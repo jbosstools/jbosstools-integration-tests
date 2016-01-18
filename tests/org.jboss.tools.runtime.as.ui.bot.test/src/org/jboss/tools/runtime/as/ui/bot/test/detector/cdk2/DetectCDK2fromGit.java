@@ -23,6 +23,9 @@ public class DetectCDK2fromGit extends DetectRuntimeTemplate {
 	
 	@BeforeClass
 	public static void setup(){
+		if (GIT_REPOSITORY_URI==null){
+			fail("\"jbt.cdk_git_uri\" property was not set.");
+		}
 		File gitRepositoryDir = new File("target/cdk-git");
 		if (gitRepositoryDir.exists()){
 			try {
@@ -35,6 +38,7 @@ public class DetectCDK2fromGit extends DetectRuntimeTemplate {
 		try {
 			Git.cloneRepository().setURI(GIT_REPOSITORY_URI).setDirectory(gitRepositoryDir).call();
 		} catch (GitAPIException e) {
+			e.printStackTrace();
 			fail("Unable to clone git repository");
 		}
 	}
@@ -50,7 +54,7 @@ public class DetectCDK2fromGit extends DetectRuntimeTemplate {
 		expectedServer.setName("cdk-v2");
 		expectedServer.setVersion("2.0");
 		expectedServer.setType("CDK");
-		expectedServer.setLocation(RuntimeProperties.getInstance().getRuntimePath(SERVER_ID));
+		expectedServer.setLocation(new File("target/cdk-git/cdk-v2").getAbsolutePath());
 		return Arrays.asList(expectedServer);
 	}
 

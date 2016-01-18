@@ -16,7 +16,7 @@
 		<reddeer.config>${project.build.directory}/../resources/generated_resources</reddeer.config>
 
 		<surefire.timeout>7200</surefire.timeout>
-		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${reddeer.config}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${reddeer.config} -Djbt.cdk_git_uri=${jbt.cdk_git_uri} ${productProperties}</systemProperties>
 	</properties>
 
 	<profiles>
@@ -37,7 +37,7 @@
 				<jboss-seam-2.3.0.Final>${requirementsDirectory}/jboss-seam-2.3.0.Final/</jboss-seam-2.3.0.Final>
 				<jboss-seam-2.2.2>${requirementsDirectory}/jboss-seam-2.2.2.Final/</jboss-seam-2.2.2>
 
-				<test.class>org.jboss.tools.runtime.as.ui.bot.test.ProjectTestsSuite</test.class>
+				<test.class>org.jboss.tools.runtime.as.ui.bot.test.StableTestsSuite</test.class>
 			</properties>
 			<build>
 				<plugins>
@@ -196,7 +196,7 @@
 				<jboss-seam-2.3.x>${requirementsDirectory}/jboss-seam-2.3.x/jboss-wfk-2.5.0/jboss-seam-2.3.3.Final-redhat-1/</jboss-seam-2.3.x>
 
 				<product-download-properties-file>resources/products-download.properties</product-download-properties-file>
-				<systemProperties> ${systemProperties} -Djboss.org.username=${jboss.org.username} -Djboss.org.password=${jboss.org.password}</systemProperties>
+				<productProperties>-Djboss.org.username=${jboss.org.username} -Djboss.org.password=${jboss.org.password}</productProperties>
 			</properties>
 			<build>
 				<plugins>
@@ -409,6 +409,7 @@
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.eclipse.jgit.feature.group</artifactId>
+							<artifactId>org.jboss.tools.openshift.cdk.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
 					</dependencies>

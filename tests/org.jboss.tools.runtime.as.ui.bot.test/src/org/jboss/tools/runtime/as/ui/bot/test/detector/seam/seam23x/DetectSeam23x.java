@@ -11,7 +11,7 @@ public class DetectSeam23x extends DetectRuntimeTemplate {
 
 	public static final String PATH_ID = "jboss-seam-2.3.x";
 		
-	public static final String VERSION = "2.3.1.Final";
+	public static final String VERSION = "2.3.3.Final-redhat-1";
 	
 	public static final String NAME = "jboss-seam-" + VERSION;
 	

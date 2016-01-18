@@ -1,5 +1,6 @@
 package org.jboss.tools.runtime.reddeer.wizard;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -26,7 +27,11 @@ public class TaskWizardLoginPage extends WizardPage{
 		new OkButton().click();
 		
 		//Do not store this to secure storage
-		new DefaultShell("Secure Storage Password");
+		try{
+			new DefaultShell("Secure Storage Password");
+		}catch(RedDeerException e){
+			new DefaultShell("Secure Storage");
+		}
 		new CancelButton().click();
 	}
 
