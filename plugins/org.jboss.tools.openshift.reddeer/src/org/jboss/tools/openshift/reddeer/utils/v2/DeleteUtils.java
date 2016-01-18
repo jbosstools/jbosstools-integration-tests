@@ -64,9 +64,9 @@ public class DeleteUtils {
 	 * Deletes project, server adapter and deployed OpenShift application.
 	 */
 	public void perform() {
-		deleteServerAdapter();
 		deleteOpenShiftApplication();
 		deleteProject();
+		deleteServerAdapter();
 	}
 
 	public void deleteServerAdapter() {

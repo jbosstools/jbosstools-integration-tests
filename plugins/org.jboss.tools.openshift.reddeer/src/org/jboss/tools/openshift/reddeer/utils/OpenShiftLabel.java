@@ -75,9 +75,10 @@ public class OpenShiftLabel {
 		public static final String[] NEW_CONNECTION = {"New", "Connection..."};
 		public static final String[] NEW_OS_PROJECT = {"New", "Project"};
 		public static final String REMOVE_CONNECTION = "Remove Connection(s)...";
+		public static final String DELETE_CONNECTION = "Delete";
 		
 		// Domain related
-		public static final String DELETE_DOMAIN = "Delete Domain...";
+		public static final String DELETE_DOMAIN = "Delete";
 		public static final String EDIT_DOMAIN = "Edit Domain...";
 		
 		// Project related
@@ -92,8 +93,8 @@ public class OpenShiftLabel {
 		public static final String START_BUILD = "Start Build";
 		
 		// Application related
-		public static final String APPLICATION_DETAILS = "Details...";
-		public static final String DELETE_APPLICATION = "Delete Application(s)...";
+		public static final String APPLICATION_PROPERTIES = "Properties";
+		public static final String DELETE_APPLICATION = "Delete";
 		public static final String EDIT_ENV_VARS = "Edit User Environment Variables...";
 		public static final String EMBED_CARTRIDGE = "Edit Embedded Cartridges...";
 		public static final String IMPORT_APPLICATION = "Import Application...";

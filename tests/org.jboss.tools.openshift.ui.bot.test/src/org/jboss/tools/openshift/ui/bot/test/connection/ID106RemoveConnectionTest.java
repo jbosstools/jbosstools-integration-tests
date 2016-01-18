@@ -45,7 +45,7 @@ public class ID106RemoveConnectionTest {
 	public void testRemoveConnection() {
 		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).select();
 		
-		new ContextMenu(OpenShiftLabel.ContextMenu.REMOVE_CONNECTION).select();
+		new ContextMenu(OpenShiftLabel.ContextMenu.DELETE_CONNECTION).select();
 		
 		new DefaultShell(OpenShiftLabel.Shell.REMOVE_CONNECTION);
 		new OkButton().click();

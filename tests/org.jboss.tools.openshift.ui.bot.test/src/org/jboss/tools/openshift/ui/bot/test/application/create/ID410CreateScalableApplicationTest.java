@@ -55,7 +55,7 @@ public class ID410CreateScalableApplicationTest {
 		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).getDomain(DatastoreOS2.DOMAIN).
 			getApplication(applicationName).select();
 		
-		new ContextMenu(OpenShiftLabel.ContextMenu.APPLICATION_DETAILS).select();
+		new ContextMenu(OpenShiftLabel.ContextMenu.APPLICATION_PROPERTIES).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.APPLICATION_DETAILS),
 				TimePeriod.LONG);

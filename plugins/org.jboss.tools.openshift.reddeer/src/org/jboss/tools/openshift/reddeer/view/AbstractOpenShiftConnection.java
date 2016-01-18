@@ -33,7 +33,7 @@ public abstract class AbstractOpenShiftConnection extends AbstractOpenShiftExplo
 	public void remove() {
 		item.select();
 		
-		new ContextMenu(OpenShiftLabel.ContextMenu.REMOVE_CONNECTION).select();
+		new ContextMenu(OpenShiftLabel.ContextMenu.DELETE_CONNECTION).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.REMOVE_CONNECTION));
 		
