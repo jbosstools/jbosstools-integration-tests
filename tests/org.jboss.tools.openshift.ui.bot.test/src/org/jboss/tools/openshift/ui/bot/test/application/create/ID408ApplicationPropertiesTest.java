@@ -61,7 +61,7 @@ public class ID408ApplicationPropertiesTest {
 				getDomain(DatastoreOS2.DOMAIN).getApplication(applicationName);
 		
 		applicationDetails(explorer, application.getTreeItem(), applicationName, "Do-It-Yourself 0.1 (diy-0.1)",
-				OpenShiftLabel.ContextMenu.APPLICATION_DETAILS);
+				OpenShiftLabel.ContextMenu.APPLICATION_PROPERTIES);
 	}
 	
 	/**

@@ -64,7 +64,7 @@ public class ID803ServerAdapterHandlingTest {
 	
 	@Test
 	public void testServerAdapterShowInBrowser() {
-		new ServerAdapter(Version.OPENSHIFT2, applicationName);
+		new ServerAdapter(Version.OPENSHIFT2, applicationName).select();
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.SHOW_IN_BROWSER).select();
 		
@@ -135,7 +135,7 @@ public class ID803ServerAdapterHandlingTest {
 		ID408ApplicationPropertiesTest.applicationDetails(new ServersView(), new ServerAdapter(Version.OPENSHIFT2, 
 				applicationName).getTreeItem(), applicationName, 
 				"JBoss Enterprise Application Platform 6 (jbosseap-6)", "OpenShift", 
-				OpenShiftLabel.ContextMenu.APPLICATION_DETAILS);
+				OpenShiftLabel.ContextMenu.APPLICATION_PROPERTIES);
 	}
 	
 	@Test

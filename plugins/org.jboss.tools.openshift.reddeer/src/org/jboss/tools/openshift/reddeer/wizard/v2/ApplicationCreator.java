@@ -51,7 +51,7 @@ public class ApplicationCreator {
 				false, false, null, null, createAdapter, null, null, null, (String[]) null);
 		
 		boolean isEmbeddedCartridgeDialogShown = basicCartridge.equals(OpenShiftLabel.Cartridge.DIY) ||
-				basicCartridge.equals(OpenShiftLabel.Cartridge.JENKINS);
+				basicCartridge.equals(OpenShiftLabel.Cartridge.JENKINS) || scalable;
 		
 		wizard.postCreateSteps(isEmbeddedCartridgeDialogShown);
 		

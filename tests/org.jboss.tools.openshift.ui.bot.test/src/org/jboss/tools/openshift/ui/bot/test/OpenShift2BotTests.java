@@ -177,7 +177,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID706PortForwardingTest.class,
 		ID707HandleEnvironmentVariablesTest.class,
 		ID708ShowInBrowserTest.class,
-		
+	
 		// Application - server adapter
 		ID801SwitchProjectDeploymentTest.class,
 		ID802ServerAdapterOverviewTest.class,

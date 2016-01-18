@@ -10,18 +10,23 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test.application.advanced;
 
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.YesButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -52,6 +57,7 @@ public class ID902DeployGitProjectTest {
 		new WorkbenchShell().setFocus();
 		
 		importGitProject();
+		commitChanges();
 		
 		NewOpenShift2ApplicationWizard wizard = new NewOpenShift2ApplicationWizard(DatastoreOS2.USERNAME, 
 				DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
@@ -118,6 +124,23 @@ public class ID902DeployGitProjectTest {
 		new FinishButton().click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
+	
+	private void commitChanges() {
+		new WaitWhile(new JobIsRunning());
+		AbstractWait.sleep(TimePeriod.NORMAL);
+		
+		new ProjectExplorer().getProject(projectName).select();
+		new ContextMenu(OpenShiftLabel.ContextMenu.GIT_COMMIT).select();
+
+		new DefaultShell(OpenShiftLabel.Shell.COMMIT);
+		new DefaultStyledText().setText("Commit from IDE");
+			
+		new WaitUntil(new WidgetIsEnabled(new PushButton(OpenShiftLabel.Button.COMMIT)));
+			
+		new PushButton(OpenShiftLabel.Button.COMMIT).click();
+		
+		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.COMMIT));
 	}
 	
 	@After
