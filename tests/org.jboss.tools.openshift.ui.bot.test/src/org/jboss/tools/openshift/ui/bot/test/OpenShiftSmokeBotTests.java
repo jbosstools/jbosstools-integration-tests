@@ -12,6 +12,8 @@ package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID101OpenOpenShiftExplorerTest;
+import org.jboss.tools.openshift.ui.bot.test.connection.ID102OpenNewConnectionShellTest;
+import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionDialogHandlingTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -19,7 +21,11 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({	
 	// OpenShift v2 smoke tests
 	ID101OpenOpenShiftExplorerTest.class,
+	ID102OpenNewConnectionShellTest.class,
+	
+	// OpenShift v3 smoke tests
+	ConnectionDialogHandlingTest.class
 })
-public class SmokeSuite {
+public class OpenShiftSmokeBotTests {
 
 }

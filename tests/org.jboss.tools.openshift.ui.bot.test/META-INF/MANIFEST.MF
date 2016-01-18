@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.common;bundle-version="[1.0.0,2.0.0)",
  org.jboss.reddeer.requirements;bundle-version="[1.0.0,2.0.0)",
  org.jboss.reddeer.core;bundle-version="[1.0.0,2.0.0)",
- org.jboss.tools.openshift.reddeer
+ org.jboss.tools.openshift.reddeer;bundle-version="[4.3.1,4.4.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Eclipse-BundleShape: jar
