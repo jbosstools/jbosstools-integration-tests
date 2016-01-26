@@ -39,6 +39,11 @@ public class JpaAnnotationGenerationTest extends HibernateRedDeerTest {
 		importProject(PRJ);
 	}
 	
+	@After
+	public void cleanUp() {
+		deleteAllProjects();
+	}
+	
 	@Test
 	public void testGenerateJPAHibernateAnnotationsContextMenu() {		
 		selectItem();
@@ -86,14 +91,6 @@ public class JpaAnnotationGenerationTest extends HibernateRedDeerTest {
 		item.select();
 	}
 	
-	@After
-	public void cleanUp() {
-		PackageExplorer packageExplorer = new PackageExplorer();
-		packageExplorer.open();
-		for (Project project : packageExplorer.getProjects()){
-			DeleteUtils.forceProjectDeletion(project, true);
-		}
-		packageExplorer.activate();
-	}
+	
 	
 }

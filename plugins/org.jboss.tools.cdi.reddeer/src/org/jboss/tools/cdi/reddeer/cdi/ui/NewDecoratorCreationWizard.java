@@ -87,9 +87,14 @@ public class NewDecoratorCreationWizard extends NewWizardDialog{
 		new PushButton("Add...").click();
 		new DefaultShell("Implemented Interfaces Selection");
 		new DefaultText(0).setText(bindings);
+		String[] splitBindings = bindings.split(".");
+		System.out.println("BIND:");
+		for(String s: splitBindings){
+			System.out.println(s);
+		}
 		Table t = new DefaultTable();
-		new WaitUntil(new TableItemIsFound(t, bindings), TimePeriod.LONG);
-		new DefaultTableItem(new TreeItemRegexMatcher(bindings)).select();
+		new WaitUntil(new TableItemIsFound(t, splitBindings[splitBindings.length-1]), TimePeriod.LONG);
+		new DefaultTableItem(new TreeItemRegexMatcher(splitBindings[splitBindings.length-1])).select();
 		new PushButton("OK").click();
 		new DefaultShell("New Decorator");
 	}

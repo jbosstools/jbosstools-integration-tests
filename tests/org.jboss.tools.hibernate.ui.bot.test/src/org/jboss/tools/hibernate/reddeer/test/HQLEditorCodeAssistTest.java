@@ -5,6 +5,9 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -13,6 +16,7 @@ import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.tools.hibernate.reddeer.console.KnownConfigurationsView;
 import org.jboss.tools.hibernate.reddeer.editor.HQLEditor;
 import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
@@ -43,17 +47,24 @@ public class HQLEditorCodeAssistTest extends HibernateRedDeerTest {
     @InjectRequirement    
     private DatabaseRequirement dbRequirement;
     
+    @After
+	public void cleanUp() {
+		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
+		deleteAllProjects();
+	}
+    
 	private void prepare() {
 
 		log.step("Import testing project");
-    	importProject(prj);
+    	importMavenProject(prj);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		log.step("Create database driver definition");
 		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
 		log.step("Create database connection profile");
 		ConnectionProfileFactory.createConnectionProfile(cfg);
-		log.step("Convert Project to Faceted form");
-		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
+		//log.step("Convert Project to Faceted form");
+		//ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
 		log.step("Set JPA Project facets");
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
 	}
@@ -79,6 +90,12 @@ public class HQLEditorCodeAssistTest extends HibernateRedDeerTest {
     @Test
     public void testHQLContentAssist43() {
     	setParams("mvn-hibernate43-ent","4.3","2.1");
+    	testHQLEditor();
+    }
+    
+    @Test
+    public void testHQLContentAssist50() {
+    	setParams("mvn-hibernate50-ent","5.0","2.1");
     	testHQLEditor();
     }
     
@@ -133,13 +150,4 @@ public class HQLEditorCodeAssistTest extends HibernateRedDeerTest {
 		assertTrue(proposal + " is expected", proposals.contains(proposal));				
 	}
 
-   
-	@After
-	public void cleanUp() {
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.getProject(prj).delete(true);
-	}
 }

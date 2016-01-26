@@ -9,6 +9,7 @@ import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -28,11 +29,12 @@ public class MavenImportWizard extends WizardDialog {
 
 	public void open() {
 		new ShellMenu("File", "Import...").select();
-		new WaitUntil(new ShellWithTextIsActive("Import"), TimePeriod.NORMAL);
+		new WaitUntil(new ShellWithTextIsAvailable("Import"));
+		new DefaultShell("Import");
 		new DefaultTreeItem("Maven", "Existing Maven Projects").select();
 		new PushButton("Next >").click();
-		new WaitUntil(new ShellWithTextIsActive("Import Maven Projects"),
-				TimePeriod.NORMAL);
+		new WaitUntil(new ShellWithTextIsAvailable("Import Maven Projects"));
+		new DefaultShell("Import Maven Projects");
 	}
 
 	@Override
@@ -56,8 +58,7 @@ public class MavenImportWizard extends WizardDialog {
 	}
 
 	private void waitForShellToDisappear(){
-			new WaitWhile(new ShellWithTextIsActive("Import Maven Projects"),
-				TimePeriod.NORMAL);
+			new WaitWhile(new ShellWithTextIsActive("Import Maven Projects"));
 		try{
 			//try to wait for another shell (with errors after import)
 			new WaitUntil(new ShellWithTextIsActive("Import Maven Projects"));

@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -9,8 +10,6 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
@@ -37,18 +36,26 @@ public class JPAEntityGenerationTest extends HibernateRedDeerTest {
     @InjectRequirement    
     private DatabaseRequirement dbRequirement;
     
+    @After
+	public void cleanUp() {
+		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
+		
+		deleteAllProjects();
+	}
+    
     
 	private void prepare() {
 		log.step("Import testing project");
-    	importProject(prj);
+    	importMavenProject(prj);
     	
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		log.step("Create driver definition");
 		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
 		log.step("Create connection profile");
 		ConnectionProfileFactory.createConnectionProfile(cfg);
-		log.step("Convert project to faceted form");
-		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
+		//log.step("Convert project to faceted form");
+		//ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
 		log.step("Set Hibernate JPA facet");
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);		
 	}
@@ -83,6 +90,12 @@ public class JPAEntityGenerationTest extends HibernateRedDeerTest {
     }
     
     @Test
+    public void testEntityGenerationWithConsole50() {
+    	setParams("mvn-hibernate50","5.0","2.1");
+    	testEntityGeneration(true);
+    }
+    
+    @Test
     public void testEntityGenerationWithoutConsole35() {
     	setParams("mvn-hibernate35","3.5","2.0");
     	testEntityGeneration(false);
@@ -104,7 +117,13 @@ public class JPAEntityGenerationTest extends HibernateRedDeerTest {
     public void testEntityGenerationWithoutConsole43() {
     	setParams("mvn-hibernate43","4.3","2.1");
     	testEntityGeneration(false);
-    }    
+    }   
+    
+    @Test
+    public void testEntityGenerationWithoutConsole50() {
+    	setParams("mvn-hibernate50","5.0","2.1");
+    	testEntityGeneration(false);
+    } 
         
     private void testEntityGeneration(boolean useHibernateConsole) {
     	prepare();
@@ -116,23 +135,13 @@ public class JPAEntityGenerationTest extends HibernateRedDeerTest {
     	log.step("Check generated entities");
     	ProjectExplorer pe = new ProjectExplorer();    
     	pe.open();
-    	pe.selectProjects(prj);
-    	try {
-    		new DefaultTreeItem(prj,"src/main/java","org.gen","Actor.java").doubleClick();
-    	}
-    	catch (SWTLayerException e) {
+    	try{
+    		pe.getProject(prj).getProjectItem("Java Resources","src/main/java","org.gen","Actor.java").open();
+    	} catch (RedDeerException e) {
     		fail("Entities not generated, possible cause https://issues.jboss.org/browse/JBIDE-19175");
     	}
     	new DefaultEditor("Actor.java");
     }
     
-	@After
-	public void cleanUp() {
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
-		
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.getProject(prj).delete(true);
-	}
+	
 }

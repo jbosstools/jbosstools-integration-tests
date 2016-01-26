@@ -23,7 +23,7 @@ import org.junit.runner.RunWith;
 @Database(name="testdb")
 public class JPAFacetTest extends HibernateRedDeerTest {
 
-	private final String PRJ = "mvn-hibernate43"; 
+	private final String PRJ = "mvn-hibernate50"; 
     @InjectRequirement    
     private DatabaseRequirement dbRequirement;
     
@@ -32,7 +32,7 @@ public class JPAFacetTest extends HibernateRedDeerTest {
     @Before
 	public void testConnectionProfile() {
     	log.step("Import test project");
-    	importProject(PRJ);
+    	importMavenProject(PRJ);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		log.step("Convert database driver definition");
 		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
@@ -40,18 +40,20 @@ public class JPAFacetTest extends HibernateRedDeerTest {
 		ConnectionProfileFactory.createConnectionProfile(cfg);		
 	}
     
+    @After
+	public void cleanUp() {
+		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
+	}
+    
     @Test
     public void testSetJPAFacets()
     {    	    
     	log.step("Set JPA facet for Hibernate");
     	DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-    	ProjectConfigurationFactory.convertProjectToFacetsForm(PRJ);
+    	//ProjectConfigurationFactory.convertProjectToFacetsForm(PRJ);
     	ProjectConfigurationFactory.setProjectFacetForDB(PRJ, cfg);
     }
     
-	@After
-	public void cleanUp() {
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
-	}
+	
 }
