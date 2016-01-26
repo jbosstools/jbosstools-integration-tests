@@ -48,6 +48,11 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 		importProject(PROJECT_NAME);
 	}
 	
+	@After 
+	public void clean() {			
+		deleteAllProjects();
+	}
+	
 	@Test
 	public void testCreateConfigurationFileWithoutConsole35() {		
 		testCreateConfigurationFile("3.5",false);
@@ -106,6 +111,21 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 	@Test
 	public void testCreateConfigurationFileFromDatasource43() {
 		createConfigurationFileFromDatasource("4.3");
+	}
+	
+	@Test
+	public void testCreateConfigurationFileWithoutConsole50() {		
+		testCreateConfigurationFile("5.0",false);
+	}
+
+	@Test
+	public void testCreateConfigurationFileWithConsole50() {
+		testCreateConfigurationFile("5.0",true);
+	}
+	
+	@Test
+	public void testCreateConfigurationFileFromDatasource50() {
+		createConfigurationFileFromDatasource("5.0");
 	}
 	
 	
@@ -184,13 +204,6 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 			KnownConfigurationsView v = new KnownConfigurationsView();
 			v.selectConsole(PROJECT_NAME);		
 		}
-	}
-			
-	@After 
-	public void clean() {			
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.getProject(PROJECT_NAME).delete(true);
 	}
 
 }

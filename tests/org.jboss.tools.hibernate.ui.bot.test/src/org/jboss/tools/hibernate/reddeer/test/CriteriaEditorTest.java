@@ -1,10 +1,12 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -12,6 +14,10 @@ import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.swt.api.Tree;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -19,8 +25,15 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.hibernate.reddeer.common.FileHelper;
 import org.jboss.tools.hibernate.reddeer.console.KnownConfigurationsView;
 import org.jboss.tools.hibernate.reddeer.editor.CriteriaEditor;
@@ -44,14 +57,20 @@ import org.junit.runner.RunWith;
 @Database(name="testdb")
 public class CriteriaEditorTest extends HibernateRedDeerTest {
 
-	private String prj = "mvn-hibernate43";
-	private String hbVersion = "4.3";
-	private String jpaVersion = "2.1"; 
+	private String prj;
+	private String hbVersion;
+	private String jpaVersion; 
 
 	private static final Logger log = Logger.getLogger(CriteriaEditorTest.class);
 	
     @InjectRequirement    
     private DatabaseRequirement dbRequirement;     
+    
+    @After
+	public void cleanUp() {
+		ConnectionProfileFactory.deleteAllConnectionProfiles();
+		deleteAllProjects();
+	}
 
     @Test
     public void testCriteriaEditorMvn35() {
@@ -74,6 +93,12 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
     @Test
     public void testCriteriaEditorMvn43() {
     	setParams("mvn-hibernate43-ent","4.3","2.1");
+    	testCriteriaEditorMvn();
+    }
+    
+    @Test
+    public void testCriteriaEditorMvn50() {
+    	setParams("mvn-hibernate50-ent","5.0","2.1");
     	testCriteriaEditorMvn();
     }
         
@@ -103,24 +128,36 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
     
 	private void prepareMaven() {
 		log.step("Import mavenized project " + prj);
-    	importProject(prj);
+    	importMavenProject(prj);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		log.step("Create database driver definition");
 		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
 		log.step("Create connection profile");
 		ConnectionProfileFactory.createConnectionProfile(cfg);
 		
-		log.step("Convert project into faceted form");
-		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
+		//log.step("Convert project into faceted form");
+		//ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
 		log.step("Set JPA Facets");
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
 		
 		log.step("Open Hibernate Configurations View");
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		v.open();
+		try{
+			Tree configs = new DefaultTree();
+			for(TreeItem i: configs.getItems()){
+				i.select();
+				new ContextMenu("Delete Configuration").select();
+				new DefaultShell("Delete console configuration");
+				new OkButton().click();
+				new WaitWhile(new ShellWithTextIsAvailable("Delete console configuration"));
+			}
+		} catch (CoreLayerException ex){
+		}
 		log.step("Add New Hibernate Configuration and set parameters");
 		new ContextMenu("Add Configuration...").select();
 		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"));
+		new LabeledText("Name:").setText(prj);
 		DefaultGroup prjGroup = new DefaultGroup("Project:");
 		new DefaultText(prjGroup).setText(prj);
 		new RadioButton("JPA (jdk 1.5+)").click();
@@ -175,11 +212,5 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
     	assertTrue("Query result items expected - known issue https://issues.jboss.org/browse/JBIDE-19743", result.getResultItems().size() > 10);
 	}
    
-	@After
-	public void cleanUp() {
-		ConnectionProfileFactory.deleteAllConnectionProfiles();
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.deleteAllProjects();
-	}
+	
 }

@@ -14,6 +14,7 @@ import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingElementsSelec
 import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingFilePage;
 import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingFileWizard;
 import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingPreviewPage;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +35,11 @@ public class MappingFileTest extends HibernateRedDeerTest {
 	public void prepare() {
 		log.step("Import test project");
 		importProject(PRJ);
+	}
+	
+	@After
+	public void clean(){
+		deleteAllProjects();
 	}
 	
 	@Test()

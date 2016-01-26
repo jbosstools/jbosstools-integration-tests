@@ -93,8 +93,4 @@ public class RevengFileTest extends HibernateRedDeerTest {
 		re.activateTableFiltersTab();
 		re.activateTypeMappingsTab();		
 	}
-
-	@After 
-	public void clean() {			
-	}
 }

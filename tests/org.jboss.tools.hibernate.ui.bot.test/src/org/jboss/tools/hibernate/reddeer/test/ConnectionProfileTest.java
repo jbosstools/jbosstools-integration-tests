@@ -27,6 +27,12 @@ public class ConnectionProfileTest {
     private DatabaseRequirement dbRequirement;
     private static final Logger log = Logger.getLogger(ConnectionProfileTest.class);
     
+    @After
+	public void cleanUp() {
+		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
+	}
+    
 	@Test
 	public void testConnectionProfile() {
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
@@ -36,10 +42,6 @@ public class ConnectionProfileTest {
 		log.step("Create connection profile");
 		ConnectionProfileFactory.createConnectionProfile(cfg);		
 	}
-	@After
-	public void cleanUp() {
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
-	}
+	
 
 }

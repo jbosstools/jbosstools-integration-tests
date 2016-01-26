@@ -38,8 +38,14 @@ public class EntityValidationTest extends HibernateRedDeerTest {
 	@Before 
 	public void prepare() {
 		log.step("Import test project");
-		importProject(PROJECT_NAME);
+		importMavenProject(PROJECT_NAME);
 	}
+	
+	@After 
+	public void clean() {			
+		deleteAllProjects();
+	}
+
 	
 	@Test
 	public void embeddedEntityValidationTest() {		
@@ -93,12 +99,4 @@ public class EntityValidationTest extends HibernateRedDeerTest {
 		problems = pv.getProblems(ProblemType.ERROR, new ProblemsDescriptionMatcher(expectedProblem));
 		assertTrue(expectedProblem + " Error is expected, known issue(s):JBIDE-19526", problems.size() == 2);
 	}
-	
-	@After 
-	public void clean() {			
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.getProject(PROJECT_NAME).delete(true);
-	}
-
 }

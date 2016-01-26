@@ -2,6 +2,8 @@ package org.jboss.tools.hibernate.reddeer.importer;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
@@ -11,15 +13,18 @@ import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.hibernate.reddeer.factory.ResourceFactory;
+import org.jboss.tools.maven.reddeer.wizards.MavenImportWizard;
+import org.jboss.tools.maven.reddeer.wizards.MavenImportWizardFirstPage;
 
 /**
  * Project importer class provides handy methods to import project from
@@ -50,11 +55,12 @@ public class ProjectImporter {
 		new WaitWhile(new JobIsRunning());
 		
 		if (!projectName.equals("hibernatelib")) {
-			new ShellMenu("Project","Clean...").select();;
-			new WaitUntil(new ShellWithTextIsActive("Clean"));
+			new ShellMenu("Project","Clean...").select();
+			new WaitUntil(new ShellWithTextIsAvailable("Clean"));
+			new DefaultShell("Clean");
 			new RadioButton("Clean all projects").click();
 			new OkButton().click();
-			new WaitWhile(new ShellWithTextIsActive("Clean"));
+			new WaitWhile(new ShellWithTextIsAvailable("Clean"));
 					
 			new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 	}
@@ -82,6 +88,12 @@ public class ProjectImporter {
 		p1.deselectAllProjects();
 		p1.selectProjects(prjName);
 		w.finish();
+	}
+	
+	public static void importMavenProject(String pomPath) throws IOException {
+		MavenImportWizard importWizard = new MavenImportWizard();
+		importWizard.open();
+		new MavenImportWizardFirstPage().importProject((new File(pomPath)).getCanonicalPath());
 	}
 
 	

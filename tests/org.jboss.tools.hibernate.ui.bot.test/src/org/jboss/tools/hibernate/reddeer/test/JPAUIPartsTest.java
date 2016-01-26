@@ -20,6 +20,13 @@ public class JPAUIPartsTest {
 	
 	private static final Logger log = Logger.getLogger(JPAUIPartsTest.class);
 	
+	@After
+	public void after() {
+		JavaPerspective p = new JavaPerspective();
+		p.open();
+		p.reset();
+	}	
+	
 	@Test
 	/**
 	 * Tests JPA perspective
@@ -67,10 +74,5 @@ public class JPAUIPartsTest {
 		view.close();		
 	}
 	
-	@After
-	public void after() {
-		JavaPerspective p = new JavaPerspective();
-		p.open();
-		p.reset();
-	}	
+	
 }

@@ -11,15 +11,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  org.jboss.tools.common.ui,
  org.eclipse.datatools.connectivity,
- org.jboss.reddeer.swt,
- org.jboss.reddeer.workbench,
  org.jboss.tools.hibernate.reddeer,
- org.jboss.reddeer.jface,
- org.jboss.reddeer.core,
- org.jboss.reddeer.junit,
- org.jboss.reddeer.eclipse,
- org.jboss.reddeer.requirements,
- org.jboss.reddeer.common
+ org.jboss.reddeer.go
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: jar

@@ -7,15 +7,13 @@ import org.jboss.reddeer.eclipse.datatools.ui.view.DataSourceExplorer;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.core.matcher.TreeItemRegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 
 /**
@@ -40,9 +38,9 @@ public class ConnectionProfileFactory {
 		for (TreeItem i : items) {
 			i.select();
 			new ContextMenu("Delete").select();
-			new WaitUntil(new ShellWithTextIsActive("Delete confirmation"));
+			new DefaultShell("Delete confirmation");
 			new YesButton().click();
-			new WaitWhile(new ShellWithTextIsActive("Delete confirmation"));				
+			new WaitWhile(new ShellWithTextIsAvailable("Delete confirmation"));				
 		}
 
 		DatabaseProfile dbProfile = new DatabaseProfile();
@@ -70,11 +68,9 @@ public class ConnectionProfileFactory {
 		explorer.open();
 		new DefaultTreeItem(new TreeItemRegexMatcher("Database Connections"), new TreeItemRegexMatcher(profileName + ".*")).select();
 		new ContextMenu("Delete").select();
-		String deleteConfirmation = "Delete confirmation";
-		RegexMatcher withRegexMatcher = new RegexMatcher(".*" + deleteConfirmation + ".*"); 
-		new WaitUntil(new ShellWithTextIsActive(withRegexMatcher));
-		new DefaultShell(deleteConfirmation);
+		new DefaultShell("Delete confirmation");
 		new YesButton().click();
+		new WaitWhile(new ShellWithTextIsAvailable("Delete confirmation"));
 	}
 	
 	/***
@@ -87,9 +83,9 @@ public class ConnectionProfileFactory {
 		for (TreeItem i : items) {
 			i.select();
 			new ContextMenu("Delete").select();;
-			new WaitUntil(new ShellWithTextIsActive("Delete confirmation"));
+			new DefaultShell("Delete confirmation");
 			new YesButton().click();
-			new WaitWhile(new ShellWithTextIsActive("Delete confirmation"));				
+			new WaitWhile(new ShellWithTextIsAvailable("Delete confirmation"));		
 		}
 	}	
 }

@@ -23,6 +23,13 @@ public class HibernateUIPartsTest {
 	
 	private static final Logger log = Logger.getLogger(HibernateUIPartsTest.class);
 	
+	@After
+	public void after() {
+		JavaPerspective p = new JavaPerspective();
+		p.open();
+		p.reset();
+	}
+	
 	@Test
 	/**
 	 * Tests Hibernate perspective
@@ -73,13 +80,6 @@ public class HibernateUIPartsTest {
 		view.restore();
 		log.step("Close view");
 		view.close();		
-	}
-	
-	@After
-	public void after() {
-		JavaPerspective p = new JavaPerspective();
-		p.open();
-		p.reset();
 	}
 	
 	
