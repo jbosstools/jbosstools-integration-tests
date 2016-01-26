@@ -51,6 +51,11 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
 	private String hbVersion = "4.3";
 	
 	private static final Logger log = Logger.getLogger(CodeGenerationConfigurationTest.class);
+	
+	@After
+	public void cleanUp() {
+		deleteAllProjects();
+	}
 
 	// Mavenized projects
     @Test
@@ -78,6 +83,12 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     }
     
     @Test
+    public void testHibernateGenerateConfiguration50() {
+    	setParams("mvn-hibernate50","5.0","2.1");
+    	createHibernateGenerationConfigurationMvn(false);
+    }
+    
+    @Test
     public void testHibernateGenerateConfigurationWithReveng35() {
     	setParams("mvn-hibernate35","3.5","2.0");
     	createHibernateGenerationConfigurationMvn(true);
@@ -98,6 +109,12 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     @Test
     public void testHibernateGenerateConfigurationWithReveng43() {
     	setParams("mvn-hibernate43","4.3","2.1");
+    	createHibernateGenerationConfigurationMvn(true);
+    }
+    
+    @Test
+    public void testHibernateGenerateConfigurationWithReveng50() {
+    	setParams("mvn-hibernate50","5.0","2.1");
     	createHibernateGenerationConfigurationMvn(true);
     }
     
@@ -141,7 +158,7 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
 	private void prepareMvn() {
 		
 		log.step("Import maven project");
-    	importProject(prj);
+    	importMavenProject(prj);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		log.step("Create Hibernate configuration file with Hibernate Console");
 		HibernateToolsFactory.testCreateConfigurationFile(cfg, prj, "hibernate.cfg.xml", true);
@@ -275,12 +292,5 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
 		
 		new DefaultCombo().setSelection(prj);
 		new OkButton().click();
-	}
-
-	@After
-	public void cleanUp() {
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.deleteAllProjects();
 	}
 }

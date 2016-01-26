@@ -4,6 +4,7 @@ package org.jboss.tools.hibernate.reddeer.test;
 import java.io.IOException;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -22,6 +23,7 @@ import org.jboss.tools.hibernate.reddeer.wizard.ConsoleConfigurationCreationWiza
 import org.jboss.tools.hibernate.reddeer.wizard.HibernateConsoleConnectionType;
 import org.jboss.tools.hibernate.reddeer.wizard.HibernateConsoleType;
 import org.jboss.tools.hibernate.ui.bot.test.Activator;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -41,7 +43,14 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 	private static final Logger log = Logger.getLogger(MappingDiagramTest.class);
 	
     @InjectRequirement    
-    private DatabaseRequirement dbRequirement;    
+    private DatabaseRequirement dbRequirement; 
+    
+    @After
+  	public void cleanUp() {
+		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
+  		deleteAllProjects();
+  	}
 
 	@Test
     public void testMappingDiagram35() {
@@ -64,6 +73,12 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
     @Test
     public void testMappingDiagram43() {
     	setParams("mvn-hibernate43-ent","4.3","2.1");
+    	testMappingDiagramMaven();
+    }
+    
+    @Test
+    public void testMappingDiagram50() {
+    	setParams("mvn-hibernate50-ent","5.0","2.1");
     	testMappingDiagramMaven();
     }
 
@@ -94,26 +109,24 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
     private void testMappingDiagramMaven() {    	
     	prepareMavenProject();
     	testMappingDiagram();
-    	cleanUpMvn();
     }
     
     private void testMappingDiagramEclipse() {
     	prepareEclipseProject();
     	testMappingDiagram();
-    	cleanUpEcl();    
     }
     
 	public void prepareMavenProject() {
 		log.step("Import test project");
-    	importProject(prj);
+    	importMavenProject(prj);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		
 		log.step("Create database driver definition");
 		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
 		log.step("Create database connection profile ");
 		ConnectionProfileFactory.createConnectionProfile(cfg);
-		log.step("Convert project to faceted form");
-		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
+		//log.step("Convert project to faceted form");
+		//ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
 		log.step("Set JPA facets to Hibernate Platform");
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
 		
@@ -143,6 +156,11 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 		log.step("Import test projects");
     	importProject("hibernatelib");
     	importProject(prj);
+		
+		log.step("Create database driver definition");
+		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
+		log.step("Create database connection profile ");
+		ConnectionProfileFactory.createConnectionProfile(cfg);
     	
     	log.step("Create hibernate console configuartion file");
     	HibernateToolsFactory.testCreateConfigurationFile(cfg, prj, "hibernate.cfg.xml", false);
@@ -161,18 +179,5 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 		mappingMenu.select();
 		
 		new DefaultEditor(prj+": Actor and 15 others");
-	}
-	
-	private void cleanUpMvn() {
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.getProject(prj).delete(true);	
-	}
-	
-	private void cleanUpEcl() {
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.deleteAllProjects();
 	}
 }

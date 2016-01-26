@@ -22,7 +22,6 @@ import org.jboss.tools.hibernate.reddeer.factory.HibernateToolsFactory;
 import org.jboss.tools.hibernate.reddeer.perspective.HibernatePerspective;
 import org.jboss.tools.hibernate.reddeer.wizard.ExportAntCodeGenWizard;
 import org.jboss.tools.hibernate.reddeer.wizard.ExportAntCodeGenWizardPage;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -94,8 +93,4 @@ public class AntFileExportTest extends HibernateRedDeerTest {
     	
     	assertTrue("Ant file cannot be ampty", new TextEditor(ANTFILE_NAME).getText().length() > 0);
     }
-    
-	@After
-	public void cleanUp() {
-	}
 }

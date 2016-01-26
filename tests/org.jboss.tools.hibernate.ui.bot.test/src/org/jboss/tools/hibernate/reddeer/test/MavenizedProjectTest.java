@@ -13,7 +13,6 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
-@CleanWorkspace
 public class MavenizedProjectTest extends HibernateRedDeerTest {
 
 	private static final Logger log = Logger.getLogger(MavenizedProjectTest.class);
@@ -38,8 +37,13 @@ public class MavenizedProjectTest extends HibernateRedDeerTest {
 		importHibernateMavenProject("mvn-hibernate43");
 	}
 	
+	@Test
+	public void testHibernateMavenProject50() {
+		importHibernateMavenProject("mvn-hibernate50");
+	}
+	
 	private void importHibernateMavenProject(String projectName) {
 		log.step("Import mavenized test project" + projectName);
-		importProject(projectName);
+		importMavenProject(projectName);
 	}
 }

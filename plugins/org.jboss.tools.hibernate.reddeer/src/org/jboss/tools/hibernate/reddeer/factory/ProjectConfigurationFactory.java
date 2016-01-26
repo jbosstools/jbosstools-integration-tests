@@ -6,6 +6,7 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.wst.common.project.facet.ui.FacetsPropertyPage;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
@@ -138,7 +139,7 @@ public class ProjectConfigurationFactory {
 		new LabeledCombo("Type:").setSelection("Disable Library Configuration");
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsActive("Modify Faceted Project"));
+		new WaitWhile(new ShellWithTextIsAvailable("Modify Faceted Project"));
 	}
 	
 	

@@ -47,6 +47,15 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		importProject(PROJECT_NAME);			
 	}
 	
+	@After 
+	public void clean() {
+		KnownConfigurationsView v = new KnownConfigurationsView();
+		v.open();
+		v.deleteConsoleConfiguration(CONSOLE_NAME);
+		
+		deleteAllProjects();
+	}
+	
 	@Test 
 	public void testConsoleConfiguration35() {
 		createConsoleConfiguration("3.5");
@@ -65,6 +74,11 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 	@Test 
 	public void testConsoleConfiguration43() {
 		createConsoleConfiguration("4.3");
+	}
+	
+	@Test 
+	public void testConsoleConfiguration50() {
+		createConsoleConfiguration("5.0");
 	}
 	
 	private void createConsoleConfiguration(String hibernateVersion) {
@@ -93,7 +107,7 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		wizard.finish();
 	}
 
-		public void prepareConsoleConfiguration(String hibernateVersion) {
+	public void prepareConsoleConfiguration(String hibernateVersion) {
 		log.step("Open Hibernate Console Configuration view");
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		v.open();
@@ -120,15 +134,5 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		
 		v.open();
 		v.selectNode(CONSOLE_NAME,"Database","SAKILA.PUBLIC","ACTOR");
-	}
-
-	@After 
-	public void clean() {
-		KnownConfigurationsView v = new KnownConfigurationsView();
-		v.open();
-		v.deleteConsoleConfiguration(CONSOLE_NAME);
-		
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.getProject(PROJECT_NAME).delete(true);
 	}
 }

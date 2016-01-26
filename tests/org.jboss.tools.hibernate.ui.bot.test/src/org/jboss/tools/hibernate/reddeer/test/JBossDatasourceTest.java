@@ -29,7 +29,6 @@ import org.junit.runner.RunWith;
  */
 @RunWith(RedDeerSuite.class)
 @Database(name="testdb")
-@CleanWorkspace
 public class JBossDatasourceTest extends HibernateRedDeerTest {
 	
 	public static final String PRJ = "mvn-hibernate35";
@@ -46,7 +45,13 @@ public class JBossDatasourceTest extends HibernateRedDeerTest {
 		log.step("Create database connection profile definition");
 		ConnectionProfileFactory.createConnectionProfile(cfg);		
 		log.step("Import testing project");
-		importProject(PRJ);
+		importMavenProject(PRJ);
+	}
+	
+	@After
+	public void cleanUp() {
+		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
 	}
 	
 	@Test
@@ -72,9 +77,5 @@ public class JBossDatasourceTest extends HibernateRedDeerTest {
 		assertFalse(new DefaultEditor(dsFileName).isDirty());
 	}
 		
-	@After
-	public void cleanUp() {
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
-	}
+
 }
