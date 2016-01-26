@@ -32,9 +32,4 @@ public class CreateSingleJPAProjectTest extends HibernateRedDeerTest {
 	public void createJPAProject21() {
 		JPAProjectFactory.createProject("jpa21test", JpaVersion.JPA21, JpaPlatform.HIBERNATE21);
 	}
-	
-	@After
-	public void cleanup() {
-		// nothing
-	}
 }

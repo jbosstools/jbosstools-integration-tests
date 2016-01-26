@@ -23,6 +23,11 @@ public class PersistenceXMLFileTest extends HibernateRedDeerTest {
 	private String prj = "ecl-jpa21"; 
 	private static final Logger log = Logger.getLogger(PersistenceXMLFileTest.class);
     
+	@After
+	public void cleanUp() {
+		deleteAllProjects();
+	}
+	
 	private void prepare() {
 		log.step("Import JPA Project");
     	importProject(prj);
@@ -75,12 +80,5 @@ public class PersistenceXMLFileTest extends HibernateRedDeerTest {
 		assertTrue("sa value is expected",usrnameVal.equals(usernameExpected));
 		String dialectVal = xh.getPersistencePropertyValue(dialectProp, text);
 		assertTrue("H2 value is expected",dialectVal.equals(dialectExpected));
-	}
-	    
-	@After
-	public void cleanUp() {
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.deleteAllProjects();
 	}
 }

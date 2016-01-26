@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -31,7 +32,7 @@ import org.junit.runner.RunWith;
 @Database(name = "testdb")
 public class JPADetailsViewTest extends HibernateRedDeerTest {
 
-	private final String PRJ = "mvn-hibernate43-ent";
+	private final String PRJ = "mvn-hibernate50-ent";
 	@InjectRequirement
 	private DatabaseRequirement dbRequirement;
 	
@@ -40,16 +41,22 @@ public class JPADetailsViewTest extends HibernateRedDeerTest {
 	@Before
 	public void testConnectionProfile() {
 		log.step("Import test project");
-		importProject(PRJ);
+		importMavenProject(PRJ);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		log.step("Create database driver definition");
 		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
 		log.step("Create database connection profile");
 		ConnectionProfileFactory.createConnectionProfile(cfg);
-		log.step("Convert project to faceted form");
-		ProjectConfigurationFactory.convertProjectToFacetsForm(PRJ);
+		//log.step("Convert project to faceted form");
+		//ProjectConfigurationFactory.convertProjectToFacetsForm(PRJ);
 		log.step("Set project facet for JPA");
 		ProjectConfigurationFactory.setProjectFacetForDB(PRJ, cfg);
+	}
+	
+	@After
+	public void cleanUp() {
+		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
 	}
 
 	@Test
@@ -58,11 +65,9 @@ public class JPADetailsViewTest extends HibernateRedDeerTest {
 		log.step("Open entity");
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.selectProjects(PRJ);
-		try {
-			new DefaultTreeItem(PRJ, "src/main/java", "org.gen", "Actor.java")
-					.doubleClick();
-		} catch (SWTLayerException e) {
+		try{
+			pe.getProject(PRJ).getProjectItem("Java Resources","src/main/java","org.gen","Actor.java").open();
+		} catch (RedDeerException e) {
 			fail("Entities not generated, possible cause https://issues.jboss.org/browse/JBIDE-19175");
 		}
 		TextEditor textEditor = new TextEditor("Actor.java");
@@ -74,14 +79,10 @@ public class JPADetailsViewTest extends HibernateRedDeerTest {
 					
 		try {
 			new DefaultStyledText("Type 'Actor' is mapped as entity.");
-		} catch (SWTLayerException e) {
+		} catch (RedDeerException e) {
 			fail("JPA details should be available - known issue - https://issues.jboss.org/browse/JBIDE-17940");
 		}
 	}
 
-	@After
-	public void cleanUp() {
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
-	}
+	
 }

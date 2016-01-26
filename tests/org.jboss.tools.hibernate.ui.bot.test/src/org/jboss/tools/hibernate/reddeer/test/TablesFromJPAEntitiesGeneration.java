@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -46,6 +47,13 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 	@InjectRequirement
 	private DatabaseRequirement dbRequirement;
 	
+	@After
+	public void cleanUp() {
+		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
+		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
+		deleteAllProjects();
+	}
+	
     // use console
     @Test
     public void testDDLGenerationWithConsole35() {
@@ -71,6 +79,12 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
     	testDDLGenerationMvn(true);
     }
     
+    @Test
+    public void testDDLGenerationWithConsole50() {
+    	setParams("mvn-hibernate50-ent","5.0","2.1");
+    	testDDLGenerationMvn(true);
+    }
+   
     @Test
     public void testDDLGenerationWithConsoleEcl35() {
     	setParams("ecl-hibernate35-ent","3.5","2.0");
@@ -113,7 +127,13 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
     	setParams("mvn-hibernate43-ent","4.3","2.1");
     	testDDLGenerationMvn(false);
     }
-        
+    
+    @Test
+    public void testDDLGenerationWithoutConsole50() {
+    	setParams("mvn-hibernate50-ent","5.0","2.1");
+    	testDDLGenerationMvn(false);
+    }
+      
     @Test
     public void testDDLGenerationWithoutConsoleEcl35() {
     	setParams("ecl-hibernate35-ent","3.5","2.0");
@@ -141,15 +161,15 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
     
     private void testDDLGenerationEcl(boolean useConsole) {
     	prepareEclipseProject();
-    	testDDLGeneration(useConsole,"src",hbVersion);
+    	testDDLGeneration(useConsole,hbVersion,"src");
     }    
     
     private void testDDLGenerationMvn(boolean useConsole) {
     	prepareMavenProject();
-    	testDDLGeneration(useConsole,"src/main/java",hbVersion);
+    	testDDLGeneration(useConsole,hbVersion, "Java Resources","src/main/java");
     }
     
-	private void testDDLGeneration(boolean useConsole, String pkg, String hbVersion) {
+	private void testDDLGeneration(boolean useConsole, String hbVersion, String... pkg ) {
 		
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
@@ -168,8 +188,8 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 
 		pe.open();
 		try {
-			new DefaultTreeItem(prj,pkg, DDL_FILE).doubleClick();
-		} catch (CoreLayerException e) {
+			pe.getProject(prj).getProjectItem(pkg).getProjectItem(DDL_FILE).open();  
+		} catch (RedDeerException e) {
 			Assert.fail("DDL is not generated - known issues(s): JBIDE-19431,JBIDE-19535");	
 		}
 		String ddlText = new TextEditor(DDL_FILE).getText();
@@ -179,14 +199,14 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 
 	private void prepareMavenProject() {
 		log.step("Import test project");
-		importProject(prj);
+		importMavenProject(prj);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		log.step("Create database driver definition");
 		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
 		log.step("Create connection profile definition");
 		ConnectionProfileFactory.createConnectionProfile(cfg);
-		log.step("Convert project to faceted from");
-		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
+		//log.step("Convert project to faceted from");
+		//ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
 		log.step("Set JPA facets to Hibernate Platform");
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
 	}
@@ -208,8 +228,8 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 		log.step("Create connection profile definition");
 		ConnectionProfileFactory.createConnectionProfile(cfg);
     	
-		log.step("Convert project to faceted from");
-		ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
+		//log.step("Convert project to faceted from");
+		//ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
 		log.step("Set JPA facets to Hibernate Platform");
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
     	
@@ -251,14 +271,5 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 		for (String s : expected) {
 			assertTrue(s + " is expected in ddl", text.contains(s));
 		}
-	}
-	
-	@After
-	public void cleanUp() {
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		ConnectionProfileFactory.deleteConnectionProfile(cfg.getProfileName());
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.deleteAllProjects();
 	}
 }
