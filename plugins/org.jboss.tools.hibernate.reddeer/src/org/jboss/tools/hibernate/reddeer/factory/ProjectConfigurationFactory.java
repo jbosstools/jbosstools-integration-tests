@@ -112,8 +112,7 @@ public class ProjectConfigurationFactory {
 		log.info("Open persistence xml file");
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		DefaultTreeItem i = new DefaultTreeItem(prj, "JPA Content", "persistence.xml");
-		i.doubleClick();
+		pe.getProject(prj).getProjectItem("JPA Content", "persistence.xml").open();
 
 		log.info("In editor set some hibernate properties on hibernate tab");
 		JpaXmlEditor pexml = new JpaXmlEditor();
