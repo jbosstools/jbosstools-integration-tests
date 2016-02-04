@@ -20,6 +20,7 @@ Export-Package: org.jboss.tools.arquillian.ui.bot.reddeer.configurations,
  org.jboss.tools.arquillian.ui.bot.reddeer.junit,
  org.jboss.tools.arquillian.ui.bot.reddeer.junit.view,
  org.jboss.tools.arquillian.ui.bot.reddeer.maven,
+ org.jboss.tools.arquillian.ui.bot.reddeer.preferences,
  org.jboss.tools.arquillian.ui.bot.reddeer.profile,
  org.jboss.tools.arquillian.ui.bot.reddeer.support
 
