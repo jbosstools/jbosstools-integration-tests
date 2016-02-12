@@ -1,6 +1,7 @@
 package org.jboss.tools.arquillian.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.arquillian.ui.bot.test.cruiserView.BasicArquilliaCruiserTest;
 import org.jboss.tools.arquillian.ui.bot.test.preferences.ArquillianPreferencePageTest;
 import org.jboss.tools.arquillian.ui.bot.test.preferences.ArquillianValidatorPreferencePageTest;
 import org.jboss.tools.arquillian.ui.bot.test.project.AddArquillianProfile;
@@ -17,7 +18,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	CreateArquillianTestCase.class,
 	RunArquillianTestCase.class,
 	ArquillianPreferencePageTest.class,
-	ArquillianValidatorPreferencePageTest.class
+	ArquillianValidatorPreferencePageTest.class,
+	BasicArquilliaCruiserTest.class
 	})
 public class ArquillianSuite {
 	
