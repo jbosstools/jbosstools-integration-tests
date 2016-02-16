@@ -19,7 +19,7 @@
 		<eapSystemProperties></eapSystemProperties>
 		<jbosstools.test.jboss-eap-6.2.home>${requirementsDirectory}/jboss-eap-6.2</jbosstools.test.jboss-eap-6.2.home>
 		<jbosstools.test.jboss-eap-6.3.home>${requirementsDirectory}/jboss-eap-6.3</jbosstools.test.jboss-eap-6.3.home>
-		<systemProperties>${integrationTestsSystemProperties} ${wildflySystemProperties} ${eapSystemProperties} -Dusage_reporting_enabled=false -Dreddeer.config=${project.build.directory}/classes/server_properties -Dmaven.config.file=${project.build.directory}/classes/settings.xml</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} ${wildflySystemProperties} ${eapSystemProperties} -Dusage_reporting_enabled=false -Drd.config=${project.build.directory}/classes/server_properties -Dmaven.config.file=${project.build.directory}/classes/settings.xml</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
 
