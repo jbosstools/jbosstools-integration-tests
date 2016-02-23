@@ -8,19 +8,14 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.easymport.ui.bot.test;
+package org.jboss.tools.easymport.reddeer.wizard;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite.SuiteClasses;
+import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 
-@RunWith(RedDeerSuite.class)
-@SuiteClasses({
-	PlainJavaProjectTest.class,
-	PlainEclipseProjectTest.class,
-	EclipseJavaProjectTest.class,
-	FeatureProjectTest.class
-	})
-public class AllTestsSuite {
+public class EasymportWizard extends ImportWizardDialog {
+	
+	public EasymportWizard() {
+		super(new String[]{"General", "Projects from Folder"});
+	}
 
 }
