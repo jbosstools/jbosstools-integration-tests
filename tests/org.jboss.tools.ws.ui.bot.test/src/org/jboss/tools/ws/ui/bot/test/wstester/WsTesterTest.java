@@ -33,14 +33,17 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.WidgetIsFound;
 import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.uiforms.impl.expandablecomposite.DefaultExpandableComposite;
 import org.jboss.tools.ws.reddeer.swt.condition.WsTesterNotEmptyResponseText;
 import org.jboss.tools.ws.reddeer.ui.dialogs.InputDialog;
 import org.jboss.tools.ws.reddeer.ui.tester.views.SelectWSDLDialog;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView.RequestType;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
+import org.jboss.tools.ws.ui.messages.JBossWSUIMessages;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
@@ -59,7 +62,18 @@ public class WsTesterTest {
  	public static void deleteProjects() {
  		ProjectHelper.deleteAllProjects();
  	}
-
+ 	
+ 	@After
+ 	public void clearResponseBody() {
+		WsTesterView wstv = new WsTesterView();
+		if (!wstv.isOpened()) {
+			wstv.open();
+		}		
+		wstv.activate();
+		
+		new DefaultText(new DefaultExpandableComposite(
+				JBossWSUIMessages.JAXRSWSTestView2_ResponseBody_Section)).setText("");
+ 	}
 	
 	/**
 	 * Test behavior of UI
@@ -244,6 +258,8 @@ public class WsTesterTest {
 		wstv.editParameterRequestArg("chapter", "2", "chapter", "1");
 		try {
 			wstv.invoke();
+			new WaitUntil(new WsTesterNotEmptyResponseText(),
+					TimePeriod.getCustom(5), false);
 			String rsp = wstv.getResponseBody();
 			String[] rspHeaders = wstv.getResponseHeaders();
 			LOGGER.log(Level.FINE, "REST response: {0}", rsp);
@@ -275,6 +291,8 @@ public class WsTesterTest {
 				String.valueOf(requestBody.length()));
 		try {
 			wstv.invoke();
+			new WaitUntil(new WsTesterNotEmptyResponseText(),
+					TimePeriod.getCustom(5), false);
 			String rsp = wstv.getResponseBody();
 			String[] rspHeaders = wstv.getResponseHeaders();
 			LOGGER.log(Level.FINE, "REST response: {0}", rsp);
@@ -298,6 +316,8 @@ public class WsTesterTest {
 		wstv.invoke();
 		new WaitUntil(new ShellWithTextIsActive(""));
 		new OkButton().click();
+		new WaitUntil(new WsTesterNotEmptyResponseText(),
+				TimePeriod.getCustom(5), false);
 		Assert.assertEquals(0, wstv.getParameterRequestArgs().size());
 		String rsp = wstv.getResponseBody();
 		String[] rspHeaders = wstv.getResponseHeaders();
@@ -305,7 +325,7 @@ public class WsTesterTest {
 		LOGGER.log(Level.FINE, "Response headers: {0}",
 				Arrays.asList(rspHeaders));
 		Assert.assertTrue(rsp.trim().length() > 0);
-		checkResponse(rsp, "Invalid API Key.");
+		checkResponse(rsp, "Invalid API key");
 	}
 
 	private String readResource(InputStream is) {

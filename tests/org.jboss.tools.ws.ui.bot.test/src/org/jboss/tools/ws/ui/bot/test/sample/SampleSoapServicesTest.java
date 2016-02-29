@@ -11,8 +11,6 @@
 
 package org.jboss.tools.ws.ui.bot.test.sample;
 
-import static org.junit.Assert.assertTrue;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
@@ -42,10 +40,6 @@ import org.junit.Test;
  */
 public class SampleSoapServicesTest extends SOAPTestBase {
 
-	private enum ServiceType {
-		SIMPLE, SAMPLE
-	}
-
 	private static final String SOAP_REQUEST = getSoapRequest(
 			"<ns1:sayHello xmlns:ns1=\"http://{0}/\"><arg0>{1}</arg0></ns1:sayHello>");
 	private static final String SERVER_URL = "localhost:8080";
@@ -57,35 +51,14 @@ public class SampleSoapServicesTest extends SOAPTestBase {
 
 	@Test
 	public void testSampleSoapWS() {
-		testDummyService(ServiceType.SAMPLE);
+		createSampleService(getWsProjectName(), "HelloServiceSample", "sample", "SampleService");
+		checkSoapService(getWsProjectName(), "HelloServiceSample", "sample", "SampleService", "You");
 	}
 
 	@Test
 	public void testSimpleSoapWs() {
-		testDummyService(ServiceType.SIMPLE);
-	}
-
-	private void testDummyService(ServiceType type) {
-		IFile dd = getDeploymentDescriptor(getWsProjectName());
-		assertTrue("Deployment descriptor missing", dd.exists());
-
-		if (type == ServiceType.SIMPLE) {
-			testSimpleWS(getWsProjectName(), "HelloServiceSimple", "sample", "SimpleService", "You");
-			testSimpleWS(getWsProjectName(), "GreetServiceSimple", "greeter", "SimpleGreeter", "Tester");
-		} else {
-			testSampleWS(getWsProjectName(), "HelloServiceSample", "sample", "SampleService", "You");
-			testSampleWS(getWsProjectName(), "GreetServiceSample", "greeter", "SampleGreeter", "Tester");
-		}
-	}
-
-	private void testSampleWS(String project, String name, String pkg, String cls, String message) {
-		createSampleService(project, name, pkg, cls);
-		checkSoapService(project, name, pkg, cls, message);
-	}
-
-	private void testSimpleWS(String project, String name, String pkg, String cls, String message) {
-		createSimpleService(project, name, pkg, cls);
-		checkSoapService(project, name, pkg, cls, message);
+		createSimpleService(getWsProjectName(), "HelloServiceSimple", "sample", "SimpleService");
+		checkSoapService(getWsProjectName(), "HelloServiceSimple", "sample", "SimpleService", "You");
 	}
 
 	private IProject getProject(String project) {
