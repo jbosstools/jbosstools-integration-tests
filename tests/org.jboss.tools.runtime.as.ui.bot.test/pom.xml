@@ -16,6 +16,7 @@
 		<reddeer.config>${project.build.directory}/../resources/generated_resources</reddeer.config>
 
 		<surefire.timeout>7200</surefire.timeout>
+		<productProperties></productProperties>
 		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${reddeer.config} -Djbt.cdk_git_uri=${jbt.cdk_git_uri} ${productProperties}</systemProperties>
 	</properties>
 
