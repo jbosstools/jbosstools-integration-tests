@@ -72,6 +72,25 @@ public class QuickstartsReporter {
 		}
 	}
 	
+	public void generateAllErrorsFile(File file){
+		PrintWriter writer = null;
+		try {
+			 writer = new PrintWriter(file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		for (Quickstart q : qstarts) {
+			if (errors.containsKey(q)) {
+				writer.println("Errors in quickstart \"" + q.getName()+"\"");
+				for (String error : errors.get(q)) {
+					writer.println("\t" + error);
+				}
+				writer.println();
+			}
+		}
+		writer.close();
+	}
+	
 	public void generateErrorFilesForEachProject(File directory){
 		if (!directory.exists()){
 			directory.mkdir();
