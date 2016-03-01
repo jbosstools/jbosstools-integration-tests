@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -74,19 +75,9 @@ public class ImportQuickstartsTest {
 			public boolean accept(File arg0) {
 				return arg0.isDirectory();
 			}
-		};
+		};		
 		for (File f : file.listFiles(directoryFilter)) {
 			System.out.println("PROCESSING " + f.getAbsolutePath());
-			if (f.getAbsolutePath().contains("picketlink") || f.getAbsolutePath().contains("wsat")) { // JBIDE-18497
-																										// Picketlink
-																										// quickstart
-																										// is
-																										// not
-																										// working
-				QuickstartsReporter.getInstance().addError(new Quickstart("Picketlink", f.getAbsolutePath()),
-						"Picketlink was skipped due to JBIDE-18497");
-				continue;
-			}
 			Quickstart qstart = new Quickstart(f.getName(), f.getAbsolutePath());
 			resultList.add(qstart);
 		}
@@ -101,7 +92,12 @@ public class ImportQuickstartsTest {
 	 */
 	@Test
 	public void quickstartTest() {
-		importQuickstart(qstart);
+		try{
+			importQuickstart(qstart);
+		}catch(NoProjectException ex){
+			//there was no project in this directory. Pass the test.
+			return;
+		}
 		checkForWarnings(qstart);
 		checkForErrors(qstart);
 		checkErrorLog(qstart);
@@ -117,13 +113,14 @@ public class ImportQuickstartsTest {
 	public static void teardown() {
 		QuickstartsReporter.getInstance().generateReport();
 		QuickstartsReporter.getInstance().generateErrorFilesForEachProject(new File("target/reports/"));
+		QuickstartsReporter.getInstance().generateAllErrorsFile(new File("target/reports/allErrors.txt"));
 	}
 
 	private void checkErrorLog(Quickstart qstart) {
 		List<LogMessage> allErrors = errorLogView.getErrorMessages();
 		String errorMessages = "";
 		for (LogMessage message : allErrors) {
-			reporter.addError(qstart, message.getMessage());
+			reporter.addError(qstart, "ERROR IN ERROR LOG: "+message.getMessage());
 			errorMessages += "\t" + message.getMessage() + "\n";
 		}
 		errorLogView.deleteLog();
@@ -148,7 +145,7 @@ public class ImportQuickstartsTest {
 		String errorMessages = "";
 		List<String> allErrors = ExamplesOperator.getInstance().getAllErrors();
 		for (String error : allErrors) {
-			reporter.addError(q, error);
+			reporter.addError(q, "ERROR IN PROJECT: "+error);
 			errorMessages += "\t" + error + "\n";
 		}
 		if (!allErrors.isEmpty()) {
@@ -178,18 +175,17 @@ public class ImportQuickstartsTest {
 	private void cleanupShells() {
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
-
-	private void importQuickstart(Quickstart quickstart) {
+	
+	private void importQuickstart(Quickstart quickstart) throws NoProjectException{
 		ExtendedMavenImportWizard mavenImportWizard = new ExtendedMavenImportWizard();
 		mavenImportWizard.open();
 		MavenImportWizardFirstPage wizPage = new MavenImportWizardFirstPage();
 		try {
 			wizPage.setRootDirectory(quickstart.getPath().getAbsolutePath());
 		} catch (WaitTimeoutExpiredException e) {
-			reporter.addError(quickstart, "There is no project in this directory");
+//			reporter.addError(quickstart, "There is no project in this directory");
 			cleanupShells();
-			fail("There is no project in this directory");
-			return;
+			throw new NoProjectException();
 		}
 		try {
 			mavenImportWizard.finish();
@@ -228,5 +224,13 @@ public class ImportQuickstartsTest {
 				new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(60 * 15));
 			}
 		}
+	}
+	
+	private class NoProjectException extends RedDeerException{
+
+		public NoProjectException() {
+			super("There is no project in this directory");
+		}
+		
 	}
 }
