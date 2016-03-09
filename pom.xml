@@ -25,11 +25,10 @@
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-tests.git</tycho.scmUrl>
 		<!-- URLs needed to resolve dependencies at build time (see <repositories> below) and at install time (see site/pom.xml#associateSites) -->
 
-		<eclipseName>neon</eclipseName>
 
-		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/${eclipseName}/snapshots/updates/integration-tests/${jbosstools_site_stream}/</jbosstools-integrationtests-site>
-		<jbosstools-site>http://download.jboss.org/jbosstools/${eclipseName}/snapshots/updates/core/${jbosstools_site_stream}/</jbosstools-site>
-		<jbosstools-tests-site>http://download.jboss.org/jbosstools/${eclipseName}/snapshots/updates/coretests/${jbosstools_site_stream}/</jbosstools-tests-site>
+		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/${eclipseReleaseName}/snapshots/updates/integration-tests/${jbosstools_site_stream}/</jbosstools-integrationtests-site>
+		<jbosstools-site>http://download.jboss.org/jbosstools/${eclipseReleaseName}/snapshots/updates/core/${jbosstools_site_stream}/</jbosstools-site>
+		<jbosstools-tests-site>http://download.jboss.org/jbosstools/${eclipseReleaseName}/snapshots/updates/coretests/${jbosstools_site_stream}/</jbosstools-tests-site>
 	</properties>
 
 	<modules>
