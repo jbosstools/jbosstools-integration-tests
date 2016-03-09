@@ -26,11 +26,6 @@
 		<!-- URLs needed to resolve dependencies at build time (see <repositories> below) and at install time (see site/pom.xml#associateSites) -->
 
 		<eclipseName>neon</eclipseName>
-		<!-- predefined RedDeer sites, if you need to change default please redefine reddeer-site property in your test -->
-		<!-- TODO: move to use /${eclipseName}/ instead of /mars/ when Red Deer moves to /neon/; see also tests/InstallDependencies.p2f for similar URLs -->
-		<reddeer-master-site>http://download.jboss.org/jbosstools/mars/snapshots/builds/reddeer_master/</reddeer-master-site>
-		<reddeer-stable-site>http://download.jboss.org/jbosstools/updates/stable/mars/core/reddeer/1.0.0/</reddeer-stable-site>
-		<reddeer-site>${reddeer-master-site}</reddeer-site>
 
 		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/${eclipseName}/snapshots/updates/integration-tests/${jbosstools_site_stream}/</jbosstools-integrationtests-site>
 		<jbosstools-site>http://download.jboss.org/jbosstools/${eclipseName}/snapshots/updates/core/${jbosstools_site_stream}/</jbosstools-site>
