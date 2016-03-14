@@ -12,7 +12,12 @@ package org.jboss.tools.archives.reddeer.component;
 
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.condition.TreeItemHasMinChildren;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -28,6 +33,7 @@ public class ArchiveProject {
 
 	private TreeItem archiveProject;
 	private ArchiveContextMenuAction menuAction;
+	protected static final Logger log = Logger.getLogger(ArchiveProject.class);
 
 	public ArchiveProject(TreeItem archiveProject) {
 		this.archiveProject = archiveProject;
@@ -51,6 +57,15 @@ public class ArchiveProject {
 	}
 	
 	public Archive getArchive(String archiveName) {
+		new WaitUntil(new TreeItemHasMinChildren(archiveProject, 1), TimePeriod.NORMAL, false);
+		if(archiveProject.getItems().isEmpty()){
+			log.debug("Archive project does not contain any archives");
+			new ShellMenu("Project","Clean...").select();
+			new DefaultShell("Clean");
+			new OkButton().click();
+			new WaitWhile(new ShellWithTextIsAvailable("Clean"));
+			new WaitWhile(new JobIsRunning());
+		}
 		new WaitUntil(new TreeItemHasMinChildren(archiveProject, 1), TimePeriod.NORMAL, false);
 		return new Archive(archiveProject.getItem(archiveName));
 	}
