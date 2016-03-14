@@ -17,6 +17,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerRSIWizardPag
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerWizardPageWithErrorCheck;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.rse.ui.view.System;
 import org.jboss.reddeer.eclipse.rse.ui.view.SystemView;
 import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardDialog;
@@ -187,16 +188,14 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 			try{
 				serverW.cancel();
 			} catch (RedDeerException ex){
-				ex.initCause(e);
-				throw ex;
+				throw e;
 			}
 			throw e;
 		} catch(AssertionError e) {
 			try{
 				serverW.cancel();
 			} catch (RedDeerException ex){
-				ex.initCause(e);
-				throw ex;
+				throw e;
 			}
 			throw e;
 		}

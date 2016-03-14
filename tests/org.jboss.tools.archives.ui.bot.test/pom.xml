@@ -16,7 +16,7 @@
 		<emma.instrument.bundles>org.jboss.ide.eclipse.archives.ui</emma.instrument.bundles>
 	<!--	<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties> -->
 		<suiteClass>org.jboss.tools.archives.ui.bot.test.ArchivesAllBotTests</suiteClass>
-		<systemProperties>-Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Dreddeer.config=target/classes/servers</systemProperties>
+		<systemProperties>-Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Drd.config=target/classes/servers</systemProperties>
 		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
 	</properties>
 	<build>
@@ -51,85 +51,9 @@
 				<configuration>
 					<testSuite>org.jboss.tools.archives.ui.bot.test</testSuite>
 					<testClass>${suiteClass}</testClass>
-					<dependencies combine.children="append">
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.ide.eclipse.archives.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.jst.enterprise_ui.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<!-- This entry should enable creating of default JDK on Mac -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.jdt.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-					</dependencies>
 				</configuration>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.apache.maven.plugins
-										</groupId>
-										<artifactId>
-											maven-dependency-plugin
-										</artifactId>
-										<versionRange>
-											[2.4,)
-										</versionRange>
-										<goals>
-											<goal>unpack</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>com.googlecode.maven-download-plugin</groupId>
-					<artifactId>download-maven-plugin</artifactId>
-					<executions>
-						<execution>
-							<id>install-as-7.1.1</id>
-							<phase>pre-integration-test</phase>
-							<goals>
-								<goal>wget</goal>
-							</goals>
-							<configuration>
-								<url>http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.zip</url>
-								<md5>175c92545454f4e7270821f4b8326c4e</md5>
-								<unpack>true</unpack>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<resources>
 				<resource>
 				<directory>resources</directory>
