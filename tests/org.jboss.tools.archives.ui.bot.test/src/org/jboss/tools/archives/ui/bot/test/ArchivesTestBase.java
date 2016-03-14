@@ -24,15 +24,24 @@ import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.apache.commons.io.FileUtils;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.Platform;
+import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesView;
 import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.After;
+import org.junit.BeforeClass;
 
 /**
  * 
@@ -45,16 +54,17 @@ public class ArchivesTestBase{
 
 	protected ProjectExplorer projectExplorer = new ProjectExplorer();
 	protected ProjectArchivesView view = new ProjectArchivesView();
+	protected static final Logger log = Logger.getLogger(ArchivesTestBase.class);
+	
+	@BeforeClass
+	public static void maximizeWorkbench(){
+		new WorkbenchShell().maximize();
+	}
 	
 	@After
 	public void cleanUp() {
-		projectExplorer.open();
-		for (Project project : projectExplorer.getProjects()) {
-		    project.select();
-		    new ContextMenu("Refresh").select();
-		    new WaitWhile(new JobIsRunning());
-			project.delete(true);
-		}
+		new CleanWorkspaceRequirement().fulfill();
+		deleteProjectDir();
 	}
 	
 	protected ProjectArchivesView openProjectArchivesView() {
@@ -131,6 +141,7 @@ public class ArchivesTestBase{
 	
 	protected static void importArchiveProjectWithoutRuntime(String projectName) {
 		
+		deleteProjectDir();
 		String location = "resources/prj/" + projectName;
 		
 		ExternalProjectImportWizardDialog importDialog = new ExternalProjectImportWizardDialog();
@@ -164,6 +175,23 @@ public class ArchivesTestBase{
 					IDELabel.Menu.REMOVE_ARCHIVE_SUPPORT).select();
 		}
 		new WaitWhile(new JobIsRunning());
+	}
+	
+	private static void deleteProjectDir(){
+		AbstractWait.sleep(TimePeriod.NORMAL);
+		String workspaceLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
+		log.debug("Workspace location is "+workspaceLocation);
+		for(File f: new File(workspaceLocation).listFiles()){
+			log.debug("Checking if "+f.getName()+" is directory");
+			if(f.isDirectory()&& f.getName().startsWith("pr")){
+				try {
+					log.debug("Deleting workspace dir "+ f.getName());
+					FileUtils.deleteDirectory(f);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 }

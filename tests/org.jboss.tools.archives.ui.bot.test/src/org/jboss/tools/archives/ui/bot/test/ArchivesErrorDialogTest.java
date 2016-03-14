@@ -41,8 +41,10 @@ import org.junit.Test;
 public class ArchivesErrorDialogTest extends ArchivesTestBase {
 
 	private static String project = "prj";
-	private static final String LOCATION = RunningPlatform.isWindows() ? "C:\\Windows\\System32":"/usr/";
+	private static final String LOCATION = RunningPlatform.isWindows() ? "C:\\Windows\\System32\\":"/usr/";
+	private static final String WIN_LOCATION = "C:/Windows/System32/";
 	private static final String ARCHIVE = project + ".jar [" + LOCATION + "]";
+	private static final String WIN_ARCHIVE = project + ".jar [" + WIN_LOCATION + "]";
 	
 	@BeforeClass
 	public static void setup() {
@@ -62,7 +64,8 @@ public class ArchivesErrorDialogTest extends ArchivesTestBase {
 		dialog.setFileSystemRelative();
 
 		Text t = new DefaultText(1);
-		t.setText(LOCATION);
+		//t.setText(LOCATION);
+		t.typeText(LOCATION);
 		dialog.finish();
 		
 		/*
@@ -70,9 +73,14 @@ public class ArchivesErrorDialogTest extends ArchivesTestBase {
 		 * accessing to LOCATION folder
 		 */ 
 		
-		view.open();
-		projectInView.getArchive(ARCHIVE).buildArchiveFull();
-		
+		view.open(); 
+		String finalLocation = null;
+		if(RunningPlatform.isWindows()){
+			finalLocation = WIN_ARCHIVE;
+		} else {
+			finalLocation = ARCHIVE;
+		}
+		projectInView.getArchive(finalLocation).buildArchiveFull();
 		handleDialogsIfInvoked();
 		assertBuildingArchiveErrorExists(
 				LOCATION + project + ".jar" ,project + ".jar");
