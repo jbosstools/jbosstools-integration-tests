@@ -38,13 +38,14 @@ public class BasicArquilliaCruiserTest {
 	private static final String STRING_2 = "// Kilroy was here";
 	private static final String QUICKSTART_SEARCH_STRING = "the `kitchensink` quickstart";
 	private static final String PROJECT_NAME = "jboss-kitchensink";
+	private static final String CENTRAL_STRING = "Red Hat Central";
 	
 	/* Copied from: org.jboss.tools.central.test.ui.reddeer.HTML5Test */
 	@Before
 	public void setup() {
-		new DefaultToolItem(new WorkbenchShell(), "JBoss Central").click();
+		new DefaultToolItem(new WorkbenchShell(), CENTRAL_STRING).click();
 		// activate central editor
-		new DefaultEditor("JBoss Central");
+		new DefaultEditor(CENTRAL_STRING);
 		new WaitUntil(new CentralIsLoaded());
 		centralBrowser = new InternalBrowser();
 		jsHelper.setBrowser(centralBrowser);
