@@ -183,7 +183,7 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 
 			setupRuntime();
 
-			serverW.finish();
+			serverW.finish(TimePeriod.getCustom(TimePeriod.VERY_LONG.getSeconds()*2));
 		} catch(RuntimeException e) {
 			try{
 				serverW.cancel();
