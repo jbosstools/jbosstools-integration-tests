@@ -26,6 +26,18 @@
 				<suiteClass>org.jboss.tools.cdi.bot.test.CDIAllBotTests</suiteClass>
 			</properties>
 		</profile>
+		<profile>
+			<id>cdi10-tests</id>
+			<properties>
+				<suiteClass>org.jboss.tools.cdi.bot.test.CDI10SuiteTest</suiteClass>
+			</properties>
+		</profile>
+		<profile>
+			<id>cdi11-tests</id>
+			<properties>
+				<suiteClass>org.jboss.tools.cdi.bot.test.CDI11SuiteTest</suiteClass>
+			</properties>
+		</profile>
 	</profiles>
 
 	<build>
@@ -104,31 +116,6 @@
 					<testSuite>org.jboss.tools.cdi.bot.test</testSuite>
 					<testClass>${suiteClass}</testClass>
 					<appArgLine>-pluginCustomization ${basedir}/pluginCustomization.ini</appArgLine>
-					<!-- Kill swt bot test take more than 3 hours minutes (10800 seconds) 
-						to finish -->
-					<dependencies combine.children="append">
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.cdi.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.jsf.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<!-- This entry should enable creating of default JDK on Mac -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.jdt.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-					</dependencies>
 				</configuration>
 			</plugin>
 		</plugins>
