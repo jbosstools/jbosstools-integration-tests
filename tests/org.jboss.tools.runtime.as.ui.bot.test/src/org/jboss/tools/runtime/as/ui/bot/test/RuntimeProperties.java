@@ -1,11 +1,10 @@
 package org.jboss.tools.runtime.as.ui.bot.test;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
-
-import org.jboss.tools.ui.bot.ext.SWTUtilExt;
 
 /**
  * Reads the configured runtimes from the property file. 
@@ -44,7 +43,7 @@ public class RuntimeProperties {
 	private void loadProperties() {
 		try {
 			properties = new Properties();
-			properties.load(new FileReader(SWTUtilExt.getResourceFile(Activator.PLUGIN_ID, "/generated_resources/runtimes.properties")));
+			properties.load(new FileReader(new File("resources/generated_resources/runtimes.properties")));
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {
