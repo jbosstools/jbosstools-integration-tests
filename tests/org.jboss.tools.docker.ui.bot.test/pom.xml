@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.jboss.tools.integration-tests</groupId>
+		<artifactId>tests</artifactId>
+		<version>4.4.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.jboss.tools.docker.tests</groupId>
+	<artifactId>org.jboss.tools.docker.ui.bot.test</artifactId>
+	<packaging>eclipse-test-plugin</packaging>
+	<properties>
+		<systemProperties>-DdockerServerURI=${dockerServerURI} -DimageName=${imageName}</systemProperties>
+		<surefire.timeout>14400</surefire.timeout>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<testSuite>org.jboss.tools.docker.ui.bot.test</testSuite>
+					<testClass>org.jboss.tools.docker.ui.bot.test.DockerAllBotTest</testClass>
+					<dependencies combine.children="append">
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.linuxtools.docker.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+					</dependencies>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>all-tests</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-surefire-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+			<properties>
+				<dockerServer>${dockerServerURI}</dockerServer>
+				<imageName>${imageName}</imageName>
+				<suiteClass>org.jboss.tools.docker.ui.bot.test.DockerAllBotTest</suiteClass>
+			</properties>
+		</profile>
+	</profiles>
+
+</project>

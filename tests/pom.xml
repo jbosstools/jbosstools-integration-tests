@@ -55,6 +55,7 @@
 		<module>org.jboss.tools.ws.ui.bot.test</module>
 		<module>org.jboss.tools.usercase.ticketmonster.ui.bot.test</module>
 		<module>org.jboss.tools.perf.test</module>
+		<module>org.jboss.tools.docker.ui.bot.test</module>
 	</modules>
 	<profiles>
 		<profile>

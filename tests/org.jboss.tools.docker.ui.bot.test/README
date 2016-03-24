@@ -1,0 +1,4 @@
+Parameters:
+-Dusage_reporting_enabled=false		disable reporting
+-DdockerServerURI=					docker server uri(ex. "tcp://localhost:2375")
+-DimageName=						docker image to test (ex. "jboss/wildfly")
