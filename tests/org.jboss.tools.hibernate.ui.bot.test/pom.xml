@@ -16,7 +16,6 @@
 		<runtimesProperties>-Drd.config=${rd.config} -Dtest.database=${test.database}</runtimesProperties>
 		<!-- don't wrap this -->		
 		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties}</systemProperties>
-		<test.installPath.OSX></test.installPath.OSX>
 	</properties>
 
 	<build>
