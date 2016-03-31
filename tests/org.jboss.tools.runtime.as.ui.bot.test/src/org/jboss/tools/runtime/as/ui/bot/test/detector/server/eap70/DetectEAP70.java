@@ -10,7 +10,7 @@ import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
 public class DetectEAP70 extends DetectRuntimeTemplate{
 
 	public static final String SERVER_ID = "jboss-eap-7.0";
-	public static final String SERVER_NAME = "JBoss EAP 7.0";
+	public static final String SERVER_NAME = "Red Hat JBoss EAP 7.0";
 	
 	@Override
 	protected String getPathID() {
