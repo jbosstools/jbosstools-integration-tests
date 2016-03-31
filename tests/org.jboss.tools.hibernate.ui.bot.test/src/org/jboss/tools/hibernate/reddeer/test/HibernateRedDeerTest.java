@@ -11,6 +11,7 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.interceptor.SyncInterceptorManager;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.eclipse.utils.DeleteUtils;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -49,6 +50,12 @@ public class HibernateRedDeerTest {
 	@BeforeClass
 	public static void beforeClass() {
 		DatabaseUtils.runSakilaDB(dbFolder);
+		
+		//https://bugs.eclipse.org/bugs/show_bug.cgi?id=470094
+		PropertiesView pw = new PropertiesView();
+		if(pw.isOpened()){
+			pw.close();
+		}
 	}
 
 	@AfterClass
