@@ -212,7 +212,7 @@ public class CriteriaEditorCodeAssistTest extends HibernateRedDeerTest {
 		expression = "session.cre";
 		criteriaEditor.setText(expression);
 		criteriaEditor.setCursorPosition(expression.length());
-		proposal = "createCriteria(Class arg0) : Criteria - Session";
+		proposal = "createCriteria\\(Class arg0\\) \\: Criteria \\- Session";
 		if (hbVersion.equals("5.0") || hbVersion.equals("4.3") || hbVersion.equals("4.0")) {
 			proposal = "createCriteria\\(Class \\w*\\) : Criteria - SharedSessionContract";
 		}
@@ -227,7 +227,7 @@ public class CriteriaEditorCodeAssistTest extends HibernateRedDeerTest {
 			}
 		}
 		if(shouldFail){
-			fail(proposal + " is expected");
+			fail(proposal + " CA proposal is expected but was "+proposals);
 		}
 		
 		expression = "session.createCriteria(Act";
