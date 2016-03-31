@@ -11,7 +11,7 @@ public class DetectEAP61 extends DetectRuntimeTemplate {
 
 	public static final String SERVER_ID = "jboss-eap-6.1";
 	
-	public static final String SERVER_NAME = "JBoss EAP 6.1";
+	public static final String SERVER_NAME = "Red Hat JBoss EAP 6.1";
 	
 	@Override
 	protected String getPathID() {
