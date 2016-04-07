@@ -12,6 +12,7 @@ package org.jboss.tools.openshift.ui.bot.test.connection.v3;
 
 import static org.junit.Assert.fail;
 
+import org.hamcrest.core.StringContains;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -30,7 +31,7 @@ public class ShowConnectionInWebConsoleTest {
 		new ContextMenu(OpenShiftLabel.ContextMenu.SHOW_IN_WEB_CONSOLE).select();
 		
 		try {
-			BrowserEditor browser = new BrowserEditor("OpenShift Web Console");
+			BrowserEditor browser = new BrowserEditor(new StringContains("Login - Red Hat"));
 			browser.close();
 		} catch (RedDeerException ex) {
 			fail("Web Console for a project has not been opened");

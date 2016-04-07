@@ -145,7 +145,7 @@ public class ServerAdapter {
 	}
 	
 	private static String getOS3ServerAdapterAppendix() {
-		return " OpenShift 3 " + DatastoreOS3.SERVER.substring(8);
+		return " at OpenShift 3 (" + DatastoreOS3.SERVER.substring(8).split(":")[0] + ")";
 	}
 	
 	public enum Version {

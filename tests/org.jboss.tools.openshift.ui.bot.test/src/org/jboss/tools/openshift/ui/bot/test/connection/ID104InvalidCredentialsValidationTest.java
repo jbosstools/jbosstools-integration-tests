@@ -40,7 +40,7 @@ public class ID104InvalidCredentialsValidationTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.openConnectionShell();
 		
-		new DefaultShell("");
+		new DefaultShell(OpenShiftLabel.Shell.NEW_CONNECTION);
 		
 		new CheckBox(0).click();
 		

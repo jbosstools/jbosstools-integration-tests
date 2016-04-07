@@ -71,7 +71,7 @@ public class ID302OpenNewApplicationWizardWithoutConnectionTest {
 	
 	@Test
 	public void testOpenWizardViaCentral() {
-		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.JBOSS_CENTRAL).click();
+		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.RED_HAT_CENTRAL).click();
 		
 		new InternalBrowser().execute(OpenShiftLabel.Others.OPENSHIFT_CENTRAL_SCRIPT);
 
@@ -98,7 +98,7 @@ public class ID302OpenNewApplicationWizardWithoutConnectionTest {
 		boolean certificateShown = System.getProperty("openshift.xserver") != null;
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		if (!explorer.connectionExists(DatastoreOS2.USERNAME)) {
-			explorer.openConnectionShell();
+			explorer.openConnectionShellViaToolItem();
 			explorer.connectToOpenShift2(DatastoreOS2.SERVER, DatastoreOS2.USERNAME,
 					System.getProperty("openshift.password"), false, false, certificateShown);
 		}

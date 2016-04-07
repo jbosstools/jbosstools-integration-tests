@@ -135,7 +135,7 @@ public class ID803ServerAdapterHandlingTest {
 		ID408ApplicationPropertiesTest.applicationDetails(new ServersView(), new ServerAdapter(Version.OPENSHIFT2, 
 				applicationName).getTreeItem(), applicationName, 
 				"JBoss Enterprise Application Platform 6 (jbosseap-6)", "OpenShift", 
-				OpenShiftLabel.ContextMenu.APPLICATION_PROPERTIES);
+				OpenShiftLabel.ContextMenu.APPLICATION_DETAILS);
 	}
 	
 	@Test
@@ -162,7 +162,7 @@ public class ID803ServerAdapterHandlingTest {
 	
 	private static void deleteApplicationViaServerAdapter() {
 		new ServerAdapter(Version.OPENSHIFT2, applicationName).select();
-		new ContextMenu("OpenShift", OpenShiftLabel.ContextMenu.DELETE_APPLICATION).select();
+		new ContextMenu("OpenShift", OpenShiftLabel.ContextMenu.DELETE_APPLICATION_VIA_ADAPTER).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.APPLICATION_SERVER_REMOVE),
 				TimePeriod.LONG);

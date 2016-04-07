@@ -48,7 +48,6 @@ public class DeleteResourceTest extends AbstractCreateApplicationTest {
 	@Test
 	public void testDeletePod() {
 		OpenShiftResource applicationPod = getApplicationPod();
-		applicationPod.refresh();
 		String podName = applicationPod.getName();
 		
 		applicationPod.select();
@@ -77,11 +76,6 @@ public class DeleteResourceTest extends AbstractCreateApplicationTest {
 			}
 		}
 		return null;
-	}
-	
-	@Test
-	public void testDeleteReplicationController() {
-		deleteResourceAndAssert(Resource.REPLICATION_CONTROLLER);
 	}
 	
 	@Test

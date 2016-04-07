@@ -72,7 +72,7 @@ public class ID301OpenNewApplicationWizardTest {
 	
 	@Test
 	public void testOpenWizardViaCentral() {
-		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.JBOSS_CENTRAL).click();
+		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.RED_HAT_CENTRAL).click();
 		
 		new InternalBrowser().execute(OpenShiftLabel.Others.OPENSHIFT_CENTRAL_SCRIPT);
 		

@@ -40,14 +40,13 @@ import org.junit.Test;
  *
  */
 public class ID304OpenNewApplicationWizardWithoutDomainTest {
-
-	private static boolean firstDomainDeleted;
-	private static boolean secondDomainDeleted;
 	
 	@BeforeClass
 	public static void deleteDomain() {
-		firstDomainDeleted = ID203DeleteDomainTest.deleteDomain(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
-		secondDomainDeleted = ID203DeleteDomainTest.deleteDomain(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.SECOND_DOMAIN);
+		ID203DeleteDomainTest.deleteDomain(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
+		ID203DeleteDomainTest.deleteDomain(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.SECOND_DOMAIN);
+		
+		new OpenShiftExplorerView().getOpenShift2Connection(DatastoreOS2.USERNAME).refresh();
 	}
 	
 	@Test
@@ -95,7 +94,7 @@ public class ID304OpenNewApplicationWizardWithoutDomainTest {
 	
 	@Test
 	public void testOpenNewApplicationWizardViaCentral() {
-		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.JBOSS_CENTRAL).click();
+		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.RED_HAT_CENTRAL).click();
 	
 		new InternalBrowser().execute(OpenShiftLabel.Others.OPENSHIFT_CENTRAL_SCRIPT);
 		
@@ -120,11 +119,7 @@ public class ID304OpenNewApplicationWizardWithoutDomainTest {
 	
 	@AfterClass
 	public static void addDomain() {
-		if (firstDomainDeleted) {
-			ID203DeleteDomainTest.createDomain(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
-		}
-		if (secondDomainDeleted) {
-			ID203DeleteDomainTest.createDomain(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.SECOND_DOMAIN);
-		}
+		ID203DeleteDomainTest.createDomain(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
+		ID203DeleteDomainTest.createDomain(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.SECOND_DOMAIN);
 	}
 }

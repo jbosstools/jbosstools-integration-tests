@@ -67,7 +67,7 @@ public class ID414CreateApplicationFromExistingProjectTest {
 		new ShellMenu("File", "New", "Other...").select();
 
 		new DefaultShell("New");
-		new DefaultTreeItem("JBoss Central", "Java EE Web Project").select();
+		new DefaultTreeItem("Red Hat Central", "Java EE Web Project").select();
 
 		new NextButton().click();
 

@@ -78,13 +78,14 @@ public class ID804CreateServerAdapterTest {
 			}
 		}
 		
+		new LabeledCombo("Domain Name:").setSelection(DatastoreOS2.DOMAIN);
 		new LabeledCombo("Application Name:").setSelection(applicationName);
 		new LabeledCombo("Deploy Project:").setSelection(applicationName);
 		
 		new FinishButton().click();
 		
 		new WaitWhile(new ShellWithTextIsAvailable("New Server"), TimePeriod.NORMAL);
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	
 		try {
 			ServerAdapter serverAdapter = new ServerAdapter(Version.OPENSHIFT2, applicationName);

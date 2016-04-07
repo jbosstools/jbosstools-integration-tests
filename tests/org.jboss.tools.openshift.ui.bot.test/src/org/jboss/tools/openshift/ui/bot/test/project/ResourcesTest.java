@@ -35,14 +35,16 @@ public class ResourcesTest {
 		verifyResourceExistence(projectItem, Resource.DEPLOYMENT_CONFIG);
 		verifyResourceExistence(projectItem, Resource.IMAGE_STREAM);
 		verifyResourceExistence(projectItem, Resource.POD);
-		verifyResourceExistence(projectItem, Resource.REPLICATION_CONTROLLER);
 		verifyResourceExistence(projectItem, Resource.ROUTE);
 		verifyResourceExistence(projectItem, Resource.SERVICE); 
 	}
 	
 	private void verifyResourceExistence(TreeItem projectItem, Resource resource) {
 		try {
-			projectItem.getItem(resource.toString());
+			OpenShiftProject project = new OpenShiftProject(projectItem);
+			project.select();
+			project.openProperties();
+			project.selectTabbedProperty(resource.toString());
 		} catch (RedDeerException ex) {
 			fail("Resource " + resource.toString() + " does not exist under a specified project item.");
 		}	

@@ -85,7 +85,7 @@ public class DeleteUtils {
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.DELETE_APP), TimePeriod.LONG);
 		
-		new DefaultShell(OpenShiftLabel.Shell.DELETE_APP).setFocus();
+		new DefaultShell(OpenShiftLabel.Shell.DELETE_APP);
 		new OkButton().click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
@@ -93,7 +93,7 @@ public class DeleteUtils {
 		explorer.getOpenShift2Connection(username).getDomain(domain).refresh();
 		
 		new WaitWhile(new OpenShiftApplicationExists(username, server, domain, appName), TimePeriod.LONG);
-		logger.info("OpenShift Application " + appName + " has been removed.");
+		logger.info("OpenShift Application " + appName + " has been removed."); 
 	}
 	
 	public void deleteProject() {

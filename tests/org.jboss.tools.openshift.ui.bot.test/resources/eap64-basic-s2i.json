@@ -2,89 +2,19 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
+        "name": "eap64-basic-s2i",
+        "namespace": "openshift",
+        "selfLink": "/oapi/v1/namespaces/openshift/templates/eap64-basic-s2i",
+        "uid": "7911668e-ec25-11e5-bf9a-525400b46e1a",
+        "resourceVersion": "292",
+        "creationTimestamp": "2016-03-17T09:48:59Z",
         "annotations": {
-            "iconClass": "icon-jboss",
             "description": "Application template for EAP 6 applications built using S2I.",
+            "iconClass": "icon-jboss",
             "tags": "eap,javaee,java,jboss,xpaas",
-            "version": "1.1.0"
-        },
-        "name": "eap64-basic-s2i"
-    },
-    "labels": {
-        "template": "eap64-basic-s2i",
-        "xpaas": "1.1.0"
-    },
-    "parameters": [
-        {
-            "description": "The name for the application.",
-            "name": "APPLICATION_NAME",
-            "value": "eap-app",
-            "required": true
-        },
-        {
-            "description": "Custom hostname for service routes.  Leave blank for default hostname, e.g.: <application-name>.<project>.<default-domain-suffix>",
-            "name": "APPLICATION_DOMAIN",
-            "value": "",
-            "required": false
-        },
-        {
-            "description": "Git source URI for application",
-            "name": "SOURCE_REPOSITORY_URL",
-            "value": "https://github.com/jboss-developer/jboss-eap-quickstarts",
-            "required": true
-        },
-        {
-            "description": "Git branch/tag reference",
-            "name": "SOURCE_REPOSITORY_REF",
-            "value": "6.4.x",
-            "required": false
-        },
-        {
-            "description": "Path within Git project to build; empty for root project directory.",
-            "name": "CONTEXT_DIR",
-            "value": "kitchensink",
-            "required": false
-        },
-        {
-            "description": "Queue names",
-            "name": "HORNETQ_QUEUES",
-            "value": "",
-            "required": false
-        },
-        {
-            "description": "Topic names",
-            "name": "HORNETQ_TOPICS",
-            "value": "",
-            "required": false
-        },
-        {
-            "description": "HornetQ cluster admin password",
-            "name": "HORNETQ_CLUSTER_PASSWORD",
-            "from": "[a-zA-Z0-9]{8}",
-            "generate": "expression",
-            "required": true
-        },
-        {
-            "description": "GitHub trigger secret",
-            "name": "GITHUB_WEBHOOK_SECRET",
-            "from": "[a-zA-Z0-9]{8}",
-            "generate": "expression",
-            "required": true
-        },
-        {
-            "description": "Generic build trigger secret",
-            "name": "GENERIC_WEBHOOK_SECRET",
-            "from": "[a-zA-Z0-9]{8}",
-            "generate": "expression",
-            "required": true
-        },
-        {
-            "description": "Namespace in which the ImageStreams for Red Hat Middleware images are installed. These ImageStreams are normally installed in the openshift namespace. You should only need to modify this if you've installed the ImageStreams in a different namespace/project.",
-            "name": "IMAGE_STREAM_NAMESPACE",
-            "value": "openshift",
-            "required": true
+            "version": "1.2.0"
         }
-    ],
+    },
     "objects": [
         {
             "kind": "Service",
@@ -124,7 +54,7 @@
                 }
             },
             "spec": {
-                "host": "${APPLICATION_DOMAIN}",
+                "host": "${HOSTNAME_HTTP}",
                 "to": {
                     "name": "${APPLICATION_NAME}"
                 }
@@ -165,7 +95,7 @@
                         "from": {
                             "kind": "ImageStreamTag",
                             "namespace": "${IMAGE_STREAM_NAMESPACE}",
-                            "name": "jboss-eap64-openshift:1.1"
+                            "name": "jboss-eap64-openshift:1.2"
                         }
                     }
                 },
@@ -248,6 +178,15 @@
                                 "name": "${APPLICATION_NAME}",
                                 "image": "${APPLICATION_NAME}",
                                 "imagePullPolicy": "Always",
+                                "livenessProbe": {
+                                    "exec": {
+                                        "command": [
+                                            "/bin/bash",
+                                            "-c",
+                                            "/opt/eap/bin/livenessProbe.sh"
+                                        ]
+                                    }
+                                },
                                 "readinessProbe": {
                                     "exec": {
                                         "command": [
@@ -258,6 +197,11 @@
                                     }
                                 },
                                 "ports": [
+                                    {
+                                        "name": "jolokia",
+                                        "containerPort": 8778,
+                                        "protocol": "TCP"
+                                    },
                                     {
                                         "name": "http",
                                         "containerPort": 8080,
@@ -293,6 +237,10 @@
                                     {
                                         "name": "HORNETQ_TOPICS",
                                         "value": "${HORNETQ_TOPICS}"
+                                    },
+                                    {
+                                        "name": "JGROUPS_CLUSTER_PASSWORD",
+                                        "value": "${JGROUPS_CLUSTER_PASSWORD}"
                                     }
                                 ]
                             }
@@ -301,5 +249,79 @@
                 }
             }
         }
-    ]
+    ],
+    "parameters": [
+        {
+            "name": "APPLICATION_NAME",
+            "description": "The name for the application.",
+            "value": "eap-app",
+            "required": true
+        },
+        {
+            "name": "HOSTNAME_HTTP",
+            "description": "Custom hostname for http service route.  Leave blank for default hostname, e.g.: \u003capplication-name\u003e-\u003cproject\u003e.\u003cdefault-domain-suffix\u003e"
+        },
+        {
+            "name": "SOURCE_REPOSITORY_URL",
+            "description": "Git source URI for application",
+            "value": "https://github.com/jboss-developer/jboss-eap-quickstarts",
+            "required": true
+        },
+        {
+            "name": "SOURCE_REPOSITORY_REF",
+            "description": "Git branch/tag reference",
+            "value": "6.4.x"
+        },
+        {
+            "name": "CONTEXT_DIR",
+            "description": "Path within Git project to build; empty for root project directory.",
+            "value": "kitchensink"
+        },
+        {
+            "name": "HORNETQ_QUEUES",
+            "description": "Queue names"
+        },
+        {
+            "name": "HORNETQ_TOPICS",
+            "description": "Topic names"
+        },
+        {
+            "name": "HORNETQ_CLUSTER_PASSWORD",
+            "description": "HornetQ cluster admin password",
+            "generate": "expression",
+            "from": "[a-zA-Z0-9]{8}",
+            "required": true
+        },
+        {
+            "name": "GITHUB_WEBHOOK_SECRET",
+            "description": "GitHub trigger secret",
+            "generate": "expression",
+            "from": "[a-zA-Z0-9]{8}",
+            "required": true
+        },
+        {
+            "name": "GENERIC_WEBHOOK_SECRET",
+            "description": "Generic build trigger secret",
+            "generate": "expression",
+            "from": "[a-zA-Z0-9]{8}",
+            "required": true
+        },
+        {
+            "name": "IMAGE_STREAM_NAMESPACE",
+            "description": "Namespace in which the ImageStreams for Red Hat Middleware images are installed. These ImageStreams are normally installed in the openshift namespace. You should only need to modify this if you've installed the ImageStreams in a different namespace/project.",
+            "value": "openshift",
+            "required": true
+        },
+        {
+            "name": "JGROUPS_CLUSTER_PASSWORD",
+            "description": "JGroups cluster password",
+            "generate": "expression",
+            "from": "[a-zA-Z0-9]{8}",
+            "required": true
+        }
+    ],
+    "labels": {
+        "template": "eap64-basic-s2i",
+        "xpaas": "1.2.0"
+    }
 }

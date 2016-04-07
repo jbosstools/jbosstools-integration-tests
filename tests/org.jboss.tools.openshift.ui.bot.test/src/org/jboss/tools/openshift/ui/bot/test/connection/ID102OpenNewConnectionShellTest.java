@@ -62,11 +62,11 @@ public class ID102OpenNewConnectionShellTest {
 	
 	private void verifyShell() {
 		try {
-			new DefaultShell("");
+			new DefaultShell(OpenShiftLabel.Shell.NEW_CONNECTION);
 			// To be sure, that it is correct shell
 			new LabeledText("Username:");
 		} catch (SWTLayerException ex) {
-			fail("New Connectin shell was not opened.");
+			fail("New Connection shell was not opened.");
 		}
 		
 		new CancelButton().click();

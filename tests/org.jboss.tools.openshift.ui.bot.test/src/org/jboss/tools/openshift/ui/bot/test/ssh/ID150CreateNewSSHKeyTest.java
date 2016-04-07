@@ -14,6 +14,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -48,6 +49,13 @@ public class ID150CreateNewSSHKeyTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).select();
+
+		try {
+			new DefaultShell(OpenShiftLabel.Shell.LOADING_CONNECTION_DETAILS);
+			new WaitWhile(new ShellWithTextIsAvailable(
+					OpenShiftLabel.Shell.LOADING_CONNECTION_DETAILS), TimePeriod.LONG);
+		} catch (RedDeerException ex) {
+		}
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.MANAGE_SSH_KEYS).select();
 		

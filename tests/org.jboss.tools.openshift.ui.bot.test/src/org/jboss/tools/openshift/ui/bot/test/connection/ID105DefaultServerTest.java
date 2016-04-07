@@ -34,7 +34,7 @@ public class ID105DefaultServerTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.openConnectionShell();
 
-		new DefaultShell("");
+		new DefaultShell(OpenShiftLabel.Shell.NEW_CONNECTION);
 		
 		CheckBox defaultServerCheckBox = new CheckBox(0);
 		LabeledCombo defaultServerCombo = 

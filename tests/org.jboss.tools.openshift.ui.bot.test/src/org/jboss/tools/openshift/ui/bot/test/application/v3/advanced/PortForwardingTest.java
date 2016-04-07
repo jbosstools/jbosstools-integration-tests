@@ -13,20 +13,20 @@ package org.jboss.tools.openshift.ui.bot.test.application.v3.advanced;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
-
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
+import org.jboss.tools.openshift.reddeer.condition.ApplicationPodIsRunning;
 import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
@@ -34,8 +34,6 @@ import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRe
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.reddeer.view.OpenShiftProject;
-import org.jboss.tools.openshift.reddeer.view.OpenShiftResource;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.create.AbstractCreateApplicationTest;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -69,6 +67,7 @@ public class PortForwardingTest extends AbstractCreateApplicationTest {
 		startAllButton.click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitUntil(new WidgetIsEnabled(new OkButton()));
 		
 		assertFalse("Button Start All should be disabled at this point.", startAllButton.isEnabled());
 		assertTrue("Button Stop All should be enabled at this point.", stopAllButton.isEnabled());
@@ -76,6 +75,8 @@ public class PortForwardingTest extends AbstractCreateApplicationTest {
 		stopAllButton.click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new DefaultShell(OpenShiftLabel.Shell.APPLICATION_PORT_FORWARDING);
+		new WaitUntil(new WidgetIsEnabled(new OkButton()));
 		
 		assertTrue("Button Start All should be enabled at this point.", startAllButton.isEnabled());
 		assertFalse("Button Stop All should be disabled at this point.", stopAllButton.isEnabled());
@@ -121,39 +122,15 @@ public class PortForwardingTest extends AbstractCreateApplicationTest {
 	}
 	
 	private void openPortForwardingDialog() {
-		getPodOfEAPApplication().select();
+		ApplicationPodIsRunning applicationPodIsRunning = new ApplicationPodIsRunning();
+		new WaitUntil(applicationPodIsRunning, TimePeriod.LONG);
 		
+		new OpenShiftExplorerView().getOpenShift3Connection().getProject().
+			getOpenShiftResource(Resource.POD, 
+					applicationPodIsRunning.getApplicationPodName()).select();
+			
 		new ContextMenu(OpenShiftLabel.ContextMenu.PORT_FORWARD).select();
 		
 		new DefaultShell(OpenShiftLabel.Shell.APPLICATION_PORT_FORWARDING);
-	}
-	
-	public static OpenShiftResource getPodOfEAPApplication() {
-		OpenShiftExplorerView explorer  = new OpenShiftExplorerView();
-		explorer.activate();
-		
-		OpenShiftProject project = explorer.getOpenShift3Connection().
-				getProject();
-		OpenShiftResource pod = null;
-			
-		while (pod == null) {
-			List<OpenShiftResource> pods = project.getOpenShiftResources(Resource.POD);
-			
-			for (OpenShiftResource resource: pods) {
-				if (!resource.getName().equals("eap-app-1-build") && !resource.getName().equals("eap-app-1-deploy")) {
-					pod = resource;
-					break;
-				}
-			}
-		}
-		
-		String podName= pod.getName();
-		
-		new WaitUntil(new ResourceExists(Resource.POD, pod.getName(), ResourceState.RUNNING), 
-				TimePeriod.LONG, true, TimePeriod.getCustom(5));
-		
-		TreeItem podResourceTreeItem = project.getTreeItem().getItem(Resource.POD.toString());
-		
-		return new OpenShiftResource(treeViewerHandler.getTreeItem(podResourceTreeItem, podName));
 	}
 }

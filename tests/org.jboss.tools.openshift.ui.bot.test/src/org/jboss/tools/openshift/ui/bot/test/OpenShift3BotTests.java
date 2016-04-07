@@ -81,7 +81,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	DeleteResourceTest.class,
 	TriggerBuildTest.class,
 	ImportApplicationTest.class,
-  	GithubWebhoookTest.class,
+	GithubWebhoookTest.class,
 	PortForwardingTest.class,
 	LogsTest.class,
 	EditResourcesTest.class,

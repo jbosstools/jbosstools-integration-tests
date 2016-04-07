@@ -32,35 +32,21 @@ public class DeploymentTest extends AbstractCreateApplicationTest {
 	public void testDeploymentOfApplicationCreatedFromTemplate() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		
+		new WaitUntil(new ResourceExists(Resource.BUILD, "eap-app-1"), TimePeriod.NORMAL, false);
+		
 		try {
-			new WaitUntil(new ResourceExists(Resource.BUILD, "eap-app-1"), 
-					TimePeriod.getCustom(120), true, TimePeriod.getCustom(7));
+			new WaitUntil(new ResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE), 
+					TimePeriod.getCustom(360), true, TimePeriod.getCustom(7));
 		} catch (WaitTimeoutExpiredException ex) {
-			fail("There should be build of an application, but there is not.");
+			fail("There should be a successful build of an application, but there is not.");
 		}
 		
 		try {
-			new WaitUntil(new ResourceExists(Resource.POD, "eap-app-1-build",
-					ResourceState.SUCCEEDED), TimePeriod.getCustom(800),
+			new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.getCustom(60),
 					true, TimePeriod.getCustom(7));
 		} catch (WaitTimeoutExpiredException ex) {
-			fail("There should be a succeeded pod of an application build, but there is not.");
-		}
-		
-		try {
-			new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.getCustom(150),
-					true, TimePeriod.getCustom(7));
-		} catch (WaitTimeoutExpiredException ex) {
-			fail("There should be 2 pods. One of a build another one of an application, but there are not.");
-		}
-		
-		try {
-			new WaitUntil(new ResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE),
-					TimePeriod.VERY_LONG, true, TimePeriod.getCustom(7));
-		} catch (WaitTimeoutExpiredException ex) {
-			fail("There should be completed build of an application, but there is not.");
-		}
-		
+			fail("There should be precisely 2 pods. One of the build and one of an running application.");
+		}		
 		
 		explorer.getOpenShift3Connection().getProject().getOpenShiftResources(Resource.ROUTE).get(0).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.SHOW_IN_WEB_BROWSER).select();

@@ -53,7 +53,7 @@ public class ConnectionDialogHandlingTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.openConnectionShell();
 		
-		new DefaultShell("");
+		new DefaultShell(OpenShiftLabel.Shell.NEW_CONNECTION);
 	}
 	
 	@Test

@@ -28,13 +28,23 @@ import org.junit.Test;
 
 public class ProjectNameValidationTest {
 	
+	public static final String PROJECT_NAME_FORMAT_ERROR = 
+			" Project name may only contain lower-case letters, numbers, and dashes. "
+					+ "It may not start or end with a dash";
+	
+	public static final String PROJECT_NAME_SHORT_ERROR = 
+			" Project name length must be between 2 and 63 characters";
+	
+	public static final String PROJECT_NAME_MAX_LENGTH_ERROR = 
+			" Maximum length allowed is 63 characters for project name";
+	
 	@Test
 	public void testShortProjectName() {
 		openNewProjectShell();
 		new LabeledText(OpenShiftLabel.TextLabels.PROJECT_NAME).setText("s");
 		
 		try {
-			new DefaultText(" Project name length must be between 2 and 63 characters.");
+			new DefaultText(PROJECT_NAME_SHORT_ERROR);
 		} catch (RedDeerException ex) {
 			fail("There is no validation message warning about small length of a project name.");
 		}
@@ -48,8 +58,7 @@ public class ProjectNameValidationTest {
 		new LabeledText(OpenShiftLabel.TextLabels.PROJECT_NAME).setText("--");
 		
 		try {
-			new DefaultText(" Project name may only contain lower-case letters, numbers, and dashes. "
-					+ "It may not start or end with a dash.");
+			new DefaultText(PROJECT_NAME_FORMAT_ERROR);
 		} catch (RedDeerException ex) {
 			fail("There is no validation message warning about inappropriate project name.");
 		}
@@ -63,8 +72,7 @@ public class ProjectNameValidationTest {
 		new LabeledText(OpenShiftLabel.TextLabels.PROJECT_NAME).setText("AAA");
 		
 		try {
-			new DefaultText(" Project name may only contain lower-case letters, numbers, and dashes. "
-					+ "It may not start or end with a dash.");
+			new DefaultText(PROJECT_NAME_FORMAT_ERROR);
 		} catch (RedDeerException ex) {
 			fail("There is no validation message warning about inappropriate project name.");
 		}
@@ -79,7 +87,7 @@ public class ProjectNameValidationTest {
 				"12345678901234567890123456789012345678901234567890123456789012345678901234567890" +
 				"123456789012345678901234");
 		try {
-			new DefaultText(" Maximum length allowed is 63 characters for project name");
+			new DefaultText(PROJECT_NAME_MAX_LENGTH_ERROR);
 		} catch (RedDeerException ex) {
 			fail("There is no validation message warning about small length of a project name.");
 		}

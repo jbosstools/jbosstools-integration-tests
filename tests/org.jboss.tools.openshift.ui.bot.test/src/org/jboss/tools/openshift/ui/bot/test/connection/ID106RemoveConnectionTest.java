@@ -12,6 +12,7 @@ package org.jboss.tools.openshift.ui.bot.test.connection;
 
 import static org.junit.Assert.assertFalse;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
@@ -44,6 +45,13 @@ public class ID106RemoveConnectionTest {
 	@Test
 	public void testRemoveConnection() {
 		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).select();
+		
+		// sometimes there is Loading OS 2 connection details shell
+		try {
+			new DefaultShell(OpenShiftLabel.Shell.LOADING_CONNECTION_DETAILS);
+			explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).select();
+		} catch (RedDeerException ex) {
+		}
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.DELETE_CONNECTION).select();
 		

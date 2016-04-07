@@ -125,7 +125,7 @@ public class OpenShiftExplorerView extends WorkbenchView {
 	
 	public void connectToOpenShift(String server, String username, String password, boolean storePassword, boolean useDefaultServer, 
 			ServerType serverType, AuthenticationMethod authMethod, boolean certificateShown) {
-		new DefaultShell("");
+		new DefaultShell(OpenShiftLabel.Shell.NEW_CONNECTION);
 		
 		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER_TYPE).setSelection(serverType.toString());
 				
@@ -176,7 +176,7 @@ public class OpenShiftExplorerView extends WorkbenchView {
 			}
 		}
 			
-		new WaitWhile(new ShellWithTextIsAvailable(""), TimePeriod.LONG);
+		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_CONNECTION), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}	
 	

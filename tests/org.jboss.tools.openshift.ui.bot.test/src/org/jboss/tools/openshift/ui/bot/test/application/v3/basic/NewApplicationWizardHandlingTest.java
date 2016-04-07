@@ -147,11 +147,11 @@ public class NewApplicationWizardHandlingTest {
 		assertTrue("There should be item representing basic EAP template in a tree but it is not there.",
 				new DefaultTree().getItems().get(0).getText().equals(OpenShiftLabel.Others.EAP_TEMPLATE));
 		
-		searchBar.setText("jws30-tomcat7-basic-s2i");
+		searchBar.setText("nodejs-example");
 		assertTrue("There should be precisely one tree item in a tree.",
 				new DefaultTree().getItems().size() == 1);
-		assertTrue("There should be item representing basic Tomcate template in a tree but it is not there.",
-				new DefaultTree().getItems().get(0).getText().equals(OpenShiftLabel.Others.TOMCAT_TEMPLATE));
+		assertTrue("There should be item representing NodeJS example template in a tree but it is not there.",
+				new DefaultTree().getItems().get(0).getText().equals(OpenShiftLabel.Others.NODEJS_TEMPLATE));
 		
 		searchBar.setText("");
 		assertTrue("There should be more templates if search bar does not contain any search query", 

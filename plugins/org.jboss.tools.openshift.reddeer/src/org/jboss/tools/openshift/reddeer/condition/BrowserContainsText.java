@@ -33,9 +33,9 @@ public class BrowserContainsText extends AbstractWaitCondition {
 	public boolean test() {
 		if (url != null) {
 			browser.setURL(url);
-			browser.forward();
+			browser.refresh();
 		} else {
-			browser.forward();
+			browser.refresh();
 		}
 		return browser.getText().contains(text);
 	}
