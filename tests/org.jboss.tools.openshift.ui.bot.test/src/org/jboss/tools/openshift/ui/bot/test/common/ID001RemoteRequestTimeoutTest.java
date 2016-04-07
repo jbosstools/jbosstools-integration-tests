@@ -55,8 +55,6 @@ public class ID001RemoteRequestTimeoutTest {
 		assertFalse("Apply button should be disable if value is not set.",
 				new PushButton("Apply").isEnabled());
 		
-		// Must be typeText, bcs. after insertion the Apply button is not enabled
-		// and workaround for fedora bcs. of keyboard events
 		while (!page.getRemoteRequestTimeout().equals("360")) {
 			page.setRemoteRequestTimeout("");
 			page.typeRemoteRequestTimeout("360");

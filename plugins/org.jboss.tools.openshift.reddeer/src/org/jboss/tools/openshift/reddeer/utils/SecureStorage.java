@@ -25,7 +25,9 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.tools.openshift.reddeer.view.AbstractOpenShiftConnection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.ServerType;
 
@@ -62,14 +64,24 @@ public class SecureStorage {
 	private static void triggerSecureStorageOfPasswordInConnectionDialog(String username, String server,
 			boolean storePassword, ServerType serverType) {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		AbstractOpenShiftConnection connection;
 		if (serverType.equals(ServerType.OPENSHIFT_2)) {
-			explorer.getOpenShift2Connection(username, server).select();
+			connection = explorer.getOpenShift2Connection(username, server);
 		} else {
-			explorer.getOpenShift3Connection().select();
+			connection = explorer.getOpenShift3Connection();
 		}
+		connection.select();
+		
+		// if loading connection shell is opened
+		try {
+			new DefaultShell("Loading OpenShift 2 connection details");
+			connection.select();
+		} catch (RedDeerException ex) {
+		}
+		
 		new ContextMenu(OpenShiftLabel.ContextMenu.EDIT_CONNECTION).select();
 		
-		new DefaultShell("").setFocus();
+		new DefaultShell(OpenShiftLabel.Shell.EDIT_CONNECTION);
 		
 		// Store password if it is not stored
 		if (!(new CheckBox(1).isChecked()) && storePassword) {
@@ -115,6 +127,7 @@ public class SecureStorage {
 	public static void verifySecureStorageOfPassword(String username, String server, boolean shouldExists, ServerType serverType) {
 		WorkbenchPreferenceDialog workbenchPreferenceDialog = new WorkbenchPreferenceDialog();
 		StoragePreferencePage secureStoragePreferencePage = new StoragePreferencePage();
+		new WorkbenchShell().setFocus();
 		workbenchPreferenceDialog.open();
 		new WorkbenchPreferenceDialog().select(secureStoragePreferencePage);
 		

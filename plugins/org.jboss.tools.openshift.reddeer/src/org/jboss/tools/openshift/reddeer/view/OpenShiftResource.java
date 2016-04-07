@@ -14,54 +14,83 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
+import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 
 /**
  * OpenShift resource. This class represents build config, build, deployment config, image stream,
  * pod, replication controller, route, service or pod.
- * 
+ * 	
  * @author mlabuda@redhat.com
  *
  */
-public class OpenShiftResource extends AbstractOpenShiftExplorerItem {
+public class OpenShiftResource {
 
-	public OpenShiftResource(TreeItem resourceItem) {
-		super(resourceItem);
+	private TableItem tableItem;
+	
+	public OpenShiftResource(TableItem tableItem) {
+		this.tableItem = tableItem;
 	}
 	
 	/**
-	 * Gets text of OpenShift resource.
-	 * @return text label of tree item representing OpenShift resource.
-	 */
-	public String getText() {
-		return item.getText();
-	}
-	
-	/**
-	 * Gets name (id) of a resource.
-	 * 
-	 * @return name of a resource
+	 * Gets name of OpenShift resource.
+	 * @return name of OpenShift resource
 	 */
 	public String getName() {
-		return treeViewerHandler.getNonStyledText(item);
+		return getColumnText("Name");
 	}
 	
 	/**
-	 * Gets additional information such as state of a resource or routing address.
+	 * Gets status of OpenShift resource (pod, build...) if it exists.
 	 * 
-	 * @return additional information about resource shown as non-styled text
+	 * @return status of resource, null if it does not exists
 	 */
-	public String getAdditionalInfo() {
-		return treeViewerHandler.getStyledTexts(item)[0].trim();
+	public String getStatus() {
+		return getColumnText("Status");
 	}
 	
+	/**
+	 * Gets property value for the OpenShift resource.
+	 * 
+	 * @param propertyPath path to property with its name
+	 * @return property value
+	 */
+	public String getPropertyValue(String... propertyPath) {
+		tableItem.select();
+		return new PropertiesView().getProperty(propertyPath).getPropertyValue();
+	}
+	
+	protected String getColumnText(String columnHeader) {
+		int index = -1; 
+		try {
+			index = new DefaultTable().getHeaderIndex(columnHeader);
+		} catch (SWTLayerException ex) { }
+		
+		if (index >= 0) {
+			return tableItem.getText(index);
+		} else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Selects resource.
+	 */
+	public void select() {
+		tableItem.select();
+	}
+	
+	/**
+	 * Deletes resource via properties view.
+	 */
 	public void delete() {
-		refresh();
-		item.select();
+		select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.DELETE_RESOURCE).select();
 		
 		new DefaultShell(OpenShiftLabel.Shell.DELETE_RESOURCE);

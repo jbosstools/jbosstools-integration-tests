@@ -80,7 +80,7 @@ public class DeployEclipseProjectTest {
 		new ShellMenu("File", "Import...").select();
 		
 		new DefaultShell("Import");
-		new DefaultTreeItem("Git", "Projects from Git (auto-import)").select();
+		new DefaultTreeItem("Git", "Projects from Git (with smart import)").select();
 	
 		nextWizardPage();
 				
@@ -90,6 +90,7 @@ public class DeployEclipseProjectTest {
 		
 		new LabeledText("URI:").setText(EAP_APP_REPO_URI);
 		
+		nextWizardPage();
 		nextWizardPage();
 		nextWizardPage();
 		nextWizardPage();
@@ -209,7 +210,7 @@ public class DeployEclipseProjectTest {
 		
 		OpenShiftResource route = new OpenShiftExplorerView().getOpenShift3Connection().
 				getProject().getOpenShiftResources(Resource.ROUTE).get(0);
-		String url = "http://" + route.getAdditionalInfo() + "/" + PROJECT_NAME;
+		String url = "http://" + route.getPropertyValue("Misc", "URI") + "/" + PROJECT_NAME;
 		route.select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.SHOW_IN_WEB_BROWSER).select();
 

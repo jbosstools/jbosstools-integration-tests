@@ -18,6 +18,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.part.MultiPageEditor;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -31,6 +32,7 @@ import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.openshift.reddeer.condition.EditorWithTitleIsAvailable;
 import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
+import org.jboss.tools.openshift.reddeer.perspective.JBossPerspective;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
@@ -43,6 +45,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+@OpenPerspective(JBossPerspective.class)
 public class GithubWebhoookTest {
 	
 	private static final String GIT_SECRET = "nosecret";
@@ -108,7 +111,7 @@ public class GithubWebhoookTest {
 	private void setWebPageContent() {
 		new WaitUntil(new EditorWithTitleIsAvailable("index.xhtml"));
 		new MultiPageEditor("index.xhtml").selectPage("Source");
-		TextEditor editor = new TextEditor();
+		TextEditor editor = new TextEditor("index.xhtml");
 		editor.setText(webPageContent);
 		editor.save();
 		editor.close();

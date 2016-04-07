@@ -24,6 +24,7 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
+import org.jboss.tools.openshift.reddeer.condition.ApplicationPodIsRunning;
 import org.jboss.tools.openshift.reddeer.condition.ConsoleHasText;
 import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
@@ -54,7 +55,11 @@ public class LogsTest extends AbstractCreateApplicationTest {
 	public void testPodLogOfApplicationPod() {
 		TestUtils.setUpOcBinary();
 		
-		OpenShiftResource pod = PortForwardingTest.getPodOfEAPApplication();
+		ApplicationPodIsRunning applicationPodIsRunning = new ApplicationPodIsRunning();
+		new WaitUntil(applicationPodIsRunning, TimePeriod.LONG);
+		
+		OpenShiftResource pod  = new OpenShiftExplorerView().getOpenShift3Connection().getProject().
+			getOpenShiftResource(Resource.POD, applicationPodIsRunning.getApplicationPodName());
 		pod.select();
 		String podName = pod.getName();
 		
@@ -76,7 +81,7 @@ public class LogsTest extends AbstractCreateApplicationTest {
 	public void testPodLogOfBuildPod() {
 		TestUtils.setUpOcBinary();
 		
-		new WaitUntil(new ResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE), 
+		new WaitUntil(new ResourceExists(Resource.BUILD, "eap-app-1"), 
 				TimePeriod.getCustom(600), true, TimePeriod.getCustom(8));
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		
@@ -100,7 +105,11 @@ public class LogsTest extends AbstractCreateApplicationTest {
 	public void testPodLogWithoutSetOCBinary() {
 		TestUtils.cleanUpOCBinary();
 		
-		OpenShiftResource pod = PortForwardingTest.getPodOfEAPApplication();
+		ApplicationPodIsRunning applicationPodIsRunning = new ApplicationPodIsRunning();
+		new WaitUntil(applicationPodIsRunning, TimePeriod.LONG);
+		
+		OpenShiftResource pod  = new OpenShiftExplorerView().getOpenShift3Connection().getProject().
+			getOpenShiftResource(Resource.POD, applicationPodIsRunning.getApplicationPodName());
 		pod.select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.POD_LOG).select();
 		

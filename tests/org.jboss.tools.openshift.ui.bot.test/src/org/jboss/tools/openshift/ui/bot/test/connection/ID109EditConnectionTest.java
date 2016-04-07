@@ -13,6 +13,7 @@ package org.jboss.tools.openshift.ui.bot.test.connection;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
@@ -38,13 +39,21 @@ public class ID109EditConnectionTest {
 		explorer.open();
 		
 		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).select();
+		
+		// sometimes there is Loading OS 2 connection details shell
+		try {
+			new DefaultShell(OpenShiftLabel.Shell.LOADING_CONNECTION_DETAILS);
+			explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).select();
+		} catch (RedDeerException ex) {
+		}
+		
 		try {
 			new ContextMenu(OpenShiftLabel.ContextMenu.EDIT_CONNECTION).select();
 		} catch (SWTLayerException ex) {
 			fail("Cannot open edit connection shell.");
 		}
 		
-		new DefaultShell("");
+		new DefaultShell(OpenShiftLabel.Shell.EDIT_CONNECTION);
 		
 		assertFalse("Edit connection shell should be aware of validated password",
 				new LabeledText(OpenShiftLabel.TextLabels.PASSWORD).getText().isEmpty());

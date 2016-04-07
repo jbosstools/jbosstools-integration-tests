@@ -54,6 +54,7 @@ public class TemplateParametersTest {
 			+ "Leave blank for default hostname, e.g.: <application-name>.<project>."
 			+ "<default-domain-suffix>";
 	public static final String APPLICATION_NAME_VALUE = "The name for the application.";
+	public static final String CONTEXT_DIR_VALUE = "Path within Git project to build; empty for root project directory.";
 	public static final String SOURCE_REPOSITORY_URL_VALUE = "https://github.com/jboss-developer/jboss-eap-quickstarts";
 	public static final String PERSONAL_GIT_REPO_URI = "https://github.com/mlabuda/jboss-eap-quickstarts";
 	public static final String SECRET_VALUE = "(generated)";
@@ -72,15 +73,15 @@ public class TemplateParametersTest {
 	
 	@Test
 	public void testTemplateParameterDetails() {
-		verifyParameter(APPLICATION_DOMAIN, APPLICATION_DOMAIN_VALUE);
+		verifyParameter(CONTEXT_DIR, CONTEXT_DIR_VALUE);
 		verifyParameter(APPLICATION_NAME, APPLICATION_NAME_VALUE);
-		verifyParameter(APPLICATION_DOMAIN, APPLICATION_DOMAIN_VALUE);
+		verifyParameter(CONTEXT_DIR, CONTEXT_DIR_VALUE);
 	}
 	
 	@Test
 	public void testTemplateParametersDefaultValues() {
-		assertTrue("Value for " + APPLICATION_DOMAIN + " parameter should be empty.",
-				new DefaultTable().getItem(APPLICATION_DOMAIN).getText(1).equals(""));
+		assertTrue("Value for " + APPLICATION_NAME + " parameter should be eap-app.",
+				new DefaultTable().getItem(APPLICATION_NAME).getText(1).equals("eap-app"));
 		assertTrue("Value for " + GENERIC_SECRET + " parameter should be " + SECRET_VALUE,
 				new DefaultTable().getItem(GENERIC_SECRET).getText(1).equals(SECRET_VALUE));
 		assertTrue("Value for " + GITHUB_SECRET + " parameter should be " + SECRET_VALUE,

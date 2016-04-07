@@ -52,17 +52,15 @@ public class CleanUpOS3 {
 		}
 		
 		if (connection != null) {
-			connection.select();
+			connection.refresh();
 			connection.expand();
 			
-			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-			
+			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);			
 			List<OpenShiftProject> projects = connection.getAllProjects();
 			if (!projects.isEmpty()) {
 				for (OpenShiftProject project: projects) {
 					log.info("Removing OpenShift project");
-					project.delete(); 
-					connection.refresh();
+					project.delete();
 				}
 			}
 		}

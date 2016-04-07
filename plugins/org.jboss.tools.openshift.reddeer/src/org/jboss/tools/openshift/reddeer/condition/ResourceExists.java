@@ -15,7 +15,6 @@ import java.util.List;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
@@ -32,16 +31,13 @@ public class ResourceExists extends AbstractWaitCondition {
 
 	private OpenShiftProject project;
 	private Matcher resourceNameMatcher;
-	private TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
-	private ResourceState buildState;
+	private ResourceState resourceState;
 	private Resource resource;
 	
 	/**
-	 * Creates new ResourceExists to wait for existence of any resource of specified type.
+	 * Creates new ResourceExists to wait for existence of any resource of specified type for
+	 * default connection and project.
 	 * 
-	 * @param server OpenShift server
-	 * @param username user name
-	 * @param projectName project name
 	 * @param resource resource type
 	 */
 	public ResourceExists(Resource resource) {
@@ -50,11 +46,8 @@ public class ResourceExists extends AbstractWaitCondition {
 	
 	/**
 	 * Creates new ResourceExists to wait for existence of a resource of specified type
-	 * matching specified resource name.
+	 * matching specified resource name for default connection and project
 	 * 
-	 * @param server OpenShift server
-	 * @param username user name
-	 * @param projectName project name
 	 * @param resource resource type
 	 * @param resourceName resource name
 	 */
@@ -64,11 +57,9 @@ public class ResourceExists extends AbstractWaitCondition {
 	
 	/**
 	 * Creates new ResourceExists to wait for existence of a resource of specified type
-	 * matching specified resource name and in specified state.
+	 * matching specified resource name and in specified state for default connection
+	 * and project.
 	 * 
-	 * @param server OpenShift server
-	 * @param username user name
-	 * @param projectName project name
 	 * @param resource resource type
 	 * @param resourceName resource name
 	 * @param resourceState state of a resource
@@ -79,11 +70,8 @@ public class ResourceExists extends AbstractWaitCondition {
 	
 	/**
 	 * Creates new ResourceExists to wait for existence of a resource of specified type
-	 * matching specified resource name matcher.
+	 * matching specified resource name matcher for default connection and project.
 	 * 
-	 * @param server OpenShift server
-	 * @param username user name
-	 * @param projectName project name
 	 * @param resource resource type
 	 * @param nameMatcher resource name matcher
 	 */
@@ -93,20 +81,18 @@ public class ResourceExists extends AbstractWaitCondition {
 		
 	/**
 	 * Creates new ResourceExists to wait for existence of a resource of specified type
-	 * matching specified resource name matcher and in specified state.
-	 * 
-	 * @param server OpenShift server
-	 * @param username user name
-	 * @param projectName project name
+	 * matching specified resource name matcher and in specified state for 
+	 * default connection and project.
+	 *
 	 * @param resource resource type
 	 * @param nameMatcher resource name matcher
 	 * @param resourceState state of a resource
 	 */
-	public ResourceExists(Resource resource, Matcher nameMatcher, ResourceState buildState) {
+	public ResourceExists(Resource resource, Matcher nameMatcher, ResourceState resourceState) {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		project = explorer.getOpenShift3Connection().getProject();
 		resourceNameMatcher = nameMatcher;
-		this.buildState = buildState;
+		this.resourceState = resourceState;
 		this.resource = resource;
 	}
 
@@ -121,9 +107,9 @@ public class ResourceExists extends AbstractWaitCondition {
 			if (resourceNameMatcher == null) {
 				return true;
 			}
-			if (resourceNameMatcher.matches(treeViewerHandler.getNonStyledText(rsrc.getTreeItem()))) {
-				if (!buildState.equals(ResourceState.UNSPECIFIED)) {
-					return treeViewerHandler.getStyledTexts(rsrc.getTreeItem())[0].contains(buildState.toString());
+			if (resourceNameMatcher.matches(rsrc.getName())) {
+				if (!resourceState.equals(ResourceState.UNSPECIFIED)) {
+					return resourceState.toString().equals(rsrc.getStatus());
 				}
 				return true;
 			}

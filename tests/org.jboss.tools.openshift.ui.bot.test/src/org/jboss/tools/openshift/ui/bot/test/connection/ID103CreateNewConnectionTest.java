@@ -27,7 +27,7 @@ public class ID103CreateNewConnectionTest {
 	@RunIf(conditionClass = OS2CredentialsExist.class)
 	public void testConnectToOpenShift() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.openConnectionShell();
+		explorer.openConnectionShellViaToolItem();
 		explorer.connectToOpenShift2(DatastoreOS2.SERVER, DatastoreOS2.USERNAME,
 				System.getProperty("openshift.password"), false, false, false);
 		

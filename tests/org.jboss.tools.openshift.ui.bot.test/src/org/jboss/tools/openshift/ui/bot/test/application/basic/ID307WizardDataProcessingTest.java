@@ -109,7 +109,7 @@ public class ID307WizardDataProcessingTest {
 				+ OpenShiftLabel.Cartridge.JBOSS_EAP,
 				new DefaultLabel(4).getText().equals(OpenShiftLabel.Cartridge.JBOSS_EAP));
 		
-		new PushButton(OpenShiftLabel.Button.ADVANCED).click();
+		new PushButton(OpenShiftLabel.Button.ADVANCED_OPEN).click();
 		
 		assertTrue("Default source code should be used by default", 
 				new CheckBox(1).isChecked());
@@ -149,7 +149,7 @@ public class ID307WizardDataProcessingTest {
 		
 		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
 		
-		new PushButton(OpenShiftLabel.Button.ADVANCED).click();
+		new PushButton(OpenShiftLabel.Button.ADVANCED_OPEN).click();
 		
 		assertTrue("Default source code should be used by default", 
 				new CheckBox(1).isChecked());

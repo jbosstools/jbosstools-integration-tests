@@ -20,6 +20,8 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
@@ -29,18 +31,34 @@ import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
+import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
+import org.jboss.tools.openshift.reddeer.enums.Resource;
+import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.create.AbstractCreateApplicationTest;
 import org.junit.After;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTest {
 
+	@BeforeClass
+	public static void waitTillApplicationIsRunning() {
+		new WaitWhile(new ResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE),
+				TimePeriod.getCustom(360), false);
+		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.LONG, false);
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+	}
+	
 	@Test
 	public void testPreselectedConnectionForNewOpenShift3ServerAdapter() {
 		openNewServerAdapterWizard();
@@ -55,15 +73,27 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 		
 		openNewServerAdapterWizard();
 		next();
+
+		String eclipseProject = Display.syncExec(new ResultRunnable<String>() {
+
+			@Override
+			public String run() {
+				return new LabeledText("Eclipse Project: ").getSWTWidget().getText();
+			}
+			
+		});
 		
-		assertTrue("Selected project from workspace should be preselected",
-				new LabeledCombo("Eclipse Project: ").getText().equals(projectName));
+		assertTrue("Selected project from workspace should be preselected",		
+				eclipseProject.equals(projectName));
 	}
 	
 	@Test
+	@Ignore
 	public void testPodPathWidgetAccessibility() {
 		openNewServerAdapterWizard();
 		next();
+		
+		new PushButton(OpenShiftLabel.Button.ADVANCED_OPEN).click();
 		
 		LabeledText podPath = new LabeledText("Pod Deployment Path: ");
 		String podPathText = podPath.getText();
@@ -109,6 +139,8 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 		openNewServerAdapterWizard();
 		next();
 		
+		new PushButton(OpenShiftLabel.Button.ADVANCED_OPEN).click();
+		
 		LabeledText srcPath = new LabeledText("Source Path: ");
 		String srcPathText = srcPath.getText();
 		srcPath.setText("");
@@ -148,7 +180,7 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 	private void next() {
 		new NextButton().click();
 		
-		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new WaitUntil(new WidgetIsEnabled(new BackButton()));
 	}
 	

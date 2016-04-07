@@ -73,7 +73,7 @@ public class OpenShiftLabel {
 		public static final String MANAGE_DOMAINS = "Manage Domains...";
 		public static final String[] NEW_DOMAIN = {"New", "Domain..."};
 		public static final String[] NEW_CONNECTION = {"New", "Connection..."};
-		public static final String[] NEW_OS_PROJECT = {"New", "Project"};
+		public static final String[] NEW_OS_PROJECT = {"New", "Project..."};
 		public static final String REMOVE_CONNECTION = "Remove Connection(s)...";
 		public static final String DELETE_CONNECTION = "Delete";
 		
@@ -83,23 +83,25 @@ public class OpenShiftLabel {
 		
 		// Project related
 		public static final String MANAGE_OS_PROJECTS = "Manage Projects...";
-		public static final String DELETE_OS_PROJECT = "Delete Project";
+		public static final String DELETE_OS_PROJECT = "Delete";
 		
 		// Resource related
 		public static final String BUILD_LOG = "Build Log...";
 		public static final String CLONE_BUILD = "Clone Build";
-		public static final String DELETE_RESOURCE = "Delete Resource...";
+		public static final String DELETE_RESOURCE = "Delete";
 		public static final String POD_LOG = "Pod Log...";
 		public static final String START_BUILD = "Start Build";
 		
 		// Application related
+		public static final String APPLICATION_DETAILS = "Details...";
 		public static final String APPLICATION_PROPERTIES = "Properties";
 		public static final String DELETE_APPLICATION = "Delete";
+		public static final String DELETE_APPLICATION_VIA_ADAPTER = "Delete Application...";
 		public static final String EDIT_ENV_VARS = "Edit User Environment Variables...";
 		public static final String EMBED_CARTRIDGE = "Edit Embedded Cartridges...";
 		public static final String IMPORT_APPLICATION = "Import Application...";
 		public static final String[] NEW_OS2_APPLICATION = {"New", "Application..."};
-		public static final String[] NEW_OS3_APPLICATION = {"New", "Application"};
+		public static final String[] NEW_OS3_APPLICATION = {"New", "Application..."};
 		public static final String[] NEW_SERVER = {"New", "Server"};	
 		public static final String[] NEW_SERVER_ADAPTER = {"New", "Server Adapter..."};		
 		public static final String PORT_FORWARD = "Port Forwarding...";		
@@ -137,6 +139,7 @@ public class OpenShiftLabel {
 		public static final String DELETE_ADAPTER = "Delete Server";
 		public static final String EDIT_CARTRIDGES = "Edit Embedded Cartridges";
 		public static final String EDIT_ENV_VAR = "Edit Environment variable";
+		public static final String EDIT_CONNECTION = "Edit OpenShift Connection";
 		public static final String EMBEDDED_CARTRIDGE = "Embedded Cartridges";
 		public static final String ENV_VARS = "Create Environment Variable(s)";
 		public static final String IMPORT = "Import";
@@ -145,6 +148,7 @@ public class OpenShiftLabel {
 		public static final String MANAGE_ENV_VARS = "Manage Application Environment Variable(s) for application ";
 		public static final String MARKERS = "Configure OpenShift Markers for project ";
 		public static final String NEW_APP_WIZARD = "New OpenShift Application";
+		public static final String NEW_CONNECTION = "New OpenShift Connection";
 		public static final String PORTS_FORWARDING = "Application port forwarding";
 		public static final String SAVE_SNAPSHOT = "Save Snapshot";
 		public static final String SELECT_EXISTING_APPLICATION = "Select Existing Application";
@@ -192,8 +196,9 @@ public class OpenShiftLabel {
 		public static final String DELETE_RESOURCE = "Delete Resource";
 		
 		// Others
-		public static final String BINARY_LOCATION_UNKNOWN = "Unknown binary location";
+		public static final String BINARY_LOCATION_UNKNOWN = "Unknown executable location";
 		public static final String CHEATSHEET = "Found cheatsheet";
+		public static final String LOADING_CONNECTION_DETAILS = "Loading OpenShift 2 connection details";
 	}
 	
 	/**
@@ -203,7 +208,8 @@ public class OpenShiftLabel {
 		public static final String APPLY = "Apply";
 		public static final String ADD = "Add...";
 		public static final String ADD_SSH_KEY = "Add Existing...";
-		public static final String ADVANCED = " Advanced >> ";
+		public static final String ADVANCED_OPEN = " Advanced >> ";
+		public static final String ADVANCED_CLOSE = " << Advanced ";
 		public static final String BROWSE = "Browse...";
 		public static final String COMMIT= "Commit";
 		public static final String COMMIT_PUBLISH = "Commit and Publish";
@@ -289,9 +295,9 @@ public class OpenShiftLabel {
 	 */
 	public static class Others {
 		public static final String CONNECT_TOOL_ITEM = "Connection...";
-		public static final String EAP_TEMPLATE = "eap64-basic-s2i (eap, javaee, java, jboss, xpaas)";
-		public static final String TOMCAT_TEMPLATE = "jws30-tomcat7-basic-s2i (tomcat, tomcat7, java, jboss, xpaas)";
-		public static final String JBOSS_CENTRAL = "JBoss Central";
+		public static final String EAP_TEMPLATE = "eap64-basic-s2i (eap, javaee, java, jboss, xpaas) - openshift";
+		public static final String NODEJS_TEMPLATE = "nodejs-example (quickstart, nodejs) - openshift";
+		public static final String RED_HAT_CENTRAL = "Red Hat Central";
 		public static final String[] NEW_APP_MENU = {"File", "New", "OpenShift Application"};
 		public static final String OPENSHIFT_APP = "OpenShift Application";
 		public static final String OPENSHIFT_CENTRAL_SCRIPT = "$(\"#wizards\" ).find('a').filter(\""

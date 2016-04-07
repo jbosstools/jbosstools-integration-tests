@@ -76,7 +76,7 @@ public class SecondWizardPage {
 		
 		// Set URL of source code or environment variables for application
 		if (sourceCodeURL != null || createEnvironmentVariable == true) {
-			new PushButton(OpenShiftLabel.Button.ADVANCED).click();
+			new PushButton(OpenShiftLabel.Button.ADVANCED_OPEN).click();
 		
 			if (sourceCodeURL != null) {
 				new CheckBox(1).click();

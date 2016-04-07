@@ -12,8 +12,10 @@ package org.jboss.tools.openshift.ui.bot.test.connection;
 
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.junit.Test;
@@ -31,6 +33,11 @@ public class ID107oHandleMoreAccountsTest {
 	@RunIf(conditionClass = OS2CredentialsExist.class)
 	public void testMoreAccountInOpenShiftExplorer() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		
+		try {
+			new DefaultShell("Loading OpenShift 2 connection details");
+		} catch (RedDeerException ex) {
+		}
 		
 		explorer.openConnectionShell();
 		explorer.connectToOpenShift2(DatastoreOS2.X_SERVER,

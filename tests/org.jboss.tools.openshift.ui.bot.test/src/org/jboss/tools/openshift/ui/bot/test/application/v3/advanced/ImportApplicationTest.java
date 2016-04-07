@@ -18,7 +18,6 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.TreeHasChildren;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
@@ -40,7 +39,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ImportApplicationTest extends AbstractCreateApplicationTest {
-
+	
 	@Before
 	public void cleanGitFolder() {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
@@ -66,13 +65,6 @@ public class ImportApplicationTest extends AbstractCreateApplicationTest {
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
-		TreeItem buildConfigItem = new DefaultTreeItem(DatastoreOS3.PROJECT1_DISPLAYED_NAME + " " + 
-				DatastoreOS3.PROJECT1, "eap-app https://github.com/jboss-developer/jboss-eap-quickstarts");
-		
-		assertTrue("Selected build config from OpenShift Explorer should be preselected to import an application",
-				buildConfigItem.isSelected());
-		
-		new NextButton().click();
 		
 		new FinishButton().click();
 		
@@ -105,8 +97,9 @@ public class ImportApplicationTest extends AbstractCreateApplicationTest {
 		new WaitUntil(new ButtonWithTextIsAvailable("Refresh"), TimePeriod.LONG);
 		new WaitUntil(new TreeHasChildren(new DefaultTree()), TimePeriod.NORMAL);
 		
-		new DefaultTreeItem(DatastoreOS3.PROJECT1_DISPLAYED_NAME + " " + DatastoreOS3.PROJECT1, 
-				"eap-app https://github.com/jboss-developer/jboss-eap-quickstarts").select();
+		
+		new DefaultTreeItem(DatastoreOS3.PROJECT1_DISPLAYED_NAME + " " + DatastoreOS3.PROJECT1).getItems().
+			get(0).select();
 		
 		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
 		

@@ -37,7 +37,7 @@ public class RemoveConnectionTest {
 		explorer.open();
 		
 		explorer.getOpenShift3Connection().select();
-		new ContextMenu(OpenShiftLabel.ContextMenu.REMOVE_CONNECTION).select();
+		new ContextMenu(OpenShiftLabel.ContextMenu.DELETE_CONNECTION).select();
 		
 		new DefaultShell(OpenShiftLabel.Shell.REMOVE_CONNECTION);
 		new OkButton().click();

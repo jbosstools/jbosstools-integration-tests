@@ -11,22 +11,23 @@
 package org.jboss.tools.openshift.reddeer.view;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.core.util.ResultRunnable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
+import org.jboss.reddeer.eclipse.ui.views.properties.TabbedPropertyList;
+import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.api.ToolItem;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.AbstractTreeItem;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 
@@ -37,49 +38,89 @@ public class OpenShiftProject extends AbstractOpenShiftExplorerItem {
 	}
 	
 	/**
+	 * Gets OpenShift resource of specified type matching specified name.
+	 * 
+	 * @param resourceType type of OpenShift resource
+	 * @param name name of OpenShift resource
+	 * @return OpenShift resource
+	 */
+	public OpenShiftResource getOpenShiftResource(Resource resourceType, String name) {
+		List<OpenShiftResource> resources = getOpenShiftResources(resourceType);
+		if (!resources.isEmpty()) {
+			for (OpenShiftResource resource: resources) {
+				if (resource.getName().equals(name)) {
+					return resource;
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Gets all resources of specific type for project.
 	 * 
 	 * @param resourceType resource type
 	 * @return list of resources of specified type or empty list if there are no resources
 	 */
 	public List<OpenShiftResource> getOpenShiftResources(Resource resourceType) {
+		return getOpenShiftResources(resourceType, false);
+	}
+		
+	/**
+	 * Gets all resources of specific type for project and allows to lock properties view 
+	 * @param resourceType resource type
+	 * @param pinView true to lock properties view, false otherwise
+	 * @return list of resources of specified type or empty list if there are no resources
+	 */
+	public List<OpenShiftResource> getOpenShiftResources(Resource resourceType, boolean pinView) {
 		List<OpenShiftResource> resources = new ArrayList<OpenShiftResource>();
-		TreeItem resourceTypeTreeItem = item.getItem(resourceType.toString());
-		resourceTypeTreeItem.select();
-		new ContextMenu(OpenShiftLabel.ContextMenu.REFRESH).select();	
+		expand();
+		openProperties();
 		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-				
-		resourceTypeTreeItem.expand();
+		togglePinPropertiesView(pinView);
 		
-		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false, TimePeriod.NONE);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
-		LinkedList<TreeItem> items = new LinkedList<TreeItem>();
-		final org.eclipse.swt.widgets.TreeItem swtItem = resourceTypeTreeItem.getSWTWidget();
-		List<org.eclipse.swt.widgets.TreeItem> eclipseItems = Display.syncExec(
-				new ResultRunnable<List<org.eclipse.swt.widgets.TreeItem>>() {
-					
-					@Override
-					public List<org.eclipse.swt.widgets.TreeItem> run() {
-						org.eclipse.swt.widgets.TreeItem[] items = swtItem.getItems();
-						return Arrays.asList(items);
-					}
-		});
-		
-		for (org.eclipse.swt.widgets.TreeItem swtTreeItem : eclipseItems) {
-			items.addLast(new OpenShiftResourceTreeItem(swtTreeItem));
-		}
-		
-		if (items != null && !items.isEmpty()) {
-			for (TreeItem resourceItem: items) {
-				resources.add(new OpenShiftResource(resourceItem));
+		selectTabbedProperty("Details");
+		selectTabbedProperty(resourceType.toString());
+		List<TableItem> tableItems = new DefaultTable().getItems();
+		if (!tableItems.isEmpty()) {
+			for (TableItem tableItem: tableItems) {
+				resources.add(new OpenShiftResource(tableItem));
 			}
 		}
 		
+		togglePinPropertiesView(false);
 		return resources;
 	}
 	
+	/**
+	 * Sets properties view to pinned or not for selected domain. Properties
+	 * view has to be opened to perform this method.
+	 * 
+	 * @param toggle toggle pinned properties view or not
+	 */
+	public void togglePinPropertiesView(boolean toggle) {
+		ToolItem pinItem = new DefaultToolItem("Pins this property view to the current selection");
+		pinItem.toggle(toggle);
+	}
+	
+	/**
+	 * Gets service tree item under the project.
+	 * 
+	 * @param label name of the service
+	 * @return tree item of service if exists, null otherwise
+	 */
+	public TreeItem getServiceTreeItem(String label) {
+		refresh();
+		try {
+			return treeViewerHandler.getTreeItem(item, label);
+		} catch (CoreLayerException ex) {
+			return null;
+		}
+	}
+	
+	/**
+	 * Deletes OpenShift project.
+	 */
 	public void delete() {
 		refresh();
 		item.select();
@@ -92,11 +133,31 @@ public class OpenShiftProject extends AbstractOpenShiftExplorerItem {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
-	class OpenShiftResourceTreeItem extends AbstractTreeItem {
-
-		protected OpenShiftResourceTreeItem(org.eclipse.swt.widgets.TreeItem swtWidget) {
-			super(swtWidget);
-		}
+	/**
+	 * Open properties for the project.
+	 */
+	public void openProperties() {
+		openProperties(item);
+	}
+	
+	/**
+	 * Opens properties for the specified tree item (project, service or pod) in OpenShift explorer.
+	 */
+	public void openProperties(TreeItem treeItem) {
+		activateOpenShiftExplorerView();
+		select();
+		new ContextMenu(OpenShiftLabel.ContextMenu.PROPERTIES).select();
 		
+		PropertiesView propertiesView = new PropertiesView();
+		propertiesView.activate();
+	}
+	
+	/**
+	 * Selects tabbed property representing OpenShift resource under the project in properties view.
+	 * 
+	 * @param resourceType resource type name
+	 */
+	public void selectTabbedProperty(String resourceType) {
+		new TabbedPropertyList().selectTab(resourceType);
 	}
 }

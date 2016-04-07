@@ -22,6 +22,18 @@ import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.Authenticati
  */
 public class DatastoreOS3 {
 
+	static {
+		String password = System.getProperty("openshift.password");
+		if (!(password == null || password.equals("") || password.startsWith("${"))) {
+			PASSWORD = password;
+		}
+		
+		String token = System.getProperty("openshift.token");
+		if (!(token == null || token.equals("") || token.startsWith("${"))) {
+			TOKEN = token;
+		}
+	}
+	
 	// used for basic authentization
 	public static String SERVER = System.getProperty("openshift.server");
 	public static String USERNAME = System.getProperty("openshift.username");

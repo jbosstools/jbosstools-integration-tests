@@ -42,6 +42,7 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
@@ -230,17 +231,20 @@ public class CreateApplicationFromTemplateTest {
 	private void verifyCreatedApplication() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
-		OpenShiftProject project = explorer.getOpenShift3Connection().
-				getProject();
+		OpenShiftProject project = explorer.getOpenShift3Connection().getProject();
+		project.refresh();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(120));
+		new WaitUntil(new ResourceExists(Resource.BUILD_CONFIG), TimePeriod.LONG, false);
 		
 		List<OpenShiftResource> buildConfig = project.getOpenShiftResources(Resource.BUILD_CONFIG);
 		assertTrue("There should be precisely 1 build config for created application, but there is following amount"
 				+ " of build configs: " + buildConfig.size(), buildConfig.size() == 1);
 		assertTrue("There should be application name and git URI in build config tree item, but they are not."
 				+ "Application name is '" + applicationName + "' and git URI is '" + srcRepoURI + "', but build "
-						+ "config consists of text '" + buildConfig.get(0).getText() + "'",
-				buildConfig.get(0).getText().contains(applicationName) && 
-				buildConfig.get(0).getText().contains(srcRepoURI));
+						+ "config has name '" + buildConfig.get(0).getName() + "'",
+				buildConfig.get(0).getPropertyValue("Labels", "application").equals(applicationName) && 
+				buildConfig.get(0).getPropertyValue("Source", "URI").equals(srcRepoURI));
 		
 		List<OpenShiftResource> imageStream = project.getOpenShiftResources(Resource.IMAGE_STREAM);
 		assertTrue("There should be precisely 1 image stream for created application, but there is following amount"
@@ -250,7 +254,7 @@ public class CreateApplicationFromTemplateTest {
 		assertTrue("There should be precisely 1 route for created application, but there is following amount"
 				+ " of routes:" + routes.size(), routes.size() == 1);
 		assertTrue("Generated (default) route should contain application name, but it's not contained.",
-				routes.get(0).getText().contains(applicationName));
+				routes.get(0).getName().equals(applicationName));
 		
 		List<OpenShiftResource> services = project.getOpenShiftResources(Resource.SERVICE);
 		assertTrue("There should be precisely 1 service for created application, but there is following amount"

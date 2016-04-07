@@ -45,6 +45,7 @@ public class OpenShiftProjectExists extends AbstractWaitCondition {
 	
 	@Override
 	public boolean test() {
+		connection.refresh();
 		return connection.projectExists(projectName);
 	}
 }

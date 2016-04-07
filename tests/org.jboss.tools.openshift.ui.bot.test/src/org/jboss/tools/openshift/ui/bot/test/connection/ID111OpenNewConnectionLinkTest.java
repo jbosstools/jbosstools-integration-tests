@@ -20,6 +20,7 @@ import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.link.AnchorLink;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.openshift.reddeer.condition.BrowserContainsText;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.junit.After;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class ID111OpenNewConnectionLinkTest {
 		
 		explorer.openConnectionShell();
 		
-		new DefaultShell("");
+		new DefaultShell(OpenShiftLabel.Shell.NEW_CONNECTION);
 
 		new AnchorLink("sign up here").click();
 		

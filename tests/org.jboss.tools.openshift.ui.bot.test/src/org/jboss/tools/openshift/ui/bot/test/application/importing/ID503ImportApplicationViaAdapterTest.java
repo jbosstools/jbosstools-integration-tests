@@ -22,6 +22,7 @@ import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
@@ -80,6 +81,10 @@ public class ID503ImportApplicationViaAdapterTest {
 				break;
 			}
 		}
+		
+		new LabeledCombo("Domain Name:").setSelection(DatastoreOS2.DOMAIN);
+		
+		new WaitUntil(new WidgetIsEnabled(new CancelButton()));
 		
 		new DefaultLink("Import this application").click();
 		
