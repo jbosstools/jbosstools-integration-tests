@@ -25,15 +25,16 @@ public class BasicTests {
 
 	private static final String CONTACTS_MOBILE_BASIC = "contacts-mobile-basic";
 	private static final String KITCHENSINK_JSP = "kitchensink-jsp";
+	private static final String CENTRAL_LABEL = "Red Hat Central";
 	private static Logger log = new Logger(HTML5Parameterized.class);
 	private static InternalBrowser centralBrowser;
 	private static JavaScriptHelper jsHelper = JavaScriptHelper.getInstance();
 	
 	@Before
 	public void setup() {
-		new DefaultToolItem(new WorkbenchShell(), "JBoss Central").click();
+		new DefaultToolItem(new WorkbenchShell(), CENTRAL_LABEL).click();
 		// activate central editor
-		new DefaultEditor("JBoss Central");
+		new DefaultEditor(CENTRAL_LABEL);
 		new WaitUntil(new CentralIsLoaded());
 		centralBrowser = new InternalBrowser();
 		jsHelper.setBrowser(centralBrowser);
@@ -48,9 +49,9 @@ public class BasicTests {
 	}
 
 	@Test
-	public void getStartedButton() {
-		centralBrowser.execute("$(\'a[href=\"http://www.jboss.org/get-started/\"]\').click()");
-		new BrowserEditor("Get started with JBoss products").close();
+	public void learnAboutRedHatButton() {
+		centralBrowser.execute("$(\'a[href=\"http://developers.redhat.com/\"]\').click()");
+		new BrowserEditor("Red Hat Developers").close();
 		;
 	}
 

@@ -5,7 +5,7 @@ import org.jboss.tools.central.reddeer.projects.ArchetypeProject;
 public class JavaEEWebProject extends ArchetypeProject {
 
 	public JavaEEWebProject(boolean blank) {
-		super("Java EE Web Project", "jboss-javaee6-webapp", blank);
+		super("Java EE Web Project", "jboss-javaee-webapp", blank);
 	}
 	
 	@Override
