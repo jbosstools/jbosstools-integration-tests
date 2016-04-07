@@ -58,6 +58,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 @JBossServer(type = ServerReqType.ANY, state = ServerReqState.RUNNING)
 public class HTML5Parameterized {
 
+	private static final String CENTRAL_LABEL = "Red Hat Central";
 	private static DefaultEditor centralEditor;
 	private static InternalBrowser browser;
 	private static ErrorsReporter reporter = ErrorsReporter.getInstance();
@@ -73,8 +74,8 @@ public class HTML5Parameterized {
 	public static Collection<CentralProject> data() {
 		closeWelcomeScreen();
 		List<CentralProject> resultList = new ArrayList<CentralProject>();
-		new DefaultToolItem(new WorkbenchShell(), "JBoss Central").click();
-		centralEditor = new DefaultEditor("JBoss Central");
+		new DefaultToolItem(new WorkbenchShell(), CENTRAL_LABEL).click();
+		centralEditor = new DefaultEditor(CENTRAL_LABEL);
 		centralEditor.activate();
 		browser = new InternalBrowser();
 		jsHelper.setBrowser(browser);
@@ -136,9 +137,9 @@ public class HTML5Parameterized {
 		ConsoleView consoleView = new ConsoleView();
 		consoleView.open();
 		consoleView.clearConsole();
-		new DefaultToolItem(new WorkbenchShell(), "JBoss Central").click();
+		new DefaultToolItem(new WorkbenchShell(), CENTRAL_LABEL).click();
 		// activate central editor
-		new DefaultEditor("JBoss Central");
+		new DefaultEditor(CENTRAL_LABEL);
 	}
 
 	
@@ -259,7 +260,7 @@ public class HTML5Parameterized {
 		public boolean test() {
 			String html = jsHelper.getHTML();
 			System.out.println(html);
-			return html.contains("Loading JBoss Central, please wait");
+			return html.contains("Loading Red Hat Central, please wait");
 		}
 
 		@Override
