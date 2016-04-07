@@ -34,6 +34,7 @@ import org.junit.Test;
 @JBossServer(type = ServerReqType.ANY, state = ServerReqState.RUNNING)
 public class ArchetypesTest {
 
+	private static final String CENTRAL_LABEL = "Red Hat Central";
 	private static Map<org.jboss.tools.central.reddeer.projects.Project, List<String>> projectWarnings = new HashMap<org.jboss.tools.central.reddeer.projects.Project, List<String>>();
 	
 	@InjectRequirement
@@ -48,9 +49,9 @@ public class ArchetypesTest {
 		preferenceDialog.select(prefPage);
 		prefPage.setUserSettingsLocation(mvnConfigFileName);
 		preferenceDialog.ok();
-		new DefaultToolItem(new WorkbenchShell(), "JBoss Central").click();
+		new DefaultToolItem(new WorkbenchShell(), CENTRAL_LABEL).click();
 		// activate central editor
-		new DefaultEditor("JBoss Central");
+		new DefaultEditor(CENTRAL_LABEL);
 	}
 
 	@After
@@ -59,9 +60,9 @@ public class ArchetypesTest {
 		for (Project p : new ProjectExplorer().getProjects()) {
 			p.delete(true);
 		}
-		new DefaultToolItem(new WorkbenchShell(), "JBoss Central").click();
+		new DefaultToolItem(new WorkbenchShell(), CENTRAL_LABEL).click();
 		// activate central editor
-		new DefaultEditor("JBoss Central");
+		new DefaultEditor(CENTRAL_LABEL);
 	}
 	
 	@AfterClass
