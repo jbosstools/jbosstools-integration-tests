@@ -30,12 +30,13 @@ import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.TemplateParame
 import org.jboss.tools.openshift.ui.bot.test.application.v3.create.CreateApplicationFromTemplateTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.create.DeploymentTest;
 import org.jboss.tools.openshift.ui.bot.test.common.OCBinaryLocationTest;
-import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionDialogHandlingTest;
+import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionWizardHandlingTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionPropertiesTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.CreateNewConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.RemoveConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.ShowConnectionInWebConsoleTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.StoreConnectionTest;
+import org.jboss.tools.openshift.ui.bot.test.integration.docker.DeployDockerImageTest;
 import org.jboss.tools.openshift.ui.bot.test.project.CreateNewProjectTest;
 import org.jboss.tools.openshift.ui.bot.test.project.DeleteProjectTest;
 import org.jboss.tools.openshift.ui.bot.test.project.ProjectNameValidationTest;
@@ -53,7 +54,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	// Connection
 	CreateNewConnectionTest.class,
 	RemoveConnectionTest.class,
-	ConnectionDialogHandlingTest.class,
+	ConnectionWizardHandlingTest.class,
 	StoreConnectionTest.class,
 	ConnectionPropertiesTest.class,
 	ShowConnectionInWebConsoleTest.class,
@@ -87,8 +88,10 @@ import org.junit.runners.Suite.SuiteClasses;
 	EditResourcesTest.class,
 
 	// Advanced application testing
-	DeployEclipseProjectTest.class,
+ 	DeployEclipseProjectTest.class,	
+ 	DeployDockerImageTest.class,	
 	
+		
 	// Server adapter
 	ServerAdapterWizardHandlingTest.class,
 	CreateServerAdapterTest.class,

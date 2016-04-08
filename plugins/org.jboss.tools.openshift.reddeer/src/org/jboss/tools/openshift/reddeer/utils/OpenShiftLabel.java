@@ -84,6 +84,8 @@ public class OpenShiftLabel {
 		// Project related
 		public static final String MANAGE_OS_PROJECTS = "Manage Projects...";
 		public static final String DELETE_OS_PROJECT = "Delete";
+		public static final String DEPLOY_DOCKER_IMAGE = "Deploy Docker Image...";
+		public static final String DEPLOY_TO_OPENSHIFT = "Deploy to OpenShift...";
 		
 		// Resource related
 		public static final String BUILD_LOG = "Build Log...";
@@ -137,6 +139,7 @@ public class OpenShiftLabel {
 		public static final String DELETE_APP = "Application removal";
 		public static final String DELETE_OS_PROJECT = "OpenShift project deletion";
 		public static final String DELETE_ADAPTER = "Delete Server";
+		public static final String DEPLOY_IMAGE_TO_OPENSHIFT = "Deploy Image to OpenShift";
 		public static final String EDIT_CARTRIDGES = "Edit Embedded Cartridges";
 		public static final String EDIT_ENV_VAR = "Edit Environment variable";
 		public static final String EDIT_CONNECTION = "Edit OpenShift Connection";
@@ -252,6 +255,10 @@ public class OpenShiftLabel {
 		// Domain related
 		public static final String DOMAIN_NAME = "Domain Name:";
 	
+		// Docker integration related
+		public static final String IMAGE_NAME = "Image Name: ";
+		public static final String RESOURCE_NAME = "Resource Name: ";
+		
 		// Project related
 		public static final String PROJECT_NAME = "Project Name:";
 		public static final String PROJECT_DISPLAYED_NAME = "Display Name:";

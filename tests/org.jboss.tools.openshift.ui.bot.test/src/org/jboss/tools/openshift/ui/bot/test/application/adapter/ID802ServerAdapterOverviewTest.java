@@ -20,7 +20,7 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
-import org.jboss.tools.openshift.reddeer.view.ServerAdapter;
+import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter;
 import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
 import org.junit.Test;
 

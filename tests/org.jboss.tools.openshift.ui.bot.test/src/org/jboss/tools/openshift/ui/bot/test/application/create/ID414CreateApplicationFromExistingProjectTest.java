@@ -39,8 +39,8 @@ import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSucce
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
-import org.jboss.tools.openshift.reddeer.view.ServerAdapter;
-import org.jboss.tools.openshift.reddeer.view.ServerAdapter.Version;
+import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter;
+import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter.Version;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.FirstWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.SecondWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.v2.NewOpenShift2ApplicationWizard;

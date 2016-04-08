@@ -22,10 +22,10 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.openshift.reddeer.condition.v2.OpenShiftApplicationExists;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.view.OpenShift2Application;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.reddeer.view.ServerAdapter;
-import org.jboss.tools.openshift.reddeer.view.ServerAdapter.Version;
+import org.jboss.tools.openshift.reddeer.view.resources.OpenShift2Application;
+import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter;
+import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter.Version;
 
 /**
  * Delete an OpenShift 2 application, server adapter and/or project. 

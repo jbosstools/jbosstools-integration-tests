@@ -41,12 +41,13 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.widget.ShellWithButton;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class ConnectionDialogHandlingTest {
+public class ConnectionWizardHandlingTest {
 
 	@Before
 	public void openConnectionShell() {
@@ -204,48 +205,6 @@ public class ConnectionDialogHandlingTest {
 		} catch (RedDeerException ex) {
 			fail("Browser with token was not opened.");
 		}
-	}
-	
-	private class ShellWithButton extends AbstractShell {
-
-		public ShellWithButton(String title, String buttonLabel) {
-			super(lookForShellWithButton(title, buttonLabel));
-			setFocus();
-		}
-
-	}
-	
-	private org.eclipse.swt.widgets.Shell lookForShellWithButton(final String title, final String buttonLabel) {
-		Matcher<String> titleMatcher = new WithTextMatcher(title);
-		Matcher<String> buttonMatcher = new BaseMatcher<String>() {
-			@Override
-			public boolean matches(Object obj) {
-				if (obj instanceof Control) {
-					final Control control = (Control) obj;
-					ReferencedComposite ref = new ReferencedComposite() {
-						@Override
-						public Control getControl() {
-							return control;
-						}
-					};
-					try {
-						new PushButton(ref, buttonLabel);
-						return true;
-					} catch (CoreLayerException e) {
-						// ok, this control doesn't contain the button
-					}
-				}
-				return false;
-			}
-
-			@Override
-			public void describeTo(Description description) {
-				description.appendText("containing button '" + buttonLabel + "'");
-			}
-		};
-		@SuppressWarnings("unchecked")
-		Matcher<String> matcher = new AndMatcher(titleMatcher, buttonMatcher);
-		return ShellLookup.getInstance().getShell(matcher);
 	}
 	
 	@Test

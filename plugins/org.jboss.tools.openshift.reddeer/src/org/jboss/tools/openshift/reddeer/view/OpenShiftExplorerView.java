@@ -36,6 +36,8 @@ import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.openshift.reddeer.exception.OpenShiftToolsException;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.view.resources.OpenShift2Connection;
+import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 
 /**
  * 

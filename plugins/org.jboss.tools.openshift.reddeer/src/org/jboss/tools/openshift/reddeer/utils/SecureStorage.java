@@ -27,9 +27,9 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.tools.openshift.reddeer.view.AbstractOpenShiftConnection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.ServerType;
+import org.jboss.tools.openshift.reddeer.view.resources.AbstractOpenShiftConnection;
 
 public class SecureStorage {
 	

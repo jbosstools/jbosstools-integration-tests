@@ -17,7 +17,7 @@ import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.reddeer.view.OpenShiftProject;
+import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftProject;
 import org.junit.Test;
 
 public class ResourcesTest {

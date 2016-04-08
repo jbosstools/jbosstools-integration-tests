@@ -14,9 +14,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.junit.Test;
 
 /**
