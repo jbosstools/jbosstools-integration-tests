@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.openshift.reddeer.view;
+package org.jboss.tools.openshift.reddeer.view.resources;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,6 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.eclipse.ui.views.properties.TabbedPropertyList;
 import org.jboss.reddeer.swt.api.TableItem;
@@ -32,9 +31,19 @@ import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 
 public class OpenShiftProject extends AbstractOpenShiftExplorerItem {
-	
+		
 	public OpenShiftProject(TreeItem projectItem) {
 		super(projectItem);
+	}
+	
+	/**
+	 * Gets an OpenShift service with specified name.
+	 * 
+	 * @param name name of an OpenShift service
+	 * @return OpenShift service
+	 */
+	public Service getService(String name) {
+		return new Service(treeViewerHandler.getTreeItem(item, name));
 	}
 	
 	/**
@@ -101,21 +110,6 @@ public class OpenShiftProject extends AbstractOpenShiftExplorerItem {
 	public void togglePinPropertiesView(boolean toggle) {
 		ToolItem pinItem = new DefaultToolItem("Pins this property view to the current selection");
 		pinItem.toggle(toggle);
-	}
-	
-	/**
-	 * Gets service tree item under the project.
-	 * 
-	 * @param label name of the service
-	 * @return tree item of service if exists, null otherwise
-	 */
-	public TreeItem getServiceTreeItem(String label) {
-		refresh();
-		try {
-			return treeViewerHandler.getTreeItem(item, label);
-		} catch (CoreLayerException ex) {
-			return null;
-		}
 	}
 	
 	/**

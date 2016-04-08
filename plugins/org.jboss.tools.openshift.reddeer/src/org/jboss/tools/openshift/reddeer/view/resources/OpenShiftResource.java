@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.openshift.reddeer.view;
+package org.jboss.tools.openshift.reddeer.view.resources;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -25,7 +25,7 @@ import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 
 /**
  * OpenShift resource. This class represents build config, build, deployment config, image stream,
- * pod, replication controller, route, service or pod.
+ * pod, replication controller, route, service or pod in properties view.
  * 	
  * @author mlabuda@redhat.com
  *

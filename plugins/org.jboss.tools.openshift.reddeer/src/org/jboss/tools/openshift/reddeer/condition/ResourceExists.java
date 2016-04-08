@@ -18,8 +18,8 @@ import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.reddeer.view.OpenShiftProject;
-import org.jboss.tools.openshift.reddeer.view.OpenShiftResource;
+import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftProject;
+import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftResource;
 
 /**
  * Wait condition to wait for existence of an OpenShift resource.

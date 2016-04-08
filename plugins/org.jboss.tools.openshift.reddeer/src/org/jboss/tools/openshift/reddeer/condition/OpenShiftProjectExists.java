@@ -12,8 +12,8 @@ package org.jboss.tools.openshift.reddeer.condition;
 
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
-import org.jboss.tools.openshift.reddeer.view.OpenShift3Connection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 
 public class OpenShiftProjectExists extends AbstractWaitCondition {
 

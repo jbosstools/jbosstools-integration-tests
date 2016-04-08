@@ -12,8 +12,8 @@ package org.jboss.tools.openshift.reddeer.condition;
 
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.openshift.reddeer.exception.OpenShiftToolsException;
-import org.jboss.tools.openshift.reddeer.view.ServerAdapter;
-import org.jboss.tools.openshift.reddeer.view.ServerAdapter.Version;
+import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter;
+import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter.Version;
 
 /**
  * Wait condition to wait for a specific server adapter. To specify version of a server adapter,
