@@ -9,7 +9,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	ArchetypesTest.class,
 	HTML5Parameterized.class,
-	BasicTests.class
+	BasicTests.class,
+	DnDTest.class
 	})
 public class AllTestsSuite {
 

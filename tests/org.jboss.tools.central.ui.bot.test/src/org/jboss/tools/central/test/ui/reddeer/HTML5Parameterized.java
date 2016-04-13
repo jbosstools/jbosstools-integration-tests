@@ -13,7 +13,6 @@ import org.eclipse.ui.IViewReference;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -44,6 +43,7 @@ import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.central.reddeer.api.ExamplesOperator;
 import org.jboss.tools.central.reddeer.api.JavaScriptHelper;
 import org.jboss.tools.central.reddeer.wizards.NewProjectExamplesWizardDialogCentral;
+import org.jboss.tools.central.test.ui.reddeer.internal.CentralBrowserIsLoading;
 import org.jboss.tools.central.test.ui.reddeer.internal.ErrorsReporter;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -251,23 +251,5 @@ public class HTML5Parameterized {
 		projectExplorer.activate();
 		List<Project> projects = projectExplorer.getProjects();
 		return projects.get(0).getName();
-	}
-	
-	
-	static class CentralBrowserIsLoading extends AbstractWaitCondition{
-
-		@Override
-		public boolean test() {
-			String html = jsHelper.getHTML();
-			System.out.println(html);
-			return html.contains("Loading Red Hat Central, please wait");
-		}
-
-		@Override
-		public String description() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
 	}
 }
