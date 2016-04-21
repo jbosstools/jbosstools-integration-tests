@@ -41,12 +41,8 @@ public class CreateHybridApplication extends AerogearBotTest {
 
 	@Parameters(name = "engine: {0}")
 	public static String[] data() {
-		return new String[] {
-			"cordova-android@3.6.4",
-			"cordova-android@3.7.2",
-			"cordova-android@4.0.0",
-			"cordova-android@4.1.1"
-		};
+		return new String[] { "cordova-android@3.6.4", "cordova-android@3.7.2", "cordova-android@4.0.0",
+				"cordova-android@4.1.1" };
 	}
 
 	public CreateHybridApplication(String engine) {
@@ -66,8 +62,12 @@ public class CreateHybridApplication extends AerogearBotTest {
 	@Test
 	public void testEngineVersionMatchesInConfigXML() throws IOException {
 		String xmlConfig = FileUtil.readFile(WS_PATH + "/" + CORDOVA_PROJECT_NAME + "/config.xml");
-		assertTrue("engine version doesn not match!", xmlConfig
-				.contains("<engine name=\"" + this.platform + "\" version=\"" + this.cordovaVersion + "\" />"));
+		boolean oldSpec = xmlConfig
+				.contains("<engine name=\"" + this.platform + "\" version=\"" + this.cordovaVersion + "\" />");
+		boolean newSpec = xmlConfig
+				.contains("<engine name=\"" + this.platform + "\" spec=\"" + this.cordovaVersion + "\" />");
+
+		assertTrue("engine version doesn not match!", oldSpec || newSpec);
 	}
 
 	@Test
