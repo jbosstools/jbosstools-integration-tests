@@ -88,7 +88,7 @@ public class DockerConnectionWizard extends WizardPage{
 	
 	public void setTcpUri(String uri){
 		setConnectionName(uri);
-		new CheckBox("Use custom connection settings:").click();
+		new CheckBox("Use custom connection settings:").toggle(true);
 		new LabeledText("Location:").setText("");
 		new RadioButton("TCP Connection").click();
 		new LabeledText("URI:").setText(uri);

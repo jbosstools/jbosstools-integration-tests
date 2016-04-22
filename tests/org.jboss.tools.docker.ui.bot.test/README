@@ -2,3 +2,4 @@ Parameters:
 -Dusage_reporting_enabled=false		disable reporting
 -DdockerServerURI=					docker server uri(ex. "tcp://localhost:2375")
 -DimageName=						docker image to test (ex. "jboss/wildfly")
+-Dscope=							This parameter is mandatory - default value is MavenAllBotTests, you can set this parameter, if you want to run SmokeSuite - eg. -Dscope=SmokeSuite

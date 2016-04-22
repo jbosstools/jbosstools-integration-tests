@@ -51,7 +51,7 @@ public class PullImageTest extends AbstractDockerBotTest {
 		new WaitUntil(new ShellWithTextIsActive("Pull Image"), TimePeriod.NORMAL);
 		new LabeledText("Name:").setText(imageName);
 		new PushButton("Finish").click();
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		
 	}
 
