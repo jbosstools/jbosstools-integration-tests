@@ -132,7 +132,7 @@ public class AerogearBotTest {
     new DefaultTreeItem(projectName).select();
     new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run w/CordovaSim)")).select();
     new WaitWhile(new JobIsRunning());
-    new WaitUntil(new ConsoleHasNoChange(TimePeriod.LONG));
+    new WaitUntil(new ConsoleHasNoChange(TimePeriod.LONG), TimePeriod.VERY_LONG);
   }
 
   /**
