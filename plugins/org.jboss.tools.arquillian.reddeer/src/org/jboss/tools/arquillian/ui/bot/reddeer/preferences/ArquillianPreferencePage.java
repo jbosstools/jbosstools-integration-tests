@@ -29,8 +29,7 @@ public class ArquillianPreferencePage extends PreferencePage {
 	private static final String ADD_DEFAULT_VM_ARGS_TO_JUNIT_LAUNCH = "Add the default VM arguments to the JUnit/TestNG launch configurations";
 	private static final String ADD_DEFAULT_VM_ARGS_TO_LAUNCH = "Add the default VM arguments to the existing launch configurations";
 	private static final String ALLOW_OS_COMMAND_WHEN_ANALYZING = "Allow running an OS command when analyzing a deployment method";
-	/* https://issues.jboss.org/browse/JBIDE-21632 */
-	private static final String ALLOW_SYS_PROPERTY_WHEN_ANALYZING = "Allow setting a system propery when analyzing a deployment method";
+	private static final String ALLOW_SYS_PROPERTY_WHEN_ANALYZING = "Allow setting a system property when analyzing a deployment method";
 
 	/**
 	 * Constructs the preference page with "Arquillian".
