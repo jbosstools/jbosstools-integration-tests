@@ -1,8 +1,8 @@
 package org.jboss.tools.runtime.as.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly82.DetectWildFly82;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly82.OperateWildFly82;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly10.DetectWildFly10;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly10.OperateWildFly10;
 import org.jboss.tools.runtime.as.ui.bot.test.download.SmokeRuntimeDownload;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -11,8 +11,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	SmokeRuntimeDownload.class,
 	
-	DetectWildFly82.class,
-	OperateWildFly82.class
+	DetectWildFly10.class,
+	OperateWildFly10.class
 })
 public class SmokeSuite {
 
