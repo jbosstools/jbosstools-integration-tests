@@ -45,6 +45,7 @@ import org.jboss.tools.openshift.ui.bot.test.application.create.ID407CreateAppli
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID408ApplicationPropertiesTest;
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID409CreateApplicationWithoutAdapterTest;
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID410CreateScalableApplicationTest;
+import org.jboss.tools.openshift.ui.bot.test.application.create.ID411CreateApplicationOnMediumGearTest;
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID412UseAnotherDomainTest;
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID413CreateApplicationWithEmbeddableCartridgeTest;
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID414CreateApplicationFromExistingProjectTest;
@@ -149,6 +150,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID408ApplicationPropertiesTest.class,
 		ID409CreateApplicationWithoutAdapterTest.class,
 		ID410CreateScalableApplicationTest.class,
+		ID411CreateApplicationOnMediumGearTest.class,
 		ID412UseAnotherDomainTest.class,
 		ID413CreateApplicationWithEmbeddableCartridgeTest.class,
 		ID414CreateApplicationFromExistingProjectTest.class,
