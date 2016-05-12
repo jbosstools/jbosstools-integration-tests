@@ -13,9 +13,9 @@ public class AnnotationProcessingSettingsPage extends PreferencePage{
 	}
 	
 	public enum ProcessingMode{
-		NONE("Do not automatically configure/execute Annotation Processing from pom.xml"),
+		NONE("Do not automatically configure/execute annotation processing from pom.xml"),
 		JDT("Automatically configure JDT APT (builds faster, but outcome may differ from Maven builds)"),
-		MAVEN("Experimental : Delegate Annotation Processing to maven plugins (for maven-processor-plugin only)");
+		MAVEN("Experimental : Delegate annotation processing to maven plugins (for maven-processor-plugin only)");
 		
 		private final String checkboxText;
 		
