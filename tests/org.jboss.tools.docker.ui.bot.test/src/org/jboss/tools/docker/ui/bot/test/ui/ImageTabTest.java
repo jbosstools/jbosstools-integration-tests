@@ -15,6 +15,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
@@ -34,8 +37,10 @@ public class ImageTabTest extends AbstractDockerBotTest {
 	public void ImageTabTest() {
 		DockerImagesTab imageTab = new DockerImagesTab();
 		String imageName = System.getProperty("imageName");
+		String dockerServerURI = System.getProperty("dockerServerURI");
 		imageTab.activate();
 		imageTab.refresh();
+		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
 
 		String idFromTable = "";
 
@@ -46,10 +51,10 @@ public class ImageTabTest extends AbstractDockerBotTest {
 		}
 		idFromTable = idFromTable.replace("sha256:", "");
 
-		ArrayList<String> idsConsole = getIds(executeCommand("docker images -q"));
+		ArrayList<String> idsConsole = getIds(executeCommand("docker -H " + dockerServerURI + " images -q"));
 
 		for (String id : idsConsole) {
-			if (idFromTable.startsWith(id)||id.startsWith(idFromTable)) {
+			if (idFromTable.contains(id)||id.contains(idFromTable)) {
 				assertTrue("Image has been found!", true);
 				return;
 			}

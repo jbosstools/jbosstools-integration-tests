@@ -35,8 +35,8 @@ import org.junit.runners.Suite;
 	AddConnectionTest.class,
 	PullImageTest.class,
 	DockerContainerTest.class,
-	ImageTabTest.class,
-	ContainerTabTest.class,
+	ImageTabTest.class,			
+	ContainerTabTest.class,		
 	DeleteAllTest.class
 	
 })
