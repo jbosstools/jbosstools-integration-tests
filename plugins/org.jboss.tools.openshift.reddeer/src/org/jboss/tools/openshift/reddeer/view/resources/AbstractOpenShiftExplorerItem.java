@@ -42,7 +42,7 @@ public abstract class AbstractOpenShiftExplorerItem {
 	}
 	
 	public void select() {
-		activateOpenShiftExplorerView();
+		activateOpenShiftExplorerView();		
 		item.select();
 	}
 	

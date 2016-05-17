@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test.application.v3.basic;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -97,13 +96,11 @@ public class NewApplicationWizardHandlingTest {
 	public void testAccessibilityOfDefinedResourcesButton() {
 		new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).activate();
 		
-		assertFalse("Defines Resources button should be disabled if no server template is selected.", 
-				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
+		assertDefinedResourcesButtonIsNotPresent();
 		
 		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
 		
-		assertFalse("Defines Resources button should be disabled if no local template is selected.", 
-				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
+		assertDefinedResourcesButtonIsNotPresent();
 		
 		new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).activate();
 		new DefaultTree().selectItems(new DefaultTreeItem(OpenShiftLabel.Others.EAP_TEMPLATE));
@@ -113,9 +110,7 @@ public class NewApplicationWizardHandlingTest {
 		
 		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
 		
-		assertFalse("Defines Resources button should be disabled if no local template is selected,"
-				+ " but a server template is selected.", 
-				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
+		assertDefinedResourcesButtonIsNotPresent();
 		
 		new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).activate();
 		new DefaultTree().unselectAllItems();
@@ -132,9 +127,16 @@ public class NewApplicationWizardHandlingTest {
 		
 		new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).activate();
 		
-		assertFalse("Defines Resources button should be disabled if no server template is selected,"
-				+ " but a local template is selected.", 
-				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
+		assertDefinedResourcesButtonIsNotPresent();
+	}
+	
+	private void assertDefinedResourcesButtonIsNotPresent() {
+		try {
+			new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES);
+			fail("Defined Resources button should not be present at this point.");
+		} catch (RedDeerException ex) {
+			// pass
+		}
 	}
 	
 	@Test

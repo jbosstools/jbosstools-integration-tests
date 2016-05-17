@@ -10,16 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.reddeer.utils;
 
-import java.util.List;
-
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
-import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftProject;
 import org.junit.After;
 import org.junit.Test;
 
@@ -31,8 +27,6 @@ import org.junit.Test;
  *
  */
 public class CleanUpOS3 {
-
-	private Logger log = new Logger(CleanUpOS3.class);
 	
 	@Test
 	public void test() {
@@ -53,16 +47,12 @@ public class CleanUpOS3 {
 		
 		if (connection != null) {
 			connection.refresh();
-			connection.expand();
+			connection.getProject(DatastoreOS3.PROJECT1_DISPLAYED_NAME).delete();
 			
-			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);			
-			List<OpenShiftProject> projects = connection.getAllProjects();
-			if (!projects.isEmpty()) {
-				for (OpenShiftProject project: projects) {
-					log.info("Removing OpenShift project");
-					project.delete();
-				}
-			}
+			connection.refresh();
+			connection.getProject(DatastoreOS3.PROJECT2).delete();
+			
+			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		}
 	}
 }

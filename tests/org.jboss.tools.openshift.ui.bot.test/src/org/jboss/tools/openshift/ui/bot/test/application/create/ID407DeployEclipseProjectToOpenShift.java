@@ -42,8 +42,8 @@ import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.reddeer.wizard.v2.NewOpenShift2ApplicationWizard;
 import org.jboss.tools.openshift.reddeer.wizard.v2.ApplicationCreator;
+import org.jboss.tools.openshift.reddeer.wizard.v2.NewOpenShift2ApplicationWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,7 +54,7 @@ import org.junit.Test;
  * @author mlabuda@redhat.com
  *
  */
-public class ID407CreateApplicationFromExistingAndChangeRemoteNameTest {
+public class ID407DeployEclipseProjectToOpenShift {
 
 	private String applicationName = "diy" + System.currentTimeMillis();
 	private String secondApplicationName = "doit" + System.currentTimeMillis();
@@ -129,16 +129,11 @@ public class ID407CreateApplicationFromExistingAndChangeRemoteNameTest {
 			new PushButton("OK").click();
 		} catch (WaitTimeoutExpiredException ex) {}
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.COMMIT), TimePeriod.LONG);
-		
-		new DefaultShell(OpenShiftLabel.Shell.COMMIT).setFocus();		
+		new WorkbenchView("Git Staging").activate();
 		new DefaultStyledText().setText("Commit");
-		new PushButton("Commit").click();
+		new PushButton(OpenShiftLabel.Button.COMMIT).click();
 		
-
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.COMMIT),
-				TimePeriod.VERY_LONG);
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		new WaitWhile(new JobIsRunning());		
 	}
 	
 	public static void postCreateSteps(String applicationName) {

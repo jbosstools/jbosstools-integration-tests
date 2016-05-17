@@ -27,6 +27,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftProjectExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 
@@ -116,7 +117,6 @@ public class OpenShiftProject extends AbstractOpenShiftExplorerItem {
 	 * Deletes OpenShift project.
 	 */
 	public void delete() {
-		refresh();
 		item.select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.DELETE_OS_PROJECT).select();
 		
@@ -125,6 +125,8 @@ public class OpenShiftProject extends AbstractOpenShiftExplorerItem {
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.DELETE_OS_PROJECT), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		new WaitWhile(new OpenShiftProjectExists());
 	}
 	
 	/**

@@ -68,7 +68,7 @@ public class EditResourcesTest extends AbstractCreateApplicationTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		assertTrue("Changes from updating of a build config should be shown "
-				+ "in OpenShift explorer view, but it is not.", 
+				+ "in Properties view, but it is not.", 
 				getBuildConfig().getPropertyValue("Source", "URI").equals(customRepo));
 	}
 

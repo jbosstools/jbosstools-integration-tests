@@ -182,37 +182,6 @@ public class DeployDockerImageTest {
 	}
 	
 	/**
-	 * Selects a specified project and verify it is correctly processed in Deploy Image
-	 * to OpenShift wizard as well as processing of docker image details.
-	 * 
-	 * @param projectName
-	 * @param projectDisplayName
-	 */
-	private void selectProjectAndVerifyDataProcessingInDeployToOpenShiftWizard(String projectName, 
-			String projectDisplayName) {
-		
-		
-		String preselected = projectDisplayName == null ? projectName : projectDisplayName + 
-				" (" + projectName + ")";
-		
-		assertTrue("Wrong project has been preselected.", new LabeledCombo("OpenShift Project: ").
-				getSelection().equals(preselected));
-		
-		assertTrue("Selected docker image should be used in wizard but it is not.",
-				new LabeledText(OpenShiftLabel.TextLabels.IMAGE_NAME).equals(
-						HELLO_OS_DOCKER_IMAGE));
-		
-		assertTrue("Resource should be infered from image name but it is not",
-				HELLO_OS_DOCKER_IMAGE.split("/")[2].equals(new LabeledText(OpenShiftLabel.
-						TextLabels.RESOURCE_NAME)));
-		
-		new CancelButton().click();
-		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.DEPLOY_IMAGE_TO_OPENSHIFT));
-
-	}
-	
-	/**
 	 * Selects project in OpenShift explorer view, open Deploy Image to OpenShift wizard
 	 * from its context menu and assert that there are correct values.
 	 * @param projectName
@@ -250,6 +219,30 @@ public class DeployDockerImageTest {
 				projectDisplayName);
 		closeWizard();
 	}	
+	
+	/**
+	 * Selects a specified project and verify it is correctly processed in Deploy Image
+	 * to OpenShift wizard as well as processing of docker image details.
+	 * 
+	 * @param projectName
+	 * @param projectDisplayName
+	 */
+	private void selectProjectAndVerifyDataProcessingInDeployToOpenShiftWizard(String projectName, 
+			String projectDisplayName) {
+		String preselected = projectDisplayName == null ? projectName : projectDisplayName + 
+				" (" + projectName + ")";
+		
+		assertTrue("Wrong project has been preselected.", new LabeledCombo("OpenShift Project: ").
+				getSelection().equals(preselected));
+		
+		assertTrue("Selected docker image should be used in wizard but it is not.",
+				new LabeledText(OpenShiftLabel.TextLabels.IMAGE_NAME).getText().equals(
+						HELLO_OS_DOCKER_IMAGE));
+		
+		assertTrue("Resource should be infered from image name but it is not",
+				HELLO_OS_DOCKER_IMAGE.split("/")[2].equals(new LabeledText(OpenShiftLabel.
+						TextLabels.RESOURCE_NAME).getText()));
+	}
 	
 	/**
 	 * Creates a new docker connection using autodetection. If this meant to be used 

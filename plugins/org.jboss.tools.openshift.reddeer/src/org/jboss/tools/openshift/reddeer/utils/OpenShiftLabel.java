@@ -282,7 +282,7 @@ public class OpenShiftLabel {
 		// Application related
 		public static final String LOCAL_TEMPLATE = "Local template";
 		public static final String DESTINATION = "Destination:";
-		public static final String SERVER_TEMPLATE = "Server templates";
+		public static final String SERVER_TEMPLATE = "Server application source";
 		public static final String TAIL_OPTIONS = "Tail options:";	
 		
 		// Webhook

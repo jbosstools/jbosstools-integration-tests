@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
@@ -29,6 +30,7 @@ import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftResource;
  */
 public class ResourceExists extends AbstractWaitCondition {
 
+	private OpenShiftExplorerView explorer;
 	private OpenShiftProject project;
 	private Matcher resourceNameMatcher;
 	private ResourceState resourceState;
@@ -89,7 +91,7 @@ public class ResourceExists extends AbstractWaitCondition {
 	 * @param resourceState state of a resource
 	 */
 	public ResourceExists(Resource resource, Matcher nameMatcher, ResourceState resourceState) {
-		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		explorer = new OpenShiftExplorerView();
 		project = explorer.getOpenShift3Connection().getProject();
 		resourceNameMatcher = nameMatcher;
 		this.resourceState = resourceState;
@@ -98,7 +100,20 @@ public class ResourceExists extends AbstractWaitCondition {
 
 	@Override
 	public boolean test() {
-		List<OpenShiftResource> resources = project.getOpenShiftResources(resource);
+		// workaround for disposed widget
+		if (project.getTreeItem().isDisposed()) {
+			project = explorer.getOpenShift3Connection().getProject();
+		}
+		
+		List<OpenShiftResource> resources;
+		try {
+			resources = project.getOpenShiftResources(resource);
+		} catch (CoreLayerException ex) {
+			// In case widget is still disposed... what the heck?!
+			explorer.getOpenShift3Connection().refresh();
+			resources = explorer.getOpenShift3Connection().getProject().getOpenShiftResources(resource);
+		}
+		
 		if (resources.isEmpty()) {
 			return false;
 		}

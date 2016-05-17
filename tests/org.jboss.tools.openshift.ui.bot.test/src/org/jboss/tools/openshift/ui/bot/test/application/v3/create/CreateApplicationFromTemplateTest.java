@@ -109,6 +109,7 @@ public class CreateApplicationFromTemplateTest {
 				"eap64-basic-s2i.json").select();
 		new OkButton().click();
 		
+		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);		
 		assertTrue("Template from workspace is not correctly shown in text field containing its path",
 				new LabeledText(OpenShiftLabel.TextLabels.SELECT_LOCAL_TEMPLATE).getText().
 					equals("${workspace_loc:" + File.separator + "org.jboss.tools.openshift.ui.bot.test"
@@ -268,6 +269,7 @@ public class CreateApplicationFromTemplateTest {
 		
 		OpenShift3Connection connection  = explorer.getOpenShift3Connection();
 		connection.getProject().delete();
+		
 		connection.createNewProject();
 		
 		ProjectExplorer projectExplorer = new ProjectExplorer();
