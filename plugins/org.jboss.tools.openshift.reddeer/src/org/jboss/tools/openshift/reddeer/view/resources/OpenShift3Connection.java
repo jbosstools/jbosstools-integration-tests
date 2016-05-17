@@ -41,7 +41,6 @@ public class OpenShift3Connection extends AbstractOpenShiftConnection {
 	 */
 	public OpenShiftProject getProject(String projectName) {
 		activateOpenShiftExplorerView();
-		item.select();
 		item.expand();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);

@@ -66,7 +66,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ResourcesTest.class,
 	ProjectPropertiesTest.class,
 	ShowProjectInWebConsoleTest.class,
-	
+
 	// Application wizard handling
 	OpenNewApplicationWizardTest.class,
 	OpenNewApplicationWizardWithNoProjectTest.class,
@@ -91,7 +91,7 @@ import org.junit.runners.Suite.SuiteClasses;
  	DeployEclipseProjectTest.class,	
  	DeployDockerImageTest.class,	
 	
-		
+	
 	// Server adapter
 	ServerAdapterWizardHandlingTest.class,
 	CreateServerAdapterTest.class,

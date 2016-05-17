@@ -22,6 +22,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.handler.ShellHandler;
+import org.jboss.reddeer.eclipse.condition.ProjectExists;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
@@ -45,6 +46,7 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
 import org.jboss.tools.openshift.reddeer.condition.BrowserContainsText;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftProjectExists;
@@ -95,20 +97,13 @@ public class DeployEclipseProjectTest {
 		nextWizardPage();
 		nextWizardPage();
 		nextWizardPage();
-		nextWizardPage();
 		
 		new WaitUntil(new WidgetIsEnabled(new FinishButton()));
 		
 		new FinishButton().click();
-		
-		new DefaultShell("Nested Projects");
-		
-		new WaitUntil(new WidgetIsEnabled(new OkButton()), TimePeriod.LONG);
-		
-		new OkButton().click();
-		
-		new WaitWhile(new ShellWithTextIsAvailable("Nested Projects"), TimePeriod.LONG);
+	
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitUntil(new ProjectExists(PROJECT_NAME), TimePeriod.LONG);
 	}
 	
 	private static void nextWizardPage() {
@@ -135,11 +130,10 @@ public class DeployEclipseProjectTest {
 			// do nothing
 		}
 		
-		new DefaultShell(OpenShiftLabel.Shell.COMMIT);
+		new WorkbenchView("Git Staging").activate();
 		new DefaultStyledText().setText("Commit from IDE");
 		new PushButton(OpenShiftLabel.Button.COMMIT).click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.COMMIT));
 		new WaitWhile(new JobIsRunning());
 	}
 	

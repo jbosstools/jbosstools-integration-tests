@@ -31,7 +31,7 @@ import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter;
 import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter.Version;
-import org.jboss.tools.openshift.ui.bot.test.application.create.ID407CreateApplicationFromExistingAndChangeRemoteNameTest;
+import org.jboss.tools.openshift.ui.bot.test.application.create.ID407DeployEclipseProjectToOpenShift;
 import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
 import org.junit.Test;
 
@@ -53,7 +53,7 @@ public class ID701ModifyAndRepublishApplicationTest extends IDXXXCreateTestingAp
 		explorer.getProject(applicationName).getProjectItem("diy", "index.html").open();
 		
 		TextEditor editor = new TextEditor("index.html");
-		editor.setText(ID407CreateApplicationFromExistingAndChangeRemoteNameTest.HTML_TEXT);
+		editor.setText(ID407DeployEclipseProjectToOpenShift.HTML_TEXT);
 		editor.save();
 		editor.close();
 		

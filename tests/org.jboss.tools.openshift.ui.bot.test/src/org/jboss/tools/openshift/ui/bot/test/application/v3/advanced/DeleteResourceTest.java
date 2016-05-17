@@ -18,16 +18,10 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.YesButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
 import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
-import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftResource;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.create.AbstractCreateApplicationTest;
@@ -50,14 +44,7 @@ public class DeleteResourceTest extends AbstractCreateApplicationTest {
 		OpenShiftResource applicationPod = getApplicationPod();
 		String podName = applicationPod.getName();
 		
-		applicationPod.select();
-		new ContextMenu(OpenShiftLabel.ContextMenu.DELETE_RESOURCE).select();
-		
-		new DefaultShell(OpenShiftLabel.Shell.DELETE_RESOURCE);
-		new YesButton().click();
-		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.DELETE_RESOURCE), TimePeriod.LONG);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		applicationPod.delete();
 		
 		try {
 			new WaitWhile(new ResourceExists(Resource.POD, podName), TimePeriod.getCustom(15));
@@ -71,7 +58,7 @@ public class DeleteResourceTest extends AbstractCreateApplicationTest {
 		List<OpenShiftResource> pods = explorer.getOpenShift3Connection().getProject().
 				getOpenShiftResources(Resource.POD);
 		for (OpenShiftResource pod: pods) {
-			if (!pod.getName().equals("eap-app-1-build")) {
+			if (!pod.getName().equals("eap-app-1-build") && !pod.getName().equals("eap-app-1-deploy")) {
 				return pod;
 			}
 		}
