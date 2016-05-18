@@ -32,16 +32,22 @@ public class QuickstartsReporter {
 	private static Map<Quickstart, List<String>> errors;
 	private static Map<Quickstart, List<String>> warnings;
 	private static List<Quickstart> qstarts;
+	private static List<String> infos;
 	private static QuickstartsReporter instance = new QuickstartsReporter();
 
 	protected QuickstartsReporter() {
 		errors = new HashMap<Quickstart, List<String>>();
 		warnings = new HashMap<Quickstart, List<String>>();
 		qstarts = new ArrayList<Quickstart>();
+		infos = new ArrayList<String>();
 	}
 
 	public static QuickstartsReporter getInstance() {
 		return instance;
+	}
+	
+	public void addInfo(String infoMessage) {
+		infos.add(infoMessage);
 	}
 
 	public void addError(Quickstart q, String error) {
@@ -65,6 +71,9 @@ public class QuickstartsReporter {
 	}
 
 	public void generateReport() {
+		for (String info:infos){
+			System.out.println("INFO: " + info);
+		}
 		for (Quickstart quickstart : qstarts) {
 			System.out.println("QUICKSTART: " + quickstart.getName());
 			if (errors.containsKey(quickstart)) {
@@ -90,6 +99,9 @@ public class QuickstartsReporter {
 			 writer = new PrintWriter(file);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		}
+		for (String info:infos){
+			writer.println("INFO: " + info);
 		}
 		for (Quickstart q : qstarts) {
 			if (errors.containsKey(q)) {
@@ -117,6 +129,9 @@ public class QuickstartsReporter {
 					writer = new PrintWriter(directory.getAbsolutePath()+"/"+q.getName()+".txt");
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
+				}
+				for (String info:infos){
+					writer.println("INFO: " + info);
 				}
 				for (String error : errors.get(q)){
 					writer.println(error);
