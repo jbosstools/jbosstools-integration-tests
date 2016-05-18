@@ -11,9 +11,13 @@ Require-Bundle: org.jboss.reddeer.common;bundle-version="0.7.0",
  org.jboss.reddeer.eclipse,
  org.junit;bundle-version="4.8.2",
  org.jboss.reddeer.junit;bundle-version="0.7.0",
- org.jboss.tools.maven.reddeer,
+ org.jboss.tools.maven.reddeer;bundle-version="4.4.0",
  org.jboss.reddeer.core,
  org.jboss.reddeer.jface;bundle-version="0.7.0",
- org.jboss.tools.central.reddeer,
+ org.jboss.tools.central.reddeer;bundle-version="4.4.0",
  org.jboss.reddeer.workbench;bundle-version="0.7.0",
- org.jboss.reddeer.junit.extension;bundle-version="0.7.0"
+ org.jboss.reddeer.junit.extension;bundle-version="0.7.0",
+ org.jboss.reddeer.requirements,
+ org.jboss.ide.eclipse.as.reddeer
+Import-Package: org.eclipse.wst.server.ui.internal.view.servers,
+ org.jboss.reddeer.requirements.server
