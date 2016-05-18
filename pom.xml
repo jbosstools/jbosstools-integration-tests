@@ -57,11 +57,6 @@
 
 	<repositories>
 		<repository>
-			<id>reddeer-site</id>
-			<url>${reddeer-site}</url>
-			<layout>p2</layout>
-		</repository>
-		<repository>
 			<id>jbosstools</id>
 			<layout>p2</layout>
 			<url>${jbosstools-site}</url>
