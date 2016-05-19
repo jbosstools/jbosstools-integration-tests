@@ -232,7 +232,7 @@ public class OpenShiftLabel {
 		public static final String SELECT_ALL = "Select all";
 		public static final String START_ALL = "Start All";
 		public static final String STOP_ALL = "Stop All";
-		public static final String WORKSPACE = "Workspace...";
+		public static final String WORKSPACE = "Browse Workspace...";
 	}
 	
 	public static class TextLabels {	
@@ -243,7 +243,7 @@ public class OpenShiftLabel {
 		public static final String PASSWORD = "Password:";
 		public static final String SERVER = "Server:";
 		public static final String USERNAME = "Username:";
-		public static final String SELECT_LOCAL_TEMPLATE = "Select a local template:";
+		public static final String SELECT_LOCAL_TEMPLATE = "Select a local template file or a full URL:";
 		public static final String SERVER_TYPE = "Server type:";
 		public static final String STORE_PASSWORD = "Save password (could trigger secure storage login)";
 		public static final String STORE_TOKEN= "Save token (could trigger secure storage login)";

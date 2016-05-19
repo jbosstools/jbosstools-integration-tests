@@ -27,6 +27,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
@@ -115,6 +116,8 @@ public class CreateApplicationFromTemplateTest {
 					equals("${workspace_loc:" + File.separator + "org.jboss.tools.openshift.ui.bot.test"
 							+ File.separator + "resources" + File.separator + "eap64-basic-s2i.json}"));
 
+		new WaitUntil(new WidgetIsEnabled(new CancelButton()));
+		
 		assertTrue("Defined resource button should be enabled", 
 				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
 		
