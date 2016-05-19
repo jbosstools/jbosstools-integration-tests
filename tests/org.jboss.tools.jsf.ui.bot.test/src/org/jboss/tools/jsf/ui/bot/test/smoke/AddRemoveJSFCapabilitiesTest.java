@@ -99,7 +99,7 @@ public class AddRemoveJSFCapabilitiesTest extends JSFAutoTestCase {
 			packageExplorer.getProject(JBT_TEST_PROJECT_NAME).select();
 			new ContextMenu("Run As","1 Run on Server").select();
 			new DefaultShell("Run On Server");
-			new DefaultTreeItem("localhost",serverRequirement.getRuntimeNameLabelText(serverRequirement.getConfig())).select();
+			new DefaultTreeItem("localhost",serverRequirement.getServerNameLabelText(serverRequirement.getConfig())).select();
 			new PushButton("Next >").click();
 			new PushButton("Finish").click();
 			new WaitWhile(new ShellWithTextIsActive("Run On Server"));
@@ -107,7 +107,6 @@ public class AddRemoveJSFCapabilitiesTest extends JSFAutoTestCase {
 			// Check Browser Content
 			new DefaultEditor("Input User Name Page");
 			String browserText = new InternalBrowser().getText();
-			server.delete(true);
 			assertTrue("Displayed HTML page has wrong content", (browserText != null)
 					&& (browserText.toLowerCase().indexOf("<title>input user name page</title>") > -1));
 		} else {

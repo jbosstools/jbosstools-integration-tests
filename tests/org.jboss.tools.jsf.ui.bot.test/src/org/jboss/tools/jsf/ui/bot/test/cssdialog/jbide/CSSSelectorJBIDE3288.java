@@ -10,6 +10,8 @@
   ******************************************************************************/
 package org.jboss.tools.jsf.ui.bot.test.cssdialog.jbide;
 
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.handler.TreeItemHandler;
 import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
@@ -79,8 +81,9 @@ public class CSSSelectorJBIDE3288 extends JSFAutoTestCase{
 	}
 	
 	private void selectTestElement(){
+		getEditor().setCursorPosition(12, 19);
 		getEditor().selectText("h:out");
-		getEditor().save();
+		new WaitWhile(new JobIsRunning());
 	}
 	
 	private void openCSSSelectorDialog(){

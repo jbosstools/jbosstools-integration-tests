@@ -34,6 +34,7 @@ public class JSF2RenameParticipantTest extends JSF2AbstractRefactorTest {
 
 	private void renameCompositeComponent() throws Exception {
 		packageExplorer.open();
+		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).refresh();
 		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent","resources","mycomp","echo.xhtml").select();
 		new ContextMenu("Refactor","Rename...").select();
 		Shell renameShell = new DefaultShell(IDELabel.Shell.RENAME_RESOURCE);

@@ -13,6 +13,7 @@ package org.jboss.tools.jsf.ui.bot.test.jsf2.refactor;
 import java.io.IOException;
 
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.condition.ShellIsActive;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -66,7 +67,9 @@ public class JSF2AttributeRenameTest extends JSF2AbstractRefactorTest {
 	protected void createCompositeComponent() throws Exception {
 		super.createCompositeComponent();
 		packageExplorer.open();
-		packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent","resources","mycomp","echo.xhtml").open();
+		ProjectItem projectItem = packageExplorer.getProject(JBT_TEST_PROJECT_NAME).getProjectItem("WebContent","resources","mycomp");
+		projectItem.refresh();
+		projectItem.getProjectItem("echo.xhtml").open();
 		TextEditor editor = new TextEditor("echo.xhtml");
 		editor.setText(loadFileContent("refactor/compositeComponent.html"));
 		editor.save();
