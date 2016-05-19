@@ -13,14 +13,15 @@ package org.jboss.tools.docker.ui.bot.test.ui;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 
@@ -32,35 +33,58 @@ import org.junit.Test;
 
 
 public class ImageTabTest extends AbstractDockerBotTest {
+	
+	private String imageName = "hello-world";
+	
+	@Before
+	public void before() {
+		openDockerPerspective();
+		createConnection();
+	}
 
 	@Test
 	public void ImageTabTest() {
+		pullImage(this.imageName);
 		DockerImagesTab imageTab = new DockerImagesTab();
-		String imageName = System.getProperty("imageName");
-		String dockerServerURI = System.getProperty("dockerServerURI");
 		imageTab.activate();
 		imageTab.refresh();
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
 
 		String idFromTable = "";
+		String repoTagsFromTable = "";
+		String createdFromTable = "";
+		String sizeFromTable = "";
 
 		for (TableItem item : imageTab.getTableItems()) {
-			if (item.getText(1).startsWith(imageName)) {
+			if (item.getText(1).contains(imageName)) {
 				idFromTable = item.getText();
+				repoTagsFromTable = item.getText(1);
+				createdFromTable = item.getText(2);
+				sizeFromTable = item.getText(3).replaceAll(".","").replaceAll(" MB", "");
+				item.click();
 			}
 		}
 		idFromTable = idFromTable.replace("sha256:", "");
+		
+		PropertiesView propertiesView = new PropertiesView();
+		propertiesView.open();
+		propertiesView.selectTab("Info");
+		String idProp = propertiesView.getProperty("Id").getPropertyValue();
+		String repoTagsProp = propertiesView.getProperty("RepoTags").getPropertyValue();
+		String createdProp = propertiesView.getProperty("Created").getPropertyValue();
+		String sizeProp = propertiesView.getProperty("VirtualSize").getPropertyValue();
+		
+		assertTrue("Id in table and in Properties do not match!", idProp.contains(idFromTable));
+		assertTrue("RepoTags in table and in Properties do not match!", repoTagsProp.equals(repoTagsFromTable));
+		assertTrue("Created in table and in Properties do not match!", createdProp.equals(createdFromTable));
+		assertTrue("Size in table and in Properties do not match!", sizeProp.startsWith(sizeFromTable));
 
-		ArrayList<String> idsConsole = getIds(executeCommand("docker -H " + dockerServerURI + " images -q"));
-
-		for (String id : idsConsole) {
-			if (idFromTable.contains(id)||id.contains(idFromTable)) {
-				assertTrue("Image has been found!", true);
-				return;
-			}
-		}
-		assertTrue("Image has NOT been found!", false);
-
+	}
+	
+	@After
+	public void after() {
+		deleteImage(this.imageName);
+		deleteConnection();
 	}
 
 

@@ -16,18 +16,18 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageOneWizard;
 import org.jboss.tools.docker.reddeer.ui.ConnectionItem;
 import org.jboss.tools.docker.reddeer.ui.DockerExplorer;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -37,11 +37,19 @@ import org.junit.Test;
  */
 
 public class DockerContainerTest extends AbstractDockerBotTest {
+	private String imageName = "";
+	private String containerName = "test_run";
+	@Before
+	public void before() {
+		openDockerPerspective();
+		createConnection();
+		this.imageName=System.getProperty("imageName");
+	}
 
+	
 	@Test
 	public void DockerContainerTest() {
 		String dockerServerURI = System.getProperty("dockerServerURI");
-		String imageName = System.getProperty("imageName");
 		ConsoleView cview = new ConsoleView();
 		cview.open();
 		try {
@@ -49,6 +57,7 @@ public class DockerContainerTest extends AbstractDockerBotTest {
 		} catch (CoreLayerException ex) {
 
 		}
+		pullImage(this.imageName);
 		DockerExplorer de = new DockerExplorer();
 		de.open();
 		ConnectionItem dockerConnection = de.getConnection(dockerServerURI);
@@ -66,8 +75,9 @@ public class DockerContainerTest extends AbstractDockerBotTest {
 		item.select();
 
 		new ContextMenu("Run...").select();
-		new WaitUntil(new ShellWithTextIsActive("Run a Docker Image"), TimePeriod.NORMAL);
-		new PushButton("Finish").click();
+		RunADockerImagePageOneWizard firstPage = new RunADockerImagePageOneWizard();
+		firstPage.setName(this.containerName);
+		firstPage.finish();
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
 
 	}
@@ -81,6 +91,14 @@ public class DockerContainerTest extends AbstractDockerBotTest {
 			}
 		}
 		return null;
+	}
+	
+
+	@After
+	public void after() {
+		deleteContainer(this.containerName);
+		deleteImage(imageName);
+		deleteConnection();
 	}
 
 }

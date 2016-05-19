@@ -16,10 +16,14 @@ import java.util.List;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 
 import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageOneWizard;
 
 /**
  * 
@@ -36,11 +40,11 @@ public class DockerImagesTab extends WorkbenchView {
 	public TableItem getDockerImage(String dockerImageName) {
 		activate();
 		for (TableItem item : getTableItems()){
-			if (item.getText().equals(dockerImageName)){
+			if (item.getText(1).contains(dockerImageName)){
 				return item;
 			}
 		}
-		throw new EclipseLayerException("There is no connection with name " + dockerImageName);
+		throw new EclipseLayerException("There is no Docker image with name " + dockerImageName);
 	}
 	
 	public void refresh(){
@@ -51,6 +55,19 @@ public class DockerImagesTab extends WorkbenchView {
 	public List<TableItem> getTableItems(){
 		return new DefaultTable().getItems();
 		
+	}
+	
+	public void buildImage(String name, String directory){
+		new DefaultToolItem("Build Image").click();
+		new LabeledText("Name:").setText(name);
+		new LabeledText("Directory:").setText(directory);
+		new FinishButton().click();
+	}
+
+	public void runImage(String imageName) {
+		TableItem image = getDockerImage(imageName);
+		image.select();
+		new ContextMenu("Run...").select();
 	}
 	
 

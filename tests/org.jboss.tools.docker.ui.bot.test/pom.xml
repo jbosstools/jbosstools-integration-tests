@@ -13,6 +13,8 @@
 	<properties>
 		<systemProperties>-DdockerServerURI=${dockerServerURI} -DimageName=${imageName} -Dscope=${scope}</systemProperties>
 		<scope>DockerAllBotTest</scope>
+		<dockerServerURI>tcp://localhost:2375</dockerServerURI>
+		<imageName>jboss/wildfly</imageName>
 		<surefire.timeout>14400</surefire.timeout>
 	</properties>
 

@@ -2,7 +2,6 @@ package org.jboss.tools.docker.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.docker.ui.bot.test.connection.AddConnectionTest;
-import org.jboss.tools.docker.ui.bot.test.ui.DeleteAllTest;
 import org.jboss.tools.docker.ui.bot.test.ui.DockerContainerTest;
 import org.jboss.tools.docker.ui.bot.test.ui.PerspectiveTest;
 import org.jboss.tools.docker.ui.bot.test.ui.PullImageTest;
@@ -22,7 +21,6 @@ import org.junit.runners.Suite;
 	AddConnectionTest.class,
 	PullImageTest.class,
 	DockerContainerTest.class,
-	DeleteAllTest.class
 })
 
 public class SmokeSuite {

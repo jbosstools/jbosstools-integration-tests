@@ -14,18 +14,20 @@ package org.jboss.tools.docker.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.docker.ui.bot.test.connection.AddConnectionTest;
+import org.jboss.tools.docker.ui.bot.test.ui.BuildImageTest;
 import org.jboss.tools.docker.ui.bot.test.ui.ContainerTabTest;
-import org.jboss.tools.docker.ui.bot.test.ui.DeleteAllTest;
 import org.jboss.tools.docker.ui.bot.test.ui.DockerContainerTest;
+import org.jboss.tools.docker.ui.bot.test.ui.ExposePortTest;
 import org.jboss.tools.docker.ui.bot.test.ui.PerspectiveTest;
 import org.jboss.tools.docker.ui.bot.test.ui.PullImageTest;
+import org.jboss.tools.docker.ui.bot.test.ui.VolumeMountTest;
 import org.jboss.tools.docker.ui.bot.test.ui.ImageTabTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 /**
  * 
- * This is a swtbot testcase for an eclipse application.
+ * This is a RedDeer testcase for an eclipse application.
  * 
  * @author jkopriva
  */
@@ -34,11 +36,12 @@ import org.junit.runners.Suite;
 	PerspectiveTest.class, 
 	AddConnectionTest.class,
 	PullImageTest.class,
+	BuildImageTest.class,
 	DockerContainerTest.class,
-	ImageTabTest.class,			
-	ContainerTabTest.class,		
-	DeleteAllTest.class
-	
+	ExposePortTest.class,
+	ImageTabTest.class,	
+	ContainerTabTest.class,
+	VolumeMountTest.class
 })
 public class DockerAllBotTest {
 

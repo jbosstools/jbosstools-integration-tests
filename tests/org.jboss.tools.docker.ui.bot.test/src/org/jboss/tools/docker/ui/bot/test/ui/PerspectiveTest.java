@@ -11,11 +11,6 @@
 
 package org.jboss.tools.docker.ui.bot.test.ui;
 
-import static org.junit.Assert.fail;
-
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.tools.docker.reddeer.perspective.DockerPerspective;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.Test;
 
@@ -28,13 +23,8 @@ import org.junit.Test;
 public class PerspectiveTest extends AbstractDockerBotTest {
 
 	@Test
-	public void testDockerToolingPerspective() {
-		new DockerPerspective().open();
-		try{
-			new ShellWithTextIsActive("Docker Explorer");
-		} catch (SWTLayerException ex){
-			fail("Docker Explorer not found in Docker tooling perspective");
-		}
+	public void PerspectiveTest() {
+		openDockerPerspective();
 	}
 
 }
