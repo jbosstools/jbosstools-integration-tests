@@ -13,7 +13,6 @@ package org.jboss.tools.jst.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.jst.ui.bot.test.bower.BowerInitTest;
-import org.jboss.tools.jst.ui.bot.test.bower.BowerPreferencesTest;
 import org.jboss.tools.jst.ui.bot.test.bower.BowerUpdateTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -22,8 +21,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 	// Bower Tests
 	BowerInitTest.class,
-	BowerUpdateTest.class,
-	BowerPreferencesTest.class
+	BowerUpdateTest.class
 })
 public class AllBowerTests {
 
