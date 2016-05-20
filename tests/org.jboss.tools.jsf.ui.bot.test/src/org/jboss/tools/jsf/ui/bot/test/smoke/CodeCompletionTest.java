@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
@@ -260,6 +261,7 @@ public class CodeCompletionTest extends JSFAutoTestCase{
 	 */
 	private void initFaceletsPageTest() {
 		EditorHandler.getInstance().closeAll(true);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		openPage(FACELETS_TEST_PAGE, FACELETS_TEST_PROJECT_NAME);
 		TextEditor editor = new TextEditor(FACELETS_TEST_PAGE);
 		setEditor(editor);

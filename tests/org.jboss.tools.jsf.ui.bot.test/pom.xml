@@ -61,13 +61,4 @@
       </plugin>
     </plugins>
   </build>
-	<profiles>
-		<profile>
-			<id>performance-test</id>
-			<properties>
-				<test.suite.class>org.jboss.tools.jsf.ui.bot.test.JSFPerformanceBotTests</test.suite.class>
-				<systemProperties>${integrationTestsSystemProperties} ${jsfUiBotTestsProperties} -DPerfMonitor.repURL=http://localhost:8180/PerfServer/rest/rep -DPerfMonitor.project=JBT -DPerfMonitor.build=420Alpha -DPerfMonitor.testsuite=JSFPerfTest -DPerfMonitor.platform=Lin_8x2.8Ghz_6GB -Djava.library.path=${basedir}/../../plugins/org.jboss.tools.perf.test.core/hyperic-sigar-1.6.5/sigar-bin/lib</systemProperties>
-			</properties>
-		</profile>
-	</profiles>
 </project>

@@ -14,18 +14,23 @@ import java.io.File;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.Browser;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.vpe.reddeer.utils.BrowserUtils;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.vpe.ui.bot.test.tools.SWTBotWebBrowser;
 
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY9x, cleanup=true)
 public abstract class JSFAutoTestCase extends VPEAutoTestCase {
-
+	
 	private String editorText;
 	private TextEditor editor;
 
