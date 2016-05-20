@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.smoke;
 
-import org.jboss.tools.ui.bot.ext.helper.FileRenameHelper;
 import org.jboss.reddeer.core.handler.TreeItemHandler;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -18,6 +17,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
 import org.jboss.tools.jst.reddeer.web.ui.navigator.WebProjectsNavigator;
+import org.jboss.tools.vpe.reddeer.utils.FileRenameHelper;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
 import org.junit.Test;
 

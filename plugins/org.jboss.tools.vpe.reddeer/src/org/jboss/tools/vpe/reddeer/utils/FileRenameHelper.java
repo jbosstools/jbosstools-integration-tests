@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.ui.bot.ext.helper;
+package org.jboss.tools.vpe.reddeer.utils;
 
 import static org.junit.Assert.assertNotNull;
 

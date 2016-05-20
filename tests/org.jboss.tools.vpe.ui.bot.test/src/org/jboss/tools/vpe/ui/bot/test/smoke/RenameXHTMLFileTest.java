@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.ui.bot.test.smoke;
 
-import org.jboss.tools.ui.bot.ext.helper.FileRenameHelper;
+import org.jboss.tools.vpe.reddeer.utils.FileRenameHelper;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
 import org.junit.Test;
 
