@@ -52,6 +52,11 @@ public class ProductRuntimeDownload extends ProductRuntimeDownloadTestBase {
 	}
 	
 	@Test
+	public void downloadEAP70() {
+		downloadRuntime("JBoss EAP 7.0.0");
+	}
+	
+	@Test
 	public void downloadJPP610() {
 		downloadRuntime("JBoss Portal Platform 6.1.0");
 	}

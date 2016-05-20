@@ -23,11 +23,13 @@
 	<profiles>
 		<!-- Profile for projects. -->
 		<profile>
-			<id>projects</id>
+			<id>projects-only</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
+				<wildfly-10.0>${requirementsDirectory}/wildfly-10.0.0.Final/</wildfly-10.0>
+				<wildfly-web-10.0>${requirementsDirectory}/wildfly-servlet-10.0.0.Final/</wildfly-web-10.0>
 				<wildfly-9.0>${requirementsDirectory}/wildfly-9.0.0.Final/</wildfly-9.0>
 				<wildfly-web-9.0>${requirementsDirectory}/wildfly-servlet-9.0.0.Final/</wildfly-web-9.0>
 				<wildfly-8.1>${requirementsDirectory}/wildfly-8.1.0.Final/</wildfly-8.1>
@@ -38,10 +40,42 @@
 				<jboss-seam-2.3.0.Final>${requirementsDirectory}/jboss-seam-2.3.0.Final/</jboss-seam-2.3.0.Final>
 				<jboss-seam-2.2.2>${requirementsDirectory}/jboss-seam-2.2.2.Final/</jboss-seam-2.2.2>
 
-				<test.class>org.jboss.tools.runtime.as.ui.bot.test.StableTestsSuite</test.class>
+				<test.class>org.jboss.tools.runtime.as.ui.bot.test.ProjectTestsSuite</test.class>
 			</properties>
 			<build>
 				<plugins>
+					<plugin>
+						<groupId>com.googlecode.maven-download-plugin</groupId>
+						<artifactId>download-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>install-seam-2.3.0.Final</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>http://sourceforge.net/projects/jboss/files/JBoss%20Seam/2.3.0.Final/jboss-seam-distribution-2.3.0.Final-dist.zip</url>
+									<unpack>true</unpack>
+									<md5>f5fcb2ae2b17514feb2a2d3bbf5f4e2b</md5>
+									<outputDirectory>${requirementsDirectory}/</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-seam-2.2.2.Final</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>http://sourceforge.net/projects/jboss/files/JBoss%20Seam/2.2.2.Final/jboss-seam-2.2.2.Final.zip</url>
+									<unpack>true</unpack>
+									<md5>3bdb26921b1ebfb7222968657df95bb3</md5>
+									<outputDirectory>${requirementsDirectory}/</outputDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-dependency-plugin</artifactId>
@@ -104,6 +138,44 @@
 								</configuration>
 							</execution>
 							<execution>
+								<id>install-widlfly-10.0.0-web</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<configuration>
+									<skip>${skipTests}</skip>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.wildfly</groupId>
+											<artifactId>wildfly-servlet-dist</artifactId>
+											<version>10.0.0.Final</version>
+											<type>zip</type>
+										</artifactItem>
+									</artifactItems>
+									<outputDirectory>${requirementsDirectory}</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-widlfly-10.0.0</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<configuration>
+									<skip>${skipTests}</skip>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.wildfly</groupId>
+											<artifactId>wildfly-dist</artifactId>
+											<version>10.0.0.Final</version>
+											<type>zip</type>
+										</artifactItem>
+									</artifactItems>
+									<outputDirectory>${requirementsDirectory}</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
 								<id>install-widlfly-web-9.0.0</id>
 								<phase>pre-integration-test</phase>
 								<goals>
@@ -143,38 +215,6 @@
 							</execution>
 						</executions>
 					</plugin>
-					<plugin>
-						<groupId>com.googlecode.maven-download-plugin</groupId>
-						<artifactId>download-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>install-seam-2.3.0.Final</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>wget</goal>
-								</goals>
-								<configuration>
-									<url>http://sourceforge.net/projects/jboss/files/JBoss%20Seam/2.3.0.Final/jboss-seam-distribution-2.3.0.Final-dist.zip</url>
-									<unpack>true</unpack>
-									<md5>f5fcb2ae2b17514feb2a2d3bbf5f4e2b</md5>
-									<outputDirectory>${requirementsDirectory}/</outputDirectory>
-								</configuration>
-							</execution>
-							<execution>
-								<id>install-seam-2.2.2.Final</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>wget</goal>
-								</goals>
-								<configuration>
-									<url>http://sourceforge.net/projects/jboss/files/JBoss%20Seam/2.2.2.Final/jboss-seam-2.2.2.Final.zip</url>
-									<unpack>true</unpack>
-									<md5>3bdb26921b1ebfb7222968657df95bb3</md5>
-									<outputDirectory>${requirementsDirectory}/</outputDirectory>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -182,10 +222,12 @@
 
 		<!-- Profile for products -->
 		<profile>
-			<id>products</id>
+			<id>stable</id>
 			<properties>
 				<test.class>org.jboss.tools.runtime.as.ui.bot.test.StableTestsSuite</test.class>
 
+				<jboss-eap-7.0>${requirementsDirectory}/jboss-eap-7.0/</jboss-eap-7.0>
+				<jboss-eap-6.4>${requirementsDirectory}/jboss-eap-6.4/</jboss-eap-6.4>
 				<jboss-eap-6.3>${requirementsDirectory}/jboss-eap-6.3/</jboss-eap-6.3>
 				<jboss-eap-6.2.x>${requirementsDirectory}/jboss-eap-6.2.x/jboss-eap-6.2</jboss-eap-6.2.x>
 				<jboss-eap-6.2>${requirementsDirectory}/jboss-eap-6.2/</jboss-eap-6.2>
@@ -223,6 +265,32 @@
 						<groupId>com.googlecode.maven-download-plugin</groupId>
 						<artifactId>download-maven-plugin</artifactId>
 						<executions>
+							<execution>
+								<id>install-eap-7.0</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${jbosstools.test.jboss-eap-7.0.url}</url>
+									<unpack>true</unpack>
+									<md5>${jbosstools.test.jboss-eap-7.0.md5}</md5>
+									<outputDirectory>${requirementsDirectory}/</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-eap-6.4</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${jbosstools.test.jboss-eap-6.4.url}</url>
+									<unpack>true</unpack>
+									<md5>${jbosstools.test.jboss-eap-6.4.md5}</md5>
+									<outputDirectory>${requirementsDirectory}/</outputDirectory>
+								</configuration>
+							</execution>
 							<execution>
 								<id>install-eap-6.3</id>
 								<phase>pre-integration-test</phase>

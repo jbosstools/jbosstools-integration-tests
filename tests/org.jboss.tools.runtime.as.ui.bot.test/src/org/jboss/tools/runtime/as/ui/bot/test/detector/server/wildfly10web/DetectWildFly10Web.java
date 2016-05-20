@@ -9,9 +9,9 @@ import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
 
 public class DetectWildFly10Web extends DetectRuntimeTemplate {
 
-	public static final String SERVER_ID = "wildfly-web-10.0";
+	public static final String SERVER_ID = "wildFly-web-10.0";
 	
-	public static final String SERVER_NAME = "Wildfly-Web 10.0";
+	public static final String SERVER_NAME = "WildFly-Web 10.0";
 	
 	@Override
 	protected String getPathID() {
