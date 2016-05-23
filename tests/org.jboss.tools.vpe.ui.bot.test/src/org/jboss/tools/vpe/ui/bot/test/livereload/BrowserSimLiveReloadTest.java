@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 import org.jboss.tools.vpe.ui.bot.test.VPEAutoTestCase;
 import org.jboss.tools.vpe.ui.bot.test.browsersim.BrowserSimAssertions;
 import org.jboss.tools.vpe.ui.bot.test.editor.VPEEditorTestCase;
-import org.jboss.ide.eclipse.as.reddeer.server.wizard.NewServerWizardDialog;
+import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerWizardPageWithErrorCheck;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
