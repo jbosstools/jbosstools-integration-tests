@@ -16,10 +16,18 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap62x.DetectEAP62
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap62x.OperateEAP62x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap63.DetectEAP63;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap63.OperateEAP63;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap64.DetectEAP64;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap64.OperateEAP64;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap70.DetectEAP70;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap70.OperateEAP70;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.DetectJBoss7;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.OperateJBoss7;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp61x.DetectJPP61x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp61x.OperateJPP61x;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly10.DetectWildFly10;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly10.OperateWildFly10;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly10web.DetectWildFly10Web;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly10web.OperateWildFly10Web;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.DetectWildFly8;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly8.OperateWildFly8;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly81.DetectWildFly81;
@@ -47,6 +55,12 @@ import org.junit.runners.Suite.SuiteClasses;
 		
 		DetectCDK2fromGit.class,
 	
+		DetectWildFly10.class,
+		OperateWildFly10.class,
+		
+		DetectWildFly10Web.class,
+		OperateWildFly10Web.class,
+		
 		DetectWildFly90.class,
 		OperateWildFly90.class,
 
@@ -61,6 +75,12 @@ import org.junit.runners.Suite.SuiteClasses;
 		
 		DetectJBoss7.class,
 		OperateJBoss7.class,
+		
+		DetectEAP70.class,
+		OperateEAP70.class,
+		
+		DetectEAP64.class,
+		OperateEAP64.class,
 		
 		DetectEAP63.class,
 		OperateEAP63.class,
