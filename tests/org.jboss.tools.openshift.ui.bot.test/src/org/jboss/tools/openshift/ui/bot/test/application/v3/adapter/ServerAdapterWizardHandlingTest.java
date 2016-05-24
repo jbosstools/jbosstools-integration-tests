@@ -137,6 +137,9 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 	@Test
 	public void testSourcePathWidgetAccessibility() {
 		openNewServerAdapterWizard();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		
 		next();
 		
 		new PushButton(OpenShiftLabel.Button.ADVANCED_OPEN).click();

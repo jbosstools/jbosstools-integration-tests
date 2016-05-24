@@ -38,6 +38,7 @@ import org.jboss.tools.openshift.ui.bot.test.connection.v3.StoreConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.integration.docker.DeployDockerImageTest;
 import org.jboss.tools.openshift.ui.bot.test.project.CreateNewProjectTest;
 import org.jboss.tools.openshift.ui.bot.test.project.DeleteProjectTest;
+import org.jboss.tools.openshift.ui.bot.test.project.LinkToCreateNewProjectTest;
 import org.jboss.tools.openshift.ui.bot.test.project.ProjectNameValidationTest;
 import org.jboss.tools.openshift.ui.bot.test.project.ProjectPropertiesTest;
 import org.jboss.tools.openshift.ui.bot.test.project.ResourcesTest;
@@ -65,6 +66,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	
 	// Project
 	ProjectNameValidationTest.class,
+	LinkToCreateNewProjectTest.class,
 	CreateNewProjectTest.class,
 	DeleteProjectTest.class,
 	ResourcesTest.class,
