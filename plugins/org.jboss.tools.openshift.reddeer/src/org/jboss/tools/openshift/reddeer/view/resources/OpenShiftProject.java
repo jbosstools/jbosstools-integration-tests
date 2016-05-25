@@ -33,8 +33,11 @@ import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 
 public class OpenShiftProject extends AbstractOpenShiftExplorerItem {
 		
+	private String projectName;
+	
 	public OpenShiftProject(TreeItem projectItem) {
 		super(projectItem);
+		projectName = treeViewerHandler.getNonStyledText(item);
 	}
 	
 	/**
@@ -126,7 +129,7 @@ public class OpenShiftProject extends AbstractOpenShiftExplorerItem {
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.DELETE_OS_PROJECT), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		new WaitWhile(new OpenShiftProjectExists());
+		new WaitWhile(new OpenShiftProjectExists(projectName));
 	}
 	
 	/**

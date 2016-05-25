@@ -92,6 +92,7 @@ public class OpenShiftLabel {
 		public static final String CLONE_BUILD = "Clone Build";
 		public static final String DELETE_RESOURCE = "Delete";
 		public static final String POD_LOG = "Pod Log...";
+		public static final String[] NEW_RESOURCE = {"New", "Resource..."};
 		public static final String START_BUILD = "Start Build";
 		
 		// Application related
@@ -152,6 +153,7 @@ public class OpenShiftLabel {
 		public static final String MARKERS = "Configure OpenShift Markers for project ";
 		public static final String NEW_APP_WIZARD = "New OpenShift Application";
 		public static final String NEW_CONNECTION = "New OpenShift Connection";
+		public static final String NEW_RESOURCE = "New OpenShift resource";
 		public static final String PORTS_FORWARDING = "Application port forwarding";
 		public static final String SAVE_SNAPSHOT = "Save Snapshot";
 		public static final String SELECT_EXISTING_APPLICATION = "Select Existing Application";
@@ -196,6 +198,7 @@ public class OpenShiftLabel {
 		public static final String WEBHOOK_TRIGGERS = "Webhooks triggers";
 		
 		// Resources related
+		public static final String CREATE_RESOURCE_SUMMARY = "Create Resource Summary";
 		public static final String DELETE_RESOURCE = "Delete Resource";
 		
 		// Others
@@ -295,6 +298,7 @@ public class OpenShiftLabel {
 		public static final String VALUE = "Value:";
 		public static final String REMOTE_REQUEST_TIMEOUT = "Remote requests timeout (in seconds):";
 		public static final String FIND_FREE_PORTS = "Find free local ports for remote ports";
+		public static final String RESOURCE_LOCATION = "Enter a file path (workspace or local) or a full URL.";
 	}
 	
 	/**
