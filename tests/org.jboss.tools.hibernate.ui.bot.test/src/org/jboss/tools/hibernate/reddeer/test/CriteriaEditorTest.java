@@ -1,23 +1,17 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.swt.api.Tree;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -25,26 +19,15 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.workbench.handler.EditorHandler;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.tools.hibernate.reddeer.common.FileHelper;
 import org.jboss.tools.hibernate.reddeer.console.KnownConfigurationsView;
 import org.jboss.tools.hibernate.reddeer.editor.CriteriaEditor;
 import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
-import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
-import org.jboss.tools.hibernate.reddeer.factory.HibernateToolsFactory;
 import org.jboss.tools.hibernate.reddeer.factory.ProjectConfigurationFactory;
 import org.jboss.tools.hibernate.reddeer.view.QueryPageTabView;
-import org.jboss.tools.hibernate.ui.bot.test.Activator;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -60,6 +43,7 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
 	private String prj;
 	private String hbVersion;
 	private String jpaVersion; 
+	private Map<String,String> libraryPathMap;
 
 	private static final Logger log = Logger.getLogger(CriteriaEditorTest.class);
 	
@@ -74,66 +58,72 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
 
     @Test
     public void testCriteriaEditorMvn35() {
-    	setParams("mvn-hibernate35-ent","3.5","2.0");
+    	setParams("mvn-hibernate35-ent","3.5","2.0", null);
     	testCriteriaEditorMvn();
     }
     
     @Test
     public void testCriteriaEditorMvn36() {
-    	setParams("mvn-hibernate36-ent","3.6","2.0");
+    	setParams("mvn-hibernate36-ent","3.6","2.0", null);
     	testCriteriaEditorMvn();
     }
     
     @Test
     public void testCriteriaEditorMvn40() {
-    	setParams("mvn-hibernate40-ent","4.0","2.0");
+    	setParams("mvn-hibernate40-ent","4.0","2.0", null);
     	testCriteriaEditorMvn();
     }
     
     @Test
     public void testCriteriaEditorMvn43() {
-    	setParams("mvn-hibernate43-ent","4.3","2.1");
+    	setParams("mvn-hibernate43-ent","4.3","2.1", null);
     	testCriteriaEditorMvn();
     }
     
     @Test
     public void testCriteriaEditorMvn50() {
-    	setParams("mvn-hibernate50-ent","5.0","2.1");
+    	setParams("mvn-hibernate50-ent","5.0","2.1", null);
     	testCriteriaEditorMvn();
     }
         
     @Test
     public void testCriteriaEditorEcl35() {
-    	setParams("ecl-hibernate35-ent","3.5","2.0");
+    	Map<String,String> libraries = new HashMap<>();
+    	libraries.putAll(hibernate35LibMap);
+    	libraries.put("h2-1.3.161.jar", null);
+    	setParams("ecl-hibernate35-ent","3.5","2.0",libraries);
     	testCriteriaEditorEcl();
     }
  
     @Test
     public void testCriteriaEditorEcl36() {
-    	setParams("ecl-hibernate36-ent","3.6","2.0");
+    	Map<String,String> libraries = new HashMap<>();
+    	libraries.putAll(hibernate36LibMap);
+    	libraries.put("h2-1.3.161.jar", null);
+    	setParams("ecl-hibernate36-ent","3.6","2.0", libraries);
     	testCriteriaEditorEcl();
     }
     
     @Test
-    public void testCriteriaEditorEcl40() {
-    	setParams("ecl-hibernate40-ent","4.0","2.0");
+    public void testCriteriaEditorEcl43() {
+    	Map<String,String> libraries = new HashMap<>();
+    	libraries.putAll(hibernate43LibMap);
+    	libraries.put("h2-1.3.161.jar", null);
+    	setParams("ecl-hibernate40-ent","4.3","2.0", libraries);
     	testCriteriaEditorEcl();
     }
     
-    private void setParams(String prj, String hbVersion, String jpaVersion) {
+    private void setParams(String prj, String hbVersion, String jpaVersion, Map<String,String> libraryPathMap) {
     	this.prj = prj;
     	this.hbVersion = hbVersion;
     	this.jpaVersion = jpaVersion;
+    	this.libraryPathMap = libraryPathMap;
     }
     
 	private void prepareMaven() {
-		log.step("Import mavenized project " + prj);
-    	importMavenProject(prj);
+		prepareMvn(prj, hbVersion);
+		//TODO is the rest of the method needed ?
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		log.step("Create database driver definition");
-		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
-		log.step("Create connection profile");
-		ConnectionProfileFactory.createConnectionProfile(cfg);
 		
 		//log.step("Convert project into faceted form");
 		//ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
@@ -141,19 +131,9 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
 		
 		log.step("Open Hibernate Configurations View");
+		deleteHibernateConfigurations();
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		v.open();
-		try{
-			Tree configs = new DefaultTree();
-			for(TreeItem i: configs.getItems()){
-				i.select();
-				new ContextMenu("Delete Configuration").select();
-				new DefaultShell("Delete console configuration");
-				new OkButton().click();
-				new WaitWhile(new ShellWithTextIsAvailable("Delete console configuration"));
-			}
-		} catch (CoreLayerException ex){
-		}
 		log.step("Add New Hibernate Configuration and set parameters");
 		new ContextMenu("Add Configuration...").select();
 		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"));
@@ -170,25 +150,9 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
 	}
     
     private void testCriteriaEditorEcl() {
-    	prepareEclipseProject();
+    	prepareEcl(prj, hbVersion, libraryPathMap);
     	testCriteriaEditor();    	
     }
-    
-    private void prepareEclipseProject() {
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		String destDir = FileHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,"resources","prj","hibernatelib","connector" );
-		try {
-			FileHelper.copyFilesBinary(cfg.getDriverPath(), destDir);
-		} catch (IOException e) {
-			Assert.fail("Cannot copy db driver: " + e.getMessage());
-		}
-		log.step("Import java project for hibernate test");
-    	importProject("hibernatelib");
-    	importProject(prj);
-    	
-    	log.step("Create hibernate configuration file");
-    	HibernateToolsFactory.testCreateConfigurationFile(cfg, prj, "hibernate.cfg.xml", false);
-	}
 	
 	private void testCriteriaEditorMvn() {
 		prepareMaven();

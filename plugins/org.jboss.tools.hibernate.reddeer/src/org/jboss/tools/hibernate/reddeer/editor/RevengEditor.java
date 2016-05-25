@@ -1,12 +1,15 @@
 package org.jboss.tools.hibernate.reddeer.editor;
 
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.condition.TreeHasChildren;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 
 /**
@@ -64,16 +67,14 @@ public class RevengEditor extends DefaultEditor {
 	public void selectAllTables() {
 		activateTableAndColumnsTab();
 		new PushButton("Add...").click();
-		new WaitUntil(new ShellWithTextIsActive("Add Tables & Columns"));
-		// dynamic tree loading, TODO: impl. fine conditions
+		new DefaultShell("Add Tables & Columns");
+		DefaultTree dbTree = new DefaultTree();
 		AbstractWait.sleep(TimePeriod.NORMAL);
-		new DefaultTree().getItems().get(0).expand();		
-		// dynamic tree loading, TODO: impl. fine conditions
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		new WaitUntil(new TreeHasChildren(dbTree));
+		dbTree.getItems().get(0).expand();
 		new PushButton("Select all children").click();
-		// dynamic tree updating, TODO: impl. fine conditions
-		AbstractWait.sleep(TimePeriod.NORMAL);
 		new PushButton("OK").click();
+		new WaitWhile(new ShellWithTextIsAvailable("Add Tables & Columns"));
 	}
 
 	

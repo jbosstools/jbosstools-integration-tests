@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.hibernate.reddeer.common.XPathHelper;
@@ -25,6 +26,7 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
+@Database(name="testdb")
 public class MappingFileTest extends HibernateRedDeerTest {
 	
 	public static final String PRJ = "java-hb-mapping-prj";
@@ -34,7 +36,7 @@ public class MappingFileTest extends HibernateRedDeerTest {
 	@Before
 	public void prepare() {
 		log.step("Import test project");
-		importProject(PRJ);
+		importProject(PRJ, null);
 	}
 	
 	@After

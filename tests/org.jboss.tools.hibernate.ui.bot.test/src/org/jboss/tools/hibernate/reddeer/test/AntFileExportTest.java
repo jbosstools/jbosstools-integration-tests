@@ -10,7 +10,7 @@ import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -49,10 +49,10 @@ public class AntFileExportTest extends HibernateRedDeerTest {
     	DatabaseConfiguration cfg = dbRequirement.getConfiguration();
     	
     	log.step("Import project with hibernate configuration and hibernate code generation configuration");
-    	importProject(PRJ);		
+    	importProject(PRJ, null);		
 		
     	log.step("Create configuration file for the project");
-		HibernateToolsFactory.testCreateConfigurationFile(cfg, PRJ, "hibernate.cfg.xml", true);
+		HibernateToolsFactory.createConfigurationFile(cfg, PRJ, "hibernate.cfg.xml", true);
 	}
     
     @Test
@@ -62,14 +62,14 @@ public class AntFileExportTest extends HibernateRedDeerTest {
     	p.open();
     	
     	new ShellMenu("Run", "Hibernate Code Generation...","Hibernate Code Generation Configurations...").select();
-    	new WaitUntil(new ShellWithTextIsActive("Hibernate Code Generation Configurations"));
+    	new WaitUntil(new ShellWithTextIsAvailable("Hibernate Code Generation Configurations"));
     	new DefaultTreeItem("Hibernate Code Generation",GEN_NAME).select();
     	new LabeledCombo("Console configuration:").setSelection(PRJ);
     	
     	new PushButton("Apply").click();
     	new PushButton("Close").click();
     	
-    	new WaitWhile(new ShellWithTextIsActive("Hibernate Code Generation Configurations"));
+    	new WaitWhile(new ShellWithTextIsAvailable("Hibernate Code Generation Configurations"));
     	new WaitWhile(new JobIsRunning());
     	    	
     	PackageExplorer pe = new PackageExplorer();    

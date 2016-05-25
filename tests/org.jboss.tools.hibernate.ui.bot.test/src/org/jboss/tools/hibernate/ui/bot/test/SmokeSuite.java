@@ -1,8 +1,6 @@
 package org.jboss.tools.hibernate.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.hibernate.reddeer.test.CreateSingleJPAProjectTest;
-import org.jboss.tools.hibernate.reddeer.test.EmptyTest;
 import org.jboss.tools.hibernate.reddeer.test.HibernateUIPartsTest;
 import org.jboss.tools.hibernate.reddeer.test.JPAUIPartsTest;
 import org.jboss.tools.hibernate.reddeer.test.MappingFileTest;
@@ -15,8 +13,6 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 
 	// Hibernate smoke tests
-	EmptyTest.class,
-	CreateSingleJPAProjectTest.class,
 	HibernateUIPartsTest.class,
 	JPAUIPartsTest.class,
 	MappingFileTest.class,

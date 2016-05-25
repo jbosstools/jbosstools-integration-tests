@@ -3,18 +3,18 @@ package org.jboss.tools.hibernate.reddeer.factory;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.wst.common.project.facet.ui.FacetsPropertyPage;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
 import org.jboss.tools.hibernate.reddeer.dialog.ProjectFacetsPage;
 import org.jboss.tools.hibernate.reddeer.dialog.ProjectPropertyDialog;
@@ -75,31 +75,42 @@ public class ProjectConfigurationFactory {
 		prjDlg.open();
 		prjDlg.select("Project Facets");
 		
+		
+		boolean javaFacet = false;
 		FacetsPropertyPage pp = new FacetsPropertyPage();
+		for(TreeItem t: pp.getSelectedFacets()){
+			if(t.getText().equals("Java")){
+				javaFacet = true;
+				break;
+			}
+		}
+		if(!javaFacet){
+			pp.selectFacet("Java");
+			DefaultHyperlink hyperlink = new DefaultHyperlink();
+			hyperlink.activate();	
+							
+			new DefaultShell("Modify Faceted Project");
+
+			new OkButton().click();
+			
+			new WaitWhile(new ShellWithTextIsAvailable("Modify Faceted Project"));
+			
+		}
 		pp.selectFacet("JPA");
 		pp.selectVersion("JPA",jpaVersion);
-				
-		prjDlg.setFocus();
 		
-		addFurtherJPAConfiguration(jpaVersion);
-		
-		prjDlg.setFocus();
-				
+		addFurtherJPAConfiguration(jpaVersion,!javaFacet);
 		prjDlg.ok();
-
-		// workaround for lost focus
 		pe.open();
 		pe.selectProjects(prj);
 		
 		prjDlg.open();		
-		prjDlg.select("JPA");
+		prjDlg.select("JPA"); //TODO Why this takes so long ?
  
 		JPAFacetWizardPage jpaPage = new JPAFacetWizardPage();
 		
 		jpaPage.setConnectionProfile(cfg.getProfileName());
-		prjDlg.setFocus();
 		jpaPage.setAutoDiscovery(true);
-		prjDlg.setFocus();
 		prjDlg.ok();
 		
 		checkPersistenceXML(prj);
@@ -125,12 +136,15 @@ public class ProjectConfigurationFactory {
 		assertTrue("persistence.xml cannot be empty", sourceText.length() > 0);
 	}
 	
-	private static void addFurtherJPAConfiguration(String jpaVersion) {	
+	private static void addFurtherJPAConfiguration(String jpaVersion, boolean addedJavaFacet) {	
 
 		DefaultHyperlink hyperlink = new DefaultHyperlink();
 		hyperlink.activate();	
 						
-		new WaitUntil(new ShellWithTextIsActive("Modify Faceted Project"));
+		new DefaultShell("Modify Faceted Project");
+		if(addedJavaFacet){
+			new NextButton().click();
+		}
 		DefaultGroup group = new DefaultGroup("Platform");
 				
 		new DefaultCombo(group).setSelection("Hibernate (JPA " + jpaVersion + ")");

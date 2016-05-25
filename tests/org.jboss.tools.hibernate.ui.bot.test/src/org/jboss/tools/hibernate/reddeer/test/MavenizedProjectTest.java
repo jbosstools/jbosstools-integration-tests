@@ -2,7 +2,7 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
+@Database(name="testdb")
 public class MavenizedProjectTest extends HibernateRedDeerTest {
 
 	private static final Logger log = Logger.getLogger(MavenizedProjectTest.class);

@@ -42,8 +42,7 @@ public class JPAFacetWizardPage extends WizardPage {
 	public void setConnectionProfile(String profileName) {
 		DefaultGroup group = new DefaultGroup("Connection");
 		new WaitUntil(new WidgetIsEnabled(new DefaultCombo(group)));
-		new DefaultCombo(group).setSelection(profileName);;
-
+		new DefaultCombo(group).setSelection(profileName);
 		PushButton apply = new PushButton("Apply");
 		apply.click();
 		new WaitWhile(new JobIsRunning());

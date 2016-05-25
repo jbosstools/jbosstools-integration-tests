@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.hibernate.reddeer.common.XPathHelper;
 import org.jboss.tools.hibernate.reddeer.editor.JpaXmlEditor;
@@ -18,9 +19,10 @@ import org.junit.runner.RunWith;
  * @author Jiri Peterka
  */
 @RunWith(RedDeerSuite.class)
+@Database(name="testdb")
 public class PersistenceXMLFileTest extends HibernateRedDeerTest {
 
-	private String prj = "ecl-jpa21"; 
+	private String prj;
 	private static final Logger log = Logger.getLogger(PersistenceXMLFileTest.class);
     
 	@After
@@ -30,7 +32,7 @@ public class PersistenceXMLFileTest extends HibernateRedDeerTest {
 	
 	private void prepare() {
 		log.step("Import JPA Project");
-    	importProject(prj);
+    	importProject(prj, null);
 	}
 	
 	@Test 

@@ -47,10 +47,9 @@ public class DriverDefinitionFactory {
 		for (int i = 0; i < items.size(); i++) {
 			new DefaultTableItem(0).select();
 			new PushButton("Remove").click();
-			new WaitUntil(new ShellWithTextIsActive("Confirm Driver Removal"));
+			new WaitUntil(new ShellWithTextIsAvailable("Confirm Driver Removal"));
 			new YesButton().click();
-			new WaitWhile(new ShellWithTextIsActive("Confirm Driver Removal"));
-			new WaitUntil(new ShellWithTextIsAvailable("Preferences"));
+			new WaitWhile(new ShellWithTextIsAvailable("Confirm Driver Removal"));
 			new DefaultShell("Preferences");
 		}
 		
@@ -63,7 +62,6 @@ public class DriverDefinitionFactory {
 		page.setDriverClass(cfg.getDriverClass());
 
 		ddw.finish();
-		new DefaultShell(ddw.getTitle());
 		preferenceDialog.ok();
 	}
 

@@ -1,7 +1,9 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
@@ -30,7 +32,9 @@ import org.junit.runner.RunWith;
 public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 
 	private String PROJECT_NAME = "consoletest";
-	private String PROJECT_LIBS = "hibernatelib"; 
+	protected  Map<String,String> libraries = new HashMap<String, String>() {{
+	    put("hsqldb-2.3.4.jar",null);
+	}};
 	private String HIBERNATE_CFG_FILE="/" + PROJECT_NAME + "/src/hibernate.cfg.xml";
 	private String CONSOLE_NAME="hibernateconsoletest";
 	
@@ -43,8 +47,7 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 	@Before 
 	public void prepare() {
 		log.step("Import test project");
-		importProject(PROJECT_LIBS);
-		importProject(PROJECT_NAME);			
+		importProject(PROJECT_NAME,libraries);			
 	}
 	
 	@After 
@@ -124,7 +127,7 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		p.setDatabaseConnection(PredefinedConnection.HIBERNATE_CONFIGURED_CONNECTION);		
 		p.setConfigurationFile(HIBERNATE_CFG_FILE);
 		p.setHibernateVersion(hibernateVersion);
-		
+		//ANY ERROR IN WIZARD ??
 		log.step("Press OK");
 		s.ok();
 		
@@ -133,6 +136,6 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		s2.close();
 		
 		v.open();
-		v.selectNode(CONSOLE_NAME,"Database","SAKILA.PUBLIC","ACTOR");
+		v.selectNode(CONSOLE_NAME,"Database","SAKILA.PUBLIC","ACTOR"); //TODO FIX THIS - SEE INSIDE
 	}
 }

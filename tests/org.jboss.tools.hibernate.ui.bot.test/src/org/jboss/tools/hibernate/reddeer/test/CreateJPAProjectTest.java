@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
+import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.tools.hibernate.reddeer.factory.JPAProjectFactory;
 import org.jboss.tools.hibernate.reddeer.wizard.JpaPlatform;
 import org.jboss.tools.hibernate.reddeer.wizard.JpaVersion;
@@ -16,6 +17,7 @@ import org.junit.runner.RunWith;
  * 
  */
 @RunWith(RedDeerSuite.class)
+@Database(name="testdb")
 public class CreateJPAProjectTest extends HibernateRedDeerTest {	
 	
 	@Before 

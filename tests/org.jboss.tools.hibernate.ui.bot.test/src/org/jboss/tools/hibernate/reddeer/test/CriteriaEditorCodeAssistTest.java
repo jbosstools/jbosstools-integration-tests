@@ -3,8 +3,9 @@ package org.jboss.tools.hibernate.reddeer.test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -12,7 +13,6 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -32,16 +32,13 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.tools.hibernate.reddeer.common.FileHelper;
 import org.jboss.tools.hibernate.reddeer.console.KnownConfigurationsView;
 import org.jboss.tools.hibernate.reddeer.editor.CriteriaEditor;
 import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
 import org.jboss.tools.hibernate.reddeer.factory.HibernateToolsFactory;
 import org.jboss.tools.hibernate.reddeer.factory.ProjectConfigurationFactory;
-import org.jboss.tools.hibernate.ui.bot.test.Activator;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -54,9 +51,10 @@ import org.junit.runner.RunWith;
 @Database(name="testdb")
 public class CriteriaEditorCodeAssistTest extends HibernateRedDeerTest {
 
-	private String prj = "mvn-hibernate43";
-	private String hbVersion = "4.3";
-	private String jpaVersion = "2.1"; 
+	private String prj;
+	private String hbVersion;
+	private String jpaVersion; 
+	private Map<String,String> libraryPathMap;
 
 	private static final Logger log = Logger.getLogger(CriteriaEditorCodeAssistTest.class);
 	
@@ -71,70 +69,77 @@ public class CriteriaEditorCodeAssistTest extends HibernateRedDeerTest {
 
     @Test
     public void testCriteriaEditorCodeAssistMvn35() {
-    	setParams("mvn-hibernate35-ent","3.5","2.0");
+    	setParams("mvn-hibernate35-ent","3.5","2.0", null);
     	testCriteriaEditorCodeAssistMvn();
     }
     
     @Test
     public void testCriteriaEditorCodeAssistMvn36() {
-    	setParams("mvn-hibernate36-ent","3.6","2.0");
+    	setParams("mvn-hibernate36-ent","3.6","2.0", null);
     	testCriteriaEditorCodeAssistMvn();
     }
     
     @Test
     public void testCriteriaEditorCodeAssistMvn40() {
-    	setParams("mvn-hibernate40-ent","4.0","2.0");
+    	setParams("mvn-hibernate40-ent","4.0","2.0", null);
     	testCriteriaEditorCodeAssistMvn();
     }
     
     @Test
     public void testCriteriaEditorCodeAssistMvn43() {
-    	setParams("mvn-hibernate43-ent","4.3","2.1");
+    	setParams("mvn-hibernate43-ent","4.3","2.1", null);
     	testCriteriaEditorCodeAssistMvn();
     }
     
     @Test
     public void testCriteriaEditorCodeAssistMvn50() {
-    	setParams("mvn-hibernate50-ent","5.0","2.1");
+    	setParams("mvn-hibernate50-ent","5.0","2.1", null);
     	testCriteriaEditorCodeAssistMvn();
     }
         
     @Test
     public void testCriteriaEditorCodeAssistEcl35() {
-    	setParams("ecl-hibernate35-ent","3.5","2.0");
+    	Map<String,String> libraries = new HashMap<>();
+    	libraries.putAll(hibernate35LibMap);
+    	libraries.put("h2-1.3.161.jar", null);
+    	setParams("ecl-hibernate35-ent","3.5","2.0",libraries);
     	testCriteriaEditorCodeAssistEcl();
     }
  
     @Test
     public void testCriteriaEditorCodeAssistEcl36() {
-    	setParams("ecl-hibernate36-ent","3.6","2.0");
+    	Map<String,String> libraries = new HashMap<>();
+    	libraries.putAll(hibernate36LibMap);
+    	libraries.put("h2-1.3.161.jar", null);
+    	setParams("ecl-hibernate36-ent","3.6","2.0", libraries);
     	testCriteriaEditorCodeAssistEcl();
     }
     
     @Test
     public void testCriteriaEditorCodeAssistEcl40() {
-    	setParams("ecl-hibernate40-ent","4.0","2.0");
+    	Map<String,String> libraries = new HashMap<>();
+    	libraries.putAll(hibernate43LibMap);
+    	libraries.put("h2-1.3.161.jar", null);
+    	setParams("ecl-hibernate40-ent","4.3","2.0", libraries);
     	testCriteriaEditorCodeAssistEcl();
     }
     
-    private void setParams(String prj, String hbVersion, String jpaVersion) {
+    private void setParams(String prj, String hbVersion, String jpaVersion, Map<String,String> libraryPathMap) {
     	this.prj = prj;
     	this.hbVersion = hbVersion;
     	this.jpaVersion = jpaVersion;
+    	this.libraryPathMap = libraryPathMap;
     }
     
 	private void prepareMaven() {
-		log.step("Import mavenized project " + prj);
-    	importMavenProject(prj);
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		log.step("Create database driver definition");
-		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
-		log.step("Create connection profile");
-		ConnectionProfileFactory.createConnectionProfile(cfg);
+		prepareMvn(prj, hbVersion);
 		
+		
+		//TODO is the rest of the method needed ? 
 		//log.step("Convert project into faceted form");
 		//ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
 		log.step("Set JPA Facets");
+		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
 		
 		log.step("Open Hibernate Configurations View");
@@ -167,25 +172,9 @@ public class CriteriaEditorCodeAssistTest extends HibernateRedDeerTest {
 	}
     
     private void testCriteriaEditorCodeAssistEcl() {
-    	prepareEclipseProject();
+    	prepareEcl(prj, hbVersion, libraryPathMap);
     	testCriteriaEditor();    	
     }
-    
-    private void prepareEclipseProject() {
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		String destDir = FileHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,"resources","prj","hibernatelib","connector" );
-		try {
-			FileHelper.copyFilesBinary(cfg.getDriverPath(), destDir);
-		} catch (IOException e) {
-			Assert.fail("Cannot copy db driver: " + e.getMessage());
-		}
-		log.step("Import java project for hibernate test");
-    	importProject("hibernatelib");
-    	importProject(prj);
-    	
-    	log.step("Create hibernate configuration file");
-    	HibernateToolsFactory.testCreateConfigurationFile(cfg, prj, "hibernate.cfg.xml", false);
-	}
 	
 	private void testCriteriaEditorCodeAssistMvn() {
 		prepareMaven();
