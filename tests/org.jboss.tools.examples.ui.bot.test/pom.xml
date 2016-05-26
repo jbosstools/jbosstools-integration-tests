@@ -27,7 +27,7 @@
 		<examplesFolderJavaEE>javaee7-samples-master</examplesFolderJavaEE>
 		<jbosstools.test.wildfly10.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.wildfly10.home>
 		<jbosstools.test.eap7.home>${requirementsDirectory}/jboss-eap-7.0</jbosstools.test.eap7.home>
-		<jbosstools.test.jboss-eap-7.x.url>http://download.eng.brq.redhat.com/released/JBEAP-7/7.0.0-Beta/jboss-eap-7.0.0.Beta.zip</jbosstools.test.jboss-eap-7.x.url>
+		<jbosstools.test.jboss-eap-7.x.url>http://download.eng.brq.redhat.com/released/JBEAP-7/7.0.0/jboss-eap-7.0.0.zip</jbosstools.test.jboss-eap-7.x.url>
 		<surefire.timeout>18000</surefire.timeout>
 		<skipTests>false</skipTests>
 		<deployOnServer>true</deployOnServer>
@@ -375,7 +375,7 @@
 				<reddeer.config>${project.build.directory}/classes/servers/wildfly-10.xml</reddeer.config>
 				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
 				<examplesFolder>${examplesFolderJavaEE}</examplesFolder>
-				<specificQuickstarts>json</specificQuickstarts>
+				<specificQuickstarts>util,test-utils,jta</specificQuickstarts>
 			</properties>
 			<build>
 				<plugins>

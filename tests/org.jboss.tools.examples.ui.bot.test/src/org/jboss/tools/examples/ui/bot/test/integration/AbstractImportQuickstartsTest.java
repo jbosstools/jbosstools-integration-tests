@@ -50,6 +50,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -124,12 +125,17 @@ public abstract class AbstractImportQuickstartsTest {
 		Server server = serversView.getServer(fullServerName);
 
 		for (String deployableProjectName : qstart.getDeployableProjectNames()) {
+			try{
 			// deploy
 			deployProject(deployableProjectName, explorer);
 			// check deploy status
 			checkDeployedProject(qstart, fullServerName);
 			// undeploy
 			unDeployModule(qstart.getName().equals("template")?"QUICKSTART_NAME":qstart.getName(), server);
+			}catch(CoreLayerException ex){
+				new DefaultShell("Server Error");
+				new OkButton().click();
+			}
 		}
 	}
 
@@ -360,6 +366,11 @@ public abstract class AbstractImportQuickstartsTest {
 		for (String error : ExamplesOperator.getInstance().getAllErrors()) {
 			if(error.contains("Missing artifact org.javaee7:test-utils")){
 				Quickstart testUtils = new Quickstart("test-utils",qstart.getPath().getAbsolutePath().replace(qstart.getName(),"test-utils"));
+				importQuickstart(testUtils);
+				break;
+			}
+			if(error.contains("Missing artifact org.javaee7:util")){
+				Quickstart testUtils = new Quickstart("util",qstart.getPath().getAbsolutePath().replace(qstart.getName(),"test-utils"));
 				importQuickstart(testUtils);
 				break;
 			}
