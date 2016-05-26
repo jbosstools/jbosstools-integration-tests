@@ -58,7 +58,7 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 		ServerReqState state() default ServerReqState.RUNNING;
 		ServerReqType type() default ServerReqType.ANY;
 		ServerReqVersion version() default ServerReqVersion.EQUAL;
-		boolean cleanup() default false;
+		boolean cleanup() default true;
 	}
 	
 	
