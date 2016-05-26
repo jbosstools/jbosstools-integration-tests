@@ -19,6 +19,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.server.IServerFamily;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -132,9 +133,14 @@ public class JBossWSPreferencesTest {
 		String runtimeVersion = jbossWsRuntimeDialog.getRuntimeVersion();
 
 		String expectedVersion;
-		switch(serverReq.getConfig().getServerFamily().getLabel()) {
+		IServerFamily serverFamily = serverReq.getConfig().getServerFamily();
+		switch(serverFamily.getLabel()) {
 		case "WildFly":
-			expectedVersion = "5.0.0.Final";
+			if ("10.x".equals(serverFamily.getVersion())) {
+				expectedVersion = "5.1.3.Final";
+			} else {
+				expectedVersion = "5.0.0.Final";
+			}
 			break;
 		case "JBoss Enterprise Application Platform":
 			expectedVersion = "4.2.3.Final-redhat-1";

@@ -254,7 +254,7 @@ public class ProjectHelper {
 		page.checkAllRuntimes(false);
 		page.checkRuntime(configuredRuntime, true);
 
-		dialog.finish();
+		dialog.finish(TimePeriod.LONG);
 	}
 
 	private static void importProject(String projectLocation) {

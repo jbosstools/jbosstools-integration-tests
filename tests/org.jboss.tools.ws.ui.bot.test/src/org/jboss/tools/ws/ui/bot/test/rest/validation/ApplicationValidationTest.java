@@ -12,8 +12,10 @@
 package org.jboss.tools.ws.ui.bot.test.rest.validation;
 
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
+import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,6 +24,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@AutoBuilding(value = false, cleanup = true)
 public class ApplicationValidationTest extends RESTfulTestBase {
 
 	
@@ -36,6 +39,7 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 
 		/* prepare project */
 		importWSTestProject(projectName);
+		ProjectHelper.cleanAllProjects();
 		
 		/* test validation error */
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, "Multiple JAX-RS Activators", null, 2);		
@@ -47,6 +51,7 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 
 		/* prepare project */
 		importWSTestProject(projectName);
+		ProjectHelper.cleanAllProjects();
 
 		/* test validation error */
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 2);
@@ -59,6 +64,7 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 
 		/* prepare project */
 		importWSTestProject(projectName);
+		ProjectHelper.cleanAllProjects();
 
 		/* test validation error */
 		assertCountOfValidationProblemsExists(ProblemType.WARNING, projectName, null, null, 0);
@@ -71,6 +77,7 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 
 		/* prepare project */
 		importWSTestProject(projectName);
+		ProjectHelper.cleanAllProjects();
 
 		/* test validation error */
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 1);
@@ -79,6 +86,7 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		openJavaFile(projectName, "test", "App.java");
 		ExtendedTextEditor textEditor = new ExtendedTextEditor();
 		textEditor.replace("@ApplicationPath(\"/rest\")", "");
+		ProjectHelper.cleanAllProjects();
 
 		/* test validation error */
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 0);
@@ -90,6 +98,7 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 
 		/* prepare project */
 		importWSTestProject(projectName);
+		ProjectHelper.cleanAllProjects();
 
 		/* test validation error */
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 1);
@@ -98,6 +107,7 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 		openJavaFile(projectName, "test", "App.java");
 		ExtendedTextEditor textEditor = new ExtendedTextEditor();
 		textEditor.replace("extends Application", "");
+		ProjectHelper.cleanAllProjects();
 
 		/* test validation error */
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 0);

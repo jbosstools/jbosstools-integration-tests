@@ -7,9 +7,11 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
+import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
 
 /**
@@ -23,6 +25,7 @@ import org.junit.Test;
  * @see https://issues.jboss.org/browse/JBIDE-16763
  */
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
+@AutoBuilding(value = false, cleanup = true)
 public class ParamConverterSupportTest extends RESTfulTestBase {
 	
 	/**
@@ -40,6 +43,7 @@ public class ParamConverterSupportTest extends RESTfulTestBase {
 	public void testParamConverterSupport() {
 		/* prepare project */
 		importWSTestProject(PROJECT1_NAME);
+		ProjectHelper.cleanAllProjects();
 		
 		/* assert that type Car is not valid for the parameter */
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, PROJECT1_NAME, null, null, 1);
@@ -49,6 +53,7 @@ public class ParamConverterSupportTest extends RESTfulTestBase {
 		
 		/* create class implementing ParamConverterProvider */
 		createParamConverter();
+		ProjectHelper.cleanAllProjects();
 		
 		/* there is no error anymore */
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, PROJECT1_NAME, null, null, 0);

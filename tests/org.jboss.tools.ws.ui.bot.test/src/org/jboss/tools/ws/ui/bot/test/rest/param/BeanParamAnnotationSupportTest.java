@@ -4,15 +4,17 @@ import java.util.List;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
+import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
 
 /**
@@ -26,6 +28,7 @@ import org.junit.Test;
  * @see https://issues.jboss.org/browse/JBIDE-16825
  */
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
+@AutoBuilding(value = false, cleanup = true)
 public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 
 	
@@ -78,12 +81,16 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 
 		/* remove @Path annotation from RestService and assert there are two errors (one in RestService and one in BeanClass */
 		editor.removeLine(pathAnnotation);
+		ProjectHelper.cleanAllProjects();
+		new WaitUntil(new RestServicePathsHaveUpdated(PROJECT1_NAME), TimePeriod.getCustom(3), false);
+		
 		assertCountOfProblemsExists(ProblemType.ERROR, PROJECT1_NAME, pathParamNotBoundToPathParameterError, null, 1);
 		assertCountOfProblemsExists(ProblemType.ERROR, PROJECT1_NAME, pathParameterNotBoundToPathParamError, null, 1);
 		assertCountOfProblemsExists(ProblemType.ERROR, PROJECT1_NAME, null, null, 2);
 
 		/* add @Path annotation into RestService and assert that errors disappear */
 		editor.insertBeforeLine(pathAnnotation, "public void post(");
+		ProjectHelper.cleanAllProjects();
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, PROJECT1_NAME, null, null, 0);
 
 		/* open BeanClass class */
@@ -92,6 +99,7 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 
 		/* remove @PathParam from BeanClass and assert that there is an warning */
 		editor.removeLine("@PathParam");
+		ProjectHelper.cleanAllProjects();
 		assertCountOfValidationProblemsExists(ProblemType.WARNING, PROJECT1_NAME, pathParameterNotBoundToAnyFieldWarning, null, 1);
 	}
 
@@ -120,9 +128,10 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		
 		/* remove @QueryParam from BeanClass and assert that endpoint URI was updated */
 		editor.removeLine("@QueryParam");
+		ProjectHelper.cleanAllProjects();
 		
-		// It takes some time till its shown in explorer
-		AbstractWait.sleep(TimePeriod.SHORT);
+		refreshRestServices(PROJECT2_NAME);
+		new WaitUntil(new RestServicePathsHaveUpdated(PROJECT2_NAME), TimePeriod.getCustom(3), false);
 		
 		restServices = restfulServicesForProject(PROJECT2_NAME);
 		assertExpectedPathOfService("unstable ", restServices.get(0), "/rest");
@@ -131,7 +140,9 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		editor.insertBeforeLine("@QueryParam(\"" + queryParam1 + "\")", queryType1);
 		editor.insertBeforeLine("import javax.ws.rs.DefaultValue;", "import javax.ws.rs.QueryParam;");
 		editor.insertBeforeLine("@DefaultValue(\"" + defaultValue + "\")", queryType1);
-		AbstractWait.sleep(TimePeriod.SHORT);
+		ProjectHelper.cleanAllProjects();
+		new WaitUntil(new RestServicePathsHaveUpdated(PROJECT2_NAME), TimePeriod.SHORT, false);
+		
 		restServices = restfulServicesForProject(PROJECT2_NAME);
 		assertCountOfRESTServices(restServices, 1);
 		assertExpectedPathOfService(restServices.get(0),
@@ -164,9 +175,10 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 
 		/* remove @MatrixParam from BeanClass and assert that endpoint URI was updated */
 		editor.removeLine("@MatrixParam");
+		ProjectHelper.cleanAllProjects();
 
-		// Wait a bit till its shown in explorer
-		AbstractWait.sleep(TimePeriod.SHORT);
+		refreshRestServices(PROJECT3_NAME);
+		new WaitUntil(new RestServicePathsHaveUpdated(PROJECT3_NAME), TimePeriod.getCustom(3), false);
 		
 		restServices = restfulServicesForProject(PROJECT3_NAME);
 		
@@ -176,7 +188,9 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		editor.insertBeforeLine("@MatrixParam(\"" + matrixParam1 + "\")", matrixType1);
 		editor.insertBeforeLine("import javax.ws.rs.DefaultValue;", "import javax.ws.rs.MatrixParam;");
 		editor.insertBeforeLine("@DefaultValue(\"" + defaultValue + "\")", matrixType1);
-		AbstractWait.sleep(TimePeriod.SHORT);
+		ProjectHelper.cleanAllProjects();
+		new WaitUntil(new RestServicePathsHaveUpdated(PROJECT3_NAME), TimePeriod.SHORT, false);
+		
 		restServices = restfulServicesForProject(PROJECT3_NAME);
 		assertExpectedPathOfService(restServices.get(0),
 				"/rest;" + matrixParam1 + "={" + matrixType1 + ":\"" + defaultValue + "\"}");//unstable

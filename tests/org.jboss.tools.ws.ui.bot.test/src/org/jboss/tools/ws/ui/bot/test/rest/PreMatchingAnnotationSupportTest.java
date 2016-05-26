@@ -3,7 +3,9 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
 
 /**
@@ -17,6 +19,7 @@ import org.junit.Test;
  * @since JBT 4.2.0.Beta1
  */
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
+@AutoBuilding(value = false, cleanup = true)
 public class PreMatchingAnnotationSupportTest extends RESTfulTestBase {
 	
 	@Override
@@ -33,6 +36,7 @@ public class PreMatchingAnnotationSupportTest extends RESTfulTestBase {
 	public void useOnNotSupportedTypeTest() {
 		String projectName = "prematching2";
 		importWSTestProject(projectName);
+		ProjectHelper.cleanAllProjects();
 		
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 1);
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName,

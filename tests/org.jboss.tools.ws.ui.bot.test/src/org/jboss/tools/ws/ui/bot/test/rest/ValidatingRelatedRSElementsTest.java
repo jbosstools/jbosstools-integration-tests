@@ -1,7 +1,9 @@
 package org.jboss.tools.ws.ui.bot.test.rest;
 
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
+import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
 
 /**
@@ -12,6 +14,7 @@ import org.junit.Test;
  * @see http://tools.jboss.org/documentation/whatsnew/jbosstools/4.2.0.Beta3.html#validating-related-jax-rs-elements
  * @since 4.2.0.Beta3
  */
+@AutoBuilding(value = false, cleanup = true)
 public class ValidatingRelatedRSElementsTest extends RESTfulTestBase {
 
 	@Override
@@ -21,6 +24,7 @@ public class ValidatingRelatedRSElementsTest extends RESTfulTestBase {
 
 	@Test
 	public void validParameterTest() {
+		ProjectHelper.cleanAllProjects();
 		/* assert there is invalid parameter error */
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, getWsProjectName(), null, null, 1);
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, getWsProjectName(), 
@@ -30,6 +34,7 @@ public class ValidatingRelatedRSElementsTest extends RESTfulTestBase {
 		openJavaFile(getWsProjectName(), "org.rest.test", "CarFromString.java");
 		ExtendedTextEditor textEditor = new ExtendedTextEditor();
 		textEditor.replace("Car fromString(", "CarFromString fromString(");
+		ProjectHelper.cleanAllProjects();
 
 		/* error disappeared */
 		assertCountOfProblemsExists(ProblemType.ERROR, getWsProjectName(), null, null, 0);

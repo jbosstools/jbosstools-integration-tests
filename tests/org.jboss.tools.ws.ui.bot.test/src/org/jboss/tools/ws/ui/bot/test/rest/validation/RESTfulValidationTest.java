@@ -12,7 +12,9 @@
 package org.jboss.tools.ws.ui.bot.test.rest.validation;
 
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
+import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
 
 /**
@@ -20,6 +22,8 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+
+@AutoBuilding(value = false, cleanup = true)
 public class RESTfulValidationTest extends RESTfulTestBase {
 
 	private static final String GET_METHOD_PATH = "/{id}";
@@ -35,6 +39,7 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 	public void testCorrectValueValidation() {
 		/* prepare project */
 		prepareSimpleRestService(GET_METHOD_PATH, CORRECT_PATH_PARAM);
+		ProjectHelper.cleanAllProjects();
 
 		/* test count of validation errors */
 		assertCountOfProblemsExists(ProblemType.ERROR, getWsProjectName(), PATH_PARAM_VALID_ERROR, null, 0);		
@@ -44,6 +49,7 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 	public void testBadValueValidation() {
 		/* prepare project */
 		prepareSimpleRestService(GET_METHOD_PATH, BAD_PATH_PARAM);
+		ProjectHelper.cleanAllProjects();
 
 		/* test count of validation errors */
 		assertCountOfProblemsExists(ProblemType.ERROR, getWsProjectName(), PATH_PARAM_VALID_ERROR, null, 1);
@@ -56,6 +62,7 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 		final String pathParamPrefix = "@PathParam(\"";
 		replaceInRestService(pathParamPrefix + CORRECT_PATH_PARAM,
 				pathParamPrefix + BAD_PATH_PARAM);
+		ProjectHelper.cleanAllProjects();
 
 		/* test count of validation errors */
 		assertCountOfProblemsExists(ProblemType.ERROR, getWsProjectName(), PATH_PARAM_VALID_ERROR,null, 1);
@@ -66,6 +73,7 @@ public class RESTfulValidationTest extends RESTfulTestBase {
 		/* prepare project */
 		prepareSimpleRestService(GET_METHOD_PATH, BAD_PATH_PARAM);
 		replaceInRestService(BAD_PATH_PARAM, CORRECT_PATH_PARAM);
+		ProjectHelper.cleanAllProjects();
 
 		/* test count of validation errors */
 		assertCountOfProblemsExists(ProblemType.ERROR, getWsProjectName(), PATH_PARAM_VALID_ERROR, null, 0);

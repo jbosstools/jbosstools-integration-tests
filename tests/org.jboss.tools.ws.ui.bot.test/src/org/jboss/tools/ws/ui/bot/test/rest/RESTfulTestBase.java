@@ -18,12 +18,15 @@ import static org.junit.Assert.assertTrue;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hamcrest.core.Is;
 import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringStartsWith;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.AbstractWait;
@@ -35,6 +38,8 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.matcher.WithTextMatchers;
 import org.jboss.reddeer.eclipse.condition.ExactNumberOfProblemsExists;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
+import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.problems.matcher.AbstractProblemMatcher;
@@ -288,5 +293,33 @@ public class RESTfulTestBase extends WSTestBase {
 		editor.setCursorPosition(line, editor.getTextAtLine(line).indexOf(text)
 				+ text.length());
 		return editor;
+	}
+	
+	protected void refreshRestServices(String projectName) {
+		Project project = new ProjectExplorer().getProject(projectName);
+		project.getChild("JAX-RS Web Services").refresh();
+	}
+	
+	protected class RestServicePathsHaveUpdated extends AbstractWaitCondition {
+		
+		private String projectName;
+		private Set<String> previousState = new HashSet<>();
+		
+		public RestServicePathsHaveUpdated(String projectName) {
+			this.projectName = projectName;
+			for (RESTfulWebService service : restfulServicesForProject(projectName)) {
+				previousState.add(service.getPath());
+			}
+		}
+		
+		@Override
+		public boolean test() {
+			Set<String> currentState = new HashSet<>();
+			for (RESTfulWebService service : restfulServicesForProject(projectName)) {
+				currentState.add(service.getPath());
+			}
+			
+			return !currentState.equals(previousState);
+		}
 	}
 }
