@@ -66,6 +66,9 @@ public class CreateApplicationFromTemplateTest {
 	
 	private static final String TESTS_PROJECT = "org.jboss.tools.openshift.ui.bot.test";
 	private static final String TESTS_PROJECT_LOCATION = System.getProperty("user.dir");
+	private static final String URL = "https://raw.githubusercontent.com/jbosstools/"
+			+ "jbosstools-integration-tests/master/tests/org.jboss.tools.openshift.ui.bot.test/"
+			+ "resources/eap64-basic-s2i.json";
 	
 	private String genericWebhookURL;
 	private String githubWebhookURL;
@@ -131,6 +134,18 @@ public class CreateApplicationFromTemplateTest {
 		new LabeledText(OpenShiftLabel.TextLabels.SELECT_LOCAL_TEMPLATE).setText(
 				TESTS_PROJECT_LOCATION + File.separator + "resources"
 				+ File.separator + "eap64-basic-s2i.json");
+		
+		assertTrue("Defined resource button should be enabled", 
+				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
+		
+		completeApplicationCreationAndVerify();
+	}
+	
+	@Test
+	public void createApplicationFromTemplateProvidedByURL() {
+		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
+		new LabeledText(OpenShiftLabel.TextLabels.SELECT_LOCAL_TEMPLATE).setText(URL);
 		
 		assertTrue("Defined resource button should be enabled", 
 				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
