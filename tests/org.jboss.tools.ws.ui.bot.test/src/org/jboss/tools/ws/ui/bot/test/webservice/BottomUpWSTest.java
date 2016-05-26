@@ -31,7 +31,7 @@ public class BottomUpWSTest extends WebServiceTestBase {
 	 * <soap:Body> <ns2:methodResponse xmlns:ns2="http://jbossws/">
 	 * <return>1234567890</return> </ns2:methodResponse> </soap:Body>
 	 */
-
+	
 	@Override
 	protected String getWsPackage() {
 		return "jbossws." + getLevel().toString().toLowerCase();
@@ -92,20 +92,20 @@ public class BottomUpWSTest extends WebServiceTestBase {
 		bottomUpWS(BottomUpWSTest.class.getResourceAsStream("/resources/jbossws/ClassA.java.ws"),
 				WebServiceRuntime.JBOSS_WS, true);
 		switch (getLevel()) {
-		case DEVELOP:
-		case ASSEMBLE:
+			case DEVELOP:
+			case ASSEMBLE:
 
 			/*
 			 * workaround for
 			 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=377624 choosing
 			 * 'Deploy' should normally deploy the project automatically
 			 */
-		case DEPLOY:
-			ServersViewHelper.runProjectOnServer(getEarProjectName());
-			ServersViewHelper.waitForDeployment(getEarProjectName(), getConfiguredServerName());
+			case DEPLOY:
+				ServersViewHelper.runProjectOnServer(getEarProjectName());
 
-		default:
-			break;
+			default:
+				ServersViewHelper.waitForDeployment(getEarProjectName(), getConfiguredServerName());
+				break;
 		}
 		DeploymentHelper.assertServiceDeployed(DeploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);
 	}

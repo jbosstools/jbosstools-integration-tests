@@ -56,7 +56,7 @@ public class SampleSoapServicesTest extends SOAPTestBase {
 	}
 
 	@Test
-	public void testSimpleSoapWs() {
+	public void testSimpleSoapWS() {
 		createSimpleService(getWsProjectName(), "HelloServiceSimple", "sample", "SimpleService");
 		checkSoapService(getWsProjectName(), "HelloServiceSimple", "sample", "SimpleService", "You");
 	}

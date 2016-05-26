@@ -8,14 +8,13 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Label;
 import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -52,7 +51,6 @@ public class WebServiceClientHelper {
 
 		page.setClientSlider(level);
 		page.setServerRuntime(serverName);
-		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(5), false);
 		page.setWebServiceRuntime(runtime.getName());
 		
 		if (targetProject != null)
@@ -61,12 +59,11 @@ public class WebServiceClientHelper {
 			page.setClientEARProject(earProject);
 
 		if (pkg != null && pkg.trim().length()>0) {
-			new WaitUntil(new WidgetIsEnabled(new PushButton("Next >")), TimePeriod.getCustom(5), false);
 			wizard.next();
-			new WaitWhile(new ShellWithTextIsActive("Progress Information"));
+			new WaitWhile(new ShellWithTextIsAvailable("Progress Information"));
 			page.setPackageName(pkg);
 		}
-		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(5), false);
+
 		wizard.finish();
 
 		checkErrorDialog(wizard);
@@ -94,8 +91,10 @@ public class WebServiceClientHelper {
 
 	private static void checkErrorInConsoleOutput(String serverName, String projectName) {
 		ConsoleView consoleView = new ConsoleView();
-		consoleView.open();
-		selectServerConsole(serverName);
+		if (!consoleView.isOpened()) {
+			consoleView.open();
+		}
+		selectServerConsole(serverName, consoleView);
 		String consoleText = consoleView.getConsoleText();
 		if (consoleText.contains("ERROR")) {
 			consoleView.clearConsole();
@@ -113,11 +112,7 @@ public class WebServiceClientHelper {
 		}
 	}
 
-	private static void selectServerConsole(String serverName) {
-		ConsoleView view = new ConsoleView();
-		if (!view.isOpened()) {
-			view.open();
-		}
+	private static void selectServerConsole(String serverName, ConsoleView view) {
 		view.activate();
 		Label consoleName = new DefaultLabel();
 		if (!consoleName.getText().contains(serverName)) {

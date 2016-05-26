@@ -18,21 +18,18 @@ import java.text.MessageFormat;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.StyledText;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceFirstWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceFirstWizardPage.ServiceType;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceSecondWizardPage;
@@ -41,6 +38,8 @@ import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.Slider
 import org.jboss.tools.ws.ui.bot.test.soap.SOAPTestBase;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ResourceHelper;
+import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
+import org.junit.After;
 import org.junit.Assert;
 
 /**
@@ -54,6 +53,11 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 	protected abstract String getWsPackage();
 
 	protected abstract String getWsName();
+	
+	@After
+	public void undeploy() {
+		ServersViewHelper.removeAllProjectsFromServer(getConfiguredServerName());
+	}
 	
 	protected void bottomUpWS(InputStream input, WebServiceRuntime serviceRuntime, boolean useDefaultProjects) {
 		String source = ResourceHelper.readStream(input);
@@ -108,22 +112,20 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 		wizard.open();
 
 		WebServiceFirstWizardPage page = new WebServiceFirstWizardPage();
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL, false);
 		page.setServiceType(type);
 		page.setSource(source);
 		page.setServerRuntime(getConfiguredServerName());
-		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(5), false);
 		page.setWebServiceRuntime(serviceRuntime.getName());
 		if (!useDefaultProjects) {
 			page.setServiceProject(getWsProjectName());
 			page.setServiceEARProject(getEarProjectName());
 		}
-		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(5), false);
+		new DefaultShell("Web Service");
 		page.setServiceSlider(level);
 		if (page.isClientEnabled()) {
 			page.setClientSlider(SliderLevel.NO_CLIENT);
 		}
-		new WaitUntil(new WidgetIsEnabled(new PushButton("Next >")), TimePeriod.getCustom(5), false);
+		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.getCustom(5), false);
 		wizard.next();
 
 		checkErrorDialog(wizard);
@@ -131,12 +133,9 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 		if (pkg != null && pkg.trim().length() > 0) {
 			WebServiceSecondWizardPage page2 = new WebServiceSecondWizardPage();
 			page2.setPackageName(pkg);
-			Button finishButton = new PushButton(IDELabel.Button.FINISH);
 			wizard.next();
-			new WaitUntil(new WidgetIsEnabled(finishButton));
 		}
 
-		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(5), false);
 		wizard.finish();
 
 		// let's fail if there's some error in the wizard,

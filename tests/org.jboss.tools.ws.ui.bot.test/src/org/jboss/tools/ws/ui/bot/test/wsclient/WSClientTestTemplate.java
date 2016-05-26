@@ -15,8 +15,6 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
-import javax.jws.WebService;
-
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
@@ -36,13 +34,17 @@ import org.junit.Test;
  * @author jlukas
  * @author Radoslav Rabara
  */
-@WebService(targetNamespace = "http://wsclient.test.bot.ui.ws.tools.jboss.org/", portName = "WSClientTestTemplatePort", serviceName = "WSClientTestTemplateService")
 public class WSClientTestTemplate extends SOAPTestBase {
 
 	protected final WebServiceRuntime serviceRuntime;
 
 	public WSClientTestTemplate(WebServiceRuntime serviceRuntime) {
 		this.serviceRuntime = serviceRuntime;
+	}
+	
+	@After
+	public void undeploy() {
+		ServersViewHelper.removeAllProjectsFromServer(getConfiguredServerName());
 	}
 
 	@Override
