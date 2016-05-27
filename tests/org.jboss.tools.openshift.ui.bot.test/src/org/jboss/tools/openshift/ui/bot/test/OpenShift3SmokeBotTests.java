@@ -22,6 +22,7 @@ import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.ImportAppli
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.LogsTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.PortForwardingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.TriggerBuildTest;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.BuilderImageApplicationWizardHandling;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.LabelsTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.NewApplicationWizardHandlingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.OpenNewApplicationWizardTest;
@@ -80,6 +81,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	NewApplicationWizardHandlingTest.class,
 	TemplateParametersTest.class,
 	LabelsTest.class,
+	BuilderImageApplicationWizardHandling.class,
 	
 	// Creation of a new application
 	CreateApplicationFromTemplateTest.class,

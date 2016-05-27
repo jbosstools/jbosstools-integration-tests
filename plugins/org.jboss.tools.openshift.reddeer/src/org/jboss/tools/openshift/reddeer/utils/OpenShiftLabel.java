@@ -145,6 +145,7 @@ public class OpenShiftLabel {
 		public static final String EDIT_ENV_VAR = "Edit Environment variable";
 		public static final String EDIT_CONNECTION = "Edit OpenShift Connection";
 		public static final String EMBEDDED_CARTRIDGE = "Embedded Cartridges";
+		public static final String ENVIRONMENT_VARIABLE = "Environment Variable";
 		public static final String ENV_VARS = "Create Environment Variable(s)";
 		public static final String IMPORT = "Import";
 		public static final String IMPORT_APPLICATION_WIZARD = "Import OpenShift Application ";
@@ -162,7 +163,10 @@ public class OpenShiftLabel {
 		public static final String PREFERENCES = "Preferences";
 		public static final String REMOVE_CONNECTION = "Remove connection";
 		public static final String REMOVE_ENV_VAR = "Remove Environment Variable";
+		public static final String REMOVE_PORT = "Remove port";
 		public static final String REFRESH_ENV_VARS = "Refresh Environment Variables";
+		public static final String RESET_ENV_VAR = "Reset Environment Variable";
+		public static final String RESET_PORTS = "Reset ports";
 		public static final String RESTART_APPLICATION = "Restart Application";
 		public static final String RESTORE_SNAPSHOT = "Restore/Deploy Snapshot";
 		public static final String SECURE_STORAGE = "Secure Storage";
@@ -205,6 +209,7 @@ public class OpenShiftLabel {
 		public static final String BINARY_LOCATION_UNKNOWN = "Unknown executable location";
 		public static final String CHEATSHEET = "Found cheatsheet";
 		public static final String LOADING_CONNECTION_DETAILS = "Loading OpenShift 2 connection details";
+		public static final String SERVICE_PORTS = "Service Ports";
 	}
 	
 	/**
@@ -230,12 +235,14 @@ public class OpenShiftLabel {
 		public static final String NEW = "New...";
 		public static final String REFRESH = "Refresh...";
 		public static final String REMOVE = "Remove...";
-		public static final String REMOVE_BASIC = "Remove...";
+		public static final String REMOVE_BASIC = "Remove";
 		public static final String RESET = "Reset";
+		public static final String RESET_ALL = "Reset All";
 		public static final String SELECT_ALL = "Select all";
 		public static final String START_ALL = "Start All";
 		public static final String STOP_ALL = "Stop All";
-		public static final String WORKSPACE = "Browse Workspace...";
+		public static final String BROWSE_WORKSPACE = "Browse Workspace...";
+		public static final String WORKSPACE = "Workspace...";
 	}
 	
 	public static class TextLabels {	
@@ -299,6 +306,16 @@ public class OpenShiftLabel {
 		public static final String REMOTE_REQUEST_TIMEOUT = "Remote requests timeout (in seconds):";
 		public static final String FIND_FREE_PORTS = "Find free local ports for remote ports";
 		public static final String RESOURCE_LOCATION = "Enter a file path (workspace or local) or a full URL.";
+		public static final String BUILDER_RESOURCE_NAME = "Name: ";
+		
+		// Git related
+		public static final String GIT_REPO_URL = "Git Repository URL:";
+		public static final String GIT_REF = "Git Reference:";
+		public static final String CONTEXT_DIR = "Context Directory:";
+		
+		// Ports
+		public static final String SERVICE_PORT = "Service port:";
+		public static final String POD_PORT = "Pod port:";
 	}
 	
 	/**
@@ -307,6 +324,7 @@ public class OpenShiftLabel {
 	public static class Others {
 		public static final String CONNECT_TOOL_ITEM = "Connection...";
 		public static final String EAP_TEMPLATE = "eap64-basic-s2i (eap, javaee, java, jboss, xpaas) - openshift";
+		public static final String EAP_BUILDER_IMAGE = "jboss-eap64-openshift:1.2 (builder, eap, javaee, java, jboss, xpaas) - openshift";
 		public static final String NODEJS_TEMPLATE = "nodejs-example (quickstart, nodejs) - openshift";
 		public static final String RED_HAT_CENTRAL = "Red Hat Central";
 		public static final String[] NEW_APP_MENU = {"File", "New", "OpenShift Application"};

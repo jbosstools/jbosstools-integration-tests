@@ -106,7 +106,7 @@ public class CreateApplicationFromTemplateTest {
 	public void createApplicationFromLocalWorkspaceTemplate() {
 		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
 		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
-		new PushButton(OpenShiftLabel.Button.WORKSPACE).click();
+		new PushButton(OpenShiftLabel.Button.BROWSE_WORKSPACE).click();
 		
 		new DefaultShell(OpenShiftLabel.Shell.SELECT_OPENSHIFT_TEMPLATE);
 		new DefaultTreeItem("org.jboss.tools.openshift.ui.bot.test", "resources", 
