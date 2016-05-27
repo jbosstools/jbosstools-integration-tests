@@ -3,6 +3,7 @@ package org.jboss.tools.forge2.ui.bot.wizard.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -88,6 +89,9 @@ public class JPAEntitiesFromTablesTest extends WizardTestBase {
 	private void checkEntityClasses() {
 		Project project = new ProjectExplorer().getProject(PROJECT_NAME);
 		project.refresh();
+		boolean hasResources = project.containsItem("Java Resources", "src/main/java", PACKAGE);
+		if(!hasResources)
+			fail("No resources have been generated!");
 		ProjectItem model = project.getProjectItem("Java Resources", "src/main/java", PACKAGE);
 
 		for (String name : tableNames) {
