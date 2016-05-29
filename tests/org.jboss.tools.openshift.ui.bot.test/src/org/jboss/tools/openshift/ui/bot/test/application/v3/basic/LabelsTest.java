@@ -66,7 +66,7 @@ public class LabelsTest {
 		assertFalse("Edit button should be disabled for read only labels",
 				buttonIsEnabled(new PushButton(OpenShiftLabel.Button.EDIT)));
 		assertFalse("Remove button should be disabled for read only labels",
-				buttonIsEnabled(new PushButton(OpenShiftLabel.Button.REMOVE_BASIC)));
+				buttonIsEnabled(new PushButton(OpenShiftLabel.Button.REMOVE)));
 	}
 	
 	@Test
@@ -104,7 +104,7 @@ public class LabelsTest {
 		
 		// Remove an existing label
 		item.select();
-		new PushButton(OpenShiftLabel.Button.REMOVE_BASIC).click();
+		new PushButton(OpenShiftLabel.Button.REMOVE).click();
 		
 		new DefaultShell(OpenShiftLabel.Shell.REMOVE_LABEL);
 		new YesButton().click();

@@ -34,6 +34,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.condition.EditorWithTitleIsActive;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
@@ -131,6 +132,11 @@ public class ID407DeployEclipseProjectToOpenShift {
 		
 		new WorkbenchView("Git Staging").activate();
 		new DefaultStyledText().setText("Commit");
+		new DefaultTreeItem(new DefaultTree(), "> index.html - diy").select();
+		new ContextMenu("Add to Index").select();
+		new DefaultTreeItem(new DefaultTree(), ".gitignore").select();
+		new ContextMenu("Add to Index").select(); 
+		
 		new PushButton(OpenShiftLabel.Button.COMMIT).click();
 		
 		new WaitWhile(new JobIsRunning());		
