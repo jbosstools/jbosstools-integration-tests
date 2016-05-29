@@ -11,10 +11,15 @@
 
 package org.jboss.tools.docker.ui.bot.test.ui;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import java.io.File;
+import java.io.IOException;
+
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
 import org.junit.Before;
@@ -26,36 +31,36 @@ import org.junit.Test;
  *
  */
 
-public class PullImageTest extends AbstractDockerBotTest {
-	private String imageName = "";
-	
+public class BuildImageTest extends AbstractDockerBotTest {
+	private static String imageName = "test_build";
+
 	@Before
 	public void before() {
 		openDockerPerspective();
 		createConnection();
-		this.imageName=System.getProperty("imageName");
-	}
-	
-	
-	@Test
-	public void PullImageTest() {
-		ConsoleView cview = new ConsoleView();
-		cview.open();
-		try {
-			cview.clearConsole();
-		} catch (CoreLayerException ex) {
-			// there's not clear console button, since nothing run before
-		}
-		pullImage(System.getProperty("dockerServerURI"),this.imageName);
-		assertTrue("Image has not been deployed!", imageIsDeployed(this.imageName));
-	}
-	
-	@After
-	public void after() {
-		deleteImage(this.imageName);
-		deleteConnection();
 	}
 
+	@Test
+	public void BuildImageTest() {
+		DockerImagesTab imageTab = new DockerImagesTab();
+		imageTab.activate();
+		imageTab.refresh();
+		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		String dockerFilePath = "";
+		try {
+			dockerFilePath = (new File("resources/test-wildfly")).getCanonicalPath();
+		} catch (IOException ex) {
+			fail("Resource file not found!");
+		}
+		imageTab.buildImage(imageName, dockerFilePath);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
 	
+
+	@After
+	public void after() {
+		deleteImage(imageName);
+		deleteConnection();
+	}
 
 }

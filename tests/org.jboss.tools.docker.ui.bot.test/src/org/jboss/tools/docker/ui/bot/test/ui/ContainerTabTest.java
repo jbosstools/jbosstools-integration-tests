@@ -13,14 +13,17 @@ package org.jboss.tools.docker.ui.bot.test.ui;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageOneWizard;
 import org.jboss.tools.docker.reddeer.ui.DockerContainersTab;
+import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 
@@ -33,35 +36,79 @@ import org.junit.Test;
 
 public class ContainerTabTest extends AbstractDockerBotTest {
 
+	private String imageName = "docker/whalesay";
+	private String containerName = "test_run_docker_whalesay";
+	
+	@Before
+	public void before() {
+		openDockerPerspective();
+		createConnection();
+	}
+	
 	@Test
 	public void ContainerTabTest() {
+		pullImage(this.imageName);
+		DockerImagesTab imageTab = new DockerImagesTab();
+		imageTab.activate();
+		imageTab.refresh();
+		new WaitWhile(new JobIsRunning());
+		imageTab.runImage(this.imageName);
+		RunADockerImagePageOneWizard firstPage = new RunADockerImagePageOneWizard();
+		firstPage.setName(this.containerName);
+		firstPage.finish();
+		new WaitWhile(new JobIsRunning());
 		DockerContainersTab containerTab = new DockerContainersTab();
-		String imageName = System.getProperty("imageName");
-		String dockerServerURI = System.getProperty("dockerServerURI");
 		containerTab.activate();
 		containerTab.refresh();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
 
+		//get values from Container Tab
 		String nameFromTable = "";
-
+		String imageFromTable = "";
+		String createdFromTable = "";
+		String commandFromTable = "";
+		String portsFromTable = "";
+		String statusFromTable = "";
+		
 		for (TableItem item : containerTab.getTableItems()) {
-			if (item.getText(1).startsWith(imageName)) {
+			if (item.getText(1).contains(this.imageName)) {
 				nameFromTable = item.getText();
+				imageFromTable = item.getText(1);
+				createdFromTable = item.getText(2);
+				commandFromTable = item.getText(3);
+				portsFromTable = item.getText(4);
+				statusFromTable = item.getText(5);
+				item.click();
 			}
 		}
-
-		ArrayList<String> namesConsole = getIds(executeCommand("docker -H " + dockerServerURI + " ps --format {{.Names}}"));
-
-		for (String name : namesConsole) {
-			if (name.contains(nameFromTable)||nameFromTable.contains(name)) {
-				assertTrue("Container has been found!", true);
-				return;
-			}
-		}
-		assertTrue("Container has NOT been found!", false);
+		
+		//get values from Properties view
+		PropertiesView propertiesView = new PropertiesView();
+		propertiesView.open();
+		propertiesView.selectTab("Info");
+		String nameProp = propertiesView.getProperty("Names").getPropertyValue();
+		String imageProp = propertiesView.getProperty("Image").getPropertyValue();
+		String createdProp = propertiesView.getProperty("Created").getPropertyValue();
+		String commandProp = propertiesView.getProperty("Command").getPropertyValue();
+		String portsProp = propertiesView.getProperty("Ports").getPropertyValue();
+		String statusProp = propertiesView.getProperty("Status").getPropertyValue();
+		
+		//compare values
+		assertTrue("Name in table and in Properties do not match!", nameProp.contains(nameFromTable));
+		assertTrue("Image in table and in Properties do not match!", imageProp.equals(imageFromTable));
+		assertTrue("Created in table and in Properties do not match!", createdProp.equals(createdFromTable));
+		assertTrue("Command in table and in Properties do not match!", commandProp.startsWith(commandFromTable));
+		assertTrue("Ports in table and in Properties do not match!", portsProp.startsWith(portsFromTable));
+		assertTrue("Status in table and in Properties do not match!", statusProp.startsWith(statusFromTable));
 
 	}
 
+	@After
+	public void after() {
+		deleteContainer(this.containerName);
+		deleteImage(this.imageName);
+		deleteConnection();
+	}
 
 }

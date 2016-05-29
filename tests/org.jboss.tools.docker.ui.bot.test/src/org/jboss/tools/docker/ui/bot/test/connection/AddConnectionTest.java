@@ -11,26 +11,26 @@
 
 package org.jboss.tools.docker.ui.bot.test.connection;
 
-import org.jboss.tools.docker.reddeer.core.ui.wizards.DockerConnectionWizard;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class AddConnectionTest extends AbstractDockerBotTest {
 	
+	@Before
+	public void before(){
+		openDockerPerspective();
+	}
 	
 	@Test
-	public void addConnectionTest(){
-		String dockerServerURI = System.getProperty("dockerServerURI");
-		createConnection(dockerServerURI);
+	public void AddConnectionTest(){
+		createConnection();
+	}	
+	
+	@After
+	public void after() {
+		deleteConnection();
 	}
-	
-	private void createConnection(String dockerServer){
-		DockerConnectionWizard connectionWizard = new DockerConnectionWizard();
-		connectionWizard.open();
-		connectionWizard.setTcpConnection(dockerServer);
-		connectionWizard.finish();
-	}
-	
-	
 
 }

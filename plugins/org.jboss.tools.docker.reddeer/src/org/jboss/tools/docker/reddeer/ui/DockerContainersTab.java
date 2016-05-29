@@ -44,7 +44,8 @@ public class DockerContainersTab extends WorkbenchView {
 	}
 	
 	public void refresh(){
-		new DefaultToolItem("Refresh Containers").click();
+		this.activate();
+		new DefaultToolItem("Refresh (F5)").click();
 		
 	}
 	
