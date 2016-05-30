@@ -45,6 +45,7 @@ public class TernCodeAssistTest extends TernTestBase {
 	public void testTernBrowserCodeAssist(){
 		ContentAssistant assistant = new DefaultEditor(JS_FILE).openContentAssistant();
 		String missingProposals = getMisingString(assistant.getProposals(), getBrowserProposalList());
+		assistant.close();
 		assertTrue("There are missing Code Assist proposals for 'browser':" + missingProposals, missingProposals.length() == 0);
 	}
 	
@@ -52,6 +53,7 @@ public class TernCodeAssistTest extends TernTestBase {
 	public void testTernEcma5CodeAssist(){
 		ContentAssistant assistant = new DefaultEditor(JS_FILE).openContentAssistant();
 		String missingProposals = getMisingString(assistant.getProposals(), getEcma5ProposalList());
+		assistant.close();
 		assertTrue("There are missing Code Assist proposals for 'ecma5':" + missingProposals, missingProposals.length() == 0);
 		
 	}
@@ -66,6 +68,7 @@ public class TernCodeAssistTest extends TernTestBase {
 		text.selectPosition("angular.".length());
 		ContentAssistant assistant = editor.openContentAssistant();
 		String missingProposals = getMisingString(assistant.getProposals(), getAngularProposalList());
+		assistant.close();
 		assertTrue("There are missing Code Assist proposals for 'angular':" + missingProposals, missingProposals.length() == 0);
 	}
 	

@@ -99,6 +99,7 @@ public class NpmInitTest extends NpmTestBase {
 	public void testCanEditNpmConfigProperties() throws IOException {
 		NpmInitDialog npmDialog = new NpmInitDialog();
 		npmDialog.open();
+		new LabeledText("Base directory:").setText(NPM_BASE_DIRECTORY);
 		new CheckBox("Use default configuration").toggle(false);
 		new LabeledText("Name:").setText(NPM_PROPERTY_NAME);
 		new LabeledText("Version:").setText(NPM_PROPERTY_VERSION);
