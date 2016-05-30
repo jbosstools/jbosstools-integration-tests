@@ -4,9 +4,11 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
+import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
 
 /**
@@ -20,6 +22,7 @@ import org.junit.Test;
  * @since JBT 4.2.0.Beta1
  */
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
+@AutoBuilding(value = false, cleanup = true)
 public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 	
 	@Override
@@ -39,6 +42,7 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 		ExtendedTextEditor textEditor = new ExtendedTextEditor();
 		textEditor.removeLine("@Target({ElementType.METHOD, ElementType.TYPE})");
 		textEditor.removeLine("@Retention(RetentionPolicy.RUNTIME)");
+		ProjectHelper.cleanAllProjects();
 
 		/* there should be 2 errors complaining about missing deleted annotations */
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 2);
@@ -53,6 +57,7 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 		/* check that there are quick fixes for both required annotations */
 		editor.openQuickFixContentAssistant().chooseProposal("Add @Retention annotation on type 'Authorized'");
 		new TextEditor().save();
+		ProjectHelper.cleanAllProjects();
 
 		/* one error should disappear as a result of using a quickfix */
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 1);
@@ -62,6 +67,7 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 		editor.activate();
 		editor.openQuickFixContentAssistant().chooseProposal("Add @Target annotation on type 'Authorized'");
 		new TextEditor().save();
+		ProjectHelper.cleanAllProjects();
 
 		/* both quickfixes were used which means that there should be no error */
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 0);
@@ -78,6 +84,7 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 		/* remove the filter */
 		new ProjectExplorer().getProject(projectName)
 			.getProjectItem("Java Resources", "src", "org.rest.test", "Filter.java").delete();
+		ProjectHelper.cleanAllProjects();
 		
 		/* there should be an error */
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, projectName, null, null, 1);

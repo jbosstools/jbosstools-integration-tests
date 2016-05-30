@@ -42,22 +42,25 @@ import org.junit.runners.Suite.SuiteClasses;
 	PathParamAnnotationSupportTest.class,
 	QueryParamAnnotationSupportTest.class,
 	MatrixParamAnnotationSupportTest.class,
-	DefaultValueAnnotationSupportTest.class,
+	DefaultValueAnnotationSupportTest.class,	
+	
+	//Automatic project build gets stuck, build projects manually
 	BeanParamAnnotationSupportTest.class,
 	RESTfulValidationTest.class,
+	HTTPMethodAnnotationQuickFixTest.class,
+	FiltersInterceptorsSupportTest.class,
+	NameBindingAnnotationSupportTest.class,
+	ValidatingRelatedRSElementsTest.class,
+	ApplicationValidationTest.class,
+	JaxRsValidatorTest.class,
+	ParamConverterSupportTest.class,
+	PreMatchingAnnotationSupportTest.class,
+	
 	RESTfulCompletionTest.class,
 	AsYouTypeValidationTest.class,
-	ValidatingRelatedRSElementsTest.class,
 	WSTesterPromptValuesSupportTest.class,
 	XmlJsonFormattingTest.class,
 	JAXRSToolingIntegrationTest.class,
-	ApplicationValidationTest.class,
-	JaxRsValidatorTest.class,
-	HTTPMethodAnnotationQuickFixTest.class,
-	ParamConverterSupportTest.class,
-	FiltersInterceptorsSupportTest.class,
-	NameBindingAnnotationSupportTest.class,
-	PreMatchingAnnotationSupportTest.class,
 })
 public class RESTWSBotTests extends AbstractTestSuite {
 

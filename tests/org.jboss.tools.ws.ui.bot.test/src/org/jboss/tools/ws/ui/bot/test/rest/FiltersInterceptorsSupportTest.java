@@ -14,10 +14,12 @@ import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
+import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
 
 /**
@@ -31,6 +33,7 @@ import org.junit.Test;
  * @since JBT 4.2.0.Beta1
  */
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
+@AutoBuilding(value = false, cleanup = true)
 public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 
 	@Override
@@ -62,6 +65,7 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 	public void filterInterceptorDefinedAsInnerClassesSupportTest() {
 		String projectName = "filterinterceptor1";
 		importAndCheckErrors(projectName);
+		ProjectHelper.cleanAllProjects();
 		assertCountOfValidationProblemsExists(ProblemType.WARNING, projectName, null, null, 4);
 	}
 
@@ -76,6 +80,7 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 	}
 
 	private void providerValidationWarning(String projectName, String className) {
+		ProjectHelper.cleanAllProjects();
 		/* wait for JAX-RS validator */
 		new WaitUntil(new ProblemExists(ProblemType.ANY),
 				TimePeriod.NORMAL, false);
@@ -94,6 +99,7 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 		//remove unused import
 		new ExtendedTextEditor().removeLine("import javax.ws.rs.ext.Provider;");
 		new ExtendedTextEditor().save();
+		ProjectHelper.cleanAllProjects();
 
 		/* wait for JAX-RS validator */
 		new WaitUntil(new ExactNumberOfProblemsExists(ProblemType.WARNING,

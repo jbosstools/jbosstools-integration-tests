@@ -1,9 +1,11 @@
 package org.jboss.tools.ws.ui.bot.test.rest.validation;
 
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.ws.reddeer.ui.preferences.JAXRSValidatorPreferencePage;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
+import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
 
 /**
@@ -11,6 +13,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@AutoBuilding(value = false, cleanup = true)
 public class JaxRsValidatorTest extends RESTfulTestBase {
 
 	@Override
@@ -37,6 +40,7 @@ public class JaxRsValidatorTest extends RESTfulTestBase {
 	public void testValidatorEnabled() {
 		/* enable restful validation */
 		restfulHelper.enableRESTValidation();
+		ProjectHelper.cleanAllProjects();
 
 		/* test count of validation errors */
 		assertCountOfProblemsExists(ProblemType.ERROR, getWsProjectName(), PATH_PARAM_VALID_ERROR, null, 1);
@@ -46,6 +50,7 @@ public class JaxRsValidatorTest extends RESTfulTestBase {
 	public void testValidatorDisabled() {
 		/* disable restful validation */
 		restfulHelper.disableRESTValidation();
+		ProjectHelper.cleanAllProjects();
 
 		/* test count of validation errors */
 		assertCountOfProblemsExists(ProblemType.ERROR, getWsProjectName(), PATH_PARAM_VALID_ERROR, null, 0);

@@ -15,8 +15,8 @@ import java.util.List;
 
 import javax.ws.rs.MatrixParam;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
@@ -75,7 +75,8 @@ public class MatrixParamAnnotationSupportTest extends RESTfulTestBase {
 	public void testEditingMatrixParam() {
 		/* prepare project */
 		replaceInRestService(matrixParam1, matrixParamNew);
-		AbstractWait.sleep(TimePeriod.getCustom(2));
+		new WaitUntil(new RestServicePathsHaveUpdated(projectName), TimePeriod.getCustom(2), false);
+		refreshRestServices(projectName);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(projectName);
@@ -91,7 +92,7 @@ public class MatrixParamAnnotationSupportTest extends RESTfulTestBase {
 	public void testEditingTypeOfMatrixParam() {
 		/* prepare project */
 		replaceInRestService(matrixParamType1, matrixParamTypeNew);
-		AbstractWait.sleep(TimePeriod.getCustom(2));
+		new WaitUntil(new RestServicePathsHaveUpdated(projectName), TimePeriod.getCustom(2), false);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(projectName);

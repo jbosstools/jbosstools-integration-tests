@@ -19,9 +19,9 @@ import java.util.List;
 
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNot;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.reddeer.ui.views.AnnotationPropertiesView;
@@ -163,6 +163,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 				pathAnnotation, 
 				annotationsView.getAnnotationValues(pathAnnotation).get(0).getText(), 
 				"/edit");
+		new WaitUntil(new RestServicePathsHaveUpdated(getWsProjectName()), TimePeriod.getCustom(2), false);
 
 		for (RESTfulWebService service : restfulServicesForProject(getWsProjectName())) {
 			String path = service.getPath();
@@ -180,7 +181,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 		annotationsView.deactivateAnnotation(getAnnotation);
 
 		// It gets some time till it's shown in explorer
-		AbstractWait.sleep(TimePeriod.SHORT);
+		new WaitUntil(new RestServicePathsHaveUpdated(getWsProjectName()), TimePeriod.getCustom(2), false);
 		
 		assertThat("RESTful services", restfulServicesForProject(getWsProjectName()).size(), Is.is(3));
 	}

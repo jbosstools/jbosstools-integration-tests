@@ -17,8 +17,6 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
@@ -99,7 +97,6 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		replaceInRestService(projectName, "/delete/{id}", "delete/edited//{id}");
 		replaceInRestService(projectName, "@DELETE", "@DELETE" + LINE_SEPARATOR
 				+ "@Produces(\"text/plain\")");
-		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(projectName);
@@ -115,7 +112,6 @@ public class RESTfulExplorerTest extends RESTfulTestBase {
 		/* prepare project*/
 		importWSTestProject(projectName);
 		prepareRestService(projectName, "EmptyRestfulWS.java.ws");
-		AbstractWait.sleep(TimePeriod.getCustom(2));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(projectName);

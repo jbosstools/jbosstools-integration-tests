@@ -16,8 +16,8 @@ import java.util.List;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
@@ -86,8 +86,8 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 
 		/* prepare project */
 		importWSTestProject(projectPath3);
-		AbstractWait.sleep(TimePeriod.getCustom(2));
-
+		new WaitUntil(new RestServicePathsHaveUpdated(projectPath3), TimePeriod.getCustom(2), false);
+		
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		restServices = restfulServicesForProject(projectPath3);
 
@@ -127,7 +127,7 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 				+ newPathType + " year;", "@PathParam(\"author\")");
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
-		AbstractWait.sleep(TimePeriod.SHORT);
+		new WaitUntil(new RestServicePathsHaveUpdated(projectPath2), TimePeriod.getCustom(2), false);
 		restServices = restfulServicesForProject(projectPath2);
 
 		/* test JAX-RS REST explorer */
@@ -149,8 +149,9 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 		ExtendedTextEditor editor = new ExtendedTextEditor();
 		editor.activate();
 		editor.replace(pathParam1, pathParam1New);
+		refreshRestServices(projectPath1);
 
-		AbstractWait.sleep(TimePeriod.getCustom(2));
+		new WaitUntil(new RestServicePathsHaveUpdated(projectPath1), TimePeriod.getCustom(2), false);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(projectPath1);
@@ -175,8 +176,8 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 		editor.activate();
 		editor.replace(pathType1, pathType1New);
 
-		AbstractWait.sleep(TimePeriod.getCustom(2));
-
+		new WaitUntil(new RestServicePathsHaveUpdated(projectPath1), TimePeriod.getCustom(2), false);
+		
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(projectPath1);
 
