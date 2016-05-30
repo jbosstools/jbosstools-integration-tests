@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 
 import org.hamcrest.core.StringContains;
 import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -238,8 +237,6 @@ public class ProjectHelper {
 		}
 		addConfiguredRuntimeIntoProject(projectName, serverName);
 		setProjectJRE(projectName);
-		cleanAllProjects();
-		AbstractWait.sleep(TimePeriod.getCustom(2));
 	}
 	
 	/**

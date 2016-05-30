@@ -16,12 +16,12 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
@@ -132,7 +132,7 @@ public class TopDownWSTest extends WebServiceTestBase {
 		// look up shell
 		try {
 			new DefaultShell("Confirm Web Service Name Overwrite");
-			new PushButton("OK").click();
+			new OkButton().click();
 		} catch(SWTLayerException e) {
 			LOGGER.log(Level.SEVERE, "No \"Confirm Web Service Name Overwrite\" dialog found!", e);
 			return;
@@ -150,13 +150,13 @@ public class TopDownWSTest extends WebServiceTestBase {
 
 		item.delete();
 
-		ShellWithTextIsActive condition = new ShellWithTextIsActive(new RegexMatcher("Delete"));
+		ShellWithTextIsAvailable condition = new ShellWithTextIsAvailable(new RegexMatcher("Delete"));
 		try {
 			new WaitUntil(condition);
 		} catch(WaitTimeoutExpiredException e) {
 			return;
 		}
-		new PushButton("OK").click();
+		new OkButton().click();
 		new WaitWhile(condition);
 	}
 	
@@ -181,9 +181,9 @@ public class TopDownWSTest extends WebServiceTestBase {
 		 choosing 'Deploy' should normally deploy the project automatically*/
 		case DEPLOY:
 			ServersViewHelper.runProjectOnServer(getEarProjectName());
-			ServersViewHelper.waitForDeployment(getEarProjectName(), getConfiguredServerName());
 			
 		default:
+			ServersViewHelper.waitForDeployment(getEarProjectName(), getConfiguredServerName());
 			break;
 		}
 		DeploymentHelper.assertServiceDeployed(DeploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);

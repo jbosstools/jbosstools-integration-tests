@@ -12,8 +12,6 @@ package org.jboss.tools.ws.ui.bot.test.integration;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
@@ -49,7 +47,6 @@ public class SOAPWSToolingIntegrationTest extends SOAPTestBase {
 	public void setup() {
 		if (!ProjectHelper.projectExists(getWsProjectName())) {
 			ProjectHelper.importWSTestProject(getWsProjectName(), getConfiguredRuntimeName());
-			ProjectHelper.cleanAllProjects();
 			ServersViewHelper.runProjectOnServer(getWsProjectName());
 			ServersViewHelper.waitForDeployment(getWsProjectName(), getConfiguredServerName());
 		}
@@ -60,6 +57,11 @@ public class SOAPWSToolingIntegrationTest extends SOAPTestBase {
 		return "integration2";
 	}
 
+	/**
+	 * Fails due to JBDS-3907
+	 * 
+	 * @see https://issues.jboss.org/browse/JBDS-3907
+	 */
 	@Test
 	public void testSimpleIntegration() {
 		WsTesterView wsTesterView = openWSDLFileInWSTester();
@@ -71,8 +73,6 @@ public class SOAPWSToolingIntegrationTest extends SOAPTestBase {
 		projectExplorer.activate();
 		Project project = projectExplorer.getProject(getWsProjectName());
 		project.refresh();
-		AbstractWait.sleep(TimePeriod.SHORT);
-		project.getProjectItem("wsdl").select();
 		project.getProjectItem("wsdl", "HelloWorldService.wsdl").select();
 		new ContextMenu("Web Services", "Test in JBoss Web Service Tester").select();
 

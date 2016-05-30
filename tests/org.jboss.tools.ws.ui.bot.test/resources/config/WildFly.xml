@@ -9,9 +9,9 @@
 	<requirements>
 		<server:jboss-server-requirement name="WildFly">
 			<server:type>
-				<server:familyWildFly version="9.x"></server:familyWildFly>
+				<server:familyWildFly version="10.x"></server:familyWildFly>
 			</server:type>
-			<server:runtime>${jbosstools.test.jboss-wildfly-9.home}</server:runtime>
+			<server:runtime>${jbosstools.test.jboss-wildfly-10.home}</server:runtime>
 		</server:jboss-server-requirement>
 	</requirements>
 </testrun>

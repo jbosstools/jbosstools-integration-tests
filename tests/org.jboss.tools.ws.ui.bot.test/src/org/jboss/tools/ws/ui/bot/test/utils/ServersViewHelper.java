@@ -1,6 +1,5 @@
 package org.jboss.tools.ws.ui.bot.test.utils;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.hamcrest.core.StringContains;
@@ -22,11 +21,9 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPubli
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
-import org.jboss.reddeer.swt.condition.TreeHasChildren;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.common.reddeer.label.IDELabel;
 
 /**
@@ -87,22 +84,20 @@ public class ServersViewHelper {
 			serversView.activate();
 			server = serversView.getServer(serverName);			
 		}
-		List<ServerModule> modules = server.getModules();
 		
-		if (modules == null || modules.isEmpty())
-			return;
-		
-		for (ServerModule module : modules) {
+		while(!server.getModules().isEmpty()) {
+			ServerModule module = server.getModules().get(0);
 			if (module != null) {
-				new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+				new WaitWhile(new JobIsRunning(), TimePeriod.LONG, false);
 				serversView.activate();
 				String moduleName = module.getLabel().getName();
 				ServerState moduleState = module.getLabel().getState();
 				clearServerConsole(serverName);
+				
 				new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL, false);
 				serversView.activate();
 				module.remove();
-				
+
 				if (moduleState.equals(ServerState.STARTED)) {
 					new WaitUntil(new ConsoleHasText("Undeployed \"" + moduleName), TimePeriod.LONG, false);
 				}
@@ -170,7 +165,6 @@ public class ServersViewHelper {
 		
 		public ProjectIsDeployed(String projectName, String serverName) {
 			view.activate();
-			new WaitUntil(new TreeHasChildren(new DefaultTree()), TimePeriod.getCustom(2));
 			Server server = view.getServer(serverName);
 			module = server.getModule(projectName);
 		}

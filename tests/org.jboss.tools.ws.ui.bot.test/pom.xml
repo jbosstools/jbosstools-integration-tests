@@ -15,14 +15,14 @@
 	<properties>
 		<rd.config>${project.build.outputDirectory}/config</rd.config>
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
-		<jbosstools.test.jboss-wildfly-9.home>${requirementsDirectory}/wildfly-9.0.1.Final</jbosstools.test.jboss-wildfly-9.home>
+		<jbosstools.test.jboss-wildfly-10.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.jboss-wildfly-10.home>
 		
 		<apache-cxf-2.x.dir>${requirementsDirectory}/apache-cxf-2.x</apache-cxf-2.x.dir>
 		<apache-cxf-2.x>${apache-cxf-2.x.dir}/apache-cxf-3.1.1/</apache-cxf-2.x>
 		<apache-cxf-2.x.url>http://archive.apache.org/dist/cxf/3.1.1/apache-cxf-3.1.1.zip</apache-cxf-2.x.url>
 		<apache-cxf-2.x.md5>142d0261de8012e6eafd780587313681</apache-cxf-2.x.md5>
 
-		<systemProperties>${integrationTestsSystemProperties} -Dws.scope=${ws.scope} -Dapache-cxf-2.x=${apache-cxf-2.x} -Drd.config=${rd.config} -Djbosstools.test.jboss-wildfly-9.home=${jbosstools.test.jboss-wildfly-9.home} -Dreddeer.close.shells=false</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dws.scope=${ws.scope} -Dapache-cxf-2.x=${apache-cxf-2.x} -Drd.config=${rd.config} -Djbosstools.test.jboss-wildfly-10.home=${jbosstools.test.jboss-wildfly-10.home} -Dreddeer.close.shells=false</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
 	<profiles>
@@ -79,7 +79,7 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>9.0.1.Final</version>
+									<version>10.0.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
