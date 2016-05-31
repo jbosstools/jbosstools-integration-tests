@@ -15,14 +15,8 @@ import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.common.reddeer.utils.ProjectHelper;
 import org.jboss.tools.hibernate.reddeer.factory.ResourceFactory;
@@ -38,7 +32,7 @@ import org.jboss.tools.maven.reddeer.wizards.MavenImportWizardFirstPage;
  */
 public class ProjectImporter {
 
-	private static final String LIB_DIR="target/requirements";
+	private static final String LIB_DIR="target/requirements/";
 	private static final Logger log = Logger.getLogger(ProjectImporter.class);
 	
 	/**
@@ -56,7 +50,11 @@ public class ProjectImporter {
 		if(libraryPathMap != null){
 			Map<String,String> fullPathJars = new HashMap<>();
 			for(String jar: libraryPathMap.keySet()){
-				fullPathJars.put(LIB_DIR+File.separator+libraryPathMap.get(jar), jar);
+				if(libraryPathMap.get(jar) == null){
+					fullPathJars.put(jar,LIB_DIR);
+				} else {
+					fullPathJars.put(jar,LIB_DIR+libraryPathMap.get(jar));
+				}
 			}
 			ProjectHelper.addLibrariesIntoProject(projectName, fullPathJars);
 		}
@@ -64,17 +62,6 @@ public class ProjectImporter {
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
 		new WaitWhile(new JobIsRunning());
-		
-		if (!projectName.equals("hibernatelib")) {
-			new ShellMenu("Project","Clean...").select();
-			new WaitUntil(new ShellWithTextIsAvailable("Clean"));
-			new DefaultShell("Clean");
-			new RadioButton("Clean all projects").click();
-			new OkButton().click();
-			new WaitWhile(new ShellWithTextIsAvailable("Clean"));
-					
-			new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
-	}
 		
 		List<Problem> problems = problemsView.getProblems(ProblemType.ERROR);
 		for (Problem p : problems) {

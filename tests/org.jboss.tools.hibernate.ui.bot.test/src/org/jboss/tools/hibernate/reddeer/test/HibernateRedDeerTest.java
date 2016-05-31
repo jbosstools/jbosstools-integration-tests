@@ -10,6 +10,7 @@ import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
@@ -45,6 +46,7 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+@AutoBuilding(value=false,cleanup=false)
 public class HibernateRedDeerTest {
 	private static final Logger log = Logger.getLogger(HibernateRedDeerTest.class);
 	
