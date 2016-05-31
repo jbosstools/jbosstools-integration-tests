@@ -1,10 +1,12 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.utils.DeleteUtils;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.swt.api.Menu;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -26,17 +28,21 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
+@Database(name="testdb")
 public class JpaAnnotationGenerationTest extends HibernateRedDeerTest {
 	
 	private final String PRJ = "configurationtest";
 	private final String PCKG = "org.test.generation.annotation";
+	protected  Map<String,String> libraries = new HashMap<String, String>() {{
+	    put("hsqldb-2.3.4.jar",null);
+	}};
 	
 	private static final Logger log = Logger.getLogger(JpaAnnotationGenerationTest.class);
 	
 	@Before 
 	public void prepare() {
 		log.step("Import testing project");
-		importProject(PRJ);
+		importProject(PRJ, libraries);
 	}
 	
 	@After

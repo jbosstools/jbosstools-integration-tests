@@ -2,27 +2,24 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.hibernate.reddeer.common.FileHelper;
 import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
 import org.jboss.tools.hibernate.reddeer.factory.HibernateToolsFactory;
 import org.jboss.tools.hibernate.reddeer.factory.ProjectConfigurationFactory;
 import org.jboss.tools.hibernate.reddeer.wizard.GenerateDdlWizard;
 import org.jboss.tools.hibernate.reddeer.wizard.GenerateDdlWizardPage;
-import org.jboss.tools.hibernate.ui.bot.test.Activator;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,9 +34,10 @@ import org.junit.runner.RunWith;
 @Database(name = "testdb")
 public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 
-	private String prj = "mvn-hibernate43";
-	private String hbVersion = "4.3";
-	private String jpaVersion = "2.0";
+	private String prj;
+	private String hbVersion;
+	private String jpaVersion;
+	private Map<String,String> libraryPathMap;
 
 	private static final Logger log = Logger.getLogger(TablesFromJPAEntitiesGeneration.class);
 	
@@ -57,106 +55,125 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
     // use console
     @Test
     public void testDDLGenerationWithConsole35() {
-    	setParams("mvn-hibernate35-ent","3.5","2.0");
+    	setParams("mvn-hibernate35-ent","3.5","2.0",null);
     	testDDLGenerationMvn(true);
     }
     
     @Test
     public void testDDLGenerationWithConsole36() {
-    	setParams("mvn-hibernate36-ent","3.6","2.0");
+    	setParams("mvn-hibernate36-ent","3.6","2.0",null);
     	testDDLGenerationMvn(true);
     }
     
     @Test
     public void testDDLGenerationWithConsole40() {
-    	setParams("mvn-hibernate40-ent","4.0","2.0");
+    	setParams("mvn-hibernate40-ent","4.0","2.0",null);
     	testDDLGenerationMvn(true);
     }
     
     @Test
     public void testDDLGenerationWithConsole43() {
-    	setParams("mvn-hibernate43-ent","4.3","2.1");
+    	setParams("mvn-hibernate43-ent","4.3","2.1",null);
     	testDDLGenerationMvn(true);
     }
     
     @Test
     public void testDDLGenerationWithConsole50() {
-    	setParams("mvn-hibernate50-ent","5.0","2.1");
+    	setParams("mvn-hibernate50-ent","5.0","2.1",null);
     	testDDLGenerationMvn(true);
     }
    
     @Test
     public void testDDLGenerationWithConsoleEcl35() {
-    	setParams("ecl-hibernate35-ent","3.5","2.0");
+    	Map<String,String> libraries = new HashMap<>();
+    	libraries.putAll(hibernate35LibMap);
+    	libraries.put("h2-1.3.161.jar", null);
+    	setParams("ecl-hibernate35-ent","3.5","2.0",libraries);
     	testDDLGenerationEcl(true);
     }
     
     @Test
     public void testDDLGenerationWithConsoleEcl36() {
-    	setParams("ecl-hibernate36-ent","3.6","2.0");
+    	Map<String,String> libraries = new HashMap<>();
+    	libraries.putAll(hibernate36LibMap);
+    	libraries.put("h2-1.3.161.jar", null);
+    	setParams("ecl-hibernate36-ent","3.6","2.0", libraries);
     	testDDLGenerationEcl(true);
     }
     
     @Test
     public void testDDLGenerationWithConsoleEcl40() {
-    	setParams("ecl-hibernate40-ent","4.0","2.0");
+    	Map<String,String> libraries = new HashMap<>();
+    	libraries.putAll(hibernate43LibMap);
+    	libraries.put("h2-1.3.161.jar", null);
+    	setParams("ecl-hibernate40-ent","4.3","2.0", libraries);
     	testDDLGenerationEcl(true);
     }
     
     // don't use console
     @Test
     public void testDDLGenerationWithoutConsole35() {
-    	setParams("mvn-hibernate35-ent","3.5","2.0");
+    	setParams("mvn-hibernate35-ent","3.5","2.0",null);
     	testDDLGenerationMvn(false);
     }
     
     @Test
     public void testDDLGenerationWithoutConsole36() {
-    	setParams("mvn-hibernate36-ent","3.6","2.0");
+    	setParams("mvn-hibernate36-ent","3.6","2.0",null);
     	testDDLGenerationMvn(false);
     }
     
     @Test
     public void testDDLGenerationWithoutConsole40() {
-    	setParams("mvn-hibernate40-ent","4.0","2.0");
+    	setParams("mvn-hibernate40-ent","4.0","2.0",null);
     	testDDLGenerationMvn(false);
     }
     
     @Test
     public void testDDLGenerationWithoutConsole43() {
-    	setParams("mvn-hibernate43-ent","4.3","2.1");
+    	setParams("mvn-hibernate43-ent","4.3","2.1",null);
     	testDDLGenerationMvn(false);
     }
     
     @Test
     public void testDDLGenerationWithoutConsole50() {
-    	setParams("mvn-hibernate50-ent","5.0","2.1");
+    	setParams("mvn-hibernate50-ent","5.0","2.1",null);
     	testDDLGenerationMvn(false);
     }
       
     @Test
     public void testDDLGenerationWithoutConsoleEcl35() {
-    	setParams("ecl-hibernate35-ent","3.5","2.0");
+    	Map<String,String> libraries = new HashMap<>();
+    	libraries.putAll(hibernate35LibMap);
+    	libraries.put("h2-1.3.161.jar", null);
+    	setParams("ecl-hibernate35-ent","3.5","2.0",libraries);
     	testDDLGenerationEcl(false);
     }
     
     @Test
     public void testDDLGenerationWithoutConsoleEcl36() {
-    	setParams("ecl-hibernate36-ent","3.6","2.0");
+    	Map<String,String> libraries = new HashMap<>();
+    	libraries.putAll(hibernate36LibMap);
+    	libraries.put("h2-1.3.161.jar", null);
+    	setParams("ecl-hibernate36-ent","3.6","2.0", libraries);
     	testDDLGenerationEcl(false);
     }
 
     @Test
     public void testDDLGenerationWithoutConsoleEcl40() {
-    	setParams("ecl-hibernate40-ent","4.0","2.0");
+    	Map<String,String> libraries = new HashMap<>();
+    	libraries.putAll(hibernate43LibMap);
+    	libraries.put("h2-1.3.161.jar", null);
+    	setParams("ecl-hibernate40-ent","4.3","2.0", libraries);
     	testDDLGenerationEcl(false);
     }
     
 
-    private void setParams(String prj, String hbVersion, String jpaVersion) {
+    private void setParams(String prj, String hbVersion, String jpaVersion, Map<String,String> libraryPathMap) {
     	this.prj = prj;
     	this.hbVersion = hbVersion;
     	this.jpaVersion = jpaVersion;
+    	this.libraryPathMap = libraryPathMap;
     }
     
     private void testDDLGenerationEcl(boolean useConsole) {
@@ -213,15 +230,8 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
     
     private void prepareEclipseProject() {    	
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		String destDir = FileHelper.getResourceAbsolutePath(Activator.PLUGIN_ID,"resources","prj","hibernatelib","connector" );
-		try {
-			FileHelper.copyFilesBinary(cfg.getDriverPath(), destDir);
-		} catch (IOException e) {
-			// Assert.fail("Cannot copy h2 driver");
-		}
 		log.step("Import test projects");
-    	importProject("hibernatelib");
-    	importProject(prj);
+    	importProject(prj, libraryPathMap);
 
 		log.step("Create database driver definition");
 		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
@@ -234,7 +244,7 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
     	
     	log.step("Create hibernate console configuartion file");
-    	HibernateToolsFactory.testCreateConfigurationFile(cfg, prj, "hibernate.cfg.xml", false);
+    	HibernateToolsFactory.createConfigurationFile(cfg, prj, "hibernate.cfg.xml", false);
 	}
 	
 	private void checkDDLContent(String text) {

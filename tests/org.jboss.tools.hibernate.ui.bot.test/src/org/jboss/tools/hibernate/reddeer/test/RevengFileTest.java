@@ -16,7 +16,6 @@ import org.jboss.tools.hibernate.reddeer.console.NewHibernateConfigurationWizard
 import org.jboss.tools.hibernate.reddeer.editor.RevengEditor;
 import org.jboss.tools.hibernate.reddeer.wizard.NewReverseEngineeringFileWizard;
 import org.jboss.tools.hibernate.reddeer.wizard.TableFilterWizardPage;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,7 +40,7 @@ public class RevengFileTest extends HibernateRedDeerTest {
 	@Before 
 	public void prepare() {
 		log.step("Import test project");
-		importProject(PROJECT_NAME);
+		importMavenProject(PROJECT_NAME);
 		prepareConsoleConfiguration();
 	}
 	

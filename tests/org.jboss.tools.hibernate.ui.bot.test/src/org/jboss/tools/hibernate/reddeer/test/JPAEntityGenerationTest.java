@@ -4,6 +4,10 @@ import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.eclipse.condition.ProjectContainsProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -28,8 +32,9 @@ import org.junit.runner.RunWith;
 @Database(name="testdb")
 public class JPAEntityGenerationTest extends HibernateRedDeerTest {
 
-	private String prj = "mvn-hibernate43"; 
-	private String jpaVersion = "2.0";
+	private String prj; 
+	private String jpaVersion;
+	private String hbVersion;
 	
 	private static final Logger log = Logger.getLogger(JPAEntityGenerationTest.class);
 	 
@@ -63,6 +68,7 @@ public class JPAEntityGenerationTest extends HibernateRedDeerTest {
     private void setParams(String prj, String hbVersion, String jpaVersion) {
     	this.prj = prj;
     	this.jpaVersion = jpaVersion;
+    	this.hbVersion = hbVersion;
     }
     
     @Test
@@ -130,12 +136,14 @@ public class JPAEntityGenerationTest extends HibernateRedDeerTest {
     	
     	DatabaseConfiguration cfg = dbRequirement.getConfiguration();
     	log.step("Generate JPA Entities via JPA -> Generate Entities from Tables");
-    	EntityGenerationFactory.generateJPAEntities(cfg,prj,"org.gen","4.3",useHibernateConsole);
+    	EntityGenerationFactory.generateJPAEntities(cfg,prj,"org.gen",hbVersion,useHibernateConsole);
     	
     	log.step("Check generated entities");
     	ProjectExplorer pe = new ProjectExplorer();    
     	pe.open();
     	try{
+    		AbstractWait.sleep(TimePeriod.NORMAL); //class generation is happening
+    		new WaitUntil(new ProjectContainsProjectItem(pe.getProject(prj), "Java Resources","src/main/java","org.gen","Actor.java"));
     		pe.getProject(prj).getProjectItem("Java Resources","src/main/java","org.gen","Actor.java").open();
     	} catch (RedDeerException e) {
     		fail("Entities not generated, possible cause https://issues.jboss.org/browse/JBIDE-19175");

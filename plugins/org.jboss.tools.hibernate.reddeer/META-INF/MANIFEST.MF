@@ -17,7 +17,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.requirements,
  org.eclipse.core.resources,
  org.jboss.reddeer.common,
- org.jboss.tools.maven.reddeer
+ org.jboss.tools.maven.reddeer,
+ org.jboss.tools.common.reddeer
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.jboss.tools.hibernate.reddeer,

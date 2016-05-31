@@ -2,8 +2,10 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -11,7 +13,7 @@ import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.swt.api.Link;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
@@ -36,6 +38,10 @@ import org.junit.runner.RunWith;
 public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 
 	private String PROJECT_NAME = "configurationtest";
+	protected  Map<String,String> libraries = new HashMap<String, String>() {{
+	    put("hsqldb-2.3.4.jar",null);
+	}};
+	//,"postgresql-9.4.1208.jre7.jar", "mysql-connector-java-6.0.2.jar"
 	private String HIBERNATE_CFG_FILE="hibernate.cfg.xml";
 	private static final Logger log = Logger.getLogger(ConsoleConfigurationFileTest.class);
 	
@@ -45,7 +51,7 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 	
 	@Before 
 	public void prepare() {
-		importProject(PROJECT_NAME);
+		importProject(PROJECT_NAME, libraries);
 	}
 	
 	@After 
@@ -149,10 +155,10 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 		log.step("Use created database connection profile for database details");
 		Link link = new DefaultLink("Get values from Connection");
 		link.click();
-		new WaitUntil(new ShellWithTextIsActive("Select Connection Profile"));
+		new WaitUntil(new ShellWithTextIsAvailable("Select Connection Profile"));
 		new DefaultCombo().setSelection(cfg.getProfileName());
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsActive("Select Connection Profile"));
+		new WaitWhile(new ShellWithTextIsAvailable("Select Connection Profile"));
 
 		new DefaultShell("");
 		

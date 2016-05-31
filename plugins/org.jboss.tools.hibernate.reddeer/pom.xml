@@ -10,5 +10,4 @@
 	<groupId>org.jboss.tools.hibernatetools.tests</groupId>
 	<artifactId>org.jboss.tools.hibernate.reddeer</artifactId>
 	<packaging>eclipse-plugin</packaging>
-
 </project>

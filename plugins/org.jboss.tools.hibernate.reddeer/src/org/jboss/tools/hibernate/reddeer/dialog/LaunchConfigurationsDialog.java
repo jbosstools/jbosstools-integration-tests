@@ -100,8 +100,9 @@ public class LaunchConfigurationsDialog {
 	 */
 	public void run() {
 		new PushButton("Run").click();
-    	new WaitWhile(new ShellWithTextIsActive("Hibernate Code Generation Configurations"));
+    	new WaitWhile(new ShellWithTextIsAvailable("Hibernate Code Generation Configurations"));
     	new WaitUntil(new JobIsRunning());
+    	new WaitWhile(new JobIsRunning());
 	}
 
 	/**
@@ -110,10 +111,10 @@ public class LaunchConfigurationsDialog {
 	 */
 	public void setRevengFile(String... path) {
 		new PushButton("Setup...").click();
-		new WaitUntil(new ShellWithTextIsActive("Setup reverse engineering"));
+		new WaitUntil(new ShellWithTextIsAvailable("Setup reverse engineering"));
 		new DefaultShell("Setup reverse engineering");
 		new PushButton("Use existing...").click();
-		new WaitUntil(new ShellWithTextIsActive("Select reverse engineering settings file"));
+		new WaitUntil(new ShellWithTextIsAvailable("Select reverse engineering settings file"));
 		new DefaultTreeItem(path).select();
 		new OkButton().click();
 	}

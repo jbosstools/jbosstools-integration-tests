@@ -3,17 +3,12 @@ package org.jboss.tools.hibernate.reddeer.test;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.tools.hibernate.reddeer.console.KnownConfigurationsView;
 import org.jboss.tools.hibernate.reddeer.editor.HQLEditor;
 import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;

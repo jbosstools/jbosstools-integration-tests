@@ -4,7 +4,6 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.hibernate.reddeer.console.KnownConfigurationsView;
 import org.jboss.tools.hibernate.reddeer.console.NewConfigurationLocationPage;
@@ -26,7 +25,7 @@ public class HibernateToolsFactory {
 	 * @param cfgFile hibernate configuration file
 	 * @param generateConsole when true hibernate console configuration is generated
 	 */
-	public static void testCreateConfigurationFile(DatabaseConfiguration cfg, String project, String cfgFile, boolean generateConsole) {		
+	public static void createConfigurationFile(DatabaseConfiguration cfg, String project, String cfgFile, boolean generateConsole) {		
 		NewHibernateConfigurationWizard wizard = new NewHibernateConfigurationWizard();
 		wizard.open();
 		NewConfigurationLocationPage p1 = new NewConfigurationLocationPage();
@@ -47,8 +46,7 @@ public class HibernateToolsFactory {
 		
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
-		DefaultTreeItem ti = new DefaultTreeItem(project,"src",cfgFile);
-		ti.doubleClick();
+		pe.getProject(project).getProjectItem("src",cfgFile).open();
 		new DefaultEditor(cfgFile);
 		
 	}

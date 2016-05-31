@@ -13,9 +13,11 @@
 
 	<properties>	
 		<!-- Tycho surefire arguments -->
-		<runtimesProperties>-Drd.config=${rd.config} -Dtest.database=${test.database}</runtimesProperties>
+		<runtimesProperties>-Drd.config=target/classes -Dtest.database=${test.database}</runtimesProperties>
 		<!-- don't wrap this -->		
 		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties}</systemProperties>
+		<testDatabase>${project.build.directory}${file.separator}requirements</testDatabase>
+		<surefire.timeout>14400</surefire.timeout>
 	</properties>
 
 	<build>
@@ -25,41 +27,131 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-		<!-- 
 		<plugins>
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
 				<artifactId>download-maven-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>install-h2-driver</id>
+						<id>h2-DB</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>http://central.maven.org/maven2/com/h2database/h2/1.3.161/h2-1.3.161.jar</url>
-							<outputDirectory>${project.build.outputDirectory}</outputDirectory>
+							<skip>${skipTests}</skip>
+							<url>https://github.com/maxandersen/sakila-h2/raw/master/sakila.h2.db</url>
+							<outputDirectory>${project.build.directory}/requirements</outputDirectory>
 							<unpack>false</unpack>
+						</configuration>
+					</execution>
+					<execution>
+						<id>hibernate35</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<skip>${skipTests}</skip>
+							<url>https://sourceforge.net/projects/hibernate/files/hibernate3/3.5.3-Final/hibernate-distribution-3.5.3-Final-dist.zip</url>
+							<outputDirectory>${project.build.directory}/requirements</outputDirectory>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+					<execution>
+						<id>hibernate36</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<skip>${skipTests}</skip>
+							<url>https://sourceforge.net/projects/hibernate/files/hibernate3/3.6.10.Final/hibernate-distribution-3.6.10.Final-dist.zip</url>
+							<outputDirectory>${project.build.directory}/requirements</outputDirectory>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+					<execution>
+						<id>hibernate40</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<skip>${skipTests}</skip>
+							<url>https://sourceforge.net/projects/hibernate/files/hibernate4/4.3.11.Final/hibernate-release-4.3.11.Final.zip</url>
+							<outputDirectory>${project.build.directory}/requirements</outputDirectory>
+							<unpack>true</unpack>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>dependencies</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<skip>${skipTests}</skip>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.hsqldb</groupId>
+    								<artifactId>hsqldb</artifactId>
+    								<version>2.3.4</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>mysql</groupId>
+    								<artifactId>mysql-connector-java</artifactId>
+    								<version>6.0.2</version>
+    							</artifactItem>
+    							<artifactItem>
+    								<groupId>org.postgresql</groupId>
+    								<artifactId>postgresql</artifactId>
+    								<version>9.4.1208.jre7</version>
+    							</artifactItem>
+    							<artifactItem>
+    							 	<groupId>org.eclipse.persistence</groupId>
+    								<artifactId>javax.persistence</artifactId>
+    								<version>2.0.0</version>
+    							</artifactItem>
+    							<artifactItem>
+    								<groupId>com.h2database</groupId>
+    								<artifactId>h2</artifactId>
+   									<version>1.3.161</version>
+    							</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<configuration>
+					<testSuite>org.jboss.tools.hibernate.ui.bot.test</testSuite>
+					<testClass>${suiteClass}</testClass>
+					<appArgLine>-pluginCustomization ${basedir}/../pluginCustomization.ini</appArgLine>
+				</configuration>
+			</plugin>
 		</plugins>
-		-->
 	</build>
 	<profiles>
 		<profile>
-			<id>rd.defaultConfig</id>
-			<activation>
-				<property>
-					<name>rd.defaultConfig</name>
-					<value>true</value>
-				</property>
-			</activation>
+			<id>all-bot-tests</id>
 			<properties>
-				<rd.config>${basedir}/target/classes</rd.config>
+				<suiteClass>org.jboss.tools.hibernate.ui.bot.test.HibernateAllTest</suiteClass>
 			</properties>
 		</profile>
-	</profiles>	
+		<profile>
+			<id>smoke-tests</id>
+			<properties>
+				<suiteClass>org.jboss.tools.hibernate.ui.bot.test.SmokeAllTest</suiteClass>
+			</properties>
+		</profile>
+	</profiles>
 </project>
