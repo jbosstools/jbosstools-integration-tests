@@ -22,27 +22,27 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.condition.TableContainsItem;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.wizard.page.ResourceLabelsWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class LabelsTest {
+	
+	private ResourceLabelsWizardPage page = new ResourceLabelsWizardPage();
 	
 	@Before
 	public void getToLabelsWizardPage() {
@@ -70,74 +70,42 @@ public class LabelsTest {
 	}
 	
 	@Test
-	public void testManageLabels() {
+	public void createLabel() {
 		String name = "label.name";
 		String value = "label-value";
-		createLabel(name, value);
+		
 		assertTrue("Label " + name + ":" + value + " should be present in the table, but its not there.",
-				new TableContainsItem(new DefaultTable(), name, 0).test());
-		
-		new PushButton(OpenShiftLabel.Button.EDIT).click();
-		
-		new DefaultShell(OpenShiftLabel.Shell.RESOURCE_LABEL);
-		assertTrue("Label name has not been shown in previous state in resource label dialog",
-				new LabeledText(OpenShiftLabel.TextLabels.LABEL).getText().equals(name));
-		assertTrue("Label value has not been shown in previous state in resource label dialog",
-				new LabeledText(OpenShiftLabel.TextLabels.VALUE).getText().equals(value));
-		
-		// Edit an existing label
-		name += "m";
-		value += "m";
-		new LabeledText(OpenShiftLabel.TextLabels.LABEL).setText(name);
-		new LabeledText(OpenShiftLabel.TextLabels.VALUE).setText(value);
-		new OkButton().click();
-		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.RESOURCE_LABEL));
-		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
-		TableItem item = null;
-		try {
-			item = new DefaultTable().getItem(name);
-		} catch (RedDeerException ex) {
-			fail("Label name has not been modified successfully.");
-		}
-		assertTrue("Label value has not been modified successfully.", item.getText(1).equals(value));
-		
-		// Remove an existing label
-		item.select();
-		new PushButton(OpenShiftLabel.Button.REMOVE).click();
-		
-		new DefaultShell(OpenShiftLabel.Shell.REMOVE_LABEL);
-		new YesButton().click();
-		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.REMOVE_LABEL));
-		
-		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
-		assertFalse("Label should not be present in the resouce labels table, but it is.",
-				new TableContainsItem(new DefaultTable(), name, 0).test());		
+				page.createLabel(name, value));
 	}
 	
-	private void createLabel(String name, String value) {
-		new PushButton(OpenShiftLabel.Button.ADD).click();
+	@Test
+	public void editLabel() {
+		String name = "label.name";
+		String value = "label-value";
+		page.createLabel(name, value);
 		
-		new DefaultShell(OpenShiftLabel.Shell.RESOURCE_LABEL);
-		new LabeledText(OpenShiftLabel.TextLabels.LABEL).setText(name);
-		new LabeledText(OpenShiftLabel.TextLabels.VALUE).setText(value);
-		
-		new WaitUntil(new WidgetIsEnabled(new OkButton()));
-		new OkButton().click();
-		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.RESOURCE_LABEL));
-		
-		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
+		assertTrue("Label value has not been modified successfully.", 
+				page.editLabel(name, name + "m", value + "m"));
+	}
+	
+	@Test
+	public void deleteLabel() {
+		String name = "label.name";
+		String value = "label-value";
+		page.createLabel(name, value);
+	
+		assertFalse("Label should not be present in the resouce labels table, but it is.",
+				page.deleteLabel(name));		
 	}
 	
 	@Test
 	public void testCreateDuplicativeLabel() {
+		ResourceLabelsWizardPage page = new ResourceLabelsWizardPage();
 		String name = "label";
 		String value = "value";
-		createLabel(name, value);
+		page.createLabel(name, value);
 		try {
-			createLabel(name, value);
+			page.createLabel(name, value);
 			fail("It should not be possible to create duplicitive labels");
 		} catch (RedDeerException ex) {
 			// pass
@@ -148,8 +116,9 @@ public class LabelsTest {
 	
 	@Test
 	public void testCreateDuplicativeReadOnlyLabel() {
+		ResourceLabelsWizardPage page = new ResourceLabelsWizardPage();
 		try {
-			createLabel("template", "noway");
+			page.createLabel("template", "noway");
 			fail("It should not be possible to create duplicite labels of already existing read only label");
 		} catch (RedDeerException ex) {
 			// pass

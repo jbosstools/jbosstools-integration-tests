@@ -163,7 +163,7 @@ public class CreateApplicationFromTemplateTest {
 	
 	private void completeApplicationCreationAndVerify() {
 		completeWizardAndVerify();
-		importApplicationAndVerify();
+		importApplicationAndVerify(projectName);
 		verifyCreatedApplication();
 	}
 	
@@ -222,7 +222,7 @@ public class CreateApplicationFromTemplateTest {
 		new OkButton().click();
 	}
 	
-	private void importApplicationAndVerify() {
+	public static void importApplicationAndVerify(String projectName) {
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION));
 		
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
