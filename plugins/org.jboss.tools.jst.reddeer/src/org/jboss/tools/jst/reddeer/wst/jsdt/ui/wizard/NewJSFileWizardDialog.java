@@ -20,6 +20,7 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
  *
  */
 public class NewJSFileWizardDialog extends NewWizardDialog{
+
 	/**
 	 * Constructs the wizard with JavaScript > JavaScript Source File.
 	 */

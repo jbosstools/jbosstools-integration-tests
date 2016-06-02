@@ -28,6 +28,7 @@ import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.jst.reddeer.tern.ui.TernModulesPropertyPage;
 import org.jboss.tools.jst.reddeer.wst.jsdt.ui.wizard.NewJSFileWizardDialog;
@@ -76,6 +77,7 @@ public class TernTestBase {
 		NewWizardDialog d = new NewJSFileWizardDialog();
 		d.open();
 		NewJSFileWizardPage p = new NewJSFileWizardPage();
+		new LabeledText("Enter or select the parent folder:").setText(PROJECT_NAME);
 		p.setFileName(filename);
 		d.finish();
 		assertTrue(filename + " not found!", new ProjectExplorer().getProject(PROJECT_NAME).containsItem(filename));

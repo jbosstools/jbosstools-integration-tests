@@ -99,6 +99,7 @@ public class BowerInitTest extends BowerTestBase {
 	public void testCanEditBowerConfigProperties() throws IOException {
 		BowerInitDialog bowerDialog = new BowerInitDialog();
 		bowerDialog.open();
+		new LabeledText("Base directory:").setText(BOWER_BASE_DIRECTORY);
 		new CheckBox("Use default configuration").toggle(false);
 		new LabeledText("Name:").setText(BOWER_PROPERTY_NAME);
 		new LabeledText("Version:").setText(BOWER_PROPERTY_VERSION);
