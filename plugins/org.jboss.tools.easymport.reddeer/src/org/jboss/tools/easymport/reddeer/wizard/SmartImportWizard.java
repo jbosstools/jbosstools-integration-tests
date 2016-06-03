@@ -10,12 +10,29 @@
  ******************************************************************************/
 package org.jboss.tools.easymport.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+/**
+ * 
+ * @author rhopp
+ *
+ */
 
-public class EasymportWizard extends ImportWizardDialog {
-	
-	public EasymportWizard() {
-		super(new String[]{"General", "Projects from Folder"});
+public class SmartImportWizard extends WizardDialog {
+
+	public void open() {
+		log.info("Opening wizard using top menu ");
+		new ShellMenu(getMenuPath()).select();
+		new DefaultShell(getDialogTitle());
 	}
 
+	protected String getDialogTitle() {
+		return "Import projects";
+	}
+	
+	protected String[] getMenuPath() {
+		return new String[]{"File", "Open Projects..."};
+	}
+	
 }
