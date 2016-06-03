@@ -29,6 +29,7 @@ import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.OpenNewApplica
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.OpenNewApplicationWizardWithNoProjectTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.TemplateParametersTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.create.CreateApplicationFromTemplateTest;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.create.CreateApplicationOnBuilderImageTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.create.DeploymentTest;
 import org.jboss.tools.openshift.ui.bot.test.common.OCBinaryLocationTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionPropertiesTest;
@@ -85,6 +86,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	
 	// Creation of a new application
 	CreateApplicationFromTemplateTest.class,
+	CreateApplicationOnBuilderImageTest.class,
 	DeploymentTest.class,
 	
 	// Application handling
@@ -103,7 +105,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	// Server adapter
 	ServerAdapterWizardHandlingTest.class,
 	CreateServerAdapterTest.class,
-
+	
 	// Clean up
 	CleanUpOS3.class 
 })

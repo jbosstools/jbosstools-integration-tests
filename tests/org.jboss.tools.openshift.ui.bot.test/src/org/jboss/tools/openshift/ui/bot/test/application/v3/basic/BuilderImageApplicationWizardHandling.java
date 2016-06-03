@@ -32,6 +32,9 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.wizard.page.EnvironmentVariableWizardPage;
+import org.jboss.tools.openshift.reddeer.wizard.page.ResourceLabelsWizardPage;
+import org.jboss.tools.openshift.reddeer.wizard.page.EnvironmentVariableWizardPage.EnvVar;
 import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
 import org.junit.After;
 import org.junit.Before;
@@ -39,6 +42,16 @@ import org.junit.Test;
 
 public class BuilderImageApplicationWizardHandling {
 
+	private ResourceLabelsWizardPage resourceLabelPage = new ResourceLabelsWizardPage();
+	EnvironmentVariableWizardPage environmentVariablesPage = new EnvironmentVariableWizardPage();
+	
+	private EnvVar envVar = new EnvVar("varname1", "varvalue1");
+	private EnvVar envVar2 = new EnvVar("varname1", "varvalue2");
+	private EnvVar homeVar = new EnvVar("HOME", "/home/jboss");
+	private EnvVar homeVar2 = new EnvVar("HOME", "/home/jbosstools");
+	private EnvVar javaVar = new EnvVar("JAVA_VENDOR", "openjdk");
+	private EnvVar javaVar2 = new EnvVar("JAVA_VENDOR", "rhjdk");
+				
 	@Before
 	public void openNewApplicationWizard() {
 		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
@@ -65,23 +78,6 @@ public class BuilderImageApplicationWizardHandling {
 				new NextButton().isEnabled());
 		assertFalse("Finish button should be disabled on first wizard page for builder images.",
 				new FinishButton().isEnabled());
-	}
-	
-	
-	private void nextToBuildConfigurationWizardPage() {
-		new DefaultTreeItem(OpenShiftLabel.Others.EAP_BUILDER_IMAGE).select();
-		
-		new WaitUntil(new WidgetIsEnabled(new NextButton()));
-		
-		new NextButton().click();
-		
-		new WaitUntil(new WidgetIsEnabled(new BackButton()));
-	}
-	
-	private void next() {		
-		new NextButton().click();
-		
-		new WaitUntil(new WidgetIsEnabled(new BackButton()));
 	}
 	
 	@Test
@@ -188,14 +184,9 @@ public class BuilderImageApplicationWizardHandling {
 	}
 	
 	@Test
-	public void testManageCustomEnvironmentVariableValidationOnDeploymentConfigurationWizardPage() {
+	public void testManageBuildEnvironmentVariables() {
 		nextToBuildConfigurationWizardPage();
-		next();
-		
-		String varName = "varname1";
-		String varValue = "varvalue1";
-		String varValue2 = "varvalue2";
-		
+
 		assertFalse("Edit button should be disabled if no environmnent variable is selected.",
 				new PushButton(OpenShiftLabel.Button.EDIT).isEnabled());
 		assertFalse("Remove button should be disabled if there is no variable selected.",
@@ -204,17 +195,19 @@ public class BuilderImageApplicationWizardHandling {
 				new PushButton(OpenShiftLabel.Button.RESET).isEnabled());
 		assertFalse("Reset All button should be disabled if there is no change performed on environment variables list.",
 				new PushButton(OpenShiftLabel.Button.RESET_ALL).isEnabled());
-		assertFalse("There should environment variables obtained from image metadata.",
-				new DefaultTable().getItems().isEmpty());
+
+	 	assertManagmentOfCustomEnvironmentVariable();
+	}
+	
+	private void assertManagmentOfCustomEnvironmentVariable() {
+		assertTrue("Table does not contain environment variable" + envVar.getName() + "=" + envVar.getValue(),
+	 			environmentVariablesPage.addEnvironmentVariable(envVar));
+	 	
+		assertTrue("Environment variable is not modified successfully.",
+				environmentVariablesPage.editEnvironmentVariable(envVar, envVar2));
 		
-	 	addEnvVar(varName, varValue);
-		new DefaultTable().getItem(varName).select();
-		
-		assertTrue("Remove button should be enabled if environment variable is selected.",
-				new PushButton(OpenShiftLabel.Button.REMOVE_BASIC).isEnabled());
-		
-		editEnvVar(varName, varValue, varValue2);
-		removeEnvVar(varName);
+		assertTrue("Environment variable should no longer be present in table.",
+				environmentVariablesPage.removeEnvironmentVariable(envVar));
 	}
 	
 	@Test
@@ -222,92 +215,56 @@ public class BuilderImageApplicationWizardHandling {
 		nextToBuildConfigurationWizardPage();
 		next();
 		
-		String varName = "HOME";
-		String varValue = "/home/jboss";
-		String newVarValue = "/home/jbosstools";
-		
-		new DefaultTable().select(varName);
+		new DefaultTable().select(homeVar.getName());
 		
 		assertFalse("Remove button should be disabled for read only variables",
 				new PushButton(OpenShiftLabel.Button.REMOVE_BASIC).isEnabled());
 		
-		editAndResetEnvVar(varName, varValue, newVarValue, OpenShiftLabel.Button.RESET);
-		editAndResetEnvVar(varName, varValue, newVarValue, OpenShiftLabel.Button.RESET_ALL);
+		assertTrue("Default variable has not been modified successfully",
+				environmentVariablesPage.editEnvironmentVariable(homeVar, homeVar2));
+		
+		assertTrue("Default variable has not been reset successfully",
+				environmentVariablesPage.resetEnvironmentVariable(homeVar2, homeVar));
+	
+		environmentVariablesPage.editEnvironmentVariable(homeVar, homeVar2);
+		environmentVariablesPage.editEnvironmentVariable(javaVar, javaVar2);
+		
+		assertTrue("Default variables have not been reset successfully", 
+				environmentVariablesPage.resetAllVariables(homeVar, javaVar));
+		
+		assertManagmentOfCustomEnvironmentVariable();
 	}
 	
-	private void addEnvVar(String name, String value) {
-		new PushButton(OpenShiftLabel.Button.ADD).click();
+	@Test
+	public void createLabel() {
+		nextToResourceLabelWizardPage();
+		String name = "label.name";
+		String value = "label-value";
 		
-		new DefaultShell(OpenShiftLabel.Shell.ENVIRONMENT_VARIABLE);
-		
-		new LabeledText("Name:").setText(name);
-		new LabeledText("Value:").setText(value);
-		new OkButton().click();
-		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.ENVIRONMENT_VARIABLE));
-		
-		assertTrue("Table does not contain added environment variable",
-				new DefaultTable().containsItem(name, 0));
+		assertTrue("Label " + name + ":" + value + " should be present in the table, but its not there.",
+				resourceLabelPage.createLabel(name, value));
 	}
 	
-	private void editEnvVar(String name, String oldValue, String newValue) {
-		new DefaultTable().getItem(name).select();
+	@Test
+	public void editLabel() {
+		nextToResourceLabelWizardPage();
+		String name = "label.name";
+		String value = "label-value";
+		resourceLabelPage.createLabel(name, value);
 		
-		assertTrue("Edit button should be enabled if environment variable is selected.",
-				new PushButton(OpenShiftLabel.Button.EDIT).isEnabled());
-		
-		new PushButton(OpenShiftLabel.Button.EDIT).click();
-		
-		new DefaultShell(OpenShiftLabel.Shell.ENVIRONMENT_VARIABLE);
-		
-		assertTrue("Environment variable name should be filled when editing an environment variable.",
-				new LabeledText("Environment Variable:").getText().equals(name));
-				//new LabeledText("Name:").equals(varName));
-		assertTrue("Environment variable value should be filled when editing an environment variable.",
-				new LabeledText("Value:").getText().equals(oldValue));
-		
-		new LabeledText("Value:").setText(newValue);
-		new OkButton().click();
-		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.ENVIRONMENT_VARIABLE));
-		
-		assertTrue("Table does not contain modified environment variable. Value is not shown correctly.",
-				new DefaultTable().getItem(name).getText(1).equals(newValue));
+		assertTrue("Label value has not been modified successfully.", 
+				resourceLabelPage.editLabel(name, name + "m", value + "m"));
 	}
 	
-	private void removeEnvVar(String name) {
-		new DefaultTable().select(name);
-		new PushButton(OpenShiftLabel.Button.REMOVE_BASIC).click();
-		
-		new DefaultShell(OpenShiftLabel.Shell.REMOVE_ENV_VAR);
-		new YesButton().click();
-		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.REMOVE_ENV_VAR));
-		
-		assertFalse("Environment variable should no longer be present in table.",
-				new DefaultTable().containsItem(name));
-	}
+	@Test
+	public void deleteLabel() {
+		nextToResourceLabelWizardPage();
+		String name = "label.name";
+		String value = "label-value";
+		resourceLabelPage.createLabel(name, value);
 	
-	private void editAndResetEnvVar(String varName, String oldValue, String newValue, String resetButton) {
-		editEnvVar(varName, oldValue, newValue);
-		new DefaultTable().getItem(varName).select();
-		
-		assertFalse("Remove button should be disabled if variable is read only.",
-				new PushButton(OpenShiftLabel.Button.REMOVE_BASIC).isEnabled());
-		assertTrue("Reset button should be enabled if variable is modified.",
-				new PushButton(OpenShiftLabel.Button.RESET).isEnabled());
-		assertTrue("Reset All button should be enabled if variable is modified.",
-				new PushButton(OpenShiftLabel.Button.RESET_ALL).isEnabled());
-		
-		new PushButton(resetButton).click();
-		
-		new DefaultShell(OpenShiftLabel.Shell.RESET_ENV_VAR);
-		new YesButton().click();
-		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.RESET_ENV_VAR));
-		
-		assertTrue("Variable was not reset successfully.",
-				new DefaultTable().getItem(varName).getText(1).equals(oldValue));
+		assertFalse("Label should not be present in the resouce labels table, but it is.",
+				resourceLabelPage.deleteLabel(name));		
 	}
 	
 	@Test
@@ -372,4 +329,31 @@ public class BuilderImageApplicationWizardHandling {
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning());
 	}
+	
+	/**************
+	  NAVIGATATION
+	***************/
+	public static void nextToBuildConfigurationWizardPage() {
+		new DefaultTreeItem(OpenShiftLabel.Others.EAP_BUILDER_IMAGE).select();
+		
+		new WaitUntil(new WidgetIsEnabled(new NextButton()));
+		
+		new NextButton().click();
+		
+		new WaitUntil(new WidgetIsEnabled(new BackButton()));
+	}
+	
+	public static void nextToResourceLabelWizardPage() {
+		nextToBuildConfigurationWizardPage();
+		next();
+		next();
+		next();
+	}
+	
+	private static void next() {		
+		new NextButton().click();
+		
+		new WaitUntil(new WidgetIsEnabled(new BackButton()));
+	}
+	
 }

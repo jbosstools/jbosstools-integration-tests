@@ -134,12 +134,12 @@ public class OpenShiftCommandLineToolsRequirement implements Requirement<OCBinar
 	private String getDownloadLink() {
 		if (Platform.getOS().equals(Platform.OS_LINUX)) {
 			if (Platform.getOSArch().equals(Platform.ARCH_X86)) {
-				return ClientVersion.LINUX_1_1_32.getDownloadLink();
+				return ClientVersion.LINUX_1_2_32.getDownloadLink();
 			} else { 
-				return ClientVersion.LINUX_1_1_64.getDownloadLink();
+				return ClientVersion.LINUX_1_2_64.getDownloadLink();
 			}
 		} else {
-			return ClientVersion.WINDOWS_1_1_AMD64.getDownloadLink();
+			return ClientVersion.WINDOWS_1_2_64.getDownloadLink();
 		}
 	}
 	
@@ -148,8 +148,15 @@ public class OpenShiftCommandLineToolsRequirement implements Requirement<OCBinar
 				+ "v1.1/openshift-origin-v1.1-ac7a99a-linux-386.tar.gz"),
 		LINUX_1_1_64("https://github.com/openshift/origin/releases/download/"
 				+ "v1.1/openshift-origin-v1.1-ac7a99a-linux-amd64.tar.gz"),
-		WINDOWS_1_1_AMD64("https://github.com/openshift/origin/releases/download/"
-				+ "v1.1/openshift-origin-v1.1-ac7a99a-windows-amd64.zip");
+		WINDOWS_1_1_64("https://github.com/openshift/origin/releases/download/"
+				+ "v1.1/openshift-origin-v1.1-ac7a99a-windows-amd64.zip"),
+		
+		LINUX_1_2_32("https://github.com/openshift/origin/releases/download/"
+				+ "v1.2.0/openshift-origin-client-tools-v1.2.0-2e62fab-linux-32bit.tar.gz"),
+		LINUX_1_2_64("https://github.com/openshift/origin/releases/download/"
+				+ "v1.2.0/openshift-origin-client-tools-v1.2.0-2e62fab-linux-64bit.tar.gz"),
+		WINDOWS_1_2_64("https://github.com/openshift/origin/releases/download/"
+				+ "v1.2.0/openshift-origin-client-tools-v1.2.0-2e62fab-windows.zip");
 		
 		String url;
 		
