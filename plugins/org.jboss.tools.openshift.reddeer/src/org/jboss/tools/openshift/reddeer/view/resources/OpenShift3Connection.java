@@ -75,11 +75,13 @@ public class OpenShift3Connection extends AbstractOpenShiftConnection {
 	
 	/**
 	 * Creates a new OpenShift project for a connection based on first project name and project
-	 * displayed name stored in {@link DatastoreOS3}.
+	 * displayed name stored in {@link DatastoreOS3}. The project name is generated every 
+	 * time this method is called because of upstream issues.
 	 * 
 	 * @return OpenShift Project
 	 */
 	public OpenShiftProject createNewProject() {
+		DatastoreOS3.generateProjectName();
 		return createNewProject(DatastoreOS3.PROJECT1, DatastoreOS3.PROJECT1_DISPLAYED_NAME);
 	}
 	
