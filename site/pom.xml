@@ -79,7 +79,7 @@
 										<arg>-s</arg>
 										<arg>${project.build.directory}/repository</arg>
 										<arg>-t</arg>
-										<arg>${eclipseName}/snapshots/updates/${snapshotLocation}/${jbosstools_site_stream}</arg>
+										<arg>${eclipseReleaseName}/snapshots/updates/${snapshotLocation}/${jbosstools_site_stream}</arg>
 									</arguments>
 								</configuration>
 							</execution>
