@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.matcher.TreeItemRegexMatcher;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
@@ -13,7 +12,6 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
@@ -87,14 +85,15 @@ public class NewDecoratorCreationWizard extends NewWizardDialog{
 		new PushButton("Add...").click();
 		new DefaultShell("Implemented Interfaces Selection");
 		new DefaultText(0).setText(bindings);
-		String[] splitBindings = bindings.split(".");
-		System.out.println("BIND:");
-		for(String s: splitBindings){
-			System.out.println(s);
-		}
+		String[] splitBindings = bindings.split("\\.");
 		Table t = new DefaultTable();
 		new WaitUntil(new TableItemIsFound(t, splitBindings[splitBindings.length-1]), TimePeriod.LONG);
-		new DefaultTableItem(new TreeItemRegexMatcher(splitBindings[splitBindings.length-1])).select();
+		for(TableItem ti: new DefaultTable().getItems()){
+			if(ti.getText().contains(splitBindings[splitBindings.length-1])){
+				ti.select();
+				break;
+			}
+		}
 		new PushButton("OK").click();
 		new DefaultShell("New Decorator");
 	}
