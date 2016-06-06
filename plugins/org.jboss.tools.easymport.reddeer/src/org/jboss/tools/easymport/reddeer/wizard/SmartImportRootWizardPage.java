@@ -13,35 +13,64 @@ package org.jboss.tools.easymport.reddeer.wizard;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.jface.wizard.WizardPage;
+import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
+import org.jboss.reddeer.swt.impl.label.DefaultLabel;
+import org.jboss.reddeer.swt.impl.link.DefaultLink;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 
-public class ImportProposalWizardPage extends WizardPage {
-
+public class SmartImportRootWizardPage extends WizardPage {
+	
+	private static final Logger log = Logger.getLogger(WizardProjectsImportPage.class);
+	
+	public void selectDirectory(String path){
+		log.info("Selecting directory \""+path+"\" in SelectImportRootWizardPage.");
+		Combo selectDirText = new LabeledCombo("Import source:");
+		selectDirText.setText(path);
+	}
+	
+	
+	public List<String> getDetectors(){
+		List<String> resultList = new ArrayList<String>();
+		new DefaultLink("installed project configurators").click();
+		new DefaultShell("Installed project configuratos");
+		String labelText = new DefaultLabel(1).getText();
+		String[] split = labelText.split("\n");
+		for (String row: split) {
+			if (row.startsWith("*")){
+				resultList.add(row.substring(2));
+			}
+		}
+		new OkButton().click();
+		return resultList;
+	}
+	
+	public void setSearchForNestedProjects(boolean value){
+		new CheckBox("Search for nested projects").toggle(value);
+	}
+	
+	public void setDetectAndConfigureNatures(boolean value){
+		new CheckBox("Detect and configure project natures").toggle(value);
+	}
+	
+	public void setHideOpenProjects(boolean value){
+		new CheckBox("Hide already open projects").toggle(value);
+	}
+	
 	public List<ProjectProposal> getAllProjectProposals() {
 
 		DefaultTree tree = new DefaultTree();
 		List<ProjectProposal> returnList = parseTree(tree);
 		return returnList;
 	}
-
-	public void selectAll() {
-		new PushButton("Select All").click();
-	}
-
-	public void deselectAll() {
-		new PushButton("Deselect All").click();
-	}
-
-	public void useAdditionalAnalysis(boolean checked) {
-		new CheckBox("Use additional analysis after import to detect nested project under selected projects "
-				+ "(BEWARE: this may create new projects in your workspace without ability to review it first!)")
-						.toggle(checked);
-	}
-
+	
 	private List<ProjectProposal> parseTree(DefaultTree tree) {
 		List<ProjectProposal> returnList = new ArrayList<>();
 		for (TreeItem treeItem : tree.getAllItems()) {

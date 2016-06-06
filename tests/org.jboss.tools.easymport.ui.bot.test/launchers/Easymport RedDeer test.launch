@@ -29,21 +29,20 @@
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
 <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
-<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_25"/>
+<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.jboss.tools.easymport.ui.bot.test.AllTestsSuite"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog  -pluginCustomization ${project_loc:org.jboss.tools.easymport.ui.bot.test}/../pluginCustomization.ini"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.easymport.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx1024m -XX:MaxPermSize=256m -Dusage_reporting_enabled=false"/>
 <stringAttribute key="pde.version" value="3.3"/>
-<stringAttribute key="product" value="org.eclipse.platform.ide"/>
+<stringAttribute key="product" value="com.jboss.devstudio.core.product"/>
 <stringAttribute key="rd.launch.property.logDebug" value="false"/>
 <stringAttribute key="rd.launch.property.rd.captureScreenshot" value="true"/>
 <stringAttribute key="rd.launch.property.rd.close.shells" value="true"/>
 <stringAttribute key="rd.launch.property.rd.close.welcome.screen" value="true"/>
 <stringAttribute key="rd.launch.property.rd.closeShells" value="true"/>
 <stringAttribute key="rd.launch.property.rd.closeWelcomeScreen" value="true"/>
-<stringAttribute key="rd.launch.property.rd.config" value="${project_loc:org.jboss.tools.arquillian.ui.bot.test}/resources/generated_config_files/project/wildfly-8.xml"/>
 <stringAttribute key="rd.launch.property.rd.disable.maven.download.repo.index.on.startup" value="true"/>
 <stringAttribute key="rd.launch.property.rd.disableMavenIndex" value="true"/>
 <stringAttribute key="rd.launch.property.rd.logLevel" value="ALL"/>

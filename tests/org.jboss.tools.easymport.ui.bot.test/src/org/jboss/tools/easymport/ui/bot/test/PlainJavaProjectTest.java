@@ -10,14 +10,20 @@
  ******************************************************************************/
 package org.jboss.tools.easymport.ui.bot.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.easymport.reddeer.wizard.ImportedProject;
 import org.jboss.tools.easymport.reddeer.wizard.ProjectProposal;
 
-public class PlainJavaProjectTest extends ProjectTestTemplate{
+public class PlainJavaProjectTest extends ProjectTestTemplate {
 
 	@Override
 	public File getProjectPath() {
@@ -37,8 +43,21 @@ public class PlainJavaProjectTest extends ProjectTestTemplate{
 		ArrayList<ImportedProject> returnList = new ArrayList<ImportedProject>();
 		ImportedProject project = new ImportedProject("PlainJavaProject", "");
 		project.addImportedAs("Java");
-//		project.addImportedAs("JDT");
 		returnList.add(project);
 		return returnList;
+	}
+
+	@Override
+	void cehckImportedProject() {
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("PlainJavaProject");
+		String[] natureIds = {};
+		try {
+			natureIds = project.getDescription().getNatureIds();
+		} catch (CoreException e) {
+			e.printStackTrace();
+			fail();
+		}
+		assertEquals("Project should have exactly 1 nature", 1, natureIds.length);
+		assertEquals("Project should have java nature", "org.eclipse.jdt.core.javanature", natureIds[0]);
 	}
 }
