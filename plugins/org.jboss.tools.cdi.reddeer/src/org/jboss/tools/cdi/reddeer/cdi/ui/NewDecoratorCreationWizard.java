@@ -89,7 +89,7 @@ public class NewDecoratorCreationWizard extends NewWizardDialog{
 		Table t = new DefaultTable();
 		new WaitUntil(new TableItemIsFound(t, splitBindings[splitBindings.length-1]), TimePeriod.LONG);
 		for(TableItem ti: new DefaultTable().getItems()){
-			if(ti.getText().contains(splitBindings[splitBindings.length-1])){
+			if(ti.getText().toLowerCase().contains(splitBindings[splitBindings.length-1].toLowerCase())){
 				ti.select();
 				break;
 			}
