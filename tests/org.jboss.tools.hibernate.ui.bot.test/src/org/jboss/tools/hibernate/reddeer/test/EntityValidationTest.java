@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
@@ -14,6 +16,7 @@ import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsDescriptionMatcher;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +48,7 @@ public class EntityValidationTest extends HibernateRedDeerTest {
 	
 	@Test
 	public void embeddedEntityValidationTest() {		
-		
+		buildProject();
 		log.step("Check problems view for no errors");
 		ProblemsView pv = new ProblemsView();
 		pv.open();
@@ -57,6 +60,8 @@ public class EntityValidationTest extends HibernateRedDeerTest {
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
 		pe.getProject(PROJECT_NAME).getProjectItem("src/main/java","org.hibernate.ui.test.model","Address.java").delete();
+		buildProject();
+		
 		pv.activate();
 		String expectedProblem = "org.hibernate.ui.test.model.Address is not mapped as an embeddable";
 		new WaitUntil(new ProblemExists(ProblemType.ERROR, new ProblemsDescriptionMatcher(expectedProblem)));
@@ -66,7 +71,7 @@ public class EntityValidationTest extends HibernateRedDeerTest {
 			
 	@Test
 	public void userIdentifierGeneratorValidationTest() {		
-		
+		buildProject();
 		log.step("Check problems view for no errors");
 		ProblemsView pv = new ProblemsView();
 		pv.open();
@@ -77,10 +82,19 @@ public class EntityValidationTest extends HibernateRedDeerTest {
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
 		pe.getProject(PROJECT_NAME).getProjectItem("src/main/java","org.hibernate.ui.test.model","Address.java").delete();
+		buildProject();
 		
 		pv.activate();
 		String expectedProblem = "Strategy class \"org.hibernate.ui.test.model.UserIdGenerator\" could not be found.";
 		problems = pv.getProblems(ProblemType.ERROR, new ProblemsDescriptionMatcher(expectedProblem));
 		assertTrue(expectedProblem + " Error is expected, known issue(s):JBIDE-19526", problems.size() == 2);
+	}
+	
+	private void buildProject(){
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		pe.getProject(PROJECT_NAME).select();
+		new ShellMenu("Project","Build Project").select();
+		new WaitWhile(new JobIsRunning());
 	}
 }
