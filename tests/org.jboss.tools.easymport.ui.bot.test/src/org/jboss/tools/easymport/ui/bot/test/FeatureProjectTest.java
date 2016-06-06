@@ -10,14 +10,22 @@
  ******************************************************************************/
 package org.jboss.tools.easymport.ui.bot.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.easymport.reddeer.wizard.ImportedProject;
 import org.jboss.tools.easymport.reddeer.wizard.ProjectProposal;
 
 public class FeatureProjectTest extends ProjectTestTemplate {
+
+	private static final String PROJECT_NAME = "FeatureProject";
 
 	@Override
 	File getProjectPath() {
@@ -27,7 +35,7 @@ public class FeatureProjectTest extends ProjectTestTemplate {
 	@Override
 	List<ProjectProposal> getExpectedProposals() {
 		ArrayList<ProjectProposal> returnList = new ArrayList<ProjectProposal>();
-		ProjectProposal projectProposal = new ProjectProposal("FeatureProject");
+		ProjectProposal projectProposal = new ProjectProposal(PROJECT_NAME);
 		returnList.add(projectProposal);
 		return returnList;
 	}
@@ -35,10 +43,24 @@ public class FeatureProjectTest extends ProjectTestTemplate {
 	@Override
 	List<ImportedProject> getExpectedImportedProjects() {
 		ArrayList<ImportedProject> returnList = new ArrayList<ImportedProject>();
-		ImportedProject project = new ImportedProject("FeatureProject", "");
+		ImportedProject project = new ImportedProject(PROJECT_NAME, "");
 		project.addImportedAs("Eclipse Feature");
 		returnList.add(project);
 		return returnList;
+	}
+	
+	@Override
+	void cehckImportedProject() {
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJECT_NAME);
+		String[] natureIds = {};
+		try {
+			natureIds = project.getDescription().getNatureIds();
+		} catch (CoreException e) {
+			e.printStackTrace();
+			fail();
+		}
+		assertEquals("Project should have exactly 1 nature", 1, natureIds.length);
+		assertEquals("Project should have feature nature", "org.eclipse.pde.FeatureNature", natureIds[0]);
 	}
 
 }

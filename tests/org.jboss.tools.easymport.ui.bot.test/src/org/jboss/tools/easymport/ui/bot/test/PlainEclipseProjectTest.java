@@ -10,10 +10,16 @@
  ******************************************************************************/
 package org.jboss.tools.easymport.ui.bot.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.jboss.tools.easymport.reddeer.wizard.ImportedProject;
 import org.jboss.tools.easymport.reddeer.wizard.ProjectProposal;
 
@@ -40,6 +46,18 @@ public class PlainEclipseProjectTest extends ProjectTestTemplate {
 		project.addImportedAs("Eclipse project");
 		returnList.add(project);
 		return returnList;
+	}
+
+	@Override
+	void cehckImportedProject() {
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("PlainEclipseProject");
+		try {
+			String[] natureIds = project.getDescription().getNatureIds();
+			assertEquals("This project should not have any nature", 0, natureIds.length);
+		} catch (CoreException e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
 
 }

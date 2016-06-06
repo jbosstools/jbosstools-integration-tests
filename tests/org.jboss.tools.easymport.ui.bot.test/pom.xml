@@ -56,7 +56,7 @@
 				<executions>
 					<execution>
 						<id>copy-resources</id>
-						<phase>pre-integration-test</phase>
+						<phase>process-resources</phase>
 						<goals>
 							<goal>copy-resources</goal>
 						</goals>
