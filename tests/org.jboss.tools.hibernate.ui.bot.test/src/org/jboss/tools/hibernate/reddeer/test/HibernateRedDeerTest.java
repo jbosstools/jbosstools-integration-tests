@@ -8,6 +8,7 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
@@ -25,7 +26,6 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.hibernate.reddeer.console.KnownConfigurationsView;
 import org.jboss.tools.hibernate.reddeer.database.DatabaseUtils;
-import org.jboss.tools.hibernate.reddeer.dialog.ProjectPropertyDialog;
 import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
 import org.jboss.tools.hibernate.reddeer.factory.HibernateToolsFactory;
@@ -190,7 +190,7 @@ public class HibernateRedDeerTest {
     	importProject(project, libs);
     	
     	log.step("Create Hibernate configuration file with Hibernate Console");
-		HibernateToolsFactory.createConfigurationFile(cfg, project, "hibernate.cfg.xml", true);
+		HibernateToolsFactory.createConfigurationFile(cfg, project, "hibernate.cfg.xml", false);
 		log.step("Set Hibernate Version in Hibernate Console");
 		HibernateToolsFactory.setHibernateVersion(project, hbVersion);
 		log.step("Hibernate console in Hibernate Settings in Project Properties");
@@ -202,17 +202,15 @@ public class HibernateRedDeerTest {
 		
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.selectProjects(project);
-		
-		ProjectPropertyDialog prjDlg = new ProjectPropertyDialog(project);
-		prjDlg.open();
-		prjDlg.select("Hibernate Settings");
+		ExplorerItemPropertyDialog pd = new ExplorerItemPropertyDialog(pe.getProject(project));
+		pd.open();
+		pd.select("Hibernate Settings");
 		
 		CheckBox cb = new CheckBox();		
 		if (!cb.isChecked()) cb.click();
 		
 		new DefaultCombo().setSelection(project);
-		new OkButton().click();
+		pd.ok();
 	}
 	
 	protected static void deleteHibernateConfigurations(){

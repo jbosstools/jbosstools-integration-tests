@@ -2,6 +2,7 @@ package org.jboss.tools.hibernate.reddeer.wizard;
 
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -47,7 +48,9 @@ public class JPAFacetWizardPage extends WizardPage {
 		apply.click();
 		new WaitWhile(new JobIsRunning());
 		// Abstract wait workaround, various shells are messing with RedDeer
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		//AbstractWait.sleep(TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"));
 	}
 
 	/**
