@@ -6,6 +6,7 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
 import org.jboss.reddeer.eclipse.wst.common.project.facet.ui.FacetsPropertyPage;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -17,7 +18,6 @@ import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
 import org.jboss.tools.hibernate.reddeer.dialog.ProjectFacetsPage;
-import org.jboss.tools.hibernate.reddeer.dialog.ProjectPropertyDialog;
 import org.jboss.tools.hibernate.reddeer.editor.JpaXmlEditor;
 import org.jboss.tools.hibernate.reddeer.wizard.JPAFacetWizardPage;
 
@@ -40,13 +40,12 @@ public class ProjectConfigurationFactory {
 	public static void convertProjectToFacetsForm(String prj) {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.selectProjects(prj);
-		ProjectPropertyDialog prjDlg = new ProjectPropertyDialog(prj);
-		prjDlg.open();    	
-		prjDlg.select("Project Facets");
+		ExplorerItemPropertyDialog pd = new ExplorerItemPropertyDialog(pe.getProject(prj));
+		pd.open();    	
+		pd.select("Project Facets");
 		ProjectFacetsPage facetsPage = new ProjectFacetsPage(prj);
 		facetsPage.convertToFacetedForm();		
-		prjDlg.ok();
+		pd.ok();
 	}
 	
 	/**
@@ -69,11 +68,10 @@ public class ProjectConfigurationFactory {
 		DatabaseConfiguration cfg, String jpaVersion) {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.selectProjects(prj);
 		
-		ProjectPropertyDialog prjDlg = new ProjectPropertyDialog(prj);
-		prjDlg.open();
-		prjDlg.select("Project Facets");
+		ExplorerItemPropertyDialog pd = new ExplorerItemPropertyDialog(pe.getProject(prj));
+		pd.open(); 
+		pd.select("Project Facets");
 		
 		
 		boolean javaFacet = false;
@@ -100,18 +98,18 @@ public class ProjectConfigurationFactory {
 		pp.selectVersion("JPA",jpaVersion);
 		
 		addFurtherJPAConfiguration(jpaVersion,!javaFacet);
-		prjDlg.ok();
+		pd.ok();
 		pe.open();
 		pe.selectProjects(prj);
 		
-		prjDlg.open();		
-		prjDlg.select("JPA"); //TODO Why this takes so long ?
+		pd.open();		
+		pd.select("JPA"); //TODO Why this takes so long ?
  
 		JPAFacetWizardPage jpaPage = new JPAFacetWizardPage();
 		
 		jpaPage.setConnectionProfile(cfg.getProfileName());
 		jpaPage.setAutoDiscovery(true);
-		prjDlg.ok();
+		pd.ok();
 		
 		checkPersistenceXML(prj);
 	}	

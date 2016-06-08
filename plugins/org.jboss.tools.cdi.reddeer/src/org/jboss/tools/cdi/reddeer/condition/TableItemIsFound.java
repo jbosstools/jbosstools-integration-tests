@@ -17,7 +17,7 @@ public class TableItemIsFound extends AbstractWaitCondition{
 	@Override
 	public boolean test() {
 		for(TableItem i: table.getItems()){
-			if(i.getText().contains(item)){
+			if(i.getText().toLowerCase().contains(item.toLowerCase())){
 				return true;
 			}
 		}
