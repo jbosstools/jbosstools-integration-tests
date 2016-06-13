@@ -60,5 +60,6 @@ public class DatastoreOS3 {
 	 */
 	public static void generateProjectName() {
 		PROJECT1 = "generated-name" + ++seed;
+		PROJECT1_DISPLAYED_NAME = "displayedName-" + seed;
 	}
 }

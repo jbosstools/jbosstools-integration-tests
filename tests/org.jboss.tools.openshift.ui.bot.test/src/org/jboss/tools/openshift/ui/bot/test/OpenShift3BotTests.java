@@ -68,7 +68,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	ConnectionPropertiesTest.class,
 	ShowConnectionInWebConsoleTest.class,
 	
-	// Project
+	// Projectp
 	ProjectNameValidationTest.class,
 	LinkToCreateNewProjectTest.class,
 	CreateNewProjectTest.class,

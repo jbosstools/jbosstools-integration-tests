@@ -194,7 +194,6 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID905ManageSnapshotsTest.class,
 		ID906RestoreApplicationFromSnapshotTest.class,
 		ID907DownloadableCartridgeContentAssistTest.class,
-		
 		CleanUpOS2.class,
 })
 public class OpenShift2BotTests {

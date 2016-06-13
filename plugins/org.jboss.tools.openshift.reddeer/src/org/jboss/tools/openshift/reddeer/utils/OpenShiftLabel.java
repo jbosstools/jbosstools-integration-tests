@@ -138,7 +138,7 @@ public class OpenShiftLabel {
 		public static final String APPLICATION_SERVER_REMOVE = "Application and Server removal";
 		public static final String COMMIT = "Commit Changes";
 		public static final String DELETE_APP = "Application removal";
-		public static final String DELETE_OS_PROJECT = "OpenShift project deletion";
+		public static final String DELETE_OS_PROJECT = "OpenShift resource deletion";
 		public static final String DELETE_ADAPTER = "Delete Server";
 		public static final String DEPLOY_IMAGE_TO_OPENSHIFT = "Deploy Image to OpenShift";
 		public static final String EDIT_CARTRIDGES = "Edit Embedded Cartridges";
@@ -203,7 +203,7 @@ public class OpenShiftLabel {
 		
 		// Resources related
 		public static final String CREATE_RESOURCE_SUMMARY = "Create Resource Summary";
-		public static final String DELETE_RESOURCE = "Delete Resource";
+		public static final String DELETE_RESOURCE = "OpenShift resource deletion";
 		
 		// Others
 		public static final String BINARY_LOCATION_UNKNOWN = "Unknown executable location";

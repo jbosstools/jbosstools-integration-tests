@@ -59,6 +59,7 @@ import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftResource;
 import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.TemplateParametersTest;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -66,7 +67,8 @@ import org.junit.Test;
 
 public class DeployEclipseProjectTest {
 
-	private static String EAP_APP_REPO_URI = "https://github.com/mlabuda/jboss-eap-application";
+	private static String EAP_APP_REPO_URI = "git@github.com:mlabuda/jboss-eap-application.git";
+	private static String HTTPS_REPO = "https://github.com/mlabuda/jboss-eap-application";
 	private static String GIT_NAME = "jboss-eap-application";
 	private static String PROJECT_NAME = "jboss-javaee6-webapp";
 	
@@ -188,6 +190,20 @@ public class DeployEclipseProjectTest {
 		new DefaultText().setText(PROJECT_NAME);
 		
 		wizard.next();
+		
+		//https://github.com/mlabuda/jboss-eap-application
+		new DefaultTable().getItem(TemplateParametersTest.SOURCE_REPOSITORY_URL).select();
+		
+		new WaitUntil(new WidgetIsEnabled(new PushButton(OpenShiftLabel.Button.EDIT)));
+		
+		new PushButton(OpenShiftLabel.Button.EDIT).click();
+		
+		new DefaultShell(OpenShiftLabel.Shell.EDIT_TEMPLATE_PARAMETER);
+		new DefaultText().setText(HTTPS_REPO);
+		new OkButton().click();
+		
+		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_TEMPLATE_PARAMETER));
+		
 		wizard.next();
 		wizard.finish();
 		
