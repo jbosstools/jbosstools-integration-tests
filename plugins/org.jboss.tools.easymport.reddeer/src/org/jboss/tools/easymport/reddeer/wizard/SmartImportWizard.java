@@ -28,11 +28,11 @@ public class SmartImportWizard extends WizardDialog {
 	}
 
 	protected String getDialogTitle() {
-		return "Import projects";
+		return "Import Projects from File System or Archive";
 	}
 	
 	protected String[] getMenuPath() {
-		return new String[]{"File", "Open Projects..."};
+		return new String[]{"File", "Open Projects from File System..."};
 	}
 	
 }
