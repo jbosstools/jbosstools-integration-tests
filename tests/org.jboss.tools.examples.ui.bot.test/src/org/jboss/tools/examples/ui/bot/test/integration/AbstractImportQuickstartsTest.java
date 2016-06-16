@@ -28,6 +28,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -78,13 +79,14 @@ public abstract class AbstractImportQuickstartsTest {
 	protected static String SERVER_NAME = "";
 	protected QuickstartsReporter reporter = QuickstartsReporter.getInstance();
 	protected static LogView errorLogView;
-	
+
+	private static final Logger log = Logger.getLogger(AbstractImportQuickstartsTest.class);
+
 	@BeforeClass
 	public static void setup() {
 		setupLog();
 	}
 
-	
 	@After
 	public void cleanup() {
 		clearWorkspace();
@@ -95,10 +97,7 @@ public abstract class AbstractImportQuickstartsTest {
 		createReports();
 	}
 
-	
-	
-	
-	protected static void setServerName(String serverName){
+	protected static void setServerName(String serverName) {
 		SERVER_NAME = serverName;
 	}
 
@@ -107,7 +106,9 @@ public abstract class AbstractImportQuickstartsTest {
 		serversView.open();
 		Server server = serversView.getServer(getServerFullName(serversView.getServers(), SERVER_NAME));
 		assertTrue("Server has not been started!", server.getLabel().getState() == ServerState.STARTED);
-		//assertTrue("Server has not been synchronized!",server.getLabel().getPublishState() == ServerPublishState.SYNCHRONIZED);
+		// assertTrue("Server has not been
+		// synchronized!",server.getLabel().getPublishState() ==
+		// ServerPublishState.SYNCHRONIZED);
 	}
 
 	/*
@@ -125,14 +126,14 @@ public abstract class AbstractImportQuickstartsTest {
 		Server server = serversView.getServer(fullServerName);
 
 		for (String deployableProjectName : qstart.getDeployableProjectNames()) {
-			try{
-			// deploy
-			deployProject(deployableProjectName, explorer);
-			// check deploy status
-			checkDeployedProject(qstart, fullServerName);
-			// undeploy
-			unDeployModule(qstart.getName().equals("template")?"QUICKSTART_NAME":qstart.getName(), server);
-			}catch(CoreLayerException ex){
+			try {
+				// deploy
+				deployProject(deployableProjectName, explorer);
+				// check deploy status
+				checkDeployedProject(qstart, fullServerName);
+				// undeploy
+				unDeployModule(qstart.getName().equals("template") ? "QUICKSTART_NAME" : qstart.getName(), server);
+			} catch (CoreLayerException ex) {
 				new DefaultShell("Server Error");
 				new OkButton().click();
 			}
@@ -140,7 +141,7 @@ public abstract class AbstractImportQuickstartsTest {
 	}
 
 	private void unDeployModule(String moduleName, Server server) {
-		System.out.println("UNDEPLOYING MODULE" + moduleName + " ON SERVER " + server.getLabel());
+		log.info("UNDEPLOYING MODULE" + moduleName + " ON SERVER " + server.getLabel());
 		ServerModule serverModule = server.getModule(new RegexMatcher(".*" + moduleName + ".*"));
 		serverModule.remove();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
@@ -164,7 +165,7 @@ public abstract class AbstractImportQuickstartsTest {
 	}
 
 	private void deployProject(String deployableProject, ProjectExplorer explorer) {
-		System.out.println("DEPLOYING " + deployableProject);
+		log.info("DEPLOYING " + deployableProject);
 		explorer.activate();
 		Project project = explorer.getProject(deployableProject);
 		project.select();
@@ -189,12 +190,14 @@ public abstract class AbstractImportQuickstartsTest {
 		}
 		return null;
 	}
-	
+
 	protected static Collection<Quickstart> createQuickstartsList() {
 		ArrayList<Quickstart> resultList = new ArrayList<Quickstart>();
 		ArrayList<String> specificQuickstarts = new ArrayList<String>();
-		if(System.getProperty("specificQuickstarts")!=null&&!System.getProperty("specificQuickstarts").trim().equals("${specificQuickstarts}")){
-			specificQuickstarts = new ArrayList<String>(Arrays.asList(System.getProperty("specificQuickstarts").trim().split(",")));
+		if (System.getProperty("specificQuickstarts") != null
+				&& !System.getProperty("specificQuickstarts").trim().equals("${specificQuickstarts}")) {
+			specificQuickstarts = new ArrayList<String>(
+					Arrays.asList(System.getProperty("specificQuickstarts").trim().split(",")));
 		}
 		File file = new File(System.getProperty("examplesLocation"));
 		FileFilter directoryFilter = new FileFilter() {
@@ -203,45 +206,50 @@ public abstract class AbstractImportQuickstartsTest {
 			public boolean accept(File arg0) {
 				return arg0.isDirectory();
 			}
-		};		
+		};
 		for (File f : file.listFiles(directoryFilter)) {
-//			if (f.getAbsolutePath().contains("picketlink") || f.getAbsolutePath().contains("wsat")) { // JBIDE-18497
-//																										// Picketlink
-//																										// quickstart
-//																										// is
-//																										// not
-//																										// working
-//				QuickstartsReporter.getInstance().addError(new Quickstart("Picketlink", f.getAbsolutePath()),
-//						"Picketlink was skipped due to JBIDE-18497");
-//				continue;
-//			}
-			if(specificQuickstarts.size()==0||specificQuickstarts.contains(f.getName())){
-				System.out.println("PROCESSING " + f.getAbsolutePath());
-				Quickstart qstart = new Quickstart(f.getName(), f.getAbsolutePath());
-				resultList.add(qstart);
+			// if (f.getAbsolutePath().contains("picketlink") ||
+			// f.getAbsolutePath().contains("wsat")) { // JBIDE-18497
+			// // Picketlink
+			// // quickstart
+			// // is
+			// // not
+			// // working
+			// QuickstartsReporter.getInstance().addError(new
+			// Quickstart("Picketlink", f.getAbsolutePath()),
+			// "Picketlink was skipped due to JBIDE-18497");
+			// continue;
+			// }
+			if (!f.getPath().contains("/.")) {
+				if (specificQuickstarts.size() == 0 || specificQuickstarts.contains(f.getName())) {
+					log.info("PROCESSING " + f.getAbsolutePath());
+					Quickstart qstart = new Quickstart(f.getName(), f.getAbsolutePath());
+					resultList.add(qstart);
+				}
 			}
 		}
 		return resultList;
 	}
-	
-	protected static void setupLog(){
+
+	protected static void setupLog() {
 		errorLogView = new LogView();
 		errorLogView.open();
 		errorLogView.deleteLog();
 	}
-	
-	protected static void clearWorkspace(){
+
+	protected static void clearWorkspace() {
 		cleanupShells();
 		deleteAllProjects();
 		closeBrowser();
 		new ConsoleView().clearConsole();
 	}
-	
-	protected void runQuickstarts(Quickstart qstart, String serverName){
+
+	protected void runQuickstarts(Quickstart qstart, String serverName) {
 		try {
 			importQuickstart(qstart);
 			importTestUtilsIfNeeded(qstart);
-			if (!isError()&&System.getProperty("deployOnServer")!=null&&System.getProperty("deployOnServer").equals("true")) {
+			if (!isError() && System.getProperty("deployOnServer") != null
+					&& System.getProperty("deployOnServer").equals("true")) {
 				checkServerStatus();
 				deployUndeployQuickstart(qstart, SERVER_NAME);
 			}
@@ -253,19 +261,23 @@ public abstract class AbstractImportQuickstartsTest {
 		checkForErrors(qstart);
 		checkErrorLog(qstart);
 	}
-	
-	protected static void createReports(){
+
+	protected static void createReports() {
 		QuickstartsReporter.getInstance().generateReport();
 		QuickstartsReporter.getInstance().generateErrorFilesForEachProject(new File("target/reports/"));
 		QuickstartsReporter.getInstance().generateAllErrorsFile(new File("target/reports/allErrors.txt"));
 	}
 
 	protected void checkErrorLog(Quickstart qstart) {
-		List<LogMessage> allErrors = errorLogView.getErrorMessages();
+		List<LogMessage> allErrors = new ArrayList<LogMessage>();
+		List<LogMessage> errors = errorLogView.getErrorMessages();
 		String errorMessages = "";
-		for (LogMessage message : allErrors) {
-			reporter.addError(qstart, "ERROR IN ERROR LOG: " + message.getMessage());
-			errorMessages += "\t" + message.getMessage() + "\n";
+		for (LogMessage message : errors) {
+			if (!message.getMessage().contains("Unable to delete")
+					&& !message.getMessage().contains("Could not delete")) {
+				reporter.addError(qstart, "ERROR IN ERROR LOG: " + message.getMessage());
+				errorMessages += "\t" + message.getMessage() + "\n";
+			}
 		}
 		errorLogView.deleteLog();
 		if (!allErrors.isEmpty()) {
@@ -291,10 +303,14 @@ public abstract class AbstractImportQuickstartsTest {
 	protected void checkForErrors(Quickstart q) {
 		updateProjectsIfNeeded();
 		String errorMessages = "";
-		List<String> allErrors = ExamplesOperator.getInstance().getAllErrors();
-		for (String error : allErrors) {
-			reporter.addError(q, "ERROR IN PROJECT: " + error);
-			errorMessages += "\t" + error + "\n";
+		List<String> allErrors = new ArrayList<String>();
+		List<String> errors = ExamplesOperator.getInstance().getAllErrors();
+		for (String error : errors) {
+			if (!error.contains("Unable to delete") && !error.contains("Could not delete")) {
+				reporter.addError(q, "ERROR IN PROJECT: " + error);
+				errorMessages += "\t" + error + "\n";
+				allErrors.add(error);
+			}
 		}
 		if (!allErrors.isEmpty()) {
 			fail("There are errors in imported project:\n" + errorMessages);
@@ -308,8 +324,8 @@ public abstract class AbstractImportQuickstartsTest {
 		}
 		return false;
 	}
-	
-	protected void updateProjectsIfNeeded(){
+
+	protected void updateProjectsIfNeeded() {
 		for (String string : ExamplesOperator.getInstance().getAllErrors()) {
 			if (string.contains("not up-to-date with pom.xml")) { // maven
 																	// update is
@@ -361,20 +377,22 @@ public abstract class AbstractImportQuickstartsTest {
 			}
 		}
 	}
-	
+
 	private void importTestUtilsIfNeeded(Quickstart qstart) {
 		for (String error : ExamplesOperator.getInstance().getAllErrors()) {
-			if(error.contains("Missing artifact org.javaee7:test-utils")){
-				Quickstart testUtils = new Quickstart("test-utils",qstart.getPath().getAbsolutePath().replace(qstart.getName(),"test-utils"));
+			if (error.contains("Missing artifact org.javaee7:test-utils")) {
+				Quickstart testUtils = new Quickstart("test-utils",
+						qstart.getPath().getAbsolutePath().replace(qstart.getName(), "test-utils"));
 				importQuickstart(testUtils);
 				break;
 			}
-			if(error.contains("Missing artifact org.javaee7:util")){
-				Quickstart testUtils = new Quickstart("util",qstart.getPath().getAbsolutePath().replace(qstart.getName(),"test-utils"));
+			if (error.contains("Missing artifact org.javaee7:util")) {
+				Quickstart testUtils = new Quickstart("util",
+						qstart.getPath().getAbsolutePath().replace(qstart.getName(), "test-utils"));
 				importQuickstart(testUtils);
 				break;
 			}
-		}		
+		}
 	}
 
 	protected static void closeBrowser() {
@@ -440,23 +458,23 @@ public abstract class AbstractImportQuickstartsTest {
 	 */
 
 	public void checkDeployedProject(Quickstart qstart, String serverNameLabel) {
-		if (!qstart.getName().contains("ejb-timer")) {
+		if (!qstart.getName().contains("ejb-timer") && !qstart.getName().contains("cluster-ha-singleton")) {
 			new WaitWhile(new JobIsRunning());
 			new WaitUntil(new ConsoleHasNoChange(TimePeriod.LONG), TimePeriod.VERY_LONG);
 		}
 		JBossServerView serversView = new JBossServerView();
 		serversView.open();
-		String moduleName = qstart.getName().equals("template")?"QUICKSTART_NAME":qstart.getName();
+		String moduleName = qstart.getName().equals("template") ? "QUICKSTART_NAME" : qstart.getName();
 		JBossServerModule module = (JBossServerModule) serversView.getServer(serverNameLabel)
 				.getModule(new RegexMatcher(".*" + moduleName + ".*")); // cannot
-																				// be
-																				// used
-																				// projectName
-																				// -
-																				// issues
-																				// with
-																				// parent
-																				// projects
+																		// be
+																		// used
+																		// projectName
+																		// -
+																		// issues
+																		// with
+																		// parent
+																		// projects
 		if (new ContextMenu("Show In", "Web Browser").isEnabled()) {
 			module.openWebPage();
 
