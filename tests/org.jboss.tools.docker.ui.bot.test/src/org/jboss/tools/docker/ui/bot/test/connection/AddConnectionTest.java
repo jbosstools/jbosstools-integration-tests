@@ -16,18 +16,24 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * 
+ * 
+ * @author jkopriva
+ */
+
 public class AddConnectionTest extends AbstractDockerBotTest {
-	
+
 	@Before
-	public void before(){
+	public void before() {
 		openDockerPerspective();
 	}
-	
+
 	@Test
-	public void AddConnectionTest(){
+	public void testAddConnection() {
 		createConnection();
-	}	
-	
+	}
+
 	@After
 	public void after() {
 		deleteConnection();

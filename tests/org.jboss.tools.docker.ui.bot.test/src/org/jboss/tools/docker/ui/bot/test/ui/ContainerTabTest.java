@@ -26,27 +26,25 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-
 /**
  * 
  * @author jkopriva
  *
  */
 
-
 public class ContainerTabTest extends AbstractDockerBotTest {
 
 	private String imageName = "docker/whalesay";
 	private String containerName = "test_run_docker_whalesay";
-	
+
 	@Before
 	public void before() {
 		openDockerPerspective();
 		createConnection();
 	}
-	
+
 	@Test
-	public void ContainerTabTest() {
+	public void testContainerTab() {
 		pullImage(this.imageName);
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
@@ -60,17 +58,17 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 		DockerContainersTab containerTab = new DockerContainersTab();
 		containerTab.activate();
 		containerTab.refresh();
-		
+
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
 
-		//get values from Container Tab
+		// get values from Container Tab
 		String nameFromTable = "";
 		String imageFromTable = "";
 		String createdFromTable = "";
 		String commandFromTable = "";
 		String portsFromTable = "";
 		String statusFromTable = "";
-		
+
 		for (TableItem item : containerTab.getTableItems()) {
 			if (item.getText(1).contains(this.imageName)) {
 				nameFromTable = item.getText();
@@ -82,8 +80,8 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 				item.click();
 			}
 		}
-		
-		//get values from Properties view
+
+		// get values from Properties view
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
 		propertiesView.selectTab("Info");
@@ -93,8 +91,8 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 		String commandProp = propertiesView.getProperty("Command").getPropertyValue();
 		String portsProp = propertiesView.getProperty("Ports").getPropertyValue();
 		String statusProp = propertiesView.getProperty("Status").getPropertyValue();
-		
-		//compare values
+
+		// compare values
 		assertTrue("Name in table and in Properties do not match!", nameProp.contains(nameFromTable));
 		assertTrue("Image in table and in Properties do not match!", imageProp.equals(imageFromTable));
 		assertTrue("Created in table and in Properties do not match!", createdProp.equals(createdFromTable));

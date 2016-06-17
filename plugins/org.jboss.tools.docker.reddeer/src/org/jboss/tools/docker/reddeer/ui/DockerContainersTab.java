@@ -28,33 +28,34 @@ import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
  */
 
 public class DockerContainersTab extends WorkbenchView {
-	
+
 	public DockerContainersTab() {
 		super("Docker Containers");
 	}
 
 	public TableItem getDockerImage(String dockerContainerName) {
 		activate();
-		for (TableItem item : getTableItems()){
-			if (item.getText().equals(dockerContainerName)){
+		for (TableItem item : getTableItems()) {
+			if (item.getText().equals(dockerContainerName)) {
 				return item;
 			}
 		}
 		throw new EclipseLayerException("There is no container with name " + dockerContainerName);
 	}
-	
-	public void refresh(){
+
+	public void refresh() {
 		this.activate();
 		new DefaultToolItem("Refresh (F5)").click();
-		
-	}
-	
-	public List<TableItem> getTableItems(){
-		return new DefaultTable().getItems();
-		
-	}
-	
 
-	
+	}
+
+	public List<TableItem> getTableItems() {
+		return new DefaultTable().getItems();
+
+	}
+
+	public void select(String containerName) {
+		getDockerImage(containerName).select();
+	}
 
 }

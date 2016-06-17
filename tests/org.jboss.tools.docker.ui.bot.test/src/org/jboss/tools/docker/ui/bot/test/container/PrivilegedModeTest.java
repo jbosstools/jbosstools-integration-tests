@@ -9,18 +9,15 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.docker.ui.bot.test.ui;
+package org.jboss.tools.docker.ui.bot.test.container;
 
-import static org.junit.Assert.fail;
-
-import java.io.File;
-import java.io.IOException;
+import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageOneWizard;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageTwoWizard;
+import org.jboss.tools.docker.reddeer.ui.DockerContainersTab;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
@@ -33,23 +30,19 @@ import org.junit.Test;
  *
  */
 
-public class VolumeMountTest extends AbstractDockerBotTest{
-	
-	private String imageName = "jboss/wildfly";
-	private String containerName = "test_run_wildfly_volumes";
-	private String deploymentPath = "resources/wildfly-deployments";
-	private String containerPath = "/opt/jboss/wildfly/standalone/deployments/";
-	private String quickstartURL = "wildfly-helloworld";
-	
+public class PrivilegedModeTest extends AbstractDockerBotTest {
+
+	private String imageName = "debian:jessie";
+	private String containerName = "test_run_debian";
+
 	@Before
 	public void before() {
 		openDockerPerspective();
 		createConnection();
 	}
-	
-	
+
 	@Test
-	public void VolumeMountTest()throws IOException{
+	public void testPrivilegedMode() {
 		pullImage(this.imageName);
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
@@ -58,33 +51,27 @@ public class VolumeMountTest extends AbstractDockerBotTest{
 		imageTab.runImage(this.imageName);
 		RunADockerImagePageOneWizard firstPage = new RunADockerImagePageOneWizard();
 		firstPage.setName(this.containerName);
-		firstPage.setPublishAllExposedPorts(false);
-		firstPage.next();
-		RunADockerImagePageTwoWizard secondPage = new RunADockerImagePageTwoWizard();
-		String deploymentPath = "";
-		try {
-			deploymentPath = (new File(this.deploymentPath)).getCanonicalPath();
-		} catch (IOException ex) {
-			fail("Resource file not found!");
-		}
-		secondPage.addDataVolumeToHost(containerPath, deploymentPath);
-		secondPage.finish();
+		firstPage.setAllocatePseudoTTY();
+		firstPage.setKeepSTDINOpen();
+		firstPage.setGiveExtendedPrivileges();
+		firstPage.finish();
 		new WaitWhile(new JobIsRunning());
-		BrowserView browserView = new BrowserView();
-		browserView.open();
-		browserView.activate();
-		browserView.openPageURL(createURL(":8080"+"/" +quickstartURL));
-		checkBrowserForErrorPage(browserView);
-
+		DockerContainersTab containerTab = new DockerContainersTab();
+		containerTab.activate();
+		containerTab.refresh();
+		containerTab.select(containerName);
+		PropertiesView propertiesView = new PropertiesView();
+		propertiesView.open();
+		propertiesView.selectTab("Inspect");
+		String privilegedProp = propertiesView.getProperty("HostConfig", "Privileged").getPropertyValue();
+		assertTrue("Container is not running in privileged mode!", privilegedProp.equals("true"));
 	}
-	
-	
+
 	@After
 	public void after() {
 		deleteContainer(this.containerName);
-		deleteImage(this.imageName);
+		deleteImage("debian");
 		deleteConnection();
 	}
-	
 
 }

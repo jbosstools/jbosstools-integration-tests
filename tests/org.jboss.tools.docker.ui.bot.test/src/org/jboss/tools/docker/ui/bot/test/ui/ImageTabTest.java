@@ -24,18 +24,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-
 /**
  * 
  * @author jkopriva
  *
  */
 
-
 public class ImageTabTest extends AbstractDockerBotTest {
-	
+
 	private String imageName = "hello-world";
-	
+
 	@Before
 	public void before() {
 		openDockerPerspective();
@@ -43,7 +41,7 @@ public class ImageTabTest extends AbstractDockerBotTest {
 	}
 
 	@Test
-	public void ImageTabTest() {
+	public void testImageTab() {
 		pullImage(this.imageName);
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
@@ -60,12 +58,12 @@ public class ImageTabTest extends AbstractDockerBotTest {
 				idFromTable = item.getText();
 				repoTagsFromTable = item.getText(1);
 				createdFromTable = item.getText(2);
-				sizeFromTable = item.getText(3).replaceAll(".","").replaceAll(" MB", "");
+				sizeFromTable = item.getText(3).replaceAll(".", "").replaceAll(" MB", "");
 				item.click();
 			}
 		}
 		idFromTable = idFromTable.replace("sha256:", "");
-		
+
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
 		propertiesView.selectTab("Info");
@@ -73,19 +71,18 @@ public class ImageTabTest extends AbstractDockerBotTest {
 		String repoTagsProp = propertiesView.getProperty("RepoTags").getPropertyValue();
 		String createdProp = propertiesView.getProperty("Created").getPropertyValue();
 		String sizeProp = propertiesView.getProperty("VirtualSize").getPropertyValue();
-		
+
 		assertTrue("Id in table and in Properties do not match!", idProp.contains(idFromTable));
 		assertTrue("RepoTags in table and in Properties do not match!", repoTagsProp.equals(repoTagsFromTable));
 		assertTrue("Created in table and in Properties do not match!", createdProp.equals(createdFromTable));
 		assertTrue("Size in table and in Properties do not match!", sizeProp.startsWith(sizeFromTable));
 
 	}
-	
+
 	@After
 	public void after() {
 		deleteImage(this.imageName);
 		deleteConnection();
 	}
-
 
 }

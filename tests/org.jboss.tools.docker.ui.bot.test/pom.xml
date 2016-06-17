@@ -11,10 +11,9 @@
 	<artifactId>org.jboss.tools.docker.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>-DdockerServerURI=${dockerServerURI} -DimageName=${imageName} -Dscope=${scope}</systemProperties>
-		<scope>DockerAllBotTest</scope>
-		<dockerServerURI>tcp://localhost:2375</dockerServerURI>
-		<imageName>jboss/wildfly</imageName>
+		<systemProperties>-DdockerServerURI=${dockerServerURI} -DunixSocket=${unixSocket}</systemProperties>
+		<unixSocket>unix:///var/run/docker.sock</unixSocket>
+		<dockerServerURI></dockerServerURI>
 		<surefire.timeout>14400</surefire.timeout>
 	</properties>
 
@@ -25,11 +24,15 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<testSuite>org.jboss.tools.docker.ui.bot.test</testSuite>
-					<testClass>org.jboss.tools.docker.ui.bot.test.${scope}</testClass>
 					<dependencies combine.children="append">
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.eclipse.linuxtools.docker.feature.feature.group</artifactId>
+							<version>0.0.0</version>
+						</dependency>
+						<dependency>
+							<type>p2-installable-unit</type>
+							<artifactId>org.eclipse.tm.terminal.view.ui</artifactId>
 							<version>0.0.0</version>
 						</dependency>
 					</dependencies>
@@ -40,7 +43,10 @@
 
 	<profiles>
 		<profile>
-			<id>all-tests</id>
+			<id>all</id>
+   			 <activation>
+      			<activeByDefault>true</activeByDefault>
+   			 </activation>
 			<build>
 				<plugins>
 					<plugin>
@@ -51,8 +57,22 @@
 			</build>
 			<properties>
 				<dockerServer>${dockerServerURI}</dockerServer>
-				<imageName>${imageName}</imageName>
-				<suiteClass>org.jboss.tools.docker.ui.bot.test.DockerAllBotTest</suiteClass>
+				<testClass>org.jboss.tools.docker.ui.bot.test.DockerAllBotTest</testClass>
+			</properties>
+		</profile>
+		<profile>
+			<id>smoke</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-surefire-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+			<properties>
+				<dockerServer>${dockerServerURI}</dockerServer>
+				<testClass>org.jboss.tools.docker.ui.bot.test.SmokeSuite</testClass>
 			</properties>
 		</profile>
 	</profiles>

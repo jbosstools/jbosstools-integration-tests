@@ -12,6 +12,7 @@
 package org.jboss.tools.docker.ui.bot.test.ui;
 
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
+import org.junit.After;
 import org.junit.Test;
 
 /**
@@ -23,8 +24,13 @@ import org.junit.Test;
 public class PerspectiveTest extends AbstractDockerBotTest {
 
 	@Test
-	public void PerspectiveTest() {
+	public void testPerspective() {
 		openDockerPerspective();
+	}
+
+	@After
+	public void clear() {
+		cleanupShells();
 	}
 
 }
