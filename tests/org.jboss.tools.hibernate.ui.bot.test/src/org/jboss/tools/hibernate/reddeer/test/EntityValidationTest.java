@@ -81,7 +81,7 @@ public class EntityValidationTest extends HibernateRedDeerTest {
 		log.step("Delete generator UserIdGenerator.java");
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
-		pe.getProject(PROJECT_NAME).getProjectItem("src/main/java","org.hibernate.ui.test.model","Address.java").delete();
+		pe.getProject(PROJECT_NAME).getProjectItem("src/main/java","org.hibernate.ui.test.model","UserIdGenerator.java").delete();
 		buildProject();
 		
 		pv.activate();
