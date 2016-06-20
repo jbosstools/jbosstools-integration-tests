@@ -8,7 +8,6 @@ import org.hibernate.id.IdentifierGenerator;
 
 public class UserIdGenerator implements IdentifierGenerator {
 
-	@Override
 	public Serializable generate(SessionImplementor session, Object object)
 			throws HibernateException {
 
