@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test.application.advanced;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -24,12 +25,14 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.SecureStorage;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.wizard.v2.NewOpenShift2ApplicationWizard;
@@ -46,7 +49,7 @@ public class ID902DeployGitProjectTest {
 
 	private String projectName = "jboss-javaee6-webapp";
 	private String applicationName = "jbosseapapp" + System.currentTimeMillis();
-	private String gitProjectURI = "https://github.com/mlabuda/jboss-eap-application.git";
+	private String gitProjectURI = "git@github.com:mlabuda/jboss-eap-application.git";
 	
 	@Test
 	public void testDeployGitBasedProject() {
@@ -88,7 +91,7 @@ public class ID902DeployGitProjectTest {
 		new WaitUntil(new ShellWithTextIsAvailable("Import"), TimePeriod.LONG);
 		
 		new DefaultShell("Import").setFocus();
-		new DefaultTreeItem("Git", "Projects from Git").select();
+		new DefaultTreeItem("Git", "Projects from Git (with smart import)").select();
 		
 		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
 		new NextButton().click();
@@ -99,6 +102,21 @@ public class ID902DeployGitProjectTest {
 		new NextButton().click();
 		
 		new LabeledText("URI:").setText(gitProjectURI);
+		
+		try {
+			new DefaultShell(OpenShiftLabel.Shell.SECURE_STORAGE_PASSWORD);
+			new DefaultText(0).setText(SecureStorage.PASSWORD);
+			
+			new WaitUntil(new WidgetIsEnabled(new OkButton()));
+			
+			new OkButton().click();
+			
+			new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.SECURE_STORAGE_PASSWORD));
+		} catch (RedDeerException ex) {
+			// do nothing, if failed, there was no secure storage shell opened
+		}
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
 		new NextButton().click();
@@ -112,9 +130,6 @@ public class ID902DeployGitProjectTest {
 		new NextButton().click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
-		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
-		new NextButton().click();
 		
 		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.LONG);
 		new FinishButton().click();

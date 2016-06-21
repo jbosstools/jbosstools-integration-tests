@@ -65,7 +65,7 @@ public class BuilderImageApplicationWizardHandling {
 		
 		assertTrue("Next button should be enabled if EAP template was selected after build image.",
 				new NextButton().isEnabled());
-		assertTrue("Finish button should be enabled if template is selected after build image.",
+		assertFalse("Finish button should be disabled if template is selected after build image.",
 				new FinishButton().isEnabled());
 		
 		selectBuilderImageAndAssertButtonsAvailability();
