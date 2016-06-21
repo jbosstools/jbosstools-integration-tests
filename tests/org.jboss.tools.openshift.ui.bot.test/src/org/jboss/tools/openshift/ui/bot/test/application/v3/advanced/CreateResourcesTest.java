@@ -36,7 +36,7 @@ import org.junit.Test;
 
 public class CreateResourcesTest {
 
-	private String testProject = "rsrc-app-project";
+	private String testProject;
 	private OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 	
 	private static final String RESOURCES_LOCATION = System.getProperty("user.dir") + 
@@ -44,6 +44,7 @@ public class CreateResourcesTest {
 	
 	@Before
 	public void prepareTestEnvironment() {
+		testProject = "rsrc-app-project" + System.currentTimeMillis();
 		explorer.getOpenShift3Connection().createNewProject(testProject);
 	}
 	

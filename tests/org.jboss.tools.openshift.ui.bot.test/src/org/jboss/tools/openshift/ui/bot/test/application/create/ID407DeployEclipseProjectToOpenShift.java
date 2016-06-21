@@ -27,6 +27,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.TreeHasChildren;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.YesButton;
@@ -137,12 +138,14 @@ public class ID407DeployEclipseProjectToOpenShift {
 		new DefaultTreeItem(new DefaultTree(), ".gitignore").select();
 		new ContextMenu("Add to Index").select(); 
 		
+		new WaitUntil(new TreeHasChildren(new DefaultTree(1)));
+		
 		new PushButton(OpenShiftLabel.Button.COMMIT).click();
 		
 		new WaitWhile(new JobIsRunning());		
 	}
 	
-	public static void postCreateSteps(String applicationName) {
+	public void postCreateSteps(String applicationName) {
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EMBEDDED_CARTRIDGE), 
 				TimePeriod.VERY_LONG);
 			
@@ -172,12 +175,9 @@ public class ID407DeployEclipseProjectToOpenShift {
 				applicationName + " at OpenShift 2").select();
 		new ContextMenu("Publish").select();
 		
-		new DefaultShell("Publish Changes");
-		new PushButton("Publish Only").click();
-
-		new DefaultShell("Attempt push force ?");
+		new DefaultShell("Publish " + applicationName + "?");
 		new YesButton().click();
-	
+		
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 
 		// Browser need time
