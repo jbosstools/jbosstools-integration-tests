@@ -35,6 +35,7 @@ import org.jboss.tools.openshift.ui.bot.test.common.OCBinaryLocationTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionPropertiesTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionWizardHandlingTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.CreateNewConnectionTest;
+import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionWizardLinksTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.RemoveConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.ShowConnectionInWebConsoleTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.StoreConnectionTest;
@@ -60,6 +61,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	OCBinaryLocationTest.class,
 	
 	// Connection
+	ConnectionWizardLinksTest.class,
 	CreateNewConnectionTest.class,
 	RemoveConnectionTest.class,
 	ConnectionWizardHandlingTest.class,
