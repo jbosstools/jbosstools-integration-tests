@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: CDI UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.cdi.bot.test
-Bundle-Version: 4.4.0.qualifier
+Bundle-Version: 4.4.1.qualifier
 Bundle-Activator: org.jboss.tools.cdi.bot.test.PluginActivator
 Require-Bundle: org.jboss.reddeer.go;bundle-version="1.0.0",
- org.jboss.tools.cdi.reddeer,
- org.jboss.tools.common.reddeer,
- org.jboss.ide.eclipse.as.reddeer,
- org.jboss.tools.jst.reddeer,
+ org.jboss.tools.cdi.reddeer;bundle-version="[4.4.1,4.5.0)",
+ org.jboss.tools.common.reddeer;bundle-version="[4.4.1,4.5.0)",
+ org.jboss.ide.eclipse.as.reddeer;bundle-version="[4.4.1,4.5.0)",
+ org.jboss.tools.jst.reddeer;bundle-version="[4.4.1,4.5.0)",
  org.jboss.tools.jsf.reddeer
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

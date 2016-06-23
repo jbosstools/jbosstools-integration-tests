@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Performance Tests Core
 Bundle-SymbolicName: org.jboss.tools.perf.test.core
-Bundle-Version: 4.4.0.qualifier
+Bundle-Version: 4.4.1.qualifier
 Bundle-ClassPath: .,
  resources/perftestlibs/gson-2.1.jar,
  resources/perftestlibs/sigar-1.6.5.132.jar,
