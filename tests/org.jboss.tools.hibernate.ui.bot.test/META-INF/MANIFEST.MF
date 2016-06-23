@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Hibernate UI tests
 Bundle-SymbolicName: org.jboss.tools.hibernate.ui.bot.test
-Bundle-Version: 4.4.0.qualifier
+Bundle-Version: 4.4.1.qualifier
 Bundle-Activator: org.jboss.tools.hibernate.ui.bot.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  org.jboss.tools.common.ui,
  org.eclipse.datatools.connectivity,
- org.jboss.tools.hibernate.reddeer,
+ org.jboss.tools.hibernate.reddeer;bundle-version="[4.4.1,4.5.0)",
  org.jboss.reddeer.go,
  org.jboss.reddeer.requirements
 Bundle-ActivationPolicy: lazy

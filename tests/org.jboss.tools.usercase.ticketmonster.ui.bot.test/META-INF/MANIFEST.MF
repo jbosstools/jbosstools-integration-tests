@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JBoss TicketMonster Integration Tests
 Bundle-SymbolicName: org.jboss.tools.usercase.ticketmonster.ui.bot.test;singleton:=true
-Bundle-Version: 4.4.0.qualifier
+Bundle-Version: 4.4.1.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.jboss.tools.usercase.ticketmonster.ui.bot.test,
@@ -22,8 +22,8 @@ Require-Bundle: org.jboss.reddeer.junit,
  org.jboss.reddeer.requirements,
  org.jboss.reddeer.junit.extension,
  org.jboss.reddeer.common;bundle-version="0.8.0",
- org.jboss.tools.maven.reddeer,
- org.jboss.tools.central.reddeer,
- org.jboss.tools.runtime.reddeer,
+ org.jboss.tools.maven.reddeer;bundle-version="[4.4.1,4.5.0)",
+ org.jboss.tools.central.reddeer;bundle-version="[4.4.1,4.5.0)",
+ org.jboss.tools.runtime.reddeer;bundle-version="[4.4.1,4.5.0)",
  org.jboss.tools.browsersim.browser;bundle-version="3.7.0",
  org.jboss.tools.browsersim.ui;bundle-version="3.7.0"

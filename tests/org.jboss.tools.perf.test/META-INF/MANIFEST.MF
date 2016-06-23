@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Validation Performance Tests
 Bundle-SymbolicName: org.jboss.tools.perf.test
-Bundle-Version: 4.4.0.qualifier
+Bundle-Version: 4.4.1.qualifier
 Bundle-Activator: org.jboss.tools.perf.test.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
@@ -16,7 +16,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.reddeer.workbench,
  org.jboss.reddeer.requirements,
  org.jboss.reddeer.junit.extension,
- org.jboss.tools.common.reddeer,
+ org.jboss.tools.common.reddeer;bundle-version="[4.4.1,4.5.0)",
  org.jboss.tools.maven.reddeer;bundle-version=4.3.0,
  org.jboss.reddeer.junit,
  org.jboss.tools.perf.test.core
