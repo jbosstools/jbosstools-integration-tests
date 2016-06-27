@@ -26,12 +26,12 @@ import org.jboss.reddeer.swt.api.TreeItem;
  *
  */
 
-public abstract class AbstractDockerExplorerItem extends AbstractExplorerItem{
+public abstract class AbstractDockerExplorerItem extends AbstractExplorerItem {
 
 	public AbstractDockerExplorerItem(TreeItem treeItem) {
 		super(treeItem);
 	}
-	
+
 	public List<ConnectionItem> getChildrenConnection() {
 		activateWrappingView();
 		List<ConnectionItem> children = new ArrayList<ConnectionItem>();
@@ -39,25 +39,22 @@ public abstract class AbstractDockerExplorerItem extends AbstractExplorerItem{
 		for (TreeItem item : treeItem.getItems()) {
 			String name = item.getText();
 			String[] childPath = new String[treeItem.getPath().length + 1];
-			System.arraycopy(treeItem.getPath(), 0, childPath, 0,
-					treeItem.getPath().length);
+			System.arraycopy(treeItem.getPath(), 0, childPath, 0, treeItem.getPath().length);
 			childPath[childPath.length - 1] = name;
 			children.add(new ConnectionItem(item));
 		}
 
 		return children;
 	}
-	
+
 	public ConnectionItem getChildConnection(String text) {
 		activateWrappingView();
 		String[] childPath = new String[treeItem.getPath().length + 1];
-		System.arraycopy(treeItem.getPath(), 0, childPath, 0,
-				treeItem.getPath().length);
+		System.arraycopy(treeItem.getPath(), 0, childPath, 0, treeItem.getPath().length);
 		childPath[childPath.length - 1] = text;
 		return getConnectionItem(text);
 	}
-	
-	
+
 	public ConnectionItem getConnectionItem(String... path) {
 		activateWrappingView();
 		TreeItem item = treeItem;
@@ -75,21 +72,16 @@ public abstract class AbstractDockerExplorerItem extends AbstractExplorerItem{
 					logger.debug("Obtaining direct children on the current level");
 					List<TreeItem> items = item.getItems();
 					logger.debug("Item \"" + pathSegment + "\" was not found. Available items on the current level:");
-					for (TreeItem treeItem: items) {
+					for (TreeItem treeItem : items) {
 						logger.debug("\"" + treeItem.getText() + "\"");
 					}
-					throw new EclipseLayerException(
-							"Cannot get connection item specified by path."
-									+ "Connection item either does not exist or solution is ambiguous because "
-									+ "of existence of more items on the path with same name without decorators");
+					throw new EclipseLayerException("Cannot get connection item specified by path."
+							+ "Connection item either does not exist or solution is ambiguous because "
+							+ "of existence of more items on the path with same name without decorators");
 				}
 			}
 		}
 		return new ConnectionItem(item);
 	}
-	
-	
-	
-	
 
 }

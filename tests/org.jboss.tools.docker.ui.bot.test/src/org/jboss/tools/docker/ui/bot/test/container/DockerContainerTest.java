@@ -9,7 +9,7 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.docker.ui.bot.test.ui;
+package org.jboss.tools.docker.ui.bot.test.container;
 
 import static org.junit.Assert.assertTrue;
 
@@ -19,6 +19,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -37,19 +38,18 @@ import org.junit.Test;
  */
 
 public class DockerContainerTest extends AbstractDockerBotTest {
-	private String imageName = "";
+	private String imageName = "docker/whalesay";
 	private String containerName = "test_run";
+
 	@Before
 	public void before() {
 		openDockerPerspective();
 		createConnection();
-		this.imageName=System.getProperty("imageName");
 	}
 
-	
 	@Test
-	public void DockerContainerTest() {
-		String dockerServerURI = System.getProperty("dockerServerURI");
+	public void testDockerContainer() {
+		String dockerServer = getDockerServer();
 		ConsoleView cview = new ConsoleView();
 		cview.open();
 		try {
@@ -60,7 +60,7 @@ public class DockerContainerTest extends AbstractDockerBotTest {
 		pullImage(this.imageName);
 		DockerExplorer de = new DockerExplorer();
 		de.open();
-		ConnectionItem dockerConnection = de.getConnection(dockerServerURI);
+		ConnectionItem dockerConnection = de.getConnection(dockerServer);
 		TreeItem dc = dockerConnection.getTreeItem();
 		dc.select();
 		dc.expand();
@@ -68,9 +68,8 @@ public class DockerContainerTest extends AbstractDockerBotTest {
 		imagesItem.select();
 		imagesItem.expand();
 
-
 		TreeItem item = getChildContainsWith(imagesItem.getItems(), imageName);
-		if(item==null)
+		if (item == null)
 			assertTrue("Image has not been found!", false);
 		item.select();
 
@@ -79,10 +78,9 @@ public class DockerContainerTest extends AbstractDockerBotTest {
 		firstPage.setName(this.containerName);
 		firstPage.finish();
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WaitWhile(new ConsoleHasNoChange());
 
 	}
-
-
 
 	private TreeItem getChildContainsWith(List<TreeItem> items, String containString) {
 		for (TreeItem item : items) {
@@ -92,7 +90,6 @@ public class DockerContainerTest extends AbstractDockerBotTest {
 		}
 		return null;
 	}
-	
 
 	@After
 	public void after() {

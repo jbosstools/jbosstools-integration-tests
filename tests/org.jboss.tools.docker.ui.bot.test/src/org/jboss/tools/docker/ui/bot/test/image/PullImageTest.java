@@ -9,10 +9,12 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.docker.ui.bot.test.ui;
+package org.jboss.tools.docker.ui.bot.test.image;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
@@ -27,18 +29,16 @@ import org.junit.Test;
  */
 
 public class PullImageTest extends AbstractDockerBotTest {
-	private String imageName = "";
-	
+	private String imageName = "docker/whalesay";
+
 	@Before
 	public void before() {
 		openDockerPerspective();
 		createConnection();
-		this.imageName=System.getProperty("imageName");
 	}
-	
-	
+
 	@Test
-	public void PullImageTest() {
+	public void testPullImage() {
 		ConsoleView cview = new ConsoleView();
 		cview.open();
 		try {
@@ -46,16 +46,15 @@ public class PullImageTest extends AbstractDockerBotTest {
 		} catch (CoreLayerException ex) {
 			// there's not clear console button, since nothing run before
 		}
-		pullImage(System.getProperty("dockerServerURI"),this.imageName);
+		pullImage(this.imageName);
+		new WaitWhile(new JobIsRunning());
 		assertTrue("Image has not been deployed!", imageIsDeployed(this.imageName));
 	}
-	
+
 	@After
 	public void after() {
 		deleteImage(this.imageName);
 		deleteConnection();
 	}
-
-	
 
 }

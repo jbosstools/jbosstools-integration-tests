@@ -9,30 +9,24 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.docker.reddeer.ui;
+package org.jboss.tools.docker.preferences;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.jface.preference.PreferencePage;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
  * 
+ * 
  * @author jkopriva
- *
  */
 
-public class ConnectionItem extends AbstractDockerExplorerItem {
+public class DockerPreferencePage extends PreferencePage {
 
-	protected final Logger log = Logger.getLogger(ProjectItem.class);
-
-	public ConnectionItem(TreeItem treeItem) {
-		super(treeItem);
+	public DockerPreferencePage() {
+		super("Docker");
 	}
 
-	@Override
-	public void select() {
-		activateWrappingView();
-		treeItem.select();
+	public void setContainerRefreshRate(int seconds) {
+		new LabeledText("Container Refresh Rate (seconds)").setText(String.valueOf(seconds));
 	}
-
 }

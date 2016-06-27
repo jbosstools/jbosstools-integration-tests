@@ -11,9 +11,10 @@
 
 package org.jboss.tools.docker.reddeer.ui;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.ctab.DefaultCTabFolder;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.jboss.reddeer.swt.api.CTabFolder;
+import org.jboss.reddeer.swt.api.CTabItem;
 
 /**
  * 
@@ -21,18 +22,21 @@ import org.jboss.reddeer.swt.api.TreeItem;
  *
  */
 
-public class ConnectionItem extends AbstractDockerExplorerItem {
+public class DockerTerminal extends WorkbenchView {
 
-	protected final Logger log = Logger.getLogger(ProjectItem.class);
-
-	public ConnectionItem(TreeItem treeItem) {
-		super(treeItem);
+	public DockerTerminal() {
+		super("Terminal");
 	}
 
-	@Override
-	public void select() {
-		activateWrappingView();
-		treeItem.select();
+	public CTabItem getPage(String pageLabel) {
+		CTabFolder tabFolder = new DefaultCTabFolder();
+		CTabItem tabItem = tabFolder.getSelection();
+		tabItem.activate();
+		return tabItem;
+	}
+
+	public String getTextFromPage(String tabName) {
+		return getPage(tabName).getText();
 	}
 
 }

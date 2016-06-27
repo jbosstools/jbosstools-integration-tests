@@ -20,7 +20,7 @@ import org.jboss.reddeer.eclipse.ui.perspectives.AbstractPerspective;
  */
 
 public class DockerPerspective extends AbstractPerspective {
-	
+
 	public DockerPerspective() {
 		super("Docker Tooling");
 	}

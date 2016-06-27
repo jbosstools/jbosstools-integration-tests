@@ -9,8 +9,10 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.docker.ui.bot.test.ui;
+package org.jboss.tools.docker.ui.bot.test.image;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -19,6 +21,7 @@ import java.io.IOException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
@@ -36,12 +39,11 @@ public class BuildImageTest extends AbstractDockerBotTest {
 
 	@Before
 	public void before() {
-		openDockerPerspective();
-		createConnection();
+		prepareWorkspace();
 	}
 
 	@Test
-	public void BuildImageTest() {
+	public void testBuildImage() {
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
 		imageTab.refresh();
@@ -53,14 +55,18 @@ public class BuildImageTest extends AbstractDockerBotTest {
 			fail("Resource file not found!");
 		}
 		imageTab.buildImage(imageName, dockerFilePath);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		ConsoleView consoleView = new ConsoleView();
+		consoleView.open();
+		assertFalse("Console has no output!", consoleView.getConsoleText().isEmpty());
+		assertTrue("Build has not been successful", consoleView.getConsoleText().contains("Successfully built"));
 	}
-	
 
 	@After
 	public void after() {
 		deleteImage(imageName);
-		deleteConnection();
+		deleteImage("jboss/base-jdk");
+		cleanUpWorkspace();
 	}
 
 }

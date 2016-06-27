@@ -23,7 +23,6 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageOneWizard;
 
 /**
  * 
@@ -32,32 +31,32 @@ import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageOneWiza
  */
 
 public class DockerImagesTab extends WorkbenchView {
-	
+
 	public DockerImagesTab() {
 		super("Docker Images");
 	}
 
 	public TableItem getDockerImage(String dockerImageName) {
 		activate();
-		for (TableItem item : getTableItems()){
-			if (item.getText(1).contains(dockerImageName)){
+		for (TableItem item : getTableItems()) {
+			if (item.getText(1).contains(dockerImageName)) {
 				return item;
 			}
 		}
 		throw new EclipseLayerException("There is no Docker image with name " + dockerImageName);
 	}
-	
-	public void refresh(){
+
+	public void refresh() {
 		new DefaultToolItem("Refresh (F5)").click();
-		
+
 	}
-	
-	public List<TableItem> getTableItems(){
+
+	public List<TableItem> getTableItems() {
 		return new DefaultTable().getItems();
-		
+
 	}
-	
-	public void buildImage(String name, String directory){
+
+	public void buildImage(String name, String directory) {
 		new DefaultToolItem("Build Image").click();
 		new LabeledText("Name:").setText(name);
 		new LabeledText("Directory:").setText(directory);
@@ -69,8 +68,5 @@ public class DockerImagesTab extends WorkbenchView {
 		image.select();
 		new ContextMenu("Run...").select();
 	}
-	
-
-	
 
 }
