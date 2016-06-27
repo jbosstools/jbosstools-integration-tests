@@ -38,7 +38,6 @@ public class RunADockerImagePageTwoWizard extends WizardPage {
 
 	public void finish() {
 		new FinishButton().click();
-
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 

@@ -25,6 +25,7 @@ import org.jboss.tools.docker.ui.bot.test.image.PullImageTest;
 import org.jboss.tools.docker.ui.bot.test.ui.ContainerTabTest;
 import org.jboss.tools.docker.ui.bot.test.ui.DifferentRegistryTest;
 import org.jboss.tools.docker.ui.bot.test.ui.PerspectiveTest;
+import org.jboss.tools.docker.ui.bot.test.ui.SearchDialogTest;
 import org.jboss.tools.docker.ui.bot.test.ui.ImageTabTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -50,7 +51,8 @@ import org.junit.runners.Suite;
 	PrivilegedModeTest.class,
 	VariablesTest.class,
 	LinkContainersTest.class,
-	DifferentRegistryTest.class
+	DifferentRegistryTest.class,
+	SearchDialogTest.class
 	
 })
 public class DockerAllBotTest {
