@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.reddeer.view.resources;
 
+import org.hamcrest.Matcher;
+import org.hamcrest.core.IsEqual;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
@@ -51,7 +53,7 @@ public abstract class AbstractOpenShiftExplorerItem {
 		item.expand();
 		
 		// There can be some processing, wait for it
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(new Matcher[] {new IsEqual<String>("Loading OpenShift resources...")}), TimePeriod.NORMAL);
 	}
 	
 	public TreeItem getTreeItem() {

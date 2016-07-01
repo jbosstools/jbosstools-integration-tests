@@ -35,7 +35,7 @@ import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftProject;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftResource;
 import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
-import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.BuilderImageApplicationWizardHandling;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.BuilderImageApplicationWizardHandlingTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +60,7 @@ public class CreateApplicationOnBuilderImageTest {
 		
 		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
 		
-		BuilderImageApplicationWizardHandling.nextToBuildConfigurationWizardPage();
+		BuilderImageApplicationWizardHandlingTest.nextToBuildConfigurationWizardPage();
 		
 		applicationName = new LabeledText("Name: ").getText();
 		
