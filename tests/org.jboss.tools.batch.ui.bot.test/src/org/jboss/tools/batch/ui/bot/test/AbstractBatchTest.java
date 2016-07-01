@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2016 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.batch.ui.bot.test;
 
 import java.util.List;
@@ -14,7 +24,7 @@ import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class AbstractBatchTest {
+public abstract class AbstractBatchTest {
 
 	protected static final String PROJECT_NAME = "batch-test-project";
 
@@ -35,6 +45,12 @@ public class AbstractBatchTest {
 	protected static final String[] JOB_XML_FILE_FULL_PATH = new String[]{RESOURCES_FOLDER, META_INF_FOLDER, JOB_FILES_FOLDER, JOB_XML_FILE};
 
 	private static final Logger log = Logger.getLogger(AbstractBatchTest.class);
+	
+	/**
+	 * Abstract method for retrieving package name
+	 * @return string representing package
+	 */
+	protected abstract String getPackage();
 	
 	protected Project getProject(){
 		PackageExplorer explorer = new PackageExplorer();

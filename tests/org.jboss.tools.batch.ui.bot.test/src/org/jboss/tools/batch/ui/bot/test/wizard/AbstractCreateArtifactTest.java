@@ -26,6 +26,7 @@ public abstract class AbstractCreateArtifactTest extends AbstractBatchTest {
 
 	protected abstract void createArtifactHook(NewBatchArtifactWizardPage page);
 
+	@Override
 	protected String getPackage() {
 		return "batch.test.wizard.artifact";
 	}

@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2016 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.batch.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -6,6 +16,7 @@ import org.jboss.tools.batch.ui.bot.test.editor.design.DesignChunkStepElementTes
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignDecisionElementTest;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignFlowElementTest;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignSplitElementTest;
+import org.jboss.tools.batch.ui.bot.test.editor.features.CheckExistingReferenceTest;
 import org.jboss.tools.batch.ui.bot.test.wizard.CreateArtifactWithPropertiesTest;
 import org.jboss.tools.batch.ui.bot.test.wizard.CreateBatchXMLArtifactTest;
 import org.jboss.tools.batch.ui.bot.test.wizard.CreateClassloaderArtifactTest;
@@ -25,7 +36,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	DesignChunkStepElementTest.class,
 	DesignDecisionElementTest.class,
 	DesignFlowElementTest.class,
-	DesignSplitElementTest.class
+	DesignSplitElementTest.class,
+	CheckExistingReferenceTest.class
 	})
 public class SmokeSuite {
 

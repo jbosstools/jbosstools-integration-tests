@@ -75,4 +75,10 @@ public class CreateJobXMLFileTest extends AbstractBatchTest {
 		
 		assertThat(tab.getJobID(), is(JOB_ID));
 	}
+
+	@Override
+	protected String getPackage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

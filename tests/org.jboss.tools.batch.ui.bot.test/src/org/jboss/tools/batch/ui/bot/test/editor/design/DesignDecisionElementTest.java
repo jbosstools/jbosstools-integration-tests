@@ -1,16 +1,18 @@
+/*******************************************************************************
+ * Copyright (c) 2016 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.batch.ui.bot.test.editor.design;
-
-import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.DECISION;
-import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.ID;
-import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.JOB;
-import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.REF;
 
 import org.jboss.tools.batch.reddeer.wizard.BatchArtifacts;
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class DesignDecisionElementTest extends DesignFlowElementsTestTemplate {
 
@@ -27,27 +29,7 @@ public class DesignDecisionElementTest extends DesignFlowElementsTestTemplate {
 	
 	@Test
 	public void createDecision(){
-		addDecision();
-		setDeciderRef();
-	}
-
-	private void addDecision() {
-		getDesignPage().addDecision(DECISION_ID);
-		
-		String decisionID = getSourcePage().evaluateXPath(JOB, appendIDSelector(DECISION, DECISION_ID), ID);
-		assertThat(decisionID, is(DECISION_ID));
-		
-		editor.save();
-		assertNumberOfProblems(1, 0);
-	}
-
-	private void setDeciderRef() {
-		getDesignPage().setDecisionRef(DECISION_ID, DECIDER_ID);
-		
-		String decisionRef = getSourcePage().evaluateXPath(JOB, appendIDSelector(DECISION, DECISION_ID), REF);
-		assertThat(decisionRef, is(DECIDER_ID));
-		
-		editor.save();
-		assertNoProblems();
+		addDecision(DECISION_ID);
+		setDeciderRef(DECISION_ID, DECIDER_ID);
 	}
 }
