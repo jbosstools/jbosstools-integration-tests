@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2016 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.forge2.ui.bot.wizard.test;
 
 import static org.junit.Assert.assertNotNull;
@@ -5,16 +15,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
-import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.tools.forge.ui.bot.test.util.ScaffoldType;
 import org.junit.Before;
 import org.junit.Test;
@@ -162,17 +167,5 @@ public class ScaffoldWizardTest extends WizardTestBase {
 		newJPAEntity(PROJECT_NAME, name, "", GROUPID + ".model");
 	}
 
-	private void setupScaffold(ScaffoldType type) {
-		scaffoldSetup(PROJECT_NAME, type);
-	}
 
-	private void createScaffold(ScaffoldType type) {
-		new ProjectExplorer().selectProjects(PROJECT_NAME);
-		WizardDialog dialog = getWizardDialog("Scaffold: Generate", "(Scaffold: Generate).*");
-		new DefaultCombo().setSelection(type.getName());
-		dialog.next();
-		new PushButton("Select All").click();
-		AbstractWait.sleep(TimePeriod.SHORT); //workaround for JBIDE-21053
-		dialog.finish(TimePeriod.LONG);
-	}
 }
