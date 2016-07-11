@@ -36,6 +36,7 @@ import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.exception.OpenShiftToolsException;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter;
 import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter.Version;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.create.AbstractCreateApplicationTest;
@@ -47,7 +48,9 @@ public class CreateServerAdapterTest extends AbstractCreateApplicationTest {
 
 	@BeforeClass
 	public static void waitTillApplicationIsRunning() {
-		new WaitWhile(new ResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE),
+		new WaitUntil(new ResourceExists(Resource.BUILD, "eap-app-1", ResourceState.RUNNING),
+				TimePeriod.getCustom(60), false);
+		new WaitWhile(new ResourceExists(Resource.BUILD, "eap-app-1", ResourceState.RUNNING),
 				TimePeriod.getCustom(360), false);
 		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.LONG, false);
 	}
@@ -81,11 +84,37 @@ public class CreateServerAdapterTest extends AbstractCreateApplicationTest {
 		setAdapterDetailsAndCreateAdapterAndVerifyExistence();
 	}
 	
+	@Test
+	public void testCreateOpenShift3ServerAdapterViaOpenShiftExplorerView() {
+		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		explorer.getOpenShift3Connection().getProject().getService("eap-app").select();
+		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_ADAPTER_FROM_EXPLORER).select();
+		
+		new DefaultShell("");
+		
+		assertTrue("Service should be preselected for new OpenShift 3 server adapter",
+				new DefaultTreeItem(DatastoreOS3.PROJECT1, "eap-app deploymentConfig=eap-app").isSelected());
+		assertTrue("Eclipse project should be preselected automatically for new server adapter",
+				new LabeledText("Eclipse Project: ").getText().equals(projectName));
+		
+		new FinishButton().click();
+		
+		new WaitWhile(new ShellWithTextIsAvailable(""));
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG, false);
+		
+		assertTrue("OpenShift 3 server adapter was not created.", 
+				new ServerAdapterExists(Version.OPENSHIFT3, buildConfigName).test());
+	}
+	
 	private void setAdapterDetailsAndCreateAdapterAndVerifyExistence() {
 		new LabeledText("Eclipse Project: ").setText(projectName);
 		new DefaultTreeItem(DatastoreOS3.PROJECT1).getItems().get(0).select();
 		next();
 		
+		finishNewServerAdapterWizardAndVerifyExistence();
+	}
+	
+	public void finishNewServerAdapterWizardAndVerifyExistence() {
 		new FinishButton().click();
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.ADAPTER));
@@ -93,6 +122,7 @@ public class CreateServerAdapterTest extends AbstractCreateApplicationTest {
 		
 		assertTrue("OpenShift 3 server adapter was not created.", 
 				new ServerAdapterExists(Version.OPENSHIFT3, buildConfigName).test());
+	
 	}
 	
 	private void next() {

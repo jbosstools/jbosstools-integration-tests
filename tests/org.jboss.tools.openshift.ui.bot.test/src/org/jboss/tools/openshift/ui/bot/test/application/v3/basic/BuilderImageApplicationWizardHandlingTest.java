@@ -40,7 +40,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BuilderImageApplicationWizardHandling {
+public class BuilderImageApplicationWizardHandlingTest {
 
 	private ResourceLabelsWizardPage resourceLabelPage = new ResourceLabelsWizardPage();
 	EnvironmentVariableWizardPage environmentVariablesPage = new EnvironmentVariableWizardPage();

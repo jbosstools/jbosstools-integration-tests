@@ -106,7 +106,8 @@ public class OpenShiftLabel {
 		public static final String[] NEW_OS2_APPLICATION = {"New", "Application..."};
 		public static final String[] NEW_OS3_APPLICATION = {"New", "Application..."};
 		public static final String[] NEW_SERVER = {"New", "Server"};	
-		public static final String[] NEW_SERVER_ADAPTER = {"New", "Server Adapter..."};		
+		public static final String[] NEW_SERVER_ADAPTER = {"New", "Server Adapter..."};
+		public static final String NEW_ADAPTER_FROM_EXPLORER = "Server Adapter...";
 		public static final String PORT_FORWARD = "Port Forwarding...";		
 		public static final String RESTART_APPLICATION = "Restart Application";	
 		public static final String[] RESTORE_SNAPSHOT = {"Snapshot", "Restore/Deploy..."};

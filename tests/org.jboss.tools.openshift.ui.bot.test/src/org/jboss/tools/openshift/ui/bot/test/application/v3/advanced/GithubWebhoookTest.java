@@ -17,12 +17,10 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.part.MultiPageEditor;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
@@ -51,15 +49,15 @@ public class GithubWebhoookTest {
 	private static final String GIT_SECRET = "nosecret";
 	private static final String srcRepoURI = "https://github.com/openshift-tools-testing-account/jboss-eap-quickstarts";
 	
-	private String randomString = "random" + System.currentTimeMillis();
-	private String webPageContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n"
+	private static String randomString = "random" + System.currentTimeMillis();
+	public static String webPageContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "\n"
 			+ "<ui:composition xmlns=\"http://www.w3.org/1999/xhtml\"" + "\n"
 			+ "xmlns:ui=\"http://java.sun.com/jsf/facelets\"" + "\n"
 			+ "xmlns:f=\"http://java.sun.com/jsf/core\"" + "\n"
 			+ "xmlns:h=\"http://java.sun.com/jsf/html\"" + "\n"
 			+ "template=\"/WEB-INF/templates/default.xhtml\">" + "\n"
 			+ "<ui:define name=\"content\">" + "\n"
-			+ "<h1>Welcome to JBoss! " + randomString + "</h1>" + "\n"
+			+ "<h1>Welcome to OpenShift3! " + randomString + "</h1>" + "\n"
 			+ "</ui:define>" + "\n"
 			+ "</ui:composition>";
 	
@@ -91,7 +89,7 @@ public class GithubWebhoookTest {
 		new ContextMenu(OpenShiftLabel.ContextMenu.DELETE_RESOURCE).select();
 		
 		new DefaultShell(OpenShiftLabel.Shell.DELETE_RESOURCE);
-		new YesButton().click();
+		new OkButton().click();
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.DELETE_RESOURCE));
 		
@@ -100,7 +98,8 @@ public class GithubWebhoookTest {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
 		Project project = projectExplorer.getProject(AbstractCreateApplicationTest.projectName);
-		project.getProjectItem("src", "main", "webapp", "index.xhtml").open();
+		project.getProjectItem("src", "main", "webapp", "index.xhtml").select();
+		new ContextMenu("Open With", "Text Editor").select();
 		
 		setWebPageContent();
 		commitAndPush();
@@ -110,11 +109,12 @@ public class GithubWebhoookTest {
 	
 	private void setWebPageContent() {
 		new WaitUntil(new EditorWithTitleIsAvailable("index.xhtml"));
-		new MultiPageEditor("index.xhtml").selectPage("Source");
-		TextEditor editor = new TextEditor("index.xhtml");
-		editor.setText(webPageContent);
-		editor.save();
-		editor.close();
+		
+		TextEditor textEditor = new TextEditor("index.xhtml");
+		textEditor.setText(GithubWebhoookTest.webPageContent);
+		textEditor.close(true);
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
 	}
 	
 	private void commitAndPush() {
