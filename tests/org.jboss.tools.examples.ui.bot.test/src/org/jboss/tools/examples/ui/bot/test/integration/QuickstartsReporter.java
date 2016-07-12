@@ -9,7 +9,6 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-
 package org.jboss.tools.examples.ui.bot.test.integration;
 
 import java.io.File;
@@ -20,9 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jboss.reddeer.common.logging.Logger;
+
 /**
- * This class gathers info of all errors and warnings for all quickstarts.
- * Also it is able to report it to system output or write them to files.
+ * This class gathers info of all errors and warnings for all quickstarts. Also
+ * it is able to report it to system output or write them to files.
  * 
  * @author rhopp
  *
@@ -35,6 +36,8 @@ public class QuickstartsReporter {
 	private static List<String> infos;
 	private static QuickstartsReporter instance = new QuickstartsReporter();
 
+	private static final Logger log = Logger.getLogger(QuickstartsReporter.class);
+
 	protected QuickstartsReporter() {
 		errors = new HashMap<Quickstart, List<String>>();
 		warnings = new HashMap<Quickstart, List<String>>();
@@ -45,7 +48,7 @@ public class QuickstartsReporter {
 	public static QuickstartsReporter getInstance() {
 		return instance;
 	}
-	
+
 	public void addInfo(String infoMessage) {
 		infos.add(infoMessage);
 	}
@@ -71,41 +74,39 @@ public class QuickstartsReporter {
 	}
 
 	public void generateReport() {
-		for (String info:infos){
-			System.out.println("INFO: " + info);
+		for (String info : infos) {
+			log.info(info);
 		}
 		for (Quickstart quickstart : qstarts) {
-			System.out.println("QUICKSTART: " + quickstart.getName());
+			log.info("QUICKSTART: " + quickstart.getName());
 			if (errors.containsKey(quickstart)) {
-				System.out.println("\tERRORS:");
-
+				log.info("\tERRORS:");
 				for (String error : errors.get(quickstart)) {
-					System.out.println("\t\t" + error);
+					log.info("\t\t" + error);
 				}
 			}
 			if (warnings.containsKey(quickstart)) {
-				System.out.println("\tWARNINGS:");
-
+				log.info("\tWARNINGS:");
 				for (String warning : warnings.get(quickstart)) {
-					System.out.println("\t\t" + warning);
+					log.info("\t\t" + warning);
 				}
 			}
 		}
 	}
-	
-	public void generateAllErrorsFile(File file){
+
+	public void generateAllErrorsFile(File file) {
 		PrintWriter writer = null;
 		try {
-			 writer = new PrintWriter(file);
+			writer = new PrintWriter(file);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		for (String info:infos){
+		for (String info : infos) {
 			writer.println("INFO: " + info);
 		}
 		for (Quickstart q : qstarts) {
 			if (errors.containsKey(q)) {
-				writer.println("Errors in quickstart \"" + q.getName()+"\"");
+				writer.println("Errors in quickstart \"" + q.getName() + "\"");
 				for (String error : errors.get(q)) {
 					writer.println("\t" + error);
 				}
@@ -114,26 +115,26 @@ public class QuickstartsReporter {
 		}
 		writer.close();
 	}
-	
-	public void generateErrorFilesForEachProject(File directory){
-		if (!directory.exists()){
+
+	public void generateErrorFilesForEachProject(File directory) {
+		if (!directory.exists()) {
 			directory.mkdir();
 		}
-		if (!directory.isDirectory()){
+		if (!directory.isDirectory()) {
 			throw new IllegalArgumentException();
 		}
-		for (Quickstart q : qstarts){
-			if (errors.containsKey(q)){
+		for (Quickstart q : qstarts) {
+			if (errors.containsKey(q)) {
 				PrintWriter writer = null;
 				try {
-					writer = new PrintWriter(directory.getAbsolutePath()+"/"+q.getName()+".txt");
+					writer = new PrintWriter(directory.getAbsolutePath() + "/" + q.getName() + ".txt");
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				}
-				for (String info:infos){
+				for (String info : infos) {
 					writer.println("INFO: " + info);
 				}
-				for (String error : errors.get(q)){
+				for (String error : errors.get(q)) {
 					writer.println(error);
 				}
 				writer.close();
