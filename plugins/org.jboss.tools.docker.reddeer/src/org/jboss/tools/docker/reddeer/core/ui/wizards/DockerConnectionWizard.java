@@ -15,7 +15,6 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Button;
@@ -43,7 +42,7 @@ public class DockerConnectionWizard extends WizardPage {
 		DockerExplorer de = new DockerExplorer();
 		de.open();
 		new DefaultToolItem("Add Connection").click();
-		new WaitUntil(new ShellWithTextIsActive("New Docker Connection"));
+		new WaitUntil(new ShellWithTextIsAvailable("New Docker Connection"));
 	}
 
 	public void finish() {
@@ -52,7 +51,7 @@ public class DockerConnectionWizard extends WizardPage {
 		Button finishButton = new PushButton("Finish");
 		finishButton.click();
 
-		new WaitWhile(new ShellWithTextIsActive(shell), TimePeriod.LONG);
+		new WaitWhile(new ShellWithTextIsAvailable(shell), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 

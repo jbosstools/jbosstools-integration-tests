@@ -8,9 +8,8 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.docker.preferences;
+package org.jboss.tools.docker.reddeer.preferences;
 
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -26,7 +25,6 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 public class RegistryAccountsPreferencePage extends PreferencePage {
 
-	private static final Logger log = Logger.getLogger(RegistryAccountsPreferencePage.class);
 
 	public RegistryAccountsPreferencePage() {
 		super("Docker", "Registry Accounts");

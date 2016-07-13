@@ -19,7 +19,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.swt.api.Combo;
@@ -93,7 +93,7 @@ public class DockerExplorer extends WorkbenchView {
 		de.open();
 		de.getConnection(dockerServerURI);
 		new ContextMenu("Pull...").select();
-		new WaitUntil(new ShellWithTextIsActive("Pull Image"), TimePeriod.NORMAL);
+		new WaitUntil(new ShellWithTextIsAvailable("Pull Image"), TimePeriod.NORMAL);
 
 		// select register
 		if (register != null) {
@@ -120,6 +120,33 @@ public class DockerExplorer extends WorkbenchView {
 	public void pullImage(String dockerServerURI, String imageName) {
 		pullImage(dockerServerURI, null, imageName);
 	}
+	
+	public void openImageSearchDialog(String dockerConnectionName, String register, String imageName){
+		DockerExplorer de = this;
+		de.open();
+		de.getConnection(dockerConnectionName);
+		new ContextMenu("Pull...").select();
+		new WaitUntil(new ShellWithTextIsAvailable("Pull Image"), TimePeriod.NORMAL);
+
+		// select register
+		if (register != null) {
+			String fullRegisterName = register;
+			Combo combo = new DefaultCombo();
+			List<String> comboItems = combo.getItems();
+			for (String item : comboItems) {
+				if (item.contains(register)) {
+					fullRegisterName = item;
+					break;
+				}
+			}
+			combo.setSelection(fullRegisterName);
+		}
+		// enter image name in dialog
+		new LabeledText("Name:").setFocus();
+		new LabeledText("Name:").setText(imageName);
+
+		new PushButton("Search...").click();
+	}
 
 	public void deleteContainer(String dockerServer, String containerName) {
 		open();
@@ -141,9 +168,9 @@ public class DockerExplorer extends WorkbenchView {
 					contextMenu = new ContextMenu("Remove");
 				}
 				contextMenu.select();
-				new WaitUntil(new ShellWithTextIsActive("Confirm Remove Container"), TimePeriod.NORMAL);
+				new WaitUntil(new ShellWithTextIsAvailable("Confirm Remove Container"), TimePeriod.NORMAL);
 				new PushButton("OK").click();
-				new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+				new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 			}
 		}
 	}
@@ -161,9 +188,9 @@ public class DockerExplorer extends WorkbenchView {
 			if (item.getText().contains(imageName)) {
 				item.select();
 				new ContextMenu("Remove").select();
-				new WaitUntil(new ShellWithTextIsActive("Confirm Remove Image"), TimePeriod.NORMAL);
+				new WaitUntil(new ShellWithTextIsAvailable("Confirm Remove Image"), TimePeriod.NORMAL);
 				new PushButton("OK").click();
-				new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+				new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 			}
 		}
 	}
@@ -208,6 +235,11 @@ public class DockerExplorer extends WorkbenchView {
 		TreeItem dc = dockerConnection.getTreeItem();
 		dc.select();
 		new DefaultToolItem("Remove Connection").click();
+	}
+	
+	public void enableConnection(String dockerConnection){
+		open();
+		new DefaultToolItem("Enable Connection").click();
 	}
 
 }

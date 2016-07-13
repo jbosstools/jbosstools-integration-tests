@@ -34,9 +34,9 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.tools.docker.preferences.RegistryAccountsPreferencePage;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.DockerConnectionWizard;
 import org.jboss.tools.docker.reddeer.perspective.DockerPerspective;
+import org.jboss.tools.docker.reddeer.preferences.RegistryAccountsPreferencePage;
 import org.jboss.tools.docker.reddeer.ui.ConnectionItem;
 import org.jboss.tools.docker.reddeer.ui.DockerExplorer;
 import org.junit.AfterClass;
@@ -117,6 +117,7 @@ public abstract class AbstractDockerBotTest {
 			connectionWizard.setTcpConnection(dockerServer);
 			connectionWizard.finish();
 		}
+		new DockerExplorer().enableConnection(dockerServer);
 	}
 
 	protected static void createConnectionSocket(String unixSocket) {
@@ -126,6 +127,7 @@ public abstract class AbstractDockerBotTest {
 			connectionWizard.setUnixSocket(unixSocket);
 			connectionWizard.finish();
 		}
+		new DockerExplorer().enableConnection(unixSocket);
 	}
 
 	protected static void deleteConnection() {
@@ -179,9 +181,9 @@ public abstract class AbstractDockerBotTest {
 	protected String createURL(String tail) {
 		String dockerServerURI = System.getProperty("dockerServerURI");
 		String serverURI;
-		if(dockerServerURI != null && !dockerServerURI.isEmpty()){
-			serverURI = dockerServerURI.replaceAll("tcp://", "http://") ;
-		}else{
+		if (dockerServerURI != null && !dockerServerURI.isEmpty()) {
+			serverURI = dockerServerURI.replaceAll("tcp://", "http://");
+		} else {
 			serverURI = "http://localhost:1234";
 		}
 		return serverURI.substring(0, serverURI.lastIndexOf(":")) + tail;

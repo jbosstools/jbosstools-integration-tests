@@ -8,11 +8,9 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.docker.preferences;
+package org.jboss.tools.docker.reddeer.preferences;
 
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.jface.preference.PreferencePage;
-import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
@@ -22,8 +20,6 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  */
 
 public class DockerMachinePreferencePage extends PreferencePage {
-
-	private static final Logger log = Logger.getLogger(DockerMachinePreferencePage.class);
 
 	public DockerMachinePreferencePage() {
 		super("Docker", "Docker Machine");
