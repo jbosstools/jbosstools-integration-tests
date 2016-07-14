@@ -83,7 +83,8 @@ function clickExample(name){
 		return null;
 	}
 	var resultsDivs = getCurrentResultsDiv();
- 	getResultDivForExample(resultsDivs, name).find("a").click();
+	
+ 	getResultDivForExample(resultsDivs, name).find("a")[0].click();
 }
 
 function clearSearch(){
