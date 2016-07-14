@@ -16,7 +16,8 @@ Export-Package: org.jboss.tools.cdi.reddeer,
  org.jboss.tools.cdi.reddeer.quickfix,
  org.jboss.tools.cdi.reddeer.uiutils,
  org.jboss.tools.cdi.reddeer.validators,
- org.jboss.tools.cdi.reddeer.xhtml
+ org.jboss.tools.cdi.reddeer.xhtml,
+ org.jboss.tools.cdi.reddeer.cdi.text.ext.hyperlink.xpl
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.jboss.reddeer.swt,

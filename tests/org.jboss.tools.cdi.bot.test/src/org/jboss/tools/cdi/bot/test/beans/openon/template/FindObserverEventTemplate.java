@@ -19,17 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.swt.SWT;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.handler.TableHandler;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.condition.ShellIsActive;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
+import org.jboss.tools.cdi.reddeer.cdi.text.ext.hyperlink.xpl.HierarchyInformationControl;
 import org.junit.After;
 import org.junit.Test;
 
@@ -112,29 +104,25 @@ public abstract class FindObserverEventTemplate extends CDITestBase {
 	
 	private void checkEvent(String eventName, String className, String observerClass){
 		openOnHelper.selectProposal(className, eventName, "Show CDI Observer Methods...");
-		Shell s = new DefaultShell();
-		Table observerTable = new DefaultTable();
+		HierarchyInformationControl hic = new HierarchyInformationControl(HierarchyInformationControl.OBSERVER_LABEL);
 		
 		String packageProjectPath = getPackageName() + " - /" + getProjectName() + "/src";
 		List<String> expectedObservers = eventWithObservers.get(eventName);
-		assertEquals(expectedObservers.size(), observerTable.getItems().size());
+		assertEquals(expectedObservers.size(), hic.getProposals().size());
 		for(String expectedObserver : expectedObservers){
-			assertTrue(observerTable.containsItem(
+			assertTrue(hic.getProposalsTable().containsItem(
 					observerClass + "."+expectedObserver+"() - " + packageProjectPath));
 		}
-		s.close();
+		hic.close();
 	}
 	
 	private void openEvent(String eventName, String className, String observerClass){
 		List<String> proposals = openOnHelper.getProposals(className, eventName, "Show CDI Observer Methods...");
 		for(String proposal: proposals){
-			openOnHelper.selectProposal(className, eventName, "Show CDI Observer Methods...");
-			Shell observerMethods = new DefaultShell(); 
-			Table observerTable = new DefaultTable();
-			//observerTable.getItem(proposal).select();
+			openOnHelper.selectProposal(className, eventName, "Show CDI Observer Methods...");			
+			HierarchyInformationControl hic = new HierarchyInformationControl(HierarchyInformationControl.OBSERVER_LABEL);
+			hic.selectProposal(proposal);
 			
-			TableHandler.getInstance().setDefaultSelection(observerTable.getItem(proposal).getSWTWidget());
-			new WaitWhile(new ShellIsActive(observerMethods));
 			String[] splitted = proposal.split("\\.");
 			TextEditor te = new TextEditor();
 			assertEquals(splitted[0]+".java",te.getTitle());
@@ -150,12 +138,9 @@ public abstract class FindObserverEventTemplate extends CDITestBase {
 			List<String> proposals = openOnHelper.getProposals(className, observer, "Show CDI Events...");
 			for(String proposal: proposals){
 				openOnHelper.selectProposal(className, observer, "Show CDI Events...");
-				Shell cdiEvents = new DefaultShell(); 
-				Table observerTable = new DefaultTable();
-				//observerTable.getItem(proposal).select();
-			
-				TableHandler.getInstance().setDefaultSelection(observerTable.getItem(proposal).getSWTWidget());
-				new WaitWhile(new ShellIsActive(cdiEvents));
+				HierarchyInformationControl hic = new HierarchyInformationControl(HierarchyInformationControl.EVENTS_LABEL);
+				hic.selectProposal(proposal);
+				
 				String[] splitted = proposal.split("\\.");
 				TextEditor te = new TextEditor();
 				assertEquals(splitted[0]+".java",te.getTitle());
@@ -174,16 +159,16 @@ public abstract class FindObserverEventTemplate extends CDITestBase {
 			assertEquals(events.get(0),te.getSelectedText());
 		} else {
 			openOnHelper.selectProposal(className, observer, "Show CDI Events...");
-			Shell s = new DefaultShell();
-			Table eventsTable = new DefaultTable();
+			HierarchyInformationControl hic = new HierarchyInformationControl(HierarchyInformationControl.EVENTS_LABEL);
+
 			String packageProjectPath = getPackageName() + " - /" + getProjectName() + "/src";
 			List<String> expectedEvents = observerWithEvents.get(observer);
-			assertEquals(expectedEvents.size(), eventsTable.getItems().size());
+			assertEquals(expectedEvents.size(), hic.getProposals().size());
 			for(String expectedEvent : expectedEvents){
-				assertTrue(eventsTable.containsItem(
+				assertTrue(hic.getProposalsTable().containsItem(
 						eventClass + "."+expectedEvent+" - " + packageProjectPath));
 			}
-			s.close();
+			hic.close();
 		}
 	}
 
