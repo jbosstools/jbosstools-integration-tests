@@ -17,7 +17,6 @@ import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerRSIWizardPag
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerWizardPageWithErrorCheck;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.rse.ui.view.System;
 import org.jboss.reddeer.eclipse.rse.ui.view.SystemView;
 import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardDialog;
@@ -31,8 +30,6 @@ import org.jboss.reddeer.requirements.server.ConfiguredServerInfo;
 import org.jboss.reddeer.requirements.server.IServerReqConfig;
 import org.jboss.reddeer.requirements.server.ServerReqBase;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
 import static org.junit.Assert.assertTrue;
 
@@ -150,16 +147,9 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 				if(version.equals("9.x")){
 					serverTypeLabelText = label+"  "+version;
 				}
-				for (org.jboss.reddeer.swt.api.TreeItem item : new DefaultTreeItem("JBoss Community").getItems()){
-					java.lang.System.out.println("'" + item.getText() + "'");	
-				}
-				
 				if(version.equals("10.x")){
 					serverTypeLabelText = label+" "+ "10.0";
 				}
-			}
-			for (TreeItem item : new DefaultTreeItem("Red Hat JBoss Middleware").getItems()){
-				java.lang.System.out.println(item.getText());
 			}
 			if(FamilyEAP.class.equals(config.getServerFamily().getClass())){
 				String label = config.getServerFamily().getLabel();
@@ -183,7 +173,7 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 
 			setupRuntime();
 
-			serverW.finish(TimePeriod.getCustom(TimePeriod.VERY_LONG.getSeconds()*2));
+			serverW.finish();
 		} catch(RuntimeException e) {
 			try{
 				serverW.cancel();
