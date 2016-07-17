@@ -18,6 +18,7 @@ import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.tools.jst.ui.bot.test.JSTTestBase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,7 @@ import org.junit.Test;
  * @author Pavol Srna
  *
  */
-public class NpmShortcutsTest extends NpmTestBase {
+public class NpmShortcutsTest extends JSTTestBase {
 
 	@Before
 	public void prepare() {

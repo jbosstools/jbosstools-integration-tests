@@ -16,6 +16,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.jst.reddeer.tern.ui.TernModulesPropertyPage;
+import org.jboss.tools.jst.ui.bot.test.JSTTestBase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,10 +29,10 @@ import java.util.List;
 /**
  * Tests for Tern -> Modules
  * 
- * @author psrna
+ * @author Pavol Srna
  *
  */
-public class TernModulesTest extends TernTestBase {
+public class TernModulesTest extends JSTTestBase {
 
 	@Before
 	public void prepare() {

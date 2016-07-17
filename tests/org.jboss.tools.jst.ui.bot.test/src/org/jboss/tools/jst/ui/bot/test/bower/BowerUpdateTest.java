@@ -24,6 +24,7 @@ import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.tools.jst.ui.bot.test.JSTTestBase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +34,7 @@ import org.junit.Test;
  * @author Ilya Buziuk
  *
  */
-public class BowerUpdateTest extends BowerTestBase {
+public class BowerUpdateTest extends JSTTestBase {
 
 	@Before
 	public void prepare() {
@@ -61,7 +62,7 @@ public class BowerUpdateTest extends BowerTestBase {
 	public void testDependeciesDownload() throws IOException {
 		/* create bower.json */
 		String content = "{\"name\": \"testProject\",\"dependencies\":{\"angularjs\": \"1.4.4\"}}";
-		File bowerJson = new File(BOWER_BASE_DIRECTORY + "/bower.json");
+		File bowerJson = new File(BASE_DIRECTORY + "/bower.json");
 		FileWriter fw = new FileWriter(bowerJson, false);
 		fw.write(content);
 		fw.flush();

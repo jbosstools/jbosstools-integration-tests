@@ -25,6 +25,7 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.jst.reddeer.npm.ui.NpmInitDialog;
+import org.jboss.tools.jst.ui.bot.test.JSTTestBase;
 import org.jboss.reddeer.core.util.FileUtil;
 import org.junit.After;
 import org.junit.Before;
@@ -35,7 +36,7 @@ import org.junit.Test;
  * @author Pavol Srna
  *
  */
-public class NpmInitTest extends NpmTestBase {
+public class NpmInitTest extends JSTTestBase {
 
 	private static final String NPM_PROPERTY_NAME = "TestName";
 	private static final String NPM_PROPERTY_VERSION = "1.1.1";
@@ -71,7 +72,7 @@ public class NpmInitTest extends NpmTestBase {
 		npmInit(PROJECT_NAME);
 		NpmInitDialog npmDialog = new NpmInitDialog();
 		npmDialog.open();
-		new LabeledText("Base directory:").setText(NPM_BASE_DIRECTORY);
+		new LabeledText("Base directory:").setText(BASE_DIRECTORY);
 		assertFalse("Finish button not disabled", npmDialog.isFinishEnabled());
 	}
 
@@ -79,7 +80,7 @@ public class NpmInitTest extends NpmTestBase {
 	public void testWizardRejectsEmptyBaseDir() {
 		NpmInitDialog npmDialog = new NpmInitDialog();
 		npmDialog.open();
-		new LabeledText("Base directory:").setText(NPM_BASE_DIRECTORY);
+		new LabeledText("Base directory:").setText(BASE_DIRECTORY);
 		assertTrue("Finish button not enabled", npmDialog.isFinishEnabled());
 		new LabeledText("Base directory:").setText("");
 		assertFalse("Finish button not disabled", npmDialog.isFinishEnabled());
@@ -89,9 +90,9 @@ public class NpmInitTest extends NpmTestBase {
 	public void testWizardRejectsNonExistingDir() {
 		NpmInitDialog npmDialog = new NpmInitDialog();
 		npmDialog.open();
-		new LabeledText("Base directory:").setText(NPM_BASE_DIRECTORY);
+		new LabeledText("Base directory:").setText(BASE_DIRECTORY);
 		assertTrue("Finish button not enabled", npmDialog.isFinishEnabled());
-		new LabeledText("Base directory:").setText(NPM_BASE_DIRECTORY + "XYZ");
+		new LabeledText("Base directory:").setText(BASE_DIRECTORY + "XYZ");
 		assertFalse("Finish button not disabled", npmDialog.isFinishEnabled());
 	}
 
@@ -99,14 +100,14 @@ public class NpmInitTest extends NpmTestBase {
 	public void testCanEditNpmConfigProperties() throws IOException {
 		NpmInitDialog npmDialog = new NpmInitDialog();
 		npmDialog.open();
-		new LabeledText("Base directory:").setText(NPM_BASE_DIRECTORY);
+		new LabeledText("Base directory:").setText(BASE_DIRECTORY);
 		new CheckBox("Use default configuration").toggle(false);
 		new LabeledText("Name:").setText(NPM_PROPERTY_NAME);
 		new LabeledText("Version:").setText(NPM_PROPERTY_VERSION);
 		new LabeledText("License:").setText(NPM_PROPERTY_LICENSE);
 		npmDialog.finish();
 		assertPackageJsonExists();
-		String packageJson = FileUtil.readFile(NPM_BASE_DIRECTORY + "/package.json");
+		String packageJson = FileUtil.readFile(BASE_DIRECTORY + "/package.json");
 		assertTrue("package.json has incorrect content",
 				packageJson.contains("\"name\": \"" + NPM_PROPERTY_NAME + "\""));
 		assertTrue("package.json has incorrect content",
