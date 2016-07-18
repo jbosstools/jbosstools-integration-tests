@@ -14,7 +14,7 @@ import org.jboss.reddeer.core.lookup.ShellLookup;
 import org.jboss.reddeer.core.reference.ReferencedComposite;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.condition.ShellIsActive;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.shell.AbstractShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
@@ -32,7 +32,7 @@ public class HierarchyInformationControl extends AbstractShell{
 	public void selectProposal(String proposal){
 		Table observerTable = new DefaultTable();		
 		TableHandler.getInstance().setDefaultSelection(observerTable.getItem(proposal).getSWTWidget());
-		new WaitWhile(new ShellIsActive(this));
+		new WaitWhile(new ShellIsAvailable(this));
 	}
 	
 	public List<String> getProposals(){
