@@ -13,13 +13,15 @@ package org.jboss.tools.jst.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.jst.ui.bot.test.json.ContentOutlineTest;
+import org.jboss.tools.jst.ui.bot.test.json.ValidationTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
 	// JSON Tests
-	ContentOutlineTest.class
+	ContentOutlineTest.class,
+	ValidationTest.class
 })
 public class AllJSONTests {
 
