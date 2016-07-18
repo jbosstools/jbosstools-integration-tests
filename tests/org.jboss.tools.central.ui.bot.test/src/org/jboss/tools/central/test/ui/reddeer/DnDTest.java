@@ -63,7 +63,7 @@ public class DnDTest {
 	}
 
 	private boolean installationStartedCheck() {
-		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		try {
 			new DefaultShell("Install New Software");
 		} catch (RedDeerException e) {
