@@ -24,6 +24,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.jboss.tools.central.reddeer.api,
  org.jboss.tools.central.reddeer.perspective,
+ org.jboss.tools.central.reddeer.preferences,
  org.jboss.tools.central.reddeer.projects,
  org.jboss.tools.central.reddeer.wait,
  org.jboss.tools.central.reddeer.wizards

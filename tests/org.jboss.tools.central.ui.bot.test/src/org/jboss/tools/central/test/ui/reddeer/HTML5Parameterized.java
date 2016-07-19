@@ -80,12 +80,12 @@ public class HTML5Parameterized {
 		browser = new InternalBrowser();
 		jsHelper.setBrowser(browser);
 		new WaitWhile(new CentralBrowserIsLoading(), TimePeriod.LONG);
-		jsHelper.searchFor("eap-6.4.0.GA");
+		jsHelper.searchFor("eap-7.0.0.GA");
 		do {
 			String[] examples = jsHelper.getExamples();
 			for (String exampleName : examples) {
 				if (!(exampleName.equals("app-client") || exampleName.equals("cluster-ha-singleton")
-						|| exampleName.equals("ejb-asynchronous"))) {
+						|| exampleName.equals("ejb-asynchronous") || exampleName.equals("ejb-timer"))) {
 					resultList.add(new CentralProject(exampleName, jsHelper.getDescriptionForExample(exampleName)));
 				}
 

@@ -21,6 +21,7 @@
 		<jbosstools.test.jboss-eap-6.3.home>${requirementsDirectory}/jboss-eap-6.3</jbosstools.test.jboss-eap-6.3.home>
 		<systemProperties>${integrationTestsSystemProperties} ${wildflySystemProperties} ${eapSystemProperties} -Dusage_reporting_enabled=false -Drd.config=${project.build.directory}/classes/server_properties -Dmaven.config.file=${project.build.directory}/classes/settings.xml</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
+		<test.class>org.jboss.tools.central.test.ui.reddeer.AllTestsSuite</test.class>
 	</properties>
 
 	<profiles>
@@ -107,6 +108,14 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+	<!-- This profile runs PrepareOfflineCommand class, which creates ${workDir}/target/offlineCommand 
+		file with command to cache examples for offline usage -->
+			<id>prepareOfflineCommand</id>
+			<properties>
+				<test.class>org.jboss.tools.central.test.ui.reddeer.prepareOffline.PrepareOfflineCommand</test.class>
+			</properties>
+		</profile>
 	</profiles>
 
 	<build>
@@ -124,8 +133,7 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<testSuite>org.jboss.tools.central.test.ui.reddeer</testSuite>
-					<testClass>org.jboss.tools.central.test.ui.reddeer.AllTestsSuite</testClass>
+					<testClass>${test.class}</testClass>
 					<dependencies combine.children="append">
 						<dependency>
 							<type>p2-installable-unit</type>
