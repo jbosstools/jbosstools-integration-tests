@@ -1,6 +1,6 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -84,10 +84,12 @@ public class EntityValidationTest extends HibernateRedDeerTest {
 		pe.getProject(PROJECT_NAME).getProjectItem("src/main/java","org.hibernate.ui.test.model","UserIdGenerator.java").delete();
 		buildProject();
 		
-		pv.activate();
 		String expectedProblem = "Strategy class \"org.hibernate.ui.test.model.UserIdGenerator\" could not be found.";
+		//new ProblemExists(ProblemType.ERROR, new ProblemsDescriptionMatcher(expectedProblem));
+		pv.activate();
 		problems = pv.getProblems(ProblemType.ERROR, new ProblemsDescriptionMatcher(expectedProblem));
-		assertTrue(expectedProblem + " Error is expected, known issue(s):JBIDE-19526", problems.size() == 2);
+		assertTrue(expectedProblem + " Error is expected, known issue(s):JBIDE-19526", problems.size() == 1);
+		assertEquals(1, pv.getProblems(ProblemType.ERROR,null));
 	}
 	
 	private void buildProject(){

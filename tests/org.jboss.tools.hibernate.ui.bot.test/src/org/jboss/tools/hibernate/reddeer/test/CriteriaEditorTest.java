@@ -86,7 +86,7 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
     	testCriteriaEditorMvn();
     }
         
-    @Test
+    //@Test
     public void testCriteriaEditorEcl35() {
     	Map<String,String> libraries = new HashMap<>();
     	libraries.putAll(hibernate35LibMap);
@@ -95,7 +95,7 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
     	testCriteriaEditorEcl();
     }
  
-    @Test
+    //@Test
     public void testCriteriaEditorEcl36() {
     	Map<String,String> libraries = new HashMap<>();
     	libraries.putAll(hibernate36LibMap);
@@ -104,7 +104,7 @@ public class CriteriaEditorTest extends HibernateRedDeerTest {
     	testCriteriaEditorEcl();
     }
     
-    @Test
+    //@Test
     public void testCriteriaEditorEcl43() {
     	Map<String,String> libraries = new HashMap<>();
     	libraries.putAll(hibernate43LibMap);

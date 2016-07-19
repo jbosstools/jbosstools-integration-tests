@@ -47,10 +47,7 @@ public class JPAFacetWizardPage extends WizardPage {
 		PushButton apply = new PushButton("Apply");
 		apply.click();
 		new WaitWhile(new JobIsRunning());
-		// Abstract wait workaround, various shells are messing with RedDeer
-		//AbstractWait.sleep(TimePeriod.NORMAL);
-		new WaitWhile(new JobIsRunning());
-		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"));
+		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.LONG);
 	}
 
 	/**

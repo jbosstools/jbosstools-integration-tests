@@ -19,6 +19,8 @@
 		<testDatabase>${project.build.directory}${file.separator}requirements</testDatabase>
 		<surefire.timeout>14400</surefire.timeout>
 	</properties>
+	
+	
 
 	<build>
 		<resources>
@@ -152,6 +154,28 @@
 			<properties>
 				<suiteClass>org.jboss.tools.hibernate.ui.bot.test.SmokeAllTest</suiteClass>
 			</properties>
+		</profile>
+		<profile>
+			<id>check-pr</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<configuration>
+							<dependency-resolution>
+								<extraRequirements>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.hibernate.eclipse.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+								</extraRequirements>
+							</dependency-resolution>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 </project>

@@ -25,14 +25,20 @@ public class MavenImportWizardFirstPage extends WizardPage{
 	}
 	
 	public void importProject(String path){
+		importProject(path,true);
+	}
+	
+	public void importProject(String path, boolean cheatsheet){
 		setRootDirectory(path);
 		new PushButton("Finish").click();
 		new WaitWhile(new ShellWithTextIsActive("Import Maven Projects"),TimePeriod.NORMAL);
-		try{
-			new DefaultShell("Found cheatsheet");
-			new PushButton("No").click();
-		}catch(Exception ex){
-			//project was without cheatsheet; continue.
+		if(cheatsheet){
+			try{
+				new DefaultShell("Found cheatsheet");
+				new PushButton("No").click();
+			}catch(Exception ex){
+				//project was without cheatsheet; continue.
+			}
 		}
 		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 	}

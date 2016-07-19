@@ -1,11 +1,14 @@
 package org.jboss.tools.hibernate.reddeer.editor;
 
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.condition.TreeHasChildren;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.hamcrest.Matcher;
+import org.hamcrest.core.IsEqual;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -69,8 +72,11 @@ public class RevengEditor extends DefaultEditor {
 		new PushButton("Add...").click();
 		new DefaultShell("Add Tables & Columns");
 		DefaultTree dbTree = new DefaultTree();
-		AbstractWait.sleep(TimePeriod.NORMAL);
 		new WaitUntil(new TreeHasChildren(dbTree));
+		Matcher[] jobs = new Matcher[1];
+		jobs[0] = new IsEqual<String>("Fetching children of Database");
+		new WaitWhile(new JobIsRunning(jobs));
+		//AbstractWait.sleep(TimePeriod.NORMAL);
 		dbTree.getItems().get(0).expand();
 		new PushButton("Select all children").click();
 		new PushButton("OK").click();

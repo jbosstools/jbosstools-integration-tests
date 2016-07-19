@@ -15,6 +15,7 @@ import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.tools.hibernate.reddeer.condition.EntityIsGenerated;
 import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
 import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
 import org.jboss.tools.hibernate.reddeer.factory.EntityGenerationFactory;
@@ -142,10 +143,12 @@ public class JPAEntityGenerationTest extends HibernateRedDeerTest {
     	ProjectExplorer pe = new ProjectExplorer();    
     	pe.open();
     	try{
-    		AbstractWait.sleep(TimePeriod.NORMAL); //class generation is happening
-    		new WaitUntil(new ProjectContainsProjectItem(pe.getProject(prj), "Java Resources","src/main/java","org.gen","Actor.java"));
+    		new WaitUntil(new EntityIsGenerated(prj, "src/main/java","org.gen","Actor.java"));
+    		//AbstractWait.sleep(TimePeriod.NORMAL); //class generation is happening
+    		//new WaitUntil(new ProjectContainsProjectItem(pe.getProject(prj), "Java Resources","src/main/java","org.gen","Actor.java"));
     		pe.getProject(prj).getProjectItem("Java Resources","src/main/java","org.gen","Actor.java").open();
     	} catch (RedDeerException e) {
+    		e.printStackTrace();
     		fail("Entities not generated, possible cause https://issues.jboss.org/browse/JBIDE-19175");
     	}
     	new DefaultEditor("Actor.java");
