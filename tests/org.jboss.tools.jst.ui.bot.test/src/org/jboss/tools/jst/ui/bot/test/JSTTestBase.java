@@ -9,15 +9,18 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.jst.ui.bot.test.tern;
+package org.jboss.tools.jst.ui.bot.test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.List;
 
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
 import org.jboss.reddeer.eclipse.wst.jsdt.ui.wizards.JavaProjectWizardDialog;
@@ -25,11 +28,14 @@ import org.jboss.reddeer.eclipse.wst.jsdt.ui.wizards.JavaProjectWizardFirstPage;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.tools.jst.reddeer.bower.ui.BowerInitDialog;
+import org.jboss.tools.jst.reddeer.npm.ui.NpmInitDialog;
 import org.jboss.tools.jst.reddeer.tern.ui.TernModulesPropertyPage;
 import org.jboss.tools.jst.reddeer.wst.jsdt.ui.wizard.NewJSFileWizardDialog;
 import org.jboss.tools.jst.reddeer.wst.jsdt.ui.wizard.NewJSFileWizardPage;
@@ -41,12 +47,12 @@ import org.junit.runner.RunWith;
  * @author Pavol Srna
  */
 @RunWith(RedDeerSuite.class)
-public class TernTestBase {
+public class JSTTestBase {
 
 	protected static final String PROJECT_NAME = "testProject";
 	protected static final String JS_FILE = "main.js";
 	protected static final String WORKSPACE = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
-	protected static final String BOWER_BASE_DIRECTORY = WORKSPACE + "/" + PROJECT_NAME;
+	protected static final String BASE_DIRECTORY = WORKSPACE + "/" + PROJECT_NAME;
 
 	protected void createJSProject() {
 		createJSProject(PROJECT_NAME);
@@ -82,12 +88,12 @@ public class TernTestBase {
 		d.finish();
 		assertTrue(filename + " not found!", new ProjectExplorer().getProject(PROJECT_NAME).containsItem(filename));
 	}
-	
-	protected void setTernModule(String module){
+
+	protected void setTernModule(String module) {
 		setTernModule(module, PROJECT_NAME);
 	}
-	
-	protected void setTernModule(String module, String project){
+
+	protected void setTernModule(String module, String project) {
 		TernModulesPropertyPage propPage = new TernModulesPropertyPage();
 		ExplorerItemPropertyDialog dialog = openProjectProperties(project);
 		dialog.select(propPage);
@@ -122,4 +128,43 @@ public class TernTestBase {
 		return sbMissing.toString();
 	}
 
+	protected void npmInit() {
+		npmInit(PROJECT_NAME);
+	}
+
+	protected void npmInit(String projectName) {
+		NpmInitDialog dialog = new NpmInitDialog();
+		dialog.open();
+		new LabeledText("Base directory:").setText(BASE_DIRECTORY);
+		dialog.finish();
+		assertPackageJsonExists();
+	}
+
+	protected void assertPackageJsonExists() {
+		File packageJson = new File(BASE_DIRECTORY + "/package.json");
+		assertTrue("package.json file does not exist", packageJson.exists());
+	}
+
+	protected void bowerInit() {
+		bowerInit(PROJECT_NAME);
+	}
+
+	protected void bowerInit(String projectName) {
+		BowerInitDialog dialog = new BowerInitDialog();
+		dialog.open();
+		new LabeledText("Base directory:").setText(BASE_DIRECTORY);
+		dialog.finish();
+		assertBowerJsonExists();
+	}
+
+	protected void assertBowerJsonExists() {
+		File bowerJson = new File(BASE_DIRECTORY + "/bower.json");
+		assertTrue("bower.json file does not exist", bowerJson.exists());
+	}
+
+	protected void bowerUpdate(String projectName) {
+		new ProjectExplorer().getProject(projectName).select();
+		new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Bower Update)")).select();
+	}
+	
 }
