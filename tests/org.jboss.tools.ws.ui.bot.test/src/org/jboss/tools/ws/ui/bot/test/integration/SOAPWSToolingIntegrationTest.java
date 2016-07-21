@@ -17,6 +17,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.ws.reddeer.swt.condition.WsTesterNotEmptyResponseText;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
@@ -32,6 +33,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@AutoBuilding(value = false, cleanup = true)
 public class SOAPWSToolingIntegrationTest extends SOAPTestBase {
 
 	private final String request = "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?> " + LINE_SEPARATOR
@@ -47,6 +49,7 @@ public class SOAPWSToolingIntegrationTest extends SOAPTestBase {
 	public void setup() {
 		if (!ProjectHelper.projectExists(getWsProjectName())) {
 			ProjectHelper.importWSTestProject(getWsProjectName(), getConfiguredRuntimeName());
+			ProjectHelper.cleanAllProjects();
 			ServersViewHelper.runProjectOnServer(getWsProjectName());
 			ServersViewHelper.waitForDeployment(getWsProjectName(), getConfiguredServerName());
 		}

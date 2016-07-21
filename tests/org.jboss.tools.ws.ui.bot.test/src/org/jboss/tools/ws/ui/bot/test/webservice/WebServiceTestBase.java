@@ -19,6 +19,7 @@ import java.text.MessageFormat;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
+import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.StyledText;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
@@ -48,6 +49,7 @@ import org.junit.Assert;
  * @author jjankovi
  *
  */
+@AutoBuilding(value = false, cleanup = true)
 public abstract class WebServiceTestBase extends SOAPTestBase {
 
 	protected abstract String getWsPackage();
