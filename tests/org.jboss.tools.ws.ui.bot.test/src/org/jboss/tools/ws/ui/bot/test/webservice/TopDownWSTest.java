@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.webservice;
 
+import static org.junit.Assert.fail;
+
 import java.util.logging.Level;
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
@@ -20,11 +22,14 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
+import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
 import org.junit.Test;
 
@@ -180,12 +185,25 @@ public class TopDownWSTest extends WebServiceTestBase {
 		/*workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=377624
 		 choosing 'Deploy' should normally deploy the project automatically*/
 		case DEPLOY:
+			ProjectHelper.cleanAllProjects();
 			ServersViewHelper.runProjectOnServer(getEarProjectName());
-			
-		default:
-			ServersViewHelper.waitForDeployment(getEarProjectName(), getConfiguredServerName());
+			break;
+
+		case INSTALL:
+		case START:
+		case TEST:
+			ServerModule module = null;
+			try {
+				module = new ServersView().getServer(getConfiguredServerName()).getModule(getEarProjectName());
+			} catch (EclipseLayerException ex) {
+				fail("The project was not deployed");
+			}
+			module.remove();
+			ProjectHelper.cleanAllProjects();
+			ServersViewHelper.runProjectOnServer(getEarProjectName());
 			break;
 		}
+		ServersViewHelper.waitForDeployment(getEarProjectName(), getConfiguredServerName());
 		DeploymentHelper.assertServiceDeployed(DeploymentHelper.getWSDLUrl(getWsProjectName(), getWsName()), 10000);
 	}
 
