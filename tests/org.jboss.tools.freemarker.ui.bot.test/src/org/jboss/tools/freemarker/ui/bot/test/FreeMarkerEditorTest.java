@@ -58,7 +58,7 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 		importTestProject();
 		log.step("Open ftl file in freemarker editor");
 		openFTLFileInEditor();
-
+		
 		checkFreemMarkerOutput();
 		checkErrorLog();
 	}	
