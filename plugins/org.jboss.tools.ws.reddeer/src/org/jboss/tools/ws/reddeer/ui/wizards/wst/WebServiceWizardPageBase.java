@@ -25,6 +25,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.scale.DefaultScale;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -65,6 +66,8 @@ public abstract class WebServiceWizardPageBase extends WizardPage {
 				).activate();
 		new DefaultTreeItem(new DefaultTree(new DefaultGroup("Server runtime:")), "Existing Servers", name).select();
 		new PushButton("OK").click();
+
+		new DefaultShell(new WithMnemonicTextMatcher(StringStartsWith.startsWith("Web Service")));
 	}
 
 	public void setWebServiceRuntime(String name) {
@@ -74,6 +77,8 @@ public abstract class WebServiceWizardPageBase extends WizardPage {
 		Group runtimeGroup = new DefaultGroup("Web service runtime:");
 		new DefaultTreeItem(new DefaultTree(runtimeGroup), name).select();
 		new PushButton("OK").click();
+
+		new DefaultShell(new WithMnemonicTextMatcher(StringStartsWith.startsWith("Web Service")));
 	}
 
 	protected void setTargetProject(String label, String name) {
@@ -88,6 +93,8 @@ public abstract class WebServiceWizardPageBase extends WizardPage {
 			c.setText(name);
 		}
 		new PushButton("OK").click();
+
+		new DefaultShell(new WithMnemonicTextMatcher(StringStartsWith.startsWith("Web Service")));
 	}
 
 	/**
