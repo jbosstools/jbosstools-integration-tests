@@ -16,8 +16,6 @@ import static org.junit.Assert.*;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
@@ -25,7 +23,6 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -42,8 +39,6 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-@OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 
 	private RegexMatcher validationProblemRegexMatcher = new RegexMatcher("No bean is eligible.*");
@@ -62,7 +57,6 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 		
 		String projectName = "configProperty-support";
 		importDeltaspikeProject(projectName,sr);
-		AbstractWait.sleep(TimePeriod.getCustom(TimePeriod.NORMAL.getSeconds()*2));
 		
 		new WaitUntil(new SpecificProblemExists(
 				validationProblemRegexMatcher), TimePeriod.LONG);
@@ -82,9 +76,8 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 		
 		String projectName = "configProperty-unsupport";
 		importDeltaspikeProject(projectName,sr);
-		AbstractWait.sleep(TimePeriod.getCustom(TimePeriod.NORMAL.getSeconds()*2));
 		
-		new WaitWhile(new SpecificProblemExists(
+		new WaitUntil(new SpecificProblemExists(
 				validationProblemRegexMatcher), TimePeriod.LONG);
 
 		insertIntoFile(projectName, "test", "Test.java", 8, 0, 
@@ -92,8 +85,8 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 		insertIntoFile(projectName, "test", "Test.java", 2, 0, 
 				"import org.apache.deltaspike.core.api.config.ConfigProperty; \n");
 		try{
-			new WaitUntil(new SpecificProblemExists(
-					validationProblemRegexMatcher), TimePeriod.LONG);
+			new WaitWhile(new SpecificProblemExists(
+					validationProblemRegexMatcher), TimePeriod.NORMAL);
 		} catch(WaitTimeoutExpiredException ex){
 			fail("this is known issue JBIDE-13554");
 		}

@@ -3,7 +3,9 @@ package org.jboss.tools.hibernate.reddeer.factory;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
@@ -99,6 +101,7 @@ public class ProjectConfigurationFactory {
 		
 		addFurtherJPAConfiguration(jpaVersion,!javaFacet);
 		pd.ok();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		pe.open();
 		pe.selectProjects(prj);
 		
@@ -110,7 +113,7 @@ public class ProjectConfigurationFactory {
 		jpaPage.setConnectionProfile(cfg.getProfileName());
 		jpaPage.setAutoDiscovery(true);
 		pd.ok();
-		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		checkPersistenceXML(prj);
 	}	
 

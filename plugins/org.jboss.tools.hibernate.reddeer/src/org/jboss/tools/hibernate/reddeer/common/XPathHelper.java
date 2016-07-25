@@ -6,6 +6,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.xml.sax.InputSource;
 
 /**
@@ -15,6 +16,8 @@ import org.xml.sax.InputSource;
  */
 public class XPathHelper {
 
+	
+	private static final Logger log = Logger.getLogger(XPathHelper.class);
 	private static XPathHelper instance;
 	private XPath xpath;
 	
@@ -48,6 +51,7 @@ public class XPathHelper {
 	
 	
 	public String getMappingFileTable(String clazz, String text) {
+		log.info("Getting mapping file from table. Source text: "+text);
 		String ret = null;
 		String form = "/hibernate-mapping/class[@name='" + clazz + "']/@table";
 		ret = evaluateXPath(form, text);

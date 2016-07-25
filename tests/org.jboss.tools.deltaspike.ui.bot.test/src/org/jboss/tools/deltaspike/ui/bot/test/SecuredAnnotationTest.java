@@ -14,8 +14,6 @@ package org.jboss.tools.deltaspike.ui.bot.test;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -40,8 +38,6 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-@OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class SecuredAnnotationTest extends DeltaspikeTestBase {
 
 	private RegexMatcher ambiguousAuthorizerProblemMatcher = new RegexMatcher(

@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
@@ -72,16 +75,15 @@ public class JpaAnnotationGenerationTest extends HibernateRedDeerTest {
 		new DefaultShell("Hibernate: add JPA annotations");
 		new PushButton("Next >").click();
 		new PushButton("Finish").click();
-				
+		new WaitWhile(new ShellWithTextIsAvailable("Hibernate: add JPA annotations"));
+		new WaitWhile(new JobIsRunning());
+		
 		new WorkbenchShell();
 		
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
-		pe.selectProjects(PRJ);		
-		
-		TreeItem item = new DefaultTreeItem(PRJ,"src",PCKG,"Dog.java");
-		item.doubleClick();
-		
+		pe.getProject(PRJ).getProjectItem("src",PCKG,"Dog.java").open();;		
+
 		TextEditor editor = new TextEditor("Dog.java");
 		StringHelper sh = new StringHelper(editor.getText());
 		sh.getPositionAfter("@Entity");		
@@ -91,10 +93,7 @@ public class JpaAnnotationGenerationTest extends HibernateRedDeerTest {
 		log.step("Select package with POJO clases");
 		PackageExplorer pe = new PackageExplorer();
 		pe.open();
-		pe.selectProjects(PRJ);		
-		
-		TreeItem item = new DefaultTreeItem(PRJ,"src",PCKG,"Dog.java");
-		item.select();
+		pe.getProject(PRJ).getProjectItem("src",PCKG,"Dog.java").select();
 	}
 	
 	
