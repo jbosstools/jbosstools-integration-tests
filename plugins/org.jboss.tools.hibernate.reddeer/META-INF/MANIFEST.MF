@@ -33,6 +33,7 @@ Export-Package: org.jboss.tools.hibernate.reddeer,
  org.jboss.tools.hibernate.reddeer.page,
  org.jboss.tools.hibernate.reddeer.perspective,
  org.jboss.tools.hibernate.reddeer.view,
- org.jboss.tools.hibernate.reddeer.wizard
+ org.jboss.tools.hibernate.reddeer.wizard,
+ org.jboss.tools.hibernate.reddeer.condition
 Eclipse-BundleShape: jar
 Bundle-Vendor: JBoss by Red Hat

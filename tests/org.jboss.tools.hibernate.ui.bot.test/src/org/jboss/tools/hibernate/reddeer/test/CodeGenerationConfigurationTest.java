@@ -22,6 +22,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.tools.hibernate.reddeer.condition.EntityIsGenerated;
 import org.jboss.tools.hibernate.reddeer.dialog.LaunchConfigurationsDialog;
 import org.jboss.tools.hibernate.reddeer.editor.RevengEditor;
 import org.jboss.tools.hibernate.reddeer.factory.HibernateToolsFactory;
@@ -85,6 +86,18 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     	createHibernateGenerationConfigurationMvn(false);
     }
     
+    //@Test
+    public void testHibernateGenerateConfiguration51() {
+    	setParams("mvn-hibernate51","5.1","2.1", null);
+    	createHibernateGenerationConfigurationMvn(false);
+    }
+    
+    //@Test
+    public void testHibernateGenerateConfiguration52() {
+    	setParams("mvn-hibernate52","5.1","2.1", null);
+    	createHibernateGenerationConfigurationMvn(false);
+    }
+    
     @Test
     public void testHibernateGenerateConfigurationWithReveng35() {
     	setParams("mvn-hibernate35","3.5","2.0", null);
@@ -112,6 +125,18 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     @Test
     public void testHibernateGenerateConfigurationWithReveng50() {
     	setParams("mvn-hibernate50","5.0","2.1", null);
+    	createHibernateGenerationConfigurationMvn(true);
+    }
+    
+    //@Test
+    public void testHibernateGenerateConfigurationWithReveng51() {
+    	setParams("mvn-hibernate51","5.1","2.1", null);
+    	createHibernateGenerationConfigurationMvn(true);
+    }
+    
+    //@Test
+    public void testHibernateGenerateConfigurationWithReveng52() {
+    	setParams("mvn-hibernate52","5.2","2.1", null);
     	createHibernateGenerationConfigurationMvn(true);
     }
     
@@ -241,7 +266,8 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     	PackageExplorer pe = new PackageExplorer();    
     	pe.open();    	
     	try {
-    		AbstractWait.sleep(TimePeriod.NORMAL);
+    		//AbstractWait.sleep(TimePeriod.NORMAL);
+    		new WaitUntil(new EntityIsGenerated(prj, src, "org.gen", "Actor.java"));
     		//new WaitUntil(new ProjectContainsProjectItem(pe.getProject(prj), src,"org.gen","Actor.java"));
     		pe.getProject(prj).getProjectItem(src,"org.gen","Actor.java").open();
     	}

@@ -31,32 +31,32 @@ import org.junit.runners.Suite;
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
 
-	AntFileExportTest.class,
-	CodeGenerationConfigurationTest.class, //650s TODO
-	ConnectionProfileTest.class,
+	AntFileExportTest.class, //35
+	CodeGenerationConfigurationTest.class, //650s //400
+	ConnectionProfileTest.class, //6
 	ConsoleConfigurationFileTest.class, //200s
-	ConsoleConfigurationTest.class,
-	CreateJPAProjectTest.class,
-	CriteriaEditorTest.class, //500s
+	ConsoleConfigurationTest.class, //60
+	CreateJPAProjectTest.class, //24
+	CriteriaEditorTest.class, //500s //240 
 	CriteriaEditorCodeAssistTest.class, //470s
 	EntityValidationTest.class,
+	JPADetailsViewTest.class, //55
 	HibernateUIPartsTest.class,
-	JPADetailsViewTest.class,
 	JPAEntityGenerationTest.class, //550s
-	JPAFacetTest.class,
-	JPAUIPartsTest.class,
-	/*
-	HQLEditorTest.class, //920s
-	HQLEditorCodeAssistTest.class, //300s
-	JBossDatasourceTest.class,
-	JpaAnnotationGenerationTest.class,
-	MappingDiagramTest.class, //350s
-	MappingFileTest.class,
-	MavenizedProjectTest.class,
-	PersistenceXMLFileTest.class,
-	RevengFileTest.class,
-	TablesFromJPAEntitiesGeneration.class	 //900s
-*/
+	
+	JPAFacetTest.class, //25
+	JPAUIPartsTest.class, //4
+	HQLEditorTest.class, //920s //157
+	HQLEditorCodeAssistTest.class, //300s //160
+	JBossDatasourceTest.class,  //12
+	JpaAnnotationGenerationTest.class, //30
+	MappingDiagramTest.class, //350s //200
+	MappingFileTest.class, //40
+	MavenizedProjectTest.class, //15
+	PersistenceXMLFileTest.class, //25
+	RevengFileTest.class, //15
+	TablesFromJPAEntitiesGeneration.class	 //900s //440
+
 	
 
 })

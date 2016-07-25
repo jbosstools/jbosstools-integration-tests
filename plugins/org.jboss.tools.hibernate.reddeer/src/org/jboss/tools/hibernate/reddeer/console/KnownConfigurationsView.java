@@ -31,7 +31,7 @@ public class KnownConfigurationsView extends WorkbenchView
 	public void triggerAddConfigurationDialog() {
 		open();
 		new ContextMenu("Add Configuration...").select();
-		new WaitUntil(new ShellWithTextIsActive("Edit Configuration") );		
+		new WaitUntil(new ShellWithTextIsAvailable("Edit Configuration") );		
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class KnownConfigurationsView extends WorkbenchView
 		selectConsole(name);
 		String title = "Edit Configuration";
 		new ContextMenu(title).select();
-		new WaitUntil(new ShellWithTextIsActive(title));
+		new WaitUntil(new ShellWithTextIsAvailable(title));
 		return new EditConfigurationShell();
 	}
 

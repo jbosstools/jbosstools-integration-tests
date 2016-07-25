@@ -91,7 +91,7 @@ public class ProjectImporter {
 	public static void importMavenProject(String pomPath) throws IOException {
 		MavenImportWizard importWizard = new MavenImportWizard();
 		importWizard.open();
-		new MavenImportWizardFirstPage().importProject((new File(pomPath)).getCanonicalPath());
+		new MavenImportWizardFirstPage().importProject((new File(pomPath)).getCanonicalPath(),false);
 	}
 
 	
