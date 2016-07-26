@@ -82,6 +82,18 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
     	setParams("mvn-hibernate50-ent","5.0","2.1",null);
     	testDDLGenerationMvn(true);
     }
+    
+    @Test
+    public void testDDLGenerationWithConsole51() {
+    	setParams("mvn-hibernate51-ent","5.1","2.1",null);
+    	testDDLGenerationMvn(true);
+    }
+    
+    @Test
+    public void testDDLGenerationWithConsole52() {
+    	setParams("mvn-hibernate52-ent","5.2","2.1",null);
+    	testDDLGenerationMvn(true);
+    }
    
     @Test
     public void testDDLGenerationWithConsoleEcl35() {
@@ -138,6 +150,18 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
     @Test
     public void testDDLGenerationWithoutConsole50() {
     	setParams("mvn-hibernate50-ent","5.0","2.1",null);
+    	testDDLGenerationMvn(false);
+    }
+    
+    @Test
+    public void testDDLGenerationWithoutConsole51() {
+    	setParams("mvn-hibernate51-ent","5.1","2.1",null);
+    	testDDLGenerationMvn(false);
+    }
+    
+    @Test
+    public void testDDLGenerationWithoutConsole52() {
+    	setParams("mvn-hibernate52-ent","5.2","2.1",null);
     	testDDLGenerationMvn(false);
     }
       

@@ -43,6 +43,16 @@ public class MavenizedProjectTest extends HibernateRedDeerTest {
 		importHibernateMavenProject("mvn-hibernate50");
 	}
 	
+	@Test
+	public void testHibernateMavenProject51() {
+		importHibernateMavenProject("mvn-hibernate51");
+	}
+	
+	@Test
+	public void testHibernateMavenProject52() {
+		importHibernateMavenProject("mvn-hibernate52");
+	}
+	
 	private void importHibernateMavenProject(String projectName) {
 		log.step("Import mavenized test project" + projectName);
 		importMavenProject(projectName);

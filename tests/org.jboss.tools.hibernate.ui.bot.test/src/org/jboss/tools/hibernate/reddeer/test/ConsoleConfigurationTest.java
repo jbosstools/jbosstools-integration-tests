@@ -84,6 +84,16 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		createConsoleConfiguration("5.0");
 	}
 	
+	@Test 
+	public void testConsoleConfiguration51() {
+		createConsoleConfiguration("5.1");
+	}
+	
+	@Test 
+	public void testConsoleConfiguration52() {
+		createConsoleConfiguration("5.2");
+	}
+	
 	private void createConsoleConfiguration(String hibernateVersion) {
 		prepareConsoleConfigurationFile(hibernateVersion);
 		prepareConsoleConfiguration(hibernateVersion);

@@ -103,6 +103,18 @@ public class JPAEntityGenerationTest extends HibernateRedDeerTest {
     }
     
     @Test
+    public void testEntityGenerationWithConsole51() {
+    	setParams("mvn-hibernate51","5.1","2.1");
+    	testEntityGeneration(true);
+    }
+    
+    @Test
+    public void testEntityGenerationWithConsole52() {
+    	setParams("mvn-hibernate52","5.2","2.1");
+    	testEntityGeneration(true);
+    }
+    
+    @Test
     public void testEntityGenerationWithoutConsole35() {
     	setParams("mvn-hibernate35","3.5","2.0");
     	testEntityGeneration(false);
@@ -129,6 +141,18 @@ public class JPAEntityGenerationTest extends HibernateRedDeerTest {
     @Test
     public void testEntityGenerationWithoutConsole50() {
     	setParams("mvn-hibernate50","5.0","2.1");
+    	testEntityGeneration(false);
+    } 
+    
+    @Test
+    public void testEntityGenerationWithoutConsole51() {
+    	setParams("mvn-hibernate51","5.1","2.1");
+    	testEntityGeneration(false);
+    } 
+    
+    @Test
+    public void testEntityGenerationWithoutConsole52() {
+    	setParams("mvn-hibernate52","5.2","2.1");
     	testEntityGeneration(false);
     } 
         

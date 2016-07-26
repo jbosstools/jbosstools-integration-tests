@@ -86,15 +86,15 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     	createHibernateGenerationConfigurationMvn(false);
     }
     
-    //@Test
+    @Test
     public void testHibernateGenerateConfiguration51() {
     	setParams("mvn-hibernate51","5.1","2.1", null);
     	createHibernateGenerationConfigurationMvn(false);
     }
     
-    //@Test
+    @Test
     public void testHibernateGenerateConfiguration52() {
-    	setParams("mvn-hibernate52","5.1","2.1", null);
+    	setParams("mvn-hibernate52","5.2","2.1", null);
     	createHibernateGenerationConfigurationMvn(false);
     }
     
@@ -128,13 +128,13 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     	createHibernateGenerationConfigurationMvn(true);
     }
     
-    //@Test
+    @Test
     public void testHibernateGenerateConfigurationWithReveng51() {
     	setParams("mvn-hibernate51","5.1","2.1", null);
     	createHibernateGenerationConfigurationMvn(true);
     }
     
-    //@Test
+    @Test
     public void testHibernateGenerateConfigurationWithReveng52() {
     	setParams("mvn-hibernate52","5.2","2.1", null);
     	createHibernateGenerationConfigurationMvn(true);
