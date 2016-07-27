@@ -1,7 +1,6 @@
 package org.jboss.tools.hibernate.reddeer.wizard;
 
 import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
@@ -26,12 +25,5 @@ public class NewJBossDatasourceWizardPage extends WizardPage {
 	 */
 	public void setParentFolder(String folder) {
 		new LabeledText("Parent folder:").setText(folder);
-	}
-	
-	/**
-	 * Click finish
-	 */
-	public void finish() {
-		new FinishButton().click(); 
 	}
 }

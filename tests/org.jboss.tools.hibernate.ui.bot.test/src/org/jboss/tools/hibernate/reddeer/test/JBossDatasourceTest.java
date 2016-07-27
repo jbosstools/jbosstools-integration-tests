@@ -1,6 +1,6 @@
 package org.jboss.tools.hibernate.reddeer.test;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -65,15 +65,15 @@ public class JBossDatasourceTest extends HibernateRedDeerTest {
 		page.setConnectionProfile(cfg.getProfileName());
 		page.setParentFolder("/" + PRJ + "/src/main/resources");
 		log.step("Finish");
-		page.finish();
+		wizard.finish();
 
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
 		String dsFileName = cfg.getProfileName() + "-ds.xml";
-		DefaultTreeItem item = new DefaultTreeItem(PRJ,"src","main","resources",dsFileName);
-		item.doubleClick();
 		
 		assertFalse(new DefaultEditor(dsFileName).isDirty());
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		assertTrue(pe.getProject(PRJ).containsItem("src","main","resources",dsFileName));
+	
 	}
 		
 

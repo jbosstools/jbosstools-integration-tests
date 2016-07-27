@@ -18,8 +18,6 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-@OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class ValidationsInPreferenceTest extends DeltaspikeTestBase {
 
 	@Test

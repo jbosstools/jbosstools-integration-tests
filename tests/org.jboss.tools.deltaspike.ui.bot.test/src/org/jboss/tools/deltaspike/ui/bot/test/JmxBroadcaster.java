@@ -15,18 +15,12 @@ package org.jboss.tools.deltaspike.ui.bot.test;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -43,8 +37,6 @@ import org.junit.Test;
  * @author jjankovi
  * 
  */
-@OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
 public class JmxBroadcaster extends DeltaspikeTestBase {
 
 	private RegexMatcher validationProblemRegexMatcher = new RegexMatcher("No bean is eligible.*");
@@ -76,14 +68,6 @@ public class JmxBroadcaster extends DeltaspikeTestBase {
 			}
 		}
 		new TextEditor("BroadcasterProducer.class");
-		
-		try{
-			new DefaultShell("Found source jar for 'deltaspike-core-impl-0.4.jar'");
-			new PushButton("No").click();
-			new WaitWhile(new ShellWithTextIsAvailable("Found source jar for 'deltaskipe-core-impl-0.4.jar'"));
-		} catch (SWTLayerException ex){
-			//do nothing because maven source lookup is not installed
-		}
 
 	}
 

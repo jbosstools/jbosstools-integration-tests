@@ -9,86 +9,52 @@
 	</parent>
 	<groupId>org.jboss.tools.deltaspike.tests</groupId>
 	<artifactId>org.jboss.tools.deltaspike.ui.bot.test</artifactId>
-
 	<packaging>eclipse-test-plugin</packaging>
+	
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Drd.config=target/classes/servers -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Ddeltaspike.libs.dir=${requirementsDirectory} -Djbosstools.test.wildfly.8x.home=${jbosstools.test.wildfly.8x.home}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Drd.config=target/classes/servers</systemProperties>
 		<suiteClass>org.jboss.tools.deltaspike.ui.bot.test.DeltaspikeAllBotTests</suiteClass>
-		<jbosstools.test.wildfly.8x.home>${requirementsDirectory}/wildfly-8.1.0.Final</jbosstools.test.wildfly.8x.home>
-		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
+		<jbosstools.test.wildfly.10x.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.wildfly.10x.home>
+		<deltaspike_lib_version>1.7.1</deltaspike_lib_version>
 	</properties>
+	
+	
+	<profiles>
+		<profile>
+			<id>check-pr</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<configuration>
+							<dependency-resolution>
+								<extraRequirements>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.cdi.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.cdi.deltaspike.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+								</extraRequirements>
+							</dependency-resolution>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
-					<execution>
-						<id>unpack</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<skip>${skipTests}</skip>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.jboss.as</groupId>
-									<artifactId>jboss-as-dist</artifactId>
-									<version>7.1.1.Final</version>
-									<type>zip</type>
-								</artifactItem>								
-							</artifactItems>
-						</configuration>
-					</execution>
-					<execution>
-						<id>deltaspike-installation</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<skip>${skipTests}</skip>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.apache.deltaspike.core</groupId>
-									<artifactId>deltaspike-core-api</artifactId>
-									<version>1.0.2</version>
-									<type>jar</type>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.apache.deltaspike.core</groupId>
-									<artifactId>deltaspike-core-impl</artifactId>
-									<version>1.0.2</version>
-									<type>jar</type>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.apache.deltaspike.modules</groupId>
-									<artifactId>deltaspike-security-module-api</artifactId>
-									<version>1.0.2</version>
-									<type>jar</type>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.apache.deltaspike.modules</groupId>
-									<artifactId>deltaspike-security-module-impl</artifactId>
-									<version>1.0.2</version>
-									<type>jar</type>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.apache.deltaspike.modules</groupId>
-									<artifactId>deltaspike-partial-bean-module-impl</artifactId>
-									<version>1.0.2</version>
-									<type>jar</type>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.apache.deltaspike.modules</groupId>
-									<artifactId>deltaspike-partial-bean-module-api</artifactId>
-									<version>1.0.2</version>
-									<type>jar</type>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
 					<execution>
 						<id>wildfly</id>
 						<phase>pre-integration-test</phase>
@@ -101,7 +67,7 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>8.1.0.Final</version>
+									<version>10.0.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
@@ -118,49 +84,15 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.apache.maven.plugins
-										</groupId>
-										<artifactId>
-											maven-dependency-plugin
-										</artifactId>
-										<versionRange>
-											[2.4,)
-										</versionRange>
-										<goals>
-											<goal>unpack</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<resources>
 				<resource>
-				<directory>resources</directory>
-				<includes>
-					<include>servers/*</include>
-				</includes>
-				<filtering>true</filtering>
-			</resource>
+					<directory>resources</directory>
+					<includes>
+						<include>servers/*</include>
+						<include>prj/**</include>
+					</includes>
+					<filtering>true</filtering>
+				</resource>
 		</resources>
 	</build>	
 </project>
