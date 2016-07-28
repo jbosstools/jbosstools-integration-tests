@@ -123,6 +123,16 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 	public void testCreateConfigurationFileWithoutConsole50() {		
 		testCreateConfigurationFile("5.0",false);
 	}
+	
+	@Test
+	public void testCreateConfigurationFileWithoutConsole51() {		
+		testCreateConfigurationFile("5.1",false);
+	}
+	
+	@Test
+	public void testCreateConfigurationFileWithoutConsole52() {		
+		testCreateConfigurationFile("5.2",false);
+	}
 
 	@Test
 	public void testCreateConfigurationFileWithConsole50() {
@@ -130,8 +140,28 @@ public class ConsoleConfigurationFileTest extends HibernateRedDeerTest {
 	}
 	
 	@Test
+	public void testCreateConfigurationFileWithConsole51() {
+		testCreateConfigurationFile("5.1",true);
+	}
+	
+	@Test
+	public void testCreateConfigurationFileWithConsole52() {
+		testCreateConfigurationFile("5.2",true);
+	}
+	
+	@Test
 	public void testCreateConfigurationFileFromDatasource50() {
 		createConfigurationFileFromDatasource("5.0");
+	}
+	
+	@Test
+	public void testCreateConfigurationFileFromDatasource51() {
+		createConfigurationFileFromDatasource("5.1");
+	}
+	
+	@Test
+	public void testCreateConfigurationFileFromDatasource52() {
+		createConfigurationFileFromDatasource("5.2");
 	}
 	
 	

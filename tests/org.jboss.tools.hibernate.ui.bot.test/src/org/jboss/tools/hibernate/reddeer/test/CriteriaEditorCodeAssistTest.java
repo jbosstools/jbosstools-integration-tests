@@ -96,6 +96,18 @@ public class CriteriaEditorCodeAssistTest extends HibernateRedDeerTest {
     	setParams("mvn-hibernate50-ent","5.0","2.1", null);
     	testCriteriaEditorCodeAssistMvn();
     }
+    
+    @Test
+    public void testCriteriaEditorCodeAssistMvn51() {
+    	setParams("mvn-hibernate51-ent","5.1","2.1", null);
+    	testCriteriaEditorCodeAssistMvn();
+    }
+    
+    @Test
+    public void testCriteriaEditorCodeAssistMvn52() {
+    	setParams("mvn-hibernate52-ent","5.2","2.1", null);
+    	testCriteriaEditorCodeAssistMvn();
+    }
         
     @Test
     public void testCriteriaEditorCodeAssistEcl35() {
@@ -202,7 +214,8 @@ public class CriteriaEditorCodeAssistTest extends HibernateRedDeerTest {
 		criteriaEditor.setText(expression);
 		criteriaEditor.setCursorPosition(expression.length());
 		proposal = "createCriteria\\(Class arg0\\) \\: Criteria \\- Session";
-		if (hbVersion.equals("5.0") || hbVersion.equals("4.3") || hbVersion.equals("4.0")) {
+		Double hv = Double.parseDouble(hbVersion);
+		if(hv >= 4.0) {
 			proposal = "createCriteria\\(Class \\w*\\) : Criteria - SharedSessionContract";
 		}
 		ca = criteriaEditor.openContentAssistant();

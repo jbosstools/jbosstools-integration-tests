@@ -86,6 +86,18 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
     	setParams("mvn-hibernate50-ent","5.0","2.1", null);
     	testMappingDiagramMaven();
     }
+    
+    @Test
+    public void testMappingDiagram51() {
+    	setParams("mvn-hibernate51-ent","5.1","2.1", null);
+    	testMappingDiagramMaven();
+    }
+    
+    @Test
+    public void testMappingDiagram52() {
+    	setParams("mvn-hibernate52-ent","5.2","2.1", null);
+    	testMappingDiagramMaven();
+    }
 
     @Test
     public void testMappingDiagramEcl35() {
