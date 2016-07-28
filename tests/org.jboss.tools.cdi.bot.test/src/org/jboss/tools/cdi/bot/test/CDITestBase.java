@@ -85,6 +85,11 @@ public class CDITestBase{
 		}
 	}
 	
+	@After
+	public void waitForJobs() {
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
+	
 	@AfterClass
 	public static void cleanUp(){
 		new WaitWhile(new JobIsRunning());
@@ -131,11 +136,6 @@ public class CDITestBase{
 		s1.close();
 		return file;
 		
-	}
-	
-	@After
-	public void waitForJobs() {
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 		
 	protected String getProjectName() {

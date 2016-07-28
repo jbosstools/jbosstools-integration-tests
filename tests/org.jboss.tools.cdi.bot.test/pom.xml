@@ -114,17 +114,17 @@
 							<skip>${skipTests}</skip>
 							<artifactItems>
 								<artifactItem>
-									 <groupId>org.jboss.weld.se</groupId>
-   									 <artifactId>weld-se</artifactId>
-    								 <version>2.2.4.Final</version>
-    								 <outputDirectory>${requirementsDirectory}/weld/se/</outputDirectory>
+									<groupId>org.jboss.weld.se</groupId>
+   									<artifactId>weld-se</artifactId>
+    									<version>2.2.4.Final</version>
+    									<outputDirectory>${requirementsDirectory}/weld/se/</outputDirectory>
 								</artifactItem>
 								
 								<artifactItem>
-									 <groupId>org.jboss.weld</groupId>
-    								 <artifactId>weld-api</artifactId>
-    								 <version>2.2.SP3</version>
-    								 <outputDirectory>${requirementsDirectory}/weld/api/</outputDirectory>
+									<groupId>org.jboss.weld</groupId>
+    									<artifactId>weld-api</artifactId>
+    									<version>2.2.SP3</version>
+    									<outputDirectory>${requirementsDirectory}/weld/api/</outputDirectory>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
@@ -137,12 +137,11 @@
 				<configuration>
 					<testSuite>org.jboss.tools.cdi.bot.test</testSuite>
 					<testClass>${suiteClass}</testClass>
-					<appArgLine>-pluginCustomization ${basedir}/pluginCustomization.ini</appArgLine>
 				</configuration>
 			</plugin>
 		</plugins>
 		<resources>
-				<resource>
+			<resource>
 				<directory>resources</directory>
 				<includes>
 					<include>servers/*</include>

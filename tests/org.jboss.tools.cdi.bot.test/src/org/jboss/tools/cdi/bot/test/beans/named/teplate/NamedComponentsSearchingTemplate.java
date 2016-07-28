@@ -9,8 +9,8 @@ import java.util.Map;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -18,10 +18,11 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.OpenCDINamedBeanDialog;
 import org.jboss.tools.cdi.reddeer.uiutils.EditorResourceHelper;
 import org.jboss.tools.common.reddeer.label.IDELabel;
-import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 
@@ -35,9 +36,15 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 	private static final String BEAN_STEREOTYPE_PATH = "resources/named/BeanWithStereotype.java.cdi";
 	private static final String BEAN_STEREOTYPE_NAMED_PATH = "resources/named/BeanWithStereotypeAndNamed.java.cdi";
 	
-	@After
+	@Before
 	public void waitForJobs() {
-		new EditorResourceHelper().deletePackage(getProjectName(), getPackageName());
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(getProjectName()).refresh();
+		if(pe.getProject(getProjectName()).
+				containsItem(CDIConstants.JAVA_RESOURCES,CDIConstants.SRC,getPackageName())){
+			new EditorResourceHelper().deletePackage(getProjectName(), getPackageName());
+		}
 	}
 	
 	@Test
