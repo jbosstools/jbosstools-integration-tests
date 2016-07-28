@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.IProduct;
-import org.eclipse.core.runtime.Platform;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.equinox.security.ui.StoragePreferencePage;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -39,13 +39,8 @@ public class TestSupport {
 		 * https://issues.jboss.org/browse/JBDS-2441
 		 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=385272
 		 */
-		try {
-			new PushButton("OK").click();
-		}
-		catch (org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException E) {
-			new PushButton("ok").click();
-		}
-						
+		new PushButton(new WithTextMatcher(new RegexMatcher("OK|ok"))).click();
+		
 		DefaultTree RepoTree = new DefaultTree();
 		List<TreeItem> repoItems = RepoTree.getAllItems();
 		
@@ -74,17 +69,8 @@ public class TestSupport {
 		
 		log.debug("Attempting to close the Secure Storage Dialog");
 		
-		/* For JBoss Tools */
-		String uiString = "Secure Storage"; 
-
-		/* Determine if JBDS is running */
-		IProduct prod = Platform.getProduct();
-		if ((prod != null) && (prod.getId().startsWith("com.jboss.devstudio."))) {
-			uiString = "Secure Storage Password";
-		}	
-		
 		try {
-			new DefaultShell(uiString).close();
+			new DefaultShell(new WithTextMatcher(new RegexMatcher("Secure Storage.*"))).close();
 			log.debug("Closed the Secure Storage Dialog");
 		} 
 		catch (SWTLayerException swtle){
@@ -104,7 +90,7 @@ public class TestSupport {
 
 		preferenceDialog.select(storagePage);
 		for (TableItem item : storagePage.getMasterPasswordProviders()) {
-			item.setChecked(true);
+			item.setChecked(false);
 		}
 
 		storagePage.apply();
