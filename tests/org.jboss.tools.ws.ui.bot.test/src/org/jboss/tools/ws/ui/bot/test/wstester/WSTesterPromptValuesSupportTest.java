@@ -37,7 +37,7 @@ import org.junit.Test;
  * @author jjankovi
  * @author Radoslav Rabara
  */
-@JBossServer(state=ServerReqState.RUNNING)
+@JBossServer(state=ServerReqState.RUNNING, cleanup=false)
 public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 
 	private String wsProjectName = "wsPromptTestProject";
@@ -52,9 +52,9 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	public void setup() {
 		if (!projectExists(wsProjectName)) {
 			importWSTestProject(wsProjectName);
-			ServersViewHelper.runProjectOnServer(wsProjectName);
-			ServersViewHelper.waitForDeployment(wsProjectName, getConfiguredServerName());
 		}
+		ServersViewHelper.runProjectOnServer(wsProjectName);
+		ServersViewHelper.waitForDeployment(wsProjectName, getConfiguredServerName());
 		testerView = new WsTesterView();
 		testerView.open();
 	}
@@ -67,6 +67,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 		if (testerView != null && testerView.isOpened()) {
 			testerView.close();
 		}
+		ServersViewHelper.removeAllProjectsFromServer(getConfiguredServerName());
 	}
 
 	@AfterClass
@@ -88,7 +89,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	}
 
 	/**
-	 * Fails due to JBIDE-12027
+	 * Fails due to JBIDE-12027/JBIDE-22377
 	 *  
 	 * Tests if the parameters were loaded with the specified type
 	 * and default values
@@ -174,7 +175,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	}
 
 	private void checkAllDefaultParametersValues(List<TreeItem> parameters) {
-		assertThat("JBIDE-12027: Default value of id is wrong", 
+		assertThat("JBIDE-12027/JBIDE-22377: Default value of id is wrong", 
 				dialog.getParameterValue(parameters.get(0)), Is.is("0"));
 		assertThat("Default value of id is wrong", 
 				dialog.getParameterValue(parameters.get(1)), Is.is("m1"));

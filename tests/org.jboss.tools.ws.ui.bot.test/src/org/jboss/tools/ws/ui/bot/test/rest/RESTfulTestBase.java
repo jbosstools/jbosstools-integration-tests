@@ -66,7 +66,7 @@ import org.junit.Assert;
  * @author jjankovi
  * 
  */
-@JBossServer(state=ServerReqState.STOPPED)
+@JBossServer(state=ServerReqState.STOPPED, cleanup=false)
 @OpenPerspective(JavaEEPerspective.class)
 public class RESTfulTestBase extends WSTestBase {
 

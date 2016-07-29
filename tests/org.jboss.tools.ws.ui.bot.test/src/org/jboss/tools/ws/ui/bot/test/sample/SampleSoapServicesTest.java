@@ -21,6 +21,8 @@ import javax.xml.namespace.QName;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.ui.wizards.ws.ui.SampleWebServiceWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.ws.ui.SimpleWebServiceWizard;
@@ -105,6 +107,7 @@ public class SampleSoapServicesTest extends SOAPTestBase {
 					new QName("http://" + svcPkg + "/", svcClass + "Port"));
 			Asserts.assertContain(c.callService(MessageFormat.format(SOAP_REQUEST, svcPkg, msgContent)),
 					"Hello " + msgContent + "!");
+			new WaitUntil(new ConsoleHasText("Hello: " + msgContent));
 		} catch (MalformedURLException e) {
 			LOGGER.log(Level.WARNING, e.getMessage(), e);
 		}

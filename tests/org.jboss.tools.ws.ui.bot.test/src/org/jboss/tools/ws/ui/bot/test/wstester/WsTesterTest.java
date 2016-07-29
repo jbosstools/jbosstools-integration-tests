@@ -26,13 +26,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.uiforms.impl.expandablecomposite.DefaultExpandableComposite;
 import org.jboss.tools.ws.reddeer.swt.condition.WsTesterNotEmptyResponseText;
@@ -208,16 +207,16 @@ public class WsTesterTest {
 	@Test
 	public void testSOAP12Service() {
 		wstv.setRequestType(RequestType.JAX_WS);
-		assertEquals(RequestType.JAX_WS, wstv.getRequestType());
-		wstv.invokeGetFromWSDL();
+		assertEquals(RequestType.JAX_WS, wstv.getRequestType());		
 
-		SelectWSDLDialog selectWSDLDialog = new SelectWSDLDialog();
+		SelectWSDLDialog selectWSDLDialog = wstv.invokeGetFromWSDL();
 		try {
 			selectWSDLDialog.openURL();
 			final String wsdlURLDialogTitle = "WSDL URL";
 			InputDialog wsdlURLDialog = new InputDialog(wsdlURLDialogTitle);
 			wsdlURLDialog.setInputText(SERVICE_URL + "?WSDL");
 			wsdlURLDialog.ok();
+			new DefaultShell(selectWSDLDialog.TITLE);
 			assertEquals(SERVICE_URL + "?WSDL", selectWSDLDialog.getURI());
 			selectWSDLDialog.selectPort("BibleWebserviceSoap12");
 			selectWSDLDialog.ok();
@@ -395,29 +394,29 @@ public class WsTesterTest {
 
 	private void selectPort(WsTesterView wstv, String portName) {
 		SelectWSDLDialog dlg = wstv.invokeGetFromWSDL();
+		
 		try {
 			dlg.openURL();
-			InputDialog wsdUrlDialog = new InputDialog();
+			InputDialog wsdUrlDialog = new InputDialog("WSDL URL");
 			wsdUrlDialog.typeInputText(SERVICE_URL + "?WSDL");
 			wsdUrlDialog.ok();
-
-			waitForProcessInformationDialog();
+			new DefaultShell(dlg.TITLE);
 
 			Assert.assertEquals(SERVICE_URL + "?WSDL", dlg.getURI());
 			List<String> items = dlg.getServices();
-			LOGGER.log(Level.FINE, "Services: {0}", items);
+			LOGGER.log(Level.INFO, "Services: {0}", items);
 			Assert.assertEquals(1, items.size());
 			Assert.assertTrue(items.contains("BibleWebservice"));
 			items = dlg.getPorts();
 
-			LOGGER.log(Level.FINE, "Ports: {0}", items);
+			LOGGER.log(Level.INFO, "Ports: {0}", items);
 			Assert.assertEquals(2, items.size());
 			Assert.assertTrue(items.contains("BibleWebserviceSoap"));
 			Assert.assertTrue(items.contains("BibleWebserviceSoap12"));
 			dlg.selectPort(portName);
 			items = dlg.getOperations();
 
-			LOGGER.log(Level.FINE, "Operations: {0}", items);
+			LOGGER.log(Level.INFO, "Operations: {0}", items);
 			Assert.assertEquals(4, items.size());
 			Assert.assertTrue(items.contains("GetBookTitles"));
 			Assert.assertTrue(items.contains("GetBibleWordsByChapterAndVerse"));
@@ -428,16 +427,6 @@ public class WsTesterTest {
 			if (new ShellWithTextIsAvailable(dlg.TITLE).test()) {
 				dlg.close();
 			}
-		}
-	}
-
-	private void waitForProcessInformationDialog() {
-		try {
-			new WaitUntil(new ShellWithTextIsAvailable("Progress Information"));
-			new WaitWhile(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.getCustom(24));
-		} catch (WaitTimeoutExpiredException sle) {
-			// WISE call was pretty quick - no progress information dialog
-			// appears
 		}
 	}
 }

@@ -41,6 +41,7 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.workbench.condition.EditorWithTitleIsActive;
+import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.common.reddeer.label.IDELabel;
@@ -92,6 +93,7 @@ public class ProjectHelper {
 	 * @param wsdlFileName
 	 */
 	public static DefaultEditor createWsdl(String projectName, String wsdlFileName) {
+		EditorHandler.getInstance().closeAll(false);
 		NewWsdlFileWizard wizard = new NewWsdlFileWizard();
 		wizard.open();
 
