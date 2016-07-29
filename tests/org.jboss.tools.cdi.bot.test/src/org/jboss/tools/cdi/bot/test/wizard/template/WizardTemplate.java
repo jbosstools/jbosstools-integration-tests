@@ -37,7 +37,6 @@ import org.jboss.tools.cdi.reddeer.cdi.ui.NewStereotypeCreationWizard;
 import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
 import org.junit.Before;
 import org.junit.Test;
-import org.jboss.reddeer.eclipse.core.resources.Project;
 
 /**
  * Test checks all CDI components wizardExts

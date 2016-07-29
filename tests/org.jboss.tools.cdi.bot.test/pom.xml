@@ -11,15 +11,21 @@
 	<artifactId>org.jboss.tools.cdi.bot.test</artifactId>
     <packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Drd.config=target/classes/servers -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Djbosstools.test.wildfly.8x.home=${jbosstools.test.wildfly.8x.home} -Djbosstools.test.weld-se.home=${jbosstools.test.weld-se.home} -Djbosstools.test.weld-api.home=${jbosstools.test.weld-api.home}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Drd.config=target/classes/servers -Djbosstools.test.weld-se.home=${jbosstools.test.weld-se.home} -Djbosstools.test.weld-api.home=${jbosstools.test.weld-api.home}</systemProperties>
 		<surefire.timeout>14400</surefire.timeout>
 		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
-		<jbosstools.test.wildfly.8x.home>${requirementsDirectory}/wildfly-8.1.0.Final</jbosstools.test.wildfly.8x.home>
+		<jbosstools.test.wildfly.10.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.wildfly.10.home>
 		<jbosstools.test.weld-se.home>${requirementsDirectory}/weld/se/</jbosstools.test.weld-se.home>
 		<jbosstools.test.weld-api.home>${requirementsDirectory}/weld/api/</jbosstools.test.weld-api.home>
 	</properties>
 
 	<profiles>
+		<profile>
+			<id>smoke-tests</id>
+			<properties>
+				<suiteClass>org.jboss.tools.cdi.bot.test.SmokeSuite</suiteClass>
+			</properties>
+		</profile>
 		<profile>
 			<id>all-bot-tests</id>
 			<properties>
@@ -98,7 +104,7 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>8.1.0.Final</version>
+									<version>10.0.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
