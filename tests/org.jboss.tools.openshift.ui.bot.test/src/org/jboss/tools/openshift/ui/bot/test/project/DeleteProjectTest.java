@@ -61,7 +61,7 @@ public class DeleteProjectTest {
 		new DefaultTable().getItem(DatastoreOS3.PROJECT1).select();
 		new PushButton(OpenShiftLabel.Button.REMOVE).click();
 		
-		new DefaultShell(OpenShiftLabel.Shell.DELETE_OS_PROJECT);
+		new DefaultShell(OpenShiftLabel.Shell.DELETE_RESOURCE);
 		new OkButton().click();
 		
 		projectExists = false;

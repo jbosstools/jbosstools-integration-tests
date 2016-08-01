@@ -139,7 +139,7 @@ public class OpenShiftLabel {
 		public static final String APPLICATION_SERVER_REMOVE = "Application and Server removal";
 		public static final String COMMIT = "Commit Changes";
 		public static final String DELETE_APP = "Application removal";
-		public static final String DELETE_OS_PROJECT = "OpenShift resource deletion";
+		public static final String DELETE_OS_PROJECT = "OpenShift project deletion";
 		public static final String DELETE_ADAPTER = "Delete Server";
 		public static final String DEPLOY_IMAGE_TO_OPENSHIFT = "Deploy Image to OpenShift";
 		public static final String EDIT_CARTRIDGES = "Edit Embedded Cartridges";
@@ -211,6 +211,7 @@ public class OpenShiftLabel {
 		public static final String CHEATSHEET = "Found cheatsheet";
 		public static final String LOADING_CONNECTION_DETAILS = "Loading OpenShift 2 connection details";
 		public static final String SERVICE_PORTS = "Service Ports";
+		public static final String SERVER_ADAPTER_SETTINGS = "OpenShift Server Adapter Settings";
 	}
 	
 	/**

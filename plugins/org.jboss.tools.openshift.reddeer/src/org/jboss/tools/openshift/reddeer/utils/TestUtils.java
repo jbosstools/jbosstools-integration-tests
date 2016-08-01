@@ -13,6 +13,7 @@ package org.jboss.tools.openshift.reddeer.utils;
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.jgit.api.Git;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -65,13 +66,16 @@ public class TestUtils {
 	}
 	
 	public static void cleanupGitFolder(String appname) {
-		File gitDir = new File(System.getProperty("user.home") + "/git");
-
+		File gitDir = new File(System.getProperty("user.home") + File.separatorChar + "git");
+		
 		boolean exists = gitDir.exists() ? true : gitDir.mkdir();
 
 		if (exists && gitDir.isDirectory() && gitDir.listFiles().length > 0) {
 			for (File file : gitDir.listFiles()) {
 				if (file.getName().contains(appname))
+					if (file.isDirectory()) {
+						closeGitRepository(file);
+					}
 					try {
 						TestUtils.delete(file);
 					} catch (IOException e) {
@@ -81,6 +85,16 @@ public class TestUtils {
 		}
 	}
 
+	public static void closeGitRepository(File repoDir) {
+		try {
+			Git git = Git.open(repoDir);
+			git.getRepository().close();
+			git.close();
+		} catch (IOException ex) {
+			// DO NOTHING
+		}
+	}
+	
 	public static void delete(File file) throws IOException {
 		if (file.isDirectory() && file.list().length > 0) {
 			String files[] = file.list();

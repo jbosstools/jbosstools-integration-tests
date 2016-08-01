@@ -50,10 +50,10 @@ public class PublishChangesTest extends AbstractCreateApplicationTest {
 		explorer.getOpenShift3Connection().getProject().getService("eap-app").select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_ADAPTER_FROM_EXPLORER).select();
 		
-		new DefaultShell("");
+		new DefaultShell(OpenShiftLabel.Shell.SERVER_ADAPTER_SETTINGS);
 		new FinishButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.ADAPTER));
+		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.SERVER_ADAPTER_SETTINGS));
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG, false);
 	}
 	
