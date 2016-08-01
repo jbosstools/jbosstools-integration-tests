@@ -3,14 +3,19 @@ package org.jboss.tools.arquillian.ui.bot.test.testcase;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.apache.log4j.Logger;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.jdt.ui.junit.JUnitView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.arquillian.ui.bot.reddeer.configurations.JUnitConfigurationPage;
 import org.jboss.tools.arquillian.ui.bot.reddeer.configurations.JUnitTestTab;
 import org.jboss.tools.arquillian.ui.bot.reddeer.configurations.RunConfigurationsDialog;
@@ -32,6 +37,7 @@ import org.junit.Test;
 public class RunArquillianTestCase extends AbstractArquillianTestCase {
 
 	private static final String LAUNCH_CONFIGURATION = "arq-test";
+	private static final Logger log = Logger.getLogger(RunArquillianTestCase.class);
 
 	@Test
 	public void testRunningTestCase(){
@@ -52,6 +58,18 @@ public class RunArquillianTestCase extends AbstractArquillianTestCase {
 //		arquillianTab.selectMavenProfile(AddArquillianProfile.PROFILE_NAME);
 		
 		runDialog.run();
+		/* Intermittent timing issue (https://issues.jboss.org/browse/JBIDE-22866) is being seen where the 
+		 * Run Configurations dialog is not closed - add this to make test more reliable */
+		log.info("Attempting to close the Run Configurations Dialog");
+		
+		try {
+			new DefaultShell(new WithTextMatcher(new RegexMatcher(".*Run Configurations.*"))).close();
+			log.info("Closed the Run Configurations Dialog");
+		} 
+		catch (SWTLayerException swtle){
+			log.error("Unable to close the Run Configurations Dialog - " + swtle.getMessage());
+			log.error (swtle);				
+		}					
 	}
 	
 	private void checkJUnitView(){
