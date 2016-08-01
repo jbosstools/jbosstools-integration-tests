@@ -1,14 +1,13 @@
 package org.jboss.tools.hibernate.reddeer.dialog;
 
 import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.condition.WidgetIsFound;
 import org.jboss.reddeer.core.matcher.ClassMatcher;
 import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.jboss.reddeer.core.matcher.WithStyleMatcher;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -49,7 +48,7 @@ public class ProjectFacetsPage extends WizardPage {
     	new DefaultShell("Properties for " + projectName);
     	new WaitUntil(new WidgetIsFound<Button>(new ClassMatcher(Button.class),new WithStyleMatcher(SWT.PUSH), new WithMnemonicTextMatcher("Apply")), TimePeriod.LONG);
     	PushButton apply = new PushButton("Apply");
-    	new WaitUntil(new ButtonWithTextIsEnabled(apply));
+    	new WaitUntil(new WidgetIsEnabled(apply));
     	apply.click();    	
 	}
 }

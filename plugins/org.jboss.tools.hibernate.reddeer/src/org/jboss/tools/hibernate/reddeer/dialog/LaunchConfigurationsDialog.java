@@ -1,7 +1,7 @@
 package org.jboss.tools.hibernate.reddeer.dialog;
 
 import org.eclipse.swt.widgets.Shell;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
@@ -102,7 +102,7 @@ public class LaunchConfigurationsDialog {
 		new PushButton("Run").click();
     	new WaitWhile(new ShellWithTextIsAvailable("Hibernate Code Generation Configurations"));
     	new WaitUntil(new JobIsRunning());
-    	new WaitWhile(new JobIsRunning());
+    	new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class LaunchConfigurationsDialog {
 	public void ok() {
 		new WaitUntil(new ShellWithTextIsAvailable(DIALOG_TITLE));
 		PushButton ok = new PushButton("OK");
-		new WaitUntil(new ButtonWithTextIsEnabled(ok));
+		new WaitUntil(new WidgetIsEnabled(ok));
 		ok.click();
 		new WaitWhile(new ShellWithTextIsAvailable(DIALOG_TITLE)); 
 	}
