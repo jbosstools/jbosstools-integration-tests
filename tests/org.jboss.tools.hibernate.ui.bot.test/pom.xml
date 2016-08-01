@@ -152,7 +152,7 @@
 		<profile>
 			<id>smoke-tests</id>
 			<properties>
-				<suiteClass>org.jboss.tools.hibernate.ui.bot.test.SmokeAllTest</suiteClass>
+				<suiteClass>org.jboss.tools.hibernate.ui.bot.test.SmokeSuite</suiteClass>
 			</properties>
 		</profile>
 		<profile>
