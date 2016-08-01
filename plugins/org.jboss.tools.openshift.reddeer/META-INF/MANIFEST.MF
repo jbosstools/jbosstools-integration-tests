@@ -6,6 +6,7 @@ Bundle-Version: 4.4.1.qualifier
 Bundle-Activator: org.jboss.tools.openshift.reddeer.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
+ org.eclipse.jgit,
  org.junit;bundle-version="4.8.2",
  org.apache.commons.compress,
  org.jboss.reddeer.jface;bundle-version="[1.0.0,2.0.0)",

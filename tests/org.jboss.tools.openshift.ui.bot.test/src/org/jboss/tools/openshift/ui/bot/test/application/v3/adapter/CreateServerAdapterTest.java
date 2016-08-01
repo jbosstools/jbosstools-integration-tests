@@ -90,7 +90,7 @@ public class CreateServerAdapterTest extends AbstractCreateApplicationTest {
 		explorer.getOpenShift3Connection().getProject().getService("eap-app").select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_ADAPTER_FROM_EXPLORER).select();
 		
-		new DefaultShell("");
+		new DefaultShell(OpenShiftLabel.Shell.SERVER_ADAPTER_SETTINGS);
 		
 		assertTrue("Service should be preselected for new OpenShift 3 server adapter",
 				new DefaultTreeItem(DatastoreOS3.PROJECT1, "eap-app deploymentConfig=eap-app").isSelected());
