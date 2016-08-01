@@ -1,14 +1,9 @@
 package org.jboss.tools.deltaspike.ui.bot.test;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.eclipse.swt.SWT;
+import org.jboss.reddeer.core.handler.WidgetHandler;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
-import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
 import org.jboss.tools.cdi.reddeer.cdi.ui.CDIValidatorPreferencePage;
 import org.junit.Test;
 
@@ -26,12 +21,10 @@ public class ValidationsInPreferenceTest extends DeltaspikeTestBase {
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
 		preferenceDialog.select(new CDIValidatorPreferencePage());
+
+		WidgetHandler.getInstance().notify(SWT.MouseUp, new DefaultLabel("Extensions").getSWTWidget());
 		
-		new DefaultHyperlink("Extensions").activate();
-		new DefaultHyperlink("Deltaspike").activate();
-		
-		//bot.twistieByLabel("Extensions").toggle();
-		//bot.twistieByLabel("Deltaspike").toggle();
+		WidgetHandler.getInstance().notify(SWT.MouseUp, new DefaultLabel("Deltaspike").getSWTWidget());
 		
 		checkDeltaspikeValidationPresense();
 		
