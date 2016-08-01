@@ -18,7 +18,6 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.cdi.bot.test.beansxml.completion.template.BeansXMLCompletionTemplate;
 import org.junit.Before;
@@ -29,7 +28,7 @@ import org.junit.Before;
  * @author Jaroslav Jankovic
  * 
  */
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1, cleanup=false)
 @OpenPerspective(JavaEEPerspective.class)
 public class BeansXMLCompletionTestCDI10 extends BeansXMLCompletionTemplate {
 	

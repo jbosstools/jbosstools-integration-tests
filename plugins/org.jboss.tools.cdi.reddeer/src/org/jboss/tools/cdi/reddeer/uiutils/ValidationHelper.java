@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.exception.CoreLayerException;
@@ -60,8 +61,12 @@ public class ValidationHelper {
 		List<Problem> problems = pw.getProblems(ProblemType.ANY);
 		List<Problem> foundProblems = new ArrayList<Problem>();
 		for(Problem p: problems){
-			if(validationProblem.equals(p)){
-				foundProblems.add(p);
+			try{
+				if(validationProblem.equals(p)){
+					foundProblems.add(p);
+				}
+			} catch (RedDeerException e) {
+				// disposed
 			}
 		}
 		return foundProblems;
