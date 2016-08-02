@@ -15,6 +15,48 @@
 	<properties>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 	</properties>
+	
+	<profiles>
+		<profile>
+			<id>smoke-tests</id>
+			<properties>
+				<suiteClass>org.jboss.tools.batch.ui.bot.test.SmokeSuite</suiteClass>
+			</properties>
+		</profile>
+		<profile>
+			<id>all-tests</id>
+			<properties>
+				<suiteClass>org.jboss.tools.batch.ui.bot.test.AllTestsSuite</suiteClass>
+			</properties>
+		</profile>
+		<profile>
+			<id>check-pr</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<configuration>
+							<dependency-resolution>
+								<extraRequirements>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.batch.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.cdi.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+								</extraRequirements>
+							</dependency-resolution>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>			
+		</profile>
+	</profiles>
 
 	<build>
 		<plugins>
@@ -26,61 +68,11 @@
 					<surefire.timeout>7200</surefire.timeout>
 					<forkedProcessTimeoutInSeconds>7200</forkedProcessTimeoutInSeconds>
 					<testSuite>org.jboss.tools.batch.ui.bot.test</testSuite>
-					<testClass>org.jboss.tools.batch.ui.bot.test.AllTestsSuite</testClass>
-					<dependencies combine.children="append">
-
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.batch.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.cdi.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-							<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.m2e.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.m2e.profiles.core</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.maven.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<!-- This entry should enable creating of default JDK on Mac -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.jdt.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-					</dependencies>
+					<testClass>${suiteClass}</testClass>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	<profiles>
-		<profile>
-			<id>smoke</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>tycho-surefire-plugin</artifactId>
-						<configuration>
-							<testSuite>org.jboss.tools.batch.ui.bot.test</testSuite>
-							<testClass>org.jboss.tools.batch.ui.bot.test.SmokeSuite</testClass>
-						</configuration>
-					</plugin>
-				</plugins>
-				</build>
-		</profile>
-	</profiles>
+
 </project>
 
