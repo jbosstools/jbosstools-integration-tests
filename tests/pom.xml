@@ -13,18 +13,18 @@
 	<packaging>pom</packaging>
 
         <properties>
-            <surefire.timeout>7200</surefire.timeout>
-            <memoryOptions2>-XX:MaxPermSize=384m</memoryOptions2>
-            <swt.bot.test.record.screencast>false</swt.bot.test.record.screencast>
-            <reddeer.close.shells>true</reddeer.close.shells>
-            <reddeer.close.welcome.screen>true</reddeer.close.welcome.screen>
-            <reddeer.disable.maven.download.repo.index.on.startup>true</reddeer.disable.maven.download.repo.index.on.startup>
-            <junitExtensionsProperties>-Dreddeer.close.shells=${reddeer.close.shells} -Dreddeer.close.welcome.screen=${reddeer.close.welcome.screen} -Dreddeer.disable.maven.download.repo.index.on.startup=${reddeer.disable.maven.download.repo.index.on.startup}</junitExtensionsProperties>
-            <integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots -Dusage_reporting_enabled=false -Dcom.atlassian.connector.eclipse.monitor.usage.first.time=false -Dcom.atlassian.connector.eclipse.monitor.usage.enabled=false ${junitExtensionsProperties}</integrationTestsSystemProperties>
-			<skipTests>true</skipTests>
-			<test.installPath.OSX></test.installPath.OSX>
-			<devstudio.repository>https://devstudio.redhat.com/10.0/snapshots/updates/</devstudio.repository>
-			<testProduct>com.jboss.devstudio.core.product</testProduct>
+		<surefire.timeout>7200</surefire.timeout>
+		<memoryOptions2>-XX:MaxPermSize=384m</memoryOptions2>
+		<swt.bot.test.record.screencast>false</swt.bot.test.record.screencast>
+		<reddeer.close.shells>true</reddeer.close.shells>
+		<reddeer.close.welcome.screen>true</reddeer.close.welcome.screen>
+		<reddeer.disable.maven.download.repo.index.on.startup>true</reddeer.disable.maven.download.repo.index.on.startup>
+		<junitExtensionsProperties>-Dreddeer.close.shells=${reddeer.close.shells} -Dreddeer.close.welcome.screen=${reddeer.close.welcome.screen} -Dreddeer.disable.maven.download.repo.index.on.startup=${reddeer.disable.maven.download.repo.index.on.startup}</junitExtensionsProperties>
+		<integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots -Dusage_reporting_enabled=false -Dcom.atlassian.connector.eclipse.monitor.usage.first.time=false -Dcom.atlassian.connector.eclipse.monitor.usage.enabled=false ${junitExtensionsProperties}</integrationTestsSystemProperties>
+		<skipTests>true</skipTests>
+		<test.installPath.OSX></test.installPath.OSX>
+		<devstudio.repository>https://devstudio.redhat.com/10.0/snapshots/updates/</devstudio.repository>
+		<testProduct>com.jboss.devstudio.core.product</testProduct>
         </properties>
 
 	<modules>
@@ -70,7 +70,7 @@
 			</activation>
 			<properties>
 				<memoryOptions1>-Xms384m -Xmx768m -XX:PermSize=192m</memoryOptions1>
-		        <memoryOptions2>-XX:MaxPermSize=384m</memoryOptions2>
+		        	<memoryOptions2>-XX:MaxPermSize=384m</memoryOptions2>
 			</properties>
 		</profile>
 		<profile>
@@ -171,30 +171,15 @@
 				<configuration>
 					<useUIThread>false</useUIThread>
 					<appArgLine>-pluginCustomization ${basedir}/../pluginCustomization.ini</appArgLine>
+					<systemProperties>
+						<org.eclipse.update.reconcile>false</org.eclipse.update.reconcile>
+					</systemProperties>
 					<explodedBundles>
 						<bundle>org.mozilla.xulrunner.cocoa.macosx</bundle>
 						<bundle>org.mozilla.xulrunner.gtk.linux.x86</bundle>
 						<bundle>org.mozilla.xulrunner.gtk.linux.x86_64</bundle>
 						<bundle>org.mozilla.xulrunner.win32.win32.x86</bundle>
 					</explodedBundles>
-					<!-- Temporary solution for mac - see JBIDE-16161 -->
-					<dependencies>
-						<dependency>
-							<type>eclipse-plugin</type>
-							<artifactId>org.eclipse.equinox.event</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.platform.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-                            <type>p2-installable-unit</type>
-                            <artifactId>org.jboss.reddeer.junit.extension.feature.feature.group</artifactId>
-                            <version>0.6.0</version>
-                        </dependency>
-					</dependencies>
 				</configuration>
 			</plugin>
 			<plugin>
