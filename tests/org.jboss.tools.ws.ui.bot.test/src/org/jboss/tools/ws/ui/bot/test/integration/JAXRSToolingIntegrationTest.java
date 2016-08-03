@@ -30,7 +30,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-@JBossServer(state=ServerReqState.RUNNING)
+@JBossServer(state=ServerReqState.RUNNING, cleanup=false)
 @OpenPerspective(JavaEEPerspective.class)
 public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 
@@ -42,20 +42,19 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 	@Override
 	public void setup() {
 		if (!projectExists(getWsProjectName())) {
-			importWSTestProject(projectName);
-			ServersViewHelper.addProjectToServer(getWsProjectName(),
-					getConfiguredServerName());
-			ServersViewHelper.waitForDeployment(getWsProjectName(), getConfiguredServerName());
-			ServersViewHelper.serverClean(getConfiguredServerName());
+			importWSTestProject(getWsProjectName());
 		}
+		ServersViewHelper.runProjectOnServer(getWsProjectName());
+		ServersViewHelper.waitForDeployment(getWsProjectName(), getConfiguredServerName());
 		wsTesterView = new WsTesterView();
 		wsTesterView.open();
 	}
-
+	
 	@Override
 	public void cleanup() {
 		/* minimize web service tester */
 		wsTesterView.close();
+		ServersViewHelper.removeAllProjectsFromServer(getConfiguredServerName());
 	}
 
 	@Override

@@ -31,9 +31,6 @@ import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -96,11 +93,6 @@ public class WSTestBase {
 	public static void deleteAll() {
 		deleteAllProjectsFromServer();
 		deleteAllProjects();
-		
-		Server server =	new ServersView().getServer(getConfiguredServerName());
-		if (!server.getLabel().getState().equals(ServerState.STOPPED)) {
-			server.restart();
-		}
 	}
 
 	protected static String getConfiguredRuntimeName() {

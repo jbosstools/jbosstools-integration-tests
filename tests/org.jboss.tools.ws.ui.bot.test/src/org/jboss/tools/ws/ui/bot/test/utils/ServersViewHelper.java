@@ -11,6 +11,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.condition.ServerExists;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
@@ -165,6 +166,7 @@ public class ServersViewHelper {
 		
 		public ProjectIsDeployed(String projectName, String serverName) {
 			view.activate();
+			new WaitUntil(new ServerExists(serverName), TimePeriod.getCustom(2));
 			Server server = view.getServer(serverName);
 			module = server.getModule(projectName);
 		}

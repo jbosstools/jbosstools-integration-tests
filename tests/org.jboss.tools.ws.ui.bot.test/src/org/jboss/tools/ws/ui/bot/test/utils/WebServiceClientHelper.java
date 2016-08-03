@@ -9,6 +9,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -95,7 +96,14 @@ public class WebServiceClientHelper {
 			consoleView.open();
 		}
 		selectServerConsole(serverName, consoleView);
-		String consoleText = consoleView.getConsoleText();
+		
+		String consoleText = null;
+		try {
+			consoleText = consoleView.getConsoleText();
+		} catch (CoreLayerException ex) {
+			consoleView.activate();
+			consoleText = consoleView.getConsoleText();
+		}
 		if (consoleText.contains("ERROR")) {
 			consoleView.clearConsole();
 			String deploymentInfoMessage = " [deployment status: ";
@@ -114,7 +122,13 @@ public class WebServiceClientHelper {
 
 	private static void selectServerConsole(String serverName, ConsoleView view) {
 		view.activate();
-		Label consoleName = new DefaultLabel();
+		Label consoleName = null;
+		try {
+			consoleName = new DefaultLabel();
+		} catch (CoreLayerException ex) {
+			view.activate();
+			consoleName = new DefaultLabel();
+		}
 		if (!consoleName.getText().contains(serverName)) {
 			new DefaultToolItem("Display Selected Console").click();
 			consoleName = new DefaultLabel();
