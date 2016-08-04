@@ -106,6 +106,25 @@ public class OpenShiftProject extends AbstractOpenShiftExplorerItem {
 	}
 	
 	/**
+	 * Gets list of application pods for specific resource name. Resource name is 
+	 * same as build config or deployment prefix name (name without dash followed by number)
+	 * @param resourceName name of resource
+	 * @return list of OpenShift application pods for specific resource name
+	 */
+	public List<OpenShiftResource> getOpenShiftApplicationPods(String resourceName) {
+		List<OpenShiftResource> resources = getOpenShiftResources(Resource.POD);
+		List<OpenShiftResource> applicationPods = new ArrayList<OpenShiftResource>();
+		for (OpenShiftResource resource: resources) {
+			String name = resource.getName();
+			if (name.contains(resourceName) && !name.contains("-build") &&
+					!name.contains("-deploy")) {
+				applicationPods.add(resource);
+			}
+		}
+		return applicationPods;
+	}
+	
+	/**
 	 * Sets properties view to pinned or not for selected domain. Properties
 	 * view has to be opened to perform this method.
 	 * 
