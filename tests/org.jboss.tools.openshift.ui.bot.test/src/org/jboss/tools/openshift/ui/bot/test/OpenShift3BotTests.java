@@ -23,6 +23,7 @@ import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.GithubWebho
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.ImportApplicationTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.LogsTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.PortForwardingTest;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.ScalingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.TriggerBuildTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.BuilderImageApplicationWizardHandlingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.LabelsTest;
@@ -104,6 +105,7 @@ import org.junit.runners.Suite.SuiteClasses;
  	DeployEclipseProjectTest.class,	
  	DeployDockerImageTest.class,	
  	CreateResourcesTest.class,
+ 	ScalingTest.class,
 	
 	// Server adapter
 	ServerAdapterWizardHandlingTest.class,

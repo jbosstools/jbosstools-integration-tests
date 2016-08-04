@@ -18,7 +18,8 @@ public enum Resource {
 	IMAGE_STREAM("Image Streams"),
 	POD("Pods"),
 	ROUTE("Routes"),
-	SERVICE("Services");
+	SERVICE("Services"),
+	DEPLOYMENT("Deployments");
 	
 	private final String text;
 	

@@ -94,6 +94,9 @@ public class OpenShiftLabel {
 		public static final String POD_LOG = "Pod Log...";
 		public static final String[] NEW_RESOURCE = {"New", "Resource..."};
 		public static final String START_BUILD = "Start Build";
+		public static final String[] SCALE_UP = {"Scale", "Up"};
+		public static final String[] SCALE_DOWN = {"Scale", "Down"};
+		public static final String[] SCALE_TO = {"Scale", "To..."};
 		
 		// Application related
 		public static final String APPLICATION_DETAILS = "Details...";
@@ -158,6 +161,7 @@ public class OpenShiftLabel {
 		public static final String NEW_RESOURCE = "New OpenShift resource";
 		public static final String PORTS_FORWARDING = "Application port forwarding";
 		public static final String SAVE_SNAPSHOT = "Save Snapshot";
+		public static final String SCALE_DEPLOYMENT = "Scale deployment";
 		public static final String SELECT_EXISTING_APPLICATION = "Select Existing Application";
 		public static final String SELECT_EXISTING_PROJECT = "Select Existing Project";
 		public static final String SELECT_OPENSHIFT_TEMPLATE = "Select an OpenShift template";
