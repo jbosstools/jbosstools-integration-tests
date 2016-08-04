@@ -10,7 +10,6 @@
 	<groupId>org.jboss.tools.jst.tests</groupId>
 	<artifactId>org.jboss.tools.jst.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -19,23 +18,42 @@
 				<configuration>
 					<testSuite>org.jboss.tools.jst.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.jst.ui.bot.test.AllJSTTests</testClass>
-					<dependencies combine.children="append">
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.wst.jsdt.feature.feature.group</artifactId>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.jst.feature.feature.group</artifactId>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.jst.jsdt.feature.feature.group</artifactId>
-						</dependency>
-					</dependencies>
+					<systemProperties>
+						<org.osgi.framework.bundle.parent>ext</org.osgi.framework.bundle.parent>
+					</systemProperties>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>check-pr</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<configuration>
+							<dependency-resolution>
+								<extraRequirements>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.jst.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.jst.jsdt.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+								</extraRequirements>
+							</dependency-resolution>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
