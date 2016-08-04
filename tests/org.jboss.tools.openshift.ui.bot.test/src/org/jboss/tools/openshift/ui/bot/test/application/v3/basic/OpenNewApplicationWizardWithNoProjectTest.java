@@ -10,8 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test.application.v3.basic;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
+import java.util.List;
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -19,6 +22,8 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
+import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.BackButton;
@@ -142,10 +147,10 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 		OpenShift3Connection connection = 
 				explorer.getOpenShift3Connection();
 		connection.select();
-		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_OS3_APPLICATION).select();;
+		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_OS3_APPLICATION).select();
 		
 		try {
-			new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
+			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Shell to create a new OpenShift application was supposed to be opened. But it's not.");
 		}
@@ -164,6 +169,39 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 		closeWizard();
 	}
 	
+	@Test
+	public void testOpenNewApplicationWizardFromOpenShiftExplorerWithNoProjectsAndCancelNewProject() {
+		clearLog();
+
+		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		explorer.reopen();
+		
+		OpenShift3Connection connection = 
+				explorer.getOpenShift3Connection();
+		connection.select();
+		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_OS3_APPLICATION).select();;
+		
+		try {
+			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
+		} catch (WaitTimeoutExpiredException ex) {
+			fail("Shell to create a new OpenShift application was supposed to be opened. But it's not.");
+		}
+		
+		new DefaultShell(OpenShiftLabel.Shell.CREATE_OS_PROJECT);
+		new LabeledText(OpenShiftLabel.TextLabels.PROJECT_NAME).setText(projectName);
+		new CancelButton().click();
+		
+		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
+		
+		//do not click! New App wizard should close on canceling New Project wizard. 
+		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+
+		checkErrorLog();
+
+		clearLog();
+	}
+
 	private void closeWizard() {
 		new CancelButton().click();
 		
@@ -186,5 +224,18 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 		OpenShift3Connection connection = explorer.getOpenShift3Connection();
 		connection.createNewProject();
 		connection.createNewProject(DatastoreOS3.PROJECT2);
+	}
+
+	private void clearLog() {
+		LogView logView = new LogView();
+		logView.open();
+		logView.deleteLog();
+	}
+
+	private void checkErrorLog() {
+		LogView logView = new LogView();
+		logView.open();
+		List<LogMessage> errorMessages = logView.getErrorMessages();
+		assertEquals("There are errors in error log: "+errorMessages, 0, errorMessages.size());
 	}
 }
