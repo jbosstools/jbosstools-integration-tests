@@ -19,6 +19,7 @@ public enum Resource {
 	POD("Pods"),
 	ROUTE("Routes"),
 	SERVICE("Services"),
+	TEMPLATE("Templates"),
 	DEPLOYMENT("Deployments");
 	
 	private final String text;
