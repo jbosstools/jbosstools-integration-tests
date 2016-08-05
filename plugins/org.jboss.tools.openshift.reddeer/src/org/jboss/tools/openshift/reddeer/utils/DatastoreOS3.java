@@ -45,8 +45,8 @@ public class DatastoreOS3 {
 	public static String GIT_USERNAME = System.getProperty("github.username", "openshift-tools-testing-account");
 	public static String GIT_PASSWORD = System.getProperty("github.password");
 	
-	public static String PROJECT1 = "project-name01";
-	public static String PROJECT1_DISPLAYED_NAME = "displayedName-01";
+	public static String PROJECT1 = "project-name" + System.currentTimeMillis();
+	public static String PROJECT1_DISPLAYED_NAME = "displayedName-" + System.currentTimeMillis();
 	public static String PROJECT2 = "project-name02";
 	
 	public static AuthenticationMethod AUTH_METHOD;
@@ -54,13 +54,12 @@ public class DatastoreOS3 {
 	public static String TEMPLATE_PATH = new File("").getAbsolutePath() + File.separator + 
 			"resources" + File.separator + "eap64-basic-s2i.json";
 	
-	private static int seed = 0;
-	
 	/**
 	 * Generates a new project name for DatastoreOS3.PROJECT1 variable.
 	 */
 	public static void generateProjectName() {
-		PROJECT1 = "generated-name" + ++seed;
+		long seed = System.currentTimeMillis();
+		PROJECT1 = "generated-name" + seed;
 		PROJECT1_DISPLAYED_NAME = "displayedName-" + seed;
 	}
 }

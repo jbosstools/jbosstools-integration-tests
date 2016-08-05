@@ -20,6 +20,7 @@ import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.DeleteResou
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.DeployEclipseProjectTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.EditResourcesTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.GithubWebhoookTest;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.HandleCustomTemplateTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.ImportApplicationTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.LogsTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.PortForwardingTest;
@@ -37,6 +38,7 @@ import org.jboss.tools.openshift.ui.bot.test.application.v3.create.DeploymentTes
 import org.jboss.tools.openshift.ui.bot.test.common.OCBinaryLocationTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionPropertiesTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionWizardHandlingTest;
+import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionWizardLinksTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.CreateNewConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.RemoveConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.ShowConnectionInWebConsoleTest;
@@ -63,6 +65,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	OCBinaryLocationTest.class,
 	
 	// Connection
+	ConnectionWizardLinksTest.class,
 	CreateNewConnectionTest.class,
 	RemoveConnectionTest.class,
 	ConnectionWizardHandlingTest.class,
@@ -100,6 +103,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	PortForwardingTest.class,
 	LogsTest.class,
 	EditResourcesTest.class,
+	HandleCustomTemplateTest.class,
 
 	// Advanced application testing
  	DeployEclipseProjectTest.class,	
