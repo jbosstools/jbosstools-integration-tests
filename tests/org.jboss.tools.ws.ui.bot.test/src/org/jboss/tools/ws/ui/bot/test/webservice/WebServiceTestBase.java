@@ -15,16 +15,22 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.InputStream;
 import java.text.MessageFormat;
+import java.util.logging.Level;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.StyledText;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
@@ -138,7 +144,15 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 			wizard.next();
 		}
 
-		wizard.finish();
+		if (pkg == null && type == ServiceType.TOP_DOWN && getLevel() == SliderLevel.ASSEMBLE) {
+			new FinishButton().click();
+			confirmWebServiceNameOverwrite();
+			
+			new WaitWhile(new ShellWithTextIsAvailable("Web Service"));
+			new WaitWhile(new JobIsRunning());
+		} else {
+			wizard.finish();
+		}
 
 		// let's fail if there's some error in the wizard,
 		// and close error dialog and the wizard so other tests
@@ -169,4 +183,14 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 		}
 	}
 
+	private void confirmWebServiceNameOverwrite() {
+		// look up shell
+		try {
+			new DefaultShell("Confirm Web Service Name Overwrite");
+			new OkButton().click();
+		} catch(SWTLayerException e) {
+			LOGGER.log(Level.SEVERE, "No \"Confirm Web Service Name Overwrite\" dialog found!", e);
+			return;
+		}
+	}
 }
