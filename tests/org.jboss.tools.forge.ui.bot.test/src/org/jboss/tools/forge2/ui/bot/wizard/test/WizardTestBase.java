@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2016 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.forge2.ui.bot.wizard.test;
 
 import static org.junit.Assert.assertTrue;
@@ -26,7 +36,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.closeeditors.CloseAllEditorsRequirement.CloseAllEditors;
-import org.jboss.reddeer.swt.condition.ButtonWithTextIsEnabled;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
@@ -36,6 +46,7 @@ import org.jboss.tools.forge.ui.bot.test.util.ScaffoldType;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
+
 /**
  * Base class for Forge2 wizard tests
  * @author Pavol Srna
@@ -156,7 +167,7 @@ public abstract class WizardTestBase {
 	}
 	
 	/**
-	 * Creates new project in currect workspace.
+	 * Creates new project in current workspace.
 	 * For more details @see WizardTestBase#newProject(String name, String path)
 	 * @param name
 	 */
@@ -241,8 +252,27 @@ public abstract class WizardTestBase {
 		new ProjectExplorer().selectProjects(projectName);
 		WizardDialog dialog = getWizardDialog("Scaffold: Setup", "(Scaffold: Setup).*");
 		new DefaultCombo().setSelection(type.getName());
-		new WaitUntil(new ButtonWithTextIsEnabled(new PushButton("Next >")));
+		new WaitUntil(new  WidgetIsEnabled(new PushButton("Next >")));
 		dialog.next();
+		dialog.finish(TimePeriod.LONG);
+	}
+	
+	
+	public void setupScaffold(ScaffoldType type) {
+		scaffoldSetup(PROJECT_NAME, type);
+	}
+
+	public void createScaffold(ScaffoldType type) {
+		createScaffold(PROJECT_NAME, type);
+	}
+	
+	public void createScaffold(String projectName, ScaffoldType type) {
+		new ProjectExplorer().selectProjects(projectName);
+		WizardDialog dialog = getWizardDialog("Scaffold: Generate", "(Scaffold: Generate).*");
+		new DefaultCombo().setSelection(type.getName());
+		dialog.next();
+		new PushButton("Select All").click();
+		new WaitUntil(new WidgetIsEnabled(new PushButton("Finish")));
 		dialog.finish(TimePeriod.LONG);
 	}
 }
