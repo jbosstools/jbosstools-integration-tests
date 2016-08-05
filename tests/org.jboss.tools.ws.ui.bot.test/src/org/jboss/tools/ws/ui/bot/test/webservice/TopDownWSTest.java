@@ -12,8 +12,6 @@ package org.jboss.tools.ws.ui.bot.test.webservice;
 
 import static org.junit.Assert.fail;
 
-import java.util.logging.Level;
-
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -24,9 +22,7 @@ import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
@@ -87,9 +83,6 @@ public class TopDownWSTest extends WebServiceTestBase {
 		prepareAssembleService();
 
 		topDownWS();
-
-		/* If there were WSDL file than it was also used in web.xml */
-		confirmWebServiceNameOverwrite();
 	}
 	
 	@Test
@@ -133,17 +126,6 @@ public class TopDownWSTest extends WebServiceTestBase {
 		topDownWS(null);
 	}
 
-	private void confirmWebServiceNameOverwrite() {
-		// look up shell
-		try {
-			new DefaultShell("Confirm Web Service Name Overwrite");
-			new OkButton().click();
-		} catch(SWTLayerException e) {
-			LOGGER.log(Level.SEVERE, "No \"Confirm Web Service Name Overwrite\" dialog found!", e);
-			return;
-		}
-	}
-
 	private void removeWsdlFileFromProject(String wsdlFileName) {
 		ProjectItem item = null;
 		try {
@@ -173,10 +155,6 @@ public class TopDownWSTest extends WebServiceTestBase {
 		topDownWS(
 				TopDownWSTest.class.getResourceAsStream("/resources/jbossws/ClassB.wsdl"),
 				WebServiceRuntime.JBOSS_WS, pkg, true);
-
-		
-		/* If there were WSDL file than it was also used in web.xml */
-		confirmWebServiceNameOverwrite();
 		
 		switch (getLevel()) {
 		case DEVELOP:
