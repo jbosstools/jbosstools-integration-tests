@@ -43,9 +43,6 @@ public class SCMCheckoutProject extends AbstractMavenSWTBotTest {
 		assertTrue(ml.isCheckoutAllProjects());
 		assertTrue(ml.isCheckoutHeadRevision());
 		mc.finish(TimePeriod.getCustom(TimePeriod.LONG.getSeconds() * 2));
-		new WaitUntil(new ShellWithTextIsAvailable("Import Maven Projects"),TimePeriod.LONG);
-		new CancelButton().click();
-		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		assertTrue(pe.containsProject("eclipsetutorial"));
@@ -80,10 +77,7 @@ public class SCMCheckoutProject extends AbstractMavenSWTBotTest {
 		}
 		new PushButton("Finish").click();
 		new WaitWhile(new ShellWithTextIsAvailable("Import Maven Projects"),TimePeriod.LONG);
-		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
-		new WaitUntil(new ShellWithTextIsAvailable("Import Maven Projects"),TimePeriod.LONG); //different shell, same name
-		new CancelButton().click();
-		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		assertTrue(pe.containsProject("eclipsetutorial.core"));
