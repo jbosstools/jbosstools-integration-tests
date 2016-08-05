@@ -431,6 +431,70 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>check-pr</id>
+			<properties>
+				<test.class>org.jboss.tools.examples.ui.bot.test.integration.EAPImportQuickstartsTest</test.class>
+				<reddeer.config>${project.build.directory}/classes/servers/eap-7.xml</reddeer.config>
+				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
+				<examplesFolder>${examplesFolderEAP}</examplesFolder>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.googlecode.maven-download-plugin</groupId>
+						<artifactId>download-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>download-examples-eap</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${quickstartsURLEAP}</url>
+									<unpack>true</unpack>
+									<outputDirectory>${project.build.directory}</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-eap-7.x</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${jbosstools.test.jboss-eap-7.x.url}</url>
+									<unpack>true</unpack>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-surefire-plugin</artifactId>
+						<configuration>
+							<testClass>org.jboss.tools.examples.ui.bot.test.integration.EAPImportQuickstartsTest</testClass>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<configuration>
+							<dependency-resolution>
+								<extraRequirements>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.central.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+								</extraRequirements>
+							</dependency-resolution>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 
 	<repositories>
