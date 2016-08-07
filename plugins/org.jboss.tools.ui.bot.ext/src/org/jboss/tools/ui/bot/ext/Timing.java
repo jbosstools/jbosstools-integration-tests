@@ -14,7 +14,7 @@ public class Timing {
 
 	private static final Logger log = Logger.getLogger(Timing.class);
 	
-	public static double multiplier=1.0;
+	public static double multiplier=1.000;
 	
 	static {
 		try {
