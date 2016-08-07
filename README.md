@@ -1,4 +1,4 @@
-# The JBoss Tools Integration Tests project
+# The JBoss Tools Integration Tests project test changes
 
 ## Summary
 
