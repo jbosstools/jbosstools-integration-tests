@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jboss.tools.integration-tests</groupId>
+        <artifactId>tests</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <groupId>org.jboss.tools</groupId>
+    <artifactId>org.jboss.tools.bpmn2.ui.bot.test</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>eclipse-test-plugin</packaging>
+    <properties>
+        <systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.skip=false -Dtest.configurations.dir=resources/</systemProperties>
+        <surefire.timeout>3600</surefire.timeout>
+	<reddeer.site>http://download.jboss.org/jbosstools/builds/staging/RedDeer_master/all/repo</reddeer.site>
+	<jbtis.site>http://download.jboss.org/jbosstools/updates/integration/juno/integration-stack/aggregate/4.0.0</jbtis.site>
+    </properties>
+
+    <repositories>
+      <!-- Red Deer Repository -->
+      <repository>
+	<id>red_deer</id>
+	<url>${reddeer.site}</url>
+	<layout>p2</layout>
+	<snapshots>
+	  <enabled>true</enabled>
+	</snapshots>
+	<releases>
+	  <enabled>true</enabled>
+	</releases>
+      </repository>
+      <!-- JBTIS Repository -->
+      <repository>
+	<id>jbtis</id>
+	<url>${jbtis.site}</url>
+	<layout>p2</layout>
+	<snapshots>
+	  <enabled>true</enabled>
+	</snapshots>
+	<releases>
+	  <enabled>true</enabled>
+	</releases>
+      </repository>
+    </repositories>
+
+    <!--build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-surefire-plugin</artifactId>
+                <version>${tychoVersion}</version>
+                <configuration>
+                    <useUIThread>false</useUIThread>
+                    <testSuite>org.jboss.tools.bpmn2.ui.bot.test</testSuite>
+                    <testClass>org.jboss.tools.bpmn2.ui.bot.test.Bpmn2AllBotTests</testClass>
+                    <dependencies combine.children="append">
+                        <dependency>
+                            <type>p2-installable-unit</type>
+                            <artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+                            <version>0.0.0</version>
+                        </dependency>
+                        <dependency>
+                            <type>p2-installable-unit</type>
+                            <artifactId>org.guvnor.tools.feature.feature.group</artifactId>
+                            <version>5.3.1</version>
+                        </dependency>
+                    </dependencies>
+                </configuration>
+            </plugin>
+	    <plugin>
+	      <groupId>org.eclipse.tycho</groupId>
+	      <artifactId>target-platform-configuration</artifactId>
+	      <version>${tychoVersion}</version>
+	      <configuration>
+		<target>
+		  <artifact>
+		    <groupId>org.jboss.tools.integration-stack</groupId>
+		    <artifactId>target-platform</artifactId>
+		    <version>4.0.0-SNAPSHOT</version>
+		    <type>target</type>
+		    <classifier>base</classifier>
+		  </artifact>
+		</target>
+	      </configuration>
+	    </plugin>
+        </plugins>
+    </build-->
+
+</project>
