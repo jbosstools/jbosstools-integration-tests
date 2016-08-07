@@ -19,6 +19,8 @@ public class MavenUserPreferencePage extends PreferencePage{
 	
 	private static final Logger log = Logger.getLogger(MavenUserPreferencePage.class);
 	
+	private static final Logger log = Logger.getLogger(MavenUserPreferencePage.class);
+	
 	public MavenUserPreferencePage(){
 		super("Maven","User Settings");
 	}
