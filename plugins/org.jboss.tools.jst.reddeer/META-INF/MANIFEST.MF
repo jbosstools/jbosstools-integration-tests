@@ -11,8 +11,10 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.core,
  org.jboss.reddeer.jface,
  org.jboss.reddeer.workbench,
- org.jboss.reddeer.eclipse
+ org.jboss.reddeer.eclipse,
+ org.jboss.reddeer.common;bundle-version="1.1.0"
 Export-Package: org.jboss.tools.jst.reddeer.bower.ui,
+ org.jboss.tools.jst.reddeer.common,
  org.jboss.tools.jst.reddeer.jsp.ui.wizard,
  org.jboss.tools.jst.reddeer.npm.ui,
  org.jboss.tools.jst.reddeer.tern.ui,
