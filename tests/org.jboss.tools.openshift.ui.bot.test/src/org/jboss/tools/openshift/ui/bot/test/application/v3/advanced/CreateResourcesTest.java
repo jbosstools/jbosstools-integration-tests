@@ -16,8 +16,10 @@ import static org.junit.Assert.fail;
 import java.io.File;
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
@@ -67,12 +69,14 @@ public class CreateResourcesTest {
 	@Test
 	public void testCreateResourceFromLocalFile() {
 		createResource(RESOURCES_LOCATION + File.separator + "hello-pod.json");
+		refreshProject();
 		
 		assertTrue("Hello pod has not been created from file",
 				explorer.getOpenShift3Connection().getProject(testProject).
 				getOpenShiftResource(Resource.POD, "hello-openshift") != null);
 		
 		createResource(RESOURCES_LOCATION + File.separator + "hello-service.json");
+		refreshProject();
 		
 		assertTrue("Hello service has not been created from file",
 				explorer.getOpenShift3Connection().getProject(testProject).
@@ -82,6 +86,7 @@ public class CreateResourcesTest {
 				getService("hello-openshift").getTreeItem() != null);
 		
 		createResource(RESOURCES_LOCATION + File.separator + "hello-route.json");
+		refreshProject();
 		
 		assertTrue("Hello route has not been created from file", 
 				explorer.getOpenShift3Connection().getProject(testProject).
@@ -118,6 +123,7 @@ public class CreateResourcesTest {
 		new OkButton().click();
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_RESOURCE));
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
 	private void assertResourceShellIsAvailable() {
@@ -131,6 +137,14 @@ public class CreateResourcesTest {
 		new CancelButton().click();
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_RESOURCE));
+	}
+	
+	private void refreshProject() {
+		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		explorer.open();
+		explorer.getOpenShift3Connection().getProject(testProject).refresh();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);		
 	}
 	
 	@After

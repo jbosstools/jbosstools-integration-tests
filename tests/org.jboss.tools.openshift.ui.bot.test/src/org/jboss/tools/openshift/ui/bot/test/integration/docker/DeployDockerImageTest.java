@@ -61,6 +61,7 @@ public class DeployDockerImageTest {
 	private static TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 	
 	public static final String HELLO_OS_DOCKER_IMAGE = "docker.io/openshift/hello-openshift";
+	public static final String TAG = "v1.2.1";
 	
 	@BeforeClass
 	public static void prepareDockerImage() {
@@ -109,7 +110,7 @@ public class DeployDockerImageTest {
 		
 		new DefaultShell(OpenShiftLabel.Shell.DEPLOY_IMAGE_TO_OPENSHIFT);
 		
-		new LabeledText(OpenShiftLabel.TextLabels.IMAGE_NAME).setText(HELLO_OS_DOCKER_IMAGE);
+		new LabeledText(OpenShiftLabel.TextLabels.IMAGE_NAME).setText(HELLO_OS_DOCKER_IMAGE + ":" + TAG);
 		
 		proceedThroughDeployImageToOpenShiftWizard();
 		
@@ -120,8 +121,6 @@ public class DeployDockerImageTest {
 	public void testDeployDockerImageFromDockerExplorer() {
 		selectProject(DatastoreOS3.PROJECT1, DatastoreOS3.PROJECT1_DISPLAYED_NAME);
 		openDeployToOpenShiftWizardFromDockerExplorer();
-		new LabeledCombo("OpenShift Project: ").setSelection(DatastoreOS3.PROJECT1_DISPLAYED_NAME + 
-				" (" + DatastoreOS3.PROJECT1+ ")");
 
 		proceedThroughDeployImageToOpenShiftWizard();
 		
@@ -236,12 +235,12 @@ public class DeployDockerImageTest {
 				getSelection().equals(preselected));
 		
 		assertTrue("Selected docker image should be used in wizard but it is not.",
-				new LabeledText(OpenShiftLabel.TextLabels.IMAGE_NAME).getText().equals(
+				new LabeledText(OpenShiftLabel.TextLabels.IMAGE_NAME).getText().contains(
 						HELLO_OS_DOCKER_IMAGE));
 		
 		assertTrue("Resource should be infered from image name but it is not",
-				HELLO_OS_DOCKER_IMAGE.split("/")[2].equals(new LabeledText(OpenShiftLabel.
-						TextLabels.RESOURCE_NAME).getText()));
+				new LabeledText(OpenShiftLabel.TextLabels.RESOURCE_NAME).getText().contains(
+						HELLO_OS_DOCKER_IMAGE.split("/")[2]));
 	}
 	
 	/**
@@ -273,7 +272,7 @@ public class DeployDockerImageTest {
 			treeViewerHandler.getTreeItem(imagesItem, HELLO_OS_DOCKER_IMAGE);
 		} catch (RedDeerException ex) {
 			imagesItem.select();
-			new ContextMenu("Pull...");
+			new ContextMenu("Pull...").select();
 			
 			new DefaultShell("Pull Image");
 			new DefaultText().setText(HELLO_OS_DOCKER_IMAGE);
