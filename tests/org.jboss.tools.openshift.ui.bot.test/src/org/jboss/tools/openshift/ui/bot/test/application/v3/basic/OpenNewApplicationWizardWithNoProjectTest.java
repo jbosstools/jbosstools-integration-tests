@@ -45,12 +45,18 @@ import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class OpenNewApplicationWizardWithNoProjectTest {
 
-	private String projectName = "tmp-project";
+	private String projectName;
+	
+	@Before
+	public void generateProjectName() {
+		projectName = "tmp-project" + System.currentTimeMillis();
+	}
 	
 	@BeforeClass
 	public static void removeProjects() {
@@ -213,7 +219,12 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 	public void deleteTmpProject() {
 		OpenShift3Connection connection = new OpenShiftExplorerView().getOpenShift3Connection();
 		connection.refresh();
-		connection.getProject(projectName).delete();
+		
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
+		if (connection.projectExists(projectName)) {
+			connection.getProject(projectName).delete();
+		}
 	}
 	
 	@AfterClass

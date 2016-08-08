@@ -48,6 +48,7 @@ public class ApplicationPodIsRunning extends AbstractWaitCondition {
 
 	@Override
 	public boolean test() {
+		project.refresh();
 		List<OpenShiftResource> pods = project.getOpenShiftResources(Resource.POD);
 	
 		if (pods.isEmpty()) {

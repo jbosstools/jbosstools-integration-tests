@@ -109,12 +109,12 @@ import org.junit.runners.Suite.SuiteClasses;
  	DeployEclipseProjectTest.class,	
  	DeployDockerImageTest.class,	
  	CreateResourcesTest.class,
- 	ScalingTest.class,
-	
+	ScalingTest.class,
+
 	// Server adapter
 	ServerAdapterWizardHandlingTest.class,
 	CreateServerAdapterTest.class,
-	PublishChangesTest.class,
+ 	PublishChangesTest.class,
 
 	// Clean up
 	CleanUpOS3.class 
