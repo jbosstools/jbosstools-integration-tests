@@ -36,6 +36,7 @@ public class AbstractCreateApplicationTest {
 	@BeforeClass
 	public static void setUp() {
 		TestUtils.cleanupGitFolder(gitFolder);
+		TestUtils.setUpOcBinary();
 		
 		// If project does not exists, e.g. something went south in recreation earlier, create it
 		if (!new OpenShiftProjectExists(DatastoreOS3.PROJECT1_DISPLAYED_NAME).test()) {

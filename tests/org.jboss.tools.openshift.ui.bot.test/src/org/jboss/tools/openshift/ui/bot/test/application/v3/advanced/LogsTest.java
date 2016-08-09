@@ -39,7 +39,6 @@ import org.jboss.tools.openshift.ui.bot.test.application.v3.create.AbstractCreat
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-@OCBinary
 public class LogsTest extends AbstractCreateApplicationTest {
 	
 	@BeforeClass
