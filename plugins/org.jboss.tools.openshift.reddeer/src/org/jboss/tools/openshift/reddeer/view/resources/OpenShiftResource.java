@@ -83,6 +83,7 @@ public class OpenShiftResource {
 	 * Selects resource.
 	 */
 	public void select() {
+		tableItem.click();
 		tableItem.select();
 	}
 	

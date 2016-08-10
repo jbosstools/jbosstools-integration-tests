@@ -49,7 +49,7 @@ public class ScalingTest extends AbstractCreateApplicationTest {
 		
 		int amountOfPods = PodsAreDeployed.getNumberOfDesiredReplicas();
 		new WaitUntil(new PodsAreDeployed(DatastoreOS3.PROJECT1_DISPLAYED_NAME, 
-				replicationControllerName, amountOfPods));
+				replicationControllerName, amountOfPods), TimePeriod.LONG);
 		
 		Service eapService = explorer.getOpenShift3Connection().getProject().getService(buildConfigName);
 		
@@ -71,7 +71,7 @@ public class ScalingTest extends AbstractCreateApplicationTest {
 		
 		int amountOfPods = PodsAreDeployed.getNumberOfDesiredReplicas();
 		new WaitUntil(new PodsAreDeployed(DatastoreOS3.PROJECT1_DISPLAYED_NAME, 
-				replicationControllerName, amountOfPods));
+				replicationControllerName, amountOfPods), TimePeriod.LONG);
 		
 		OpenShiftResource replicationController = explorer.getOpenShift3Connection().
 				getProject().getOpenShiftResources(Resource.DEPLOYMENT).get(0);
