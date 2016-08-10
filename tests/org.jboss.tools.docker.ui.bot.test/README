@@ -2,5 +2,6 @@ Parameters:
 -Dusage_reporting_enabled=false							disable reporting
 -DdockerServerURI=tcp://localhost:2375					docker server uri(ex. "tcp://localhost:2375")*
 -DunixSocket=unix:///var/run/docker.sock				docker server socket(ex. "unix:///var/run/docker.sock")*
+-DsearchConnection=true									use search for finding docker host
 
 *User should use one of from these parameters, if he not specify any, then unixSocket with default value "unix:///var/run/docker.sock" is used.
