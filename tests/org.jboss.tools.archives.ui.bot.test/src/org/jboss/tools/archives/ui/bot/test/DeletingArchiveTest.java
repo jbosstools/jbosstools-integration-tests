@@ -10,9 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -25,74 +24,45 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-@CleanWorkspace
 public class DeletingArchiveTest extends ArchivesTestBase {
 
-	private static String project = "pr4";
-	private static final String ARCHIVE_NAME_AA = 
-			project + "aa.jar";
-	private static final String ARCHIVE_NAME_AB = 
-			project + "ab.jar";
-	private static final String ARCHIVE_NAME_BA = 
-			project + "ba.jar";
-	private static final String ARCHIVE_NAME_BB = 
-			project + "bb.jar";
-	private static final String ARCHIVE_NAME_CA = 
-			project + "ca.jar";
-	private static final String ARCHIVE_NAME_CB = 
-			project + "cb.jar";
-	private static final String ARCHIVE_NAME_DA = 
-			project + "da.jar";
-	private static final String ARCHIVE_NAME_DB = 
-			project + "db.jar";
-	private static final String PATH_SUFFIX = " [/" + project + "]"; 
+	private static String projectName = "DeletingArchiveTest";
+	private static final String ARCHIVE_NAME_AA = projectName + "aa.jar";
+	private static final String ARCHIVE_NAME_AB = projectName + "ab.jar";
+	private static final String ARCHIVE_NAME_BA = projectName + "ba.jar";
+	private static final String ARCHIVE_NAME_BB = projectName + "bb.jar";
+	private static final String ARCHIVE_NAME_CA = projectName + "ca.jar";
+	private static final String ARCHIVE_NAME_CB = projectName + "cb.jar";
+	private static final String ARCHIVE_NAME_DA = projectName + "da.jar";
+	private static final String ARCHIVE_NAME_DB = projectName + "db.jar";
+	private static final String PATH_SUFFIX = " [/" + projectName + "]"; 
 	
-	@Before
-	public void setup() {
-		importArchiveProjectWithoutRuntime(project);
+	@BeforeClass
+	public static void setup() {
+		createJavaProject(projectName);
+		addArchivesSupport(projectName);
+		createArchive(projectName, ARCHIVE_NAME_AA, true);
+		createArchive(projectName, ARCHIVE_NAME_AB, true);
+		createArchive(projectName, ARCHIVE_NAME_BA, true);
+		createArchive(projectName, ARCHIVE_NAME_BB, true);
+		createArchive(projectName, ARCHIVE_NAME_CA, true);
+		createArchive(projectName, ARCHIVE_NAME_CB, true);
+		createArchive(projectName, ARCHIVE_NAME_DA, true);
+		createArchive(projectName, ARCHIVE_NAME_DB, true);
 	}
 	
 	@Test
 	public void testDeletingArchiveWithView() {
-		
-		/* prepare view for testing */
-		view = viewForProject(project);
-		
-		/* delete archive in view with context menu */
-		view
-			.getProject()
-			.getArchive(ARCHIVE_NAME_AA + PATH_SUFFIX)
-			.deleteArchive(true);
-		
-		/* test archive was deleted */
-		assertArchiveIsNotInView(view, ARCHIVE_NAME_AA + PATH_SUFFIX);
-		
-		/* delete archive in view with keyboard shortcut */
-//		view.deleteArchive(false, project, ARCHIVE_NAME_AB + PATH_SUFFIX);
-		
-		/* test archive was deleted */
-//		assertItemNotExistsInView(view, project, ARCHIVE_NAME_AB + PATH_SUFFIX);
+		view = viewForProject(projectName);
+		view.getProject(projectName).getArchive(ARCHIVE_NAME_AA + PATH_SUFFIX).deleteArchive(true);
+		assertArchiveIsNotInView(projectName, view, ARCHIVE_NAME_AA + PATH_SUFFIX);
 	}
 	
 	@Test
 	public void testDeletingArchiveWithExplorer() {
-		
-		/* prepare explorer for testing */
-		ProjectArchivesExplorer explorer = explorerForProject(project);
-		
-		/* delete archive in explorer with context menu*/
-		explorer
-			.getArchive(ARCHIVE_NAME_BA + PATH_SUFFIX)
-			.deleteArchive(true);
-		
-		/* test archive was deleted */
+		ProjectArchivesExplorer explorer = explorerForProject(projectName);
+		explorer.getArchive(ARCHIVE_NAME_BA + PATH_SUFFIX).deleteArchive(true);
 		assertArchiveIsNotInExplorer(explorer, ARCHIVE_NAME_BA + PATH_SUFFIX);
-		
-		/* delete archive in explorer with keyboard shortcut */
-//		explorer.deleteArchive(false, ARCHIVE_NAME_BB + PATH_SUFFIX);
-		
-		/* test archive was deleted */
-//		assertItemNotExistsInExplorer(explorer, ARCHIVE_NAME_BB + PATH_SUFFIX);
 	}
 	
 //	@Test

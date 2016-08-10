@@ -22,19 +22,18 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	ViewIsPresentTest.class,
 	ArchivePreferencesTest.class,
-	VariousProjectsArchiving.class,
 	ArchiveViewReSwitchingTest.class,
 	FolderTest.class,
 	FilesetTest.class,
 	UserLibrariesFilesetTest.class,
-	ArchivesSupportTest.class, 
-	ArchivesErrorDialogTest.class,
+	ArchivesSupportTest.class,
 	BuildingArchiveNode.class,
 	BuildingProjectTest.class,
 	BuildingArchiveTest.class,
 	CreatingArchiveTest.class,
 	DeletingArchiveTest.class, 
 	ModifyingArchiveTest.class,
+	VariousProjectsArchiving.class,
 	DeployingArchiveTest.class,
 })
 public class ArchivesAllBotTests {

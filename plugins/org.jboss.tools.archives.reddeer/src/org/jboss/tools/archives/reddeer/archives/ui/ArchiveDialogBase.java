@@ -11,7 +11,7 @@
 package org.jboss.tools.archives.reddeer.archives.ui;
 
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -26,11 +26,8 @@ import org.jboss.reddeer.common.wait.WaitWhile;
  */
 public abstract class ArchiveDialogBase extends DefaultShell {
 
-	private String dialogTitle;
-	
 	public ArchiveDialogBase(String dialogTitle) {
 		super(dialogTitle);
-		this.dialogTitle = dialogTitle;
 	}
 	
 	public ArchiveDialogBase setArchiveName(String archiveName) {
@@ -68,11 +65,12 @@ public abstract class ArchiveDialogBase extends DefaultShell {
 	
 	public void cancel() {
 		new PushButton("Cancel").click();
+		new WaitWhile(new ShellIsAvailable(this));
 	}
 	
 	public void finish() {
 		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsActive(dialogTitle));
+		new WaitWhile(new ShellIsAvailable(this));
 		new WaitWhile(new JobIsRunning());
 	}
 

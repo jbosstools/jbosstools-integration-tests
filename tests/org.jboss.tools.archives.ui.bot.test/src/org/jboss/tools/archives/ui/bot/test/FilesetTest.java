@@ -10,15 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import static org.junit.Assert.fail;
-
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.swt.condition.TreeContainsItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.reddeer.component.Archive;
-import org.jboss.tools.archives.ui.bot.test.condition.FilesetIsInArchive;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -28,15 +27,19 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-@CleanWorkspace
 public class FilesetTest extends ArchivesTestBase {
 
-	private static final String PROJECT_1 = "pr2";
-	private static final String PROJECT_2 = "pr5";
+	private static final String PROJECT_1 = "FilesetTest1";
+	private static final String PROJECT_2 = "FilesetTest2";
 	
-	private static final String PROJECT_1_ARCHIVE_PATH = PROJECT_1 + ".jar" + 
+	private static final String PROJECT_1_ARCHIVE = PROJECT_1 + ".jar";
+	
+	private static final String PROJECT_1_ARCHIVE_PATH = PROJECT_1_ARCHIVE + 
 			" [/" + PROJECT_1 + "]";
-	private static final String PROJECT_2_ARCHIVE_PATH = PROJECT_2 + ".jar" + 
+	
+	private static final String PROJECT_2_ARCHIVE = PROJECT_2 + ".jar";
+	
+	private static final String PROJECT_2_ARCHIVE_PATH = PROJECT_2_ARCHIVE+ 
 			" [/" + PROJECT_2 + "]";
 	
 	private static final String INCLUDES_1 = ".project";
@@ -47,97 +50,90 @@ public class FilesetTest extends ArchivesTestBase {
 	
 	private static final String INCLUDES_NEW = ".classpath";
 	
+	@BeforeClass
+	public static void setup(){
+		createJavaProject(PROJECT_1);
+		addArchivesSupport(PROJECT_1);
+		createArchive(PROJECT_1, PROJECT_1_ARCHIVE, true);
+		
+		createJavaProject(PROJECT_2);
+		addArchivesSupport(PROJECT_2);
+		createArchive(PROJECT_2, PROJECT_2_ARCHIVE, true);
+	}
+	
 	@Test
 	public void testCreatingFileset() {
-		importArchiveProjectWithoutRuntime(PROJECT_1);
-		
 		view = viewForProject(PROJECT_1);
-		Archive archiveInView = view.getProject().getArchive(PROJECT_1_ARCHIVE_PATH);
-		testCreatingFileset(archiveInView, PROJECT_1, INCLUDES_1, EXCLUDES_2);
+		Archive archiveInView = view.getProject(PROJECT_1).getArchive(PROJECT_1_ARCHIVE_PATH);
+		archiveInView.newFileset().setIncludes(INCLUDES_1).setExcludes(EXCLUDES_2).setFlatten(true).finish();
+		new WaitUntil(new TreeContainsItem(new DefaultTree(), PROJECT_1, PROJECT_1_ARCHIVE_PATH, 
+				formatFileset(PROJECT_1, INCLUDES_1, EXCLUDES_2)));
 		
 		ProjectArchivesExplorer explorer = explorerForProject(PROJECT_1);
 		Archive archiveInExplorer = explorer.getArchive(PROJECT_1_ARCHIVE_PATH);
-		testCreatingFileset(archiveInExplorer, PROJECT_1, INCLUDES_2, EXCLUDES_2);
+		archiveInExplorer.newFileset().setIncludes(INCLUDES_2).setExcludes(EXCLUDES_2).setFlatten(true).finish();
+		new WaitUntil(new TreeContainsItem(new DefaultTree(), PROJECT_1, "Project Archives", PROJECT_1_ARCHIVE_PATH, 
+				formatFileset(PROJECT_1, INCLUDES_2, EXCLUDES_2)));
 		
 	}
 	
 	@Test
 	public void testModifyingFileset() {
-		importArchiveProjectWithoutRuntime(PROJECT_2);
-		
 		view = viewForProject(PROJECT_2);
-		Archive archiveInView = view.getProject().getArchive(PROJECT_2_ARCHIVE_PATH);
-		testModifyFileset(archiveInView, PROJECT_2, 
-				formatFileset(PROJECT_2, INCLUDES_1, EXCLUDES_1), INCLUDES_NEW, EXCLUDES_1);
+		Archive archiveInView = view.getProject(PROJECT_2).getArchive(PROJECT_2_ARCHIVE_PATH);
+		createFileset(archiveInView, PROJECT_2, PROJECT_2_ARCHIVE_PATH, INCLUDES_1, EXCLUDES_1);
+		createFileset(archiveInView, PROJECT_2, PROJECT_2_ARCHIVE_PATH, INCLUDES_2, EXCLUDES_2);
+		
+		String fileset = formatFileset(PROJECT_2, INCLUDES_1, EXCLUDES_1);
+		String newFileset = formatFileset(PROJECT_2, INCLUDES_NEW, EXCLUDES_1);
+		archiveInView.getFileset(fileset, false).editFileset()
+		.setIncludes(INCLUDES_NEW).setExcludes(EXCLUDES_1).finish();
+		
+
+		new WaitWhile(new TreeContainsItem(new DefaultTree(), PROJECT_2, PROJECT_2_ARCHIVE_PATH, 
+				fileset));	
+		new WaitUntil(new TreeContainsItem(new DefaultTree(), PROJECT_2, PROJECT_2_ARCHIVE_PATH, 
+				newFileset));
 		
 		ProjectArchivesExplorer explorer = explorerForProject(PROJECT_2);
 		Archive archiveInExplorer = explorer.getArchive(PROJECT_2_ARCHIVE_PATH);
-		testModifyFileset(archiveInExplorer, PROJECT_2, 
-				formatFileset(PROJECT_2, INCLUDES_2, EXCLUDES_2), INCLUDES_NEW, EXCLUDES_2);
+		fileset = formatFileset(PROJECT_2, INCLUDES_2, EXCLUDES_2);
+		newFileset = formatFileset(PROJECT_2, INCLUDES_NEW, EXCLUDES_2);
+		archiveInExplorer.getFileset(fileset, true).editFileset()
+		.setIncludes(INCLUDES_NEW).setExcludes(EXCLUDES_2).finish();
+		
+		new WaitWhile(new TreeContainsItem(new DefaultTree(), PROJECT_2, "Project Archives", PROJECT_2_ARCHIVE_PATH, 
+				fileset));	
+		new WaitUntil(new TreeContainsItem(new DefaultTree(), PROJECT_2, "Project Archives", PROJECT_2_ARCHIVE_PATH, 
+				newFileset));
 	}
 	
 	@Test
 	public void testDeletingFileset() {
-		importArchiveProjectWithoutRuntime(PROJECT_2);
-		
 		view = viewForProject(PROJECT_2);
-		Archive archiveInView = view.getProject().getArchive(PROJECT_2_ARCHIVE_PATH);
-		testDeleteFileset(archiveInView, formatFileset(PROJECT_2, INCLUDES_1, EXCLUDES_1));
+		Archive archiveInView = view.getProject(PROJECT_2).getArchive(PROJECT_2_ARCHIVE_PATH);
+		createFileset(archiveInView, PROJECT_2, PROJECT_2_ARCHIVE_PATH, INCLUDES_1, EXCLUDES_1);
+		createFileset(archiveInView, PROJECT_2, PROJECT_2_ARCHIVE_PATH, INCLUDES_2, EXCLUDES_2);
+		
+		archiveInView.getFileset(formatFileset(PROJECT_2, INCLUDES_1, EXCLUDES_1), false).deleteFileset(true);
+		new WaitWhile(new TreeContainsItem(new DefaultTree(), PROJECT_2, PROJECT_2_ARCHIVE_PATH, 
+				formatFileset(PROJECT_2, INCLUDES_1, EXCLUDES_1)), TimePeriod.LONG);	
 		
 		ProjectArchivesExplorer explorer = explorerForProject(PROJECT_2);
 		Archive archiveInExplorer = explorer.getArchive(PROJECT_2_ARCHIVE_PATH);
-		testDeleteFileset(archiveInExplorer, formatFileset(PROJECT_2, INCLUDES_2, EXCLUDES_2));
-	}
-	
-	private void testCreatingFileset(Archive archive, String projectName, 
-			String includes, String excludes) {
-		
-		archive.newFileset().setIncludes(includes)
-			.setExcludes(excludes).setFlatten(true).finish();
-		
-		try {
-			new WaitUntil(new FilesetIsInArchive(
-					archive, formatFileset(projectName, includes, excludes)));
-		} catch (WaitTimeoutExpiredException te) {
-			fail("'" + formatFileset(projectName, includes, excludes) 
-					 + "' was not created under archive '" 
-					 + archive.getName() + "'!");
-		}
-	}
-	
-	private void testModifyFileset(Archive archive, String projectName, 
-			String filesetName, String includes, String excludes) {
-		
-		archive.getFileset(filesetName).editFileset()
-			.setIncludes(includes).setExcludes(excludes).finish();
-	
-		try {
-			new WaitWhile(new FilesetIsInArchive(archive, filesetName));
-			new WaitUntil(new FilesetIsInArchive(archive, 
-					formatFileset(projectName, includes, excludes)));
-		} catch (WaitTimeoutExpiredException te) {
-			fail("'" + filesetName
-					 + "' was not modified to '" 
-					 + formatFileset(projectName, includes, excludes) 
-					 + "' under archive '" + archive.getName() + "'!");
-		}
-	}
-	
-	private void testDeleteFileset(Archive archive, String filesetName) {
-		
-		archive.getFileset(filesetName).deleteFileset(true);
-		
-		try {
-			new WaitWhile(new FilesetIsInArchive(archive, filesetName));
-		} catch (WaitTimeoutExpiredException te) {
-			fail("'" + filesetName 
-					 + "' was not deleted under archive '" 
-					 + archive.getName() + "'!");
-		}
+		archiveInExplorer.getFileset(formatFileset(PROJECT_2, INCLUDES_2, EXCLUDES_2), true).deleteFileset(true);
+		new WaitWhile(new TreeContainsItem(new DefaultTree(), PROJECT_2, "Project Archives", PROJECT_2_ARCHIVE_PATH, 
+				formatFileset(PROJECT_2, INCLUDES_2, EXCLUDES_2)), TimePeriod.LONG);	
 	}
 	
 	private String formatFileset(String projectName, String includes, String excludes) {
 		return "+[" + includes + "] -[" + excludes + "] : /" + projectName;
+	}
+	
+	private void createFileset(Archive archiveInView, String project, String archivePath, String inclues, String excludes){
+		archiveInView.newFileset().setIncludes(inclues).setExcludes(excludes).setFlatten(true).finish();
+		new WaitUntil(new TreeContainsItem(new DefaultTree(), project, archivePath, 
+				formatFileset(project, inclues, excludes)));
 	}
 	
 }

@@ -10,24 +10,18 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import static org.junit.Assert.fail;
-
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
+import org.jboss.reddeer.swt.condition.TreeContainsItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.reddeer.component.Archive;
-import org.jboss.tools.archives.ui.bot.test.condition.UserLibraryFilesetIsInArchive;
 import org.jboss.tools.common.reddeer.label.IDELabel;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -38,12 +32,22 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-@CleanWorkspace
 public class UserLibrariesFilesetTest extends ArchivesTestBase {
 
-	private static String PROJECT_NAME= "pr2";
-	private static String ARCHIVE_PATH = PROJECT_NAME + ".jar" + 
-			" [/" + PROJECT_NAME + "]";
+	private static String PROJECT_NAME1= "UserLibrariesFilesetTest1";
+	private static String ARCHIVE_NAME1 = PROJECT_NAME1 + ".jar";
+	private static String ARCHIVE_PATH1 = ARCHIVE_NAME1 + 
+			" [/" + PROJECT_NAME1 + "]";
+	
+	private static String PROJECT_NAME2= "UserLibrariesFilesetTest2";
+	private static String ARCHIVE_NAME2 = PROJECT_NAME2 + ".jar";
+	private static String ARCHIVE_PATH2 = ARCHIVE_NAME2 + 
+			" [/" + PROJECT_NAME2 + "]";
+	
+	private static String PROJECT_NAME3= "UserLibrariesFilesetTest3";
+	private static String ARCHIVE_NAME3 = PROJECT_NAME3 + ".jar";
+	private static String ARCHIVE_PATH3 = ARCHIVE_NAME3 + 
+			" [/" + PROJECT_NAME3 + "]";
 	
 	private final static String USER_LIBRARY_1 = "myLibrary1";
 	private final static String USER_LIBRARY_2 = "myLibrary2";
@@ -58,111 +62,96 @@ public class UserLibrariesFilesetTest extends ArchivesTestBase {
 		createUserLibrary(USER_LIBRARY_4);
 	}
 	
-	@Before
-	public void prepareWorkspace() {
-		importArchiveProjectWithoutRuntime(PROJECT_NAME);
+	@BeforeClass
+	public static void prepareWorkspace() {
+		createJavaProject(PROJECT_NAME1);
+		addArchivesSupport(PROJECT_NAME1);
+		createArchive(PROJECT_NAME1, ARCHIVE_NAME1, true);
+		
+		createJavaProject(PROJECT_NAME2);
+		addArchivesSupport(PROJECT_NAME2);
+		createArchive(PROJECT_NAME2, ARCHIVE_NAME2, true);
+		
+		createJavaProject(PROJECT_NAME3);
+		addArchivesSupport(PROJECT_NAME3);
+		createArchive(PROJECT_NAME3, ARCHIVE_NAME3, true);
 	}
 	
 	@Test
 	public void testCreatingUserLibraryFileset() {
-		view = viewForProject(PROJECT_NAME);
-		Archive archiveInView = view.getProject().getArchive(ARCHIVE_PATH);
-		testCreatingUserLibraryFileset(archiveInView, USER_LIBRARY_1);
+		view = viewForProject(PROJECT_NAME1);
+		Archive archiveInView = view.getProject(PROJECT_NAME1).getArchive(ARCHIVE_PATH1);
+		archiveInView.newUserLibraryFileset().
+		selectUserLibrary(USER_LIBRARY_1).finish();
+		new WaitUntil(new TreeContainsItem(new DefaultTree(), PROJECT_NAME1, ARCHIVE_PATH1, USER_LIBRARY_1));
 		
-		ProjectArchivesExplorer explorer = explorerForProject(PROJECT_NAME);
-		Archive archiveInExplorer = explorer.getArchive(ARCHIVE_PATH);
-		testCreatingUserLibraryFileset(archiveInExplorer, USER_LIBRARY_2);
+		ProjectArchivesExplorer explorer = explorerForProject(PROJECT_NAME1);
+		Archive archiveInExplorer = explorer.getArchive(ARCHIVE_PATH1);
+		archiveInExplorer.newUserLibraryFileset().
+		selectUserLibrary(USER_LIBRARY_2).finish();
+		new WaitUntil(new TreeContainsItem(new DefaultTree(), PROJECT_NAME1, "Project Archives",
+				ARCHIVE_PATH1, USER_LIBRARY_2));
 	}
 	
 	@Test
 	public void testModifyingUserLibraryFileset() {
-		view = viewForProject(PROJECT_NAME);
-		Archive archiveInView = view.getProject().getArchive(ARCHIVE_PATH);
-		testCreatingUserLibraryFileset(archiveInView, USER_LIBRARY_1);
-		testModifyUserLibraryFileset(archiveInView, USER_LIBRARY_1, USER_LIBRARY_3);
+		view = viewForProject(PROJECT_NAME2);
+		Archive archiveInView = view.getProject(PROJECT_NAME2).getArchive(ARCHIVE_PATH2);
+		archiveInView.newUserLibraryFileset().selectUserLibrary(USER_LIBRARY_1).finish();
+		new WaitUntil(new TreeContainsItem(new DefaultTree(), PROJECT_NAME2, ARCHIVE_PATH2, USER_LIBRARY_1));
 		
-		ProjectArchivesExplorer explorer = explorerForProject(PROJECT_NAME);
-		Archive archiveInExplorer = explorer.getArchive(ARCHIVE_PATH);
-		testCreatingUserLibraryFileset(archiveInExplorer, USER_LIBRARY_2);
-		testModifyUserLibraryFileset(archiveInExplorer, USER_LIBRARY_2, USER_LIBRARY_4);
+		archiveInView.getUserLibraryFileset(USER_LIBRARY_1, false).editUserLibraryFileset()
+		.selectUserLibrary(USER_LIBRARY_3).finish();
+		//bug view wont refresh
+		new WaitWhile(new TreeContainsItem(new DefaultTree(), PROJECT_NAME2, ARCHIVE_PATH2, USER_LIBRARY_1));
+		new WaitUntil(new TreeContainsItem(new DefaultTree(), PROJECT_NAME2, ARCHIVE_PATH2, USER_LIBRARY_3));
+		
+		ProjectArchivesExplorer explorer = explorerForProject(PROJECT_NAME2);
+		Archive archiveInExplorer = explorer.getArchive(ARCHIVE_PATH2);
+		archiveInExplorer.newUserLibraryFileset().selectUserLibrary(USER_LIBRARY_2).finish();
+		new WaitUntil(new TreeContainsItem(new DefaultTree(), PROJECT_NAME2, "Project Archives",
+				ARCHIVE_PATH2, USER_LIBRARY_2));
+		archiveInView.getUserLibraryFileset(USER_LIBRARY_2, true).editUserLibraryFileset()
+		.selectUserLibrary(USER_LIBRARY_4).finish();
+		new WaitWhile(new TreeContainsItem(new DefaultTree(), PROJECT_NAME2, "Project Archives",
+				ARCHIVE_PATH2, USER_LIBRARY_2));
+		new WaitUntil(new TreeContainsItem(new DefaultTree(), PROJECT_NAME2, "Project Archives",
+				ARCHIVE_PATH2, USER_LIBRARY_4));
 	}
 	
 	@Test
 	public void testDeletingUserLibraryFileset() {
-		view = viewForProject(PROJECT_NAME);
-		Archive archiveInView = view.getProject().getArchive(ARCHIVE_PATH);
-		testCreatingUserLibraryFileset(archiveInView, USER_LIBRARY_1);
-		testDeleteUserLibraryFileset(archiveInView, USER_LIBRARY_1);
+		view = viewForProject(PROJECT_NAME3);
+		Archive archiveInView = view.getProject(PROJECT_NAME3).getArchive(ARCHIVE_PATH3);
+		archiveInView.newUserLibraryFileset().
+		selectUserLibrary(USER_LIBRARY_1).finish();
+		new WaitUntil(new TreeContainsItem(new DefaultTree(), PROJECT_NAME3, ARCHIVE_PATH3, USER_LIBRARY_1));
 		
-		ProjectArchivesExplorer explorer = explorerForProject(PROJECT_NAME);
-		Archive archiveInExplorer = explorer.getArchive(ARCHIVE_PATH);
-		testCreatingUserLibraryFileset(archiveInExplorer, USER_LIBRARY_2);
-		testDeleteUserLibraryFileset(archiveInExplorer, USER_LIBRARY_2);
-	}
-	
-	private void testCreatingUserLibraryFileset(Archive archive, 
-			String userLibraryFileset) {
+		archiveInView.getUserLibraryFileset(USER_LIBRARY_1, false).deleteUserLibraryFileset(true);
+		new WaitWhile(new TreeContainsItem(new DefaultTree(), PROJECT_NAME3, ARCHIVE_PATH3, USER_LIBRARY_1));
 		
-		archive.newUserLibraryFileset().
-			selectUserLibrary(userLibraryFileset).finish();
+		ProjectArchivesExplorer explorer = explorerForProject(PROJECT_NAME3);
+		Archive archiveInExplorer = explorer.getArchive(ARCHIVE_PATH3);
+		archiveInExplorer.newUserLibraryFileset().
+		selectUserLibrary(USER_LIBRARY_2).finish();
+		new WaitUntil(new TreeContainsItem(new DefaultTree(), PROJECT_NAME3, "Project Archives",
+				ARCHIVE_PATH3, USER_LIBRARY_2));
 		
-		try {
-			new WaitUntil(new UserLibraryFilesetIsInArchive(
-				archive, userLibraryFileset));
-		} catch (WaitTimeoutExpiredException te) {
-			fail("'" + userLibraryFileset
-					 + "' was not created under archive '" 
-					 + archive.getName() + "'!");
-		}
-	}
-	
-	private void testModifyUserLibraryFileset(Archive archive,
-			String userLibrary1, String userLibrary2) {
-		
-		archive.getUserLibraryFileset(userLibrary1)
-			.editUserLibraryFileset()
-			.selectUserLibrary(userLibrary2).finish();
-		
-		try {
-			new WaitUntil(new UserLibraryFilesetIsInArchive(archive, userLibrary1));
-			new WaitWhile(new UserLibraryFilesetIsInArchive(archive, userLibrary2));
-		} catch (WaitTimeoutExpiredException te) {
-			fail("'" + userLibrary1 + "' was not modified to '" 
-					 + userLibrary2 + "' under archive '" 
-					 + archive.getName() + "'!");
-		}
-	}
-
-	private void testDeleteUserLibraryFileset(Archive archive,
-			String userLibrary) {
-		
-		archive.getUserLibraryFileset(userLibrary).deleteUserLibraryFileset(true);
-		
-		try {
-			new WaitWhile(new UserLibraryFilesetIsInArchive(archive, userLibrary));
-		} catch (WaitTimeoutExpiredException te) {
-			fail("'" + userLibrary 
-					 + "' was not deleted under archive '" 
-					 + archive.getName() + "'!");
-		}
+		archiveInView.getUserLibraryFileset(USER_LIBRARY_2, false).deleteUserLibraryFileset(true);
+		new WaitWhile(new TreeContainsItem(new DefaultTree(), PROJECT_NAME3, "Project Archives",
+				ARCHIVE_PATH3, USER_LIBRARY_2));
 	}
 	
 	private static void createUserLibrary(String userLibrary) {
-		openUserLibraryPreferencePage();
+		WorkbenchPreferenceDialog wd = new WorkbenchPreferenceDialog();
+		wd.open();
+		wd.select("Java","Build Path","User Libraries");
 		new PushButton(IDELabel.Button.NEW).click();
-		new DefaultShell("New User Library");
+		DefaultShell libraryShell = new DefaultShell("New User Library");
 		new DefaultText(0).setText(userLibrary);
 		new PushButton(IDELabel.Button.OK).click();
-		new DefaultShell("Preferences");
-		new PushButton(IDELabel.Button.OK).click();
-		new WaitWhile(new ShellWithTextIsActive("Preferences"));
-		new WaitWhile(new JobIsRunning());
-	}
-	
-	private static void openUserLibraryPreferencePage() {
-		new ShellMenu("Window","Preferences").select();
-		new DefaultShell("Preferences");
-		new DefaultTreeItem("Java","Build Path","User Libraries").select();
+		new WaitWhile(new ShellIsAvailable(libraryShell));
+		wd.ok();
 	}
 	
 }

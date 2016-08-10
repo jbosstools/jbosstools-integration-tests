@@ -10,7 +10,15 @@
  ******************************************************************************/
 package org.jboss.tools.archives.reddeer.component;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.archives.reddeer.archives.ui.FilesetDialog;
 
 /**
@@ -22,11 +30,9 @@ import org.jboss.tools.archives.reddeer.archives.ui.FilesetDialog;
 public class Fileset {
 
 	private TreeItem fileset;
-	private ArchiveContextMenuAction menuAction;
 
 	public Fileset(TreeItem fileset) {
 		this.fileset = fileset;
-		menuAction = new ArchiveContextMenuAction();
 	}
 	
 	public String getName() {
@@ -35,12 +41,22 @@ public class Fileset {
 	
 	public FilesetDialog editFileset() {
 		fileset.select();
-		return menuAction.editFileset();
+		new ContextMenu("Edit Fileset").select();
+		return new FilesetDialog();
 	}
 	
 	public void deleteFileset(boolean withContextMenu) {
 		fileset.select();
-		menuAction.deleteFileset(withContextMenu);
+		
+		new ContextMenu("Delete Fileset").select();
+		try {
+			Shell s = new DefaultShell("Delete selected nodes?");
+			new PushButton("Yes").click();
+			new WaitWhile(new ShellIsAvailable(s));
+		} catch (RedDeerException e) {
+			//do nothing here
+		}
+		new WaitWhile(new JobIsRunning());
 	}
 	
 }

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><packages version="1.3">
-  <package exploded="false" inWorkspace="true" name="pr1.jar" todir="/pr1" type="jar">
-    <properties>
-      <property name="org.jboss.ide.eclipse.as.core.packages.ModuleIDPropertyKey" value="14186419453743913041511591290031483"/>
-    </properties>
-  </package>
-  <properties/>
-</packages>

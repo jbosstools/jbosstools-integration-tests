@@ -12,14 +12,9 @@ package org.jboss.tools.archives.reddeer.component;
 
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.condition.TreeItemHasMinChildren;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.NewJarDialog;
 
@@ -32,12 +27,10 @@ import org.jboss.tools.archives.reddeer.archives.ui.NewJarDialog;
 public class ArchiveProject {
 
 	private TreeItem archiveProject;
-	private ArchiveContextMenuAction menuAction;
 	protected static final Logger log = Logger.getLogger(ArchiveProject.class);
 
 	public ArchiveProject(TreeItem archiveProject) {
 		this.archiveProject = archiveProject;
-		menuAction = new ArchiveContextMenuAction();
 	}
 	
 	public String getName() {
@@ -45,29 +38,32 @@ public class ArchiveProject {
 	}
 	
 	public NewJarDialog newJarArchive() {
-		archiveProject.select();
-		return menuAction.createNewJarArchive();
-		
+		selectArchive();
+		new ContextMenu("New Archive", "JAR").select();
+		return new NewJarDialog();
 	}
 	
 	public void buildProjectFull() {
-		archiveProject.select();
-		menuAction.buildProjectFull();
+		selectArchive();
+		new ContextMenu("Build Project (Full)").select();
 		new WaitWhile(new JobIsRunning());
 	}
 	
 	public Archive getArchive(String archiveName) {
-		new WaitUntil(new TreeItemHasMinChildren(archiveProject, 1), TimePeriod.NORMAL, false);
-		if(archiveProject.getItems().isEmpty()){
-			log.debug("Archive project does not contain any archives");
-			new ShellMenu("Project","Clean...").select();
-			new DefaultShell("Clean");
-			new OkButton().click();
-			new WaitWhile(new ShellWithTextIsAvailable("Clean"));
-			new WaitWhile(new JobIsRunning());
+		return new Archive(archiveProject, archiveProject.getItem(archiveName));
+	}
+	
+	public boolean hasArchive(String archiveName){
+		try{
+			archiveProject.getItem(archiveName);
+		} catch (RedDeerException e) {
+			return false;
 		}
-		new WaitUntil(new TreeItemHasMinChildren(archiveProject, 1), TimePeriod.NORMAL, false);
-		return new Archive(archiveProject.getItem(archiveName));
+		return true;
+	}
+	
+	public void selectArchive(){
+		archiveProject.select();
 	}
 	
 }

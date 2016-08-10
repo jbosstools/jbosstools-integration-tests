@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.archives.ui.bot.test.condition.ExplorerInProjectExplorer;
@@ -24,10 +23,9 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-@CleanWorkspace
 public class ArchivesSupportTest extends ArchivesTestBase {
 
-	private static final String project = "prj";
+	private static final String project = "ArchivesSupportTest";
 	
 	@BeforeClass
 	public static void setup() {

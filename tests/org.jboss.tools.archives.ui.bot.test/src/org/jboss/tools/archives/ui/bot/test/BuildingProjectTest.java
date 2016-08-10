@@ -11,7 +11,7 @@
 package org.jboss.tools.archives.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -22,27 +22,26 @@ import org.junit.Test;
  */
 public class BuildingProjectTest extends ArchivesTestBase {
 
-	private static String projectName = "pr1";
-	private final String ARCHIVE_NAME = projectName + ".jar";
+	private static String projectName = "BuildingProjectTest";
+	private static final String ARCHIVE_NAME = projectName + ".jar";
 	
-	@Before
-	public void setup() {
-		importArchiveProjectWithoutRuntime(projectName);
+	@BeforeClass
+	public static void setup() {
+		createJavaProject(projectName);
+		addArchivesSupport(projectName);
+		createArchive(projectName, ARCHIVE_NAME, true);
 	}
 	
 	@Test
 	public void testBuildingProjectWithView() {
-		viewForProject(projectName)
-			.getProject()
-			.buildProjectFull();
+		viewForProject(projectName).getProject(projectName).buildProjectFull();
 		projectExplorer.open();
 		assertTrue(projectExplorer.getProject(projectName).containsItem(ARCHIVE_NAME));
 	}
 	
 	@Test
 	public void testBuildingProjectWithExplorer() {
-		explorerForProject(projectName)
-			.buildProjectFull();
+		explorerForProject(projectName).buildProjectFull();
 		projectExplorer.open();
 		assertTrue(projectExplorer.getProject(projectName).containsItem(ARCHIVE_NAME));
 	}

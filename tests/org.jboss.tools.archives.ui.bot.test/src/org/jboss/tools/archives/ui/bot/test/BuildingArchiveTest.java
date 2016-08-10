@@ -12,8 +12,7 @@ package org.jboss.tools.archives.ui.bot.test;
 
 import static org.junit.Assert.*;
 
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -22,35 +21,31 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-@CleanWorkspace
 public class BuildingArchiveTest extends ArchivesTestBase{
 
-	private static String projectName = "pr2";
+	private static String projectName = "BuildingArchiveTest";
 	
-	private final String PATH_SUFFIX = " [/" + projectName + "]"; 
-	private final String ARCHIVE_NAME = projectName + ".jar";
-	private final String ARCHIVE_PATH = 
+	private static final String PATH_SUFFIX = " [/" + projectName + "]"; 
+	private static final String ARCHIVE_NAME = projectName + ".jar";
+	private static final String ARCHIVE_PATH = 
 			ARCHIVE_NAME + PATH_SUFFIX;
 	
-	@Before
-	public void setup() {
-		importArchiveProjectWithoutRuntime(projectName);
+	@BeforeClass
+	public static void setup() {
+		createJavaProject(projectName);
+		addArchivesSupport(projectName);
+		createArchive(projectName, ARCHIVE_NAME, true);
 	}
 	
 	@Test
 	public void testBuildingArchiveWithView() {
-		viewForProject(projectName)
-			.getProject()
-			.getArchive(ARCHIVE_PATH)
-			.buildArchiveFull();
+		viewForProject(projectName).getProject(projectName).getArchive(ARCHIVE_PATH).buildArchiveFull();
 		assertTrue(projectExplorer.getProject(projectName).containsItem(ARCHIVE_NAME));
 	}
 	
 	@Test
 	public void testBuildingArchiveWithExplorer() {
-		explorerForProject(projectName)
-			.getArchive(ARCHIVE_PATH)
-			.buildArchiveFull();
+		explorerForProject(projectName).getArchive(ARCHIVE_PATH).buildArchiveFull();
 		assertTrue(projectExplorer.getProject(projectName).containsItem(ARCHIVE_NAME));
 	}
 	

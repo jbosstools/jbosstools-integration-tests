@@ -10,10 +10,18 @@
  ******************************************************************************/
 package org.jboss.tools.archives.reddeer.component;
 
+import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.TreeItemHasMinChildren;
-import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
+import org.jboss.reddeer.swt.condition.TreeContainsItem;
+import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.eclipse.swt.SWT;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.tools.archives.reddeer.archives.jdt.integration.LibFilesetDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.ArchivePublishDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.EditArchiveDialog;
@@ -30,11 +38,11 @@ import org.jboss.tools.archives.reddeer.archives.ui.NewJarDialog;
 public class Archive {
 
 	private TreeItem archive;
-	private ArchiveContextMenuAction menuAction;
+	private TreeItem archiveProject;
 	
-	public Archive(TreeItem archive) {
+	public Archive(TreeItem archiveProject, TreeItem archive) {
 		this.archive = archive;
-		menuAction = new ArchiveContextMenuAction();
+		this.archiveProject = archiveProject;
 	}
 	
 	public String getName() {
@@ -43,99 +51,95 @@ public class Archive {
 	
 	public NewJarDialog newJarArchive() {
 		archive.select();
-		return menuAction.createNewJarArchive();
+		new ContextMenu("New Archive", "JAR").select();
+		return new NewJarDialog();
 		
 	}
 	
 	public NewFolderDialog newFolder() {
 		archive.select();
-		return menuAction.createFolder();
+		new ContextMenu("New Folder").select();
+		return new NewFolderDialog();
 	}
 	
 	public FilesetDialog newFileset() {
 		archive.select();
-		return menuAction.createFileset();
+		new ContextMenu("New Fileset").select();
+		return new FilesetDialog();
 	}
 	
 	public LibFilesetDialog newUserLibraryFileset() {
 		archive.select();
-		return menuAction.createUserLibraryFileset();
+		new ContextMenu("New User Library Fileset").select();
+		return new LibFilesetDialog();
 	}
 	
 	public void buildArchiveFull() {
 		archive.select();
-		menuAction.buildArchiveFull();
+		new ContextMenu("Build Archive (Full)").select();
+		new WaitWhile(new JobIsRunning());
 	}
 	
 	public EditArchiveDialog editArchive() {
 		archive.select();
-		return menuAction.editArchive();
+		new ContextMenu("Edit Archive").select();
+		return new EditArchiveDialog();
 	}
 	
 	public void deleteArchive(boolean withContextMenu) {
 		archive.select();
-		menuAction.deleteArchive(withContextMenu);
+		if (withContextMenu) {
+			new ContextMenu("Delete Archive").select();
+		} else {
+			KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.DEL);
+		}
+		Shell dShell = new DefaultShell("Delete selected nodes?");
+		new PushButton("Yes").click();
+		new WaitWhile(new ShellIsAvailable(dShell));
+		new WaitWhile(new JobIsRunning());
 	}
-	
-//	public void deleteArchives(boolean withContextMenu, String... archives) {
-//		SWTBotTreeItem[] items = new SWTBotTreeItem[archives.length];
-//		
-//		int index = 0;
-//		for (String archive : archives) {
-//			items[index] = getArchive(archive);
-//			index++;
-//		}
-//		deleteArchives(this.bot().tree(), withContextMenu, items);
-//	}
 	
 	public ArchivePublishDialog publishToServer() {
 		archive.select();
-		return menuAction.publishToServer();
+		new ContextMenu("Publish To Server").select();
+		if (new DefaultShell().getText().equals("Archive Publish Settings")) {
+			return new ArchivePublishDialog();
+		}
+		new WaitWhile(new JobIsRunning());
+		return null;
 	}
 	
 	public ArchivePublishDialog editPublishSettings() {
 		archive.select();
-		return menuAction.editPublishSettings();
+		new ContextMenu("Edit publish settings...").select();
+		return new ArchivePublishDialog();
 	}
 	
 	public Archive getArchive(String archiveName) {
-		new WaitUntil(new TreeItemHasMinChildren(archive, 1), TimePeriod.NORMAL, false);
-		return new Archive(archive.getItem(archiveName));
+		new WaitUntil(new TreeContainsItem(archive.getParent(), archiveProject.getText(), archive.getText()));
+		return new Archive(archiveProject, archive.getItem(archiveName));
 	}
 	
-	public Folder getFolder(String folderName) {
-		new WaitUntil(new TreeItemHasMinChildren(archive, 1), TimePeriod.NORMAL, false);
+	public Folder getFolder(String folderName, boolean explorer) {
+		waitForArchiveItem(folderName, explorer);
 		return new Folder(archive.getItem(folderName));
 	}
 	
-	public Fileset getFileset(String filesetName) {
-		new WaitUntil(new TreeItemHasMinChildren(archive, 1), TimePeriod.NORMAL, false);
+	public Fileset getFileset(String filesetName, boolean explorer) {
+		waitForArchiveItem(filesetName, explorer);
 		return new Fileset(archive.getItem(filesetName));
 	}
 	
-	public UserLibraryFileset getUserLibraryFileset(String userLibraryFilesetName) {
-		new WaitUntil(new TreeItemHasMinChildren(archive, 1), TimePeriod.NORMAL, false);
+	public UserLibraryFileset getUserLibraryFileset(String userLibraryFilesetName, boolean explorer) {
+		waitForArchiveItem(userLibraryFilesetName, explorer);
 		return new UserLibraryFileset(archive.getItem(userLibraryFilesetName));
 	}
-
-
-//	public boolean itemExists(String... path) {
-//		try {
-//			new DefaultTreeItem(globalPath(path));
-//			return true;
-//		} catch (Exception sle) {
-//			return false;
-//		}
-//	}
 	
-//	private String[] globalPath(String... path) {
-//		String[] globalPath = new String[path.length + 2];
-//		globalPath[0] = explorer.getPath()[0];
-//		globalPath[1] = explorer.getPath()[1];
-//		for (int i = 2; i < globalPath.length; i++) {
-//			globalPath[i] = path[i-2];
-//		}
-//		return globalPath;
-//	}
-	
+	private void waitForArchiveItem(String item, boolean explorer){
+		if(!explorer){
+			new WaitUntil(new TreeContainsItem(archive.getParent(), archiveProject.getText(), archive.getText(), item));
+		} else {
+			new WaitUntil(new TreeContainsItem(archive.getParent(), archiveProject.getText(), "Project Archives", archive.getText(), item));
+		}
+	}
 }

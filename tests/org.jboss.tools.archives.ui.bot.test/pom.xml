@@ -14,7 +14,6 @@
 	<properties>
 		<coverage.filter>org.jboss.ide.eclipse.archives.ui*</coverage.filter>
 		<emma.instrument.bundles>org.jboss.ide.eclipse.archives.ui</emma.instrument.bundles>
-	<!--	<systemProperties>${integrationTestsSystemProperties} -Dswtbot.test.properties.file=${project.basedir}/properties/swtbot.properties</systemProperties> -->
 		<suiteClass>org.jboss.tools.archives.ui.bot.test.ArchivesAllBotTests</suiteClass>
 		<systemProperties>-Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Drd.config=target/classes/servers</systemProperties>
 		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
@@ -55,7 +54,7 @@
 			</plugin>
 		</plugins>
 		<resources>
-				<resource>
+			<resource>
 				<directory>resources</directory>
 				<includes>
 					<include>servers/*</include>
@@ -64,4 +63,34 @@
 			</resource>
 		</resources>
 	</build>
+	
+	<profiles>
+		<profile>
+			<id>check-pr</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<configuration>
+							<dependency-resolution>
+								<extraRequirements>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.archives.scanner.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.ide.eclipse.archives.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+								</extraRequirements>
+							</dependency-resolution>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
