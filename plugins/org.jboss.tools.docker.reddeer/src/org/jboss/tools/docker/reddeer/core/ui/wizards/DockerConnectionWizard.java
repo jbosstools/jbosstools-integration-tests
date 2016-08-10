@@ -18,10 +18,12 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Button;
+import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.tools.docker.reddeer.ui.DockerExplorer;
@@ -95,6 +97,14 @@ public class DockerConnectionWizard extends WizardPage {
 		new WaitUntil(new ShellWithTextIsAvailable("Success"));
 		Button okButton = new PushButton("OK");
 		okButton.click();
+	}
+	
+	public void search(String connectionName){
+		new PushButton("Search...").click();
+		new WaitUntil(new ShellWithTextIsAvailable("Docker Connection Selection"));
+		Table table = new DefaultTable();
+		table.getItem(connectionName).select();
+		new PushButton("OK").click();	
 	}
 
 }

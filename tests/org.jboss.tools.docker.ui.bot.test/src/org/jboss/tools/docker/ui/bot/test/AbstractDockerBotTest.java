@@ -103,7 +103,10 @@ public abstract class AbstractDockerBotTest {
 
 	protected static void createConnection() {
 		String dockerServerURI = System.getProperty("dockerServerURI");
-		if (dockerServerURI == null || dockerServerURI.isEmpty()) {
+		String searchConnection = System.getProperty("searchConnection");
+		if(searchConnection != null && !searchConnection.isEmpty() && searchConnection.equals("true")){
+			createConnectionSearch("default");
+		}else if (dockerServerURI == null || dockerServerURI.isEmpty()) {
 			createConnectionSocket(System.getProperty("unixSocket"));
 		} else {
 			createConnectionTCP(dockerServerURI);
@@ -128,6 +131,16 @@ public abstract class AbstractDockerBotTest {
 			connectionWizard.finish();
 		}
 		new DockerExplorer().enableConnection(unixSocket);
+	}
+
+	protected static void createConnectionSearch(String connectionName) {
+		if (!new DockerExplorer().connectionExist(connectionName)) {
+			DockerConnectionWizard connectionWizard = new DockerConnectionWizard();
+			connectionWizard.open();
+			connectionWizard.search(connectionName);
+			connectionWizard.finish();
+		}
+		new DockerExplorer().enableConnection(connectionName);
 	}
 
 	protected static void deleteConnection() {
@@ -180,8 +193,9 @@ public abstract class AbstractDockerBotTest {
 
 	protected String createURL(String tail) {
 		String dockerServerURI = System.getProperty("dockerServerURI");
+		String searchConnection = System.getProperty("searchConnection");
 		String serverURI;
-		if (dockerServerURI != null && !dockerServerURI.isEmpty()) {
+		if (dockerServerURI != null && !dockerServerURI.isEmpty()&& !searchConnection.equals("true")) {
 			serverURI = dockerServerURI.replaceAll("tcp://", "http://");
 		} else {
 			serverURI = "http://localhost:1234";
