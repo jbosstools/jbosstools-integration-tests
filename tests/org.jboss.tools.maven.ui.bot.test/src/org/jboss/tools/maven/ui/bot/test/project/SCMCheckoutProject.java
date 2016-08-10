@@ -1,23 +1,21 @@
 package org.jboss.tools.maven.ui.bot.test.project;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.m2e.core.ui.wizard.MavenCheckoutWizard;
 import org.jboss.reddeer.eclipse.m2e.scm.wizard.MavenCheckoutLocationPage;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.CancelButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
@@ -43,6 +41,7 @@ public class SCMCheckoutProject extends AbstractMavenSWTBotTest {
 		assertTrue(ml.isCheckoutAllProjects());
 		assertTrue(ml.isCheckoutHeadRevision());
 		mc.finish(TimePeriod.getCustom(TimePeriod.LONG.getSeconds() * 2));
+		ignoreM2eConnectors();
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		assertTrue(pe.containsProject("eclipsetutorial"));
@@ -78,9 +77,19 @@ public class SCMCheckoutProject extends AbstractMavenSWTBotTest {
 		new PushButton("Finish").click();
 		new WaitWhile(new ShellWithTextIsAvailable("Import Maven Projects"),TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
+		ignoreM2eConnectors();
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		assertTrue(pe.containsProject("eclipsetutorial.core"));
 		assertEquals(1,pe.getProjects().size());
+	}
+	
+	private void ignoreM2eConnectors(){
+		try{
+			new ShellWithTextIsAvailable("Discover m2e connectors");
+			new PushButton("Cancel").click();
+		}catch(CoreLayerException ex){
+			//The shell "Discover m2e connectors" is shown only if these connectors are not installed.
+		}
 	}
 }
