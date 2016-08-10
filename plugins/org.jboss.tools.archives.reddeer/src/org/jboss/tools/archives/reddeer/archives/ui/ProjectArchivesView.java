@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.archives.reddeer.archives.ui;
 
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
@@ -28,12 +30,12 @@ public class ProjectArchivesView extends WorkbenchView {
 	}
 	
 	public void buildArchiveNode() {
-		new DefaultToolItem("Build Archive Node");
+		new DefaultToolItem("Build Archive Node").click();
+		new WaitWhile(new JobIsRunning());
 	}
 	
-	@SuppressWarnings("unchecked")
-	public ArchiveProject getProject() {
-		return new ArchiveProject(new DefaultTreeItem(0));
+	public ArchiveProject getProject(String projectName) {
+		return new ArchiveProject(new DefaultTreeItem(projectName));
 	}
 	
 }

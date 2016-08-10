@@ -11,36 +11,25 @@
 package org.jboss.tools.archives.ui.bot.test;
 
 
-import static org.junit.Assert.fail;
-
-import java.io.File;
-import java.io.IOException;
+import static org.junit.Assert.*;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.ide.NewJavaProjectWizardPage;
-import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.apache.commons.io.FileUtils;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.Platform;
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.tools.archives.reddeer.archives.ui.NewJarDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesView;
 import org.jboss.tools.common.reddeer.label.IDELabel;
-import org.junit.After;
 import org.junit.BeforeClass;
 
 /**
@@ -48,12 +37,12 @@ import org.junit.BeforeClass;
  * @author jjankovi
  *
  */
-@CleanWorkspace
 @OpenPerspective(JavaPerspective.class)
+@CleanWorkspace
 public class ArchivesTestBase{
 
-	protected ProjectExplorer projectExplorer = new ProjectExplorer();
-	protected ProjectArchivesView view = new ProjectArchivesView();
+	protected static ProjectExplorer projectExplorer = new ProjectExplorer();
+	protected static ProjectArchivesView view = new ProjectArchivesView();
 	protected static final Logger log = Logger.getLogger(ArchivesTestBase.class);
 	
 	@BeforeClass
@@ -61,18 +50,12 @@ public class ArchivesTestBase{
 		new WorkbenchShell().maximize();
 	}
 	
-	@After
-	public void cleanUp() {
-		new CleanWorkspaceRequirement().fulfill();
-		deleteProjectDir();
-	}
-	
 	protected ProjectArchivesView openProjectArchivesView() {
 		view.open();
 		return view;
 	}
 	
-	protected ProjectArchivesView viewForProject(String projectName) {
+	protected static ProjectArchivesView viewForProject(String projectName) {
 		view.open();
 		projectExplorer.open();
 		projectExplorer.getProject(projectName).select();
@@ -84,25 +67,14 @@ public class ArchivesTestBase{
 		return new ProjectArchivesExplorer(projectName);
 	}
 	
-	protected void assertArchiveIsInView(ProjectArchivesView view, 
-			String archiveName) {
-		try {
-			view.open();
-			view.getProject().getArchive(archiveName);
-		} catch (Exception sle) {
-			fail("'" + archiveName + "' is not in archives view but it should!");
-		}
+	protected void assertArchiveIsInView(String project, ProjectArchivesView view, String archiveName) {
+		view.open();
+		assertTrue(view.getProject(project).hasArchive(archiveName));
 	}
 	
-	protected void assertArchiveIsNotInView(ProjectArchivesView view, 
-			String archiveName) {
-		try {
-			view.open();
-			view.getProject().getArchive(archiveName);
-			fail("'" + archiveName + "' is in archives view but it should not!");
-		} catch (Exception sle) {
-			
-		}
+	protected void assertArchiveIsNotInView(String project, ProjectArchivesView view, String archiveName) {
+		view.open();
+		assertFalse(view.getProject(project).hasArchive(archiveName));
 	}
 	
 	protected void assertArchiveIsInExplorer(ProjectArchivesExplorer explorer, 
@@ -123,10 +95,10 @@ public class ArchivesTestBase{
 		}
 	}
 	
-	protected static void clearErrorView() {
+	protected static void deleteErrorView() {
 		LogView lw = new LogView();
 		lw.open();
-		lw.clearLog();
+		lw.deleteLog();
 	}
 	
 	protected static void createJavaProject(String projectName) {
@@ -139,34 +111,18 @@ public class ArchivesTestBase{
 		javaProject.finish(false);
 	}
 	
-	protected static void importArchiveProjectWithoutRuntime(String projectName) {
-		
-		deleteProjectDir();
-		String location = "resources/prj/" + projectName;
-		
-		ExternalProjectImportWizardDialog importDialog = new ExternalProjectImportWizardDialog();
-		importDialog.open();
-		WizardProjectsImportPage importPage = new WizardProjectsImportPage();
-		try {
-			importPage.setRootDirectory((new File(location)).getCanonicalPath());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		importPage.copyProjectsIntoWorkspace(true);
-		importDialog.finish();
-	}
-	
-	protected void addArchivesSupport(String projectName) {
+	protected static void addArchivesSupport(String projectName) {
 		addRemoveArchivesSupport(projectName, true);
 	}
 	
-	protected void removeArchivesSupport(String projectName) {
+	protected static void removeArchivesSupport(String projectName) {
 		addRemoveArchivesSupport(projectName, false);
 	}
 	
-	private void addRemoveArchivesSupport(String projectName, boolean add) {
-		projectExplorer.open();
-		projectExplorer.getProject(projectName).select();
+	private static void addRemoveArchivesSupport(String projectName, boolean add) {
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(projectName).select();
 		if (add) {
 			new ContextMenu(IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, 
 					IDELabel.Menu.ADD_ARCHIVE_SUPPORT).select();
@@ -174,24 +130,29 @@ public class ArchivesTestBase{
 			new ContextMenu(IDELabel.Menu.PACKAGE_EXPLORER_CONFIGURE, 
 					IDELabel.Menu.REMOVE_ARCHIVE_SUPPORT).select();
 		}
-		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
-	private static void deleteProjectDir(){
-		AbstractWait.sleep(TimePeriod.NORMAL);
-		String workspaceLocation = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
-		log.debug("Workspace location is "+workspaceLocation);
-		for(File f: new File(workspaceLocation).listFiles()){
-			log.debug("Checking if "+f.getName()+" is directory");
-			if(f.isDirectory()&& f.getName().startsWith("pr")){
-				try {
-					log.debug("Deleting workspace dir "+ f.getName());
-					FileUtils.deleteDirectory(f);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+	protected static void createArchive(NewJarDialog dialog, String archiveName, boolean standardCompression) {
+		dialog.setArchiveName(archiveName);
+		if (standardCompression) {
+			dialog.setZipStandardArchiveType();
+		} else {
+			dialog.setNoCompressionArchiveType();
 		}
+		dialog.finish();
+	}
+	
+	protected static void createArchive(String project, String archiveName, boolean standardCompression) {
+		view = viewForProject(project);
+		NewJarDialog dialog = view.getProject(project).newJarArchive();
+		dialog.setArchiveName(archiveName);
+		if (standardCompression) {
+			dialog.setZipStandardArchiveType();
+		} else {
+			dialog.setNoCompressionArchiveType();
+		}
+		dialog.finish();
 	}
 	
 }

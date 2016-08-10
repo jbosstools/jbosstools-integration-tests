@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -105,10 +106,12 @@ public class ArchivePublishDialog extends DefaultShell {
 	
 	public void cancel() {
 		new PushButton("Cancel").click();
+		new WaitWhile(new ShellIsAvailable(this));
 	}
 	
 	public void finish() {
 		new PushButton("Finish").click();
+		new WaitWhile(new ShellIsAvailable(this));
 		new WaitWhile(new JobIsRunning());
 	}
 	

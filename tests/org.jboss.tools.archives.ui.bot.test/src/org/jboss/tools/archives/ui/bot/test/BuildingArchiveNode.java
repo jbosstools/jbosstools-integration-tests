@@ -12,9 +12,6 @@ package org.jboss.tools.archives.ui.bot.test;
 
 import static org.junit.Assert.*;
 
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -24,27 +21,26 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-@CleanWorkspace
 public class BuildingArchiveNode extends ArchivesTestBase {
 
-	private static String projectName = "pr2";
+	private static String projectName = "BuildingArchiveNode";
 	
-	private final String PATH_SUFFIX = " [/" + projectName + "]"; 
-	private final String ARCHIVE_NAME = projectName + ".jar";
-	private final String ARCHIVE_PATH = 
-			ARCHIVE_NAME + PATH_SUFFIX;
+	private static final String PATH_SUFFIX = " [/" + projectName + "]"; 
+	private static final String ARCHIVE_NAME = projectName + ".jar";
+	private static final String ARCHIVE_PATH = ARCHIVE_NAME + PATH_SUFFIX;
 	
 	@BeforeClass
 	public static void setup() {
-		importArchiveProjectWithoutRuntime(projectName);
+		createJavaProject(projectName);
+		addArchivesSupport(projectName);
+		createArchive(projectName, ARCHIVE_NAME, true);
 	}
 	
 	@Test
 	public void testBuildingArchiveNode() {
 		view = viewForProject(projectName);
-		view.getProject().getArchive(ARCHIVE_PATH);
+		view.getProject(projectName).getArchive(ARCHIVE_PATH);
 		view.buildArchiveNode();
-		new WaitWhile(new JobIsRunning());
 		projectExplorer.open();
 		assertTrue(projectExplorer.getProject(projectName).containsItem(ARCHIVE_NAME));
 	}

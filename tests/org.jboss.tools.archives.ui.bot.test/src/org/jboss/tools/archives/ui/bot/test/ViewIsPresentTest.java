@@ -12,7 +12,7 @@ package org.jboss.tools.archives.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesView;
 import org.junit.Test;
 
 /**
@@ -22,13 +22,13 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-@CleanWorkspace
 public class ViewIsPresentTest extends ArchivesTestBase {
 
 	@Test
 	public void testArchivesViewIsPresent() {
-		openProjectArchivesView();
-		assertTrue(view.isOpened());
+		ProjectArchivesView pw = new ProjectArchivesView();
+		pw.open();
+		assertTrue(pw.isOpened());
 	}
 	
 }

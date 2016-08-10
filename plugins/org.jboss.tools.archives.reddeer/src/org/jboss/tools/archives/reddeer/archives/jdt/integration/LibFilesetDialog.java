@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -50,10 +51,12 @@ public class LibFilesetDialog extends DefaultShell {
 	
 	public void cancel() {
 		new PushButton("Cancel").click();
+		new WaitWhile(new ShellIsAvailable(this));
 	}
 	
 	public void finish() {
 		new PushButton("Finish").click();
+		new WaitWhile(new ShellIsAvailable(this));
 		new WaitWhile(new JobIsRunning());
 	}
 	

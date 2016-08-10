@@ -14,15 +14,13 @@ import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.clabel.DefaultCLabel;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.MainPreferencePage;
 import org.jboss.tools.common.reddeer.label.IDELabel;
@@ -34,10 +32,9 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-@CleanWorkspace
 public class ArchivePreferencesTest extends ArchivesTestBase {
 
-	private static String projectName = "prj";
+	private static String projectName = "ArchivePreferencesTest";
 	
 	@Test
 	public void testArchivePreferences() {
@@ -58,37 +55,23 @@ public class ArchivePreferencesTest extends ArchivesTestBase {
 	private void testLocalArchivePreferences() {
 		createJavaProject(projectName);
 		addArchivesSupport(projectName);
-		openLocalArchivePreferences(projectName);
-		openGlobalPreferencesFromLocal(projectName);
-	}
-	
-	private void openLocalArchivePreferences(String projectName) {
-		openPropertiesForProject(projectName);
-		
-		String projectProperties = "Properties for " + projectName;
-		new WaitUntil(new ShellWithTextIsActive(projectProperties));
-		new DefaultShell(projectProperties);
-		new DefaultTreeItem("Project Archives").select();
-	}
-	
-	private void openPropertiesForProject(String projectName) {
 		ProjectExplorer pExplorer = new ProjectExplorer();
 		pExplorer.open();
 		
 		pExplorer.getProject(projectName).select();
 		new ContextMenu(IDELabel.Menu.PROPERTIES).select();
-	}
-	
-	private void openGlobalPreferencesFromLocal(String projectName) {
+		String projectProperties = "Properties for " + projectName;
+		new DefaultShell(projectProperties);
+		new DefaultTreeItem("Project Archives").select();
 		new DefaultLink("Configure Workspace Settings...").click();
 		new DefaultShell(IDELabel.Shell.PREFERENCES_FILTERED);
 		try {
 			new DefaultCLabel("Project Archives");
 			new PushButton(IDELabel.Button.CANCEL).click();
-			new WaitWhile(new ShellWithTextIsActive(IDELabel.Shell.PREFERENCES_FILTERED));
+			new WaitWhile(new ShellWithTextIsAvailable(IDELabel.Shell.PREFERENCES_FILTERED));
 			new DefaultShell("Properties for " + projectName);
 			new PushButton(IDELabel.Button.CANCEL).click();
-			new WaitWhile(new ShellWithTextIsActive("Properties for " + projectName));
+			new WaitWhile(new ShellWithTextIsAvailable("Properties for " + projectName));
 		}catch (Exception wnfe) {
 			fail("Archive global preferences page was not invoked");
 		}

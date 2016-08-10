@@ -10,13 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.archives.ui.bot.test;
 
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.swt.condition.TreeContainsItem;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.archives.reddeer.archives.ui.EditArchiveDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
-import org.jboss.tools.archives.ui.bot.test.condition.ArchiveIsInExplorer;
-import org.jboss.tools.archives.ui.bot.test.condition.ArchiveIsInView;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -26,67 +26,49 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
-@CleanWorkspace
 public class ModifyingArchiveTest extends ArchivesTestBase {
 
 	private static String project = "pr3";
-	private final String ARCHIVE_NAME_1 = 
-			project + "a.jar";
-	private final String ARCHIVE_NAME_2 = 
-			project + "b.jar";
-	private final String ARCHIVE_NAME_1_NEW = 
-			project + "a-new.jar";
-	private final String ARCHIVE_NAME_2_NEW = 
-			project + "b-new.jar";
+	private static final String ARCHIVE_NAME_1 = project + "a.jar";
+	private static final String ARCHIVE_NAME_2 = project + "b.jar";
+	private static final String ARCHIVE_NAME_1_NEW = project + "a-new.jar";
+	private static final String ARCHIVE_NAME_2_NEW = project + "b-new.jar";
 	
-	private final String PATH_SUFFIX = " [/" + project + "]"; 
-	private final String PATH_ARCHIVE_1 = 
-			ARCHIVE_NAME_1 + PATH_SUFFIX;
-	private final String PATH_ARCHIVE_2 = 
-			ARCHIVE_NAME_2 + PATH_SUFFIX;
-	private final String PATH_ARCHIVE_1_NEW = 
-			ARCHIVE_NAME_1_NEW + PATH_SUFFIX;
-	private final String PATH_ARCHIVE_2_NEW = 
-			ARCHIVE_NAME_2_NEW + PATH_SUFFIX;
+	private static final String PATH_SUFFIX = " [/" + project + "]"; 
+	private static final String PATH_ARCHIVE_1 = ARCHIVE_NAME_1 + PATH_SUFFIX;
+	private static final String PATH_ARCHIVE_2 = ARCHIVE_NAME_2 + PATH_SUFFIX;
+	private static final String PATH_ARCHIVE_1_NEW = ARCHIVE_NAME_1_NEW + PATH_SUFFIX;
+	private static final String PATH_ARCHIVE_2_NEW = ARCHIVE_NAME_2_NEW + PATH_SUFFIX;
 	
-	@Before
-	public void setup() {
-		importArchiveProjectWithoutRuntime(project);
+	@BeforeClass
+	public static void setup(){
+		createJavaProject(project);
+		addArchivesSupport(project);
+		createArchive(project, ARCHIVE_NAME_1, true);
+		createArchive(project, ARCHIVE_NAME_2, true);
 	}
 	
 	@Test
 	public void testModifyingArchiveWithView() {
 		
-		/* prepare view for testing */
 		view = viewForProject(project);
 		
-		/* modifying archive name with Project Archive view */
-		EditArchiveDialog dialog = view
-				.getProject()
-				.getArchive(PATH_ARCHIVE_1)
-				.editArchive();
+		EditArchiveDialog dialog = view.getProject(project).getArchive(PATH_ARCHIVE_1).editArchive();
 		editArchive(dialog, ARCHIVE_NAME_1_NEW);
 		
-		/* test archive was modified */
-		new WaitUntil(new ArchiveIsInView(PATH_ARCHIVE_1_NEW, view));
-		assertArchiveIsNotInView(view, PATH_ARCHIVE_1);
+		new WaitWhile(new TreeContainsItem(new DefaultTree(), project, PATH_ARCHIVE_1));
+		new WaitUntil(new TreeContainsItem(new DefaultTree(), project, PATH_ARCHIVE_1_NEW));
 	}
 	
 	@Test
 	public void testModifyingArchiveWithExplorer() {
-		
-		/* prepare explorer for testing */
 		ProjectArchivesExplorer explorer = new ProjectArchivesExplorer(project);
 		
-		/* modifying archive name with Project Archive explorer */
-		EditArchiveDialog dialog = explorer
-				.getArchive(PATH_ARCHIVE_2)
-				.editArchive();
+		EditArchiveDialog dialog = explorer.getArchive(PATH_ARCHIVE_2).editArchive();
 		editArchive(dialog, ARCHIVE_NAME_2_NEW);
-		
-		/* test archive was modified */
-		new WaitUntil(new ArchiveIsInExplorer(PATH_ARCHIVE_2_NEW, explorer));
-		assertArchiveIsNotInExplorer(explorer, PATH_ARCHIVE_2);
+	
+		new WaitWhile(new TreeContainsItem(new DefaultTree(), project, "Project Archives",PATH_ARCHIVE_2));
+		new WaitUntil(new TreeContainsItem(new DefaultTree(), project, "Project Archives",PATH_ARCHIVE_2_NEW));
 	}
 	
 	private void editArchive(EditArchiveDialog dialog, String newArchiveName) {
