@@ -2,6 +2,8 @@ package org.jboss.tools.cdi.bot.test.beansxml.validation.cdi11;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -27,6 +29,7 @@ public class BeansXMLValidationQuickFixTestCDI11 extends BeansXMLValidationQuick
 		new EditorResourceHelper().replaceInEditor("/>", "></beans>");
 		beansEditor.save();
 		beansEditor.close();
+		new WaitWhile(new JobIsRunning());
 	}
 
 }

@@ -9,17 +9,16 @@ import java.util.Map;
 
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.swt.condition.TableHasRows;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.OpenCDINamedBeanDialog;
+import org.jboss.tools.cdi.reddeer.condition.NamedDialogHasMatchingItems;
 import org.jboss.tools.cdi.reddeer.uiutils.EditorResourceHelper;
 import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.junit.Before;
@@ -54,6 +53,7 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 		
 		namedDialog = openSearchNamedDialog();
 		namedDialog.setNamedPrefix(beanName);
+		new WaitUntil(new NamedDialogHasMatchingItems(namedDialog, 1));
 		assertTrue(namedDialog.matchingItems().size() == 1);
 		namedDialog.ok();
 		assertTrue(new DefaultEditor().getTitle().equals(beanName + ".java"));
@@ -68,6 +68,7 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 		
 		namedDialog = openSearchNamedDialog();
 		namedDialog.setNamedPrefix(beanName);
+		new WaitUntil(new NamedDialogHasMatchingItems(namedDialog, 0));
 		assertTrue(namedDialog.matchingItems().size() == 0);
 		namedDialog.cancel();
 	}
@@ -82,6 +83,7 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 		
 		namedDialog = openSearchNamedDialog();
 		namedDialog.setNamedPrefix(namedParam);
+		new WaitUntil(new NamedDialogHasMatchingItems(namedDialog, 1));
 		assertEquals(1,namedDialog.matchingItems().size());
 		namedDialog.ok();
 		assertTrue(new DefaultEditor().getTitle().equals(beanName + ".java"));
@@ -100,6 +102,7 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 				
 		namedDialog = openSearchNamedDialog();
 		namedDialog.setNamedPrefix(namedParam);
+		new WaitUntil(new NamedDialogHasMatchingItems(namedDialog, 1));
 		assertEquals(1, namedDialog.matchingItems().size());
 		namedDialog.ok();
 		assertEquals(beanName + ".java", new DefaultEditor().getTitle());
@@ -109,8 +112,10 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 		
 		namedDialog = openSearchNamedDialog();
 		namedDialog.setNamedPrefix(namedParam);
+		new WaitUntil(new NamedDialogHasMatchingItems(namedDialog, 0));
 		assertEquals(0, namedDialog.matchingItems().size());
 		namedDialog.setNamedPrefix(changedNamedParam);
+		new WaitUntil(new NamedDialogHasMatchingItems(namedDialog, 1));
 		assertEquals(1, namedDialog.matchingItems().size());
 		namedDialog.ok();
 		assertEquals(beanName + ".java", new DefaultEditor().getTitle());
@@ -133,6 +138,7 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 		namedDialog = openSearchNamedDialog();
 		namedDialog.setNamedPrefix(namedParam);
 		List<String> matchingItems = namedDialog.matchingItems();
+		new WaitUntil(new NamedDialogHasMatchingItems(namedDialog, 2));
 		assertTrue(matchingItems.size() == 2);
 		for (String matchingItem : matchingItems) {
 			if (matchingItem.contains(beanName)) {
@@ -166,6 +172,7 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 		for (String prefix : prefixesWithCount.keySet()) {
 			namedDialog = openSearchNamedDialog();		
 			namedDialog.setNamedPrefix(prefix);
+			new WaitUntil(new NamedDialogHasMatchingItems(namedDialog, prefixesWithCount.get(prefix)));
 			assertTrue("Prefix "+prefix+" has " +namedDialog.matchingItems().size()+" matching items but expected is "+prefixesWithCount.get(prefix),
 					namedDialog.matchingItems().size() == prefixesWithCount.get(prefix));
 			namedDialog.cancel();			
@@ -184,6 +191,7 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 		editResourceUtil.replaceClassContentByResource(beanName+".java", readFile(BEAN_STEREOTYPE_PATH), false);
 		namedDialog = openSearchNamedDialog();
 		namedDialog.setNamedPrefix(beanName);
+		new WaitUntil(new NamedDialogHasMatchingItems(namedDialog, 1));
 		assertTrue(namedDialog.matchingItems().size() == 1);
 		namedDialog.ok();
 		assertTrue(new DefaultEditor().getTitle().equals(beanName + ".java"));
@@ -205,8 +213,10 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 		
 		namedDialog = openSearchNamedDialog();		
 		namedDialog.setNamedPrefix(beanName);
+		new WaitUntil(new NamedDialogHasMatchingItems(namedDialog, 0));
 		assertTrue(namedDialog.matchingItems().size() == 0);
 		namedDialog.setNamedPrefix(namedParam);
+		new WaitUntil(new NamedDialogHasMatchingItems(namedDialog, 1));
 		assertTrue(namedDialog.matchingItems().size() == 1);
 		namedDialog.ok();
 		assertTrue(new DefaultEditor().getTitle().equals(beanName + ".java"));
@@ -228,9 +238,10 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 		
 		namedDialog = openSearchNamedDialog();
 		namedDialog.setNamedPrefix(beanName);
-		new WaitWhile(new TableHasRows(new DefaultTable()), TimePeriod.NORMAL, false);
+		new WaitUntil(new NamedDialogHasMatchingItems(namedDialog, 0));
 		assertEquals(0,namedDialog.matchingItems().size());
 		namedDialog.setNamedPrefix(namedParam);
+		new WaitUntil(new NamedDialogHasMatchingItems(namedDialog, 1));
 		assertEquals(1,namedDialog.matchingItems().size());
 		namedDialog.ok();
 		assertTrue(new DefaultEditor().getTitle().equals(beanName + ".java"));
@@ -240,9 +251,10 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 		
 		namedDialog = openSearchNamedDialog();
 		namedDialog.setNamedPrefix(namedParam);
-		new WaitWhile(new TableHasRows(new DefaultTable()), TimePeriod.NORMAL, false);
+		new WaitUntil(new NamedDialogHasMatchingItems(namedDialog, 0));
 		assertEquals(0, namedDialog.matchingItems().size());
 		namedDialog.setNamedPrefix(changedNamedParam);
+		new WaitUntil(new NamedDialogHasMatchingItems(namedDialog, 1));
 		assertEquals(1, namedDialog.matchingItems().size());
 		namedDialog.ok();
 		assertTrue(new DefaultEditor().getTitle().equals(beanName + ".java"));
