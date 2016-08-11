@@ -278,7 +278,7 @@ public class EditorPartWrapper extends AbstractEditor{
 	
 	public void selectBeanDiscoveryMode(String mode){
 		selectBeanXmlType("beans.xml");
-		new DefaultCombo(new DefaultSection("Cdi Beans"),0).setSelection(mode);;
+		new DefaultCombo(new DefaultSection("Cdi Beans"),0).setSelection(mode);
 	}
 	
 	public String getBeanDiscoveryMode(){
