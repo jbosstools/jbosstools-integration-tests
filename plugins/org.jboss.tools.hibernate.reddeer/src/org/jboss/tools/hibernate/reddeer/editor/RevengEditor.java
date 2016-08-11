@@ -19,6 +19,10 @@ import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
  *
  */
 public class RevengEditor extends DefaultEditor {
+	
+	public RevengEditor() {
+		super("Hibernate Reverse Engineering Editor");
+	}
 
 	/**
 	 * Activates editor's Overview tab
