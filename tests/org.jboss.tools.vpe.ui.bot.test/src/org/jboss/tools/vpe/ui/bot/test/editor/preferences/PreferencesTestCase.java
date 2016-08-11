@@ -96,7 +96,7 @@ public abstract class PreferencesTestCase extends VPEEditorTestCase {
 			vpePreferencePage.toggleShowTextFormattingBar(false);
 		}
 		vpePreferencePage.setDefaultActiveEditorTab("Visual/Source");
-		vpePreferencePage.seVisualSourceEditorsSplitting("Vertical splitting with Source Editor on the top");
+		vpePreferencePage.setVisualSourceEditorsSplitting("Vertical splitting with Source Editor on the top");
 		if (preferenceDialog != null) {
 			preferenceDialog.ok();
 		}
