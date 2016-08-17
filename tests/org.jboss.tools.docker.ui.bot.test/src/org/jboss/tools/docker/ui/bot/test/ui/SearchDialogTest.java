@@ -39,6 +39,7 @@ public class SearchDialogTest extends AbstractDockerBotTest {
 	private String imageName = "busybox";
 	private String tag = "1.24.2";
 	private String expectedImageName = "busybox";
+	private String registryAddress = "https://index.docker.io";
 
 	@Before
 	public void before() {
@@ -48,7 +49,7 @@ public class SearchDialogTest extends AbstractDockerBotTest {
 
 	@Test
 	public void testSearchDialog() {
-		new DockerExplorer().openImageSearchDialog(getDockerServer(), "Docker", this.imageName);
+		new DockerExplorer().openImageSearchDialog(getDockerServer(), this.registryAddress, this.imageName);
 		SearchDockerImagePageOneWizard pageOne = new SearchDockerImagePageOneWizard();
 		pageOne.searchImage();
 		assertFalse("Search result is empty!", pageOne.getSearchResults().isEmpty());
@@ -61,7 +62,7 @@ public class SearchDialogTest extends AbstractDockerBotTest {
 		SearchDockerImagePageTwoWizard pageTwo = new SearchDockerImagePageTwoWizard();
 		assertFalse("Search tags are empty!", pageTwo.getTags().isEmpty());
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
-		assertTrue("Search result do not contains tag:" + tag + "!", pageTwo.tagsContains(tag));
+		assertTrue("Search results do not contains tag:" + tag + "!", pageTwo.tagsContains(tag));
 		pageTwo.selectTag(tag);
 		pageTwo.finish();
 		new DefaultShell("Pull Image");

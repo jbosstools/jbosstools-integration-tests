@@ -81,6 +81,8 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 			}
 		}
 
+		selectContainerInDockerExplorer(containerName);
+
 		// get values from Properties view
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
@@ -99,7 +101,27 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 		assertTrue("Command in table and in Properties do not match!", commandProp.startsWith(commandFromTable));
 		assertTrue("Ports in table and in Properties do not match!", portsProp.startsWith(portsFromTable));
 		assertTrue("Status in table and in Properties do not match!", statusProp.startsWith(statusFromTable));
+	}
 
+	@Test
+	public void testContainerTabSearch() {
+		pullImage(this.imageName);
+		DockerImagesTab imageTab = new DockerImagesTab();
+		imageTab.activate();
+		imageTab.refresh();
+		new WaitWhile(new JobIsRunning());
+		imageTab.runImage(this.imageName);
+		RunADockerImagePageOneWizard firstPage = new RunADockerImagePageOneWizard();
+		firstPage.setName(this.containerName);
+		firstPage.finish();
+		new WaitWhile(new JobIsRunning());
+		DockerContainersTab containerTab = new DockerContainersTab();
+		containerTab.activate();
+		containerTab.refresh();
+		containerTab.searchContainer("aaa");
+		assertTrue("Search result is not 0!", containerTab.getTableItems().size() == 0);
+		containerTab.searchContainer("");
+		assertTrue("Search result is 0!", containerTab.getTableItems().size() > 0);
 	}
 
 	@After

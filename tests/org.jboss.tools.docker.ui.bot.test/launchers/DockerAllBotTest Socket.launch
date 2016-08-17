@@ -31,13 +31,14 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.docker.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DunixSocket=unix:///var/run/docker.sock -Dusage_reporting_enabled=false"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DunixSocket=unix:///var/run/docker.sock -Dusage_reporting_enabled=false -DdockerHubUsername=${string_prompt:-DdockerHubUsername:} -DdockerHubEmail=${string_prompt:-DdockerHubEmail:} -DdockerHubPassword=${string_prompt:-DdockerHubPassword:}"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="com.jboss.devstudio.core.product"/>
 <stringAttribute key="rd.launch.property.rd.captureScreenshot" value="true"/>
 <stringAttribute key="rd.launch.property.rd.closeShells" value="true"/>
 <stringAttribute key="rd.launch.property.rd.closeWelcomeScreen" value="true"/>
 <stringAttribute key="rd.launch.property.rd.disableMavenIndex" value="true"/>
+<stringAttribute key="rd.launch.property.rd.logCollectorEnabled" value="true"/>
 <stringAttribute key="rd.launch.property.rd.logLevel" value="ALL"/>
 <stringAttribute key="rd.launch.property.rd.logMessageFilter" value="ALL"/>
 <stringAttribute key="rd.launch.property.rd.openAssociatedPerspective" value="never"/>

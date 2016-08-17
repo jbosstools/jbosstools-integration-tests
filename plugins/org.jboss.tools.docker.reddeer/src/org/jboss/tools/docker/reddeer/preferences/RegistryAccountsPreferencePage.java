@@ -24,7 +24,11 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  */
 
 public class RegistryAccountsPreferencePage extends PreferencePage {
-
+	
+	public static final String SERVER_ADDRESS = "Server Address:";
+	public static final String USERNAME = "Username:";
+	public static final String EMAIL = "Email:";
+	public static final String PASSWORD = "Password:";
 
 	public RegistryAccountsPreferencePage() {
 		super("Docker", "Registry Accounts");
@@ -32,10 +36,10 @@ public class RegistryAccountsPreferencePage extends PreferencePage {
 
 	public void addRegistry(String serverAddress, String email, String userName, String password) {
 		new PushButton("Add").click();
-		new LabeledText("Server Address").setText(serverAddress);
-		new LabeledText("Username").setText(userName);
-		new LabeledText("Email").setText(email);
-		new LabeledText("Password").setText(password);
+		new LabeledText(SERVER_ADDRESS).setText(serverAddress);
+		new LabeledText(USERNAME).setText(userName);
+		new LabeledText(EMAIL).setText(email);
+		new LabeledText(PASSWORD).setText(password);
 		new OkButton().click();
 	}
 
@@ -44,10 +48,10 @@ public class RegistryAccountsPreferencePage extends PreferencePage {
 		if (table.containsItem(serverAddress)) {
 			table.select(serverAddress);
 			new PushButton("Edit").click();
-			new LabeledText("Server Address").setText(serverAddress);
-			new LabeledText("Username").setText(userName);
-			new LabeledText("Email").setText(email);
-			new LabeledText("Password").setText(password);
+			new LabeledText(SERVER_ADDRESS).setText(serverAddress);
+			new LabeledText(USERNAME).setText(userName);
+			new LabeledText(EMAIL).setText(email);
+			new LabeledText(PASSWORD).setText(password);
 			new PushButton("OK").click();
 		}
 	}

@@ -20,7 +20,6 @@ import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageOneWizard;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageTwoWizard;
-import org.jboss.tools.docker.reddeer.ui.DockerContainersTab;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.reddeer.ui.DockerTerminal;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
@@ -36,7 +35,7 @@ import org.junit.Test;
 
 public class LinkContainersTest extends AbstractDockerBotTest {
 
-	private String imageName = "docker.io/mariadb";
+	private String imageName = "mariadb:latest";
 	private String containerNameDB = "test_run_mariadb";
 	private String containerNameClient = "test_connect_mariadb";
 
@@ -73,10 +72,7 @@ public class LinkContainersTest extends AbstractDockerBotTest {
 	}
 
 	public String getDBAddress() {
-		DockerContainersTab containerTab = new DockerContainersTab();
-		containerTab.activate();
-		containerTab.refresh();
-		containerTab.select(containerNameDB);
+		selectContainerInDockerExplorer(containerNameDB);
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
 		propertiesView.selectTab("Inspect");

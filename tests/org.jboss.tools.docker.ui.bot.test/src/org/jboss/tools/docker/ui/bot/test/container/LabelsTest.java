@@ -17,6 +17,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageOneWizard;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageTwoWizard;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
@@ -29,10 +30,9 @@ import org.junit.Test;
  *
  */
 
-public class PrivilegedModeTest extends AbstractDockerBotTest {
-
+public class LabelsTest extends AbstractDockerBotTest {
 	private String imageName = "debian:jessie";
-	private String containerName = "test_run_debian";
+	private String containerName = "test_run_debian_label";
 
 	@Before
 	public void before() {
@@ -41,7 +41,7 @@ public class PrivilegedModeTest extends AbstractDockerBotTest {
 	}
 
 	@Test
-	public void testPrivilegedMode() {
+	public void testLabels() {
 		pullImage(this.imageName);
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
@@ -53,20 +53,24 @@ public class PrivilegedModeTest extends AbstractDockerBotTest {
 		firstPage.setAllocatePseudoTTY();
 		firstPage.setKeepSTDINOpen();
 		firstPage.setGiveExtendedPrivileges();
-		firstPage.finish();
+		firstPage.next();
+		RunADockerImagePageTwoWizard secondPage = new RunADockerImagePageTwoWizard();
+		secondPage.addLabel("foo", "bar");
+		secondPage.finish();
 		new WaitWhile(new JobIsRunning());
 		selectContainerInDockerExplorer(containerName);
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
 		propertiesView.selectTab("Inspect");
-		String privilegedProp = propertiesView.getProperty("HostConfig", "Privileged").getPropertyValue();
-		assertTrue("Container is not running in privileged mode!", privilegedProp.equals("true"));
+		String labelProp = propertiesView.getProperty("Config", "Labels", "foo").getPropertyValue();
+		assertTrue("Container do not have label!", labelProp.equals("bar"));
 	}
 
 	@After
 	public void after() {
-		deleteContainer(this.containerName);
-		deleteImage("debian");
+		deleteContainer(containerName);
+		deleteImage(imageName);
+		deleteImage("busybox");
 		deleteConnection();
 	}
 

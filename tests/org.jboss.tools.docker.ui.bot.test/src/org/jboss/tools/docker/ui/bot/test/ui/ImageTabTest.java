@@ -64,6 +64,8 @@ public class ImageTabTest extends AbstractDockerBotTest {
 		}
 		idFromTable = idFromTable.replace("sha256:", "");
 
+		selectImageInDockerExplorer(imageName);
+
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
 		propertiesView.selectTab("Info");
@@ -76,7 +78,18 @@ public class ImageTabTest extends AbstractDockerBotTest {
 		assertTrue("RepoTags in table and in Properties do not match!", repoTagsProp.equals(repoTagsFromTable));
 		assertTrue("Created in table and in Properties do not match!", createdProp.equals(createdFromTable));
 		assertTrue("Size in table and in Properties do not match!", sizeProp.startsWith(sizeFromTable));
+	}
 
+	public void testImageTabSearch() {
+		pullImage(this.imageName);
+		DockerImagesTab imageTab = new DockerImagesTab();
+		imageTab.activate();
+		imageTab.refresh();
+		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		imageTab.searchImage("aaa");
+		assertTrue("Search result is not 0!", imageTab.getTableItems().size() == 0);
+		imageTab.searchImage("");
+		assertTrue("Search result is 0!", imageTab.getTableItems().size() > 0);
 	}
 
 	@After
