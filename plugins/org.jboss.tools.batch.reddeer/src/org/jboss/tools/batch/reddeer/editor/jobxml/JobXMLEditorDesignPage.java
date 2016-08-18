@@ -1,8 +1,15 @@
 package org.jboss.tools.batch.reddeer.editor.jobxml;
 
+import org.eclipse.swt.SWT;
+import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
+import org.jboss.reddeer.swt.api.Button;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
 
 /**
@@ -89,6 +96,29 @@ public class JobXMLEditorDesignPage {
 	public void setDecisionRef(String id, String ref){
 		selectNode(JOB, "Flow Elements", id);
 		new DefaultText(new DefaultSection(DECISION), 1).setText(ref);
+	}
+	
+	public void addProperty(String stepID, String artifact, String propertyName, Object value) {
+		selectNode(JOB, "Flow Elements", stepID, artifact);
+		new LabeledCheckBox("Properties").toggle(true);
+		DefaultSection section = new DefaultSection("Properties");
+		DefaultToolItem toolitem = new DefaultToolItem(section, new WithTooltipTextMatcher("Add Property"));
+		toolitem.click();
+		KeyboardFactory.getKeyboard().type(propertyName);
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.TAB);
+		KeyboardFactory.getKeyboard().type(value.toString());
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.CR);
+	}
+	
+	public void addExceptionClass(String stepID, String artifact, String sectionName, 
+			String exceptionType, String exceptionClass) {
+		selectNode(JOB, "Flow Elements", stepID, artifact);
+		DefaultSection section = new DefaultSection(sectionName);
+		new CheckBox(section, exceptionType).click();
+		DefaultToolItem toolitem = new DefaultToolItem(section, new WithTooltipTextMatcher("Add Class Element"));
+		toolitem.click();
+		KeyboardFactory.getKeyboard().type(exceptionClass);
+		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.CR);
 	}
 	
 	private void addFlowElement(String name, String id){
