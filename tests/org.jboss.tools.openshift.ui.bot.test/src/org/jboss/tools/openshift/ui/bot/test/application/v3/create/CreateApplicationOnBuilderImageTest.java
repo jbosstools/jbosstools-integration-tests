@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test.application.v3.create;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -22,9 +23,13 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ProjectExists;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.impl.button.BackButton;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
@@ -102,6 +107,40 @@ public class CreateApplicationOnBuilderImageTest {
 				+ " of services: " + services.size(), services.size() == 1);
 	}
 	
+    @Test
+    public void validateJBIDE22704() {
+        new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
+        
+        BuilderImageApplicationWizardHandlingTest.nextToBuildConfigurationWizardPage();
+        
+        applicationName = new LabeledText("Name: ").getText();
+        
+        assertNotNull(applicationName);
+        assertTrue(applicationName.length() > 0);
+        
+        new WaitUntil(new WidgetIsEnabled(new NextButton()));
+
+        /*
+         * switch to the Deployment page
+         */
+        new NextButton().click();
+        new WaitUntil(new WidgetIsEnabled(new BackButton()));
+        
+        int numberofEnvironmentVariables = new DefaultTable().rowCount();
+        assertTrue(numberofEnvironmentVariables > 0);
+        
+        /*
+         * switch to the Routing page
+         */
+        new NextButton().click();
+        new WaitUntil(new WidgetIsEnabled(new BackButton()));
+        
+        int numberOfServicePorts = new DefaultTable().rowCount();
+        assertTrue(numberOfServicePorts > 0);
+        
+        new CancelButton().click();
+    }
+
 	@After
 	public void tearDown() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
