@@ -3,12 +3,11 @@ package org.jboss.tools.arquillian.ui.bot.test.cruiserView;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
-
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.TreeContainsItem;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
@@ -88,21 +87,34 @@ public class BasicArquilliaCruiserTest {
 		log.step("Locate the project in the Arquillia Cruiser View");
 		ArquilliaCruiserView arquilliaCruiserView = new ArquilliaCruiserView();   
 		arquilliaCruiserView.open();
-		
+				
 		/* Verify that the persistence.xml file is present */
 		log.step("Verify that the persistence.xml file is present");
-		assertTrue ("presistence.xml file should be located in Arquillia View", findStringInTreeItemList (arquilliaCruiserView.getTree().getAllItems(), "persistence.xml"));
-	
+		new WaitUntil((new TreeContainsItem(arquilliaCruiserView.getTree(), 
+				"jboss-kitchensink", "src/test/java", "org.jboss.as.quickstarts.kitchensink.test", "MemberRegistrationTest.java", "createTestArchive(test.war)", 
+				"WEB-INF", "classes", "META-INF", "persistence.xml")), TimePeriod.LONG, true);
+		assertTrue ("presistence.xml file should be located in Arquillia View", new TreeContainsItem(arquilliaCruiserView.getTree(), 
+				"jboss-kitchensink", "src/test/java", "org.jboss.as.quickstarts.kitchensink.test", "MemberRegistrationTest.java", "createTestArchive(test.war)", 
+				"WEB-INF", "classes", "META-INF", "persistence.xml").test());
+
 		/* Remove the reference to persistence.xml from the MemberRegistrationTest.java file */
 		log.step("Remove the reference to persistence.xml from the MemberRegistrationTest.java file");
 		arquilliaCruiserView.getTreeItem("jboss-kitchensink", "src/test/java", "org.jboss.as.quickstarts.kitchensink.test", "MemberRegistrationTest.java").doubleClick();
 		editFile (STRING_1, STRING_2);
+		
+		System.out.println("Expected size = " + arquilliaCruiserView.getTree().getAllItems().size());
 				
 		/* And confirm that persistance.xml file is dynamically removed from the Arquillia Cruiser View */
 		log.step("Confirm that persistance.xml file is dynamically removed from the Arquillia Cruiser View");
+		
+		arquilliaCruiserView.close();
+		arquilliaCruiserView.open();
 		projectExplorer.getProject("jboss-kitchensink").select();
-		assertFalse ("presistence.xml file should not be located in Arquillia View", findStringInTreeItemList (arquilliaCruiserView.getTree().getAllItems(), "persistence.xml"));
-				
+		
+		assertFalse ("presistence.xml file should be located in Arquillia View", new TreeContainsItem(arquilliaCruiserView.getTree(), 
+				"jboss-kitchensink", "src/test/java", "org.jboss.as.quickstarts.kitchensink.test", "MemberRegistrationTest.java", "createTestArchive(test.war)", 
+				"WEB-INF", "classes", "META-INF", "persistence.xml").test());
+
 		/* Restore the reference to persistence.xml from the MemberRegistrationTest.java file */
 		log.step("Restore the reference to persistence.xml from the MemberRegistrationTest.java file");
 		arquilliaCruiserView.getTreeItem("jboss-kitchensink", "src/test/java", "org.jboss.as.quickstarts.kitchensink.test", "MemberRegistrationTest.java").doubleClick();
@@ -110,26 +122,13 @@ public class BasicArquilliaCruiserTest {
 		
 		/* And confirm that persistance.xml file is dynamically restored to the Arquillia Cruiser View */
 		log.step("Confirm that persistance.xml file is dynamically restored to the Arquillia Cruiser View");
-		projectExplorer.getProject("jboss-kitchensink").select();
-		assertTrue ("presistence.xml file should be located in Arquillia View", findStringInTreeItemList (arquilliaCruiserView.getTree().getAllItems(), "persistence.xml"));
-	}
-	
-	/**
-	 * Search for List of TreeItem objects by name/text
-	 * 
-	 * @param treeItems
-	 * @param searchString
-	 * @return True or false
-	 */
-	private boolean findStringInTreeItemList (List<TreeItem> treeItems, String searchString) {
-		boolean retValue = false;		
-		   for(TreeItem currentItem : treeItems) {
-	            if (currentItem.getText().equals(searchString)) {
-	            	retValue = true;
-	            	break;
-	            }
-	        }
-		return retValue;
+		
+		new WaitUntil((new TreeContainsItem(arquilliaCruiserView.getTree(), 
+				"jboss-kitchensink", "src/test/java", "org.jboss.as.quickstarts.kitchensink.test", "MemberRegistrationTest.java", "createTestArchive(test.war)", 
+				"WEB-INF", "classes", "META-INF", "persistence.xml")), TimePeriod.LONG, true);
+		assertTrue ("presistence.xml file should be located in Arquillia View", new TreeContainsItem(arquilliaCruiserView.getTree(), 
+				"jboss-kitchensink", "src/test/java", "org.jboss.as.quickstarts.kitchensink.test", "MemberRegistrationTest.java", "createTestArchive(test.war)", 
+				"WEB-INF", "classes", "META-INF", "persistence.xml").test());
 	}
 	
 	/**

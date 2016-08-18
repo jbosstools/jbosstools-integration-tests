@@ -8,6 +8,7 @@ import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.CLabelWithTextIsAvailable;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.WidgetIsFound;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
@@ -15,6 +16,8 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.core.lookup.ShellLookup;
+import org.jboss.reddeer.core.matcher.ClassMatcher;
+import org.jboss.reddeer.core.matcher.WithLabelMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -72,8 +75,13 @@ public class RunConfigurationsDialog {
 	public void createConfiguration(RunConfiguration configuration){
 		TreeItem t = new DefaultTreeItem(configuration.getCategory());
 		t.select();
+				
+		new ContextMenu("New").select();
 		
-		new ContextMenu("New").select();;
+		/* Added to make test more reliable - intermittent timing-related 
+		 * failures (https://issues.jboss.org/browse/JBIDE-22866) were being seen */
+		new WaitUntil(new WidgetIsFound<org.eclipse.swt.widgets.Text>(new ClassMatcher(org.eclipse.swt.widgets.Text.class), new WithLabelMatcher("Name:")));
+		
 		new LabeledText("Name:").setText(configuration.getName());
 	}
 	
