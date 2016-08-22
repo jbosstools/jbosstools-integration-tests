@@ -2,7 +2,6 @@ package org.jboss.tools.batch.reddeer.editor.jobxml;
 
 import org.eclipse.swt.SWT;
 import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
-import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;

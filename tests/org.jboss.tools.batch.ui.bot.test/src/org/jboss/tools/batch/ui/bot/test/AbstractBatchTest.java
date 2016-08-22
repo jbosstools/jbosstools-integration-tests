@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.batch.ui.bot.test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
@@ -20,7 +21,10 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardDialog;
+import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardPage;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -41,6 +45,8 @@ public abstract class AbstractBatchTest {
 	protected static final String JOB_FILES_FOLDER = "batch-jobs";
 	
 	protected static final String JOB_XML_FILE = "batch-test-job.xml";
+	
+	protected static final String JOB_ID = "batch-test";
 
 	protected static final String[] JOB_XML_FILE_FULL_PATH = new String[]{RESOURCES_FOLDER, META_INF_FOLDER, JOB_FILES_FOLDER, JOB_XML_FILE};
 
@@ -52,10 +58,65 @@ public abstract class AbstractBatchTest {
 	 */
 	protected abstract String getPackage();
 	
-	protected Project getProject(){
+	/**
+	 * Returns actual project object base on PROJECT_NAME constant
+	 * @return Project object of actual project
+	 */
+	protected static Project getProject(){
 		PackageExplorer explorer = new PackageExplorer();
 		explorer.open();
 		return explorer.getProject(PROJECT_NAME);
+	}
+	
+	/**
+	 * Method for test classes initialization, imports batch test project and creates
+	 * its job XML configuration file.
+	 * @param log class logger from which method was called
+	 */
+	protected static void initTestResources(Logger log) {
+		log.info("Import archive project " + PROJECT_NAME);
+		importProject();
+		log.info("Create base batch job XML configuration " + JOB_ID);
+		createJobXMLFile(JOB_ID);
+	}
+	
+	/**
+	 * Imports zip test project
+	 */
+	private static void importProject() {
+		ExternalProjectImportWizardDialog dialog = new ExternalProjectImportWizardDialog();
+		dialog.open();
+		
+		WizardProjectsImportPage page = new WizardProjectsImportPage();
+		page.setArchiveFile(Activator.getPathToFileWithinPlugin("projects/batch-test-project.zip"));
+		page.selectProjects(PROJECT_NAME);
+		
+		dialog.finish(TimePeriod.VERY_LONG);
+		getProject().select();
+	}
+	
+	/**
+	 * Removes project from Project Explorer
+	 * @param log class logger from which method was called
+	 */
+	protected static void removeProject(Logger log) {
+		log.info("Removing " + PROJECT_NAME);
+		getProject().delete(true);
+	}
+	
+	/**
+	 * Creates job XML in actual selected project
+	 * @param jobID id of the job XML file
+	 */
+	protected static void createJobXMLFile(String jobID) {
+		NewJobXMLFileWizardDialog dialog = new NewJobXMLFileWizardDialog();
+		dialog.open();
+		
+		NewJobXMLFileWizardPage page = new NewJobXMLFileWizardPage();
+		page.setFileName(JOB_XML_FILE);
+		page.setJobID(jobID);
+		
+		dialog.finish();
 	}
 
 	protected void assertNoProblems() {
@@ -66,7 +127,7 @@ public abstract class AbstractBatchTest {
 		List<Problem> problems = null;
 		try {
 			problems = problemsView.getProblems(ProblemType.ANY);
-			assertThat(problems.size(), is(0));
+			assertThat(getUniqueProblemsSize(problems), is(0));
 		} catch (AssertionError e){
 			String message = "Found unexpected problems\n";
 			for (Problem problem : problems){
@@ -87,10 +148,10 @@ public abstract class AbstractBatchTest {
 		List<Problem> problems = null;
 		try {
 			problems = problemsView.getProblems(ProblemType.ERROR);
-			assertThat(problems.size(), is(error));
+			assertThat(getUniqueProblemsSize(problems), is(error));
 			
 			problems = problemsView.getProblems(ProblemType.WARNING);
-			assertThat(problems.size(), is(warning));
+			assertThat(getUniqueProblemsSize(problems), is(warning));
 		} catch (AssertionError e){
 			String message = "Found unexpected problems\n";
 			for (Problem problem : problems){
@@ -98,5 +159,31 @@ public abstract class AbstractBatchTest {
 			}
 			throw new AssertionError(message, e);
 		}
+	}
+	
+	private int getUniqueProblemsSize(List<Problem> problems) {
+		List<Problem> uniqueProblems = new ArrayList<Problem>();
+		for (Problem problem : problems) {
+			boolean contains = false;
+			// hardcoded way how to find out that custom class object is in list
+			// TODO implement necessary methods into Reddeer's problem class (equals, hashcode)
+			for (Problem item : uniqueProblems) {
+				if (isSameProblem(problem, item)) {
+					contains = true;
+					break;
+				}
+			}
+			if (!contains) {
+				uniqueProblems.add(problem);
+			}
+		}
+		return uniqueProblems.size();
+	} 
+	
+	private boolean isSameProblem(Problem x, Problem y) {
+		return x.getType().equals(y.getType()) && 
+				x.getResource().equals(y.getResource()) && 
+				x.getDescription().equals(y.getDescription()) &&
+				x.getLocation().equals(y.getLocation());
 	}
 }

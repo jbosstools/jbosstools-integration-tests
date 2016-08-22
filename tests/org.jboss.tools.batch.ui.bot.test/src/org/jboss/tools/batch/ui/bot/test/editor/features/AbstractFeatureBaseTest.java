@@ -24,6 +24,8 @@ import org.jboss.tools.batch.reddeer.wizard.BatchArtifacts;
 import org.jboss.tools.batch.reddeer.wizard.NewBatchArtifactWizardDialog;
 import org.jboss.tools.batch.reddeer.wizard.NewBatchArtifactWizardPage;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignFlowElementsTestTemplate;
+import org.junit.After;
+import org.junit.Before;
 import org.jboss.reddeer.eclipse.ui.search.SearchResult;
 import org.jboss.reddeer.eclipse.ui.search.SearchView;
 /**
@@ -49,8 +51,26 @@ public abstract class AbstractFeatureBaseTest extends DesignFlowElementsTestTemp
 	
 	protected final static String PROPERTY_NAME = "testProperty";
 	
-	public String getFullFileName(String name, String type){
+	public String getFullFileName(String name, String type) {
 		return name + "." + type;
+	}
+	
+	@Before
+	@Override
+	public void setupEditor() {
+		if (!getProject().containsItem(JOB_XML_FILE_FULL_PATH)) {
+			getProject().select();
+			createJobXMLFile(JOB_ID); 
+		}
+		super.setupEditor();
+	}
+	
+	@After
+	@Override
+	public void closeEditor() {
+		if (getProject().containsItem(JOB_XML_FILE_FULL_PATH)) {
+			getProject().getProjectItem(JOB_XML_FILE_FULL_PATH).delete();
+		}
 	}
 	
 	/**
@@ -63,7 +83,7 @@ public abstract class AbstractFeatureBaseTest extends DesignFlowElementsTestTemp
 		boolean result = false;
 		ProjectItem project = getProject().getProjectItem(path);
 		if( project != null) {
-			project.activateWrappingView();
+			project.select();
 			new ContextMenu("References", "Project").select();
 			new WaitWhile(new JobIsRunning());
 			try {

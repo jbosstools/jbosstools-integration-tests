@@ -18,6 +18,7 @@ import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage
 import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.READER;
 import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.STEP;
 import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.WRITER;
+
 import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.BATCHLET;
 import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.CHECKPOINT;
 import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.CHUNK;

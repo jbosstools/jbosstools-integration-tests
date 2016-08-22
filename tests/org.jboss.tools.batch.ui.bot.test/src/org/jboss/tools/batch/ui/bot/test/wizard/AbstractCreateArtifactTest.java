@@ -25,12 +25,12 @@ public abstract class AbstractCreateArtifactTest extends AbstractBatchTest {
 	protected abstract BatchArtifacts getArtifact();
 
 	protected abstract void createArtifactHook(NewBatchArtifactWizardPage page);
-
+	
 	@Override
 	protected String getPackage() {
 		return "batch.test.wizard.artifact";
 	}
-	
+
 	@After
 	public void tearDown(){
 		try {
