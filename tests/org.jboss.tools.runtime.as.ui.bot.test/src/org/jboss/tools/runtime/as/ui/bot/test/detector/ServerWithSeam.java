@@ -39,7 +39,7 @@ public class ServerWithSeam extends RuntimeDetectionTestCase {
 	
 	@Test
 	public void seamFirst(){
-		deselectRuntime(DetectEAP52.SERVER_ID);
+		deselectRuntime(DetectEAP52.SERVER_NAME);
 		
 		assertSeamRuntimesNumber(1);
 		assertServerRuntimesNumber(0);
