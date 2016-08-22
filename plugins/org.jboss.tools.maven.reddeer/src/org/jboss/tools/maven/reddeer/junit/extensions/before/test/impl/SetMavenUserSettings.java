@@ -20,6 +20,7 @@ import org.junit.runners.model.TestClass;
 public class SetMavenUserSettings implements IBeforeTest {
 	
 	private static final Logger log = Logger.getLogger(SetMavenUserSettings.class);
+	private int priority = 100;
 	
 	@Override
 	public void runBeforeTestClass(String config, TestClass testClass) {
@@ -32,6 +33,11 @@ public class SetMavenUserSettings implements IBeforeTest {
 	@Override
 	public boolean hasToRun() {
 		return System.getProperty("maven.settings.path") != null;
+	}
+	
+	@Override
+	public long getPriority() {
+		return priority;
 	}
 	
 	private String getMavenSettingsPath(){
