@@ -28,7 +28,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.openshift.reddeer.condition.EditorWithTitleIsAvailable;
-import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.perspective.JBossPerspective;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
@@ -83,7 +83,7 @@ public class GithubWebhoookTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		new WaitUntil(new ResourceExists(Resource.BUILD), TimePeriod.VERY_LONG);
+		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD), TimePeriod.VERY_LONG);
 		
 		explorer.getOpenShift3Connection().getProject().getOpenShiftResources(Resource.BUILD).get(0).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.DELETE_RESOURCE).select();
@@ -93,7 +93,7 @@ public class GithubWebhoookTest {
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.DELETE_RESOURCE));
 		
-		new WaitWhile(new ResourceExists(Resource.BUILD), TimePeriod.VERY_LONG);
+		new WaitWhile(new OpenShiftResourceExists(Resource.BUILD), TimePeriod.VERY_LONG);
 		
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
@@ -104,7 +104,7 @@ public class GithubWebhoookTest {
 		setWebPageContent();
 		commitAndPush();
 		
-		new WaitUntil(new ResourceExists(Resource.BUILD, "eap-app-2"), TimePeriod.VERY_LONG);
+		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-2"), TimePeriod.VERY_LONG);
 	}
 	
 	private void setWebPageContent() {

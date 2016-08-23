@@ -40,6 +40,10 @@ public class OpenShiftProject extends AbstractOpenShiftExplorerItem {
 		projectName = treeViewerHandler.getNonStyledText(item);
 	}
 	
+	public String getName() {
+		return projectName;
+	}
+
 	/**
 	 * Gets an OpenShift service with specified name.
 	 * 

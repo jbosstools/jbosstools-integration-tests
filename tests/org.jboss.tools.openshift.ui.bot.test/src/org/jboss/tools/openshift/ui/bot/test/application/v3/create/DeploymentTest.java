@@ -19,7 +19,7 @@ import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
 import org.jboss.tools.openshift.reddeer.condition.BrowserContainsText;
-import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
@@ -32,10 +32,10 @@ public class DeploymentTest extends AbstractCreateApplicationTest {
 	public void testDeploymentOfApplicationCreatedFromTemplate() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		
-		new WaitUntil(new ResourceExists(Resource.BUILD, "eap-app-1"), TimePeriod.NORMAL, false);
+		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1"), TimePeriod.NORMAL, false);
 		
 		try {
-			new WaitUntil(new ResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE), 
+			new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE), 
 					TimePeriod.getCustom(360), true, TimePeriod.getCustom(7));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("There should be a successful build of an application, but there is not.");

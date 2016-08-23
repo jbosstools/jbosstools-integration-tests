@@ -19,7 +19,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
-import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
@@ -32,7 +32,7 @@ public class DeleteResourceTest extends AbstractCreateApplicationTest {
 
 	@BeforeClass
 	public static void waitForApplication() {
-		new WaitUntil(new ResourceExists(Resource.POD, "eap-app-1-build", ResourceState.SUCCEEDED), 
+		new WaitUntil(new OpenShiftResourceExists(Resource.POD, "eap-app-1-build", ResourceState.SUCCEEDED), 
 				TimePeriod.getCustom(600), true, TimePeriod.getCustom(8));
 		
 		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.VERY_LONG, true,
@@ -47,7 +47,7 @@ public class DeleteResourceTest extends AbstractCreateApplicationTest {
 		applicationPod.delete();
 		
 		try {
-			new WaitWhile(new ResourceExists(Resource.POD, podName), TimePeriod.getCustom(15));
+			new WaitWhile(new OpenShiftResourceExists(Resource.POD, podName), TimePeriod.getCustom(15));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Application pod should be deleted at this point, but it it still present.");
 		}
@@ -103,7 +103,7 @@ public class DeleteResourceTest extends AbstractCreateApplicationTest {
 		rsrc.delete();
 		
 		try {
-			new WaitWhile(new ResourceExists(resource, resourceName), TimePeriod.getCustom(15));
+			new WaitWhile(new OpenShiftResourceExists(resource, resourceName), TimePeriod.getCustom(15));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Route " + resource + " should be deleted at this point but it is still present.");
 		}

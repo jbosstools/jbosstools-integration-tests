@@ -21,7 +21,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
-import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
@@ -36,10 +36,10 @@ public class TriggerBuildTest extends AbstractCreateApplicationTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.reopen();
 		
-		new WaitUntil(new ResourceExists(Resource.BUILD_CONFIG), 
+		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD_CONFIG), 
 				TimePeriod.getCustom(120), true, TimePeriod.getCustom(7));
 		
-		new WaitUntil(new ResourceExists(Resource.BUILD, "eap-app-1"), 
+		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1"), 
 				TimePeriod.LONG, true, TimePeriod.getCustom(7));
 		
 		List<OpenShiftResource> builds = explorer.getOpenShift3Connection().getProject().
@@ -62,7 +62,7 @@ public class TriggerBuildTest extends AbstractCreateApplicationTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.reopen();
 		
-		new WaitUntil(new ResourceExists(Resource.BUILD), 
+		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD), 
 					TimePeriod.getCustom(240), true, TimePeriod.getCustom(7));
 		
 		List<OpenShiftResource> builds = explorer.getOpenShift3Connection().getProject().

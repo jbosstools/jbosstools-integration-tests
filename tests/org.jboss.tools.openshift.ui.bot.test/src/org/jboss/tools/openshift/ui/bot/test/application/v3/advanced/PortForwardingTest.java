@@ -27,7 +27,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
 import org.jboss.tools.openshift.reddeer.condition.ApplicationPodIsRunning;
-import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement.OCBinary;
@@ -46,7 +46,7 @@ public class PortForwardingTest extends AbstractCreateApplicationTest {
 	public static void setUpOCBinaryAndWaitForApplication() {
 		TestUtils.setUpOcBinary();
 		
-		new WaitUntil(new ResourceExists(Resource.POD, "eap-app-1-build",
+		new WaitUntil(new OpenShiftResourceExists(Resource.POD, "eap-app-1-build",
 				ResourceState.SUCCEEDED), TimePeriod.getCustom(600),
 				true, TimePeriod.getCustom(7));
 		

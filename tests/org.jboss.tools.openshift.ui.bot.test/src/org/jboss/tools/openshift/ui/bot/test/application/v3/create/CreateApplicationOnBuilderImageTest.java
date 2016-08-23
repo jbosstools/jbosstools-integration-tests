@@ -32,7 +32,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftProjectExists;
-import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
@@ -92,7 +92,7 @@ public class CreateApplicationOnBuilderImageTest {
 		project.refresh();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(120));
-		new WaitUntil(new ResourceExists(Resource.BUILD_CONFIG), TimePeriod.LONG, false);
+		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD_CONFIG), TimePeriod.LONG, false);
 		
 		List<OpenShiftResource> buildConfig = project.getOpenShiftResources(Resource.BUILD_CONFIG);
 		assertTrue("There should be precisely 1 build config for created application, but there is following amount"

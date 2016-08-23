@@ -16,6 +16,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftProjectExists;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement.OCBinary;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
@@ -25,6 +26,7 @@ import org.jboss.tools.openshift.reddeer.wizard.v3.TemplatesCreator;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
+@OCBinary
 public class AbstractCreateApplicationTest {
 
 	public static String gitFolder = "jboss-eap-quickstarts";

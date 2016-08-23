@@ -26,7 +26,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
 import org.jboss.tools.openshift.reddeer.condition.ApplicationPodIsRunning;
 import org.jboss.tools.openshift.reddeer.condition.ConsoleHasText;
-import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement.OCBinary;
@@ -43,7 +43,7 @@ public class LogsTest extends AbstractCreateApplicationTest {
 	
 	@BeforeClass
 	public static void waitForApplication() {
-		new WaitUntil(new ResourceExists(Resource.POD, "eap-app-1-build", ResourceState.SUCCEEDED), 
+		new WaitUntil(new OpenShiftResourceExists(Resource.POD, "eap-app-1-build", ResourceState.SUCCEEDED), 
 				TimePeriod.getCustom(600), true, TimePeriod.getCustom(8));
 		
 		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.VERY_LONG, true,
@@ -80,7 +80,7 @@ public class LogsTest extends AbstractCreateApplicationTest {
 	public void testPodLogOfBuildPod() {
 		TestUtils.setUpOcBinary();
 		
-		new WaitUntil(new ResourceExists(Resource.BUILD, "eap-app-1"), 
+		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1"), 
 				TimePeriod.getCustom(600), true, TimePeriod.getCustom(8));
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		

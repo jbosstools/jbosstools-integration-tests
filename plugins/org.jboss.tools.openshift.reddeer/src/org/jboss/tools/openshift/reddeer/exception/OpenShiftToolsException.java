@@ -25,6 +25,10 @@ public class OpenShiftToolsException extends RuntimeException {
 		super();
 	}
 
+	public OpenShiftToolsException(Throwable t) {
+		super(t);
+	}
+
 	public OpenShiftToolsException(String msg) {
 		super(msg);
 	}

@@ -16,6 +16,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
+import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.BackButton;
@@ -35,14 +36,14 @@ import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
  * 
  * @author mlabuda@redhat.com
  */
-public abstract class NewOpenShiftApplicationWizard {
+public abstract class AbstractOpenShiftApplicationWizard {
 	
 	protected TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 	
 	protected String server;
 	protected String username;
 	
-	public NewOpenShiftApplicationWizard(String server, String username) {
+	public AbstractOpenShiftApplicationWizard(String server, String username) {
 		this.server = server;
 		this.username = username;
 	}
@@ -64,12 +65,7 @@ public abstract class NewOpenShiftApplicationWizard {
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		
-		for (String comboItem: new DefaultCombo(0).getItems()) {
-			if (comboItem.contains(username) && comboItem.contains(server)) {
-				new DefaultCombo(0).setSelection(comboItem);
-				break;
-			}
-		}
+		selectConnection(username, server, new DefaultCombo(0));
 		
 		new NextButton().click();
 		
@@ -77,6 +73,16 @@ public abstract class NewOpenShiftApplicationWizard {
 		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
+	}
+
+	private void selectConnection(String username, String server, Combo connectionCombo) {
+		for (String comboItem: connectionCombo.getItems()) {
+			if (comboItem.contains(username) 
+					&& (server == null || comboItem.contains(server))) {
+				connectionCombo.setSelection(comboItem);
+				break;
+			}
+		}
 	}
 	
 	/**
@@ -91,12 +97,7 @@ public abstract class NewOpenShiftApplicationWizard {
 				TimePeriod.LONG);
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		
-		for (String comboItem: new DefaultCombo(0).getItems()) {
-			if (comboItem.contains(username)) {
-				new DefaultCombo(0).setSelection(comboItem);
-				break;
-			}
-		}
+		selectConnection(username, null, new DefaultCombo());
 		
 		new NextButton().click();
 		
@@ -105,7 +106,16 @@ public abstract class NewOpenShiftApplicationWizard {
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
 	}
-	
+
+	protected void selectComboItem(String itemSubstring, DefaultCombo projectCombo) {
+		for (String comboItem: projectCombo.getItems()) {
+			if (comboItem.contains(itemSubstring)) {
+				projectCombo.setSelection(comboItem);
+				break;
+			}
+		}
+	}
+
 	/**
 	 * Waits and clicks Back button.
 	 */

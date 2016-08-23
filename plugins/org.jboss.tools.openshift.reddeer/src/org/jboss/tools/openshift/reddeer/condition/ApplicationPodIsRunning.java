@@ -55,6 +55,9 @@ public class ApplicationPodIsRunning extends AbstractWaitCondition {
 			return false;
 		}
 		
+		// TODO: this FLAWED: it assumes that all pods that it finds within a
+		// project are the pods for the application that a test wants to wait
+		// for
 		for (OpenShiftResource resource: pods) {
 			if (!resource.getName().contains("build") && 
 					!resource.getName().contains("deploy")) {

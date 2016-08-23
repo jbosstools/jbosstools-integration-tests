@@ -44,7 +44,7 @@ import org.jboss.reddeer.workbench.api.View;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.openshift.reddeer.condition.BrowserContainsText;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftProjectExists;
-import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
@@ -132,7 +132,7 @@ public class DeployDockerImageTest {
 	 */
 	private void verifyDeployedHelloWorldDockerImage() {
 		try {
-			new WaitUntil(new ResourceExists(Resource.POD, new StringContains("hello-openshift"),
+			new WaitUntil(new OpenShiftResourceExists(Resource.POD, new StringContains("hello-openshift"),
 				ResourceState.RUNNING), TimePeriod.getCustom(240));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("There should be a running application pod for a deployed docker image, "
