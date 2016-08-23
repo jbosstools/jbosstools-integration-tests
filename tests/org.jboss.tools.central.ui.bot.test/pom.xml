@@ -14,12 +14,13 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<jbosstools.test.wildfly.home>${requirementsDirectory}/wildfly-8.0.0.Final</jbosstools.test.wildfly.home>
+		<jbosstools.test.wildfly.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.wildfly.home>
 		<wildflySystemProperties></wildflySystemProperties>
 		<eapSystemProperties></eapSystemProperties>
 		<jbosstools.test.jboss-eap-6.2.home>${requirementsDirectory}/jboss-eap-6.2</jbosstools.test.jboss-eap-6.2.home>
 		<jbosstools.test.jboss-eap-6.3.home>${requirementsDirectory}/jboss-eap-6.3</jbosstools.test.jboss-eap-6.3.home>
-		<systemProperties>${integrationTestsSystemProperties} ${wildflySystemProperties} ${eapSystemProperties} -Dusage_reporting_enabled=false -Drd.config=${project.build.directory}/classes/server_properties -Dmaven.config.file=${project.build.directory}/classes/settings.xml</systemProperties>
+		<rd.config>${project.build.directory}/classes/server_properties</rd.config>
+		<systemProperties>${integrationTestsSystemProperties} ${wildflySystemProperties} ${eapSystemProperties} -Dusage_reporting_enabled=false -Drd.config=${rd.config} -Dmaven.config.file=${project.build.directory}/classes/settings.xml</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 		<test.class>org.jboss.tools.central.test.ui.reddeer.AllTestsSuite</test.class>
 	</properties>
@@ -37,17 +38,43 @@
 						<artifactId>download-maven-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>install-wildfly-8</id>
+								<id>install-wildfly-10</id>
 								<phase>pre-integration-test</phase>
 								<goals>
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>http://download.jboss.org/wildfly/8.0.0.Final/wildfly-8.0.0.Final.zip</url>
+									<url>http://download.jboss.org/wildfly/10.0.0.Final/wildfly-10.0.0.Final.zip</url>
 									<unpack>true</unpack>
 								</configuration>
 							</execution>
 						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>pr-check</id>
+			<properties>
+				<test.class>org.jboss.tools.central.test.ui.reddeer.SmokeSuite</test.class>
+				<rd.config>${project.build.directory}/classes/server_properties/wildfly10.xml</rd.config>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<configuration>
+							<dependency-resolution>
+								<extraRequirements>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.central.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+								</extraRequirements>
+							</dependency-resolution>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>

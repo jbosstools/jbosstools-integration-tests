@@ -6,9 +6,9 @@
 	xsi:schemaLocation="http://www.jboss.org/NS/Req http://www.jboss.org/schema/reddeer/v1/RedDeerSchema.xsd http://www.jboss.org/NS/ServerReq http://www.jboss.org/schema/reddeer/v1/JBossServerRequirements.xsd">
 
 	<requirements>
-		<server:jboss-server-requirement name="Wildfly-8">
+		<server:jboss-server-requirement name="Wildfly-10">
 			<server:type>
-				<server:familyWildFly version="8.x"></server:familyWildFly>
+				<server:familyWildFly version="10.x"></server:familyWildFly>
 			</server:type>
 			<server:runtime>${jbosstools.test.wildfly.home}</server:runtime>
 		</server:jboss-server-requirement>
