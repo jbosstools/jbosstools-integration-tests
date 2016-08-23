@@ -54,5 +54,9 @@ public class SetMavenUserSettings implements IBeforeTest {
 		} 
 		preferenceDialog.ok();
 	}
+	
+	public long getPriority() {
+		return 0;
+	}
 
 }
