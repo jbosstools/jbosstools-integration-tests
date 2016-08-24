@@ -6,17 +6,10 @@ Bundle-Version: 4.4.1.qualifier
 Bundle-Activator: org.jboss.tools.hibernate.reddeer.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.jboss.reddeer.eclipse,
- org.jboss.reddeer.swt,
- org.jboss.reddeer.workbench,
  org.hamcrest.core,
- org.jboss.reddeer.jface,
  org.junit,
- org.jboss.reddeer.uiforms,
- org.jboss.reddeer.core,
- org.jboss.reddeer.requirements,
  org.eclipse.core.resources,
- org.jboss.reddeer.common,
+ org.jboss.reddeer.go;bundle-version="1.1.0",
  org.jboss.tools.maven.reddeer,
  org.jboss.tools.common.reddeer
 Bundle-ActivationPolicy: lazy

@@ -3,6 +3,7 @@ package org.jboss.tools.hibernate.ui.bot.test;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.hibernate.reddeer.test.AntFileExportTest;
 import org.jboss.tools.hibernate.reddeer.test.CodeGenerationConfigurationTest;
+import org.jboss.tools.hibernate.reddeer.test.CodeGenerationKeyWordsTest;
 import org.jboss.tools.hibernate.reddeer.test.ConnectionProfileTest;
 import org.jboss.tools.hibernate.reddeer.test.ConsoleConfigurationFileTest;
 import org.jboss.tools.hibernate.reddeer.test.ConsoleConfigurationTest;
@@ -33,6 +34,7 @@ import org.junit.runners.Suite;
 
 	AntFileExportTest.class, //35
 	CodeGenerationConfigurationTest.class, //650s //400
+	CodeGenerationKeyWordsTest.class,
 	ConnectionProfileTest.class, //6
 	ConsoleConfigurationFileTest.class, //200s
 	ConsoleConfigurationTest.class, //60
@@ -56,7 +58,6 @@ import org.junit.runners.Suite;
 	PersistenceXMLFileTest.class, //25
 	RevengFileTest.class, //15
 	TablesFromJPAEntitiesGeneration.class	 //900s //440
-
 	
 
 })

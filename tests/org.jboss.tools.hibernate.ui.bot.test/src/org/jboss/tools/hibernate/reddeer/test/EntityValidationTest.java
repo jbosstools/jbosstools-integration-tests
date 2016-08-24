@@ -89,7 +89,6 @@ public class EntityValidationTest extends HibernateRedDeerTest {
 		pv.activate();
 		problems = pv.getProblems(ProblemType.ERROR, new ProblemsDescriptionMatcher(expectedProblem));
 		assertTrue(expectedProblem + " Error is expected, known issue(s):JBIDE-19526", problems.size() == 1);
-		assertEquals(1, pv.getProblems(ProblemType.ERROR,null));
 	}
 	
 	private void buildProject(){
