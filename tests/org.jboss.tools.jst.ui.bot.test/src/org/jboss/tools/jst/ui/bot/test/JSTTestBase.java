@@ -16,25 +16,44 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.wst.jsdt.debug.core.model.JavaScriptDebugModel;
+import org.hamcrest.Matcher;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
+import org.jboss.reddeer.eclipse.core.resources.ExplorerItem;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.eclipse.wst.jsdt.ui.wizards.JavaProjectWizardDialog;
 import org.jboss.reddeer.eclipse.wst.jsdt.ui.wizards.JavaProjectWizardFirstPage;
 import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.api.Tree;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.jst.reddeer.bower.ui.BowerInitDialog;
+import org.jboss.tools.jst.reddeer.common.TreeContainsItem;
 import org.jboss.tools.jst.reddeer.npm.ui.NpmInitDialog;
 import org.jboss.tools.jst.reddeer.tern.ui.TernModulesPropertyPage;
 import org.jboss.tools.jst.reddeer.wst.jsdt.ui.wizard.NewJSFileWizardDialog;
@@ -42,7 +61,7 @@ import org.jboss.tools.jst.reddeer.wst.jsdt.ui.wizard.NewJSFileWizardPage;
 import org.junit.runner.RunWith;
 
 /**
- * TestBase Class for Tern tests
+ * TestBase Class for JST tests
  * 
  * @author Pavol Srna
  */
@@ -69,6 +88,20 @@ public class JSTTestBase {
 
 	protected void cleanEditor() {
 		cleanEditor(JS_FILE);
+	}
+
+	protected static void importExistingProject(String path) {
+
+		ExternalProjectImportWizardDialog importDialog = new ExternalProjectImportWizardDialog();
+		importDialog.open();
+		WizardProjectsImportPage importPage = new WizardProjectsImportPage();
+		try {
+			importPage.setRootDirectory((new File(path).getCanonicalPath()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		importPage.copyProjectsIntoWorkspace(true);
+		importDialog.finish();
 	}
 
 	protected void cleanEditor(String name) {
@@ -132,7 +165,7 @@ public class JSTTestBase {
 		npmInit(PROJECT_NAME);
 	}
 
-	protected void npmInit(String projectName) {
+	protected static void npmInit(String projectName) {
 		NpmInitDialog dialog = new NpmInitDialog();
 		dialog.open();
 		new LabeledText("Base directory:").setText(BASE_DIRECTORY);
@@ -140,16 +173,16 @@ public class JSTTestBase {
 		assertPackageJsonExists();
 	}
 
-	protected void assertPackageJsonExists() {
+	protected static void assertPackageJsonExists() {
 		File packageJson = new File(BASE_DIRECTORY + "/package.json");
 		assertTrue("package.json file does not exist", packageJson.exists());
 	}
 
-	protected void bowerInit() {
+	protected static void bowerInit() {
 		bowerInit(PROJECT_NAME);
 	}
 
-	protected void bowerInit(String projectName) {
+	protected static void bowerInit(String projectName) {
 		BowerInitDialog dialog = new BowerInitDialog();
 		dialog.open();
 		new LabeledText("Base directory:").setText(BASE_DIRECTORY);
@@ -157,14 +190,101 @@ public class JSTTestBase {
 		assertBowerJsonExists();
 	}
 
-	protected void assertBowerJsonExists() {
+	protected static void npmIntall(String projectName) {
+		npmInstall(projectName, null);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected ContextMenu runAsNodeJSAppMenu() {
+		ContextMenu menu = new ContextMenu(new WithTextMatcher("Run As"),
+				new RegexMatcher("(\\d+)( Node.js Application)"));
+		return menu;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected ContextMenu debugAsNodeJSAppMenu(ExplorerItem item) {
+		item.select();
+		ContextMenu menu = new ContextMenu(new WithTextMatcher("Debug As"),
+				new RegexMatcher("(\\d+)( Node.js Application)"));
+		return menu;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected static void npmInstall(String projectName, String... dir) {
+		new ProjectExplorer().getProject(projectName).select();
+		if (dir != null) {
+			new ProjectExplorer().getProject(projectName).getProjectItem(dir).select();
+		}
+		new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( npm Install)")).select();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
+
+	protected static void assertBowerJsonExists() {
 		File bowerJson = new File(BASE_DIRECTORY + "/bower.json");
 		assertTrue("bower.json file does not exist", bowerJson.exists());
 	}
 
-	protected void bowerUpdate(String projectName) {
+	@SuppressWarnings("unchecked")
+	protected static void bowerUpdate(String projectName) {
 		new ProjectExplorer().getProject(projectName).select();
 		new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Bower Update)")).select();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
+
+	protected static void bowerInstall(String projectName) {
+		bowerInstall(projectName, null);
+	}
+
+	@SuppressWarnings("unchecked")
+	protected static void bowerInstall(String projectName, String... dir) {
+		new ProjectExplorer().getProject(projectName).select();
+		if (dir != null) {
+			new ProjectExplorer().getProject(projectName).getProjectItem(dir).select();
+		}
+		new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Bower Install)")).select();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
+
+	protected void setLineBreakpoint(TextEditor editor, int lineNumber) throws CoreException {
+		editor.activate();
+		IResource resource = (IResource) editor.getEditorPart().getEditorInput().getAdapter(IResource.class);
+		JavaScriptDebugModel.createLineBreakpoint(resource, lineNumber, -1, -1, new HashMap<String, Object>(), true);
+	}
+
+	protected void doubleClickTreeItem(Tree tree, Matcher matcher) {
+		List<TreeItem> items = tree.getAllItems();
+		for (TreeItem i : items) {
+			if (matcher.matches(i.getText())) {
+				i.doubleClick();
+			}
+		}
+	}
+
+	protected void resume(Tree tree, Matcher matcher){
+		List<TreeItem> items = tree.getAllItems();
+		for (TreeItem i : items) {
+			if (matcher.matches(i.getText())) {
+				i.select();
+				new ContextMenu("Resume").select();
+			}
+		}
 	}
 	
+	protected TreeItem getVariable(String name) {
+
+		WorkbenchView variables = new WorkbenchView("Variables");
+		variables.activate();
+		DefaultTree variablesTree = new DefaultTree();
+		new WaitUntil(new TreeContainsItem(variablesTree, new WithTextMatcher(name), false));
+
+		List<TreeItem> vars = variablesTree.getItems();
+
+		TreeItem var = null;
+		for (TreeItem i : vars) {
+			if (i.getText().equals(name)) {
+				var = i;
+			}
+		}
+		return var;
+	}
 }
