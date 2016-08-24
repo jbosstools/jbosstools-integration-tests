@@ -10,6 +10,10 @@
 	<groupId>org.jboss.tools.jst.tests</groupId>
 	<artifactId>org.jboss.tools.jst.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
+	<properties>
+		<suiteClass>org.jboss.tools.jst.ui.bot.test.AllJSTTests</suiteClass>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -17,7 +21,7 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<testSuite>org.jboss.tools.jst.ui.bot.test</testSuite>
-					<testClass>org.jboss.tools.jst.ui.bot.test.AllJSTTests</testClass>
+					<testClass>${suiteClass}</testClass>
 					<systemProperties>
 						<org.osgi.framework.bundle.parent>ext</org.osgi.framework.bundle.parent>
 					</systemProperties>
