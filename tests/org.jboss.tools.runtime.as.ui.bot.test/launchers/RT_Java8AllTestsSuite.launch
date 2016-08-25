@@ -32,7 +32,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -pluginCustomization ${project_loc:/org.jboss.tools.runtime.as.ui.bot.test}/../pluginCustomization.ini"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.runtime.as.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx1024m -Dusage_reporting_enabled=false -Dreddeer.config=${project_loc:/org.jboss.tools.runtime.as.ui.bot.test}/resources/generated_resources/java8.xml"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx1024m -Dusage_reporting_enabled=false -Drd.config=${project_loc:/org.jboss.tools.runtime.as.ui.bot.test}/resources/generated_resources/java8.xml"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="org.eclipse.platform.ide"/>
 <booleanAttribute key="show_selected_only" value="false"/>
