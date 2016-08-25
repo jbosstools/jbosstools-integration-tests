@@ -72,9 +72,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	DynamicWebProjectWithCDITestCDI11.class,
 	EjbProjectWithCDITestCDI11.class,
 	UtilityProjectWithCDITestCDI11.class,
-
-	
-	
 	BeansXMLUITestCDI11.class,
 	BeansXMLDiscoveryModesTestCDI11.class,
 	ExcludeBeanTestCDI11.class,

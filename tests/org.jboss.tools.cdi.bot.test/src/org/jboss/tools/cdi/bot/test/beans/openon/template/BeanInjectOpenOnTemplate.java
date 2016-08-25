@@ -17,6 +17,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
+import org.jboss.tools.cdi.reddeer.cdi.text.ext.hyperlink.xpl.HierarchyInformationControl;
 import org.junit.Test;
 
 public class BeanInjectOpenOnTemplate extends CDITestBase{
@@ -115,8 +116,11 @@ public class BeanInjectOpenOnTemplate extends CDITestBase{
 		List<String> beans =  beanInjections.get(injectionPoint);
 		//no need to test with only one assignable bean, was tested previously
 		if(beans.size() > 1){
-			List<String> proposals = openOnHelper.getProposals("MainBean", injectionPoint, 
+			openOnHelper.selectProposal("MainBean", injectionPoint, 
 					"Show All Assignable Beans...");
+			HierarchyInformationControl hc = new HierarchyInformationControl(HierarchyInformationControl.EVENTS_LABEL);
+			List<String> proposals = hc.getProposals();
+			hc.close();
 			for(String proposal: proposals){
 				openOnHelper.selectProposal("MainBean", injectionPoint, 
 						"Show All Assignable Beans...");

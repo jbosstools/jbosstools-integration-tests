@@ -11,17 +11,9 @@
 
 package org.jboss.tools.cdi.reddeer.uiutils;
 
-import java.io.InputStream;
-
-import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.tools.cdi.reddeer.CDIConstants;
-import org.jboss.tools.cdi.reddeer.cdi.ui.NewBeansXMLCreationWizard;
 import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
-import org.jboss.tools.common.reddeer.label.IDELabel;
 
 /**
  * Helper for beans.xml validation
