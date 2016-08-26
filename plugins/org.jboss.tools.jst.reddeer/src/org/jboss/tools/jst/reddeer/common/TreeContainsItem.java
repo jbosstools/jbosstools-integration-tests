@@ -12,7 +12,6 @@ package org.jboss.tools.jst.reddeer.common;
 
 import java.util.List;
 
-import org.eclipse.swt.SWTException;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.core.exception.CoreLayerException;
