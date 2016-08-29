@@ -14,6 +14,10 @@ package org.jboss.tools.jst.ui.bot.test;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.jst.ui.bot.test.bower.BowerInitTest;
 import org.jboss.tools.jst.ui.bot.test.bower.BowerUpdateTest;
+import org.jboss.tools.jst.ui.bot.test.json.ContentOutlineTest;
+import org.jboss.tools.jst.ui.bot.test.json.ValidationTest;
+import org.jboss.tools.jst.ui.bot.test.nodejs.NodeJSDebuggerTest;
+import org.jboss.tools.jst.ui.bot.test.nodejs.NodeJSLauncherTest;
 import org.jboss.tools.jst.ui.bot.test.npm.NpmInitTest;
 import org.jboss.tools.jst.ui.bot.test.npm.NpmShortcutsTest;
 import org.jboss.tools.jst.ui.bot.test.tern.TernCodeAssistTest;
@@ -33,7 +37,15 @@ import org.junit.runners.Suite;
 	
 	//Tern Tests
 	TernCodeAssistTest.class,
-	TernModulesTest.class
+	TernModulesTest.class,
+	
+	//JSON Editor Tests
+	ContentOutlineTest.class,
+	ValidationTest.class,
+	
+	//NodeJS Debugger Tests
+	NodeJSLauncherTest.class,
+	NodeJSDebuggerTest.class
 	
 	// ...
 	
