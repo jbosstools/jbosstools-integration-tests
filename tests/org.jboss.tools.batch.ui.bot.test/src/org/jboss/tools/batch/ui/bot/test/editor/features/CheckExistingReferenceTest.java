@@ -13,6 +13,8 @@ package org.jboss.tools.batch.ui.bot.test.editor.features;
 import static org.junit.Assert.*;
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.batch.reddeer.wizard.BatchArtifacts;
 import org.junit.Test;
@@ -48,6 +50,8 @@ public class CheckExistingReferenceTest extends AbstractFeatureBaseTest {
 		addBatchlet(BATCHLET_STEP_ID, getBatchArtifactID(BATCHLET_ID));
 		editor.save();
 		
+		new WaitWhile(new JobIsRunning());
+		
 		assertNoProblems();
 		
 		assertTrue(searchForClassReference(JOB_XML_FILE, 
@@ -61,8 +65,10 @@ public class CheckExistingReferenceTest extends AbstractFeatureBaseTest {
 		// adding new step, batchlet with property via design view
 		addStep(PROPERTY_STEP_ID);
 		addBatchlet(PROPERTY_STEP_ID, getBatchArtifactID(BATCHLET_PROPERTY_ID));
-		getDesignPage().addProperty(PROPERTY_STEP_ID, "Batchlet", PROPERTY_NAME, "xxx");
+		getDesignPage().addProperty(PROPERTY_STEP_ID, "Batchlet", PROPERTY_NAME, "test value");
 		editor.save();
+		
+		new WaitWhile(new JobIsRunning());
 		
 		assertNoProblems();
 		
@@ -75,6 +81,7 @@ public class CheckExistingReferenceTest extends AbstractFeatureBaseTest {
 	public void testExceptionClassReference() {
 		// create necessary artifacts
 		assertTrue(createExceptionClass(EXCEPTION_ID));
+		new WaitWhile(new JobIsRunning());
 		addDefaultSerialVersionID(EXCEPTION_JAVA_CLASS);
 		closeEditor(EXCEPTION_JAVA_CLASS);
 		
@@ -82,6 +89,8 @@ public class CheckExistingReferenceTest extends AbstractFeatureBaseTest {
 		closeEditor(getFullFileName(READER_CLASS, "java"));
 		createBatchArtifact(BatchArtifacts.ITEM_WRITER, WRITER_CLASS);
 		closeEditor(getFullFileName(WRITER_CLASS, "java"));
+		
+		new WaitWhile(new JobIsRunning());
 		
 		assertNoProblems();
 		
@@ -93,6 +102,8 @@ public class CheckExistingReferenceTest extends AbstractFeatureBaseTest {
 		getDesignPage().addExceptionClass(EXCEPTION_STEP_ID, "Chunk", "Skippable Exception Classes", 
 				"Skippable-exception-classes", getPackage() + "." + EXCEPTION_ID);
 		editor.save();
+		
+		new WaitWhile(new JobIsRunning());
 		
 		assertNoProblems();
 		
