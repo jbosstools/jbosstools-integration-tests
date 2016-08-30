@@ -117,7 +117,11 @@ public abstract class FindObserverEventTemplate extends CDITestBase {
 	}
 	
 	private void openEvent(String eventName, String className, String observerClass){
-		List<String> proposals = openOnHelper.getProposals(className, eventName, "Show CDI Observer Methods...");
+		
+		openOnHelper.selectProposal(className, eventName, "Show CDI Observer Methods...");
+		HierarchyInformationControl hc = new HierarchyInformationControl(HierarchyInformationControl.OBSERVER_LABEL);
+		List<String> proposals = hc.getProposals();
+		hc.close();
 		for(String proposal: proposals){
 			openOnHelper.selectProposal(className, eventName, "Show CDI Observer Methods...");			
 			HierarchyInformationControl hic = new HierarchyInformationControl(HierarchyInformationControl.OBSERVER_LABEL);
@@ -135,7 +139,10 @@ public abstract class FindObserverEventTemplate extends CDITestBase {
 		List<String> events = observerWithEvents.get(observer);
 		//no need to test with one, was tested previously
 		if(events.size()!=1){
-			List<String> proposals = openOnHelper.getProposals(className, observer, "Show CDI Events...");
+			openOnHelper.selectProposal(className, observer, "Show CDI Events...");
+			HierarchyInformationControl hc = new HierarchyInformationControl(HierarchyInformationControl.EVENTS_LABEL);
+			List<String> proposals = hc.getProposals();
+			hc.close();
 			for(String proposal: proposals){
 				openOnHelper.selectProposal(className, observer, "Show CDI Events...");
 				HierarchyInformationControl hic = new HierarchyInformationControl(HierarchyInformationControl.EVENTS_LABEL);
