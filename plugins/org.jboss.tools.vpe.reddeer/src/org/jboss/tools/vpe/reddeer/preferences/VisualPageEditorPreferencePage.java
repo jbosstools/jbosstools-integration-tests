@@ -13,6 +13,7 @@ package org.jboss.tools.vpe.reddeer.preferences;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 /**
@@ -165,7 +166,7 @@ public class VisualPageEditorPreferencePage extends PreferencePage  {
 	 * Sets default active editor tab
 	 * @param splitting
 	 */
-	public void seVisualSourceEditorsSplitting (String splitting){
+	public void setVisualSourceEditorsSplitting (String splitting){
 		log.debug("Set Visual/Source editors splitting to: " + splitting);
 		new LabeledCombo("Visual/Source editors splitting").setSelection(splitting);
 	}
@@ -180,5 +181,29 @@ public class VisualPageEditorPreferencePage extends PreferencePage  {
 	 */
 	public void activateGeneralTab (){
 		new DefaultTabItem("Visual Templates").activate();
+	}
+	
+	public void toggleSynchronizeScrolling(boolean toggle){
+		new CheckBox("Synchronize scrolling between source and visual panes").toggle(toggle);
+	}
+	
+	public void toggleInformIfProjectIsNotCofiguredProperly(boolean toggle){
+		new CheckBox("Inform if the project is not configured properly to use Visual Page Editor").toggle(toggle);
+	}
+	
+	public boolean isHTML5Engine(){
+		return new RadioButton("HTML5 (use WebKit)").isSelected();
+	}
+	
+	public boolean isJSFEngine(){
+		return new RadioButton("JSF (use XulRunner)").isSelected();
+	}
+	
+	public void setHTML5Engine(){
+		new RadioButton("HTML5 (use WebKit)").toggle(true);
+	}
+	
+	public void setJSFEngine(){
+		new RadioButton("JSF (use XulRunner)").toggle(true);
 	}
 }

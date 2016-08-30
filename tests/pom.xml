@@ -54,6 +54,7 @@
 		<module>org.jboss.tools.seam.ui.bot.test</module>
 		<module>org.jboss.tools.ui.bot.ext.test</module>
 		<module>org.jboss.tools.vpe.ui.bot.test</module>
+		<module>org.jboss.tools.vpe.bot.test</module>
 		<module>org.jboss.tools.ws.ui.bot.test</module>
 		<module>org.jboss.tools.usercase.ticketmonster.ui.bot.test</module>
 		<module>org.jboss.tools.perf.test</module>
