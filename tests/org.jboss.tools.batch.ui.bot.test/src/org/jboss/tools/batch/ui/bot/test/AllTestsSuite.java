@@ -17,6 +17,7 @@ import org.jboss.tools.batch.ui.bot.test.editor.design.DesignDecisionElementTest
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignFlowElementTest;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignSplitElementTest;
 import org.jboss.tools.batch.ui.bot.test.editor.features.CheckExistingReferenceTest;
+import org.jboss.tools.batch.ui.bot.test.validation.XSDValidationTest;
 import org.jboss.tools.batch.ui.bot.test.wizard.CreateAllArtifactsFromAbstractClassTest;
 import org.jboss.tools.batch.ui.bot.test.wizard.CreateAllArtifactsFromInterfaceTest;
 import org.jboss.tools.batch.ui.bot.test.wizard.CreateArtifactWithPropertiesTest;
@@ -41,7 +42,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	DesignDecisionElementTest.class,
 	DesignFlowElementTest.class,
 	DesignSplitElementTest.class,
-	CheckExistingReferenceTest.class
+	CheckExistingReferenceTest.class,
+	XSDValidationTest.class
 	})
 public class AllTestsSuite {
 
