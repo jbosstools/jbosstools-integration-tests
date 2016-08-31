@@ -108,9 +108,9 @@
 				</configuration>
 			</plugin>
 		</plugins>
-			<!-- Server Configuration files -->
-			<resources>
-				<resource>
+		<!-- Server Configuration files -->
+		<resources>
+			<resource>
 				<directory>resources/config_files_templates</directory>
 				<includes>
 					<include>project/*</include>
@@ -133,7 +133,154 @@
 						</configuration>
 					</plugin>
 				</plugins>
-				</build>
+			</build>
 		</profile>
+
+		<profile>
+			<id>check-pr</id>
+			<build>
+				<plugins>
+
+<!-- 	<plugin> -->
+<!-- 		<groupId>org.eclipse.tycho</groupId> -->
+<!-- 		<artifactId>target-platform-configuration</artifactId> -->
+<!-- 		<configuration> -->
+<!-- 			<dependency-resolution> -->
+<!-- 				<extraRequirements> -->
+<!-- 					<requirement> -->
+<!-- 						<type>p2-installable-unit</type> -->
+<!-- 						<id>org.jboss.tools.arquillian.feature.feature.group</id> -->
+<!-- 						<versionRange>0.0.0</versionRange> -->
+<!-- 					</requirement> -->
+<!-- 				</extraRequirements> -->
+<!-- 			</dependency-resolution> -->
+<!-- 		</configuration> -->
+<!-- 	</plugin> -->
+
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<configuration>
+							<dependency-resolution>
+								<extraRequirements>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.arquillian.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.eclipse.m2e.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.eclipse.m2e.profiles.core</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.runtime.core</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.ide.eclipse.as.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.common.el.ui</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.central</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.eclipse.m2e.maven.indexer</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.eclipse.m2e.maven.runtime</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.eclipse.m2e.maven.runtime.slf4j.simple</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.arquillian.maven.configurator</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.maven.conversion.ui</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.maven.core</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.maven.hibernate</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.maven.jbosspackaging</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.maven.jdt</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.maven.portlet</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.maven.project.examples</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.maven.seam</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.maven.sourcelookup.core</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.maven.sourcelookup.ui</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.maven.ui</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+								</extraRequirements>
+							</dependency-resolution>
+						</configuration>
+					</plugin>
+
+				</plugins>
+			</build>
+		</profile>
+		
 	</profiles>
 </project>
