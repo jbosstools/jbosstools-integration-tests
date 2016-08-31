@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test.application.v3.create;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -22,12 +23,18 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ProjectExists;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.impl.button.BackButton;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftProjectExists;
 import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
@@ -52,6 +59,10 @@ public class CreateApplicationOnBuilderImageTest {
 		if (new ProjectExists(projectName).test()) {
 			new ProjectExplorer().getProject(projectName).delete(true);
 		}
+	    // If project does not exists, e.g. something went south in recreation earlier, create it
+        if (!new OpenShiftProjectExists(DatastoreOS3.PROJECT1_DISPLAYED_NAME).test()) {
+            new OpenShiftExplorerView().getOpenShift3Connection().createNewProject();
+        }
 	}
 	
 	@Test
@@ -102,6 +113,50 @@ public class CreateApplicationOnBuilderImageTest {
 				+ " of services: " + services.size(), services.size() == 1);
 	}
 	
+    private void validateJBIDE22704() {
+        BuilderImageApplicationWizardHandlingTest.nextToBuildConfigurationWizardPage();
+        
+        applicationName = new LabeledText("Name: ").getText();
+        
+        assertNotNull(applicationName);
+        assertTrue(applicationName.length() > 0);
+        
+        new WaitUntil(new WidgetIsEnabled(new NextButton()));
+
+        /*
+         * switch to the Deployment page
+         */
+        new NextButton().click();
+        new WaitUntil(new WidgetIsEnabled(new BackButton()));
+        
+        int numberofEnvironmentVariables = new DefaultTable().rowCount();
+        assertTrue(numberofEnvironmentVariables > 0);
+        
+        /*
+         * switch to the Routing page
+         */
+        new NextButton().click();
+        new WaitUntil(new WidgetIsEnabled(new BackButton()));
+        
+        int numberOfServicePorts = new DefaultTable().rowCount();
+        assertTrue(numberOfServicePorts > 0);
+        
+        new CancelButton().click();
+        new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(120));
+    }
+    
+    @Test
+    public void validateJBIDE22704FromShellMenu() {
+        new NewOpenShift3ApplicationWizard().openWizardFromShellMenu();
+        validateJBIDE22704();
+    }
+
+    @Test
+    public void validateJBIDE22704FromCentral() {
+        new NewOpenShift3ApplicationWizard().openWizardFromCentral();
+        validateJBIDE22704();
+    }
+
 	@After
 	public void tearDown() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
