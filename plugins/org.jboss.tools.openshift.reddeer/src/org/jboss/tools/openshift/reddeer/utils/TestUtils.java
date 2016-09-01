@@ -72,7 +72,7 @@ public class TestUtils {
 
 		if (exists && gitDir.isDirectory() && gitDir.listFiles().length > 0) {
 			for (File file : gitDir.listFiles()) {
-				if (file.getName().contains(appname))
+				if (file.getName().contains(appname)) {
 					if (file.isDirectory()) {
 						closeGitRepository(file);
 					}
@@ -81,6 +81,7 @@ public class TestUtils {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
+				}
 			}
 		}
 	}
