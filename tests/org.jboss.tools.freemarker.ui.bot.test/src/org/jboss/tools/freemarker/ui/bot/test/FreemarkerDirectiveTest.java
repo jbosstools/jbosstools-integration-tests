@@ -9,17 +9,17 @@ import java.util.List;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -33,7 +33,6 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 	
 	
 	private static final Logger log = Logger.getLogger(FreeMarkerEditorTest.class);
-	private String prj = "org.jboss.tools.freemarker.testprj";
 	
 	@BeforeClass
 	public static void beforeClass() {
@@ -60,7 +59,6 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 		checkErrorLog();
 	}	
 
-	@Ignore  
 	@Test
 	public void attemptDirectiveOutlineTest() {
 		openFTLFileInEditor("attempt-directive.ftl","attempt");		
@@ -117,11 +115,13 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 	
 	private void openFTLFileInEditor(String file, String... outline) {
 		
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-
+		PackageExplorer explorer = new PackageExplorer();
+		Project project = explorer.getProject(projectName);
+		project.expand();
+		project.refresh();
+		ProjectItem item = project.getProjectItem(parentFolder, file);
+		item.open();
 		
-		new DefaultTreeItem(prj, "ftl", file).doubleClick();
 		new TextEditor(file);
 		
 		log.step("Open outline view and check freemarker elements there");
@@ -150,7 +150,7 @@ public class FreemarkerDirectiveTest extends FreemarkerTest {
 	
 	@After
 	public void cleanup() {
-		removeTestProject(prj);
+		removeTestProject(projectName);
 	}
 	
 	@AfterClass
