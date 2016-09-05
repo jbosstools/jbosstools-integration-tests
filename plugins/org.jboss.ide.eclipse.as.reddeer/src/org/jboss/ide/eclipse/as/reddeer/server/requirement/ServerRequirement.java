@@ -148,7 +148,7 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 					serverTypeLabelText = label+"  "+version;
 				}
 				if(version.equals("10.x")){
-					serverTypeLabelText = label+" "+ "10.0";
+					serverTypeLabelText = label+" "+ version;
 				}
 			}
 			if(FamilyEAP.class.equals(config.getServerFamily().getClass())){
