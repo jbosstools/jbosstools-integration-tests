@@ -1,10 +1,19 @@
-package org.jboss.tools.freemarker.ui.bot.test;
+/*******************************************************************************
+ * Copyright (c) 2016 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
+package org.jboss.tools.freemarker.ui.bot.test.editor;
 
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.eclipse.core.resources.Project;
@@ -13,9 +22,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -25,17 +32,10 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
-public class FreeMarkerCodeAssistTest extends FreemarkerTest  {
+public class FreeMarkerCodeAssistTest extends AbstractFreemarkerTest  {
 	
 	
 	private static final Logger log = Logger.getLogger(FreeMarkerCodeAssistTest.class);
-	
-	@BeforeClass
-	public static void beforeClass() {
-		log.step("Import test project for freemarker test");
-		importTestProject();
-		log.step("Open ftl file in freemarker editor");		
-	}
 	
 	@Test
 	public void codeAssistDirectiveAssign() {
@@ -213,10 +213,6 @@ public class FreeMarkerCodeAssistTest extends FreemarkerTest  {
 		checkCodeAssist("<#", "visit");
 	}
 
-	@After
-	public void after() {
-	}
-
 	private void checkCodeAssist(String expr, String... expected) {
 		log.step("Check if code assist contains expected expressions");		
 		
@@ -244,11 +240,6 @@ public class FreeMarkerCodeAssistTest extends FreemarkerTest  {
 			assertTrue(e + " is expected", proposals.contains(e));
 		}
 
-	}
-	
-	@AfterClass
-	public static void cleanup() {
-		removeTestProject(projectName);
 	}
 
 	private void forceEditorFocus(TextEditor editor) {

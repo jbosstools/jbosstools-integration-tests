@@ -8,29 +8,45 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.freemarker.testprj;
+package org.jboss.tools.freemarker.testprj.model;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
-public class FMTest {
+public class DataModelTest {
+	
 	public static void main(String[] args) throws IOException {
-		FMTest test = new FMTest();
+		DataModelTest test = new DataModelTest();
 		test.perform();
 	}
 
 	public void perform() {
 		// Add the values in the datamodel
-		Map<String,Object> datamodel = new HashMap<String,Object>();
-		datamodel.put("pet", "Bunny");
-		datamodel.put("number", new Integer(6));
+		Map<String, List<User>> datamodel = new HashMap<String,List<User>>();
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR, 1989);
+		cal.set(Calendar.MONTH, Calendar.JANUARY);
+		cal.set(Calendar.DAY_OF_MONTH, 1);
+		List<User> userList = new ArrayList<User>();
+		userList.add(new User("John", "Smith", 27, true, cal.getTime()));
+		cal.set(Calendar.YEAR, 1990);
+		userList.add(new User("Alan", "Baker", 28, true, cal.getTime()));
+		cal.set(Calendar.YEAR, 1991);
+		userList.add(new User("Amy", "Tailor", 29, false, cal.getTime()));
+		//datamodel.put("user", new User("Jarda", "Novak", 27, true, cal.getTime()));
+		datamodel.put("users", userList);
 		try {
-			freemarkerDo(datamodel, "pet.ftl");
+			freemarkerDo(datamodel, "data-model.ftl");
 		}
 
 		catch (Exception e) {
@@ -39,11 +55,12 @@ public class FMTest {
 		}
 	}
 
-	public void freemarkerDo(Map<String, Object> datamodel, String template) throws Exception {
+	public void freemarkerDo(Map<String, List<User>> datamodel, String template) throws Exception {
 		Configuration cfg = new Configuration(Configuration.getVersion());
 		cfg.setDirectoryForTemplateLoading(new File(System.getProperty("user.dir") + "/resource"));
 		Template tpl = cfg.getTemplate(template);
 		OutputStreamWriter output = new OutputStreamWriter(System.out);
 		tpl.process(datamodel, output);
 	}
+
 }

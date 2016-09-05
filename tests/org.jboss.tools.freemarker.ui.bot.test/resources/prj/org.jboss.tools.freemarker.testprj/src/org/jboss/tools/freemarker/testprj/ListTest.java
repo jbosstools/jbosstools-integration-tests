@@ -15,22 +15,22 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
+
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 
-public class FMTest {
+public class ListTest {
+
 	public static void main(String[] args) throws IOException {
-		FMTest test = new FMTest();
+		ListTest test = new ListTest();
 		test.perform();
 	}
 
 	public void perform() {
 		// Add the values in the datamodel
 		Map<String,Object> datamodel = new HashMap<String,Object>();
-		datamodel.put("pet", "Bunny");
-		datamodel.put("number", new Integer(6));
 		try {
-			freemarkerDo(datamodel, "pet.ftl");
+			freemarkerDo(datamodel, "list-directive.ftl");
 		}
 
 		catch (Exception e) {
@@ -41,9 +41,10 @@ public class FMTest {
 
 	public void freemarkerDo(Map<String, Object> datamodel, String template) throws Exception {
 		Configuration cfg = new Configuration(Configuration.getVersion());
-		cfg.setDirectoryForTemplateLoading(new File(System.getProperty("user.dir") + "/resource"));
+		cfg.setDirectoryForTemplateLoading(new File(System.getProperty("user.dir") + "/ftl"));
 		Template tpl = cfg.getTemplate(template);
 		OutputStreamWriter output = new OutputStreamWriter(System.out);
 		tpl.process(datamodel, output);
 	}
+	
 }

@@ -1,0 +1,15 @@
+Full name: John Smith
+Age: 27
+Male: true
+Date of Birth: 1989.01.01
+######
+Full name: Alan Baker
+Age: 28
+Male: true
+Date of Birth: 1990.01.01
+######
+Full name: Amy Tailor
+Age: 29
+Male: false
+Date of Birth: 1991.01.01
+######

@@ -1,5 +1,16 @@
-package org.jboss.tools.freemarker.ui.bot.test;
+/*******************************************************************************
+ * Copyright (c) 2016 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
+package org.jboss.tools.freemarker.ui.bot.test.editor;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
@@ -17,29 +28,66 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.platform.RunningPlatform;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.tools.freemarker.ui.bot.test.Activator;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
 
 /**
  * Freemarker test parent
  * @author Jiri Peterka
  *
  */
-public class FreemarkerTest {
+public abstract class AbstractFreemarkerTest {
 		
-	private static final Logger log = Logger.getLogger(FreeMarkerEditorTest.class);
+	private static final Logger log = Logger.getLogger(FreeMarkerBaseEditorTest.class);
 	
 	protected static String projectName = "org.jboss.tools.freemarker.testprj";
 	
 	protected static String parentFolder = "ftl";
+	
+	@BeforeClass
+	public static void beforeClass() {
+		setFullOutlineView();
+	}
+	
+	@Before
+	public void setUp() {
+		log.step("Import test project for freemarker test");
+		importTestProject();
+	}
+	
+	@After
+	public void after() {
+		removeTestProject(projectName);
+		ConsoleView console = new ConsoleView();
+		if (console.isOpened()) {
+			console.clearConsole();
+			console.close();
+		}
+	}
 	
 	/**
 	 * Sets Freemarker to full outline view mode
@@ -212,9 +260,7 @@ public class FreemarkerTest {
 		if (pe.containsProject(prj)) {
 			pe.getProject(prj).delete(true);
 		}
-
 	}
-	
 	
 	/**
 	 * Copies binary file originalFile to location toLocation
@@ -257,7 +303,6 @@ public class FreemarkerTest {
 		}
 	}
 	
-	
 	/**
 	 * Emtpy Error Log View
 	 */
@@ -268,4 +313,107 @@ public class FreemarkerTest {
 		elv.deleteLog();
 		new WaitWhile(new JobIsRunning());
 	}
+	
+	/**
+	 * Checks whether executed freemarker template is resulting correct output
+	 * @param outputIsInFile boolean value that distinguishes if expected output is in String or will
+	 * be read from file
+	 * 
+	 * @param output expected output source (file or String)
+	 * @param alternateOutput alternate output string
+	 * @param runFile java file to be run as Java Application
+	 */
+	protected void checkFreemMarkerOutput(boolean outputIsInFile, String output, 
+			String alternateOutput, String... runFile) {
+		
+		String outputExpected = "";
+		if (outputIsInFile) {
+			String outputFilepath = getResourceAbsolutePath(
+					Activator.PLUGIN_ID, output);
+		
+			outputExpected = readOutputFromFile(outputFilepath);
+		} else {
+			outputExpected = output;
+		}
+
+		runJavaFile(runFile);
+		
+		new WaitUntil(new ConsoleHasText(outputExpected), TimePeriod.NORMAL, false);
+		ConsoleView cv = new ConsoleView();
+		cv.open();
+		String consoleText = cv.getConsoleText();
+		
+		if (!consoleText.equals(outputExpected)) {
+			log.error("Console text doesn't correspond with expected text");
+			log.dump("Console text:\n" + consoleText);
+			log.dump("Expected text:\n" + outputExpected);
+		}
+		// workaround for slightly different format on Windows
+		compareConsoleToOutput(consoleText, outputExpected, alternateOutput);
+	}
+	
+	/**
+	 * If given alternate expected result, checks whether we are running on Windows platform,
+	 * if yes, it checks whether console output contains alternate output. Otherwise it tries if 
+	 * expected output and resulting console output are equal, using String equals method.
+	 * Otherwise it checks whether trimmed console output is equal to trimmed expected output.
+	 * 
+	 * @param console String content of console that will be compared
+	 * @param output Expected output represented by String
+	 * @param alternateOutput Alternate output used for Windows platform
+	 */
+	private void compareConsoleToOutput(String console, String output, String alternateOutput) {
+		if (RunningPlatform.isWindows() && alternateOutput != null && alternateOutput.length() > 0) {
+			log.info("Testing alternative output for windows platform: " + alternateOutput);
+			assertTrue("Console text does not contains expected text", 
+					console.contains(alternateOutput));
+		} else if (console.equals(output)) {
+			log.info("Console text corresponds to expected output");
+		} else if (console.trim().equals(output.trim())) {
+			log.info("Console text corresponds to expected output after trimming");
+		} else {
+			fail("Console text does not corresponds to the expected output");
+		}
+	}
+	
+	/**
+	 * Returns content of a file as a String
+	 * 
+	 * @param absolutePath absolute file path
+	 * @return Content of given file specified by absolute path as a String
+	 */
+	private String readOutputFromFile(String absolutePath) {
+		String outputExpected = "";
+		try {
+			outputExpected = readTextFileToString(absolutePath);
+			log.info("------------------------------------------");
+			log.info(outputExpected);
+			log.info("------------------------------------------");
+		} catch (IOException e) {
+			log.error(e.getMessage());
+			new RuntimeException("Unable to read from resource");
+		}
+		return outputExpected;
+	}
+	
+	/**
+	 * Tries to run given file path in Project explorer as a Java Application
+	 * 
+	 * @param javaFilePath File path specified as a array of strings
+	 */
+	@SuppressWarnings("unchecked")
+	private void runJavaFile(String... javaFilePath) {
+		PackageExplorer explorer = new PackageExplorer();
+		Project project = explorer.getProject(projectName);
+		ProjectItem item = project.getProjectItem(javaFilePath);
+		item.select();
+		WithTextMatcher regex = new WithTextMatcher(new RegexMatcher(".*Java Application.*"));
+		new ContextMenu(new WithTextMatcher("Run As"), regex).select();
+
+		new WaitUntil(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.NORMAL, false);
+		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"));
+		new WaitWhile(new JobIsRunning());		
+	}
+
+
 }
