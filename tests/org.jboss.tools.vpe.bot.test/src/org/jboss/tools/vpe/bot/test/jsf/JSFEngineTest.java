@@ -31,10 +31,14 @@ public class JSFEngineTest extends VPETestBase {
 
 	@BeforeClass
 	public static void createProject() {
-		ErrorInLog el = new ErrorInLog(
-				"Could not open the Visual Page Editor: "
-						+ "You currently have Visual editor configured to have better HTML5",
-				"org.jboss.tools.vpe.preview.core");
+		String errorMessage;
+		if(isLinux()){
+			errorMessage = "You currently have Visual editor configured to have better HTML5";
+		} else {
+			errorMessage = "Visual Page Editor has experimental support for Windows 64-bit";
+		}
+		
+		ErrorInLog el = new ErrorInLog(errorMessage,"org.jboss.tools.vpe.preview.core");
 		List<ErrorInLog> errors = new ArrayList<ErrorInLog>();
 		errors.add(el);
 		errors.add(el);

@@ -63,8 +63,10 @@ public class HTML5EditorHighlight extends VPETestBase{
 		VPVEditor vpvEditor = new VPVEditor();
 		AbstractWait.sleep(TimePeriod.SHORT); //we have to wait for browser 
 		vpvEditor.clickInBrowser("abc");
+		new WaitUntil(new VPEditorHasTextSelected(vpvEditor, "abc"));
 		assertEquals("<td>abc</td>",vpvEditor.getSelectedTextInEditor());
 		vpvEditor.clickInBrowser("custom");
+		new WaitUntil(new VPEditorHasTextSelected(vpvEditor, "custom"));
 		assertEquals("<cTag>custom</cTag>",vpvEditor.getSelectedTextInEditor());
 	}
 	
