@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: CDI Seam3 UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.cdi.seam3.bot.test
-Bundle-Version: 4.4.1.qualifier
+Bundle-Version: 4.4.2.qualifier
 Bundle-Activator: org.jboss.tools.cdi.seam3.bot.test.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.junit;bundle-version="4.8.1",
@@ -13,13 +13,13 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.reddeer.workbench,
  org.jboss.reddeer.junit,
  org.jboss.reddeer.requirements,
- org.jboss.ide.eclipse.as.reddeer;bundle-version="[4.4.1,4.5.0)",
+ org.jboss.ide.eclipse.as.reddeer;bundle-version="[4.4.2,4.5.0)",
  org.jboss.reddeer.eclipse,
  org.jboss.reddeer.core,
  org.jboss.reddeer.common,
  org.jboss.reddeer.jface,
  org.jboss.reddeer.junit.extension,
- org.jboss.tools.cdi.reddeer;bundle-version="[4.4.1,4.5.0)",
+ org.jboss.tools.cdi.reddeer;bundle-version="[4.4.2,4.5.0)",
  org.jboss.tools.common.reddeer
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
