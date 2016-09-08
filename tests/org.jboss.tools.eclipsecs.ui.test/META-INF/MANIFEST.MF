@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse CS UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.eclipsecs.ui.test
-Bundle-Version: 4.4.1.qualifier
+Bundle-Version: 4.4.2.qualifier
 Bundle-Activator: org.jboss.tools.eclipsecs.ui.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

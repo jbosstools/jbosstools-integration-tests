@@ -1,18 +1,18 @@
 Bundle-ManifestVersion: 2
 Bundle-Name: Arquillian UI Tests
 Bundle-SymbolicName: org.jboss.tools.arquillian.ui.bot.test
-Bundle-Version: 4.4.1.qualifier
+Bundle-Version: 4.4.2.qualifier
 Bundle-Activator: org.jboss.tools.arquillian.ui.bot.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.apache.log4j,
  org.eclipse.core.runtime,
  org.junit,
  org.hamcrest.core,
- org.jboss.ide.eclipse.as.reddeer;bundle-version="[4.4.1,4.5.0)",
- org.jboss.tools.maven.reddeer;bundle-version="[4.4.1,4.5.0)",
- org.jboss.tools.arquillian.reddeer;bundle-version="[4.4.1,4.5.0)",
+ org.jboss.ide.eclipse.as.reddeer;bundle-version="[4.4.2,4.5.0)",
+ org.jboss.tools.maven.reddeer;bundle-version="[4.4.2,4.5.0)",
+ org.jboss.tools.arquillian.reddeer;bundle-version="[4.4.2,4.5.0)",
  org.jboss.reddeer.go;bundle-version="1.0.0",
- org.jboss.tools.central.reddeer;bundle-version="[4.4.1,4.5.0)" 
+ org.jboss.tools.central.reddeer;bundle-version="[4.4.2,4.5.0)" 
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.eclipse.core.resources
