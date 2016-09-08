@@ -10,12 +10,17 @@
  ******************************************************************************/
 package org.jboss.tools.batch.ui.bot.test;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
@@ -23,10 +28,9 @@ import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardDialog;
 import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardPage;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public abstract class AbstractBatchTest {
 
@@ -76,8 +80,8 @@ public abstract class AbstractBatchTest {
 	protected static void initTestResources(Logger log) {
 		log.info("Import archive project " + PROJECT_NAME);
 		importProject();
-		log.info("Create base batch job XML configuration " + JOB_ID);
-		createJobXMLFile(JOB_ID);
+		new WaitWhile(new JobIsRunning());
+		getProject().select();
 	}
 	
 	/**
@@ -92,7 +96,6 @@ public abstract class AbstractBatchTest {
 		page.selectProjects(PROJECT_NAME);
 		
 		dialog.finish(TimePeriod.VERY_LONG);
-		getProject().select();
 	}
 	
 	/**
@@ -102,6 +105,7 @@ public abstract class AbstractBatchTest {
 	protected static void removeProject(Logger log) {
 		log.info("Removing " + PROJECT_NAME);
 		getProject().delete(true);
+		new WaitWhile(new JobIsRunning());
 	}
 	
 	/**
