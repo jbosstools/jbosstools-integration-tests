@@ -17,6 +17,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
+import org.jboss.tools.cdi.reddeer.cdi.text.ext.hyperlink.AssignableBeansDialog;
 import org.jboss.tools.cdi.reddeer.cdi.text.ext.hyperlink.xpl.HierarchyInformationControl;
 import org.junit.Test;
 
@@ -118,12 +119,13 @@ public class BeanInjectOpenOnTemplate extends CDITestBase{
 		if(beans.size() > 1){
 			openOnHelper.selectProposal("MainBean", injectionPoint, 
 					"Show All Assignable Beans...");
-			HierarchyInformationControl hc = new HierarchyInformationControl(HierarchyInformationControl.EVENTS_LABEL);
-			List<String> proposals = hc.getProposals();
-			hc.close();
+			AssignableBeansDialog ad = new AssignableBeansDialog();
+			List<String> proposals = ad.getAllBeans();
+			ad.close();
 			for(String proposal: proposals){
 				openOnHelper.selectProposal("MainBean", injectionPoint, 
 						"Show All Assignable Beans...");
+				ad = new AssignableBeansDialog();
 				Table observerTable = new DefaultTable();
 				//observerTable.getItem(proposal).select();
 			
