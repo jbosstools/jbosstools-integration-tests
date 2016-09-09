@@ -1,11 +1,14 @@
 package org.jboss.tools.batch.ui.bot.test.wizard;
 
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditor;
 import org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorDesignPage;
 import org.jboss.tools.batch.ui.bot.test.AbstractBatchTest;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -22,6 +25,8 @@ public class CreateJobXMLFileTest extends AbstractBatchTest {
 	@BeforeClass
 	public static void setUpBeforeClass() {
 		initTestResources(log);
+		getProject().select();
+		createJobXMLFile(JOB_ID);
 	}
 	
 	@Test

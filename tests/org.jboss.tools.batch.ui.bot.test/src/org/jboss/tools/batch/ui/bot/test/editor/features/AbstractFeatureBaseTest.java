@@ -54,7 +54,7 @@ public abstract class AbstractFeatureBaseTest extends DesignFlowElementsTestTemp
 	public String getFullFileName(String name, String type) {
 		return name + "." + type;
 	}
-	
+
 	@Before
 	@Override
 	public void setupEditor() {
@@ -71,6 +71,7 @@ public abstract class AbstractFeatureBaseTest extends DesignFlowElementsTestTemp
 		if (getProject().containsItem(JOB_XML_FILE_FULL_PATH)) {
 			getProject().getProjectItem(JOB_XML_FILE_FULL_PATH).delete();
 		}
+		super.closeEditor();
 	}
 	
 	/**
@@ -88,6 +89,7 @@ public abstract class AbstractFeatureBaseTest extends DesignFlowElementsTestTemp
 			new WaitWhile(new JobIsRunning());
 			try {
 				SearchView search = new SearchView();
+				search.open();
 				for (SearchResult item : search.getSearchResults()) {
 					if (item.getSearchResultText().toLowerCase().contains(text.toLowerCase())) {
 						result = true;
@@ -120,6 +122,7 @@ public abstract class AbstractFeatureBaseTest extends DesignFlowElementsTestTemp
 			new WaitWhile(new JobIsRunning());
 			try {
 				SearchView search = new SearchView();
+				search.open();
 				for (SearchResult item : search.getSearchResults()) {
 					if (item.getSearchResultText().toLowerCase().contains(text.toLowerCase())) {
 						result = true;

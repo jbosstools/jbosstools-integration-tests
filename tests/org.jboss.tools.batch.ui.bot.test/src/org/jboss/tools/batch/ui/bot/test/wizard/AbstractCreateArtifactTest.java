@@ -1,5 +1,9 @@
 package org.jboss.tools.batch.ui.bot.test.wizard;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.wst.xml.ui.tabletree.XMLMultiPageEditor;
 import org.jboss.reddeer.eclipse.wst.xml.ui.tabletree.XMLSourcePage;
@@ -10,11 +14,6 @@ import org.jboss.tools.batch.reddeer.wizard.NewBatchArtifactWizardDialog;
 import org.jboss.tools.batch.reddeer.wizard.NewBatchArtifactWizardPage;
 import org.jboss.tools.batch.ui.bot.test.AbstractBatchTest;
 import org.junit.After;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractCreateArtifactTest extends AbstractBatchTest {
 
