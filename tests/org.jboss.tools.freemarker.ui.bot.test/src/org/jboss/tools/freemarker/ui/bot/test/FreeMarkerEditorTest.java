@@ -17,7 +17,10 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -40,7 +43,6 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 	
 	
 	private static final Logger log = Logger.getLogger(FreeMarkerEditorTest.class);
-	private String prj = "org.jboss.tools.freemarker.testprj";
 	
 	@BeforeClass
 	public static void beforeClass() {
@@ -66,11 +68,13 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 
 	private void openFTLFileInEditor() {
 		
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-
+		PackageExplorer explorer = new PackageExplorer();
+		Project project = explorer.getProject(projectName);
+		project.expand();
+		project.refresh();
+		ProjectItem item = project.getProjectItem(parentFolder, "welcome.ftl");
+		item.open();
 		
-		new DefaultTreeItem(prj, "ftl", "welcome.ftl").doubleClick();
 		new TextEditor("welcome.ftl");
 		
 		log.step("Open outline view and check freemarker elements there");
@@ -106,10 +110,10 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 			new RuntimeException("Unable to read from resource");
 		}
 
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-
-		new DefaultTreeItem(prj,"src","org.jboss.tools.freemarker.testprj","FMTest.java").select();
+		PackageExplorer explorer = new PackageExplorer();
+		Project project = explorer.getProject(projectName);
+		ProjectItem item = project.getProjectItem("src","org.jboss.tools.freemarker.testprj","FMTest.java");
+		item.select();
 		new ContextMenu(new WithTextMatcher("Run As"), new WithTextMatcher(new RegexMatcher(".*Java Application.*"))).select();
 
 		new WaitWhile(new ShellWithTextIsActive("Progress Information"));
@@ -134,6 +138,6 @@ public class FreeMarkerEditorTest extends FreemarkerTest {
 
 	@After
 	public void after() {
-		removeTestProject(prj);
+		removeTestProject(projectName);
 	}
 }

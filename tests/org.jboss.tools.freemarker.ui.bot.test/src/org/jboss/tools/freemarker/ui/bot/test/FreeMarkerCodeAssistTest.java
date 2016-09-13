@@ -4,11 +4,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -26,7 +29,6 @@ public class FreeMarkerCodeAssistTest extends FreemarkerTest  {
 	
 	
 	private static final Logger log = Logger.getLogger(FreeMarkerCodeAssistTest.class);
-	private static String prj = "org.jboss.tools.freemarker.testprj";
 	
 	@BeforeClass
 	public static void beforeClass() {
@@ -218,13 +220,12 @@ public class FreeMarkerCodeAssistTest extends FreemarkerTest  {
 	private void checkCodeAssist(String expr, String... expected) {
 		log.step("Check if code assist contains expected expressions");		
 		
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		new DefaultTreeItem(prj, "ftl", "empty.ftl").doubleClick();				
-		
-		// editor focus bug workaround 
-		pe.open();
-		new DefaultTreeItem(prj, "ftl", "empty.ftl").doubleClick();				
+		PackageExplorer explorer = new PackageExplorer();
+		Project project = explorer.getProject(projectName);
+		project.expand();
+		project.refresh();
+		ProjectItem item = project.getProjectItem(parentFolder, "empty.ftl");
+		item.open();
 
 		String file = "empty.ftl";
 		TextEditor textEditor = new TextEditor(file);
@@ -232,6 +233,7 @@ public class FreeMarkerCodeAssistTest extends FreemarkerTest  {
 		textEditor.setText(start);
 		textEditor.save();				
 		
+		forceEditorFocus(textEditor);
 		textEditor.setCursorPosition(start.length());
 				
 		ContentAssistant ca = textEditor.openContentAssistant();
@@ -241,11 +243,22 @@ public class FreeMarkerCodeAssistTest extends FreemarkerTest  {
 		for (String e : expected) {			
 			assertTrue(e + " is expected", proposals.contains(e));
 		}
+
 	}
 	
 	@AfterClass
 	public static void cleanup() {
-		removeTestProject(prj);
+		removeTestProject(projectName);
 	}
 
+	private void forceEditorFocus(TextEditor editor) {
+		Display.syncExec(new Runnable() {
+
+            @Override
+            public void run() {
+                editor.getEditorPart().setFocus();
+            }
+        });		
+	}
+	
 }
