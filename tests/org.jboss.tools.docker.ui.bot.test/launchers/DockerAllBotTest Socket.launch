@@ -12,7 +12,7 @@
 <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/pde-junit"/>
 <booleanAttribute key="default" value="true"/>
 <booleanAttribute key="includeOptional" value="true"/>
-<stringAttribute key="location" value="${workspace_loc}/../junit-workspace2"/>
+<stringAttribute key="location" value="${workspace_loc}/../junit-workspace"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
 <listEntry value="/org.jboss.tools.docker.ui.bot.test/src/org/jboss/tools/docker/ui/bot/test/DockerAllBotTest.java"/>
 </listAttribute>
@@ -31,7 +31,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.docker.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DunixSocket=unix:///var/run/docker.sock -Dusage_reporting_enabled=false -DdockerHubUsername=${string_prompt:-DdockerHubUsername:} -DdockerHubEmail=${string_prompt:-DdockerHubEmail:} -DdockerHubPassword=${string_prompt:-DdockerHubPassword:}"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DunixSocket=unix:///var/run/docker.sock -Dusage_reporting_enabled=false -DdockerHubUsername=${string_prompt:-DdockerHubUsername:} -DdockerHubEmail=${string_prompt:-DdockerHubEmail:} -DdockerHubPassword=${string_prompt:-DdockerHubPassword:} -DdockerComposePath="/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="com.jboss.devstudio.core.product"/>
 <stringAttribute key="rd.launch.property.rd.captureScreenshot" value="true"/>
