@@ -16,15 +16,20 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.docker.ui.bot.test.connection.AddConnectionTest;
 import org.jboss.tools.docker.ui.bot.test.container.DockerContainerTest;
 import org.jboss.tools.docker.ui.bot.test.container.ExposePortTest;
+import org.jboss.tools.docker.ui.bot.test.container.LabelsTest;
 import org.jboss.tools.docker.ui.bot.test.container.LinkContainersTest;
 import org.jboss.tools.docker.ui.bot.test.container.PrivilegedModeTest;
 import org.jboss.tools.docker.ui.bot.test.container.VariablesTest;
 import org.jboss.tools.docker.ui.bot.test.container.VolumeMountTest;
 import org.jboss.tools.docker.ui.bot.test.image.BuildImageTest;
+import org.jboss.tools.docker.ui.bot.test.image.HierarchyViewTest;
+import org.jboss.tools.docker.ui.bot.test.image.ImageTagTest;
 import org.jboss.tools.docker.ui.bot.test.image.PullImageTest;
+import org.jboss.tools.docker.ui.bot.test.image.PushImageTest;
 import org.jboss.tools.docker.ui.bot.test.ui.ContainerTabTest;
 import org.jboss.tools.docker.ui.bot.test.ui.DifferentRegistryTest;
 import org.jboss.tools.docker.ui.bot.test.ui.PerspectiveTest;
+import org.jboss.tools.docker.ui.bot.test.ui.PropertiesViewTest;
 import org.jboss.tools.docker.ui.bot.test.ui.SearchDialogTest;
 import org.jboss.tools.docker.ui.bot.test.ui.ImageTabTest;
 import org.junit.runner.RunWith;
@@ -45,15 +50,19 @@ import org.junit.runners.Suite;
 	PullImageTest.class,
 	DockerContainerTest.class,
 	ExposePortTest.class,
-	ImageTabTest.class,	
+	ImageTabTest.class,
 	ContainerTabTest.class,
 	VolumeMountTest.class,
 	PrivilegedModeTest.class,
 	VariablesTest.class,
 	LinkContainersTest.class,
 	DifferentRegistryTest.class,
-	SearchDialogTest.class
-	
+	SearchDialogTest.class,
+	ImageTagTest.class,
+	LabelsTest.class,
+	HierarchyViewTest.class,
+	PropertiesViewTest.class,
+	PushImageTest.class
 })
 public class DockerAllBotTest {
 

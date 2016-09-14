@@ -76,6 +76,13 @@ public class RunADockerImagePageTwoWizard extends WizardPage {
 		new LabeledText("Value:").setText(value);
 		new OkButton().click();
 	}
+	
+	public void addLabel(String name, String value) {
+		new PushButton(2, new WithTextMatcher("Add...")).click();
+		new LabeledText("Name:").setText(name);
+		new LabeledText("Value:").setText(value);
+		new OkButton().click();
+	}
 
 	public void setResourceLimitation(String CPU, String memoryLimit) {
 		new CheckBox("Enable resource limitations").click();

@@ -11,16 +11,14 @@
 
 package org.jboss.tools.docker.ui.bot.test.ui;
 
+import static org.junit.Assert.assertTrue;
+
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.equinox.security.ui.StoragePreferencePage;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
@@ -38,7 +36,7 @@ public class DifferentRegistryTest extends AbstractDockerBotTest {
 	private String email = "test@test.com";
 	private String userName = "test";
 	private String password = "password";
-	private String imageName = "rhel";
+	private String imageName = "rhel:latest";
 
 	@Before
 	public void before() {
@@ -56,27 +54,10 @@ public class DifferentRegistryTest extends AbstractDockerBotTest {
 			// there's not clear console button, since nothing run before
 		}
 		setUpRegister(this.serverAddress, this.email, this.userName, this.password);
-		setSecureStorage();
-		pullImage(this.serverAddress, this.imageName);
+		setSecureStorage(this.password);
+		pullImage(this.userName+ "@" +this.serverAddress, this.imageName);
 		new WaitWhile(new JobIsRunning());
-	}
-
-	private void setSecureStorage() {
-		try {
-			new DefaultShell("Secure Storage Password");
-			new LabeledText("Password:").setText(password);
-			new LabeledText("Confirm password:").setText(password);
-			new PushButton("OK").click();
-			new DefaultShell("Secure Storage - Password Hint Needed");
-			new PushButton("NO").click();
-		} catch (CoreLayerException ex) {
-			new PushButton("OK").click();
-		} catch (SWTLayerException e) {
-			new DefaultShell("Secure Storage");
-			new LabeledText("Password:").setText(password);
-			new PushButton("OK").click();
-		}
-
+		assertTrue("Image is not deployed!", imageIsDeployed(this.imageName));
 	}
 
 	public static void disableSecureStorage() {

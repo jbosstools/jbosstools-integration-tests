@@ -24,6 +24,7 @@ import java.util.Set;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
@@ -31,7 +32,9 @@ import org.jboss.reddeer.jface.preference.PreferenceDialog;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.DockerConnectionWizard;
@@ -49,6 +52,7 @@ import org.junit.BeforeClass;
  */
 
 public abstract class AbstractDockerBotTest {
+	private static String registryAddress = "https://index.docker.io";
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -104,9 +108,9 @@ public abstract class AbstractDockerBotTest {
 	protected static void createConnection() {
 		String dockerServerURI = System.getProperty("dockerServerURI");
 		String searchConnection = System.getProperty("searchConnection");
-		if(searchConnection != null && !searchConnection.isEmpty() && searchConnection.equals("true")){
+		if (searchConnection != null && !searchConnection.isEmpty() && searchConnection.equals("true")) {
 			createConnectionSearch("default");
-		}else if (dockerServerURI == null || dockerServerURI.isEmpty()) {
+		} else if (dockerServerURI == null || dockerServerURI.isEmpty()) {
 			createConnectionSocket(System.getProperty("unixSocket"));
 		} else {
 			createConnectionTCP(dockerServerURI);
@@ -148,19 +152,23 @@ public abstract class AbstractDockerBotTest {
 	}
 
 	protected static void deleteImage(String imageName) {
-		new DockerExplorer().deleteImage(getDockerServer(), imageName);
+		new DockerExplorer().deleteImages(getDockerServer(), imageName);
 	}
 
 	protected static boolean imageIsDeployed(String imageName) {
 		return new DockerExplorer().imageIsDeployed(getDockerServer(), imageName);
 	}
 
+	protected static int deployedImagesCount(String imageName) {
+		return new DockerExplorer().deployedImagesCount(getDockerServer(), imageName);
+	}
+
 	protected static void deleteContainer(String containerName) {
-		new DockerExplorer().deleteContainer(getDockerServer(), containerName);
+		new DockerExplorer().deleteContainers(getDockerServer(), containerName);
 	}
 
 	protected void pullImage(String imageName) {
-		new DockerExplorer().pullImage(getDockerServer(), imageName);
+		new DockerExplorer().pullImage(getDockerServer(), registryAddress, imageName);
 	}
 
 	protected void pullImage(String registry, String imageName) {
@@ -195,7 +203,7 @@ public abstract class AbstractDockerBotTest {
 		String dockerServerURI = System.getProperty("dockerServerURI");
 		String searchConnection = System.getProperty("searchConnection");
 		String serverURI;
-		if (dockerServerURI != null && !dockerServerURI.isEmpty()&& !searchConnection.equals("true")) {
+		if (dockerServerURI != null && !dockerServerURI.isEmpty() && !searchConnection.equals("true")) {
 			serverURI = dockerServerURI.replaceAll("tcp://", "http://");
 		} else {
 			serverURI = "http://localhost:1234";
@@ -245,7 +253,7 @@ public abstract class AbstractDockerBotTest {
 
 	protected static void deleteImages(String dockerServer, Set<String> images) {
 		for (String image : images) {
-			new DockerExplorer().deleteImage(dockerServer, image);
+			new DockerExplorer().deleteImages(dockerServer, image);
 		}
 	}
 
@@ -268,7 +276,7 @@ public abstract class AbstractDockerBotTest {
 
 	protected static void deleteContainers(String dockerServer, Set<String> containers) {
 		for (String container : containers) {
-			new DockerExplorer().deleteContainer(dockerServer, container);
+			new DockerExplorer().deleteContainers(dockerServer, container);
 		}
 	}
 
@@ -288,8 +296,34 @@ public abstract class AbstractDockerBotTest {
 		} else if (System.getProperty("unixSocket") != null) {
 			return System.getProperty("unixSocket");
 		} else {
-			return "unix:///var/run/docker.sock";
+			return "default";
 		}
+	}
+
+	protected void selectImageInDockerExplorer(String imageName) {
+		new DockerExplorer().selectImage(getDockerServer(), imageName);
+	}
+
+	protected void selectContainerInDockerExplorer(String containerName) {
+		new DockerExplorer().selectContainer(getDockerServer(), containerName);
+	}
+
+	public static void setSecureStorage(String password) {
+		try {
+			new DefaultShell("Secure Storage Password");
+			new LabeledText("Password:").setText(password);
+			new LabeledText("Confirm password:").setText(password);
+			new PushButton("OK").click();
+			new DefaultShell("Secure Storage - Password Hint Needed");
+			new PushButton("NO").click();
+		} catch (CoreLayerException ex) {
+			new PushButton("OK").click();
+		} catch (SWTLayerException e) {
+			new DefaultShell("Secure Storage");
+			new LabeledText("Password:").setText(password);
+			new PushButton("OK").click();
+		}
+
 	}
 
 }

@@ -25,6 +25,8 @@ import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.api.Menu;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -40,6 +42,11 @@ import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
  */
 
 public class DockerExplorer extends WorkbenchView {
+
+	// image name label in dialog
+	private static final String IMAGE_NAME = "Image name:";
+	//Docker hub address
+	private static final String REGISTRY_ADDRESS = "https://index.docker.io";
 
 	public DockerExplorer() {
 		super("Docker Explorer");
@@ -96,21 +103,11 @@ public class DockerExplorer extends WorkbenchView {
 		new WaitUntil(new ShellWithTextIsAvailable("Pull Image"), TimePeriod.NORMAL);
 
 		// select register
-		if (register != null) {
-			String fullRegisterName = register;
-			Combo combo = new DefaultCombo();
-			List<String> comboItems = combo.getItems();
-			for (String item : comboItems) {
-				if (item.contains(register)) {
-					fullRegisterName = item;
-					break;
-				}
-			}
-			combo.setSelection(fullRegisterName);
-		}
+		Combo combo = new DefaultCombo();
+		combo.setSelection(register);
 		// enter image name in dialog
-		new LabeledText("Name:").setFocus();
-		new LabeledText("Name:").setText(imageName);
+		new LabeledText(IMAGE_NAME).setFocus();
+		new LabeledText(IMAGE_NAME).setText(imageName);
 
 		new PushButton("Finish").click();
 		AbstractWait.sleep(TimePeriod.getCustom(5));
@@ -118,37 +115,26 @@ public class DockerExplorer extends WorkbenchView {
 	}
 
 	public void pullImage(String dockerServerURI, String imageName) {
-		pullImage(dockerServerURI, null, imageName);
+		pullImage(dockerServerURI, REGISTRY_ADDRESS, imageName);
 	}
-	
-	public void openImageSearchDialog(String dockerConnectionName, String register, String imageName){
+
+	public void openImageSearchDialog(String dockerConnectionName, String register, String imageName) {
 		DockerExplorer de = this;
 		de.open();
 		de.getConnection(dockerConnectionName);
 		new ContextMenu("Pull...").select();
 		new WaitUntil(new ShellWithTextIsAvailable("Pull Image"), TimePeriod.NORMAL);
 
-		// select register
-		if (register != null) {
-			String fullRegisterName = register;
-			Combo combo = new DefaultCombo();
-			List<String> comboItems = combo.getItems();
-			for (String item : comboItems) {
-				if (item.contains(register)) {
-					fullRegisterName = item;
-					break;
-				}
-			}
-			combo.setSelection(fullRegisterName);
-		}
+		Combo combo = new DefaultCombo();
+		combo.setSelection(register);
 		// enter image name in dialog
-		new LabeledText("Name:").setFocus();
-		new LabeledText("Name:").setText(imageName);
+		new LabeledText(IMAGE_NAME).setFocus();
+		new LabeledText(IMAGE_NAME).setText(imageName);
 
 		new PushButton("Search...").click();
 	}
 
-	public void deleteContainer(String dockerServer, String containerName) {
+	public void deleteContainers(String dockerServer, String containerName) {
 		open();
 		ConnectionItem dockerConnection = getConnection(dockerServer);
 		TreeItem dc = dockerConnection.getTreeItem();
@@ -175,7 +161,7 @@ public class DockerExplorer extends WorkbenchView {
 		}
 	}
 
-	public void deleteImage(String dockerServer, String imageName) {
+	public void deleteImages(String dockerServer, String imageName) {
 		open();
 		ConnectionItem dockerConnection = getConnection(dockerServer);
 		TreeItem dc = dockerConnection.getTreeItem();
@@ -191,11 +177,17 @@ public class DockerExplorer extends WorkbenchView {
 				new WaitUntil(new ShellWithTextIsAvailable("Confirm Remove Image"), TimePeriod.NORMAL);
 				new PushButton("OK").click();
 				new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+				break;
 			}
 		}
 	}
 
 	public boolean imageIsDeployed(String dockerServer, String imageName) {
+		return deployedImagesCount(dockerServer, imageName) >= 1;
+	}
+
+	public int deployedImagesCount(String dockerServer, String imageName) {
+		int count = 0;
 		open();
 		ConnectionItem dockerConnection = getConnection(dockerServer);
 		TreeItem dc = dockerConnection.getTreeItem();
@@ -206,13 +198,55 @@ public class DockerExplorer extends WorkbenchView {
 		imagesItem.expand();
 		for (TreeItem item : imagesItem.getItems()) {
 			if (item.getText().contains(imageName)) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public boolean containerIsDeployed(String dockerServer, String containerName) {
+		return selectContainer(dockerServer, containerName);
+	}
+
+	public void deleteConnection(String dockerServer) {
+		open();
+		ConnectionItem dockerConnection = getConnection(dockerServer);
+		TreeItem dc = dockerConnection.getTreeItem();
+		dc.select();
+		new DefaultToolItem("Remove Connection").click();
+	}
+
+	public void enableConnection(String dockerConnection) {
+		open();
+		new DefaultToolItem("Enable Connection").click();
+	}
+
+	public void openImageHierarchy(String dockerServer, String imageName) {
+		selectImage(dockerServer, imageName);
+		new ContextMenu("Open Image Hierarchy").select();
+
+	}
+
+	public boolean selectImage(String serverName, String imageName) {
+		open();
+		ConnectionItem dockerConnection = getConnection(serverName);
+		TreeItem dc = dockerConnection.getTreeItem();
+		dc.select();
+		dc.expand();
+		TreeItem imagesItem = dc.getItem("Images");
+		imagesItem.select();
+		imagesItem.expand();
+		for (TreeItem item : imagesItem.getItems()) {
+			if (item.getText().contains(imageName)) {
+				item.select();
 				return true;
 			}
 		}
 		return false;
+
 	}
 
-	public boolean containerIsDeployed(String dockerServer, String containerName) {
+	public boolean selectContainer(String dockerServer, String containerName) {
 		open();
 		ConnectionItem dockerConnection = getConnection(dockerServer);
 		TreeItem dc = dockerConnection.getTreeItem();
@@ -223,23 +257,40 @@ public class DockerExplorer extends WorkbenchView {
 		containerItem.expand();
 		for (TreeItem item : containerItem.getItems()) {
 			if (item.getText().contains(containerName)) {
+				item.select();
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public void deleteConnection(String dockerServer) {
-		open();
-		ConnectionItem dockerConnection = getConnection(dockerServer);
-		TreeItem dc = dockerConnection.getTreeItem();
-		dc.select();
-		new DefaultToolItem("Remove Connection").click();
+	public void pushImage(String dockerServer, String imageName, String registryAccount, boolean forceTagging,
+			boolean keepTaggedImage) {
+		selectImage(dockerServer, imageName);
+		new ContextMenu("Push...").select();
+		new WaitUntil(new ShellWithTextIsAvailable("Push Image"), TimePeriod.NORMAL);
+		Combo combo = new DefaultCombo();
+		combo.setSelection(registryAccount);
+		new CheckBox("Force tagging image with selected registry").toggle(forceTagging);
+		new CheckBox("Keep tagged image upon completion").toggle(keepTaggedImage);
+		new FinishButton().click();
 	}
-	
-	public void enableConnection(String dockerConnection){
-		open();
-		new DefaultToolItem("Enable Connection").click();
+
+	public void addTagToImage(String serverName, String imageName, String newTag) {
+		selectImage(serverName, imageName);
+		new ContextMenu("Add Tag").select();
+		new LabeledText("New Tag:").setText(newTag);
+		new FinishButton().click();
+	}
+
+	public void selectConnection(String connectionName) {
+		activate();
+		for (ConnectionItem connectionItem : getConnections()) {
+			if (connectionItem.getName() != null && connectionItem.getName().contains(connectionName)) {
+				connectionItem.select();
+				break;
+			}
+		}
 	}
 
 }

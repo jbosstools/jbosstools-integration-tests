@@ -14,16 +14,15 @@ package org.jboss.tools.docker.reddeer.ui;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
 /**
  * 
- * @author jkopriva
+ * @author jkopriva@redhat.com
  *
  */
 
@@ -34,7 +33,7 @@ public class DockerContainersTab extends WorkbenchView {
 	}
 
 	public TableItem getDockerImage(String dockerContainerName) {
-		activate();
+		this.activate();
 		for (TableItem item : getTableItems()) {
 			if (item.getText().equals(dockerContainerName)) {
 				return item;
@@ -56,6 +55,11 @@ public class DockerContainersTab extends WorkbenchView {
 
 	public void select(String containerName) {
 		getDockerImage(containerName).select();
+	}
+
+	public void searchContainer(String containerName) {
+		this.activate();
+		new DefaultText().setText(containerName);
 	}
 
 }

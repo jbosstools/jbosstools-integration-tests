@@ -36,7 +36,7 @@ import org.junit.Test;
 
 public class VolumeMountTest extends AbstractDockerBotTest {
 
-	private String imageName = "jboss/wildfly";
+	private String imageName = "jboss/wildfly:10.0.0.Final";
 	private String containerName = "test_run_wildfly_volumes";
 	private String deploymentPath = "resources/wildfly-deployments";
 	private String containerPath = "/opt/jboss/wildfly/standalone/deployments/";
