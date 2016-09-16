@@ -78,32 +78,6 @@
 							<artifactId>org.jboss.tools.arquillian.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.m2e.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.m2e.profiles.core</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.runtime.core</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<!-- This entry should enable creating of default JDK on Mac -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.jdt.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
 					</dependencies>
 				</configuration>
 			</plugin>
@@ -135,5 +109,34 @@
 				</plugins>
 				</build>
 		</profile>
+
+		<profile>
+			<id>check-pr</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<configuration>
+						
+							<dependency-resolution>
+								<extraRequirements>
+			 
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.arquillian.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>   								
+									
+								</extraRequirements>
+								
+							</dependency-resolution>
+						
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
 	</profiles>
 </project>
