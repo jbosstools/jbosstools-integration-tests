@@ -80,7 +80,7 @@ public class RunConfigurationsDialog {
 		
 		/* Added to make test more reliable - intermittent timing-related 
 		 * failures (https://issues.jboss.org/browse/JBIDE-22866) were being seen */
-		new WaitUntil(new WidgetIsFound<org.eclipse.swt.widgets.Text>(new ClassMatcher(org.eclipse.swt.widgets.Text.class), new WithLabelMatcher("Name:")));
+		new WaitUntil(new WidgetIsFound<org.eclipse.swt.widgets.Text>(new ClassMatcher(org.eclipse.swt.widgets.Text.class), new WithLabelMatcher("Name:")),TimePeriod.VERY_LONG);
 		
 		new LabeledText("Name:").setText(configuration.getName());
 	}
