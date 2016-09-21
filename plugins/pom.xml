@@ -20,6 +20,7 @@
 		<module>org.jboss.tools.batch.reddeer</module>
 		<module>org.jboss.tools.browsersim.reddeer</module>
 		<module>org.jboss.tools.cdi.reddeer</module>
+		<module>org.jboss.tools.cdk.reddeer</module>
 		<module>org.jboss.tools.common.reddeer</module>
 		<module>org.jboss.tools.easymport.reddeer</module>
 		<module>org.jboss.tools.forge.reddeer</module>

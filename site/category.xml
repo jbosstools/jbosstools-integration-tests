@@ -24,6 +24,7 @@
 <bundle id="org.jboss.tools.batch.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.browsersim.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.cdi.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
+<bundle id="org.jboss.tools.cdk.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.common.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.easymport.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.easymport.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
@@ -45,6 +46,7 @@
 <bundle id="org.jboss.tools.archives.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.cdi.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.cdi.seam3.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
+<bundle id="org.jboss.tools.cdk.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.central.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.deltaspike.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.dummy.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
@@ -81,6 +83,7 @@
 <bundle id="org.jboss.tools.batch.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.browsersim.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.cdi.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
+<bundle id="org.jboss.tools.cdk.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.common.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.easymport.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.easymport.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
@@ -103,6 +106,7 @@
 <bundle id="org.jboss.tools.archives.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.cdi.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.cdi.seam3.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
+<bundle id="org.jboss.tools.cdk.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.central.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.deltaspike.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.dummy.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
