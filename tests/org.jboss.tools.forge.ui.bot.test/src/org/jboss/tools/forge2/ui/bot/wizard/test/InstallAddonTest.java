@@ -14,6 +14,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
@@ -33,15 +34,15 @@ import org.junit.Test;
 public class InstallAddonTest extends WizardTestBase {
 	private static String INSTALL_ADDON_DIALOG_NAME = "Install an Addon from the catalog";
 	private static String REMOVE_ADDON_DIALOG_NAME = "Remove an Addon";
-	private static String ADDON_NAME = "Gradle";
-	private static String ADDON_PACKAGE_NAME = "org.jboss.forge.addon:gradle";
+	private static String ADDON_NAME = "RichFaces";
+	private static String ADDON_PACKAGE_NAME = "org.richfaces.forge:richfaces";
 
 	@Test
 	public void testAddonInstall() {
 		WizardDialog dialog = getWizardDialog(INSTALL_ADDON_DIALOG_NAME, "(" + INSTALL_ADDON_DIALOG_NAME + ").*");
 		new DefaultCombo().setSelection(ADDON_NAME);
 		new WaitWhile(new JobIsRunning());
-		dialog.finish();
+		dialog.finish(TimePeriod.VERY_LONG);
 		WizardDialog dialogRemove = getWizardDialog(REMOVE_ADDON_DIALOG_NAME, "(" + REMOVE_ADDON_DIALOG_NAME + ").*");
 		Table table = new DefaultTable();
 		String addonFullName = "";
