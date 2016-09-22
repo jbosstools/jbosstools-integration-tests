@@ -17,17 +17,20 @@ import org.jboss.reddeer.swt.condition.TreeContainsItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.eclipse.swt.SWT;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.tools.archives.reddeer.archives.jdt.integration.LibFilesetDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.ArchivePublishDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.EditArchiveDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.FilesetDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.NewFolderDialog;
 import org.jboss.tools.archives.reddeer.archives.ui.NewJarDialog;
+import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 
 /**
  * Archive retrieved from Project Archives view/explorer
@@ -139,7 +142,8 @@ public class Archive {
 		if(!explorer){
 			new WaitUntil(new TreeContainsItem(archive.getParent(), archiveProject.getText(), archive.getText(), item));
 		} else {
-			new WaitUntil(new TreeContainsItem(archive.getParent(), archiveProject.getText(), "Project Archives", archive.getText(), item));
+			new ProjectArchivesExplorer(archiveProject.getText());
+			new WaitUntil(new TreeContainsItem(new DefaultTree(), archiveProject.getText(), "Project Archives", archive.getText(), item));
 		}
 	}
 }

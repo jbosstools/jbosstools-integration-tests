@@ -19,6 +19,8 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.eclipse.condition.ProjectContainsProjectItem;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
 import org.jboss.tools.archives.reddeer.component.Archive;
 import org.jboss.tools.common.reddeer.label.IDELabel;
@@ -97,14 +99,7 @@ public class UserLibrariesFilesetTest extends ArchivesTestBase {
 	public void testModifyingUserLibraryFileset() {
 		view = viewForProject(PROJECT_NAME2);
 		Archive archiveInView = view.getProject(PROJECT_NAME2).getArchive(ARCHIVE_PATH2);
-		archiveInView.newUserLibraryFileset().selectUserLibrary(USER_LIBRARY_1).finish();
-		new WaitUntil(new TreeContainsItem(new DefaultTree(), PROJECT_NAME2, ARCHIVE_PATH2, USER_LIBRARY_1));
 		
-		archiveInView.getUserLibraryFileset(USER_LIBRARY_1, false).editUserLibraryFileset()
-		.selectUserLibrary(USER_LIBRARY_3).finish();
-		//bug view wont refresh
-		new WaitWhile(new TreeContainsItem(new DefaultTree(), PROJECT_NAME2, ARCHIVE_PATH2, USER_LIBRARY_1));
-		new WaitUntil(new TreeContainsItem(new DefaultTree(), PROJECT_NAME2, ARCHIVE_PATH2, USER_LIBRARY_3));
 		
 		ProjectArchivesExplorer explorer = explorerForProject(PROJECT_NAME2);
 		Archive archiveInExplorer = explorer.getArchive(ARCHIVE_PATH2);
@@ -113,10 +108,22 @@ public class UserLibrariesFilesetTest extends ArchivesTestBase {
 				ARCHIVE_PATH2, USER_LIBRARY_2));
 		archiveInView.getUserLibraryFileset(USER_LIBRARY_2, true).editUserLibraryFileset()
 		.selectUserLibrary(USER_LIBRARY_4).finish();
-		new WaitWhile(new TreeContainsItem(new DefaultTree(), PROJECT_NAME2, "Project Archives",
-				ARCHIVE_PATH2, USER_LIBRARY_2));
-		new WaitUntil(new TreeContainsItem(new DefaultTree(), PROJECT_NAME2, "Project Archives",
-				ARCHIVE_PATH2, USER_LIBRARY_4));
+		
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		new WaitWhile(new ProjectContainsProjectItem(pe.getProject(PROJECT_NAME2), 
+				"Project Archives", ARCHIVE_PATH2, USER_LIBRARY_2));
+		
+		new WaitUntil(new ProjectContainsProjectItem(pe.getProject(PROJECT_NAME2), 
+				"Project Archives", ARCHIVE_PATH2, USER_LIBRARY_4));
+
+		archiveInView.newUserLibraryFileset().selectUserLibrary(USER_LIBRARY_1).finish();
+		new WaitUntil(new TreeContainsItem(new DefaultTree(), PROJECT_NAME2, ARCHIVE_PATH2, USER_LIBRARY_1));
+		archiveInView.getUserLibraryFileset(USER_LIBRARY_1, false).editUserLibraryFileset()
+		.selectUserLibrary(USER_LIBRARY_3).finish();
+		//bug view wont refresh
+		new WaitWhile(new TreeContainsItem(new DefaultTree(), PROJECT_NAME2, ARCHIVE_PATH2, USER_LIBRARY_1));
+		new WaitUntil(new TreeContainsItem(new DefaultTree(), PROJECT_NAME2, ARCHIVE_PATH2, USER_LIBRARY_3));
 	}
 	
 	@Test
