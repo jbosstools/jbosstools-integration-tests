@@ -8,17 +8,10 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.vpe.bot.test;
+package org.jboss.tools.vpe.reddeer.editor.mozilla;
 
-import org.jboss.reddeer.common.platform.RunningPlatform;
-import org.jboss.reddeer.junit.execution.TestMethodShouldRun;
-import org.junit.runners.model.FrameworkMethod;
+import org.jboss.tools.vpe.reddeer.VisualEditor;
 
-public class JSFEngineShoudRun implements TestMethodShouldRun{
-
-	@Override
-	public boolean shouldRun(FrameworkMethod method) {
-		return RunningPlatform.isLinux();
-	}
+public class MozillaEditor extends VisualEditor{
 
 }

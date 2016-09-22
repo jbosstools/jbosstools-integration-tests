@@ -22,6 +22,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.ui.dialogs.FilteredPreferenceDialog;
 import org.jboss.tools.vpe.preview.editor.VpvEditorPart;
+import org.jboss.tools.vpe.reddeer.VisualEditor;
 import org.jboss.tools.vpe.reddeer.resref.core.VpvResourcesDialog;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -31,7 +32,7 @@ import org.jboss.tools.jst.reddeer.web.ui.editor.jspeditor.JSPMultiPageEditor;
 import org.jboss.tools.jst.web.ui.internal.editor.jspeditor.PalettePageImpl;
 import org.jboss.tools.jst.web.ui.palette.PaletteAdapter;
 
-public class VPVEditor extends JSPMultiPageEditor{
+public class VPVEditor extends VisualEditor{
 	
 	public VPVEditor() {
 		super();
@@ -48,7 +49,10 @@ public class VPVEditor extends JSPMultiPageEditor{
 	    	return null;
 	    }
 	    Elements selectedElements = document.getElementsByAttributeValue("data-vpvid", selectedElementId.toString());
-	    return selectedElements.get(0).text();
+	    if(selectedElements.size() > 0){
+	    	return selectedElements.get(0).text();
+	    }
+	    return null;
 	}
 	
 	private Long getSelectedElementId(final VpvEditorPart vpvEditor){
@@ -80,8 +84,11 @@ public class VPVEditor extends JSPMultiPageEditor{
 		Object[] coord = (Object[])evaluateScript("var elements = document.getElementsByTagName('*'); var i;"
 				+ "for(i=0; i<elements.length; i++){ "
 		+ "if(elements[i].textContent == '"+text+"'){"
-				+ "var coord = new Array(); coord[0]= elements[i].getBoundingClientRect().left;"
-				+ "coord[1]= elements[i].getBoundingClientRect().top;return coord}}");
+				+ "var coord = new Array(); coord[0]= elements[i].getBoundingClientRect().right-"
+				+ "((elements[i].getBoundingClientRect().right-elements[i].getBoundingClientRect().left)/2);"
+				+ "coord[1]= elements[i].getBoundingClientRect().top - "
+				+ "((elements[i].getBoundingClientRect().top-elements[i].getBoundingClientRect().bottom)/2);"
+				+ "return coord}}");
 		final Event ev = new Event();
 		ev.x=(int)((Double)coord[0]).doubleValue();
 		ev.y=(int)((Double)coord[1]).doubleValue();
@@ -90,7 +97,7 @@ public class VPVEditor extends JSPMultiPageEditor{
 			
 			@Override
 			public void run() {
-
+				getBrowser().notifyListeners(SWT.MouseDown, ev);
 				getBrowser().notifyListeners(SWT.MouseUp, ev);
 				
 			}

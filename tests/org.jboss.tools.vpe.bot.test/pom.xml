@@ -13,6 +13,7 @@
 
 	<properties>
 		<suiteClass>org.jboss.tools.vpe.bot.test.VPEAllTests</suiteClass>
+		<systemProperties>-Drd.logCollectorEnabled=false</systemProperties>
 	</properties>
 
 	<profiles>

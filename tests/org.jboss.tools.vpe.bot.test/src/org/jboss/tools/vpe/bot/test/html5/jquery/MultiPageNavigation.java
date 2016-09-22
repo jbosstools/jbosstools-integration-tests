@@ -19,7 +19,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.jst.reddeer.palette.JQueryMobilePalette;
-import org.jboss.tools.jst.reddeer.web.ui.editor.jspeditor.JSPMultiPageEditor;
 import org.jboss.tools.vpe.bot.test.VPETestBase;
 import org.jboss.tools.vpe.reddeer.matcher.TextTooltipMatcher;
 import org.jboss.tools.vpe.reddeer.preview.editor.VPVEditor;
