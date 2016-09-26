@@ -1,14 +1,14 @@
 package org.jboss.tools.hibernate.reddeer.editor;
 
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
+import org.jboss.reddeer.swt.condition.TreeContainsItem;
 import org.jboss.reddeer.swt.condition.TreeHasChildren;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.hamcrest.Matcher;
-import org.hamcrest.core.IsEqual;
+import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
@@ -68,21 +68,18 @@ public class RevengEditor extends DefaultEditor {
 
 	/**
 	 * Select all tables within Add Tables & Columns tab
-	 */	
-	public void selectAllTables() {
+	 */
+	public void selectAllTables(String databaseName) {
 		activateTableAndColumnsTab();
 		new PushButton("Add...").click();
-		new DefaultShell("Add Tables & Columns");
+		Shell s= new DefaultShell("Add Tables & Columns");
 		DefaultTree dbTree = new DefaultTree();
 		new WaitUntil(new TreeHasChildren(dbTree));
-		Matcher[] jobs = new Matcher[1];
-		jobs[0] = new IsEqual<String>("Fetching children of Database");
-		new WaitWhile(new JobIsRunning(jobs));
-		//AbstractWait.sleep(TimePeriod.NORMAL);
-		dbTree.getItems().get(0).expand();
+		new WaitUntil(new TreeContainsItem(dbTree, databaseName));
+		new DefaultTreeItem(databaseName).select();
 		new PushButton("Select all children").click();
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsAvailable("Add Tables & Columns"));
+		new WaitWhile(new ShellIsAvailable(s));
 	}
 
 	

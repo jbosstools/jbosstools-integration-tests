@@ -300,7 +300,7 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
 		re.activateTypeMappingsTab();
 		re.activateTableAndColumnsTab();
 		try {
-			re.selectAllTables();
+			re.selectAllTables("SAKILA.PUBLIC");
 		} catch (WaitTimeoutExpiredException e) {
 			fail("Cannot add tables - known issue(s) - JBIDE-19443");
 		}
