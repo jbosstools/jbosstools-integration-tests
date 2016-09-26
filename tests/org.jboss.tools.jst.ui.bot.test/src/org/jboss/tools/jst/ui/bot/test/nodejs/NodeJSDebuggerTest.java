@@ -17,7 +17,6 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -26,7 +25,7 @@ import org.jboss.reddeer.eclipse.ui.perspectives.DebugPerspective;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.jboss.reddeer.workbench.condition.EditorWithTitleIsActive;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.jst.reddeer.common.CursorPositionIsOnLine;
@@ -39,6 +38,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+
+
 /**
  * Tests for NodeJS Debugger
  * 
@@ -48,29 +51,25 @@ import org.junit.Test;
 @OpenPerspective(DebugPerspective.class)
 public class NodeJSDebuggerTest extends JSTTestBase {
 
-	private static String TEST_APP_NAME = "testApp";
+	private static String TEST_APP_NAME = "jsdt-node-test-project";
 	private static String IMPORT_PATH = "resources/" + TEST_APP_NAME;
 
-	private static String CONSOLE_LOG = "console.log";
+	private static int BOOK_JS_BREAKPOINT_LINE = 4;
 
 	private static String DEBUG_VARIABLE_EXPRESS = "express";
-	private static String DEBUG_VARIABLE_PATH = "path";
 	private static String DEBUG_VARIABLE_PORT = "port";
+	private static String DEBUG_VARIABLE_TITLE = "title";
+	private static String DEBUG_VARIABLE_TITLE_VALUE = "\"Nineteen Eighty-Four\"";
+	private static String DEBUG_VARIABLE_AUTHOR = "author";
+	private static String DEBUG_VARIABLE_AUTHOR_VALUE = "\"George Orwell\"";
 
 	@BeforeClass
 	public static void prepare() {
-		try {
-			new DefaultEditor("Red Hat Central").close();
-		} catch (CoreLayerException e) {
-			// if not open, ignore
-		}
 		/* PE is closed in Debug perspective, open it */
 		new ProjectExplorer().open();
 		importExistingProject(IMPORT_PATH);
-		assertTrue("testApp has not been imported!", new ProjectExplorer().containsProject(TEST_APP_NAME));
-		bowerInstall(TEST_APP_NAME, "client");
-		npmInstall(TEST_APP_NAME, "client");
-		npmInstall(TEST_APP_NAME, "server");
+		assertTrue(TEST_APP_NAME + " has not been imported!", new ProjectExplorer().containsProject(TEST_APP_NAME));
+		npmInstall(TEST_APP_NAME);
 
 	}
 
@@ -83,16 +82,16 @@ public class NodeJSDebuggerTest extends JSTTestBase {
 	@Before
 	public void debugAs() {
 
-		debugAsNodeJSAppMenu(new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("server", "server.js"))
+		debugAsNodeJSAppMenu(new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("index.js"))
 				.select();
 
 		new WorkbenchView("Debug").open();
 		DefaultTree debugTree = new DefaultTree();
 		new WaitUntil(
-				new TreeContainsItem(debugTree, new RegexMatcher("\\(anonymous function\\)(.*)(server\\.js)(.*)")),
+				new TreeContainsItem(debugTree, new RegexMatcher("\\(anonymous function\\)(.*)(index\\.js)(.*)")),
 				TimePeriod.LONG);
 
-		RegexMatcher matcher = new RegexMatcher("\\(anonymous function\\)(.*)(server\\.js)(.*)");
+		RegexMatcher matcher = new RegexMatcher("\\(anonymous function\\)(.*)(index\\.js)(.*)");
 		doubleClickTreeItem(debugTree, matcher);
 
 		ConsoleView console = new ConsoleView();
@@ -111,68 +110,64 @@ public class NodeJSDebuggerTest extends JSTTestBase {
 	public void testJSVariablesAvailableInView() {
 
 		TreeItem varExpress = getVariable(DEBUG_VARIABLE_EXPRESS);
-		TreeItem varPath = getVariable(DEBUG_VARIABLE_PATH);
 		TreeItem varPort = getVariable(DEBUG_VARIABLE_PORT);
 
 		assertTrue("Variable '" + DEBUG_VARIABLE_EXPRESS + "' not found in view!", varExpress != null);
-		assertTrue(varExpress.getCell(0).equals(DEBUG_VARIABLE_EXPRESS));
-		assertTrue(varExpress.getCell(1).equals("undefined"));
-
-		assertTrue("Variable '" + DEBUG_VARIABLE_PATH + "' not found in view!", varPath != null);
-		assertTrue(varPath.getCell(0).equals(DEBUG_VARIABLE_PATH));
-		assertTrue(varPath.getCell(1).equals("undefined"));
+		assertThat(varExpress.getCell(0), is(DEBUG_VARIABLE_EXPRESS));
+		assertThat(varExpress.getCell(1), is("undefined"));
 
 		assertTrue("Variable '" + DEBUG_VARIABLE_PORT + "' not found in view!", varPort != null);
-		assertTrue(varPort.getCell(0).equals(DEBUG_VARIABLE_PORT));
-		assertTrue(varPort.getCell(1).equals("undefined"));
+		assertThat(varPort.getCell(0), is(DEBUG_VARIABLE_PORT));
+		assertThat(varPort.getCell(1), is("undefined"));
 
 	}
 
 	@Test
 	public void testJSVariablesInitialized() throws CoreException {
 
-		TextEditor editor = new TextEditor("server.js");
-		int line = editor.getLineOfText(CONSOLE_LOG) + 1;
-		setLineBreakpoint(editor, line);
+		
+		new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("book.js").open();
+		new WaitUntil(new EditorWithTitleIsActive("book.js"));
+		TextEditor editor = new TextEditor("book.js");
+		setLineBreakpoint(editor, BOOK_JS_BREAKPOINT_LINE);
 
 		// resume
 		new WorkbenchView("Debug").open();
 		DefaultTree debugTree = new DefaultTree();
-		resume(debugTree, new RegexMatcher("\\(anonymous function\\)(.*)(server\\.js)(.*)"));
-		new WaitUntil(new CursorPositionIsOnLine(editor, line));
+		resume(debugTree, new RegexMatcher("\\(anonymous function\\)(.*)(index\\.js)(.*)"));
+		
+		new WaitUntil(new EditorWithTitleIsActive("book.js"), TimePeriod.LONG);
+		new WaitUntil(new CursorPositionIsOnLine(editor, BOOK_JS_BREAKPOINT_LINE));
 
-		TreeItem varExpress = getVariable(DEBUG_VARIABLE_EXPRESS);
-		TreeItem varPath = getVariable(DEBUG_VARIABLE_PATH);
-		TreeItem varPort = getVariable(DEBUG_VARIABLE_PORT);
+		TreeItem varTitle = getVariable(DEBUG_VARIABLE_TITLE);
+		TreeItem varAuthor = getVariable(DEBUG_VARIABLE_AUTHOR);
 
-		assertTrue("Variable '" + DEBUG_VARIABLE_EXPRESS + "' not found in view!", varExpress != null);
-		assertTrue(varExpress.getCell(0).equals(DEBUG_VARIABLE_EXPRESS));
-		assertTrue(varExpress.getCell(1).contains("[Function]"));
-
-		assertTrue("Variable '" + DEBUG_VARIABLE_PATH + "' not found in view!", varPath != null);
-		assertTrue(varPath.getCell(0).equals(DEBUG_VARIABLE_PATH));
-		assertTrue(varPath.getCell(1).contains("[Object]"));
-
-		assertTrue("Variable '" + DEBUG_VARIABLE_PORT + "' not found in view!", varPort != null);
-		assertTrue(varPort.getCell(0).equals(DEBUG_VARIABLE_PORT));
-		assertTrue(varPort.getCell(1).equals("3000"));
-
+		assertTrue("Variable '"+ DEBUG_VARIABLE_TITLE  + "' not found in view!", varTitle != null);
+		assertThat(varTitle.getCell(0), is(DEBUG_VARIABLE_TITLE));
+		assertThat(varTitle.getCell(1), is(DEBUG_VARIABLE_TITLE_VALUE));
+		
+		
+		assertTrue("Variable '" + DEBUG_VARIABLE_AUTHOR + "' not found in view!", varAuthor != null);
+		assertThat(varAuthor.getCell(0), is(DEBUG_VARIABLE_AUTHOR));
+		assertThat(varAuthor.getCell(1), is(DEBUG_VARIABLE_AUTHOR_VALUE));
 	}
 
 	@Test
 	public void testDebuggerStopsAtBreakpoint() throws CoreException {
 
-		TextEditor editor = new TextEditor("server.js");
-		int line = editor.getLineOfText(CONSOLE_LOG) + 1;
-		setLineBreakpoint(editor, line);
+		new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("book.js").open();
+		new WaitUntil(new EditorWithTitleIsActive("book.js"));
+		TextEditor editor = new TextEditor("book.js");
+		setLineBreakpoint(editor, BOOK_JS_BREAKPOINT_LINE);
 
 		// resume
 		new WorkbenchView("Debug").open();
 		DefaultTree debugTree = new DefaultTree();
-		resume(debugTree, new RegexMatcher("\\(anonymous function\\)(.*)(server\\.js)(.*)"));
+		resume(debugTree, new RegexMatcher("\\(anonymous function\\)(.*)(index\\.js)(.*)"));
 
 		try {
-			new WaitUntil(new CursorPositionIsOnLine(editor, line));
+			new WaitUntil(new EditorWithTitleIsActive("book.js"), TimePeriod.LONG);
+			new WaitUntil(new CursorPositionIsOnLine(editor, BOOK_JS_BREAKPOINT_LINE));
 		} catch (WaitTimeoutExpiredException e) {
 			Assert.fail("Debugger hasn't stopped on breakpoint");
 		}

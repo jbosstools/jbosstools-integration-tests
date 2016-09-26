@@ -1,0 +1,23 @@
+{
+  "name": "jsdt-node-test-project",
+  "version": "1.0.0",
+  "description": "simple Node.js Project for JSDT tests usage",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ibuziuk/jsdt-node-test-project.git"
+  },
+  "author": "Ilya Buziuk",
+  "license": "EPL v1.0",
+  "bugs": {
+    "url": "https://github.com/ibuziuk/jsdt-node-test-project/issues"
+  },
+  "homepage": "https://github.com/ibuziuk/jsdt-node-test-project#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}

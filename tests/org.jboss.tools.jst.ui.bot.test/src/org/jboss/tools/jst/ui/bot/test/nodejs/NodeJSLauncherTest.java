@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.jst.ui.bot.test.nodejs;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.handler.ShellHandler;
@@ -24,6 +25,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import org.junit.Assert;
+
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -35,7 +38,7 @@ import static org.junit.Assert.assertTrue;
 @OpenPerspective(DebugPerspective.class)
 public class NodeJSLauncherTest extends JSTTestBase {
 
-	private static String TEST_APP_NAME = "testApp";
+	private static String TEST_APP_NAME = "jsdt-node-test-project";
 	private static String IMPORT_PATH = "resources/" + TEST_APP_NAME;
 
 	@BeforeClass
@@ -43,10 +46,8 @@ public class NodeJSLauncherTest extends JSTTestBase {
 		/* PE is closed in Debug perspective, open it */
 		new ProjectExplorer().open();
 		importExistingProject(IMPORT_PATH);
-		assertTrue("testApp has not been imported!", new ProjectExplorer().containsProject(TEST_APP_NAME));
-		bowerInstall(TEST_APP_NAME, "client");
-		npmInstall(TEST_APP_NAME, "client");
-		npmInstall(TEST_APP_NAME, "server");
+		assertTrue(TEST_APP_NAME + " has not been imported!", new ProjectExplorer().containsProject(TEST_APP_NAME));
+		npmInstall(TEST_APP_NAME);
 	}
 
 	@AfterClass
@@ -57,42 +58,37 @@ public class NodeJSLauncherTest extends JSTTestBase {
 
 	@Test
 	public void testNodeJSRunAsLauncherAvailable() {
-		ExplorerItem serverJS = new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("server", "server.js");
-		serverJS.select();
+		ExplorerItem indexJS = new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("index.js");
+		indexJS.select();
 		assertTrue("'Run As -> Node.js Application' not available!", runAsNodeJSAppMenu().isEnabled());
 	}
 
 	@Test
 	public void testNodeJSAppIsRunning() {
-		ExplorerItem serverJS = new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("server", "server.js");
-		serverJS.select();
+		ExplorerItem indexJS = new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("index.js");
+		indexJS.select();
 		runAsNodeJSAppMenu().select();
 
 		ConsoleView console = new ConsoleView();
 		console.activate();
-		new WaitUntil(new ConsoleHasText("Hello From Node.js App"));
-		new WaitUntil(new ConsoleHasText("Express server listening on port 3000"));
-
-		assertTrue("Node.js App is not running!", console.getConsoleText().contains("Hello From Node.js App"));
-		assertTrue("Node.js App is not running!",
-				console.getConsoleText().contains("Express server listening on port 3000"));
-
+		try {
+			new WaitUntil(new ConsoleHasText("Listening on port 3000"));
+		} catch (WaitTimeoutExpiredException e) {
+			Assert.fail("Node.js App is not running!");
+		}
 		console.terminateConsole();
-
 	}
 
 	@Test
 	public void testNodeJSDebugAsLauncherAvailable() {
 		assertTrue("'Debug As -> Node.js Application' not available!",
-				debugAsNodeJSAppMenu(
-						new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("server", "server.js"))
-								.isEnabled());
+				debugAsNodeJSAppMenu(new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("index.js"))
+						.isEnabled());
 	}
 
 	@Test
 	public void testNodeJSAppIsDebugging() {
-		debugAsNodeJSAppMenu(new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("server", "server.js"))
-				.select();
+		debugAsNodeJSAppMenu(new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("index.js")).select();
 
 		ConsoleView console = new ConsoleView();
 		console.activate();
