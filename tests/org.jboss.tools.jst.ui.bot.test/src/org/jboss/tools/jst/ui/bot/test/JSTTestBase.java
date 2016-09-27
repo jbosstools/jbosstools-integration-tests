@@ -25,6 +25,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.wst.jsdt.debug.core.model.JavaScriptDebugModel;
 import org.hamcrest.Matcher;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -275,11 +276,15 @@ public class JSTTestBase {
 		WorkbenchView variables = new WorkbenchView("Variables");
 		variables.activate();
 		DefaultTree variablesTree = new DefaultTree();
-		new WaitUntil(new TreeContainsItem(variablesTree, new WithTextMatcher(name), false));
-
-		List<TreeItem> vars = variablesTree.getItems();
-
+		
 		TreeItem var = null;
+		try{
+			new WaitUntil(new TreeContainsItem(variablesTree, new WithTextMatcher(name), false));
+		}catch (WaitTimeoutExpiredException e) {
+			//not found
+			return null;
+		}
+		List<TreeItem> vars = variablesTree.getItems();
 		for (TreeItem i : vars) {
 			if (i.getText().equals(name)) {
 				var = i;
