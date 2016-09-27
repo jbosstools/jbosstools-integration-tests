@@ -6,7 +6,6 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.hibernate.reddeer.common.XPathHelper;
 import org.jboss.tools.hibernate.reddeer.editor.JpaXmlEditor;
 import org.junit.After;
@@ -60,8 +59,7 @@ public class PersistenceXMLFileTest extends HibernateRedDeerTest {
     	log.step("Open persistence xml file");
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		DefaultTreeItem i = new DefaultTreeItem(prj,"JPA Content","persistence.xml");
-		i.doubleClick();
+		pe.getProject(prj).getProjectItem("JPA Content","persistence.xml").open();
 		
     	log.step("In editor set some hibernate properties on hibernate tab");
 		JpaXmlEditor pexml = new JpaXmlEditor();
