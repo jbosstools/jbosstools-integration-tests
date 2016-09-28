@@ -12,12 +12,17 @@ package org.jboss.tools.vpe.bot.test.preferences;
 
 import static org.junit.Assert.*;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.junit.execution.annotation.RunIf;
+import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.tools.vpe.bot.test.JSFEngineShoudRun;
 import org.jboss.tools.vpe.bot.test.VPETestBase;
 import org.jboss.tools.vpe.reddeer.preferences.VisualPageEditorPreferencePage;
 import org.junit.Test;
@@ -30,12 +35,22 @@ public class BrowserEnginePreferencesTest extends VPETestBase{
 		wd.open();
 		VisualPageEditorPreferencePage vp = new VisualPageEditorPreferencePage();
 		wd.select(vp);
-		assertTrue(vp.isHTML5Engine());
-		assertFalse(vp.isJSFEngine());
+		if(isLinux()){
+			assertTrue(vp.isHTML5Engine());
+			assertFalse(vp.isJSFEngine());
+		} else {
+			try{
+				vp.isHTML5Engine();
+				fail("Engine composite should not be available on windows");
+			} catch (RedDeerException ex){
+				
+			}
+		}
 		wd.ok();
 	}
 	
 	@Test
+	@RunIf(conditionClass=JSFEngineShoudRun.class)
 	public void testBrowserEngineRestartPreferences(){
 		WorkbenchPreferenceDialog wd = new WorkbenchPreferenceDialog();
 		wd.open();
@@ -53,6 +68,7 @@ public class BrowserEnginePreferencesTest extends VPETestBase{
 		assertFalse(new RadioButton("JSF (use XulRunner)").isEnabled());
 		new DefaultLabel("Switching Visual Editor engine is not available under "
 				+ "GTK3 or when embedded XULRunner is disabled");
+		wd.ok();
 	}
 	
 	private void testGTK2EnginePreferences(WorkbenchPreferenceDialog wd, VisualPageEditorPreferencePage vp){
@@ -62,13 +78,14 @@ public class BrowserEnginePreferencesTest extends VPETestBase{
 			vp.setHTML5Engine();
 		}		
 		vp.apply();
-		new DefaultShell("Confirm restart");
+		Shell restartShell = new DefaultShell("Confirm restart");
 		new CancelButton().click();
+		new WaitWhile(new ShellIsAvailable(restartShell));
 		wd.open();
-		new OkButton().click();
-		new DefaultShell("Confirm restart");
+		wd.ok();
+		restartShell = new DefaultShell("Confirm restart");
 		new CancelButton().click();
-		wd.open();
+		new WaitWhile(new ShellIsAvailable(restartShell));
 		wd.cancel();
 	}
 		

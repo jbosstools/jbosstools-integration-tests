@@ -18,6 +18,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -42,6 +43,9 @@ public class SecuresAnnotationTest extends DeltaspikeTestBase {
 	
 	private RegexMatcher notDeclaredSecurityBindingProblemMatcher = new RegexMatcher(
 			"Authorizer method .* does not declare a security binding type");
+	
+	private RegexMatcher multipleSecutityBindingsProblemMatcher = new RegexMatcher(
+			"Authorizer method .* declares multiple security binding types");
 	
 	@InjectRequirement
 	private ServerRequirement sr;
@@ -83,6 +87,22 @@ public class SecuresAnnotationTest extends DeltaspikeTestBase {
 		
 		new WaitWhile(new SpecificProblemExists(
 				notDeclaredSecurityBindingProblemMatcher), TimePeriod.LONG);
+		
+	}
+	
+	@Test
+	public void testMultipleSecutityBindings() {
+		
+		String projectName = "multipleSecutityBindings";
+		importDeltaspikeProject(projectName,sr);
+		
+		new WaitUntil(new SpecificProblemExists(
+				multipleSecutityBindingsProblemMatcher), TimePeriod.LONG);
+		
+		replaceInEditor(projectName, "test", "CustomAuthorizer.java", "@CustomSecurityBinding2()", "", true);
+		
+		new WaitWhile(new SpecificProblemExists(
+				multipleSecutityBindingsProblemMatcher), TimePeriod.LONG);
 		
 	}
 	

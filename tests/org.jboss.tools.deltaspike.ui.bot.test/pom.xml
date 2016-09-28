@@ -32,12 +32,12 @@
 								<extraRequirements>
 									<requirement>
 										<type>p2-installable-unit</type>
-										<id>org.jboss.tools.cdi.feature.group</id>
+										<id>org.jboss.tools.cdi.feature.feature.group</id>
 										<versionRange>0.0.0</versionRange>
 									</requirement>
 									<requirement>
 										<type>p2-installable-unit</type>
-										<id>org.jboss.tools.cdi.deltaspike.feature.group</id>
+										<id>org.jboss.tools.cdi.deltaspike.feature.feature.group</id>
 										<versionRange>0.0.0</versionRange>
 									</requirement>
 								</extraRequirements>

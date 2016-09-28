@@ -17,6 +17,7 @@ import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPag
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.common.reddeer.utils.ProjectHelper;
 import org.jboss.tools.hibernate.reddeer.factory.ResourceFactory;
@@ -58,6 +59,7 @@ public class ProjectImporter {
 			}
 			ProjectHelper.addLibrariesIntoProject(projectName, fullPathJars);
 		}
+		new WaitUntil(new JobIsRunning(), TimePeriod.SHORT,false);
 		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();

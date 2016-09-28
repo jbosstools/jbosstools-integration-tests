@@ -16,23 +16,39 @@ import org.jboss.tools.vpe.reddeer.preview.editor.VPVEditor;
 public class VPEditorHasTextSelected implements WaitCondition{
 	
 	private VPVEditor editor;
+	private String text;
 	
 	public VPEditorHasTextSelected(VPVEditor editor) {
 		this.editor = editor;
 	}
+	
+	public VPEditorHasTextSelected(VPVEditor editor, String text) {
+		this.editor = editor;
+		this.text = text;
+	}
 
 	@Override
 	public boolean test() {
-		return !editor.getSelectedTextInBrowser().isEmpty();
+		if(text != null){
+			return text.equals(editor.getSelectedTextInBrowser());
+		}
+		return (editor.getSelectedTextInBrowser() != null && !editor.getSelectedTextInBrowser().isEmpty());
 	}
 
 	@Override
 	public String description() {
+		if(text != null){
+			return "VPE editor has '"+text+"' selected. Currently selected text is '"+
+					editor.getSelectedTextInBrowser()+"'";
+		}
 		return "VPE editor has text selected";
 	}
 
 	@Override
 	public String errorMessage() {
+		if(text != null){
+			return "'"+editor.getSelectedTextInBrowser()+"' was selected but '"+text+"' was expected";
+		}
 		return "No text was selected in VPE editor";
 	}
 

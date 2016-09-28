@@ -29,6 +29,7 @@ import org.jboss.reddeer.eclipse.wst.html.ui.wizard.NewHTMLTemplatesWizardPage;
 import org.jboss.reddeer.eclipse.wst.html.ui.wizard.NewHTMLWizard;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
@@ -43,6 +44,9 @@ public class VPETestBase {
 	
 	@BeforeClass
 	public static void prepareWorkspaceBase(){
+		if(!new WorkbenchShell().isMaximized()){
+			new WorkbenchShell().maximize();
+		}
 		errors = null;
 		openErrorLog().deleteLog();
 	}
@@ -55,11 +59,11 @@ public class VPETestBase {
 			assertEquals(errors.size(),  msgs.size());
 			for(LogMessage lm: msgs){
 				for(ErrorInLog er: errors){
-					if(lm.getMessage().equals(er.getMessage()) && lm.getPlugin().equals(er.getPlugin())){
+					if(lm.getMessage().contains(er.getMessage()) && lm.getPlugin().equals(er.getPlugin())){
 						break;
 					}
+					fail("Unexpected error "+lm);
 				}
-				fail("Unexpected error "+lm);
 			}
 		} else {
 			if(msgs.size() == 1){
@@ -67,7 +71,7 @@ public class VPETestBase {
 					fail("There's error in error log "+msgs.get(0));
 				}
 			} else {
-				assertEquals(0, openErrorLog().getErrorMessages().size());
+				assertEquals(0, msgs.size());
 			}
 		}
 	}
@@ -133,6 +137,10 @@ public class VPETestBase {
 		te.insertText(3, 0, "<script src=\"http://code.jquery.com/jquery-1.11.2.min.js\"></script>");
 		
 		te.save();
+	}
+	
+	public static boolean isLinux(){
+		return RunningPlatform.isLinux();
 	}
 	
 	public static boolean isGTK2(){

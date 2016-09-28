@@ -18,11 +18,7 @@ public class JSFEngineShoudRun implements TestMethodShouldRun{
 
 	@Override
 	public boolean shouldRun(FrameworkMethod method) {
-		String gtkVersion = System.getProperty("org.eclipse.swt.internal.gtk.version");
-		Boolean xulRunner = Boolean.parseBoolean(System.getProperty("org.jboss.tools.vpe.loadxulrunner"));
-		Boolean isLinux = RunningPlatform.isLinux();
-		
-		return isLinux && !gtkVersion.startsWith("3") && !xulRunner;
+		return RunningPlatform.isLinux();
 	}
 
 }
