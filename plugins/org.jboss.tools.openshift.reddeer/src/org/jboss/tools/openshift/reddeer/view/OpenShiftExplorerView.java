@@ -237,6 +237,16 @@ public class OpenShiftExplorerView extends WorkbenchView {
 		return new OpenShift3Connection(getConnectionItem(DatastoreOS3.SERVER, DatastoreOS3.USERNAME));
 	}
 	
+	/**
+	 * Gets default OpenShift 3 connection, which has specified server and user name 
+	 * through method parameters when used in another test.
+	 * 
+	 * @return OpenShift 3 connection
+	 */
+	public OpenShift3Connection getOpenShift3Connection(String server, String username) {
+		return new OpenShift3Connection(getConnectionItem(server, username));
+	}
+	
 	private TreeItem getConnectionItem(String server, String username) {
 		open();
 		TreeItem connectionItem = treeViewerHandler.getTreeItem(new DefaultTree(), username);
