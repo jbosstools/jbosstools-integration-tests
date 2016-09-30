@@ -45,7 +45,7 @@ public class BasicArquilliaCruiserTest {
 		new DefaultToolItem(new WorkbenchShell(), CENTRAL_STRING).click();
 		// activate central editor
 		new DefaultEditor(CENTRAL_STRING);
-		new WaitUntil(new CentralIsLoaded());
+		new WaitUntil(new CentralIsLoaded(), TimePeriod.VERY_LONG);
 		centralBrowser = new InternalBrowser();
 		jsHelper.setBrowser(centralBrowser);
 	}
