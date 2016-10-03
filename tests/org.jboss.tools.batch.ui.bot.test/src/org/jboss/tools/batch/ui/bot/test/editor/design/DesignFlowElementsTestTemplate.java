@@ -27,6 +27,7 @@ import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage
 import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.REF;
 import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.SPLIT;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditor;
 import org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorDesignPage;
@@ -36,7 +37,9 @@ import org.jboss.tools.batch.reddeer.wizard.NewBatchArtifactWizardDialog;
 import org.jboss.tools.batch.reddeer.wizard.NewBatchArtifactWizardPage;
 import org.jboss.tools.batch.ui.bot.test.AbstractBatchTest;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
@@ -44,10 +47,22 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	
 	protected JobXMLEditor editor;
 	
+	private static Logger log = Logger.getLogger(DesignFlowElementsTestTemplate.class);
+	
 	@Override
 	protected String getPackage(){
 		return "batch.test.editor.design";
 	}
+	
+	@BeforeClass
+	public static void setUpBeforeClass() {
+		initTestResources(log);
+	}
+	
+	@AfterClass
+	public static void tearDownAfterClass() {
+		removeProject(log);
+	}	
 	
 	@Before
 	public void setupEditor(){
