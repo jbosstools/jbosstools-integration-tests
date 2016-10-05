@@ -14,7 +14,7 @@
 	<properties>
 		<systemProperties>${integrationTestsSystemProperties} -Drd.config=target/classes/servers</systemProperties>
 		<suiteClass>org.jboss.tools.deltaspike.ui.bot.test.DeltaspikeAllBotTests</suiteClass>
-		<jbosstools.test.wildfly.10x.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.wildfly.10x.home>
+		<jbosstools.test.wildfly.10x.home>${requirementsDirectory}/wildfly-10.1.0.Final</jbosstools.test.wildfly.10x.home>
 		<deltaspike_lib_version>1.7.1</deltaspike_lib_version>
 	</properties>
 	
@@ -67,7 +67,7 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>10.0.0.Final</version>
+									<version>10.1.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>

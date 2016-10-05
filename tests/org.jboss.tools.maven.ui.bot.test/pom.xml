@@ -13,7 +13,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<systemProperties>${integrationTestsSystemProperties} -Djbosstools.test.seam.2.1.0.home=${requirementsDirectory}/jboss-seam-2.1.2 -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Dproject.build.directory=${project.build.directory} -Djbosstools.test.wildfly8.home=${jbosstools.test.wildfly8.home} -Drd.config=target/classes/servers -Dmaven.settings.path=target/classes/settings.xml -Dscope=${scope}</systemProperties>
-		<jbosstools.test.wildfly8.home>${requirementsDirectory}/wildfly-8.1.0.Final</jbosstools.test.wildfly8.home>
+		<jbosstools.test.wildfly8.home>${requirementsDirectory}/wildfly-8.2.1.Final</jbosstools.test.wildfly8.home>
 		<scope>MavenAllBotTests</scope>
 		<surefire.timeout>18000</surefire.timeout>
 	</properties>
@@ -44,7 +44,7 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>8.1.0.Final</version>
+									<version>8.2.1.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>

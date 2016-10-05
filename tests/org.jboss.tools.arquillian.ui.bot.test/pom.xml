@@ -19,7 +19,7 @@
 		
 		<download-properties-file>${project.basedir}/properties/projects-download.properties</download-properties-file>
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
-		<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.2.0.Final</jbosstools.test.jboss-wildfly-8.home>
+		<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.2.1.Final</jbosstools.test.jboss-wildfly-8.home>
 		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties}</systemProperties>
 		<runtimesProperties>-Drd.config=${project.build.outputDirectory}/project/wildfly-8.xml -Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home}</runtimesProperties>
 	</properties>
@@ -140,4 +140,3 @@
 
 	</profiles>
 </project>
-
