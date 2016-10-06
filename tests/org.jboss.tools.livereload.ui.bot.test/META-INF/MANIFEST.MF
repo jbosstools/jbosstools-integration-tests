@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Livereload UI Bot Tests
+Bundle-SymbolicName: org.jboss.tools.livereload.ui.bot.test
+Bundle-Version: 4.4.2.qualifier
+Bundle-Activator: org.jboss.tools.livereload.ui.bot.test.Activator
+Require-Bundle: org.jboss.reddeer.go;bundle-version="1.1.0",
+ org.jboss.reddeer.gef;bundle-version="1.1.0",
+ org.jboss.tools.jst.reddeer,
+ org.eclipse.gef,
+ org.jboss.tools.jst.web.ui,
+ org.jboss.tools.common,
+ org.jboss.tools.vpe.reddeer,
+ org.eclipse.debug.core,
+ org.eclipse.debug.ui,
+ org.jboss.tools.livereload.core,
+ org.eclipse.wst.server.core,
+ org.jboss.ide.eclipse.as.reddeer,
+ org.jboss.tools.livereload.reddeer
+Bundle-ActivationPolicy: lazy
+Eclipse-BundleShape: jar
+Bundle-Localization: plugin
+Bundle-Vendor: JBoss by Red Hat
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
