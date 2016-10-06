@@ -22,9 +22,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.views.navigator.ResourceNavigator;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -36,6 +34,7 @@ import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.wizard.v2.ApplicationCreator;
+import org.jboss.tools.openshift.ui.bot.test.application.create.ID415DisableMavenBuildTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -87,18 +86,8 @@ public class ID903ApplicationMarkersTest {
 				TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		ResourceNavigator navigator = new ResourceNavigator();
-		navigator.open();
-		Project eapProject = null;
-		for (Project project: navigator.getProjects()) {
-			if (project.getText().contains(applicationName)) {
-				eapProject = project;
-				break;
-			}
-		}
-		
 		for (String marker: markerFiles) {
-			TreeItem markerItem = getMarkerItem(eapProject, marker);
+			TreeItem markerItem = ID415DisableMavenBuildTest.getOpenShiftMarker(applicationName, marker);
 			assertTrue("Marker " + marker + " has not been created for the application " + applicationName,
 					markerItem != null);
 			deleteItem(markerItem);
@@ -124,25 +113,6 @@ public class ID903ApplicationMarkersTest {
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.MARKERS + applicationName),
 				TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-	}
-	
-	private static TreeItem getMarkerItem(Project project, String marker) {
-		project.select();
-		project.getTreeItem().expand();
-		for (TreeItem openshiftItem: project.getTreeItem().getItems()) {
-			if (openshiftItem.getText().contains(".openshift")) {
-				for (TreeItem markersItem: openshiftItem.getItems()) {
-					if (markersItem.getText().contains("markers")) {
-						for (TreeItem markerItem: markersItem.getItems()) {
-							if (markerItem.getText().contains(marker)) {
-								return markerItem;
-							}
-						}
-					}
-				}
-			}
-		}
-		return null;
 	}
 	
 	private static void deleteItem(TreeItem item) {

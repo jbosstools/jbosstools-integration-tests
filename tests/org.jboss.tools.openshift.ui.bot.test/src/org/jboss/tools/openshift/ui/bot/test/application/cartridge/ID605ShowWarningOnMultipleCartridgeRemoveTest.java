@@ -40,8 +40,8 @@ public class ID605ShowWarningOnMultipleCartridgeRemoveTest extends IDXXXCreateTe
 
 	@Test
 	public void deselectEmbeddedCartridge() {
-		embedCartridge(OpenShiftLabel.EmbeddableCartridge.CRON);		
-		
+		embedCartridge(OpenShiftLabel.EmbeddableCartridge.CRON, true);		
+				
 		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).
 			getDomain(DatastoreOS2.DOMAIN).getApplication(applicationName).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE).select();
@@ -51,7 +51,11 @@ public class ID605ShowWarningOnMultipleCartridgeRemoveTest extends IDXXXCreateTe
 		new DefaultShell(OpenShiftLabel.Shell.EDIT_CARTRIDGES);
 		
 		new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.CRON).select();
-		new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.CRON).setChecked(false);
+		try {
+			new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.CRON).setChecked(false);
+		} catch (WaitTimeoutExpiredException ex) {
+			// pass
+		}
 		
 		try {
 			new WaitUntil(new ShellWithTextIsAvailable("Remove cartridge cron-1.4"));
@@ -77,8 +81,8 @@ public class ID605ShowWarningOnMultipleCartridgeRemoveTest extends IDXXXCreateTe
 	
 	@Test
 	public void deselectMultipleEmbeddedCartridges() {
-		embedCartridge(OpenShiftLabel.EmbeddableCartridge.CRON);
-		embedCartridge(OpenShiftLabel.EmbeddableCartridge.POSTGRE_SQL);
+		embedCartridge(OpenShiftLabel.EmbeddableCartridge.CRON, true);
+		embedCartridge(OpenShiftLabel.EmbeddableCartridge.POSTGRE_SQL, true);
 		
 		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).
 			getDomain(DatastoreOS2.DOMAIN).getApplication(applicationName).select();
@@ -112,39 +116,8 @@ public class ID605ShowWarningOnMultipleCartridgeRemoveTest extends IDXXXCreateTe
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
-	@Test
-	public void deselectMultipleCurrentlyAddedCartridges() {
-		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).
-			getDomain(DatastoreOS2.DOMAIN).getApplication(applicationName).select();
-		new ContextMenu(OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE).select();
-		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_CARTRIDGES));
-		
-		new DefaultShell(OpenShiftLabel.Shell.EDIT_CARTRIDGES);
-		
-		new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.CRON).select();
-		new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.CRON).setChecked(true);
-		
-		new PushButton("Deselect All").click();
-		
-		try {
-			new WaitUntil(new ShellWithTextIsAvailable("Deselect All Cartridges"), TimePeriod.getCustom(5));
-			fail("There should not be shown warning about possible data loss on freshly added cartridges.");
-		} catch (WaitTimeoutExpiredException ex) {
-			// PASS
-		}
-		
-		new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.CRON).select();
-		assertFalse("Cartridge should be listed as unchecked, because it was removed.",
-				new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.CRON).isChecked());
-		
-		new CancelButton().click();
-		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_CARTRIDGES));
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-	}
-	
-	private void embedCartridge(String cartridge) {
+	// embed if embed is true, remove otherwise
+	private void embedCartridge(String cartridge, boolean embed) {
 		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).
 			getDomain(DatastoreOS2.DOMAIN).getApplication(applicationName).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE).select();
@@ -154,7 +127,11 @@ public class ID605ShowWarningOnMultipleCartridgeRemoveTest extends IDXXXCreateTe
 		new DefaultShell(OpenShiftLabel.Shell.EDIT_CARTRIDGES);
 		
 		new DefaultTable().getItem(cartridge).select();
-		new DefaultTable().getItem(cartridge).setChecked(true);
+		try {
+			new DefaultTable().getItem(cartridge).setChecked(embed);
+		} catch (WaitTimeoutExpiredException ex) {
+			// pass, there is an issue with table events, but it works
+		}
 		
 		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.LONG);
 		

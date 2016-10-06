@@ -12,6 +12,7 @@ package org.jboss.tools.openshift.ui.bot.test.application.cartridge;
 
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -53,7 +54,11 @@ public class ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest extends IDXXX
 		new DefaultShell(OpenShiftLabel.Shell.EDIT_CARTRIDGES);
 		
 		new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.JENKINS).select();
-		new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.JENKINS).setChecked(true);
+		try {
+			new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.JENKINS).setChecked(true);
+		} catch (WaitTimeoutExpiredException ex) {
+			// pass
+		}
 		
 		new DefaultShell(OpenShiftLabel.Shell.ADD_CARTRIDGE_DIALOG);
 		new PushButton(OpenShiftLabel.Button.APPLY).click();

@@ -19,6 +19,7 @@ import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.ServerType;
 import org.junit.Test;
 
 /**
@@ -35,6 +36,8 @@ public class ID105DefaultServerTest {
 		explorer.openConnectionShell();
 
 		new DefaultShell(OpenShiftLabel.Shell.NEW_CONNECTION);
+		
+		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER_TYPE).setSelection(ServerType.OPENSHIFT_2.toString());
 		
 		CheckBox defaultServerCheckBox = new CheckBox(0);
 		LabeledCombo defaultServerCombo = 

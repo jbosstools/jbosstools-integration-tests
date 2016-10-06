@@ -12,9 +12,12 @@ package org.jboss.tools.openshift.ui.bot.test.application.create;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.core.resources.Project;
+import java.util.List;
+
+import org.jboss.reddeer.eclipse.core.resources.ExplorerItem;
 import org.jboss.reddeer.eclipse.ui.views.navigator.ResourceNavigator;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.tools.openshift.reddeer.exception.OpenShiftToolsException;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
@@ -35,7 +38,7 @@ public class ID415DisableMavenBuildTest {
 	private String applicationName = "eap" + System.currentTimeMillis();
 	
 	@Test
-	public void testCreateApplicationWithMarker() {
+	public void testCreatedApplicationHasSkipMvnBuildMarker() {
 		NewOpenShift2ApplicationWizard	wizard = new NewOpenShift2ApplicationWizard(DatastoreOS2.USERNAME,
 				DatastoreOS2.SERVER, DatastoreOS2.DOMAIN);
 		wizard.openWizardFromExplorer();
@@ -43,30 +46,41 @@ public class ID415DisableMavenBuildTest {
 				applicationName, false, true, false, true, null, null, true, null, null, null, (String[]) null);
 		wizard.postCreateSteps(false);
 		
-		ResourceNavigator navigator = new ResourceNavigator();
-		navigator.open();
-		Project eapProject = navigator.getProject(applicationName);
-		eapProject.select();
-		
-		assertTrue("Disable maven build marker has not been added into the project and application.",
-				containsMavenMarker(eapProject));
+		assertTrue("There is no skip_maven_build marker under EAP project in Navigator.", 
+				getOpenShiftMarker(applicationName, "skip_maven_build") != null);
 	}
 	
-	private boolean containsMavenMarker(Project project) {
-		for (TreeItem openshiftItem: project.getTreeItem().getItems()) {
-			if (openshiftItem.getText().contains(".openshift")) {
-				for (TreeItem markersItem: openshiftItem.getItems()) {
-					if (markersItem.getText().contains("markers")) {
-						for (TreeItem disableMvnBuildMarker: markersItem.getItems()) {
-							if (disableMvnBuildMarker.getText().contains("skip_maven_build")) {
-								return true;
+	public static TreeItem getOpenShiftMarker(String projectName, String marker) {
+		ExplorerItem project = getEAPProjectInNavigator(projectName);
+		if (project == null) {
+			throw new OpenShiftToolsException("There is no project with name " + projectName);
+		}
+		for (TreeItem treeItemL1: project.getTreeItem().getItems()) {
+			if (treeItemL1.getText().contains(".openshift")) {
+				for (TreeItem treeItemL2: treeItemL1.getItems()) {
+					if (treeItemL2.getText().contains("markers")) {
+						for (TreeItem treeItemL3: treeItemL2.getItems()) {
+							if (treeItemL3.getText().contains(marker)) {
+								return treeItemL3;
 							}
 						}
 					}
 				}
 			}
 		}
-		return false;
+		return null;
+	}
+	
+	private static ExplorerItem getEAPProjectInNavigator(String name) {
+		ResourceNavigator navigator = new ResourceNavigator();
+		navigator.open();
+		List<ExplorerItem> navigatorProjects = navigator.getExplorerItems();
+		for (ExplorerItem explorerItem: navigatorProjects) {
+			if (explorerItem.getText().contains(name)) {
+				return explorerItem;
+			}
+		}
+		return null;
 	}
 	
 	@After

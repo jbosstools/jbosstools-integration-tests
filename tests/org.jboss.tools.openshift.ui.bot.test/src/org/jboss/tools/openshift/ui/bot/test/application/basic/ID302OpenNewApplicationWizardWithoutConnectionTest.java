@@ -28,6 +28,7 @@ import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.ServerType;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -56,6 +57,7 @@ public class ID302OpenNewApplicationWizardWithoutConnectionTest {
 			new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 			
 			// try that there are widgets for credentials
+			new LabeledCombo(OpenShiftLabel.TextLabels.SERVER_TYPE).setSelection(ServerType.OPENSHIFT_2.toString());
 			new LabeledText(OpenShiftLabel.TextLabels.PASSWORD);
 			new LabeledCombo(OpenShiftLabel.TextLabels.CONNECTION);
 			
@@ -81,6 +83,7 @@ public class ID302OpenNewApplicationWizardWithoutConnectionTest {
 			new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 			
 			// try that there are widgets for credentials
+			new LabeledCombo(OpenShiftLabel.TextLabels.SERVER_TYPE).setSelection(ServerType.OPENSHIFT_2.toString());
 			new LabeledText(OpenShiftLabel.TextLabels.PASSWORD);
 			new LabeledCombo(OpenShiftLabel.TextLabels.CONNECTION);
 			

@@ -35,6 +35,8 @@ import org.junit.Test;
  */
 public class ID104InvalidCredentialsValidationTest {
 	
+	public static final String password = System.getProperty("openshift.password");
+	
 	@Test
 	public void testInvalidCredentials() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
@@ -42,43 +44,29 @@ public class ID104InvalidCredentialsValidationTest {
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_CONNECTION);
 		
-		new CheckBox(0).click();
-		
 		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER_TYPE).setSelection(ServerType.OPENSHIFT_2.toString());
 		
-		incorrectServer();
-		verify("server");
+		new CheckBox(0).toggle(false);		
 		
-		incorrectUsername();
-		verify("username");
+		setCredentials("https://incorrect.server.url", DatastoreOS2.USERNAME, password);
+		assertInvalidCredentialsDisableFinishButton("server");
 		
-		incorrectPassword();
-		verify("password");
+		setCredentials(DatastoreOS2.SERVER, "nonexisting", password);
+		assertInvalidCredentialsDisableFinishButton("username");
+		
+		setCredentials(DatastoreOS2.SERVER, DatastoreOS2.USERNAME, "incorrectpwd");
+		assertInvalidCredentialsDisableFinishButton("password");
 		
 		new CancelButton().click();
 	}
 	
-	private void incorrectServer() {
-		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER).setText("https://incorrect.server.url");
-		new LabeledText(OpenShiftLabel.TextLabels.USERNAME).setText(DatastoreOS2.USERNAME);
-		new LabeledText(OpenShiftLabel.TextLabels.PASSWORD).setText(
-				System.getProperty("openshift.password"));		
-	}
-
-	private void incorrectUsername() {
-		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER).setText(DatastoreOS2.SERVER);
-		new LabeledText(OpenShiftLabel.TextLabels.USERNAME).setText("nonexisting");
-		new LabeledText(OpenShiftLabel.TextLabels.PASSWORD).setText(
-				System.getProperty("openshift.password"));	
+	private void setCredentials(String server, String username, String password) {
+		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER).setText(server);
+		new LabeledText(OpenShiftLabel.TextLabels.USERNAME).setText(username);
+		new LabeledText(OpenShiftLabel.TextLabels.PASSWORD).setText(password);		
 	}
 	
-	private void incorrectPassword() {
-		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER).setText(DatastoreOS2.SERVER);
-		new LabeledText(OpenShiftLabel.TextLabels.USERNAME).setText(DatastoreOS2.USERNAME);
-		new LabeledText(OpenShiftLabel.TextLabels.PASSWORD).setText("incorrectpwd");
-	}
-	
-	private void verify(String credential) {
+	private void assertInvalidCredentialsDisableFinishButton(String credential) {
 		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.NORMAL);
 		
 		new FinishButton().click();

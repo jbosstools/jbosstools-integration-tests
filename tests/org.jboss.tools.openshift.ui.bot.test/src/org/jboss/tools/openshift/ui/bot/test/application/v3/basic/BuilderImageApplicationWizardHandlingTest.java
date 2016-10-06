@@ -166,7 +166,7 @@ public class BuilderImageApplicationWizardHandlingTest {
 	}
 		
 	private void validateGitRepoURL(String url) {
-		new LabeledText(OpenShiftLabel.TextLabels.GIT_REPO_URL).setText("url");
+		new LabeledText(OpenShiftLabel.TextLabels.GIT_REPO_URL).setText(url);
 		
 		assertFalse("Next button should be disabled if git repo URL is invalid",
 				new NextButton().isEnabled());
@@ -175,7 +175,7 @@ public class BuilderImageApplicationWizardHandlingTest {
 	}
 	
 	private void validateGitReference(String ref) {
-		new LabeledText(OpenShiftLabel.TextLabels.GIT_REF).setText("ref");
+		new LabeledText(OpenShiftLabel.TextLabels.GIT_REF).setText(ref);
 		
 		assertFalse("Next button should be disabled if git reference is invalid",
 				new NextButton().isEnabled());
