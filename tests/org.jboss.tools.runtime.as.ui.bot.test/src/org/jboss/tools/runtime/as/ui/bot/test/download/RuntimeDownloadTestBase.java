@@ -63,6 +63,7 @@ public class RuntimeDownloadTestBase extends RuntimeDetectionTestCase {
 		
 		new PushButton("Download...").click();
 		new WaitUntil(new ShellWithTextIsAvailable("Download Runtimes"), TimePeriod.VERY_LONG);
+		new DefaultShell("Download Runtimes").setFocus();
 		runtimeDownloadWizard = new WizardDialog();
 	}
 	
