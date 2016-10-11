@@ -23,7 +23,6 @@ import org.jboss.tools.openshift.ui.bot.test.application.advanced.ID904DeployApp
 import org.jboss.tools.openshift.ui.bot.test.application.advanced.ID905ManageSnapshotsTest;
 import org.jboss.tools.openshift.ui.bot.test.application.advanced.ID906RestoreApplicationFromSnapshotTest;
 import org.jboss.tools.openshift.ui.bot.test.application.advanced.ID907DownloadableCartridgeContentAssistTest;
-import org.jboss.tools.openshift.ui.bot.test.application.basic.ID301OpenNewApplicationWizardTest;
 import org.jboss.tools.openshift.ui.bot.test.application.basic.ID302OpenNewApplicationWizardWithoutConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.application.basic.ID303OpenNewApplicationWizardWithoutSSHKeyTest;
 import org.jboss.tools.openshift.ui.bot.test.application.basic.ID304OpenNewApplicationWizardWithoutDomainTest;
@@ -31,7 +30,6 @@ import org.jboss.tools.openshift.ui.bot.test.application.basic.ID305CartridgeCon
 import org.jboss.tools.openshift.ui.bot.test.application.basic.ID306PreselectLastUsedConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.application.basic.ID307WizardDataProcessingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID601EmbedCartridgeTest;
-import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID602oAddConflictCartridgesTest;
 import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID603AddDownloadableEmbeddableCartridgeTest;
 import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest;
 import org.jboss.tools.openshift.ui.bot.test.application.cartridge.ID605ShowWarningOnMultipleCartridgeRemoveTest;
@@ -59,13 +57,11 @@ import org.jboss.tools.openshift.ui.bot.test.application.handle.ID704RestartAppl
 import org.jboss.tools.openshift.ui.bot.test.application.handle.ID705TailFilesTest;
 import org.jboss.tools.openshift.ui.bot.test.application.handle.ID706PortForwardingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.handle.ID707HandleEnvironmentVariablesTest;
-import org.jboss.tools.openshift.ui.bot.test.application.handle.ID708ShowInBrowserTest;
 import org.jboss.tools.openshift.ui.bot.test.application.importing.ID501ImportApplicationViaExplorerTest;
 import org.jboss.tools.openshift.ui.bot.test.application.importing.ID502ImportApplicationViaMenuTest;
 import org.jboss.tools.openshift.ui.bot.test.application.importing.ID503ImportApplicationViaAdapterTest;
 import org.jboss.tools.openshift.ui.bot.test.common.ID001RemoteRequestTimeoutTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID101OpenOpenShiftExplorerTest;
-import org.jboss.tools.openshift.ui.bot.test.connection.ID102OpenNewConnectionShellTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID103CreateNewConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID104InvalidCredentialsValidationTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID105DefaultServerTest;
@@ -74,7 +70,6 @@ import org.jboss.tools.openshift.ui.bot.test.connection.ID107oHandleMoreAccounts
 import org.jboss.tools.openshift.ui.bot.test.connection.ID108xHandleMoreServersTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID109EditConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID110SecurityStorageTest;
-import org.jboss.tools.openshift.ui.bot.test.connection.ID111OpenNewConnectionLinkTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID112RefreshConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID113ConnectionPropertiesTest;
 import org.jboss.tools.openshift.ui.bot.test.domain.ID201NewDomainTest;
@@ -103,7 +98,6 @@ import org.junit.runners.Suite.SuiteClasses;
 		
 		// Connection
 		ID101OpenOpenShiftExplorerTest.class,
-		ID102OpenNewConnectionShellTest.class,
 		ID103CreateNewConnectionTest.class,
 		ID104InvalidCredentialsValidationTest.class,
 		ID105DefaultServerTest.class,
@@ -112,7 +106,6 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID108xHandleMoreServersTest.class,
 		ID109EditConnectionTest.class,
 		ID110SecurityStorageTest.class,
-		ID111OpenNewConnectionLinkTest.class,
 		ID112RefreshConnectionTest.class,
 		ID113ConnectionPropertiesTest.class,
 		
@@ -131,7 +124,6 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID207DomainPropertiesTest.class,
 
 		// Application
-		ID301OpenNewApplicationWizardTest.class,
 		ID302OpenNewApplicationWizardWithoutConnectionTest.class,
 		ID303OpenNewApplicationWizardWithoutSSHKeyTest.class,
 		ID304OpenNewApplicationWizardWithoutDomainTest.class,
@@ -146,7 +138,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID404CreateNewApplicationViaCentralTest.class,
 		ID405CreateQuickstartTest.class,
 		ID406CreateApplicationOnDownloadableCartridgeTest.class,
-		ID407DeployEclipseProjectToOpenShift.class,
+	 	ID407DeployEclipseProjectToOpenShift.class,
 		ID408ApplicationPropertiesTest.class,
 		ID409CreateApplicationWithoutAdapterTest.class,
 		ID410CreateScalableApplicationTest.class,
@@ -165,7 +157,6 @@ import org.junit.runners.Suite.SuiteClasses;
 		
 		// Application - embedded cartridges
 		ID601EmbedCartridgeTest.class,
-		ID602oAddConflictCartridgesTest.class,
 		ID603AddDownloadableEmbeddableCartridgeTest.class,
 		ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest.class,
 		ID605ShowWarningOnMultipleCartridgeRemoveTest.class,
@@ -178,7 +169,6 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID705TailFilesTest.class,
 		ID706PortForwardingTest.class,
 		ID707HandleEnvironmentVariablesTest.class,
-		ID708ShowInBrowserTest.class,
 	
 		// Application - server adapter
 		ID801SwitchProjectDeploymentTest.class,
@@ -194,6 +184,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID905ManageSnapshotsTest.class,
 		ID906RestoreApplicationFromSnapshotTest.class,
 		ID907DownloadableCartridgeContentAssistTest.class,
+		
 		CleanUpOS2.class,
 })
 public class OpenShift2BotTests {

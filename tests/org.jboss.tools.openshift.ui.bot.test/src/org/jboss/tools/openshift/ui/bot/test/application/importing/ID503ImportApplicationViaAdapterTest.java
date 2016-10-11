@@ -16,6 +16,7 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsKilled;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
@@ -93,6 +94,9 @@ public class ID503ImportApplicationViaAdapterTest {
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
 		
 		new FinishButton().click();
+		
+		// Kill refreshing server adapter list job
+		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);

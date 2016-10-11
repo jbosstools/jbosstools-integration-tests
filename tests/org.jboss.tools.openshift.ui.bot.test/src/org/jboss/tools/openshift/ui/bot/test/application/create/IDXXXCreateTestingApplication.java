@@ -14,22 +14,23 @@ import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.wizard.v2.ApplicationCreator;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
 public class IDXXXCreateTestingApplication {
 
-	protected String applicationName = "diy" + System.currentTimeMillis();
+	protected static String applicationName;
 	
-	@Before
-	public void createApplication() {
+	@BeforeClass
+	public static void createApplication() {
+		applicationName = "diy" + System.currentTimeMillis();
 		new ApplicationCreator(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, false).
 			createSimpleApplicationOnBasicCartridges(
 				OpenShiftLabel.Cartridge.DIY, applicationName, false, true, true);
 	}
 	
-	@After
-	public void deleteApplication() {
+	@AfterClass
+	public static void deleteApplication() {
 		new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, 
 				applicationName, applicationName).perform();
 	}

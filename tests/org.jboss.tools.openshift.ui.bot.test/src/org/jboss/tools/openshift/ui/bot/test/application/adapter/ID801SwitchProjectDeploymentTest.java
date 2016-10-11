@@ -15,10 +15,13 @@ import static org.junit.Assert.assertTrue;
 import org.hamcrest.core.StringContains;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
@@ -46,15 +49,11 @@ public class ID801SwitchProjectDeploymentTest extends IDXXXCreateTestingApplicat
 		
 		new ContextMenu("Properties").select();
 		
-		// Shell has in name [Started] sometimes, hard to say when
-		DefaultShell serverAdapterShell = null;
-		try {
-			serverAdapterShell = new DefaultShell(new StringContains("Properties for " + applicationName));
-		} catch(Exception ex) {
-			serverAdapterShell = new DefaultShell("Properties for " + serverAdapter.getLabel());
-		} 
-		String title = serverAdapterShell.getText();
+		new WaitUntil(new ShellWithTextIsAvailable(new StringContains("Properties for " + applicationName)),
+				TimePeriod.getCustom(5), false);
 		
+		DefaultShell serverAdapterShell = new DefaultShell(new WithTextMatcher(
+				new StringContains("Properties for " + applicationName)));		
 		new PushButton("Switch Location").click();
 		AbstractWait.sleep(TimePeriod.getCustom(2));
 		assertTrue("Location was not correctly switched to Servers.",
@@ -68,8 +67,7 @@ public class ID801SwitchProjectDeploymentTest extends IDXXXCreateTestingApplicat
 		
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(title), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(serverAdapterShell), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
-	
 }

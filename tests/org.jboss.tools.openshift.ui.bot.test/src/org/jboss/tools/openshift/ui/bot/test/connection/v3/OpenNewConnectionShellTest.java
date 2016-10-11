@@ -8,15 +8,17 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.openshift.ui.bot.test.connection;
+package org.jboss.tools.openshift.ui.bot.test.connection.v3;
 
 import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.link.DefaultLink;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
@@ -28,7 +30,7 @@ import org.junit.Test;
  * @author mlabuda@redhat.com
  *
  */
-public class ID102OpenNewConnectionShellTest {
+public class OpenNewConnectionShellTest {
 	
 	OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 	
@@ -43,7 +45,7 @@ public class ID102OpenNewConnectionShellTest {
 			fail("New Connection shell cannot be opened via context menu.");
 		}
 		
-		verifyShell();
+		verifyNewConnectionShellIsOpened();
 	}
 	
 	@Test
@@ -57,18 +59,19 @@ public class ID102OpenNewConnectionShellTest {
 			fail("New Connection shell cannot be opened via view tool item.");
 		}
 		
-		verifyShell();
+		verifyNewConnectionShellIsOpened();
 	}
 	
-	private void verifyShell() {
+	private void verifyNewConnectionShellIsOpened() {
+		Shell connectionShell = null;
 		try {
-			new DefaultShell(OpenShiftLabel.Shell.NEW_CONNECTION);
-			// To be sure, that it is correct shell
-			new LabeledText("Username:");
+			connectionShell = new DefaultShell(OpenShiftLabel.Shell.NEW_CONNECTION);
 		} catch (SWTLayerException ex) {
 			fail("New Connection shell was not opened.");
 		}
 		
 		new CancelButton().click();
+		
+		new WaitWhile(new ShellIsAvailable(connectionShell));
 	}
 }

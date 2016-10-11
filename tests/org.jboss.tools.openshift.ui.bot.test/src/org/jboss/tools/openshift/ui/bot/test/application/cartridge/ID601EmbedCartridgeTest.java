@@ -20,8 +20,10 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
@@ -51,7 +53,7 @@ public class ID601EmbedCartridgeTest extends IDXXXCreateTestingApplication {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		OpenShift2Application application = explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).
 				getDomain(DatastoreOS2.DOMAIN).getApplication(applicationName);
-	
+		
 		embedCartridge(explorer, application.getTreeItem(), applicationName, OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE);
 	}
 	
@@ -75,7 +77,13 @@ public class ID601EmbedCartridgeTest extends IDXXXCreateTestingApplication {
 				getCheckedItemsCount() == 0);
 		
 		new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.CRON).select();
-		new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.CRON).setChecked(true);
+		//TableUtils.checkTableItem(new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.CRON), true);
+		//	new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.CRON).setChecked(true);
+		try {
+			new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.CRON).setChecked(true);
+		} catch (WaitTimeoutExpiredException ex) {
+			// pass, bad notifications of event
+		}
 		
 		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.LONG);
 		
@@ -116,12 +124,16 @@ public class ID601EmbedCartridgeTest extends IDXXXCreateTestingApplication {
 				getCheckedItemsCount() == 1);
 		
 		new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.CRON).select();
-		new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.CRON).setChecked(false);
+		try {
+			new DefaultTable().getItem(OpenShiftLabel.EmbeddableCartridge.CRON).setChecked(false);
+		} catch (WaitTimeoutExpiredException ex) {
+			// pass
+		}
 		
-		new DefaultShell("Remove cartridge cron-1.4");
+		Shell removeCartridge = new DefaultShell("Remove cartridge cron-1.4");
 		new YesButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable("Remove cartridge cron-1.4"));
+		new WaitWhile(new ShellIsAvailable(removeCartridge), TimePeriod.LONG);
 		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.LONG);
 		
 		new FinishButton().click();
