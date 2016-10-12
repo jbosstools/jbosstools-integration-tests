@@ -155,7 +155,7 @@ public class ServerRequirement extends ServerReqBase implements Requirement<JBos
 				String label = config.getServerFamily().getLabel();
 				String version = config.getServerFamily().getVersion();
 				if(version.equals("7.x")){
-					serverTypeLabelText = label+" 7.0";
+					serverTypeLabelText = label+" 7.x";
 				}
 			}
 			sp.selectType(config.getServerFamily().getCategory(), serverTypeLabelText);
