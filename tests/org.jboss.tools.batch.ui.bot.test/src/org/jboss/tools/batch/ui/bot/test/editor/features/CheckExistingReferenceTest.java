@@ -10,12 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.batch.ui.bot.test.editor.features;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.batch.reddeer.wizard.BatchArtifacts;
 import org.junit.Test;
 
@@ -82,7 +80,7 @@ public class CheckExistingReferenceTest extends AbstractFeatureBaseTest {
 		// create necessary artifacts
 		assertTrue(createExceptionClass(EXCEPTION_ID));
 		new WaitWhile(new JobIsRunning());
-		addDefaultSerialVersionID(EXCEPTION_JAVA_CLASS);
+		addDefaultSerialVersionID(EXCEPTION_JAVA_CLASS, 3);
 		closeEditor(EXCEPTION_JAVA_CLASS);
 		
 		createBatchArtifact(BatchArtifacts.ITEM_READER, READER_CLASS);
@@ -109,25 +107,5 @@ public class CheckExistingReferenceTest extends AbstractFeatureBaseTest {
 		
 		assertTrue(searchForClassReference(JOB_XML_FILE, 
 				new String[]{JAVA_FOLDER, getPackage(), EXCEPTION_JAVA_CLASS}));
-	}
-	
-	// to avoid reporting problems in problem view
-	private void addDefaultSerialVersionID(String filename) {
-		TextEditor editor = new TextEditor(filename);
-		editor.activate();
-		
-		editor.insertLine(3, "\n\tprivate static final long serialVersionUID = 1L;\n");
-		editor.save();
-	}
-	
-	private void closeEditor(String name) {
-		try {
-			TextEditor javaEditor = new TextEditor(name);
-			if (javaEditor.isActive()){
-				javaEditor.close();
-			}
-		} catch (WaitTimeoutExpiredException e) {
-			// print exception, do nothing
-		}
 	}
 }

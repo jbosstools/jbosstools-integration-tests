@@ -28,7 +28,6 @@ import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardDialog;
 import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardPage;
 
