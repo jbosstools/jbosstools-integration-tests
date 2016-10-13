@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.wst.xml.ui.tabletree.XMLMultiPageEditor;
 import org.jboss.reddeer.eclipse.wst.xml.ui.tabletree.XMLSourcePage;
@@ -14,6 +15,8 @@ import org.jboss.tools.batch.reddeer.wizard.NewBatchArtifactWizardDialog;
 import org.jboss.tools.batch.reddeer.wizard.NewBatchArtifactWizardPage;
 import org.jboss.tools.batch.ui.bot.test.AbstractBatchTest;
 import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
 public abstract class AbstractCreateArtifactTest extends AbstractBatchTest {
 
@@ -25,9 +28,21 @@ public abstract class AbstractCreateArtifactTest extends AbstractBatchTest {
 
 	protected abstract void createArtifactHook(NewBatchArtifactWizardPage page);
 	
+	private static Logger log = Logger.getLogger(AbstractCreateArtifactTest.class);
+	
 	@Override
 	protected String getPackage() {
 		return "batch.test.wizard.artifact";
+	}
+	
+	@BeforeClass
+	public static void setUpBeforeClass() {
+		initTestResources(log);
+	}
+	
+	@AfterClass
+	public static void tearDownAfterClass() {
+		removeProject(log);
 	}
 
 	@After

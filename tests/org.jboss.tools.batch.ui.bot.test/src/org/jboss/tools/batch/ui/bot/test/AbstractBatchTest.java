@@ -16,6 +16,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.OperationCanceledException;
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -81,6 +86,7 @@ public abstract class AbstractBatchTest {
 		importProject();
 		new WaitWhile(new JobIsRunning());
 		getProject().select();
+		createJobXMLFile(JOB_ID);
 	}
 	
 	/**
@@ -103,7 +109,16 @@ public abstract class AbstractBatchTest {
 	 */
 	protected static void removeProject(Logger log) {
 		log.info("Removing " + PROJECT_NAME);
-		getProject().delete(true);
+		IProject project = ResourcesPlugin.getPlugin().getWorkspace().getRoot().getProject(PROJECT_NAME);
+		try {
+			project.delete(true, true, null);
+		} catch (CoreException coreExc) {
+			log.error("Could not delete project or its content");
+			throw new RedDeerException("Project delete operation was not possible to process");
+		} catch (OperationCanceledException cancelExc) {
+			log.error("Delete operation was canceled");
+			throw new RedDeerException("Project delete operation was canceled");
+		}
 		new WaitWhile(new JobIsRunning());
 	}
 	
