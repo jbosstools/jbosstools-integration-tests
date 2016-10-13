@@ -41,8 +41,6 @@ public class MylynTestValidate {
 
 	@Test
 	public void testValidate() {
-		
-		TestSupport.disableSecureStorage();
 
 		TaskRepositoriesView view = new TaskRepositoriesView();
 		
