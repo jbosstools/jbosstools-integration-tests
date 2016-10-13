@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.wst.server.core.IServer;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.tools.livereload.core.internal.server.jetty.LiveReloadProxyServer;
 import org.jboss.tools.livereload.core.internal.server.wst.LiveReloadServerBehaviour;
 import org.jboss.tools.livereload.core.internal.service.EventFilter;
@@ -21,6 +22,8 @@ import org.jboss.tools.livereload.core.internal.service.EventService;
 import org.jboss.tools.livereload.core.internal.service.Subscriber;
 
 public class Livereload {
+	
+	protected static final Logger log = Logger.getLogger(Livereload.class);
 	
 	public static int getLivereloadPort(){
 		Map<Subscriber, List<EventFilter>> subs = EventService.getInstance().getSubscribers();
@@ -36,7 +39,9 @@ public class Livereload {
 	}
 	
 	public static String getLivereloadURL(String projectName, String webPage){
-		return "http://localhost:"+getLivereloadPort()+"/"+projectName+"/"+webPage;
+		String lURL = "http://localhost:"+getLivereloadPort()+"/"+projectName+"/"+webPage;
+		log.info("livereload URL is "+lURL);
+		return lURL;
 		
 	}
 

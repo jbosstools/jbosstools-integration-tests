@@ -18,7 +18,6 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.core.resources.Project;
@@ -136,7 +135,7 @@ public class CDIWebProjectWizardTemplate{
 		boolean result = new DefaultTreeItem(new DefaultTree(1),"CDI (Contexts and Dependency Injection)").isChecked();
 		result = result && new DefaultTreeItem(new DefaultTree(1),"CDI (Contexts and Dependency Injection)").getCell(1).equals(cdiVersion);
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive("Properties for "+projectName), TimePeriod.NORMAL);
+		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+projectName), TimePeriod.NORMAL);
 		return result;
 	}
 	
