@@ -28,6 +28,7 @@ public class NewServerContainerWizardPage {
 	private static Logger log = Logger.getLogger(NewServerContainerWizardPage.class);
 	
 	public void setFolder(String folder) {
+		new DefaultShell("New Server");
 		new LabeledText("Folder: ").setText(folder);
 	}
 	

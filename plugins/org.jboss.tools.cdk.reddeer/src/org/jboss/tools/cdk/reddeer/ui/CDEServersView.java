@@ -12,11 +12,8 @@ package org.jboss.tools.cdk.reddeer.ui;
 
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.cdk.reddeer.ui.CDEServer;
-import org.jboss.tools.cdk.reddeer.ui.wizard.NewServerContainerWizardPage;
 
 public class CDEServersView extends ServersView {
 	

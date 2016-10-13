@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.cdk.reddeer.ui;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -27,11 +26,16 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.cdk.reddeer.condition.ServerHasState;
 
+/**
+ * Extended Server class for purposes of Container Development Kit Server Adapter
+ * @author odockal
+ *
+ */
 public class CDEServer extends Server {
 	
 	private static Logger log = Logger.getLogger(CDEServer.class);
 	
-	private static final TimePeriod TIMEOUT = TimePeriod.VERY_LONG;
+	private static final TimePeriod TIMEOUT = TimePeriod.getCustom(600);
 	
 	public CDEServer(TreeItem item, ServersView view) {
 		super(item, view);
@@ -39,11 +43,12 @@ public class CDEServer extends Server {
 	
 	@Override
 	protected void operateServerState(String menuItem, final ServerState resultState) {
+		ServerState actualState = this.getLabel().getState();
 		log.debug("Operate server's state: '" + menuItem + "'");
 		select();
 		new ContextMenu(menuItem).select();
 		new WaitUntil(new JobIsRunning(), TIMEOUT);
-		if (resultState == ServerState.STARTING || resultState == ServerState.STARTED) {
+		if (actualState == ServerState.STOPPING || actualState == ServerState.STOPPED) {
 			confirmSSLCertificateDialog();
 		}
 		new WaitUntil(new ServerHasState(this, resultState), TIMEOUT);
@@ -58,9 +63,10 @@ public class CDEServer extends Server {
 	 */
 	private void confirmSSLCertificateDialog() {
 		try {
-			new WaitUntil(new ShellWithTextIsAvailable("Untrusted SSL Certificate"), TimePeriod.VERY_LONG);
+			new WaitUntil(new ShellWithTextIsAvailable("Untrusted SSL Certificate"), TimePeriod.getCustom(300));
 			new DefaultShell("Untrusted SSL Certificate");
 			new PushButton("Yes").click();
+			log.info("SSL Certificate Dialog appeared during " + this.getLabel().getState().toString());
 			new WaitWhile(new ShellWithTextIsAvailable("Untrusted SSL Certificate"));
 		} catch (WaitTimeoutExpiredException ex) {
 			log.info("WaitTimeoutExpiredException occured when handling Certificate dialog. "
