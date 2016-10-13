@@ -73,8 +73,6 @@ public class MylynTestBzQuery {
 	 */
 	public void testBugzillaQuery(String targetRepo, String queryName, String bugzillaSummary, String bugzilla) {
 
-		TestSupport.disableSecureStorage();
-		
 		TaskRepositoriesView view = new TaskRepositoriesView();
 
 		view.open();

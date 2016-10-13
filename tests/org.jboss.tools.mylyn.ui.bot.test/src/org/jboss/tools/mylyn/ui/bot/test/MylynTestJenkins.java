@@ -64,9 +64,7 @@ public class MylynTestJenkins {
 	
 	@Test
 	public void testServer() {
-
-		TestSupport.disableSecureStorage();
-				
+		
 		BuildServerDialog buildServerDialog = null;
 		MylynBuildView view = new MylynBuildView();
 
@@ -128,8 +126,6 @@ public class MylynTestJenkins {
 	@Test
 	public void testAuthServer() {
 			
-		TestSupport.disableSecureStorage();
-		
 		BuildServerDialog buildServerDialog = null;
 		MylynBuildView view = new MylynBuildView();
 

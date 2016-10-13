@@ -36,8 +36,6 @@ public class MylynTestLocalRepo {
 	@Test
 	public void testLocalRepo() {
 
-		TestSupport.disableSecureStorage();
-		
 		/* Verify Local task repository can be found */
 		TaskRepositoriesView view = new TaskRepositoriesView();	
 		view.open();
