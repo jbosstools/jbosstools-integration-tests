@@ -12,7 +12,7 @@
 	<name>integration-tests.tests</name>
 	<packaging>pom</packaging>
 
-        <properties>
+	<properties>
 		<surefire.timeout>7200</surefire.timeout>
 		<memoryOptions2>-XX:MaxPermSize=384m</memoryOptions2>
 		<swt.bot.test.record.screencast>false</swt.bot.test.record.screencast>
@@ -22,10 +22,13 @@
 		<junitExtensionsProperties>-Dreddeer.close.shells=${reddeer.close.shells} -Dreddeer.close.welcome.screen=${reddeer.close.welcome.screen} -Dreddeer.disable.maven.download.repo.index.on.startup=${reddeer.disable.maven.download.repo.index.on.startup}</junitExtensionsProperties>
 		<integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots -Dusage_reporting_enabled=false -Dcom.atlassian.connector.eclipse.monitor.usage.first.time=false -Dcom.atlassian.connector.eclipse.monitor.usage.enabled=false ${junitExtensionsProperties}</integrationTestsSystemProperties>
 		<skipTests>true</skipTests>
+		<!-- JBDS-4077 this should be passed in from Jenkins or commandline; also should use profile install-base when running tests -->
+		<test.installBase></test.installBase>
 		<test.installPath.OSX></test.installPath.OSX>
+		<test.installPath>${test.installBase}${test.installPath.OSX}</test.installPath>
 		<devstudio.repository>https://devstudio.redhat.com/10.0/snapshots/updates/</devstudio.repository>
 		<testProduct>com.jboss.devstudio.core.product</testProduct>
-        </properties>
+	</properties>
 
 	<modules>
 		<module>org.jboss.ide.eclipse.as.ui.bot.test</module>
@@ -176,6 +179,9 @@
 					<appArgLine>-pluginCustomization ${basedir}/../pluginCustomization.ini</appArgLine>
 					<systemProperties>
 						<org.eclipse.update.reconcile>false</org.eclipse.update.reconcile>
+						<!-- JBDS-4077 this should be passed in from Jenkins or commandline -->
+						<test.installBase>${test.installBase}</test.installBase>
+						<test.installPath>${test.installBase}${test.installPath.OSX}</test.installPath>
 					</systemProperties>
 					<explodedBundles>
 						<bundle>org.mozilla.xulrunner.cocoa.macosx</bundle>
