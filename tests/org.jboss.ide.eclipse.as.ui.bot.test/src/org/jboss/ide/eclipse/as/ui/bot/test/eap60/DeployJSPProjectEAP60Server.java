@@ -10,7 +10,7 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
  * @author Lucia Jelinkova
  *
  */
-@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.EAP6_0)
+@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.EAP6_0,cleanup=false)
 public class DeployJSPProjectEAP60Server extends DeployJSPProjectTemplate {
 
 	@Override

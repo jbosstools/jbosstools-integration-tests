@@ -6,7 +6,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.ide.eclipse.as.ui.bot.test.template.HotDeployJSPFileTemplate;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 
-@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.WILDFLY9x, version=ServerReqVersion.EQUAL)
+@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.WILDFLY9x, version=ServerReqVersion.EQUAL,cleanup=false)
 public class HotDeployJSPFileWildfly9Server extends HotDeployJSPFileTemplate {
 
 }
