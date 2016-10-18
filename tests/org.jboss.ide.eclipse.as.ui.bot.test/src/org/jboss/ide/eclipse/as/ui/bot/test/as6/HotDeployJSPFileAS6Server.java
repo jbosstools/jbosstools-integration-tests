@@ -5,7 +5,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.ide.eclipse.as.ui.bot.test.template.HotDeployJSPFileTemplate;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 
-@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.AS6x)
+@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.AS6x,cleanup=false)
 public class HotDeployJSPFileAS6Server extends HotDeployJSPFileTemplate {
 
 }

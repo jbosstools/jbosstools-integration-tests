@@ -10,7 +10,7 @@ import org.jboss.reddeer.requirements.server.ServerReqState;
  * @author Lucia Jelinkova
  *
  */
-@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.AS6x)
+@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.AS6x,cleanup=false)
 public class DeployJSPProjectAS6Server extends DeployJSPProjectTemplate {
 
 	@Override
