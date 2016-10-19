@@ -40,5 +40,6 @@
 		<module>org.jboss.tools.openshift.reddeer</module>
 		<module>org.jboss.tools.docker.reddeer</module>
 		<module>org.jboss.tools.livereload.reddeer</module>
+		<module>org.jboss.tools.browsersim.rmi</module>
 	</modules>
 </project>

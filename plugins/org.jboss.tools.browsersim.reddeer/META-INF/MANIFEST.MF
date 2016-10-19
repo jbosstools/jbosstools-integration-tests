@@ -6,17 +6,15 @@ Bundle-Version: 4.4.2.qualifier
 Bundle-Activator: org.jboss.tools.browsersim.reddeer.Activator
 Bundle-Vendor: JBoss by Red Hat
 Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- org.apache.log4j;bundle-version="1.2.15",
- org.eclipse.debug.core;bundle-version="3.10.0",
- org.jboss.tools.browsersim.browser;bundle-version="3.7.0",
- org.jboss.tools.browsersim.ui;bundle-version="3.7.0",
- org.jboss.reddeer.swt;bundle-version="0.7.0",
- org.jboss.reddeer.common,
- org.jboss.reddeer.core,
- org.junit,
- org.jboss.reddeer.junit;bundle-version="0.8.0",
- org.jboss.tools.browsersim.eclipse;bundle-version="3.7.0"
+ org.jboss.reddeer.go,
+ org.eclipse.debug.core,
+ org.jboss.tools.browsersim.rmi,
+ org.eclipse.jdt.launching,
+ org.jboss.tools.browsersim.eclipse,
+ org.jboss.tools.browsersim.browser,
+ org.jboss.tools.browsersim.ui,
+ org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Export-Package: org.jboss.tools.browsersim.reddeer
+Export-Package: org.jboss.tools.browsersim.reddeer,
+ org.jboss.tools.browsersim.reddeer.condition
