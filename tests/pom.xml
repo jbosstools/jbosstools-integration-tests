@@ -27,42 +27,63 @@
 		<testProduct>com.jboss.devstudio.core.product</testProduct>
         </properties>
 
-	<modules>
-		<module>org.jboss.ide.eclipse.as.ui.bot.test</module>
-		<module>org.jboss.tools.aerogear.ui.bot.test</module>
-		<module>org.jboss.tools.archives.ui.bot.test</module>
-		<module>org.jboss.tools.arquillian.ui.bot.test</module>
-		<module>org.jboss.tools.batch.ui.bot.test</module>
-		<module>org.jboss.tools.cdi.bot.test</module>
-		<module>org.jboss.tools.cdi.seam3.bot.test</module>
-		<module>org.jboss.tools.central.ui.bot.test</module>
-		<module>org.jboss.tools.cdk.ui.bot.test</module>
-		<module>org.jboss.tools.deltaspike.ui.bot.test</module>
-		<module>org.jboss.tools.dummy.ui.bot.test</module>
-		<module>org.jboss.tools.easymport.ui.bot.test</module>
-		<module>org.jboss.tools.eclipsecs.ui.test</module>
-		<module>org.jboss.tools.examples.ui.bot.test</module>
-		<module>org.jboss.tools.forge.ui.bot.test</module>
-		<module>org.jboss.tools.freemarker.ui.bot.test</module>
-		<module>org.jboss.tools.hibernate.ui.bot.test</module>
-		<module>org.jboss.tools.jsf.ui.bot.test</module>
-		<module>org.jboss.tools.jst.ui.bot.test</module>
-		<module>org.jboss.tools.maven.ui.bot.test</module>
-		<module>org.jboss.tools.mylyn.ui.bot.test</module>
-		<module>org.jboss.tools.openshift.ui.bot.test</module>
-		<module>org.jboss.tools.portlet.ui.bot.test</module>
-		<module>org.jboss.tools.runtime.as.ui.bot.test</module>
-		<module>org.jboss.tools.seam.ui.bot.test</module>
-		<module>org.jboss.tools.ui.bot.ext.test</module>
-		<module>org.jboss.tools.vpe.ui.bot.test</module>
-		<module>org.jboss.tools.vpe.bot.test</module>
-		<module>org.jboss.tools.ws.ui.bot.test</module>
-		<module>org.jboss.tools.usercase.ticketmonster.ui.bot.test</module>
-		<module>org.jboss.tools.perf.test</module>
-		<module>org.jboss.tools.docker.ui.bot.test</module>
-		<module>org.jboss.tools.livereload.ui.bot.test</module>
-	</modules>
 	<profiles>
+		<!-- Run all modules by default. Alternatively, to use a single test bundle,
+		     use -Dtest.module=org.jboss.tools.cdi.bot.test or similar -->
+		<profile>
+			<id>all-modules</id>
+			<activation>
+				<property>
+					<name>!test.module</name>
+				</property>
+			</activation>
+			<modules>
+				<module>org.jboss.ide.eclipse.as.ui.bot.test</module>
+				<module>org.jboss.tools.aerogear.ui.bot.test</module>
+				<module>org.jboss.tools.archives.ui.bot.test</module>
+				<module>org.jboss.tools.arquillian.ui.bot.test</module>
+				<module>org.jboss.tools.batch.ui.bot.test</module>
+				<module>org.jboss.tools.cdi.bot.test</module>
+				<module>org.jboss.tools.cdi.seam3.bot.test</module>
+				<module>org.jboss.tools.central.ui.bot.test</module>
+				<module>org.jboss.tools.cdk.ui.bot.test</module>
+				<module>org.jboss.tools.deltaspike.ui.bot.test</module>
+				<module>org.jboss.tools.dummy.ui.bot.test</module>
+				<module>org.jboss.tools.easymport.ui.bot.test</module>
+				<module>org.jboss.tools.eclipsecs.ui.test</module>
+				<module>org.jboss.tools.examples.ui.bot.test</module>
+				<module>org.jboss.tools.forge.ui.bot.test</module>
+				<module>org.jboss.tools.freemarker.ui.bot.test</module>
+				<module>org.jboss.tools.hibernate.ui.bot.test</module>
+				<module>org.jboss.tools.jsf.ui.bot.test</module>
+				<module>org.jboss.tools.jst.ui.bot.test</module>
+				<module>org.jboss.tools.maven.ui.bot.test</module>
+				<module>org.jboss.tools.mylyn.ui.bot.test</module>
+				<module>org.jboss.tools.openshift.ui.bot.test</module>
+				<module>org.jboss.tools.portlet.ui.bot.test</module>
+				<module>org.jboss.tools.runtime.as.ui.bot.test</module>
+				<module>org.jboss.tools.seam.ui.bot.test</module>
+				<module>org.jboss.tools.ui.bot.ext.test</module>
+				<module>org.jboss.tools.vpe.ui.bot.test</module>
+				<module>org.jboss.tools.vpe.bot.test</module>
+				<module>org.jboss.tools.ws.ui.bot.test</module>
+				<module>org.jboss.tools.usercase.ticketmonster.ui.bot.test</module>
+				<module>org.jboss.tools.perf.test</module>
+				<module>org.jboss.tools.docker.ui.bot.test</module>
+				<module>org.jboss.tools.livereload.ui.bot.test</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>single-module</id>
+			<activation>
+				<property>
+					<name>test.module</name>
+				</property>
+			</activation>
+			<modules>
+				<module>${test.module}</module>
+			</modules>
+		</profile>
 		<profile>
 			<id>windows-xp-memory-options</id>
 			<activation>
