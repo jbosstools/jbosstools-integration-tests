@@ -12,7 +12,7 @@
 	<name>integration-tests.tests</name>
 	<packaging>pom</packaging>
 
-        <properties>
+	<properties>
 		<surefire.timeout>7200</surefire.timeout>
 		<memoryOptions2>-XX:MaxPermSize=384m</memoryOptions2>
 		<swt.bot.test.record.screencast>false</swt.bot.test.record.screencast>
@@ -25,7 +25,7 @@
 		<test.installPath.OSX></test.installPath.OSX>
 		<devstudio.repository>https://devstudio.redhat.com/10.0/snapshots/updates/</devstudio.repository>
 		<testProduct>com.jboss.devstudio.core.product</testProduct>
-        </properties>
+	</properties>
 
 	<profiles>
 		<!-- Run all modules by default. Alternatively, to use a single test bundle,
@@ -71,6 +71,7 @@
 				<module>org.jboss.tools.perf.test</module>
 				<module>org.jboss.tools.docker.ui.bot.test</module>
 				<module>org.jboss.tools.livereload.ui.bot.test</module>
+				<module>org.jboss.tools.browsersim.ui.bot.test</module>
 			</modules>
 		</profile>
 		<profile>
