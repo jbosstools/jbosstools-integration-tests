@@ -25,9 +25,9 @@
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-tests.git</tycho.scmUrl>
 		<!-- URLs needed to resolve dependencies at build time (see <repositories> below) and at install time (see site/pom.xml#associateSites) -->
 
-		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/${eclipseReleaseName}/snapshots/updates/integration-tests/${jbosstools_site_stream}/</jbosstools-integrationtests-site>
-		<jbosstools-site>http://download.jboss.org/jbosstools/${eclipseReleaseName}/snapshots/updates/core/${jbosstools_site_stream}/</jbosstools-site>
-		<jbosstools-tests-site>http://download.jboss.org/jbosstools/${eclipseReleaseName}/snapshots/updates/coretests/${jbosstools_site_stream}/</jbosstools-tests-site>
+		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/${eclipseReleaseName}/snapshots/updates/integration-tests/${stream_jbt}/</jbosstools-integrationtests-site>
+		<jbosstools-site>http://download.jboss.org/jbosstools/${eclipseReleaseName}/snapshots/updates/core/${stream_jbt}/</jbosstools-site>
+		<jbosstools-tests-site>http://download.jboss.org/jbosstools/${eclipseReleaseName}/snapshots/updates/coretests/${stream_jbt}/</jbosstools-tests-site>
 		<!-- build and run with latest TP -->
 		<tpc.version>${TARGET_PLATFORM_VERSION_MAX}</tpc.version>
 	</properties>
@@ -69,4 +69,3 @@
 		</repository>
 	</repositories>
 </project>
-
