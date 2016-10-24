@@ -26,6 +26,7 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
@@ -35,6 +36,7 @@ import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -107,6 +109,21 @@ public class AerogearBotTest {
 	}
 	w.finish();
 	new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	//workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=502146
+	//close dialog
+	try{
+		new WaitUntil(new ShellWithTextIsActive("Problem Occurred"));
+		new PushButton("OK").click();
+	}catch (WaitTimeoutExpiredException e) {
+		// expected, shell may not be shown in all cases
+	}
+	
+	//workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=506123
+	//save config.xml
+	DefaultEditor configEditor = new DefaultEditor(CORDOVA_APP_NAME);
+	configEditor.activate();
+	configEditor.save();
+	
   }
 
   public void runTreeItemInAndroidEmulator(String projectName) {

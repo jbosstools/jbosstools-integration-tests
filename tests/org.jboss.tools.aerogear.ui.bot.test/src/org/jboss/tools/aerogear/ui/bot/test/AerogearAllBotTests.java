@@ -24,7 +24,8 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 	OpenConfigEditor.class, 
 	RunWithCordovaSim.class,
 	DisplayJavaScriptErrors.class,
-	MultiversionSupport.class})
+	MultiversionSupport.class
+})
 @RunWith(RedDeerSuite.class)
 public class AerogearAllBotTests {
 
