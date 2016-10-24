@@ -29,10 +29,10 @@
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.jboss.tools.aerogear.ui.bot.test.AerogearAllBotTests"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -Dorg.osgi.framework.bundle.parent=ext"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.aerogear.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.7 -XX:MaxPermSize=256m -Xms256m -Xmx1024m  -Dusage_reporting_enabled=false"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.7 -XX:MaxPermSize=256m -Xms256m -Xmx1024m  -Dusage_reporting_enabled=false -Dorg.osgi.framework.bundle.parent=ext"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="org.eclipse.platform.ide"/>
 <stringAttribute key="rd.launch.property.captureScreenshot" value="true"/>
@@ -40,6 +40,17 @@
 <stringAttribute key="rd.launch.property.logLevel" value="ALL"/>
 <stringAttribute key="rd.launch.property.logMessageFilter" value="ALL"/>
 <stringAttribute key="rd.launch.property.pauseFailedTest" value="false"/>
+<stringAttribute key="rd.launch.property.rd.captureScreenshot" value="true"/>
+<stringAttribute key="rd.launch.property.rd.closeShells" value="true"/>
+<stringAttribute key="rd.launch.property.rd.closeWelcomeScreen" value="true"/>
+<stringAttribute key="rd.launch.property.rd.disableMavenIndex" value="true"/>
+<stringAttribute key="rd.launch.property.rd.logCollectorEnabled" value="true"/>
+<stringAttribute key="rd.launch.property.rd.logLevel" value="ALL"/>
+<stringAttribute key="rd.launch.property.rd.logMessageFilter" value="ALL"/>
+<stringAttribute key="rd.launch.property.rd.openAssociatedPerspective" value="never"/>
+<stringAttribute key="rd.launch.property.rd.pauseFailedTest" value="false"/>
+<stringAttribute key="rd.launch.property.rd.recordScreenCast" value="false"/>
+<stringAttribute key="rd.launch.property.rd.timePeriodFactor" value="1.0"/>
 <stringAttribute key="rd.launch.property.recordScreenCast" value="false"/>
 <stringAttribute key="rd.launch.property.reddeer.close.shells" value="true"/>
 <stringAttribute key="rd.launch.property.reddeer.close.welcome.screen" value="true"/>

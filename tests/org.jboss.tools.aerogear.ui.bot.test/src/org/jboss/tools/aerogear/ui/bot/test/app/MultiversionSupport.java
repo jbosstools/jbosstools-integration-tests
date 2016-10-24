@@ -80,10 +80,10 @@ public class MultiversionSupport extends AerogearBotTest {
 		String consoleEngineVersion = parseConsoleTextForVersion(console.getConsoleText());
 		assertNotNull("Cordova Engine version was not displayed in console", consoleEngineVersion);
 		// change mobile engine version for project
-		PackageExplorer packageExplorer = new PackageExplorer();
-		packageExplorer.open();
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
 		ExplorerItemPropertyDialog projectPropertiesDialog = new ExplorerItemPropertyDialog(
-				new ProjectExplorer().getProject(CORDOVA_PROJECT_NAME));
+				projectExplorer.getProject(CORDOVA_PROJECT_NAME));
 		projectPropertiesDialog.open();
 		EnginePropertyPage enginePropertyPage = new EnginePropertyPage();
 		projectPropertiesDialog.select(enginePropertyPage);
