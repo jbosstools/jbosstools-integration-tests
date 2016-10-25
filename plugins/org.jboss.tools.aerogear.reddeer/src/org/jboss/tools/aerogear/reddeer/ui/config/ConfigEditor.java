@@ -12,9 +12,22 @@ package org.jboss.tools.aerogear.reddeer.ui.config;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+
 import org.eclipse.swt.SWT;
+import org.hamcrest.Matcher;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.WidgetIsFound;
+import org.jboss.reddeer.core.lookup.EditorPartLookup;
+import org.jboss.reddeer.core.matcher.AndMatcher;
+import org.jboss.reddeer.core.matcher.ClassMatcher;
+import org.jboss.reddeer.core.matcher.EditorPartClassMatcher;
+import org.jboss.reddeer.core.matcher.EditorPartTitleMatcher;
+import org.jboss.reddeer.core.matcher.MatcherBuilder;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -30,6 +43,7 @@ import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.workbench.exception.WorkbenchLayerException;
 import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
 
 /**
@@ -38,14 +52,29 @@ import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
  * @author Vlado Pakan
  * 
  */
-public class ConfigEditor extends AbstractEditor {
+public class ConfigEditor extends AbstractEditor{
 
 	private static final String OVERVIEW_TAB_ITEM = "Overview";
 	private static final String PLATFORM_PROPERTIES_TAB_ITEM = "Platform Properties";
 	private static final String CONFIG_XML_TAB_ITEM = "config.xml";
+	private org.eclipse.thym.ui.config.internal.ConfigEditor editor;
+	
+	public ConfigEditor(){
+		super(EditorPartLookup.getInstance().getEditor());
+		if (!(editorPart instanceof org.eclipse.thym.ui.config.internal.ConfigEditor)){
+			throw new WorkbenchLayerException("The active editor is not a ConfigEditor editor, but " + editorPart.getClass());
+		}
+		editor = (org.eclipse.thym.ui.config.internal.ConfigEditor) editorPart;
+	}
 
 	public ConfigEditor(String title) {
-		super(title);
+		super(EditorPartLookup.getInstance().getEditor(
+				new EditorPartClassMatcher(org.eclipse.thym.ui.config.internal.ConfigEditor.class), 
+				new EditorPartTitleMatcher(new WithTextMatcher(title))));
+		editor = (org.eclipse.thym.ui.config.internal.ConfigEditor) editorPart;
+		// workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=506123
+		// save config.xml
+		save();
 	}
 
 	/**
@@ -54,7 +83,7 @@ public class ConfigEditor extends AbstractEditor {
 	 * @param pluginId
 	 */
 	public void addPlugin(String pluginId) {
-		openPluginDiscoveryDialog();
+		Shell pluginsShell = openPluginDiscoveryDialog();
 		// Filter for pluginId
 		new DefaultText(0).setText(pluginId);
 		KeyboardFactory.getKeyboard().type(SWT.CR);
@@ -77,6 +106,7 @@ public class ConfigEditor extends AbstractEditor {
 		} catch (SWTLayerException swtle){
 			// Do nothing shell was not displayed
 		}
+		new WaitWhile(new ShellIsAvailable(pluginsShell));
 		
 	}
 	/**
@@ -84,14 +114,18 @@ public class ConfigEditor extends AbstractEditor {
 	 * 
 	 * @param pluginId
 	 */
-	public void openPluginDiscoveryDialog() {
+	public Shell openPluginDiscoveryDialog() {
 		activate();
 		new DefaultCTabItem(ConfigEditor.PLATFORM_PROPERTIES_TAB_ITEM).activate();
 		new PushButton("Add...").click();
-		new DefaultShell("Cordova Plug-in Discovery");
+		Shell pluginsShell = new DefaultShell("Cordova Plug-in Discovery");
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		
 		// Wait until some plugin is displayed within dialog
-		new DefaultLabel(10);
+		ClassMatcher cm = new ClassMatcher(org.eclipse.swt.widgets.Label.class);;
+		WidgetIsFound found = new WidgetIsFound(pluginsShell.getControl(), 10, cm);
+		new WaitUntil(found,TimePeriod.LONG);
+		return pluginsShell;
 	}
 	/**
 	 * Fulfilled when Label with text has specified position
