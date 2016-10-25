@@ -9,14 +9,14 @@ import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionPage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionWizard;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
+import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 
 /**
@@ -46,9 +46,9 @@ public class DriverDefinitionFactory {
 		for (int i = 0; i < items.size(); i++) {
 			new DefaultTableItem(0).select();
 			new PushButton("Remove").click();
-			new WaitUntil(new ShellWithTextIsAvailable("Confirm Driver Removal"));
+			Shell confirm = new DefaultShell("Confirm Driver Removal");
 			new YesButton().click();
-			new WaitWhile(new ShellWithTextIsAvailable("Confirm Driver Removal"));
+			new WaitWhile(new ShellIsAvailable(confirm));
 			new DefaultShell("Preferences");
 		}
 		

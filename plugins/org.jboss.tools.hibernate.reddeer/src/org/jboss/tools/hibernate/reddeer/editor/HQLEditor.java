@@ -1,12 +1,13 @@
 package org.jboss.tools.hibernate.reddeer.editor;
 
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.YesButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 
 /**
@@ -33,8 +34,9 @@ public class HQLEditor extends TextEditor {
 		new DefaultToolItem("Run HQL").click();
 		
 		try {
-			new WaitUntil(new ShellWithTextIsActive("Open Session factory"), TimePeriod.SHORT);
+			Shell s= new DefaultShell("Open Session factory");
 			new YesButton().click();
+			new WaitWhile(new ShellIsAvailable(s));
 		}
 		catch (WaitTimeoutExpiredException e) {
 			log.warn("Open Session factory question dialog was expected");
