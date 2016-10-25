@@ -14,33 +14,24 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.eclipse.swt.widgets.Control;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.handler.WidgetHandler;
-import org.jboss.reddeer.core.lookup.ShellLookup;
-import org.jboss.reddeer.core.matcher.AndMatcher;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.core.reference.ReferencedComposite;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.shell.AbstractShell;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.AuthenticationMethod;
 import org.jboss.tools.openshift.reddeer.widget.ShellWithButton;
 import org.junit.After;
 import org.junit.Before;
@@ -131,7 +122,7 @@ public class ConnectionWizardHandlingTest {
 	
 	private void switchToOAuth() {
 		new LabeledCombo(OpenShiftLabel.TextLabels.PROTOCOL).setSelection(
-				OpenShiftExplorerView.AuthenticationMethod.OAUTH.toString());
+				AuthenticationMethod.OAUTH.toString());
 		
 		try {
 			new LabeledText(OpenShiftLabel.TextLabels.TOKEN);
@@ -143,7 +134,7 @@ public class ConnectionWizardHandlingTest {
 	
 	private void switchToBasic() {
 		new LabeledCombo(OpenShiftLabel.TextLabels.PROTOCOL).setSelection(
-				OpenShiftExplorerView.AuthenticationMethod.BASIC.toString());
+				AuthenticationMethod.BASIC.toString());
 		
 		try {
 			new LabeledText(OpenShiftLabel.TextLabels.USERNAME);
@@ -161,7 +152,7 @@ public class ConnectionWizardHandlingTest {
 				OpenShiftExplorerView.ServerType.OPENSHIFT_3.toString());
 
 		new LabeledCombo(OpenShiftLabel.TextLabels.PROTOCOL).setSelection(
-				OpenShiftExplorerView.AuthenticationMethod.OAUTH.toString());
+				AuthenticationMethod.OAUTH.toString());
 		
 		try {
 			new DefaultStyledText("Enter a token or retrieve a new one.");

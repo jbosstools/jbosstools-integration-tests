@@ -16,7 +16,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.openshift.reddeer.condition.ApplicationPodIsRunning;
 import org.jboss.tools.openshift.reddeer.condition.BrowserContainsText;
-import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.exception.OpenShiftToolsException;
@@ -35,7 +35,7 @@ public class PublishChangesTest extends AbstractCreateApplicationTest {
 
 	@BeforeClass	
 	public static void waitForRunningApplication() {
-		new WaitUntil(new ResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE),
+		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE),
 				TimePeriod.getCustom(1000));
 		
 		new WaitUntil(new ApplicationPodIsRunning(), TimePeriod.LONG);

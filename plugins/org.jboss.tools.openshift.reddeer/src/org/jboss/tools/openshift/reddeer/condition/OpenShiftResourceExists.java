@@ -12,6 +12,7 @@ package org.jboss.tools.openshift.reddeer.condition;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.core.exception.CoreLayerException;
@@ -19,6 +20,7 @@ import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftProject;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftResource;
 
@@ -28,13 +30,13 @@ import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftResource;
  * @author mlabuda@redhat.com
  *
  */
-public class ResourceExists extends AbstractWaitCondition {
+public class OpenShiftResourceExists extends AbstractWaitCondition {
 
-	private OpenShiftExplorerView explorer;
+	private final OpenShiftExplorerView explorer;
 	private OpenShiftProject project;
-	private Matcher resourceNameMatcher;
-	private ResourceState resourceState;
-	private Resource resource;
+	private final Matcher<String> resourceNameMatcher;
+	private final ResourceState resourceState;
+	private final Resource resource;
 	
 	/**
 	 * Creates new ResourceExists to wait for existence of any resource of specified type for
@@ -42,8 +44,8 @@ public class ResourceExists extends AbstractWaitCondition {
 	 * 
 	 * @param resource resource type
 	 */
-	public ResourceExists(Resource resource) {
-		this(resource, (Matcher) null, ResourceState.UNSPECIFIED);
+	public OpenShiftResourceExists(Resource resource) {
+		this(resource, (Matcher<String>) null, ResourceState.UNSPECIFIED);
 	}
 	
 	/**
@@ -53,7 +55,7 @@ public class ResourceExists extends AbstractWaitCondition {
 	 * @param resource resource type
 	 * @param resourceName resource name
 	 */
-	public ResourceExists(Resource resource, String resourceName) {
+	public OpenShiftResourceExists(Resource resource, String resourceName) {
 		this(resource, new WithTextMatcher(resourceName), ResourceState.UNSPECIFIED);
 	}
 	
@@ -66,10 +68,14 @@ public class ResourceExists extends AbstractWaitCondition {
 	 * @param resourceName resource name
 	 * @param resourceState state of a resource
 	 */
-	public ResourceExists(Resource resource, String resourceName, ResourceState resourceState) {
-		this(resource, new WithTextMatcher(resourceName), resourceState);
+	public OpenShiftResourceExists(Resource resource, String resourceName, ResourceState resourceState) {
+		this(resource, new WithTextMatcher(resourceName), resourceState, null);
 	}
 	
+	public OpenShiftResourceExists(Resource resource, String resourceName, ResourceState resourceState, String projectName) {
+		this(resource, new WithTextMatcher(resourceName), resourceState, projectName);
+	}
+
 	/**
 	 * Creates new ResourceExists to wait for existence of a resource of specified type
 	 * matching specified resource name matcher for default connection and project.
@@ -77,7 +83,7 @@ public class ResourceExists extends AbstractWaitCondition {
 	 * @param resource resource type
 	 * @param nameMatcher resource name matcher
 	 */
-	public ResourceExists(Resource resource, Matcher nameMatcher) {
+	public OpenShiftResourceExists(Resource resource, Matcher<String> nameMatcher) {
 		this(resource, nameMatcher, ResourceState.UNSPECIFIED);
 	}
 		
@@ -90,34 +96,34 @@ public class ResourceExists extends AbstractWaitCondition {
 	 * @param nameMatcher resource name matcher
 	 * @param resourceState state of a resource
 	 */
-	public ResourceExists(Resource resource, Matcher nameMatcher, ResourceState resourceState) {
-		explorer = new OpenShiftExplorerView();
-		project = explorer.getOpenShift3Connection().getProject();
-		resourceNameMatcher = nameMatcher;
+	public OpenShiftResourceExists(Resource resource, Matcher<String> nameMatcher, ResourceState resourceState) {
+		this(resource, nameMatcher, resourceState, null);
+	}
+
+	public OpenShiftResourceExists(Resource resource, Matcher<String> nameMatcher, ResourceState resourceState, String projectName) {
+		this.explorer = new OpenShiftExplorerView();
+		this.project = getProjectOrDefault(projectName, explorer);
+		this.resourceNameMatcher = nameMatcher;
 		this.resourceState = resourceState;
 		this.resource = resource;
 	}
 
-	@Override
+	private OpenShiftProject getProjectOrDefault(String projectName, OpenShiftExplorerView explorer) {
+		if (StringUtils.isEmpty(projectName)) {
+			return explorer.getOpenShift3Connection().getProject();
+		} else {
+			return explorer.getOpenShift3Connection().getProject(projectName);
+		}
+	}
+
+		@Override
 	public boolean test() {
 		// workaround for disposed widget
 		if (project.getTreeItem().isDisposed()) {
-			project = explorer.getOpenShift3Connection().getProject();
+			this.project = explorer.getOpenShift3Connection().getProject(project.getName());
 		}
-		
-		List<OpenShiftResource> resources;
-		try {
-			resources = project.getOpenShiftResources(resource);
-		} catch (CoreLayerException ex) {
-			// In case widget is still disposed... what the heck?!
-			explorer.getOpenShift3Connection().refresh();
-			resources = explorer.getOpenShift3Connection().getProject().getOpenShiftResources(resource);
-		}
-		
-		if (resources.isEmpty()) {
-			return false;
-		}
-		
+
+		List<OpenShiftResource> resources = getResources();
 		for (OpenShiftResource rsrc: resources) {
 			if (resourceNameMatcher == null) {
 				return true;
@@ -131,6 +137,19 @@ public class ResourceExists extends AbstractWaitCondition {
 		}
 		return false;
 	}
+
+		private List<OpenShiftResource> getResources() {
+			List<OpenShiftResource> resources;
+			try {
+				resources = project.getOpenShiftResources(resource);
+			} catch (CoreLayerException ex) {
+				// In case widget is still disposed... what the heck?!
+				OpenShift3Connection connection = explorer.getOpenShift3Connection();
+				connection.refresh();
+				resources = connection.getProject(project.getName()).getOpenShiftResources(resource);
+			}
+			return resources;
+		}
 
 	@Override
 	public String description() {

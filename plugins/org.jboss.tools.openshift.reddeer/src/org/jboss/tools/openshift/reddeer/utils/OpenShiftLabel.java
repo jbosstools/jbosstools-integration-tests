@@ -161,7 +161,7 @@ public class OpenShiftLabel {
 		public static final String NEW_RESOURCE = "New OpenShift resource";
 		public static final String PORTS_FORWARDING = "Application port forwarding";
 		public static final String SAVE_SNAPSHOT = "Save Snapshot";
-		public static final String SCALE_DEPLOYMENT = "Scale deployment";
+		public static final String SCALE_DEPLOYMENTS = "Scale Deployments";
 		public static final String SELECT_EXISTING_APPLICATION = "Select Existing Application";
 		public static final String SELECT_EXISTING_PROJECT = "Select Existing Project";
 		public static final String SELECT_OPENSHIFT_TEMPLATE = "Select an OpenShift template";
@@ -176,6 +176,7 @@ public class OpenShiftLabel {
 		public static final String RESTORE_SNAPSHOT = "Restore/Deploy Snapshot";
 		public static final String SECURE_STORAGE = "Secure Storage";
 		public static final String SECURE_STORAGE_PASSWORD = "Secure Storage Password";
+		public static final String STOP_ALL_DEPLOYMENTS = "Stop all deployments?";
 		public static final String TAIL_FILES = "Tail Files";
 		
 		// Domain related
@@ -343,5 +344,6 @@ public class OpenShiftLabel {
 				"OpenShift 2 Server Adapter"};
 		public static final String[] OS3_SERVER_ADAPTER = new String[] {"OpenShift", 
 				"OpenShift 3 Server Adapter"};
+
 	}
 }

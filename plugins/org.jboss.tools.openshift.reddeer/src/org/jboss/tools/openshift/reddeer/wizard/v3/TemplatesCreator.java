@@ -12,6 +12,7 @@ package org.jboss.tools.openshift.reddeer.wizard.v3;
 
 import java.util.List;
 
+import org.eclipse.ui.actions.ImportResourcesAction;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -22,6 +23,7 @@ import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
@@ -50,26 +52,6 @@ public class TemplatesCreator {
 	
 	/**
 	 * Initiates a new template creator to create a new OpenShift 3 application based on template.
-	 * Wizard is opened from OpenShift explorer if openFromShellMenu is false. Otherwise wizard is 
-	 * opened via shell menu.
-	 * 
-	 * @param server OpenShift 3 server
-	 * @param username user name
-	 * @param project project
-	 * @param openFromShellMenu open wizard from shell menu, if false, opens it from OpenShift explorer
-	 */
-	public TemplatesCreator(boolean openFromShellMenu) {
-		wizard = new NewOpenShift3ApplicationWizard();
-		
-		if (openFromShellMenu) {
-			wizard.openWizardFromShellMenu();
-		} else {
-			wizard.openWizardFromExplorer();
-		}
-	}
-
-	/**
-	 * Initiates a new template creator to create a new OpenShift 3 application based on template.
 	 * Wizard is opened from OpenShift explorer view.
 	 * 
 	 * @param server OpenShift 3 server
@@ -79,7 +61,31 @@ public class TemplatesCreator {
 	public TemplatesCreator() {
 		this(false);
 	}
-	
+
+	/**
+	 * Initiates a new template creator to create a new OpenShift 3 application based on template.
+	 * Wizard is opened from OpenShift explorer if openFromShellMenu is false. Otherwise wizard is 
+	 * opened via shell menu.
+	 * 
+	 * @param server OpenShift 3 server
+	 * @param username user name
+	 * @param project project
+	 * @param openFromShellMenu open wizard from shell menu, if false, opens it from OpenShift explorer
+	 */
+	public TemplatesCreator(boolean openFromShellMenu) {
+		this(null, openFromShellMenu);
+	}
+
+	public TemplatesCreator(String project, boolean openFromShellMenu) {
+		wizard = new NewOpenShift3ApplicationWizard();
+		
+		if (openFromShellMenu) {
+			wizard.openWizardFromShellMenu(project);
+		} else {
+			wizard.openWizardFromExplorer(project);
+		}
+	}
+
 	/**
 	 * Creates new OpenShift 3 application from a local template.
 	 * 
@@ -131,6 +137,15 @@ public class TemplatesCreator {
 	}
 	
 	/**
+	 * Creates new OpenShift 3 application from a server template with matching name.
+	 * 
+	 * @param templateName name of a server template
+	 */
+	public void createOpenShiftApplicationBasedOnServerTemplate(String templateName, boolean importProject) {
+		createOpenShiftApplicationBasedOnTemplate(importProject, true, templateName, null, null, (TemplateParameter[]) null);
+	}
+
+	/**
 	 * Creates new OpenShift 3 application from a server template with matching name and specific template parameters.
 	 * 
 	 * @param templateName name of a server template
@@ -163,79 +178,68 @@ public class TemplatesCreator {
 			TemplateParameter... parameters) {
 		createOpenShiftApplicationBasedOnTemplate(true, templateName, null, labels, parameters);
 	}
-	
+
 	private void createOpenShiftApplicationBasedOnTemplate(boolean serverTemplate, String templateName, 
 			final String templateLocalPath, List<Label> labels, TemplateParameter... parameters) {
-		
-		if (serverTemplate) {
-			new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).activate();
-			
-			new WaitUntil(new TreeIsAvailable());
-			
-			new DefaultTree().selectItems(new DefaultTreeItem(templateName));
-		} else {
-			new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
-			
-			new WaitWhile(new TreeIsAvailable());
-			
-			final org.eclipse.swt.widgets.Text text = new DefaultText().getSWTWidget();
-			Display.syncExec(new ResultRunnable<Boolean>() {
+		createOpenShiftApplicationBasedOnTemplate(true, serverTemplate, templateName, templateLocalPath, labels, parameters);
+	}
 
-				@Override
-				public Boolean run() {
-					text.setText(templateLocalPath);
-					return true;
-				}
-			});
+	private void createOpenShiftApplicationBasedOnTemplate(boolean importProject, boolean serverTemplate, String templateName, 
+			final String templateLocalPath, List<Label> labels, TemplateParameter... parameters) {
+		if (serverTemplate) {
+			selectServerTemplate(templateName);
+		} else {
+			selectLocalTemplate(templateLocalPath);
 		}		
 		
 		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
-		
 		new NextButton().click();
-		
+
 		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
-		
 		if (parameters != null && parameters.length != 0) {
 			setTemplateParameters(parameters);
 		}
-		
 		new NextButton().click();
-		
+
 		new WaitWhile(new WidgetIsEnabled(new NextButton()), TimePeriod.LONG);
-		
 		if (labels != null && labels.size() != 0) {
 			createOpenShiftLabels(labels);
 		}
 		
 		new FinishButton().click();
-		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.APPLICATION_SUMMARY), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.APPLICATION_SUMMARY);
-		
 		new OkButton().click();
-		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION));
-		
-		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
-		new FinishButton().click();
-		
-		try {
-			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CHEATSHEET), TimePeriod.LONG);
-			
-			new DefaultShell(OpenShiftLabel.Shell.CHEATSHEET);
-			new CheckBox(0).click();
-			new NoButton().click();
-			
-			new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CHEATSHEET));
-		} catch (WaitTimeoutExpiredException ex) {
-			// do nothing if cheat sheet is not provided
-		}
-		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+
+		executeImport(importProject);
 	}
-	
+
+	private void selectLocalTemplate(final String templateLocalPath) {
+		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
+		
+		new WaitWhile(new TreeIsAvailable());
+		
+		final org.eclipse.swt.widgets.Text text = new DefaultText().getSWTWidget();
+		Display.syncExec(new ResultRunnable<Boolean>() {
+
+			@Override
+			public Boolean run() {
+				text.setText(templateLocalPath);
+				return true;
+			}
+		});
+	}
+
+	private void selectServerTemplate(String templateName) {
+		new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).activate();
+		
+		new WaitUntil(new TreeIsAvailable());
+		
+		new DefaultTree().selectItems(new DefaultTreeItem(templateName));
+	}
+
 	private void setTemplateParameters(TemplateParameter[] parameters) {
 		for (TemplateParameter parameter: parameters) {
 				new DefaultTable().select(parameter.getName());
@@ -256,7 +260,7 @@ public class TemplatesCreator {
 				new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		}
 	}
-	
+
 	private void createOpenShiftLabels(List<Label> labels) {
 		for (Label label: labels) {
 			new PushButton(OpenShiftLabel.Button.ADD).click();
@@ -271,6 +275,29 @@ public class TemplatesCreator {
 			new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.RESOURCE_LABEL));
 			
 			new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
+		}
+	}
+	
+	private void executeImport(boolean importProject) {
+		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
+		if (!importProject) {
+			new CancelButton().click();
+		} else {
+			new FinishButton().click();
+			try {
+				new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CHEATSHEET), TimePeriod.LONG);
+				
+				new DefaultShell(OpenShiftLabel.Shell.CHEATSHEET);
+				new CheckBox(0).click();
+				new NoButton().click();
+				
+				new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CHEATSHEET));
+			} catch (WaitTimeoutExpiredException ex) {
+				// do nothing if cheat sheet is not provided
+			}
+
+			new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
+			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		}
 	}
 }

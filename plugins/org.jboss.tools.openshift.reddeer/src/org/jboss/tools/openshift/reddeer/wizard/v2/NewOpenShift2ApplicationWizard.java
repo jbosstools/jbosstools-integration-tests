@@ -28,7 +28,7 @@ import org.jboss.tools.openshift.reddeer.condition.v2.OpenShiftApplicationExists
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter.Version;
-import org.jboss.tools.openshift.reddeer.wizard.NewOpenShiftApplicationWizard;
+import org.jboss.tools.openshift.reddeer.wizard.AbstractOpenShiftApplicationWizard;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.FirstWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.FourthWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.page.v2.SecondWizardPage;
@@ -43,7 +43,7 @@ import org.jboss.tools.openshift.reddeer.wizard.page.v2.ThirdWizardPage;
  * @author mlabuda@redhat.com
  *
  */
-public class NewOpenShift2ApplicationWizard extends NewOpenShiftApplicationWizard {	
+public class NewOpenShift2ApplicationWizard extends AbstractOpenShiftApplicationWizard {	
 	
 	private String domain;
 	

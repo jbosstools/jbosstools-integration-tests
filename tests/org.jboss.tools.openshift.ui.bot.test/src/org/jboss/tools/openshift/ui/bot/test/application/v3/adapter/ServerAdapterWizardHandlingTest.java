@@ -37,7 +37,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
-import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
@@ -52,7 +52,7 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 
 	@BeforeClass
 	public static void waitTillApplicationIsRunning() {
-		new WaitWhile(new ResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE),
+		new WaitWhile(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE),
 				TimePeriod.getCustom(360), false);
 		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.LONG, false);
 		

@@ -28,7 +28,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.openshift.reddeer.condition.ButtonWithTextIsAvailable;
-import org.jboss.tools.openshift.reddeer.condition.ResourceExists;
+import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
@@ -57,7 +57,7 @@ public class ImportApplicationTest extends AbstractCreateApplicationTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		new WaitUntil(new ResourceExists(Resource.BUILD_CONFIG), TimePeriod.LONG);
+		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD_CONFIG), TimePeriod.LONG);
 		
 		explorer.getOpenShift3Connection().getProject().getOpenShiftResources(Resource.BUILD_CONFIG).get(0).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.IMPORT_APPLICATION).select();

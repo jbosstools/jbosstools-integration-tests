@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2016 Red Hat, Inc.
+ * Copyright (c) 2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v 1.0 which accompanies this distribution,
@@ -10,36 +10,41 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.reddeer.matcher;
 
+import java.util.regex.Pattern;
+
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
-/**
- * Matcher for matching of no existing substring.
- * 
- * @author mlabuda@redhat.com
- */
-public class StringNotContained extends BaseMatcher<String> {
+import com.openshift.restclient.model.IResource;
 
-	private String substring;
+/**
+ * Matcher that matches the name of a given resource against a given regex.
+ * 
+ * @author adietish@redhat.com
+ */
+public class ResourceNameMatcher extends BaseMatcher<String> {
+
+	private Pattern pattern;
 	
-	public StringNotContained(String substring) {
-		this.substring = substring;
+	public ResourceNameMatcher(String regex) {
+		this.pattern = Pattern.compile(regex);
 	}
 	
 	@Override
 	public boolean matches(Object o) {
-		if (!(o instanceof String)) {
+		if (!(o instanceof IResource)) {
 			return false;
 		}
-		return matches((String) o);
+		IResource resource = (IResource) o;
+		return matches(resource.getName());
 	}
 	
 	public boolean matches(String text) {
-		return !text.contains(substring);
+		return pattern.matcher(text).find();
 	}
 
 	@Override
 	public void describeTo(Description description) {
-		description.appendText("does not contain substring " + substring);
+		description.appendText("resource name matches " + pattern.pattern());
 	}	
 }

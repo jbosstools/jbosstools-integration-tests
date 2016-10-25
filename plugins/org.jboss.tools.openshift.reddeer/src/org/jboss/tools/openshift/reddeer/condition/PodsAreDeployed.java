@@ -10,8 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.reddeer.condition;
 
-import java.util.List;
+import static org.junit.Assert.assertNotNull;
 
+import org.apache.commons.lang.StringUtils;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
@@ -31,21 +32,18 @@ import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftResource;
  */
 public class PodsAreDeployed extends AbstractWaitCondition {
 	
-	private OpenShiftResource replicationController;
-	private String podAmountValue;
+	private final OpenShiftResource replicationController;
+	private final String podAmountValue;
 	
 	/**
 	 * Constructor to wait for a specific amount of pods to be running
 	 * @param projectName name of project with a replication controller
-	 * @param resourceName name of replication controller
+	 * @param replicationControllerName name of replication controller
 	 * @param desiredAmountOfPods desired amount of running pods
 	 */
-	public PodsAreDeployed(String projectName, String resourceName, int desiredAmountOfPods) {
-		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.open();
-		replicationController = explorer.getOpenShift3Connection().getProject(projectName).
-				getOpenShiftResource(Resource.DEPLOYMENT, resourceName);
-		podAmountValue = desiredAmountOfPods + " current / " + desiredAmountOfPods + " desired";
+	public PodsAreDeployed(OpenShiftProject project, String replicationControllerName, int desiredAmountOfPods) {
+		assertNotNull(this.replicationController = project.getOpenShiftResource(Resource.DEPLOYMENT, replicationControllerName));
+		this.podAmountValue = desiredAmountOfPods + " current / " + desiredAmountOfPods + " desired";
 	}
 	
 	@Override
@@ -54,27 +52,45 @@ public class PodsAreDeployed extends AbstractWaitCondition {
 		return replicationController.getPropertyValue("Misc", "Replicas").trim().equals(
 				podAmountValue);
 	}
-	
-	public static int getNumberOfCurrentReplicas() {
-		return Integer.valueOf(getReplicasInfo().split(" ")[0]).intValue();
+
+	public static int getNumberOfCurrentReplicas(String project, String replicationControllerName) {
+		return getReplicas(getReplicasInfo(project, replicationControllerName));
 	}
-	
-	public static int getNumberOfDesiredReplicas() {
-		return Integer.valueOf(getReplicasInfo().split(" ")[3]).intValue();
+
+	public static int getNumberOfCurrentReplicas(OpenShiftProject project, String replicationControllerName) {
+		return getReplicas(getReplicasInfo(project, replicationControllerName));
 	}
-	
-	public static String getReplicasInfo() { 
-		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		OpenShiftProject project = explorer.getOpenShift3Connection().getProject();		
-		OpenShiftResource replicationController = null;
-		List<OpenShiftResource> rsrcs = project.getOpenShiftResources(Resource.DEPLOYMENT);
-		for (OpenShiftResource resource: rsrcs) {
-			if (resource.getName().contains("-" + rsrcs.size())) {
-				replicationController = resource;
-				break;
-			}
+
+	public static int getNumberOfCurrentReplicas(String server, String username, String project, String replicationControllerName) {
+		return getReplicas(getReplicasInfo(server, username, project, replicationControllerName));
+	}
+
+	public static String getReplicasInfo(String server, String username, String project, String replicationControllerName) { 
+		return getReplicasInfo(new OpenShiftExplorerView().getOpenShift3Connection(server, username).getProject(project), replicationControllerName);
+	}
+
+	public static String getReplicasInfo(String project, String replicationControllerName) { 
+		return getReplicasInfo(new OpenShiftExplorerView().getOpenShift3Connection().getProject(project), replicationControllerName);
+	}
+
+	private static int getReplicas(String replicaInfo) {
+		if (StringUtils.isEmpty(replicaInfo)) {
+			return -1;
 		}
-		
+
+		return Integer.valueOf(replicaInfo.split(" ")[0]);
+	}
+	
+	public static String getReplicasInfo(OpenShiftProject project, String replicationControllerName) { 
+		if (project == null
+				|| StringUtils.isEmpty(replicationControllerName)) {
+			return null;
+		}
+
+		OpenShiftResource replicationController = project.getOpenShiftResource(Resource.DEPLOYMENT, replicationControllerName);
+		if (replicationController == null) {
+			return null;
+		}
 		return replicationController.getPropertyValue("Misc", "Replicas").trim();
 	}
 }
