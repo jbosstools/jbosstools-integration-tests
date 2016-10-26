@@ -22,6 +22,7 @@ import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.cdi.reddeer.cdi.ui.CDIValidatorPreferencePage;
 import org.jboss.tools.deltaspike.ui.bot.test.condition.SpecificProblemExists;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 /**
@@ -36,11 +37,16 @@ public class ValidationsInPreferenceTest extends DeltaspikeTestBase {
 	@InjectRequirement
 	private static ServerRequirement sr;
 
-	private WorkbenchPreferenceDialog preferenceDialog;
+	private static WorkbenchPreferenceDialog preferenceDialog;
 
 	@After
 	public void closeAllEditors() {
 		deleteAllProjects();
+	}
+	
+	@AfterClass
+	public static void setDefaultProblemSeverity() {
+		setSeverityToDefault();
 	}
 
 	/**
@@ -78,7 +84,7 @@ public class ValidationsInPreferenceTest extends DeltaspikeTestBase {
 		}
 	}
 
-	private void openValidationsInPreferenceDialog() {
+	private static void openValidationsInPreferenceDialog() {
 		preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
 		preferenceDialog.select(new CDIValidatorPreferencePage());
@@ -102,6 +108,16 @@ public class ValidationsInPreferenceTest extends DeltaspikeTestBase {
 
 		applyChanges();
 	}
+	
+	private static void setSeverityToDefault() {
+		openValidationsInPreferenceDialog();
+
+		for (DeltaspikeValidations validation : DeltaspikeValidations.values()) {
+			new LabeledCombo(validation.getValidationLabel()).setSelection(validation.getDefaultProblemSeverity());
+		}
+
+		applyChanges();
+	}
 
 	private void checkAllProblemsDetected(ProblemType problemType) {
 		for (DeltaspikeValidations validation : DeltaspikeValidations.values()) {
@@ -115,7 +131,7 @@ public class ValidationsInPreferenceTest extends DeltaspikeTestBase {
 		}
 	}
 
-	private void applyChanges() {
+	private static void applyChanges() {
 		String confirmChangesShell = "Validator Settings Changed";
 		
 		new PushButton("Apply").click();
@@ -132,27 +148,34 @@ enum DeltaspikeValidations {
 	// @formatter:off
 	EXCEPTION_HANDLER(
 			"Bean is not annotated @ExceptionHandler:",
-			"Exception handler methods must be registered on beans annotated with @ExceptionHandler"), 
+			"Exception handler methods must be registered on beans annotated with @ExceptionHandler",
+			"Warning"), 
 	INVALID_HANDER(
 			"Invalid hander method parameter type:",
-			"Parameter of a handler method must be a ExceptionEvent.*"), 
+			"Parameter of a handler method must be a ExceptionEvent.*",
+			"Warning"), 
 	AMBIGUOUS_AUTHORIZER(
 			"Ambiguous authorizer for a secured method:",
-			"Ambiguous authorizers found.*"), 
+			"Ambiguous authorizers found.*",
+			"Warning"), 
 	UNRESOLVED_AUTHORIZER(
 			"Unresolved authorizer for a secured method:",
-			"No matching authorizer found.*"), 
+			"No matching authorizer found.*",
+			"Warning"), 
 	INVALID_AUTHORIZER(
 			"Invalid authorizer:",
-			"Authorizer method .*");
+			"Authorizer method .*",
+			"Error");
 	// @formatter:on
 
 	private String label;
 	private String message;
+	private String severity;
 
-	private DeltaspikeValidations(String label, String message) {
+	private DeltaspikeValidations(String label, String message, String severity) {
 		this.label = label;
 		this.message = message;
+		this.severity = severity;
 	}
 
 	/**
@@ -171,6 +194,15 @@ enum DeltaspikeValidations {
 	 */
 	public String getValidationMessage() {
 		return message;
+	}
+	
+	/**
+	 * Returns default problem severity as string.
+	 * 
+	 * @return default problem severity
+	 */
+	public String getDefaultProblemSeverity() {
+		return severity;
 	}
 
 }
