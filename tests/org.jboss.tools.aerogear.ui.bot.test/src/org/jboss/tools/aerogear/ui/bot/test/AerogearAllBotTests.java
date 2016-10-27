@@ -15,6 +15,7 @@ import org.jboss.tools.aerogear.ui.bot.test.app.DisplayJavaScriptErrors;
 import org.jboss.tools.aerogear.ui.bot.test.app.MultiversionSupport;
 import org.jboss.tools.aerogear.ui.bot.test.app.OpenConfigEditor;
 import org.jboss.tools.aerogear.ui.bot.test.app.RunWithCordovaSim;
+import org.jboss.tools.aerogear.ui.bot.test.cordovasim.CordovaSimTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -24,7 +25,8 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 	OpenConfigEditor.class, 
 	RunWithCordovaSim.class,
 	DisplayJavaScriptErrors.class,
-	MultiversionSupport.class
+	MultiversionSupport.class,
+	CordovaSimTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class AerogearAllBotTests {
