@@ -17,7 +17,6 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageOneWizard;
 import org.jboss.tools.docker.reddeer.ui.DockerContainersTab;
@@ -35,7 +34,7 @@ import org.junit.Test;
 
 public class PropertiesViewTest extends AbstractDockerBotTest {
 
-	private String imageName = "docker/whalesay";
+	private String imageName = "docker/whalesay:latest";
 	private String containerName = "test_run_docker_whalesay";
 
 	@Before
@@ -59,16 +58,8 @@ public class PropertiesViewTest extends AbstractDockerBotTest {
 		DockerContainersTab containerTab = new DockerContainersTab();
 		containerTab.activate();
 		containerTab.refresh();
-
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
-
-		containerTab.select(imageName);
-	/*	for (TableItem item : containerTab.getTableItems()) {
-			if (item.getText(1).contains(this.imageName)) {
-				item.click();
-				break;
-			}
-		}*/
+		containerTab.select(containerName);
 
 		// get values from Properties view
 		PropertiesView propertiesView = new PropertiesView();
@@ -85,14 +76,7 @@ public class PropertiesViewTest extends AbstractDockerBotTest {
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
 		imageTab.refresh();
-
 		imageTab.selectImage(imageName);
-		/*for (TableItem item : imageTab.getTableItems()) {
-			if (item.getText(1).contains(imageName)) {
-				item.click();
-			}
-		}*/
-
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
 		try {

@@ -26,12 +26,14 @@ import org.jboss.tools.docker.ui.bot.test.image.HierarchyViewTest;
 import org.jboss.tools.docker.ui.bot.test.image.ImageTagTest;
 import org.jboss.tools.docker.ui.bot.test.image.PullImageTest;
 import org.jboss.tools.docker.ui.bot.test.image.PushImageTest;
+import org.jboss.tools.docker.ui.bot.test.ui.ComposeTest;
 import org.jboss.tools.docker.ui.bot.test.ui.ContainerTabTest;
 import org.jboss.tools.docker.ui.bot.test.ui.DifferentRegistryTest;
 import org.jboss.tools.docker.ui.bot.test.ui.PerspectiveTest;
 import org.jboss.tools.docker.ui.bot.test.ui.PropertiesViewTest;
 import org.jboss.tools.docker.ui.bot.test.ui.SearchDialogTest;
 import org.jboss.tools.docker.ui.bot.test.ui.ImageTabTest;
+import org.jboss.tools.docker.ui.bot.test.ui.LaunchDockerImageTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -62,7 +64,9 @@ import org.junit.runners.Suite;
 	LabelsTest.class,
 	HierarchyViewTest.class,
 	PropertiesViewTest.class,
-	PushImageTest.class
+	PushImageTest.class,
+	LaunchDockerImageTest.class,
+	ComposeTest.class
 })
 public class DockerAllBotTest {
 

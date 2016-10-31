@@ -36,7 +36,7 @@ public class DifferentRegistryTest extends AbstractDockerBotTest {
 	private String email = "test@test.com";
 	private String userName = "test";
 	private String password = "password";
-	private String imageName = "rhel:latest";
+	private String imageName = "devstudio/atomicapp:latest";
 
 	@Before
 	public void before() {

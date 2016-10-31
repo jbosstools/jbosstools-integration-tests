@@ -95,12 +95,12 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 		String statusProp = propertiesView.getProperty("Status").getPropertyValue();
 
 		// compare values
-		assertTrue("Name in table and in Properties do not match!", nameProp.contains(nameFromTable));
-		assertTrue("Image in table and in Properties do not match!", imageProp.equals(imageFromTable));
-		assertTrue("Created in table and in Properties do not match!", createdProp.equals(createdFromTable));
-		assertTrue("Command in table and in Properties do not match!", commandProp.startsWith(commandFromTable));
-		assertTrue("Ports in table and in Properties do not match!", portsProp.startsWith(portsFromTable));
-		assertTrue("Status in table and in Properties do not match!", statusProp.startsWith(statusFromTable));
+		assertTrue("Name in table and in Properties do not match!("+nameProp+"-"+nameFromTable+")", nameProp.contains(nameFromTable));
+		assertTrue("Image in table and in Properties do not match!("+imageProp+"-"+imageFromTable+")", imageProp.equals(imageFromTable));
+		assertTrue("Created in table and in Properties do not match!("+createdProp+"-"+createdFromTable+")", createdProp.equals(createdFromTable));
+		assertTrue("Command in table and in Properties do not match!("+commandProp+"-"+commandFromTable+")", commandProp.startsWith(commandFromTable));
+		assertTrue("Ports in table and in Properties do not match!("+portsProp+"-"+portsFromTable+")", portsProp.startsWith(portsFromTable));
+		assertTrue("Status in table and in Properties do not match!("+statusProp+"-"+statusFromTable+")", statusProp.startsWith(statusFromTable));
 	}
 
 	@Test

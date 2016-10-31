@@ -218,6 +218,7 @@ public class DockerExplorer extends WorkbenchView {
 
 	public void enableConnection(String dockerConnection) {
 		open();
+		selectConnection(dockerConnection);
 		new DefaultToolItem("Enable Connection").click();
 	}
 
