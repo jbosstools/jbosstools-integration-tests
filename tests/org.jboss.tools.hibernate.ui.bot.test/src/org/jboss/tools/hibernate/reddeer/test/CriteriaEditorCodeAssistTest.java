@@ -19,8 +19,10 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -168,7 +170,7 @@ public class CriteriaEditorCodeAssistTest extends HibernateRedDeerTest {
 		}
 		log.step("Add New Hibernate Configuration and set parameters");
 		new ContextMenu("Add Configuration...").select();
-		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"));
+		Shell editConfig = new DefaultShell("Edit Configuration");
 		new LabeledText("Name:").setText(prj);
 		DefaultGroup prjGroup = new DefaultGroup("Project:");
 		new DefaultText(prjGroup).setText(prj);
@@ -179,6 +181,7 @@ public class CriteriaEditorCodeAssistTest extends HibernateRedDeerTest {
 		new PushButton("Apply").click();
 		log.step("Click OK to finish the dialog");
 		new OkButton().click();
+		new WaitWhile(new ShellIsAvailable(editConfig));
 	}
     
     private void testCriteriaEditorCodeAssistEcl() {
