@@ -198,6 +198,8 @@
 					<appArgLine>-pluginCustomization ${basedir}/../pluginCustomization.ini</appArgLine>
 					<systemProperties>
 						<org.eclipse.update.reconcile>false</org.eclipse.update.reconcile>
+						<!-- JBDS-4077 this should be passed in from Jenkins or commandline -->
+						<tpc.version>${TARGET_PLATFORM_VERSION_MAX}</tpc.version>
 					</systemProperties>
 					<explodedBundles>
 						<bundle>org.mozilla.xulrunner.cocoa.macosx</bundle>
