@@ -18,13 +18,13 @@ import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.tools.browsersim.rmi.IBrowsersimHandler;
 
-public class BrowserSimIsRunning extends AbstractWaitCondition{
+public class SimIsRunning extends AbstractWaitCondition{
 	
 	private Registry registry;
 	private String handlerName;
-	private IBrowsersimHandler bsHandler = null;
+	private IBrowsersimHandler Handler = null;
 	
-	public BrowserSimIsRunning(String handlerName) {
+	public SimIsRunning(String handlerName) {
 		try {
 			this.handlerName = handlerName;
 			this.registry = LocateRegistry.getRegistry();
@@ -35,21 +35,21 @@ public class BrowserSimIsRunning extends AbstractWaitCondition{
 	
 	public boolean test(){
 		try {
-			bsHandler = (IBrowsersimHandler) registry.lookup(handlerName);
+			Handler = (IBrowsersimHandler) registry.lookup(handlerName);
 		} catch (Exception e1) {
 			return false;
 		} 
 		
 		try {
-			return bsHandler.isStarted();
+			return Handler.isStarted();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 			return false;
 		}
 	}
 	
-	public IBrowsersimHandler getBSHandler(){
-		return bsHandler;
+	public IBrowsersimHandler getHandler(){
+		return Handler;
 	}
 	
 	@Override

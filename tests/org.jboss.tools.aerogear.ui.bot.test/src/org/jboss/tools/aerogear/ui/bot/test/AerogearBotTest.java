@@ -29,6 +29,7 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
@@ -43,6 +44,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.aerogear.reddeer.ui.config.ConfigEditor;
 import org.jboss.tools.aerogear.reddeer.ui.wizard.NewTHYMProjectWizard;
 import org.junit.After;
+import org.junit.BeforeClass;
 
 /**
  * Base class for SWTBot tests of Aerogear JBoss Tools plugin.
@@ -55,6 +57,14 @@ public class AerogearBotTest {
 	protected static final String CORDOVA_PROJECT_NAME = "CordovaTestProject";
 	protected static final String CORDOVA_APP_NAME = "CordovaTestApp";
 	protected static String WS_PATH = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
+	
+	@BeforeClass
+	public static void prepare(){
+		WorkbenchShell ws = new WorkbenchShell();
+		if(!ws.isMaximized()){
+			ws.maximize();
+		}
+	}
 
 	/**
 	 * Creates a new hybrid mobile project in workspace.

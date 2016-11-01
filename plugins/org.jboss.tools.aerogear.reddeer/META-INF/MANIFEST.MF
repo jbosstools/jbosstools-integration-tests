@@ -14,13 +14,18 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.eclipse;bundle-version="0.8.0",
  org.jboss.reddeer.common;bundle-version="0.8.0",
  org.eclipse.thym.ui,
- org.eclipse.ui.forms
+ org.eclipse.ui.forms,
+ org.jboss.tools.browsersim.reddeer,
+ org.eclipse.debug.core,
+ org.jboss.tools.browsersim.rmi,
+ org.jboss.tools.cordovasim.rmi
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: jar
 Bundle-Vendor: JBoss by Red Hat
 Export-Package: org.jboss.tools.aerogear.reddeer.ui.config,
  org.jboss.tools.aerogear.reddeer.ui.preferences,
  org.jboss.tools.aerogear.reddeer.ui.properties,
  org.jboss.tools.aerogear.reddeer.ui.wizard,
- org.jboss.tools.aerogear.reddeer.ui.wizard.export
+ org.jboss.tools.aerogear.reddeer.ui.wizard.export,
+ org.jboss.tools.aerogear.reddeer.cordovasim
