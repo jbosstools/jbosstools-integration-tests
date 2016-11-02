@@ -12,6 +12,7 @@ package org.jboss.tools.forge2.ui.bot.test.suite;
 
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.forge2.ui.bot.wizard.test.CDISetupWizardTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.ConstraintSetupWizardTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.EJBSetupWizardTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.FacesSetupWizardTest;
@@ -42,7 +43,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	JPAEntityWizardTest.class,
 	JPAFieldWizardTest.class,
 	ScaffoldSetupWizardTest.class,
-	ScaffoldWizardTest.class
+	ScaffoldWizardTest.class,
+	CDISetupWizardTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class SmokeSuite {
