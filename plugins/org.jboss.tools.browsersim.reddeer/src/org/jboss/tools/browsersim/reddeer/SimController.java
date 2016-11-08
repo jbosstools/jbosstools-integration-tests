@@ -99,7 +99,7 @@ public class SimController {
 	protected IBrowsersimHandler launchSimWithRMI(List<Bundle> additionalBundles, String mainClass,
 			ContextMenu menu, ToolItem item, String handlerName) {
 		startRMIRegistry();
-		ILaunchConfigurationWorkingCopy wc = getSimLaunchConfig(menu, null);
+		ILaunchConfigurationWorkingCopy wc = getSimLaunchConfig(menu, item);
 		try {
 			List<String> s = wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, new ArrayList<String>());
 			Bundle hamcrest = Platform.getBundle(HAMCREST_BUNDLE);
