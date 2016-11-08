@@ -3,7 +3,6 @@ package org.jboss.tools.hibernate.reddeer.dialog;
 import org.eclipse.swt.widgets.Shell;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.core.handler.WidgetHandler;
@@ -42,7 +41,7 @@ public class LaunchConfigurationsDialog {
     	p.open();
     	
     	new ShellMenu("Run", "Hibernate Code Generation...","Hibernate Code Generation Configurations...").select();
-    	new WaitUntil(new ShellWithTextIsActive(DIALOG_TITLE));	
+    	new DefaultShell(DIALOG_TITLE);
 	}
 
 	/**
@@ -143,12 +142,9 @@ public class LaunchConfigurationsDialog {
 	 * Presses Cancel button on the Dialog. 
 	 */
 	public void cancel() {
-		final String parentShellText = WidgetHandler.getInstance().getText(
-			ShellHandler.getInstance().getParentShell(new DefaultShell(DIALOG_TITLE).getSWTWidget()));
 		CancelButton cancel = new CancelButton();
 		cancel.click();
 		new WaitWhile(new ShellWithTextIsAvailable(DIALOG_TITLE));
-		new WaitUntil(new ShellWithTextIsActive(parentShellText));
 	}
 	
 	/**
