@@ -26,12 +26,22 @@ import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.jst.reddeer.wst.html.ui.wizard.NewHTMLFileWizardDialog;
 import org.jboss.tools.jst.reddeer.wst.html.ui.wizard.NewHTMLFileWizardHTMLPage;
+import org.junit.BeforeClass;
 
 public class LivereloadBaseTest {
 	
 	public static final String PROJECT_NAME="WebProject";
+	
+	@BeforeClass
+	public static void prepareBase(){
+		WorkbenchShell ws = new WorkbenchShell();
+		if(!ws.isMaximized()){
+			ws.maximize();
+		}
+	}
 	
 	public String createProjectWithPage(){
 		WebProjectWizard ww = new WebProjectWizard();

@@ -15,6 +15,7 @@ import static org.junit.Assert.*;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -57,7 +58,7 @@ public class LivereloadTest extends LivereloadBaseTest{
 		String newText = te.getText().replaceAll(browserText, browserTextNew);
 		te.setText(newText);
 		te.save();
-		new WaitWhile(new BrowserContainsText(ib, browserText));
+		new WaitWhile(new BrowserContainsText(ib, browserText), TimePeriod.LONG);
 		assertTrue(ib.getText().contains(browserTextNew));		
 	}
 
