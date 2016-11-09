@@ -15,12 +15,16 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.Shell;
 import org.jboss.tools.browsersim.wait.ShellWithTextIsAvailable;
 import org.jboss.tools.browsersim.wait.WaitUntil;
 import org.jboss.tools.browsersim.widgets.Browser;
+import org.jboss.tools.browsersim.widgets.RDDisplay;
+import org.jboss.tools.browsersim.widgets.ResultRunnable;
 import org.jboss.tools.browsersim.widgets.WidgetHandler;
 import org.jboss.tools.browsersim.widgets.WidgetLookup;
 
@@ -103,7 +107,7 @@ public class BrowsersimHandler extends UnicastRemoteObject implements IBrowsersi
 	}
 	
 	private Menu getBrowsersimMenu(){
-		Control bsControl = WidgetLookup.getBrowsersimControl();
+		Control bsControl = WidgetLookup.getBrowsersimControl(WidgetLookup.getBrowsersimShell());
 		
 		WidgetHandler.notify(SWT.MenuDetect,bsControl);
 		
@@ -126,5 +130,27 @@ public class BrowsersimHandler extends UnicastRemoteObject implements IBrowsersi
 		MenuItem[] items = WidgetHandler.getMenuItems(menu);
 		return WidgetHandler.isMenuSelected(items, "Enable LiveReload");
 	}
-
+	
+	public void setBrowsersimLocation(final int x, final int y){
+		RDDisplay.syncExec(new Runnable() {
+			
+			@Override
+			public void run() {
+				Shell browsersimShell = WidgetLookup.getBrowsersimShell();
+				browsersimShell.setLocation(x, y);
+			}
+		});
+	}
+	
+	public Point getBrowsersimSize(){
+		return RDDisplay.syncExec(new ResultRunnable<Point>() {
+			
+			@Override
+			public Point run() {
+				Shell browsersimShell = WidgetLookup.getBrowsersimShell();
+				return browsersimShell.getSize();
+			}
+		});
+	}
+	
 }

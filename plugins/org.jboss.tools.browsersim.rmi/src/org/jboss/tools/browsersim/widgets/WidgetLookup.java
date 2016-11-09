@@ -29,31 +29,61 @@ import org.jboss.tools.browsersim.wait.WaitWhile;
 
 public class WidgetLookup {
 	
-	public static Control getBrowsersimControl(){
+	public static Shell getBrowsersimShell(){
 		Shell trShell = getTruncatedShell();
 		if(trShell != null){
 			new PushButton("Truncate (recommended)").click();
 			new WaitWhile(new ShellIsAvailable(trShell));
 		}
-		return RDDisplay.syncExec(new ResultRunnable<Control>() {
+		return RDDisplay.syncExec(new ResultRunnable<Shell>() {
 
 			@Override
-			public Control run() {
+			public Shell run() {
 				Shell s = RDDisplay.getDisplay().getActiveShell();
 				if(s == null){
 					s = RDDisplay.getDisplay().getShells()[0];
 				}
-				for(Control c: s.getChildren()){
-					if(c instanceof DeviceComposite){
-						((Shell)c.getParent()).setMinimized(false);
-						((Shell)c.getParent()).forceActive();
-						c.setFocus();
-						return c;
-					}
+				if(s != null && s.getText().equals("BrowserSim")){
+					s.setMinimized(false);
+					s.forceActive();
+					s.setFocus();
+					return s;
 				}
-				return null;
+				throw new NullPointerException("Unable to retrieve browsersim shell");
 			}
 		});
+	}
+	
+	public static Control getBrowsersimControl(final Shell browsersimShell){
+		return RDDisplay.syncExec(new ResultRunnable<Control>() {
+
+			@Override
+			public Control run() {
+				Control c = getShellDeviceComposite(browsersimShell);
+				if(c == null){
+					for(Shell s: browsersimShell.getShells()){
+						c = getShellDeviceComposite(s);
+						if(c != null){
+							break;
+						}
+					}
+				}
+				if(c == null){
+					throw new NullPointerException("Unable to retrieve browsersim control");
+				}
+				return c;
+			}
+		});
+	}
+	
+	private static Control getShellDeviceComposite(Shell parentShell){
+		for(Control c: parentShell.getChildren()){
+			if(c instanceof DeviceComposite){
+				c.setFocus();
+				return c;
+			}
+		}
+		return null;
 	}
 	
 	public static Shell getTruncatedShell(){
@@ -73,7 +103,7 @@ public class WidgetLookup {
 	}
 	
 	public static IBrowser getBrowsersimBrowser(){
-		getBrowsersimControl();
+		getBrowsersimShell();
 		return BrowserSim.getInstances().get(0).getBrowser();
 		
 	}

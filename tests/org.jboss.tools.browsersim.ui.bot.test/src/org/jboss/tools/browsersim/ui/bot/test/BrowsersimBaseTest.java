@@ -10,6 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.browsersim.ui.bot.test;
 
+import java.rmi.RemoteException;
+
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
+import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
@@ -20,20 +26,11 @@ import org.jboss.tools.browsersim.rmi.IBrowsersimHandler;
 import org.jboss.tools.jst.reddeer.wst.html.ui.wizard.NewHTMLFileWizardDialog;
 import org.jboss.tools.jst.reddeer.wst.html.ui.wizard.NewHTMLFileWizardHTMLPage;
 import org.junit.AfterClass;
-import org.junit.BeforeClass;
 
 public class BrowsersimBaseTest {
 	
 	protected static IBrowsersimHandler bsHandler;
 	public static final String PROJECT_NAME="WebProject";
-	
-	@BeforeClass
-	public static void maximize(){
-		WorkbenchShell ws = new WorkbenchShell();
-		if(!ws.isMaximized()){
-			ws.maximize();
-		}
-	}
 	
 	@AfterClass
 	public static void stopBrowsersim(){
@@ -41,9 +38,27 @@ public class BrowsersimBaseTest {
 		bsController.stopBrowsersim();
 	}
 	
-	public static void launchBrowsersim(ContextMenu menu){
+	public static void launchBrowsersim(ContextMenu menu) throws RemoteException{
 		BrowserSimController bsController = new BrowserSimController();
 		bsHandler = bsController.launchBrowserSim(menu);
+		
+		setProperBrowsersimLocation();
+	}
+	
+	private static void setProperBrowsersimLocation() throws RemoteException{
+		Point browserSimSize = bsHandler.getBrowsersimSize();
+		WorkbenchShell ws = new WorkbenchShell();
+		Rectangle area = Display.syncExec(new ResultRunnable<Rectangle>() {
+			
+			@Override
+			public Rectangle run() {
+				Rectangle area = Display.getDisplay().getPrimaryMonitor().getClientArea();
+				ws.getSWTWidget().setSize(area.width-browserSimSize.x, area.height);
+				ws.getSWTWidget().setLocation(0, 0);
+				return area;
+			}
+		});
+		bsHandler.setBrowsersimLocation(area.width-browserSimSize.x, area.height);
 	}
 	
 	public String createProjectWithPage(){

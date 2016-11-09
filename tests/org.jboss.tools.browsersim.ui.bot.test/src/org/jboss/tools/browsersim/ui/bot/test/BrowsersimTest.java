@@ -22,7 +22,7 @@ import org.junit.Test;
 public class BrowsersimTest extends BrowsersimBaseTest{
 	
 	@BeforeClass
-	public static void prepareBrowsersim(){
+	public static void prepareBrowsersim() throws RemoteException{
 		launchBrowsersim(null);
 	}
 	
