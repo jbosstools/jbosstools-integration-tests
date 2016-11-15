@@ -13,6 +13,7 @@ package org.jboss.tools.docker.ui.bot.test.container;
 
 import java.io.IOException;
 
+import org.jboss.ide.eclipse.as.reddeer.server.deploy.DeployOnServer;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
@@ -57,11 +58,8 @@ public class ExposePortTest extends AbstractDockerBotTest {
 		new WaitWhile(new ConsoleHasNoChange());
 		BrowserView browserView = new BrowserView();
 		browserView.open();
-		browserView.activate();
 		String url = createURL(":8080");
-		browserView.openPageURL(url);
-		checkBrowserForErrorPage(browserView);
-
+		DeployOnServer.checkBrowserForErrorPage(browserView, url);
 	}
 
 	@After

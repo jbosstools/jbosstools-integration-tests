@@ -13,7 +13,8 @@ Require-Bundle: org.junit,
  org.jboss.reddeer.swt,
  org.jboss.reddeer.workbench,
  org.jboss.reddeer.junit,
- org.jboss.reddeer.core
+ org.jboss.reddeer.core,
+ org.jboss.ide.eclipse.as.reddeer
 Import-Package: org.eclipse.core.resources
 Eclipse-BundleShape: jar
 

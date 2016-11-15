@@ -32,6 +32,7 @@ import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
+import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ModuleLabel;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
@@ -258,18 +259,49 @@ public class DeployOnServer {
 	 * 
 	 * Checks browser, if module is running and address is correct.
 	 * 
-	 * @param browser
+	 * @param browserEditor
 	 */
-	protected void checkBrowserForErrorPage(BrowserEditor browser) {
+	public static void checkBrowserForErrorPage(BrowserEditor browserEditor) {
+		evaluateBrowserPage(browserEditor.getText());
+	}
+	
+	/**
+	 * 
+	 * Checks browser, if module is running and address is correct.
+	 * 
+	 * @param browserView
+	 * @param url
+	 */
+	public static void checkBrowserForErrorPage(BrowserView browserView, String url) {
+		//Try to refresh page if it is not loaded.
+		if (browserView.getText().contains("Unable") || browserView.getText().contains("404")) {
+			if (url == null) {
+				browserView.refreshPage();
+			} else {
+				browserView.openPageURL(url);
+			}
+		}
+		new WaitWhile(new JobIsRunning());
+		evaluateBrowserPage(browserView.getText());
+	}
+	
+	/**
+	 * 
+	 * Evaluate page text, if it not empty or without error.
+	 * 
+	 * @param browserPage
+	 */
+	private static void evaluateBrowserPage(String browserPage){
 		ConsoleView consoleView = new ConsoleView();
 		consoleView.open();
 		assertFalse("Browser contains text 'Status 404'\n Console output:\n" + consoleView.getConsoleText(),
-				browser.getText().contains("Status 404") || browser.getText().contains("404 - Not Found"));
+				browserPage.contains("Status 404") || browserPage.contains("404 - Not Found"));
 		assertFalse(
 				"Browser contains text 'Error processing request'\n Console output:\n" + consoleView.getConsoleText(),
-				browser.getText().contains("Error processing request"));
+				browserPage.contains("Error processing request"));
 		assertFalse("Browser contains text 'Forbidden'\n Console output:\n" + consoleView.getConsoleText(),
-				browser.getText().contains("Forbidden"));
+				browserPage.contains("Forbidden"));
+		
 	}
 
 	/**
