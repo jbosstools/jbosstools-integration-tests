@@ -1,5 +1,6 @@
 # The JBoss Tools Integration Tests project
 
+
 ## Summary
 
 JBoss Tools Integration Test contains SWT Bot test plugins for overall integration testing of JBoss Tools. 
