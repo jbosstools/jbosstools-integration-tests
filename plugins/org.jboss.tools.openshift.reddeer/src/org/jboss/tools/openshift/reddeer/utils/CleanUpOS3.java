@@ -10,10 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.reddeer.utils;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.junit.After;
@@ -27,7 +27,7 @@ import org.junit.Test;
  *
  */
 public class CleanUpOS3 {
-	
+
 	@Test
 	public void test() {
 		// NOTHING TO DO
@@ -35,24 +35,28 @@ public class CleanUpOS3 {
 	
 	@After
 	public void cleanUp() {
-		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.open();
-		
-		OpenShift3Connection connection = null;
 		try {
-			 connection = explorer.getOpenShift3Connection();
-		} catch (JFaceLayerException ex) {
-			// There is no connection with such username, nothing happens
+			OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+			explorer.open();
+			OpenShift3Connection connection = explorer.getOpenShift3Connection();
+	
+			if (connection != null) {
+				safeDeleteProject(DatastoreOS3.PROJECT1_DISPLAYED_NAME, connection);
+				safeDeleteProject(DatastoreOS3.PROJECT2, connection);
+
+				new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+			}
+		} catch(RedDeerException e) {
+			// swallow intentionally
 		}
-		
-		if (connection != null) {
+	}
+
+	private void safeDeleteProject(String projectName, OpenShift3Connection connection) {
+		try {
 			connection.refresh();
-			connection.getProject(DatastoreOS3.PROJECT1_DISPLAYED_NAME).delete();
-			
-			connection.refresh();
-			connection.getProject(DatastoreOS3.PROJECT2).delete();
-			
-			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+			connection.getProject(projectName).delete();
+		} catch (RedDeerException e) {
+			// swallow intentionally
 		}
 	}
 }
