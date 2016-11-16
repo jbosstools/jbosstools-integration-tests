@@ -19,9 +19,4 @@ public class ProjectRuntimeDownload extends ProjectRuntimeDownloadTestBase {
 	public void downloadAS711() {
 		downloadAndCheckServer("JBoss AS 7.1.1 (Brontes)", 1);
 	}
-	
-	@Test
-	public void downloadSeam231() {
-		downloadAndCheckSeam("JBoss Seam 2.3.1", 1);
-	}
 }

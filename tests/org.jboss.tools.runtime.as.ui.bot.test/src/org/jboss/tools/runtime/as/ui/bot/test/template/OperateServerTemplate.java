@@ -167,7 +167,7 @@ public abstract class OperateServerTemplate {
 		try{
 			LOGGER.step("Trying to close shell \"Warning: server process not terminated\"");
 			DefaultShell warningShell = new DefaultShell("Warning: server process not terminated");
-			new PushButton("Yes");
+			new PushButton("Yes").click();
 			new WaitWhile(new ShellIsActive(warningShell));
 			LOGGER.step("Warning shell is closed.");
 		}catch (SWTLayerException e) {

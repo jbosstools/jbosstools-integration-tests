@@ -17,7 +17,7 @@
 
 		<surefire.timeout>7200</surefire.timeout>
 		<productProperties></productProperties>
-		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${reddeer.config} -Djbt.cdk_git_uri=${jbt.cdk_git_uri} ${productProperties}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${reddeer.config} ${productProperties}</systemProperties>
 	</properties>
 
 	<profiles>
@@ -220,7 +220,10 @@
 		</profile>
 
 
-		<!-- Profile for products -->
+		<!-- Profile for stable tests 
+			It needs jboss.org.username and jboss.org.password variables to be set.
+			Also product-download-properties-file property have to point to file with download URL's of product servers.
+		-->
 		<profile>
 			<id>stable</id>
 			<properties>
@@ -235,8 +238,16 @@
 				<jboss-eap-6.0.x>${requirementsDirectory}/jboss-eap-6.0.x/jboss-eap-6.0/</jboss-eap-6.0.x>
 
 				<jboss-jpp-6.1.x>${requirementsDirectory}/jboss-jpp-6.1.x/jboss-portal-6.1/</jboss-jpp-6.1.x>
+				
+				<wildfly-10.0>${requirementsDirectory}/wildfly-10.0.0.Final/</wildfly-10.0>
+				<wildfly-web-10.0>${requirementsDirectory}/wildfly-servlet-10.0.0.Final/</wildfly-web-10.0>
+				<wildfly-9.0>${requirementsDirectory}/wildfly-9.0.0.Final/</wildfly-9.0>
+				<wildfly-web-9.0>${requirementsDirectory}/wildfly-servlet-9.0.0.Final/</wildfly-web-9.0>
+				<wildfly-8.1>${requirementsDirectory}/wildfly-8.1.0.Final/</wildfly-8.1>
+				<wildfly-8.0>${requirementsDirectory}/wildfly-8.0.0.Final/</wildfly-8.0>
 
-				<jboss-seam-2.3.x>${requirementsDirectory}/jboss-seam-2.3.x/jboss-wfk-2.5.0/jboss-seam-2.3.3.Final-redhat-1/</jboss-seam-2.3.x>
+				<jboss-as-7>${requirementsDirectory}/jboss-as-7.1.1.Final/</jboss-as-7>
+				<cdk>${requirementsDirectory}/cdk</cdk>
 
 				<product-download-properties-file>resources/products-download.properties</product-download-properties-file>
 				<productProperties>-Djboss.org.username=${jboss.org.username} -Djboss.org.password=${jboss.org.password}</productProperties>
@@ -265,6 +276,18 @@
 						<groupId>com.googlecode.maven-download-plugin</groupId>
 						<artifactId>download-maven-plugin</artifactId>
 						<executions>
+							<execution>
+								<id>install-cdk_weekly</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${cdk_weekly.url}</url>
+									<unpack>true</unpack>
+									<outputDirectory>${requirementsDirectory}/</outputDirectory>
+								</configuration>
+							</execution>
 							<execution>
 								<id>install-eap-7.0</id>
 								<phase>pre-integration-test</phase>
@@ -380,6 +403,145 @@
 									<unpack>true</unpack>
 									<md5>${jboss-seam-2.3.x.md5}</md5>
 									<outputDirectory>${requirementsDirectory}/jboss-seam-2.3.x/</outputDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>install-widlfly-8.1.0</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<configuration>
+									<skip>${skipTests}</skip>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.wildfly</groupId>
+											<artifactId>wildfly-dist</artifactId>
+											<version>8.1.0.Final</version>
+											<type>zip</type>
+										</artifactItem>
+									</artifactItems>
+									<outputDirectory>${requirementsDirectory}</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-widlfly-8.0.0</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<configuration>
+									<skip>${skipTests}</skip>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.wildfly</groupId>
+											<artifactId>wildfly-dist</artifactId>
+											<version>8.0.0.Final</version>
+											<type>zip</type>
+										</artifactItem>
+									</artifactItems>
+									<outputDirectory>${requirementsDirectory}</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-widlfly-9.0.0</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<configuration>
+									<skip>${skipTests}</skip>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.wildfly</groupId>
+											<artifactId>wildfly-dist</artifactId>
+											<version>9.0.0.Final</version>
+											<type>zip</type>
+										</artifactItem>
+									</artifactItems>
+									<outputDirectory>${requirementsDirectory}</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-widlfly-10.0.0-web</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<configuration>
+									<skip>${skipTests}</skip>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.wildfly</groupId>
+											<artifactId>wildfly-servlet-dist</artifactId>
+											<version>10.0.0.Final</version>
+											<type>zip</type>
+										</artifactItem>
+									</artifactItems>
+									<outputDirectory>${requirementsDirectory}</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-widlfly-10.0.0</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<configuration>
+									<skip>${skipTests}</skip>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.wildfly</groupId>
+											<artifactId>wildfly-dist</artifactId>
+											<version>10.0.0.Final</version>
+											<type>zip</type>
+										</artifactItem>
+									</artifactItems>
+									<outputDirectory>${requirementsDirectory}</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-widlfly-web-9.0.0</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<configuration>
+									<skip>${skipTests}</skip>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.wildfly</groupId>
+											<artifactId>wildfly-servlet-dist</artifactId>
+											<version>9.0.0.Final</version>
+											<type>zip</type>
+										</artifactItem>
+									</artifactItems>
+									<outputDirectory>${requirementsDirectory}</outputDirectory>
+								</configuration>
+							</execution>
+							<execution>
+								<id>install-as</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<configuration>
+									<skip>${skipTests}</skip>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.jboss.as</groupId>
+											<artifactId>jboss-as-dist</artifactId>
+											<version>7.1.1.Final</version>
+											<type>zip</type>
+										</artifactItem>
+									</artifactItems>
+									<outputDirectory>${requirementsDirectory}</outputDirectory>
 								</configuration>
 							</execution>
 						</executions>
