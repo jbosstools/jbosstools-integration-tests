@@ -8,6 +8,7 @@ import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
 
+@JRE(cleanup=true, value=1.8)
 public class DetectWildFly90Web extends DetectRuntimeTemplate {
 
 	public static final String SERVER_ID = "wildfly-web-9.0";
