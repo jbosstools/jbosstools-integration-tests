@@ -28,6 +28,7 @@ import org.jboss.tools.openshift.core.connection.Connection;
 import org.jboss.tools.openshift.reddeer.exception.OpenShiftToolsException;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
+import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 
 import com.openshift.restclient.ClientBuilder;
 import com.openshift.restclient.IClient;
@@ -74,9 +75,9 @@ public class OpenShiftConnectionRequirement implements Requirement<RequiredBasic
 
 	@Override
 	public void fulfill() {
-		String server = DatastoreOS3.getValueOrDefault(connectionSpec.server(), DatastoreOS3.SERVER);
-		String username = DatastoreOS3.getValueOrDefault(connectionSpec.username(), DatastoreOS3.USERNAME);
-		String password = DatastoreOS3.getValueOrDefault(connectionSpec.password(), DatastoreOS3.PASSWORD);
+		String server = TestUtils.getValueOrDefault(connectionSpec.server(), DatastoreOS3.SERVER);
+		String username = TestUtils.getValueOrDefault(connectionSpec.username(), DatastoreOS3.USERNAME);
+		String password = TestUtils.getValueOrDefault(connectionSpec.password(), DatastoreOS3.PASSWORD);
 
 		try {
 			ConnectionURL url = getConnectionURL(username, server);

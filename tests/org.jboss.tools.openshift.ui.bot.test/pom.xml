@@ -13,7 +13,9 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Dtest.configurations.dir=${configurations.dir} -Dopenshift.server=${openshift.server} -Dopenshift.xserver=${openshift.xserver} -Dopenshift.username=${openshift.username} -Dopenshift.password=${openshift.password} -Dopenshift.token=${openshift.token} -Dgithub.password=${github.password} -Dopenshift.authmethod=${openshift.authmethod} -Dopenshift.nexus.mirror=${openshift.nexus.mirror}</systemProperties>
+		<systemProperties>
+			${integrationTestsSystemProperties} -Dtest.configurations.dir=${configurations.dir} -Dopenshift.server=${openshift.server} -Dopenshift.xserver=${openshift.xserver} -Dopenshift.username=${openshift.username} -Dopenshift.password=${openshift.password} -Dopenshift.token=${openshift.token} -Dgithub.username=${github.username} -Dgithub.password=${github.password} -Dopenshift.authmethod=${openshift.authmethod} -Dsecurestorage.password=${securestorage.password} -Dopenshift.nexus.mirror=${openshift.nexus.mirror}
+		</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 		<openshift.server></openshift.server>
 		<openshift.xserver></openshift.xserver>
@@ -22,6 +24,9 @@
 		<openshift.token></openshift.token>
 		<openshift.authmethod></openshift.authmethod>
 		<openshift.nexus.mirror></openshift.nexus.mirror>
+		<github.username></github.username>
+		<github.password></github.password>
+		<securestorage.password></securestorage.password>
 	</properties>
 
 	<build>

@@ -178,6 +178,7 @@ public class OpenShiftLabel {
 		public static final String SECURE_STORAGE_PASSWORD = "Secure Storage Password";
 		public static final String STOP_ALL_DEPLOYMENTS = "Stop all deployments?";
 		public static final String TAIL_FILES = "Tail Files";
+		public static final String UNTRUSTED_SSL_CERTIFICATE = "Untrusted SSL Certificate";
 		
 		// Domain related
 		public static final String CREATE_DOMAIN = "Create Domain";

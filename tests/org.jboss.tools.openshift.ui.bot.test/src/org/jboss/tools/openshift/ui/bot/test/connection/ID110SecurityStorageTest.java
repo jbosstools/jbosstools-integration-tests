@@ -16,10 +16,15 @@ import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.ServerType;
 import org.junit.Test;
 
 /**
- * Test capabilities of secured storage for OpenShift Tools plugin.
+ * Test capabilities of secured storage for OpenShift Tools plugin.<br/>
  * 
- * @author mlabuda@redhat.com
+ * This class needs the following classes to be executed first
+ * <ul>
+ * 		<li>ID101OpenOpenShiftExplorerTest.class</li>
+ *		<li>ID103CreateNewConnectionTest.class</li>
+ * </ul>
  *
+ * @author mlabuda@redhat.com
  */
 public class ID110SecurityStorageTest {
 	

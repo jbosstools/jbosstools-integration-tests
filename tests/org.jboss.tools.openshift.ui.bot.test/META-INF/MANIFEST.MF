@@ -25,7 +25,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.swt,
  org.hamcrest.core,
  org.jboss.tools.openshift.common.ui,
- org.eclipse.core.databinding
+ org.eclipse.core.databinding,
+ org.apache.commons.lang;bundle-version="2.6.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-BundleShape: jar

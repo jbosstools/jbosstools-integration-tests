@@ -27,6 +27,7 @@ import org.jboss.tools.openshift.core.connection.Connection;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftProjectExists;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement.RequiredProject;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
+import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 
 import com.openshift.restclient.ResourceKind;
 import com.openshift.restclient.model.IProject;
@@ -79,7 +80,7 @@ public class OpenShiftProjectRequirement implements Requirement<RequiredProject>
 
 	@Override
 	public void fulfill() {
-		String projectName = DatastoreOS3.getValueOrDefault(projectSpec.name(), DatastoreOS3.TEST_PROJECT);
+		String projectName = TestUtils.getValueOrDefault(projectSpec.name(), DatastoreOS3.TEST_PROJECT);
 		Connection connection = ConnectionUtils.getConnectionOrDefault(projectSpec.connectionURL());
 		assertNotNull(NLS.bind("No connection {0} exists", projectSpec.connectionURL()), connection);
 
