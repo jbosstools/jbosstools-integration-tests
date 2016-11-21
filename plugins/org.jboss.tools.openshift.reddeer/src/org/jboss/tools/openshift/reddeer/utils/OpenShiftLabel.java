@@ -229,6 +229,7 @@ public class OpenShiftLabel {
 		public static final String ADVANCED_OPEN = " Advanced >> ";
 		public static final String ADVANCED_CLOSE = " << Advanced ";
 		public static final String BROWSE = "Browse...";
+		public static final String CLOSE = "Close";
 		public static final String COMMIT= "Commit";
 		public static final String COMMIT_PUBLISH = "Commit and Publish";
 		public static final String COMMIT_PUSH = "Commit and Push";
@@ -267,8 +268,9 @@ public class OpenShiftLabel {
 		public static final String CHECK_SERVER_TYPE = "Check Server Type";
 		public static final String PROTOCOL = "Protocol:";
 		public static final String TOKEN = "Token";
-		public static final String RETRIEVAL_LINK = "retrieve";
-		
+		public static final String RETRIEVE_TOKEN = "Enter a token or retrieve a new one.";
+		public static final String LINK_RETRIEVE = "retrieve";
+
 		// Domain related
 		public static final String DOMAIN_NAME = "Domain Name:";
 	
