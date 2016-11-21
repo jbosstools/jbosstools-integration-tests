@@ -68,4 +68,7 @@ public class ConnectionUtils {
 		}
 	}
 
+	public static void clearAll() {
+		ConnectionsRegistrySingleton.getInstance().clear();
+	}
 }
