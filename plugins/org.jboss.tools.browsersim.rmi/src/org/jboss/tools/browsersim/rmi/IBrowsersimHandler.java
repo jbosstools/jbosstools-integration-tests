@@ -14,6 +14,8 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Point;
+
 public interface IBrowsersimHandler extends Remote{
 	
 	public void openPreferences() throws RemoteException;
@@ -28,5 +30,8 @@ public interface IBrowsersimHandler extends Remote{
 	public List<String> getSkinsMenuItems() throws RemoteException;
 	public void enableLivereload() throws RemoteException;
 	public boolean isLivereloadEnabled() throws RemoteException;
+	public void setBrowsersimLocation(int x, int y) throws RemoteException;
+	public Point getBrowsersimSize() throws RemoteException;
+	
 
 }
