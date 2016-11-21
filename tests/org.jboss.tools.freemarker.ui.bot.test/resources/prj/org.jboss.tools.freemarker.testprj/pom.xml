@@ -4,7 +4,7 @@
 	<artifactId>org.jboss.tools.freemarker.testprj</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.freemarker/freemarker -->
+		<!-- https://mvnrepository.com/artifact/org.freemarker/freemarker-->
 		<dependency>
 		    <groupId>org.freemarker</groupId>
 		    <artifactId>freemarker</artifactId>
@@ -14,6 +14,25 @@
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<configuration>
+							<dependency-resolution>
+								<extraRequirements>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.ide.eclipse.freemarker.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+								</extraRequirements>
+							</dependency-resolution>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
 	  		<plugin>
 	       		<artifactId>maven-compiler-plugin</artifactId>
 	       		<version>3.5.1</version>
