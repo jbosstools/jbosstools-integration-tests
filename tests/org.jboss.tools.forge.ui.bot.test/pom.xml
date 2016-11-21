@@ -11,9 +11,20 @@
 	<artifactId>org.jboss.tools.forge.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>-Ddatabase.path=${test.database}</systemProperties>
+		<systemProperties>-Ddatabase.path=${test.database} -Djbosstools.test.wildfly10.home=${jbosstools.test.wildfly10.home} -Drd.config=${reddeer.config} </systemProperties>
+		<reddeer.config>${project.build.directory}/classes/servers/wildfly-10.xml</reddeer.config>
+		<jbosstools.test.wildfly10.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.wildfly10.home>
 	</properties>
 	<build>
+		<resources>
+			<resource>
+				<directory>resources</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
@@ -44,6 +55,30 @@
 						</dependency>
 					</dependencies>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>download-wildfly</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.wildfly</groupId>
+									<artifactId>wildfly-dist</artifactId>
+									<version>10.0.0.Final</version>
+									<type>zip</type>
+								</artifactItem>
+							</artifactItems>
+							<skip>${skipTests}</skip>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

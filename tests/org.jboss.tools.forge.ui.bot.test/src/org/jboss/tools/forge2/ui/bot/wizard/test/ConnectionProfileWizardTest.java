@@ -43,8 +43,7 @@ public class ConnectionProfileWizardTest extends WizardTestBase {
 
 	@Before
 	public void prepare() {
-		assertNotNull("Property 'database.path' is not defined!", dbFolder);
-		DatabaseUtils.runSakilaDB(dbFolder);
+		startSakilaDatabase();
 	}
 
 	@Test

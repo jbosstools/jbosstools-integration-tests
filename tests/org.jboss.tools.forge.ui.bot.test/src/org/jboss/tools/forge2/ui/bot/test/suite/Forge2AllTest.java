@@ -15,6 +15,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.forge2.ui.bot.wizard.test.CDISetupWizardTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.ConnectionProfileWizardTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.ConstraintSetupWizardTest;
+import org.jboss.tools.forge2.ui.bot.wizard.test.DeployScaffoldDBTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.EJBSetupWizardTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.FacesSetupWizardTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.InstallAddonTest;
@@ -51,7 +52,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	CDISetupWizardTest.class,
 	ConnectionProfileWizardTest.class,
 	JPAEntitiesFromTablesTest.class,
-	InstallAddonTest.class
+	InstallAddonTest.class,
+	DeployScaffoldDBTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class Forge2AllTest {
