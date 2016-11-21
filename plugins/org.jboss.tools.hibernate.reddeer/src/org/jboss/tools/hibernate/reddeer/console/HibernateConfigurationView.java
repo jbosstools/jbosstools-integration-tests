@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.swt.api.Menu;
+import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -69,12 +71,12 @@ public class HibernateConfigurationView extends WorkbenchView {
 		new WorkbenchShell();
 		Menu m = new ShellMenu("File","New","Other...");
 		m.select();
-
-		new WaitUntil(new ShellWithTextIsActive("New"));		
+		
+		new DefaultShell("New");	
 		new DefaultTreeItem("Hibernate", "Hibernate Console Configuration").select();
 		new PushButton("Next >").click();
 		
-		new WaitUntil(new ShellWithTextIsActive(""));
+		Shell s = new DefaultShell("");	
 		
 		new LabeledText("Name:").setText(configuration.getName());
 		
@@ -85,6 +87,6 @@ public class HibernateConfigurationView extends WorkbenchView {
 		new DefaultText(3).setText(configuration.getConfigurationFile());
 		
 		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsActive(""));
+		new WaitWhile(new ShellIsAvailable(s));
 	}	
 }
