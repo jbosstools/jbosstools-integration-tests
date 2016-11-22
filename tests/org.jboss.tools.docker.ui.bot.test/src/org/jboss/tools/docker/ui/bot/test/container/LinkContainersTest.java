@@ -18,8 +18,9 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageOneWizard;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageTwoWizard;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunResourceVolumesVariablesPage;
+import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.reddeer.ui.DockerTerminal;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
@@ -35,7 +36,8 @@ import org.junit.Test;
 
 public class LinkContainersTest extends AbstractDockerBotTest {
 
-	private String imageName = "mariadb:latest";
+	private String imageName = "mariadb";
+	private String imageTag = "latest";
 	private String containerNameDB = "test_run_mariadb";
 	private String containerNameClient = "test_connect_mariadb";
 
@@ -47,7 +49,7 @@ public class LinkContainersTest extends AbstractDockerBotTest {
 
 	@Test
 	public void testLinkContainers() {
-		pullImage(this.imageName);
+		pullImage(imageName, imageTag);
 		runDatabase();
 		runClient(getDBAddress());
 	}
@@ -57,14 +59,14 @@ public class LinkContainersTest extends AbstractDockerBotTest {
 		imageTab.activate();
 		imageTab.refresh();
 		new WaitWhile(new JobIsRunning());
-		imageTab.runImage(this.imageName);
-		RunADockerImagePageOneWizard firstPage = new RunADockerImagePageOneWizard();
+		imageTab.runImage(imageName + ":" + imageTag);
+		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
 		firstPage.setName(this.containerNameDB);
 		firstPage.setEntrypoint("docker-entrypoint.sh");
 		firstPage.setCommand("mysqld");
 		firstPage.setPublishAllExposedPorts(false);
 		firstPage.next();
-		RunADockerImagePageTwoWizard secondPage = new RunADockerImagePageTwoWizard();
+		ImageRunResourceVolumesVariablesPage secondPage = new ImageRunResourceVolumesVariablesPage();
 		secondPage.addEnviromentVariable("MYSQL_ROOT_PASSWORD", "password");
 		secondPage.finish();
 		new WaitWhile(new JobIsRunning());
@@ -72,7 +74,7 @@ public class LinkContainersTest extends AbstractDockerBotTest {
 	}
 
 	public String getDBAddress() {
-		selectContainerInDockerExplorer(containerNameDB);
+		new DockerExplorerView().getDockerConnection(getDockerServer()).getContainer(containerNameDB).select();
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
 		propertiesView.selectTab("Inspect");
@@ -84,8 +86,8 @@ public class LinkContainersTest extends AbstractDockerBotTest {
 		imageTab.activate();
 		imageTab.refresh();
 		new WaitWhile(new JobIsRunning());
-		imageTab.runImage(this.imageName);
-		RunADockerImagePageOneWizard firstPage = new RunADockerImagePageOneWizard();
+		imageTab.runImage(imageName + ":" + imageTag);
+		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
 		firstPage.setName(this.containerNameClient);
 		firstPage.setEntrypoint("docker-entrypoint.sh");
 		firstPage.setCommand("mysql -h" + dbAddress + " -P3306 -uroot -ppassword");
@@ -107,7 +109,7 @@ public class LinkContainersTest extends AbstractDockerBotTest {
 	public void after() {
 		deleteContainer(this.containerNameClient);
 		deleteContainer(this.containerNameDB);
-		deleteImage(this.imageName);
+		deleteImage(imageName, imageTag);
 		deleteConnection();
 	}
 

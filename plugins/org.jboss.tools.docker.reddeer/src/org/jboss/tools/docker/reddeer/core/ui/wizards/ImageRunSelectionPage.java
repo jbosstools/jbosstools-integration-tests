@@ -31,16 +31,20 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  *
  */
 
-public class RunADockerImagePageOneWizard extends WizardPage {
+public class ImageRunSelectionPage extends WizardPage {
 
-	public RunADockerImagePageOneWizard() {
+	public ImageRunSelectionPage() {
 		super();
 		new WaitUntil(new ShellWithTextIsAvailable("Run a Docker Image"), TimePeriod.LONG);
 	}
 
 	public void finish() {
-		new FinishButton().click();
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		if (new FinishButton().isEnabled()) {
+			new FinishButton().click();
+			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		} else {
+			throw new RuntimeException("Image cannot be run! (Duplicate name?)");
+		}
 	}
 
 	public void next() {

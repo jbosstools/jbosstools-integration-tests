@@ -18,7 +18,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageOneWizard;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
@@ -33,7 +33,8 @@ import org.junit.Test;
 
 public class ExposePortTest extends AbstractDockerBotTest {
 
-	private String imageName = "jboss/wildfly:10.0.0.Final";
+	private String imageName = "jboss/wildfly";
+	private String imageTag = "10.0.0.Final";
 	private String containerName = "test_run_wildfly";
 
 	@Before
@@ -44,14 +45,14 @@ public class ExposePortTest extends AbstractDockerBotTest {
 
 	@Test
 	public void testExposePort() throws IOException {
-		pullImage(this.imageName);
+		pullImage(imageName, imageTag);
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
 		imageTab.refresh();
 		new WaitWhile(new JobIsRunning());
-		imageTab.runImage(this.imageName);
-		RunADockerImagePageOneWizard firstPage = new RunADockerImagePageOneWizard();
-		firstPage.setName(this.containerName);
+		imageTab.runImage(imageName + ":" + imageTag);
+		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
+		firstPage.setName(containerName);
 		firstPage.setPublishAllExposedPorts(false);
 		firstPage.finish();
 		new WaitWhile(new JobIsRunning());
@@ -64,8 +65,8 @@ public class ExposePortTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		deleteContainer(this.containerName);
-		deleteImage(this.imageName);
+		deleteContainer(containerName);
+		deleteImage(imageName, imageTag);
 		deleteConnection();
 	}
 

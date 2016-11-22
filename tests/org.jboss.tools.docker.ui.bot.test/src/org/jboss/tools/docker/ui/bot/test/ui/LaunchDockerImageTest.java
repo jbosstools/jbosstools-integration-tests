@@ -13,7 +13,7 @@ package org.jboss.tools.docker.ui.bot.test.ui;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.tools.docker.reddeer.ui.DockerExplorer;
+import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.reddeer.ui.RunDockerImageLaunchConfiguration;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
@@ -27,9 +27,9 @@ import org.junit.Test;
  */
 
 public class LaunchDockerImageTest extends AbstractDockerBotTest {
-	private static final String IMAGE_NAME = "hello-world:latest";
-	private static final String CONTAINER_NAME = "test_variables";
-	private static final String CONFIGURATION_NAME = "test_configuration";
+	private String imageName = "hello-world";
+	private String containerName = "test_variables";
+	private String configurationName = "test_configuration";
 
 	@Before
 	public void before() {
@@ -40,28 +40,26 @@ public class LaunchDockerImageTest extends AbstractDockerBotTest {
 	@Test
 	public void testLaunchConfiguration() {
 
-		pullImage(IMAGE_NAME);
+		pullImage(imageName);
 		RunDockerImageLaunchConfiguration runImageConf = new RunDockerImageLaunchConfiguration();
 		runImageConf.open();
-		runImageConf.createNewConfiguration(CONFIGURATION_NAME);
-		runImageConf.setContainerName(CONTAINER_NAME);
-		runImageConf.selectImage(IMAGE_NAME);
+		runImageConf.createNewConfiguration(configurationName);
+		runImageConf.setContainerName(containerName);
+		runImageConf.selectImage(imageName + ":latest");
 		runImageConf.setPrivilegedMode(true);
 		runImageConf.apply();
-		runImageConf.runConfiguration(CONFIGURATION_NAME);
+		runImageConf.runConfiguration(configurationName);
 
-
-		DockerExplorer de = new DockerExplorer();
-		assertTrue("Container is not deployed!",de.containerIsDeployed(getDockerServer(), CONTAINER_NAME));
+		assertTrue("Container is not deployed!",new DockerExplorerView().getDockerConnection(getDockerServer()).getContainer(containerName)!=null);
 		runImageConf.open();
-		runImageConf.deleteRunConfiguration(CONFIGURATION_NAME);
+		runImageConf.deleteRunConfiguration(configurationName);
 		runImageConf.close();
 	}
 
 	@After
 	public void after() {
-		deleteContainer(CONTAINER_NAME);
-		deleteImage(IMAGE_NAME);
+		deleteContainer(containerName);
+		deleteImage(imageName);
 		deleteConnection();
 	}
 

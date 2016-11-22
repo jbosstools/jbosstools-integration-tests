@@ -18,6 +18,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
@@ -64,7 +65,7 @@ public class ImageTabTest extends AbstractDockerBotTest {
 		}
 		idFromTable = idFromTable.replace("sha256:", "");
 
-		selectImageInDockerExplorer(imageName);
+		new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(imageName).select();
 
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();

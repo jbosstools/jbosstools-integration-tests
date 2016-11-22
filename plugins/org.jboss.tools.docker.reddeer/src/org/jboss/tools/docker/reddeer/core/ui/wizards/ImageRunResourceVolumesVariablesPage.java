@@ -30,9 +30,9 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  *
  */
 
-public class RunADockerImagePageTwoWizard extends WizardPage {
+public class ImageRunResourceVolumesVariablesPage extends WizardPage {
 
-	public RunADockerImagePageTwoWizard() {
+	public ImageRunResourceVolumesVariablesPage() {
 		super();
 	}
 

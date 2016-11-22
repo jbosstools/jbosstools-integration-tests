@@ -40,8 +40,8 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.SearchDockerImagePageOneWizard;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.SearchDockerImagePageTwoWizard;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageSearchPage;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageTagSelectionPage;
 import org.jboss.tools.docker.reddeer.perspective.DockerPerspective;
 
 /**
@@ -145,11 +145,11 @@ public class RunDockerImageLaunchConfiguration extends LaunchConfiguration {
 	public void searchImage(String imageName, String tag) {
 		selectTab(MAIN_TAB_LABEL);
 		new PushButton("Search...");
-		SearchDockerImagePageOneWizard pageOne = new SearchDockerImagePageOneWizard();
+		ImageSearchPage pageOne = new ImageSearchPage();
 		pageOne.searchImage(imageName);
 		pageOne.next();
 		new WaitWhile(new ProgressInformationShellIsActive(), TimePeriod.NORMAL);
-		SearchDockerImagePageTwoWizard pageTwo = new SearchDockerImagePageTwoWizard();
+		ImageTagSelectionPage pageTwo = new ImageTagSelectionPage();
 		assertFalse("Search tags are empty!", pageTwo.getTags().isEmpty());
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
 		assertTrue("Search results do not contains tag:" + tag + "!", pageTwo.tagsContains(tag));

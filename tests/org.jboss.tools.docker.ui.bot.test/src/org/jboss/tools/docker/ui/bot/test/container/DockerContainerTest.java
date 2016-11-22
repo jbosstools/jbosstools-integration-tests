@@ -13,19 +13,14 @@ package org.jboss.tools.docker.ui.bot.test.container;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
-
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageOneWizard;
-import org.jboss.tools.docker.reddeer.ui.ConnectionItem;
-import org.jboss.tools.docker.reddeer.ui.DockerExplorer;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
+import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
 import org.junit.Before;
@@ -57,24 +52,11 @@ public class DockerContainerTest extends AbstractDockerBotTest {
 		} catch (CoreLayerException ex) {
 
 		}
-		pullImage(this.imageName);
-		DockerExplorer de = new DockerExplorer();
-		de.open();
-		ConnectionItem dockerConnection = de.getConnection(dockerServer);
-		TreeItem dc = dockerConnection.getTreeItem();
-		dc.select();
-		dc.expand();
-		TreeItem imagesItem = dc.getItem("Images");
-		imagesItem.select();
-		imagesItem.expand();
+		pullImage(imageName);
+		assertTrue("Image has not been found!", new DockerExplorerView().getDockerConnection(dockerServer).getImage(imageName)!=null);
 
-		TreeItem item = getChildContainsWith(imagesItem.getItems(), imageName);
-		if (item == null)
-			assertTrue("Image has not been found!", false);
-		item.select();
-
-		new ContextMenu("Run...").select();
-		RunADockerImagePageOneWizard firstPage = new RunADockerImagePageOneWizard();
+		new DockerExplorerView().getDockerConnection(dockerServer).getImage(imageName).run();
+		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
 		firstPage.setName(this.containerName);
 		firstPage.finish();
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
@@ -82,18 +64,9 @@ public class DockerContainerTest extends AbstractDockerBotTest {
 
 	}
 
-	private TreeItem getChildContainsWith(List<TreeItem> items, String containString) {
-		for (TreeItem item : items) {
-			if (item.getText().contains(containString)) {
-				return item;
-			}
-		}
-		return null;
-	}
-
 	@After
 	public void after() {
-		deleteContainer(this.containerName);
+		deleteContainer(containerName);
 		deleteImage(imageName);
 		deleteConnection();
 	}

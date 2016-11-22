@@ -51,7 +51,7 @@ public class PullImageTest extends AbstractDockerBotTest {
 		new WaitWhile(new JobIsRunning());
 		assertTrue("Image has not been deployed!", imageIsDeployed(this.imageName));
 	}
-	
+
 	@Test
 	public void testPullImageWithoutTag() {
 		ConsoleView cview = new ConsoleView();
@@ -64,12 +64,17 @@ public class PullImageTest extends AbstractDockerBotTest {
 		pullImage(this.imageNameNoTag);
 		new WaitWhile(new JobIsRunning());
 		assertTrue("Image has not been deployed!", imageIsDeployed(this.imageNameNoTag));
-		assertTrue("Multiple images has been deployed!", deployedImagesCount(this.imageNameNoTag)==1);
+		assertTrue("Multiple images has been deployed!", deployedImagesCount(this.imageNameNoTag) == 1);
 	}
 
 	@After
 	public void after() {
-		deleteImage(this.imageName);
+		if (imageIsDeployed(imageName)) {
+			deleteImage(this.imageName);
+		}
+		if (imageIsDeployed(imageNameNoTag)) {
+			deleteImage(this.imageNameNoTag);
+		}
 		deleteConnection();
 	}
 

@@ -17,5 +17,6 @@ Require-Bundle: org.junit,
 Export-Package: org.jboss.tools.docker.reddeer.core.ui.wizards,
  org.jboss.tools.docker.reddeer.perspective,
  org.jboss.tools.docker.reddeer.preferences,
- org.jboss.tools.docker.reddeer.ui
+ org.jboss.tools.docker.reddeer.ui,
+ org.jboss.tools.docker.reddeer.ui.resources
 

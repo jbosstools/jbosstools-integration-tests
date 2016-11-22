@@ -19,41 +19,42 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.tools.docker.reddeer.ui.DockerExplorer;
+import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 
 /**
  * 
- * @author jkopriva
+ * @author jkopriva@redhat.com
  *
  */
 
-public class DockerConnectionWizard extends WizardPage {
+public class NewDockerConnectionPage extends WizardPage {
+	private static final String NEW_DOCKER_CONNECTION_SHELL = "New Docker Connection";
 
-	public DockerConnectionWizard() {
+	public NewDockerConnectionPage() {
 		super();
 	}
 
 	public void open() {
-		DockerExplorer de = new DockerExplorer();
-		de.open();
+		new DockerExplorerView().open();
 		new DefaultToolItem("Add Connection").click();
-		new WaitUntil(new ShellWithTextIsAvailable("New Docker Connection"));
+		new WaitUntil(new ShellWithTextIsAvailable(NEW_DOCKER_CONNECTION_SHELL));
 	}
 
 	public void finish() {
-		String shell = new DefaultShell().getText();
-		new WaitUntil(new ShellWithTextIsAvailable("New Docker Connection"));
-		Button finishButton = new PushButton("Finish");
-		finishButton.click();
+		new WaitUntil(new ShellWithTextIsAvailable(NEW_DOCKER_CONNECTION_SHELL));
+		new WaitUntil(new WidgetIsEnabled(new FinishButton()));
+		new FinishButton().click();
 
-		new WaitWhile(new ShellWithTextIsAvailable(shell), TimePeriod.LONG);
+		new WaitWhile(new ShellWithTextIsAvailable(NEW_DOCKER_CONNECTION_SHELL), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
@@ -72,11 +73,11 @@ public class DockerConnectionWizard extends WizardPage {
 		setTcpConnection(uri, null, false);
 	}
 
-	public void setTcpConnection(String uri, String authentificationPath, boolean pingConnection) {
+	public void setTcpConnection(String uri, String authentificationCertificatePath, boolean pingConnection) {
 		setTcpUri(uri);
-		if (authentificationPath != null) {
+		if (authentificationCertificatePath != null) {
 			new CheckBox("Enable authentication").click();
-			new LabeledText("Path:").setText(authentificationPath);
+			new LabeledText("Path:").setText(authentificationCertificatePath);
 		}
 		if (pingConnection) {
 			pingConnection();

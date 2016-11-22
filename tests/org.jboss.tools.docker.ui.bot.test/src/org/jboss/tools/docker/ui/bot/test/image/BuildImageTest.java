@@ -65,7 +65,7 @@ public class BuildImageTest extends AbstractDockerBotTest {
 	@After
 	public void after() {
 		deleteImage(imageName);
-		deleteImage("jboss/base-jdk");
+		deleteImage("jboss/base-jdk","8");
 		cleanUpWorkspace();
 	}
 

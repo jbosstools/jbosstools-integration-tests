@@ -29,9 +29,9 @@ import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 
-public class SearchDockerImagePageTwoWizard extends WizardPage{
+public class ImageTagSelectionPage extends WizardPage{
 
-	public SearchDockerImagePageTwoWizard()  {
+	public ImageTagSelectionPage()  {
 		super();
 		new WaitUntil(new ShellWithTextIsAvailable("Search and pull a Docker image"), TimePeriod.NORMAL);
 	}

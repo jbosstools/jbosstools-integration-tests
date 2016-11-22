@@ -12,7 +12,7 @@
 package org.jboss.tools.docker.ui.bot.test.ui;
 
 import org.jboss.tools.docker.reddeer.ui.DockerContainersTab;
-import org.jboss.tools.docker.reddeer.ui.DockerExplorer;
+import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
@@ -32,9 +32,9 @@ public class PerspectiveTest extends AbstractDockerBotTest {
 	}
 	
 	@Test
-	public void testDockerExplorerPresent() {
+	public void testDockerExplorerViewPresent() {
 		openDockerPerspective();
-		new DockerExplorer().open();
+		new DockerExplorerView().open();
 	}
 	
 	@Test
