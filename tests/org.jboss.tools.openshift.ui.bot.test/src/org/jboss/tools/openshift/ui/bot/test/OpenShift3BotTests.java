@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2016 Red Hat, Inc.
+ * Copyright (c) 2015-2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v 1.0 which accompanies this distribution,
@@ -41,7 +41,6 @@ import org.jboss.tools.openshift.ui.bot.test.connection.v3.ConnectionWizardHandl
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.CreateNewConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.OpenNewConnectionShellTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.RemoveConnectionTest;
-import org.jboss.tools.openshift.ui.bot.test.connection.v3.ShowConnectionInWebConsoleTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.v3.StoreConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.integration.docker.DeployDockerImageTest;
 import org.jboss.tools.openshift.ui.bot.test.project.CreateNewProjectTest;
@@ -50,7 +49,6 @@ import org.jboss.tools.openshift.ui.bot.test.project.LinkToCreateNewProjectTest;
 import org.jboss.tools.openshift.ui.bot.test.project.ProjectNameValidationTest;
 import org.jboss.tools.openshift.ui.bot.test.project.ProjectPropertiesTest;
 import org.jboss.tools.openshift.ui.bot.test.project.ResourcesTest;
-import org.jboss.tools.openshift.ui.bot.test.project.ShowProjectInWebConsoleTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -71,7 +69,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	ConnectionWizardHandlingTest.class,
 	StoreConnectionTest.class,
 	ConnectionPropertiesTest.class,
-	ShowConnectionInWebConsoleTest.class,
 	
 	// Project
 	ProjectNameValidationTest.class,
@@ -80,7 +77,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	DeleteProjectTest.class,
 	ResourcesTest.class,
 	ProjectPropertiesTest.class,
-	ShowProjectInWebConsoleTest.class,
 
 	// Application wizard handling
 	OpenNewApplicationWizardTest.class,
