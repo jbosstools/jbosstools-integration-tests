@@ -10,18 +10,29 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test.connection.v3;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.tools.common.reddeer.perspectives.JBossPerspective;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
+@OpenPerspective(JBossPerspective.class)
+@RequiredBasicConnection()
 public class ConnectionPropertiesTest {
 	
+	private static final String PROPERTY_USERNAME = "User Name";
+	private static final String PROPERTY_HOST = "Host";
+
 	@Test
 	public void testConnectionProperties() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
@@ -35,11 +46,13 @@ public class ConnectionPropertiesTest {
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.activate();
 		
-		assertTrue("Property host is not valid. Was '" + propertiesView.getProperty("Host").getPropertyValue() 
-				+ "' but was expected '" + DatastoreOS3.SERVER + "'", propertiesView.getProperty("Host").
-					getPropertyValue().equals(DatastoreOS3.SERVER));
-		assertTrue("Property user name inot valid. Was '" + propertiesView.getProperty("User Name").getPropertyValue() 
-				+ "' but was expected '" + DatastoreOS3.USERNAME + "'", propertiesView.getProperty("User Name").
-					getPropertyValue().equals(DatastoreOS3.USERNAME));
+		assertEquals("Property host is not valid. Was '" + propertiesView.getProperty(PROPERTY_HOST).getPropertyValue() 
+				+ "' but was expected '" + DatastoreOS3.SERVER + "'", 
+				DatastoreOS3.SERVER, 
+				propertiesView.getProperty(PROPERTY_HOST).getPropertyValue());
+		assertEquals("Property user name inot valid. Was '" + propertiesView.getProperty(PROPERTY_USERNAME).getPropertyValue() 
+				+ "' but was expected '" + DatastoreOS3.USERNAME + "'", 
+				DatastoreOS3.USERNAME, 
+				propertiesView.getProperty(PROPERTY_USERNAME).getPropertyValue());
 	}
 }
