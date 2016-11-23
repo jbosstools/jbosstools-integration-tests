@@ -18,6 +18,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 
+import org.jboss.ide.eclipse.as.reddeer.server.deploy.DeployOnServer;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
@@ -105,9 +106,8 @@ public class ComposeTest extends AbstractDockerBotTest {
 		//Check if application is running
 		BrowserView browserView = new BrowserView();
 		browserView.open();
-		browserView.activate();
 		browserView.openPageURL(URL);
-		checkBrowserForErrorPage(browserView, URL);
+		DeployOnServer.checkBrowserForErrorPage(browserView, URL);
 	}
 
 	@After

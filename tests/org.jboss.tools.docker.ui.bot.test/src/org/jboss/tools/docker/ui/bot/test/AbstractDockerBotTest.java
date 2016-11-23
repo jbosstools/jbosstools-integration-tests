@@ -11,7 +11,6 @@
 
 package org.jboss.tools.docker.ui.bot.test;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
@@ -21,13 +20,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.eclipse.core.runtime.jobs.Job;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.jface.preference.PreferenceDialog;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
@@ -61,6 +57,7 @@ public abstract class AbstractDockerBotTest {
 
 	@AfterClass
 	public static void cleanUp() {
+		killPullingJobs();
 		cleanupShells();
 	}
 
@@ -173,30 +170,6 @@ public abstract class AbstractDockerBotTest {
 
 	protected void pullImage(String registry, String imageName) {
 		new DockerExplorer().pullImage(getDockerServer(), registry, imageName);
-	}
-
-	protected void checkBrowserForErrorPage(BrowserView browser) {
-		checkBrowserForErrorPage(browser, null);
-	}
-
-	protected void checkBrowserForErrorPage(BrowserView browser, String url) {
-		ConsoleView consoleView = new ConsoleView();
-		consoleView.open();
-		if (browser.getText().contains("Unable") || browser.getText().contains("404")) {
-			if (url == null) {
-				browser.refreshPage();
-			} else {
-				browser.openPageURL(url);
-			}
-		}
-		new WaitWhile(new JobIsRunning());
-		assertFalse("Browser contains text 'Status 404'\n Console output:\n" + consoleView.getConsoleText(),
-				browser.getText().contains("Status 404") || browser.getText().contains("404 - Not Found")
-						|| browser.getText().contains("Unable") || browser.getText().contains("Forbidden")
-						|| browser.getText().contains("404"));
-		assertFalse(
-				"Browser contains text 'Error processing request'\n Console output:\n" + consoleView.getConsoleText(),
-				browser.getText().contains("Error processing request"));
 	}
 
 	protected String createURL(String tail) {
@@ -322,6 +295,17 @@ public abstract class AbstractDockerBotTest {
 			new DefaultShell("Secure Storage");
 			new LabeledText("Password:").setText(password);
 			new PushButton("OK").click();
+		}
+
+	}
+
+	public static void killPullingJobs() {
+		Job[] currentJobs;
+		currentJobs = Job.getJobManager().find(null);
+		for (Job job : currentJobs) {
+			if(job.getName().startsWith("Pulling docker image")){
+				job.cancel();
+			}
 		}
 
 	}

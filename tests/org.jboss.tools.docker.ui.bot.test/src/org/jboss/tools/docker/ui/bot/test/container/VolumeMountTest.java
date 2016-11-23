@@ -16,6 +16,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 
+import org.jboss.ide.eclipse.as.reddeer.server.deploy.DeployOnServer;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
@@ -74,9 +75,8 @@ public class VolumeMountTest extends AbstractDockerBotTest {
 		String url = createURL(":8080" + "/" + quickstartURL);
 		BrowserView browserView = new BrowserView();
 		browserView.open();
-		browserView.activate();
 		browserView.openPageURL(url);
-		checkBrowserForErrorPage(browserView, url);
+		DeployOnServer.checkBrowserForErrorPage(browserView, url);
 
 	}
 
