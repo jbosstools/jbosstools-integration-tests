@@ -107,7 +107,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	PublishChangesTest.class,
 	
 	// Clean up
-	CleanUpOS3.class 
+	CleanUpOS3.class
 })
 public class OpenShift3SmokeBotTests {
 

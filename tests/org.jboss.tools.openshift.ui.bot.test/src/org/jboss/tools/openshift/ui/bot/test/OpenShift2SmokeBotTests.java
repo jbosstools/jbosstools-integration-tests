@@ -3,7 +3,6 @@ package org.jboss.tools.openshift.ui.bot.test;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.openshift.reddeer.utils.CleanUpOS2;
 import org.jboss.tools.openshift.ui.bot.test.application.adapter.ID804CreateServerAdapterTest;
-import org.jboss.tools.openshift.ui.bot.test.application.basic.ID302OpenNewApplicationWizardWithoutConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.application.basic.ID303OpenNewApplicationWizardWithoutSSHKeyTest;
 import org.jboss.tools.openshift.ui.bot.test.application.basic.ID304OpenNewApplicationWizardWithoutDomainTest;
 import org.jboss.tools.openshift.ui.bot.test.application.create.ID401CreateNewApplicationViaExplorerTest;
@@ -23,7 +22,6 @@ import org.jboss.tools.openshift.ui.bot.test.connection.ID104InvalidCredentialsV
 import org.jboss.tools.openshift.ui.bot.test.connection.ID105DefaultServerTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID106RemoveConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID107oHandleMoreAccountsTest;
-import org.jboss.tools.openshift.ui.bot.test.connection.ID108xHandleMoreServersTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID109EditConnectionTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID110SecurityStorageTest;
 import org.jboss.tools.openshift.ui.bot.test.connection.ID112RefreshConnectionTest;
@@ -58,7 +56,6 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID105DefaultServerTest.class,
 		ID106RemoveConnectionTest.class,
 		ID107oHandleMoreAccountsTest.class,
-		ID108xHandleMoreServersTest.class,
 		ID109EditConnectionTest.class,
 		ID110SecurityStorageTest.class,
 		ID112RefreshConnectionTest.class,
@@ -79,7 +76,6 @@ import org.junit.runners.Suite.SuiteClasses;
 		ID207DomainPropertiesTest.class,
 
 		// Application
-		ID302OpenNewApplicationWizardWithoutConnectionTest.class,
 		ID303OpenNewApplicationWizardWithoutSSHKeyTest.class,
 		ID304OpenNewApplicationWizardWithoutDomainTest.class,
 		

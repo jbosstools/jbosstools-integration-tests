@@ -20,6 +20,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.Browser;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
@@ -33,11 +34,13 @@ import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.AuthenticationMethod;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * @author mlabuda@redhat.com
  * @author adietish@redhat.com
  */
+@RunWith(RedDeerSuite.class)
 public class CreateNewConnectionTest {
 
 	private static final String PAGETITLE_API_TOKEN = "Your API token is";
