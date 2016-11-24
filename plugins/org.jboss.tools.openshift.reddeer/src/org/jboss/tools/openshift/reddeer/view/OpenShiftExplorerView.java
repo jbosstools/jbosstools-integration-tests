@@ -85,7 +85,7 @@ public class OpenShiftExplorerView extends WorkbenchView {
 		try {
 			new ContextMenu(OpenShiftLabel.ContextMenu.NEW_CONNECTION).select();
 		} catch (CoreLayerException ex) {
-			new DefaultLink(OpenShiftLabel.TextLabels.NEW_CONNECTION).click();
+			new DefaultLink(OpenShiftLabel.TextLabels.CREATE_CONNECTION).click();
 		}
 	}
 
