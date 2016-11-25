@@ -61,6 +61,8 @@
 				<snapshotLocation>integration-tests</snapshotLocation>
 			</properties>
 			<build>
+				<!-- update site is copied to a repository.zip file -->
+				<finalName>repository</finalName>
 				<plugins>
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
@@ -78,7 +80,24 @@
 										<arg>-s</arg>
 										<arg>${project.build.directory}/repository</arg>
 										<arg>-t</arg>
-										<arg>${eclipseReleaseName}/snapshots/updates/${snapshotLocation}/${jbosstools_site_stream}</arg>
+										<arg>${eclipseReleaseName}/snapshots/updates/${snapshotLocation}/${stream_jbt}</arg>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>deploy-snapshot-updatezip</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>deploy</phase>
+								<configuration>
+									<arguments>
+									<arg>-s</arg>
+									<arg>${project.build.directory}</arg>
+									<arg>-t</arg>
+									<arg>${jbosstools-build-type}/${JOB_NAME}/${BUILD_TIMESTAMP}-B${BUILD_NUMBER}/all</arg>
+									<arg>-i</arg>
+									<arg>repository.zip</arg>
 									</arguments>
 								</configuration>
 							</execution>
