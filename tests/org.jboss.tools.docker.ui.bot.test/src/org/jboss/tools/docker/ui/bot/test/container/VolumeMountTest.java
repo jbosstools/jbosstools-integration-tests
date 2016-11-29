@@ -21,8 +21,8 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageOneWizard;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageTwoWizard;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunResourceVolumesVariablesPage;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
@@ -37,7 +37,8 @@ import org.junit.Test;
 
 public class VolumeMountTest extends AbstractDockerBotTest {
 
-	private String imageName = "jboss/wildfly:10.0.0.Final";
+	private String imageName = "jboss/wildfly";
+	private String imageTag = "10.0.0.Final";
 	private String containerName = "test_run_wildfly_volumes";
 	private String deploymentPath = "resources/wildfly-deployments";
 	private String containerPath = "/opt/jboss/wildfly/standalone/deployments/";
@@ -51,17 +52,17 @@ public class VolumeMountTest extends AbstractDockerBotTest {
 
 	@Test
 	public void testVolumeMount() throws IOException {
-		pullImage(this.imageName);
+		pullImage(imageName, imageTag);
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
 		imageTab.refresh();
 		new WaitWhile(new JobIsRunning());
-		imageTab.runImage(this.imageName);
-		RunADockerImagePageOneWizard firstPage = new RunADockerImagePageOneWizard();
+		imageTab.runImage(imageName + ":" + imageTag);
+		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
 		firstPage.setName(this.containerName);
 		firstPage.setPublishAllExposedPorts(false);
 		firstPage.next();
-		RunADockerImagePageTwoWizard secondPage = new RunADockerImagePageTwoWizard();
+		ImageRunResourceVolumesVariablesPage secondPage = new ImageRunResourceVolumesVariablesPage();
 		String deploymentPath = "";
 		try {
 			deploymentPath = (new File(this.deploymentPath)).getCanonicalPath();
@@ -83,7 +84,7 @@ public class VolumeMountTest extends AbstractDockerBotTest {
 	@After
 	public void after() {
 		deleteContainer(this.containerName);
-		deleteImage(this.imageName);
+		deleteImage(imageName, imageTag);
 		deleteConnection();
 	}
 

@@ -32,9 +32,9 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  *
  */
 
-public class SearchDockerImagePageOneWizard extends WizardPage{
+public class ImageSearchPage extends WizardPage{
 
-	public SearchDockerImagePageOneWizard() {
+	public ImageSearchPage() {
 		super();
 		new WaitUntil(new ShellWithTextIsAvailable("Search and pull a Docker image"), TimePeriod.NORMAL);
 	}

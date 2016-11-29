@@ -22,7 +22,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.tools.docker.reddeer.ui.DockerExplorer;
+import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
@@ -35,13 +35,12 @@ import org.junit.Test;
  *
  */
 
-
 public class PushImageTest extends AbstractDockerBotTest {
 	private static String imageName = "test_push";
 	private static String registryAccount = System.getProperty("dockerHubUsername") + "@https://index.docker.io";
 	private static String registryAddress = "https://index.docker.io";
 	private static String imageTag = System.getProperty("dockerHubUsername") + "/variables";
-	
+	private String seconds = "";
 
 	@Before
 	public void before() {
@@ -71,27 +70,23 @@ public class PushImageTest extends AbstractDockerBotTest {
 		String dockerHubPassword = System.getProperty("dockerHubPassword");
 		setUpRegister(registryAddress, dockerHubEmail, dockerHubUsername, dockerHubPassword);
 		setSecureStorage("password");
-		DockerExplorer explorer = new DockerExplorer();
-		explorer.activate();
-		java.util.Date date= new java.util.Date();
-		long seconds = date.getTime();
+		java.util.Date date = new java.util.Date();
+		seconds = String.valueOf(date.getTime());
 		String imageNewTag = imageTag + ":" + seconds;
-		explorer.addTagToImage(getDockerServer(), imageName, imageNewTag);
-		explorer.pushImage(getDockerServer(), imageNewTag, registryAccount, false, false);
+		new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(imageName).addTagToImage(imageNewTag);
+		new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(imageTag, seconds)
+				.pushImage(registryAccount, false, false);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		deleteImage(imageTag);
-		explorer.activate();
-		explorer.selectConnection(getDockerServer());
-		explorer.pullImage(getDockerServer(), registryAddress, imageNewTag);
+		deleteImage(imageTag, seconds);
+		new DockerExplorerView().getDockerConnection(getDockerServer()).pullImage(imageTag, seconds, registryAddress);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		assertTrue("Image has not been pushed/pulled!",imageIsDeployed(imageNewTag));
+		assertTrue("Image has not been pushed/pulled!", imageIsDeployed(imageTag));
 	}
 
 	@After
 	public void after() {
 		deleteRegister(registryAddress);
-		deleteImage(imageName);
-		deleteImage("jboss/base-jdk");
+		deleteImage(imageTag, seconds);
 		cleanUpWorkspace();
 	}
 

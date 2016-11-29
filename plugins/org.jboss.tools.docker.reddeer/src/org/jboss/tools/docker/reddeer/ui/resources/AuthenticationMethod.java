@@ -9,30 +9,25 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 
-package org.jboss.tools.docker.reddeer.ui;
+package org.jboss.tools.docker.reddeer.ui.resources;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.swt.api.TreeItem;
 
 /**
  * 
- * @author jkopriva
+ * @author mlabuda@redhat.com, jkopriva@redhat.com
  *
  */
+public enum AuthenticationMethod {
+	UNIX_SOCKET("Unix socket"), TCP_CONNECTION("TCP Connection");
 
-public class ConnectionItem extends AbstractDockerExplorerItem {
+	private final String text;
 
-	protected final Logger log = Logger.getLogger(ProjectItem.class);
-
-	public ConnectionItem(TreeItem treeItem) {
-		super(treeItem);
+	private AuthenticationMethod(String text) {
+		this.text = text;
 	}
 
 	@Override
-	public void select() {
-		activateWrappingView();
-		treeItem.select();
+	public String toString() {
+		return text;
 	}
-
 }

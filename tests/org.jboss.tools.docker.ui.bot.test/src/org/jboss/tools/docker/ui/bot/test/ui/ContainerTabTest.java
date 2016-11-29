@@ -18,8 +18,9 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageOneWizard;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerContainersTab;
+import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
@@ -51,7 +52,7 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 		imageTab.refresh();
 		new WaitWhile(new JobIsRunning());
 		imageTab.runImage(this.imageName);
-		RunADockerImagePageOneWizard firstPage = new RunADockerImagePageOneWizard();
+		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
 		firstPage.setName(this.containerName);
 		firstPage.finish();
 		new WaitWhile(new JobIsRunning());
@@ -81,7 +82,7 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 			}
 		}
 
-		selectContainerInDockerExplorer(containerName);
+		new DockerExplorerView().getDockerConnection(getDockerServer()).getContainer(containerName).select();
 
 		// get values from Properties view
 		PropertiesView propertiesView = new PropertiesView();
@@ -111,7 +112,7 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 		imageTab.refresh();
 		new WaitWhile(new JobIsRunning());
 		imageTab.runImage(this.imageName);
-		RunADockerImagePageOneWizard firstPage = new RunADockerImagePageOneWizard();
+		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
 		firstPage.setName(this.containerName);
 		firstPage.finish();
 		new WaitWhile(new JobIsRunning());

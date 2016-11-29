@@ -27,8 +27,8 @@ import org.jboss.tools.cdk.reddeer.requirements.DisableSecureStorageRequirement.
 import org.jboss.tools.cdk.reddeer.ui.CDEServer;
 import org.jboss.tools.cdk.reddeer.ui.CDEServersView;
 import org.jboss.tools.cdk.reddeer.ui.wizard.NewServerContainerWizardPage;
-import org.jboss.tools.docker.reddeer.ui.ConnectionItem;
-import org.jboss.tools.docker.reddeer.ui.DockerExplorer;
+import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
+import org.jboss.tools.docker.reddeer.ui.resources.DockerConnection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.junit.After;
@@ -219,20 +219,19 @@ public class CDKDevstudioBaseTest {
 	@Test
 	public void testDockerDaemonConnection() {
 		startServerAdapter();
-		DockerExplorer dockerExplorer = new DockerExplorer();
+		DockerExplorerView dockerExplorer = new DockerExplorerView();
 		dockerExplorer.open();
-		ConnectionItem connection = null;
+		DockerConnection connection = null;
 		try {
-			connection = dockerExplorer.getConnection(DOCKER_DAEMON_CONNECTION);
+			connection = dockerExplorer.getDockerConnection(DOCKER_DAEMON_CONNECTION);
 		} catch (EclipseLayerException ex) {
 			fail("Could not find Docker connection " + DOCKER_DAEMON_CONNECTION);
 		}
 		connection.select();
-		dockerExplorer.enableConnection(DOCKER_DAEMON_CONNECTION);
+		connection.enableConnection();
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(30));
 		try {
-			connection.expand();
-			assertTrue("Docker connection does not contain any other connections", connection.getChildrenConnection().size() > 0);
+			assertTrue("Docker connection does not contain any other connections", connection.getImagesNames().size() > 0);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("WaitTimeoutExpiredException occurs when expanding"
 					+ " Docker connection " + DOCKER_DAEMON_CONNECTION);

@@ -18,8 +18,9 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.RunADockerImagePageOneWizard;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerContainersTab;
+import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
@@ -34,7 +35,7 @@ import org.junit.Test;
 
 public class PropertiesViewTest extends AbstractDockerBotTest {
 
-	private String imageName = "docker/whalesay:latest";
+	private String imageName = "docker/whalesay";
 	private String containerName = "test_run_docker_whalesay";
 
 	@Before
@@ -51,7 +52,7 @@ public class PropertiesViewTest extends AbstractDockerBotTest {
 		imageTab.refresh();
 		new WaitWhile(new JobIsRunning());
 		imageTab.runImage(this.imageName);
-		RunADockerImagePageOneWizard firstPage = new RunADockerImagePageOneWizard();
+		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
 		firstPage.setName(this.containerName);
 		firstPage.finish();
 		new WaitWhile(new JobIsRunning());
@@ -88,8 +89,10 @@ public class PropertiesViewTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		deleteContainer(this.containerName);
-		deleteImage(this.imageName);
+		if (new DockerExplorerView().getDockerConnection(getDockerServer()).getContainer(containerName) != null) {
+			deleteContainer(this.containerName);
+		}
+		deleteImage("docker/whalesay");
 		deleteConnection();
 	}
 

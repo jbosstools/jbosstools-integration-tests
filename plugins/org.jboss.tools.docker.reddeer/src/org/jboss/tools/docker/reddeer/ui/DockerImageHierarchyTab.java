@@ -43,7 +43,6 @@ public class DockerImageHierarchyTab extends WorkbenchView {
 	public List<TreeItem> getTreeItems() {
 		activate();
 		return new DefaultTree().getItems();
-
 	}
 
 }

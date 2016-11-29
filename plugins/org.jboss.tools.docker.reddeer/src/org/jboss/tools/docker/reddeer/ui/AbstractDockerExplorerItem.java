@@ -11,77 +11,46 @@
 
 package org.jboss.tools.docker.reddeer.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.core.resources.AbstractExplorerItem;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.jface.exception.JFaceLayerException;
+import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.api.TreeItem;
 
 /**
  * 
- * @author jkopriva
+ * @author jkopriva@redhat.com, mlabuda@redhat.com
  *
  */
 
-public abstract class AbstractDockerExplorerItem extends AbstractExplorerItem {
+public abstract class AbstractDockerExplorerItem {
+
+	protected TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
+	protected TreeItem item;
 
 	public AbstractDockerExplorerItem(TreeItem treeItem) {
-		super(treeItem);
+		this.item = treeItem;
 	}
 
-	public List<ConnectionItem> getChildrenConnection() {
-		activateWrappingView();
-		List<ConnectionItem> children = new ArrayList<ConnectionItem>();
-
-		for (TreeItem item : treeItem.getItems()) {
-			String name = item.getText();
-			String[] childPath = new String[treeItem.getPath().length + 1];
-			System.arraycopy(treeItem.getPath(), 0, childPath, 0, treeItem.getPath().length);
-			childPath[childPath.length - 1] = name;
-			children.add(new ConnectionItem(item));
-		}
-
-		return children;
+	/**
+	 * Activates docker explorer.
+	 */
+	protected void activateDockerExplorerView() {
+		new DockerExplorerView().activate();
 	}
-
-	public ConnectionItem getChildConnection(String text) {
-		activateWrappingView();
-		String[] childPath = new String[treeItem.getPath().length + 1];
-		System.arraycopy(treeItem.getPath(), 0, childPath, 0, treeItem.getPath().length);
-		childPath[childPath.length - 1] = text;
-		return getConnectionItem(text);
+	
+	/**
+	 * Selects abstract docker explorer item.
+	 */
+	public void select() {
+		activateDockerExplorerView();
+		item.select();
 	}
-
-	public ConnectionItem getConnectionItem(String... path) {
-		activateWrappingView();
-		TreeItem item = treeItem;
-		for (int i = 0; i < path.length; i++) {
-			String pathSegment = path[i];
-			try {
-				item = item.getItem(pathSegment);
-			} catch (CoreLayerException ex) {
-				// there is no item with specific path segment, time to use name
-				// without decorators
-				try {
-					item = treeViewerHandler.getTreeItem(item, pathSegment);
-				} catch (JFaceLayerException exception) {
-					// non existing item
-					logger.debug("Obtaining direct children on the current level");
-					List<TreeItem> items = item.getItems();
-					logger.debug("Item \"" + pathSegment + "\" was not found. Available items on the current level:");
-					for (TreeItem treeItem : items) {
-						logger.debug("\"" + treeItem.getText() + "\"");
-					}
-					throw new EclipseLayerException("Cannot get connection item specified by path."
-							+ "Connection item either does not exist or solution is ambiguous because "
-							+ "of existence of more items on the path with same name without decorators");
-				}
-			}
-		}
-		return new ConnectionItem(item);
+	
+	/**
+	 * Gets tree item encapsulated in abstract docker explorer item.
+	 * 
+	 * @return encapsulated tree item
+	 */
+	public TreeItem getTreeItem() {
+		return item;
 	}
-
+	
 }

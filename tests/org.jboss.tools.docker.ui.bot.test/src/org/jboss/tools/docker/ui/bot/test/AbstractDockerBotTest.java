@@ -17,15 +17,13 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import org.eclipse.core.runtime.jobs.Job;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.jface.preference.PreferenceDialog;
-import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -33,22 +31,22 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.DockerConnectionWizard;
 import org.jboss.tools.docker.reddeer.perspective.DockerPerspective;
 import org.jboss.tools.docker.reddeer.preferences.RegistryAccountsPreferencePage;
-import org.jboss.tools.docker.reddeer.ui.ConnectionItem;
-import org.jboss.tools.docker.reddeer.ui.DockerExplorer;
+import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
+import org.jboss.tools.docker.reddeer.ui.resources.AuthenticationMethod;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 /**
  * 
- * @author jkopriva
+ * @author jkopriva@redhat.com
  *
  */
 
 public abstract class AbstractDockerBotTest {
-	private static String registryAddress = "https://index.docker.io";
+
+	private static DockerExplorerView dockerView;
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -115,68 +113,94 @@ public abstract class AbstractDockerBotTest {
 	}
 
 	protected static void createConnectionTCP(String dockerServer) {
-		if (!new DockerExplorer().connectionExist(dockerServer)) {
-			DockerConnectionWizard connectionWizard = new DockerConnectionWizard();
-			connectionWizard.open();
-			connectionWizard.setTcpConnection(dockerServer);
-			connectionWizard.finish();
+		dockerView = new DockerExplorerView();
+		dockerView.open();
+		if (!dockerView.getDockerConnectionsNames().contains(dockerServer)) {
+			dockerView.createDockerConnection(AuthenticationMethod.TCP_CONNECTION, dockerServer, null, dockerServer);
+			dockerView.getDockerConnection(dockerServer).enableConnection();
 		}
-		new DockerExplorer().enableConnection(dockerServer);
 	}
 
 	protected static void createConnectionSocket(String unixSocket) {
-		if (!new DockerExplorer().connectionExist(unixSocket)) {
-			DockerConnectionWizard connectionWizard = new DockerConnectionWizard();
-			connectionWizard.open();
-			connectionWizard.setUnixSocket(unixSocket);
-			connectionWizard.finish();
+		dockerView = new DockerExplorerView();
+		dockerView.open();
+		if (!dockerView.getDockerConnectionsNames().contains(unixSocket)) {
+			dockerView.createDockerConnection(AuthenticationMethod.UNIX_SOCKET, unixSocket, null, unixSocket);
+			dockerView.getDockerConnection(unixSocket).enableConnection();
 		}
-		new DockerExplorer().enableConnection(unixSocket);
 	}
 
 	protected static void createConnectionSearch(String connectionName) {
-		if (!new DockerExplorer().connectionExist(connectionName)) {
-			DockerConnectionWizard connectionWizard = new DockerConnectionWizard();
-			connectionWizard.open();
-			connectionWizard.search(connectionName);
-			connectionWizard.finish();
+		dockerView = new DockerExplorerView();
+		dockerView.open();
+		if (!dockerView.getDockerConnectionsNames().contains(connectionName)) {
+			dockerView.createDockerConnection(connectionName);
+			dockerView.getDockerConnection(connectionName).enableConnection();
 		}
-		new DockerExplorer().enableConnection(connectionName);
 	}
 
 	protected static void deleteConnection() {
-		new DockerExplorer().deleteConnection(getDockerServer());
+		new DockerExplorerView().getDockerConnection(getDockerServer()).removeConnection();
 	}
 
 	protected static void deleteImage(String imageName) {
-		new DockerExplorer().deleteImages(getDockerServer(), imageName);
+		if (new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(imageName) != null) {
+			new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(imageName).remove();
+		} else {
+			fail("Image " + imageName + " does not exists!");
+		}
+	}
+
+	protected static void deleteImage(String imageName, String imageTag) {
+		new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(imageName, imageTag).remove();
+	}
+
+	protected static void deleteImages(String dockerServer, List<String> images) {
+		for (String image : images) {
+			deleteImage(image);
+		}
 	}
 
 	protected static boolean imageIsDeployed(String imageName) {
-		return new DockerExplorer().imageIsDeployed(getDockerServer(), imageName);
+		return new DockerExplorerView().getDockerConnection(getDockerServer()).imageIsDeployed(imageName);
 	}
 
 	protected static int deployedImagesCount(String imageName) {
-		return new DockerExplorer().deployedImagesCount(getDockerServer(), imageName);
+		return new DockerExplorerView().getDockerConnection(getDockerServer()).deployedImagesCount(imageName);
 	}
 
 	protected static void deleteContainer(String containerName) {
-		new DockerExplorer().deleteContainers(getDockerServer(), containerName);
+		if (new DockerExplorerView().getDockerConnection(getDockerServer()).getContainer(containerName) != null) {
+			new DockerExplorerView().getDockerConnection(getDockerServer()).getContainer(containerName).remove();
+		} else {
+			fail("Container " + containerName + " does not exists!");
+		}
+	}
+
+	protected static void deleteContainers(String dockerServer, List<String> containers) {
+		for (String container : containers) {
+			deleteContainer(container);
+		}
 	}
 
 	protected void pullImage(String imageName) {
-		new DockerExplorer().pullImage(getDockerServer(), registryAddress, imageName);
+		new DockerExplorerView().getDockerConnection(getDockerServer()).pullImage(imageName);
 	}
 
-	protected void pullImage(String registry, String imageName) {
-		new DockerExplorer().pullImage(getDockerServer(), registry, imageName);
+	protected void pullImage(String imageName, String imageTag) {
+		new DockerExplorerView().getDockerConnection(getDockerServer()).pullImage(imageName, imageTag, null);
+	}
+
+	protected void pullImage(String imageName, String imageTag, String dockerRegister) {
+		new DockerExplorerView().getDockerConnection(getDockerServer()).pullImage(imageName, imageTag, dockerRegister);
 	}
 
 	protected String createURL(String tail) {
 		String dockerServerURI = System.getProperty("dockerServerURI");
 		String searchConnection = System.getProperty("searchConnection");
 		String serverURI;
-		if (dockerServerURI != null && !dockerServerURI.isEmpty() && !searchConnection.equals("true")) {
+		if (dockerServerURI != null && !dockerServerURI.isEmpty()
+				&& (searchConnection == null || !searchConnection.equals("true"))) {
 			serverURI = dockerServerURI.replaceAll("tcp://", "http://");
 		} else {
 			serverURI = "http://localhost:1234";
@@ -207,54 +231,17 @@ public abstract class AbstractDockerBotTest {
 		new OkButton().click();
 	}
 
-	protected static Set<String> getImages(String dockerServer) {
-		Set<String> images = new HashSet<String>();
-		DockerExplorer de = new DockerExplorer();
-		de.open();
-		ConnectionItem dockerConnection = de.getConnection(dockerServer);
-		TreeItem dc = dockerConnection.getTreeItem();
-		dc.select();
-		dc.expand();
-		TreeItem imagesItem = dc.getItem("Images");
-		imagesItem.select();
-		imagesItem.expand();
-		for (TreeItem item : imagesItem.getItems()) {
-			images.add(item.getText());
-		}
-		return images;
+	protected static List<String> getImages(String dockerServer) {
+		return new DockerExplorerView().getDockerConnection(getDockerServer()).getImagesNames();
 	}
 
-	protected static void deleteImages(String dockerServer, Set<String> images) {
-		for (String image : images) {
-			new DockerExplorer().deleteImages(dockerServer, image);
-		}
-	}
-
-	protected static Set<String> getContainers(String dockerServer) {
-		Set<String> containers = new HashSet<String>();
-		DockerExplorer de = new DockerExplorer();
-		de.open();
-		ConnectionItem dockerConnection = de.getConnection(dockerServer);
-		TreeItem dc = dockerConnection.getTreeItem();
-		dc.select();
-		dc.expand();
-		TreeItem containersItem = dc.getItem("Containers");
-		containersItem.select();
-		containersItem.expand();
-		for (TreeItem item : containersItem.getItems()) {
-			containers.add(item.getText());
-		}
-		return containers;
-	}
-
-	protected static void deleteContainers(String dockerServer, Set<String> containers) {
-		for (String container : containers) {
-			new DockerExplorer().deleteContainers(dockerServer, container);
-		}
+	protected static List<String> getContainers(String dockerServer) {
+		return new DockerExplorerView().getDockerConnection(getDockerServer()).getContainersNames();
 	}
 
 	protected void prepareWorkspace() {
 		openDockerPerspective();
+		deleteCreatedConnections();
 		createConnection();
 	}
 
@@ -271,14 +258,6 @@ public abstract class AbstractDockerBotTest {
 		} else {
 			return "default";
 		}
-	}
-
-	protected void selectImageInDockerExplorer(String imageName) {
-		new DockerExplorer().selectImage(getDockerServer(), imageName);
-	}
-
-	protected void selectContainerInDockerExplorer(String containerName) {
-		new DockerExplorer().selectContainer(getDockerServer(), containerName);
 	}
 
 	public static void setSecureStorage(String password) {
@@ -300,14 +279,19 @@ public abstract class AbstractDockerBotTest {
 	}
 
 	public static void killPullingJobs() {
-		Job[] currentJobs;
-		currentJobs = Job.getJobManager().find(null);
+		Job[] currentJobs = Job.getJobManager().find(null);
 		for (Job job : currentJobs) {
-			if(job.getName().startsWith("Pulling docker image")){
+			if (job.getName().startsWith("Pulling docker image")) {
 				job.cancel();
 			}
 		}
+	}
 
+	public static void deleteCreatedConnections() {
+		List<String> connections = new DockerExplorerView().getDockerConnectionsNames();
+		for (String connection : connections) {
+			new DockerExplorerView().getDockerConnection(connection).removeConnection();
+		}
 	}
 
 }

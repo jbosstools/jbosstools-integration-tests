@@ -53,11 +53,11 @@ public class DifferentRegistryTest extends AbstractDockerBotTest {
 		} catch (CoreLayerException ex) {
 			// there's not clear console button, since nothing run before
 		}
-		setUpRegister(this.serverAddress, this.email, this.userName, this.password);
+		setUpRegister(serverAddress, email, userName, password);
 		setSecureStorage(this.password);
-		pullImage(this.userName+ "@" +this.serverAddress, this.imageName);
+		pullImage(imageName ,null, this.userName+ "@" +serverAddress);
 		new WaitWhile(new JobIsRunning());
-		assertTrue("Image is not deployed!", imageIsDeployed(this.imageName));
+		assertTrue("Image is not deployed!", imageIsDeployed("devstudio/atomicapp"));
 	}
 
 	public static void disableSecureStorage() {
@@ -75,7 +75,7 @@ public class DifferentRegistryTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		deleteImage(this.imageName);
+		deleteImage(serverAddress + "/devstudio/atomicapp");
 		deleteConnection();
 		deleteRegister(serverAddress);
 	}

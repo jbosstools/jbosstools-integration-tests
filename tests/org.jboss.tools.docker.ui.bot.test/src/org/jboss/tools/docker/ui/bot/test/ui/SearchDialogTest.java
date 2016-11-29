@@ -21,9 +21,9 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ProgressInformationShellIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.SearchDockerImagePageOneWizard;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.SearchDockerImagePageTwoWizard;
-import org.jboss.tools.docker.reddeer.ui.DockerExplorer;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageSearchPage;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageTagSelectionPage;
+import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
 import org.junit.Before;
@@ -37,7 +37,7 @@ import org.junit.Test;
 
 public class SearchDialogTest extends AbstractDockerBotTest {
 	private String imageName = "busybox";
-	private String tag = "1.24.2";
+	private String imageTag = "1.24.2";
 	private String expectedImageName = "busybox";
 	private String registryAddress = "https://index.docker.io";
 
@@ -49,8 +49,8 @@ public class SearchDialogTest extends AbstractDockerBotTest {
 
 	@Test
 	public void testSearchDialog() {
-		new DockerExplorer().openImageSearchDialog(getDockerServer(), this.registryAddress, this.imageName);
-		SearchDockerImagePageOneWizard pageOne = new SearchDockerImagePageOneWizard();
+		new DockerExplorerView().getDockerConnection(getDockerServer()).openImageSearchDialog(this.imageName, null, this.registryAddress);
+		ImageSearchPage pageOne = new ImageSearchPage();
 		pageOne.searchImage();
 		assertFalse("Search result is empty!", pageOne.getSearchResults().isEmpty());
 		assertTrue("Search result do not contains image:" + expectedImageName + "!",
@@ -59,11 +59,11 @@ public class SearchDialogTest extends AbstractDockerBotTest {
 
 		new WaitWhile(new ProgressInformationShellIsActive(), TimePeriod.NORMAL);
 		AbstractWait.sleep(TimePeriod.getCustom(5));
-		SearchDockerImagePageTwoWizard pageTwo = new SearchDockerImagePageTwoWizard();
+		ImageTagSelectionPage pageTwo = new ImageTagSelectionPage();
 		assertFalse("Search tags are empty!", pageTwo.getTags().isEmpty());
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
-		assertTrue("Search results do not contains tag:" + tag + "!", pageTwo.tagsContains(tag));
-		pageTwo.selectTag(tag);
+		assertTrue("Search results do not contains tag:" + imageTag + "!", pageTwo.tagsContains(imageTag));
+		pageTwo.selectTag(imageTag);
 		pageTwo.finish();
 		new DefaultShell("Pull Image");
 		new PushButton("Finish").click();
@@ -72,7 +72,7 @@ public class SearchDialogTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		deleteImage(this.imageName);
+		deleteImage(imageName, imageTag);
 		deleteConnection();
 	}
 

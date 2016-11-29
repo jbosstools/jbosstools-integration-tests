@@ -25,7 +25,7 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.tools.docker.reddeer.ui.DockerExplorer;
+import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.reddeer.ui.DockerImageHierarchyTab;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
@@ -65,8 +65,7 @@ public class HierarchyViewTest extends AbstractDockerBotTest {
 		consoleView.open();
 		assertFalse("Console has no output!", consoleView.getConsoleText().isEmpty());
 		assertTrue("Build has not been successful", consoleView.getConsoleText().contains("Successfully built"));
-		DockerExplorer de = new DockerExplorer();
-		de.openImageHierarchy(getDockerServer(), imageName);
+		new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(imageName).openImageHierarchy();
 		new WaitWhile(new ShellWithTextIsAvailable("Docker Image Hierarchy"));
 		DockerImageHierarchyTab hierarchyTab = new DockerImageHierarchyTab();
 		hierarchyTab.open();
@@ -87,7 +86,7 @@ public class HierarchyViewTest extends AbstractDockerBotTest {
 	@After
 	public void after() {
 		deleteImage(imageName);
-		deleteImage("jboss/base-jdk");
+		deleteImage("jboss/base-jdk","8");
 		cleanUpWorkspace();
 	}
 
