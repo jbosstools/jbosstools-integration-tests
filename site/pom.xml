@@ -8,8 +8,7 @@
 		<version>4.4.2-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.integration-tests</groupId>
-	<artifactId>site</artifactId>
-	<name>integration-tests.site</name>
+	<artifactId>integration-tests.site</artifactId>
 	<packaging>eclipse-repository</packaging>
 	<repositories>
 	</repositories>
@@ -35,12 +34,12 @@
 						</goals>
 						<configuration>
 							<siteTemplateFolder>${siteTemplateFolder}</siteTemplateFolder>
-              <associateSites>
-              	<!-- installing this content requires: JBT Core site, JBT Core Tests site, and Red Deer site -->
-                <associateSite>${jbosstools-nightly}</associateSite>
+							<associateSites>
+								<!-- installing this content requires: JBT Core site, JBT Core Tests site, and Red Deer site -->
+								<associateSite>${jbosstools-nightly}</associateSite>
 								<associateSite>${jbosstools-coretests-site}</associateSite>
 								<associateSite>${reddeer-nightly-staging-site}</associateSite>
-              </associateSites>
+							</associateSites>
 							<symbols>
 								<update.site.name>${update.site.name}</update.site.name>
 								<update.site.description>${update.site.description}</update.site.description>
@@ -61,7 +60,9 @@
 				<maven.deploy.skip>true</maven.deploy.skip>
 				<snapshotLocation>integration-tests</snapshotLocation>
 			</properties>
-				<build>
+			<build>
+				<!-- update site is copied to a repository.zip file -->
+				<finalName>repository</finalName>
 				<plugins>
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
@@ -79,7 +80,24 @@
 										<arg>-s</arg>
 										<arg>${project.build.directory}/repository</arg>
 										<arg>-t</arg>
-										<arg>${eclipseReleaseName}/snapshots/updates/${snapshotLocation}/${jbosstools_site_stream}</arg>
+										<arg>${eclipseReleaseName}/snapshots/updates/${snapshotLocation}/${stream_jbt}</arg>
+									</arguments>
+								</configuration>
+							</execution>
+							<execution>
+								<id>deploy-snapshot-updatezip</id>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<phase>deploy</phase>
+								<configuration>
+									<arguments>
+									<arg>-s</arg>
+									<arg>${project.build.directory}</arg>
+									<arg>-t</arg>
+									<arg>${jbosstools-build-type}/${JOB_NAME}/${BUILD_TIMESTAMP}-B${BUILD_NUMBER}/all</arg>
+									<arg>-i</arg>
+									<arg>repository.zip</arg>
 									</arguments>
 								</configuration>
 							</execution>
