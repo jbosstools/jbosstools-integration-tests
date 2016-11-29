@@ -23,6 +23,42 @@
 				<suiteClass>org.jboss.tools.vpe.bot.test.JSFEngineTests</suiteClass>
 			</properties>
 		</profile>
+		
+		<profile>
+			<id>check-pr</id>
+			<properties>
+				<suiteClass>org.jboss.tools.maven.ui.bot.test.MavenAllBotTests</suiteClass>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<configuration>
+							<dependency-resolution>
+								<extraRequirements>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.vpe.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.xulrunner.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>org.jboss.tools.vpe.preview.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+								</extraRequirements>
+							</dependency-resolution>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 
 
