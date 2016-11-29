@@ -13,8 +13,11 @@ Require-Bundle: org.junit,
  org.jboss.reddeer.core,
  org.jboss.reddeer.swt,
  org.jboss.reddeer.eclipse,
- org.eclipse.swt
-Export-Package: org.jboss.tools.cdk.reddeer.preferences,
+ org.eclipse.swt,
+ org.jboss.reddeer.junit
+Export-Package: org.jboss.tools.cdk.reddeer.condition,
+ org.jboss.tools.cdk.reddeer.preferences,
+ org.jboss.tools.cdk.reddeer.requirements,
  org.jboss.tools.cdk.reddeer.ui,
  org.jboss.tools.cdk.reddeer.ui.wizard
 

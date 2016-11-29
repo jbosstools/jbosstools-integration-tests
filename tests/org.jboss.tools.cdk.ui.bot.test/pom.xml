@@ -23,7 +23,7 @@
 		<profile>
 			<id>all-tests</id>
 			<properties>
-				<suiteClass>org.jboss.tools.cdk.ui.bot.test.AllTestsSuite</suiteClass>
+				<suiteClass>org.jboss.tools.cdk.ui.bot.test.CDKAllTestsSuite</suiteClass>
 			</properties>
 		</profile>
 	</profiles>

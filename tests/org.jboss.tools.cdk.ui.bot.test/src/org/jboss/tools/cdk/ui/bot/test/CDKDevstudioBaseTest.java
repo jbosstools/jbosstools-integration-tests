@@ -19,15 +19,17 @@ import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
+import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.cdk.reddeer.preferences.OpenShift3SSLCertificatePreferencePage;
+import org.jboss.tools.cdk.reddeer.requirements.DisableSecureStorageRequirement.DisableSecureStorage;
 import org.jboss.tools.cdk.reddeer.ui.CDEServer;
 import org.jboss.tools.cdk.reddeer.ui.CDEServersView;
 import org.jboss.tools.cdk.reddeer.ui.wizard.NewServerContainerWizardPage;
 import org.jboss.tools.docker.reddeer.ui.ConnectionItem;
 import org.jboss.tools.docker.reddeer.ui.DockerExplorer;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.reddeer.view.resources.OpenShift2Connection;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -50,9 +52,11 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 
 /**
  * Basic Devstudio and CDK integration test
+ * Requires Secure Storage disabled
  * @author odockal
  *
  */
+@DisableSecureStorage
 public class CDKDevstudioBaseTest {
 
 	private CDEServersView serversView;
@@ -118,6 +122,7 @@ public class CDKDevstudioBaseTest {
 	public static void setUpEnvironemnt() {
 		log.info("Checking given program arguments");
 		checkCredentials();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG, false);
 		log.info("Adding new Container Development Environment server adapter");
 		addNewCDEServer();
 	}
@@ -130,6 +135,7 @@ public class CDKDevstudioBaseTest {
 		try {
 			servers.getServer(SERVER_ADAPTER).delete(true);
 		} catch (EclipseLayerException exc) {
+			log.error(exc.getMessage());
 			exc.printStackTrace();
 		} 
 	}
@@ -141,7 +147,7 @@ public class CDKDevstudioBaseTest {
 		serversView.open();
 		log.info("Getting server object from Servers View with name: " + SERVER_ADAPTER);
 		server = (CDEServer)serversView.getServer(SERVER_ADAPTER);
-		new WaitUntil(new JobIsRunning(), TimePeriod.SHORT, false);
+		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
 	}
 	
 	@After
@@ -161,6 +167,7 @@ public class CDKDevstudioBaseTest {
 		try {
 			server.start();
 		} catch (ServersViewException e) {
+			log.error(e.getMessage());
 			e.printStackTrace();
 		}
 		printCertificates();
@@ -182,14 +189,13 @@ public class CDKDevstudioBaseTest {
 		assertEquals(ServerState.STARTED, server.getLabel().getState());
 	}
 	
-	// TODO: rewrite with using OpenShift3Connection object with parameters passed to program
 	@Test
 	public void testOpenShiftConnection() {
 		startServerAdapter();
 		OpenShiftExplorerView osExplorer = new OpenShiftExplorerView();
 		osExplorer.open();
 		try {
-			OpenShift3Connection connection = osExplorer.getOpenShift3Connection(OPENSHIFT_SERVER, OPENSHIFT_USER_NAME);
+			OpenShift3Connection connection = osExplorer.getOpenShift3Connection(null, OPENSHIFT_USER_NAME);
 			// usually, when server adapter is not started, openshift connection after refresh should cause 
 			// problem occurs dialog
 			connection.refresh();
@@ -239,13 +245,21 @@ public class CDKDevstudioBaseTest {
 		NewServerWizardDialog dialog = view.newServer();
 		NewServerWizardPage page = new NewServerWizardPage();
 		
+		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL, false);
 		page.selectType(SERVER_TYPE, SERVER_NAME);
 		page.setHostName("localhost");
 		dialog.next();
 		
 		NewServerContainerWizardPage containerPage = new NewServerContainerWizardPage();
+		log.info("Setting credentials");
 		containerPage.setCredentials(USERNAME, PASSWORD);
+		log.info("Setting vagrant file folder");
 		containerPage.setFolder(VAGRANTFILE_PATH);
+		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.NORMAL);
+		log.info("Finishing Add new server dialog");
+		if (!(new FinishButton().isEnabled())){
+			log.error("Finish button was not enabled");
+		}
 		dialog.finish();
 	}
 	
