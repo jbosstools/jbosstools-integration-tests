@@ -13,6 +13,7 @@
 	<properties>
 		<systemProperties>${integrationTestsSystemProperties} -Dtest.configurations.dir=${configurations.dir}</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
+		<suiteClass>org.jboss.tools.aerogear.ui.bot.test.AerogearAllBotTests</suiteClass>
 	</properties>
 
 	<build>
@@ -22,7 +23,7 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<testSuite>org.jboss.tools.aerogear.ui.bot.test</testSuite>
-					<testClass>org.jboss.tools.aerogear.ui.bot.test.AerogearAllBotTests</testClass>
+					<testClass>${suiteClass}</testClass>
 					<systemProperties>
 						<org.osgi.framework.bundle.parent>ext</org.osgi.framework.bundle.parent>
 					</systemProperties>
@@ -42,4 +43,32 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>cordovasim-check-pr</id>
+			<properties>
+				<suiteClass>org.jboss.tools.aerogear.ui.bot.test.CordovaAllBotTests</suiteClass>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<configuration>
+							<dependency-resolution>
+								<extraRequirements>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<artifactId>org.jboss.tools.cordovasim.feature.feature.group</artifactId>
+										<version>0.0.0</version>
+									</requirement>
+								</extraRequirements>
+							</dependency-resolution>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>
