@@ -13,13 +13,8 @@ package org.jboss.tools.docker.ui.bot.test.ui;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.equinox.security.ui.StoragePreferencePage;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
 import org.junit.Before;
@@ -55,27 +50,13 @@ public class DifferentRegistryTest extends AbstractDockerBotTest {
 		}
 		setUpRegister(serverAddress, email, userName, password);
 		setSecureStorage(this.password);
-		pullImage(imageName ,null, this.userName+ "@" +serverAddress);
-		new WaitWhile(new JobIsRunning());
+		pullImage(imageName, null, this.userName + "@" + serverAddress);
 		assertTrue("Image is not deployed!", imageIsDeployed("devstudio/atomicapp"));
-	}
-
-	public static void disableSecureStorage() {
-		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
-		StoragePreferencePage storagePage = new StoragePreferencePage();
-		preferenceDialog.open();
-
-		preferenceDialog.select(storagePage);
-		for (TableItem item : storagePage.getMasterPasswordProviders()) {
-			item.setChecked(true);
-		}
-		storagePage.apply();
-		preferenceDialog.ok();
 	}
 
 	@After
 	public void after() {
-		deleteImage(serverAddress + "/devstudio/atomicapp");
+		deleteImageContainerAfter(serverAddress + "/devstudio/atomicapp");
 		deleteConnection();
 		deleteRegister(serverAddress);
 	}

@@ -82,7 +82,7 @@ public class ImageTagTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		deleteImage(imageName);
+		deleteImageContainerAfter(imageName);
 		cleanUpWorkspace();
 	}
 

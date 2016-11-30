@@ -70,8 +70,7 @@ public class LabelsTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		deleteContainer(containerName);
-		deleteImage(imageName,imageTag);
+		deleteImageContainerAfter(containerName,imageName + ":" + imageTag);
 		deleteConnection();
 	}
 

@@ -53,9 +53,9 @@ public class DockerContainerTest extends AbstractDockerBotTest {
 
 		}
 		pullImage(imageName);
-		assertTrue("Image has not been found!", new DockerExplorerView().getDockerConnection(dockerServer).getImage(imageName)!=null);
+		assertTrue("Image has not been found!", imageIsDeployed(getCompleteImageName(imageName)));
 
-		new DockerExplorerView().getDockerConnection(dockerServer).getImage(imageName).run();
+		new DockerExplorerView().getDockerConnection(dockerServer).getImage(getCompleteImageName(imageName)).run();
 		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
 		firstPage.setName(this.containerName);
 		firstPage.finish();
@@ -66,8 +66,7 @@ public class DockerContainerTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		deleteContainer(containerName);
-		deleteImage(imageName);
+		deleteImageContainerAfter(containerName, imageName);
 		deleteConnection();
 	}
 

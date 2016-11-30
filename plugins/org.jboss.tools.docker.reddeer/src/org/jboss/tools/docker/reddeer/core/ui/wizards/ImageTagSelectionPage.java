@@ -26,6 +26,7 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 
@@ -60,6 +61,9 @@ public class ImageTagSelectionPage extends WizardPage{
 				item.select();
 			}
 		}
+	}
+	public void cancel(){
+		new CancelButton().click();
 	}
 
 

@@ -69,12 +69,7 @@ public class PullImageTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		if (imageIsDeployed(imageName)) {
-			deleteImage(this.imageName);
-		}
-		if (imageIsDeployed(imageNameNoTag)) {
-			deleteImage(this.imageNameNoTag);
-		}
+		deleteImageContainerAfter(imageName,imageNameNoTag);
 		deleteConnection();
 	}
 

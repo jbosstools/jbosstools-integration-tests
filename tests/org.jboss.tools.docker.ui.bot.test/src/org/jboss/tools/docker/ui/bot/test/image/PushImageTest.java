@@ -41,6 +41,7 @@ public class PushImageTest extends AbstractDockerBotTest {
 	private static String registryAddress = "https://index.docker.io";
 	private static String imageTag = System.getProperty("dockerHubUsername") + "/variables";
 	private String seconds = "";
+	private String imageNewTag = "";
 
 	@Before
 	public void before() {
@@ -49,6 +50,14 @@ public class PushImageTest extends AbstractDockerBotTest {
 
 	@Test
 	public void pushImage() {
+		String dockerHubUsername = System.getProperty("dockerHubUsername");
+		String dockerHubEmail = System.getProperty("dockerHubEmail");
+		String dockerHubPassword = System.getProperty("dockerHubPassword");
+		if (dockerHubUsername == null || dockerHubUsername.isEmpty() || dockerHubEmail == null
+				|| dockerHubEmail.isEmpty() || dockerHubPassword == null || dockerHubPassword.isEmpty()) {
+			fail("At least one of credentials is null or empty! dockerHubUsername:" + dockerHubUsername + " dockerHubEmail:"
+					+ dockerHubEmail + " dockerHubPassword:" + dockerHubPassword + " Aborting test...");
+		}
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
 		imageTab.refresh();
@@ -65,14 +74,11 @@ public class PushImageTest extends AbstractDockerBotTest {
 		consoleView.open();
 		assertFalse("Console has no output!", consoleView.getConsoleText().isEmpty());
 		assertTrue("Build has not been successful", consoleView.getConsoleText().contains("Successfully built"));
-		String dockerHubUsername = System.getProperty("dockerHubUsername");
-		String dockerHubEmail = System.getProperty("dockerHubEmail");
-		String dockerHubPassword = System.getProperty("dockerHubPassword");
 		setUpRegister(registryAddress, dockerHubEmail, dockerHubUsername, dockerHubPassword);
 		setSecureStorage("password");
 		java.util.Date date = new java.util.Date();
 		seconds = String.valueOf(date.getTime());
-		String imageNewTag = imageTag + ":" + seconds;
+		imageNewTag = imageTag + ":" + seconds;
 		new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(imageName).addTagToImage(imageNewTag);
 		new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(imageTag, seconds)
 				.pushImage(registryAccount, false, false);
@@ -86,7 +92,7 @@ public class PushImageTest extends AbstractDockerBotTest {
 	@After
 	public void after() {
 		deleteRegister(registryAddress);
-		deleteImage(imageTag, seconds);
+		deleteImageContainerAfter(imageNewTag);
 		cleanUpWorkspace();
 	}
 

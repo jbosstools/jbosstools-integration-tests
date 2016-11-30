@@ -11,13 +11,14 @@
 	<artifactId>org.jboss.tools.docker.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>-DdockerServerURI=${dockerServerURI} -DunixSocket=${unixSocket} -DdockerHubUsername=${dockerHubUsername} -DdockerHubemail=${dockerHubEmail} -DdockerHubPassword=${dockerHubPassword} -DdockerComposePath=${dockerComposePath}</systemProperties>
-		<unixSocket>unix:///var/run/docker.sock</unixSocket>
+		<systemProperties>-DsearchConnection=${searchConnection} -DdockerServerURI=${dockerServerURI} -DunixSocket=${unixSocket} -DdockerHubUsername=${dockerHubUsername} -DdockerHubEmail=${dockerHubEmail} -DdockerHubPassword=${dockerHubPassword} -DdockerComposePath=${dockerComposePath}</systemProperties>
+		<searchConnection></searchConnection>
+		<unixSocket></unixSocket>
 		<dockerServerURI></dockerServerURI>
 		<dockerHubUsername></dockerHubUsername>
 		<dockerHubEmail></dockerHubEmail>
 		<dockerHubPassword></dockerHubPassword>
-		<dockerComposePath>/usr/local/bin</dockerComposePath>
+		<dockerComposePath></dockerComposePath>
 		<surefire.timeout>14400</surefire.timeout>
 	</properties>
 
@@ -60,7 +61,6 @@
 				</plugins>
 			</build>
 			<properties>
-				<dockerServer>${dockerServerURI}</dockerServer>
 				<testClass>org.jboss.tools.docker.ui.bot.test.DockerAllBotTest</testClass>
 			</properties>
 		</profile>
@@ -75,7 +75,6 @@
 				</plugins>
 			</build>
 			<properties>
-				<dockerServer>${dockerServerURI}</dockerServer>
 				<testClass>org.jboss.tools.docker.ui.bot.test.SmokeSuite</testClass>
 			</properties>
 		</profile>

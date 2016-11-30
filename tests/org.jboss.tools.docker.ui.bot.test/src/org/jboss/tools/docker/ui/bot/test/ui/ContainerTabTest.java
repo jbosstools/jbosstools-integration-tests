@@ -71,7 +71,7 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 		String statusFromTable = "";
 
 		for (TableItem item : containerTab.getTableItems()) {
-			if (item.getText(1).contains(this.imageName)) {
+			if (item.getText(1).contains(imageName)) {
 				nameFromTable = item.getText();
 				imageFromTable = item.getText(1);
 				createdFromTable = item.getText(2);
@@ -106,14 +106,14 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 
 	@Test
 	public void testContainerTabSearch() {
-		pullImage(this.imageName);
+		pullImage(imageName);
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
 		imageTab.refresh();
 		new WaitWhile(new JobIsRunning());
-		imageTab.runImage(this.imageName);
+		imageTab.runImage(imageName);
 		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
-		firstPage.setName(this.containerName);
+		firstPage.setName(containerName);
 		firstPage.finish();
 		new WaitWhile(new JobIsRunning());
 		DockerContainersTab containerTab = new DockerContainersTab();
@@ -127,8 +127,7 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		deleteContainer(this.containerName);
-		deleteImage(this.imageName);
+		deleteImageContainerAfter(containerName,imageName);
 		deleteConnection();
 	}
 

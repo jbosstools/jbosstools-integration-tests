@@ -107,9 +107,7 @@ public class LinkContainersTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		deleteContainer(this.containerNameClient);
-		deleteContainer(this.containerNameDB);
-		deleteImage(imageName, imageTag);
+		deleteImageContainerAfter(containerNameClient, containerNameDB, imageName + ":" + imageTag);
 		deleteConnection();
 	}
 

@@ -65,7 +65,7 @@ public class ImageTabTest extends AbstractDockerBotTest {
 		}
 		idFromTable = idFromTable.replace("sha256:", "");
 
-		new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(imageName).select();
+		new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(getCompleteImageName(imageName)).select();
 
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
@@ -95,7 +95,7 @@ public class ImageTabTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		deleteImage(this.imageName);
+		deleteImageContainerAfter(imageName);
 		deleteConnection();
 	}
 

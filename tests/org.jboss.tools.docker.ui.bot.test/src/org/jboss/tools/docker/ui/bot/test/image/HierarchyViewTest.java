@@ -85,13 +85,12 @@ public class HierarchyViewTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		deleteImage(imageName);
-		deleteImage("jboss/base-jdk","8");
+		deleteImageContainerAfter(imageName, "jboss/base-jdk:8");
 		cleanUpWorkspace();
 	}
 
 	public void compareTextInFirstNode(List<TreeItem> treeItems, String expectedValue) {
-		String nodeText = treeItems.get(0).getText().replaceAll("\\(.*\\)", "").trim();
+		String nodeText = treeItems.get(0).getText().replaceAll("\\(.*\\)", "").trim().replaceAll("docker.io/", "");
 		assertTrue("Hierarchy view contains string:" + nodeText + ", but it is expected:" + expectedValue,
 				nodeText.startsWith(expectedValue));
 	}

@@ -22,9 +22,9 @@ import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
@@ -64,7 +64,7 @@ public class NewDockerConnectionPage extends WizardPage {
 
 	public void setUnixSocket(String unixSocket) {
 		setConnectionName(unixSocket);
-		new CheckBox("Use custom connection settings:").click();
+		new CheckBox("Use custom connection settings:").toggle(true);
 		new LabeledText("Location:").setText(unixSocket);
 
 	}
@@ -76,7 +76,7 @@ public class NewDockerConnectionPage extends WizardPage {
 	public void setTcpConnection(String uri, String authentificationCertificatePath, boolean pingConnection) {
 		setTcpUri(uri);
 		if (authentificationCertificatePath != null) {
-			new CheckBox("Enable authentication").click();
+			new CheckBox("Enable authentication").toggle(true);
 			new LabeledText("Path:").setText(authentificationCertificatePath);
 		}
 		if (pingConnection) {
@@ -88,7 +88,7 @@ public class NewDockerConnectionPage extends WizardPage {
 		setConnectionName(uri);
 		new CheckBox("Use custom connection settings:").toggle(true);
 		new LabeledText("Location:").setText("");
-		new RadioButton("TCP Connection").click();
+		new RadioButton("TCP Connection").toggle(true);
 		new LabeledText("URI:").setText(uri);
 	}
 
@@ -96,16 +96,15 @@ public class NewDockerConnectionPage extends WizardPage {
 		Button testConnectionButton = new PushButton("Test Connection");
 		testConnectionButton.click();
 		new WaitUntil(new ShellWithTextIsAvailable("Success"));
-		Button okButton = new PushButton("OK");
-		okButton.click();
+		new OkButton().click();
 	}
-	
-	public void search(String connectionName){
+
+	public void search(String connectionName) {
 		new PushButton("Search...").click();
 		new WaitUntil(new ShellWithTextIsAvailable("Docker Connection Selection"));
 		Table table = new DefaultTable();
 		table.getItem(connectionName).select();
-		new PushButton("OK").click();	
+		new OkButton().click();
 	}
 
 }

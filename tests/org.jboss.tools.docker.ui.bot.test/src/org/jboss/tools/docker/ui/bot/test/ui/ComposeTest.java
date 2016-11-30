@@ -52,6 +52,7 @@ import org.junit.Test;
 public class ComposeTest extends AbstractDockerBotTest {
 	private static String imageName = "test_compose";
 	private static final String URL = "http://0.0.0.0:5000/";
+	private static final String DOCKER_COMPOSE_PATH = "/usr/local/bin";
 
 	@Before
 	public void before() {
@@ -62,7 +63,7 @@ public class ComposeTest extends AbstractDockerBotTest {
 	public void testCompose() {
 		// If patch to Docker compose is empty, try default path.
 		String dockerComposePath = System.getProperty("dockerComposePath") == null
-				|| System.getProperty("dockerComposePath").isEmpty() ? "/usr/local/bin"
+				|| System.getProperty("dockerComposePath").isEmpty() ? DOCKER_COMPOSE_PATH
 						: System.getProperty("dockerComposePath");
 
 		// Set up Docker Compose location
@@ -124,12 +125,7 @@ public class ComposeTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		deleteContainer("testcompose_web_1");
-		deleteContainer("testcompose_redis_1");
-		deleteImage("testcompose_web");
-		deleteImage("test_compose");
-		deleteImage("python", "2.7");
-		deleteImage("redis");
+		deleteImageContainerAfter("testcompose_web_1","testcompose_redis_1","testcompose_web","test_compose", "python:2.7","redis");
 		cleanUpWorkspace();
 	}
 
