@@ -18,6 +18,13 @@ import org.jboss.tools.batch.ui.bot.test.editor.design.DesignFlowElementTest;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignSplitElementTest;
 import org.jboss.tools.batch.ui.bot.test.editor.features.CheckExistingReferenceTest;
 import org.jboss.tools.batch.ui.bot.test.editor.features.RenameTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceBatchPropertyTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceClassAttributeTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceElementLoopingTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceLevelReferenctingTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceRefAttributeTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceRestartAttributeTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceUniqueIDTest;
 import org.jboss.tools.batch.ui.bot.test.wizard.CreateAllArtifactsFromAbstractClassTest;
 import org.jboss.tools.batch.ui.bot.test.wizard.CreateAllArtifactsFromInterfaceTest;
 import org.jboss.tools.batch.ui.bot.test.wizard.CreateArtifactWithPropertiesTest;
@@ -43,7 +50,14 @@ import org.junit.runners.Suite.SuiteClasses;
 	DesignFlowElementTest.class,
 	DesignSplitElementTest.class,
 	CheckExistingReferenceTest.class,
-	RenameTest.class
+	RenameTest.class,
+	ValidateSourceUniqueIDTest.class,
+	ValidateSourceBatchPropertyTest.class,
+	ValidateSourceRefAttributeTest.class,
+	ValidateSourceClassAttributeTest.class,
+	ValidateSourceElementLoopingTest.class,
+	ValidateSourceLevelReferenctingTest.class,
+	ValidateSourceRestartAttributeTest.class
 	})
 public class AllTestsSuite {
 

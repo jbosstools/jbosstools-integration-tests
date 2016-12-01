@@ -22,7 +22,6 @@ import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

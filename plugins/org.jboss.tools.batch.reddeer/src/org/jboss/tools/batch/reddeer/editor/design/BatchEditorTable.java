@@ -43,7 +43,6 @@ public class BatchEditorTable {
 	 * @param index the index of the table in the given section
 	 */
 	public BatchEditorTable(String section, int index) {
-		super();
 		this.sectionName = section;
 		this.index = index;
 		this.section = new DefaultSection(this.sectionName);

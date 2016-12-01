@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job id="job-ref" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/jobXML_1_0.xsd"
+    version="1.0">
+    
+    <listeners>
+    	<listener ref="jobListener"></listener>
+    	<listener ref="customClassListener"></listener>
+    	<listener ref="src.main.java.CustomListener"></listener>
+    </listeners>
+    
+    <step id="step">
+    	<batchlet ref="batchlet"></batchlet>
+    </step>
+    
+    <decision ref="decider" id="decision"></decision>
+    <step id="chunk-step">
+    	<chunk>
+    		<reader ref="reader"></reader>
+    		<processor ref="processor"></processor>
+    		<writer ref="writer"></writer>
+    		<checkpoint-algorithm ref="checkpointAlgorithm"></checkpoint-algorithm>
+    	</chunk>
+    </step>
+    
+    <step id="step-listener">
+    	<listeners>
+    		<listener ref="stepListener"></listener>
+    	</listeners>
+    </step>
+ 	
+ 	<step id="step-partition">
+ 		<partition>
+ 			<mapper ref="mapper"></mapper>
+ 			<collector ref="collector"></collector>
+ 			<analyzer ref="analyzer"></analyzer>
+ 			<reducer ref="reducer"></reducer>
+ 		</partition>
+ 	</step>
+    
+</job>
