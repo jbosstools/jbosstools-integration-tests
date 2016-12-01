@@ -20,10 +20,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.batch.reddeer.wizard.BatchArtifacts;
-import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardDialog;
-import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardPage;
 import org.junit.After;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -34,8 +31,6 @@ import org.junit.Test;
  */
 @OpenPerspective(JavaPerspective.class)
 public class RenameTest extends AbstractFeatureBaseTest {
-
-	private static final String PACKAGE = "batch.test.editor.design";
 
 	private static final String EXCEPTION_STEP_ID = "My-exception-step";
 
@@ -53,27 +48,12 @@ public class RenameTest extends AbstractFeatureBaseTest {
 
 	private static final String RENAMED_PROPERTY_NAME = "renamedTestProperty";
 
-	protected static final String JOB_ID = "batch-test";
-
-	/**
-	 * Delete all files in {@value #PACKAGE} package and create clean job xml
-	 * file
-	 */
-	@BeforeClass
-	public static void cleanBeforeClass() {
-		deleteItemIfExists(JOB_XML_FILE_FULL_PATH);
-		deleteItemIfExists(new String[] { JAVA_FOLDER, PACKAGE });
-
-		createJobXml();
-		assertTrue(getProject().containsItem(JOB_XML_FILE_FULL_PATH));
-	}
-
 	/**
 	 * Delete all files used in this test and create clean job xml file
 	 */
 	@After
 	public void clean() {
-		cleanBeforeClass();
+		deleteItemIfExists(new String[] { JAVA_FOLDER, getPackage() });
 	}
 
 	@Test
@@ -82,8 +62,8 @@ public class RenameTest extends AbstractFeatureBaseTest {
 
 		String newId = RENAMED_PREFIX + BATCHLET_PROPERTY_ID;
 		String newFileName = RENAMED_PREFIX + BATCHLET_PROPERTY_JAVA_CLASS;
-		String[] pathToClass = new String[] { JAVA_FOLDER, PACKAGE, BATCHLET_PROPERTY_JAVA_CLASS };
-		String[] pathToClassRenamed = new String[] { JAVA_FOLDER, PACKAGE, newFileName };
+		String[] pathToClass = new String[] { JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS };
+		String[] pathToClassRenamed = new String[] { JAVA_FOLDER, getPackage(), newFileName };
 
 		// Rename to "Renamed..." and search for reference
 		assertTrue("Can't rename class " + BATCHLET_PROPERTY_JAVA_CLASS, renameClass(newId, pathToClass));
@@ -95,7 +75,7 @@ public class RenameTest extends AbstractFeatureBaseTest {
 	public void renameProperty() {
 		this.createBatchletWithProperty();
 
-		String[] pathToClass = new String[] { JAVA_FOLDER, PACKAGE, BATCHLET_PROPERTY_JAVA_CLASS };
+		String[] pathToClass = new String[] { JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS };
 
 		// Rename property in bachlet class.
 		renamePropertyInFile(PROPERTY_NAME, RENAMED_PROPERTY_NAME, pathToClass);
@@ -103,7 +83,7 @@ public class RenameTest extends AbstractFeatureBaseTest {
 		// Search for renamed property
 		assertTrue("Property with name " + RENAMED_PROPERTY_NAME + " was not found in search results.",
 				searchForPropertyInFile(JOB_XML_FILE, RENAMED_PROPERTY_NAME,
-						new String[] { JAVA_FOLDER, PACKAGE, BATCHLET_PROPERTY_JAVA_CLASS }));
+						new String[] { JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS }));
 	}
 
 	@Test
@@ -112,8 +92,8 @@ public class RenameTest extends AbstractFeatureBaseTest {
 
 		String newId = RENAMED_PREFIX + EXCEPTION_ID;
 		String newFileName = RENAMED_PREFIX + EXCEPTION_JAVA_CLASS;
-		String[] pathToClass = new String[] { JAVA_FOLDER, PACKAGE, EXCEPTION_JAVA_CLASS };
-		String[] pathToClassRenamed = new String[] { JAVA_FOLDER, PACKAGE, newFileName };
+		String[] pathToClass = new String[] { JAVA_FOLDER, getPackage(), EXCEPTION_JAVA_CLASS };
+		String[] pathToClassRenamed = new String[] { JAVA_FOLDER, getPackage(), newFileName };
 
 		// Rename to "Renamed..." and search for reference
 		assertTrue("Can't rename class " + EXCEPTION_JAVA_CLASS, renameClass(newId, pathToClass));
@@ -164,30 +144,17 @@ public class RenameTest extends AbstractFeatureBaseTest {
 		editor.save();
 	}
 
-	private static void createJobXml() {
-		getProject().select();
-
-		NewJobXMLFileWizardDialog dialog = new NewJobXMLFileWizardDialog();
-		dialog.open();
-
-		NewJobXMLFileWizardPage page = new NewJobXMLFileWizardPage();
-		page.setFileName(JOB_XML_FILE);
-		page.setJobID(JOB_ID);
-
-		dialog.finish();
-	}
-
 	/**
 	 * Create batchlet class with one property and add these class to job xml
 	 * file.
 	 */
 	private void createBatchletWithProperty() {
 		createBatchArtifactWithProperty(BatchArtifacts.BATCHLET, BATCHLET_PROPERTY_ID, PROPERTY_NAME);
+		closeEditor(BATCHLET_PROPERTY_JAVA_CLASS);
 		addStep(PROPERTY_STEP_ID);
 		addBatchlet(PROPERTY_STEP_ID, getBatchArtifactID(BATCHLET_PROPERTY_ID));
 		getDesignPage().addProperty(PROPERTY_STEP_ID, "Batchlet", PROPERTY_NAME, "xxx");
 		editor.save();
-		closeEditor(BATCHLET_PROPERTY_JAVA_CLASS);
 	}
 
 	/**
@@ -210,7 +177,7 @@ public class RenameTest extends AbstractFeatureBaseTest {
 		setReaderRef(EXCEPTION_STEP_ID, READER_ID);
 		setWriterRef(EXCEPTION_STEP_ID, WRITER_ID);
 		getDesignPage().addExceptionClass(EXCEPTION_STEP_ID, "Chunk", BatchExceptions.SKIPPABLE.getSectionName(),
-				BatchExceptions.SKIPPABLE.getType(), PACKAGE + "." + EXCEPTION_ID);
+				BatchExceptions.SKIPPABLE.getType(), getPackage() + "." + EXCEPTION_ID);
 
 		editor.save();
 	}
