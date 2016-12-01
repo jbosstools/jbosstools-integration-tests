@@ -14,17 +14,20 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.List;
+
 import org.hamcrest.core.StringContains;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.platform.RunningPlatform;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
-import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
@@ -35,52 +38,94 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.impl.toolbar.ViewToolBar;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.workbench.api.View;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
+import org.jboss.tools.docker.reddeer.ui.resources.DockerConnection;
 import org.jboss.tools.openshift.reddeer.condition.BrowserContainsText;
-import org.jboss.tools.openshift.reddeer.condition.OpenShiftProjectExists;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
-import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.jboss.tools.openshift.reddeer.widget.ShellWithButton;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RequiredBasicConnection
+@RunWith(RedDeerSuite.class)
 public class DeployDockerImageTest {
-
-	private static TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 	
+	@InjectRequirement
+	private static OpenShiftConnectionRequirement openshiftConnectionRequirement;
+	
+	private static DockerExplorerView dockerExplorer;
+	
+	public static String PROJECT1 = "deployimagetesting1" + System.currentTimeMillis();
+	public static String PROJECT2 = "deployimagetesting2" + System.currentTimeMillis();
+	
+	public static String DOCKER_CONNECTION = "default";
 	public static final String HELLO_OS_DOCKER_IMAGE = "docker.io/openshift/hello-openshift";
 	public static final String TAG = "v1.2.1";
 	
 	@BeforeClass
-	public static void prepareDockerImage() {
-		createDockerConnection();
+	public static void setUp() {
+		prepareDockerConnection();
 		pullHelloImageIfDoesNotExist();
+		createProjects();
+	}
+	
+	private static void prepareDockerConnection() {
+		dockerExplorer = new DockerExplorerView();
+		dockerExplorer.open();
+		List<String> connectionsNames = dockerExplorer.getDockerConnectionsNames();
+		if (connectionsNames.isEmpty()) {
+			if (RunningPlatform.isWindows() || RunningPlatform.isOSX()) {
+				dockerExplorer.createDockerConnection(DOCKER_CONNECTION);
+			} else {
+				dockerExplorer.createDockerConnection(DOCKER_CONNECTION, 
+						"unix:///var/run/docker.sock");
+			}
+		} else {
+			DOCKER_CONNECTION = connectionsNames.get(0);
+		}
+	}
+	
+	/**
+	 * If hello world docker image does not exist, this method will pull it.
+	 */
+	private static void pullHelloImageIfDoesNotExist() {
+		DockerExplorerView dockerExplorer = new DockerExplorerView();
+		DockerConnection dockerConnection = dockerExplorer.getDockerConnection(DOCKER_CONNECTION); 
+		if (dockerConnection.getImage(HELLO_OS_DOCKER_IMAGE, TAG) == null) {
+			dockerConnection.pullImage(HELLO_OS_DOCKER_IMAGE, TAG);
+		}
+	}
+	
+	private static void createProjects() {
+		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		explorer.open();
+		OpenShift3Connection connection = explorer.getOpenShift3Connection(
+				openshiftConnectionRequirement.getConnection());
+		connection.createNewProject(PROJECT1);
+		connection.createNewProject(PROJECT2);
+	}
+	
+	@AfterClass
+	public static void cleanUp() {
+		OpenShift3Connection connection  = new OpenShiftExplorerView().getOpenShift3Connection(
+				openshiftConnectionRequirement.getConnection());
+		connection.getProject(PROJECT1).delete();
+		connection.getProject(PROJECT2).delete();
 	}
 	
 	@After
-	public void recreateProjects() {
-		OpenShift3Connection connection  = new OpenShiftExplorerView().getOpenShift3Connection();
-		connection.getProject().delete();
-		
-		new WaitWhile(new OpenShiftProjectExists(), TimePeriod.LONG);
-		
-		connection.createNewProject();
-		
-		new WaitUntil(new OpenShiftProjectExists(), TimePeriod.LONG);
-		
-		// Close browser if it is opened
+	public void closeBrowser() {
 		try {
 			BrowserEditor browser = new BrowserEditor(new StringContains("hello"));
 			browser.close();
@@ -91,21 +136,21 @@ public class DeployDockerImageTest {
 	
 	@Test
 	public void testWizardDataHandlingOpenedFromOpenShiftExplorerTest() {
-		selectAndVerifyProjectProcessingFromOpenShiftExplorer(DatastoreOS3.PROJECT1, DatastoreOS3.PROJECT1_DISPLAYED_NAME);
-		selectAndVerifyProjectProcessingFromOpenShiftExplorer(DatastoreOS3.PROJECT2, null);
-		selectAndVerifyProjectProcessingFromOpenShiftExplorer(DatastoreOS3.PROJECT1, DatastoreOS3.PROJECT1_DISPLAYED_NAME);
+		assertDockerImageIsProcessedCorrectlyWhenUsedFromOpenShiftExplorer(PROJECT1);
+		assertDockerImageIsProcessedCorrectlyWhenUsedFromOpenShiftExplorer(PROJECT2);
+		assertDockerImageIsProcessedCorrectlyWhenUsedFromOpenShiftExplorer(PROJECT1);
 	}
 	
 	@Test
 	public void testWizardDataHandlingOpenedFromDockerExplorer() {
-		selectAndVerifyDataProcessingFromDockerExplorer(DatastoreOS3.PROJECT1, DatastoreOS3.PROJECT1_DISPLAYED_NAME);
-		selectAndVerifyDataProcessingFromDockerExplorer(DatastoreOS3.PROJECT2, null);		
-		selectAndVerifyDataProcessingFromDockerExplorer(DatastoreOS3.PROJECT1, DatastoreOS3.PROJECT1_DISPLAYED_NAME);
+		assertDockerImageIsProcessedCorrectlyWhenUsedFromDockerExplorer(PROJECT1);
+		assertDockerImageIsProcessedCorrectlyWhenUsedFromDockerExplorer(PROJECT2);		
+		assertDockerImageIsProcessedCorrectlyWhenUsedFromDockerExplorer(PROJECT1);
 	}
 	
 	@Test
 	public void testDeployDockerImageFromOpenShiftExplorer() {
-		selectProject(DatastoreOS3.PROJECT1, DatastoreOS3.PROJECT1_DISPLAYED_NAME);
+		selectProject(PROJECT2);
 		new ContextMenu(OpenShiftLabel.ContextMenu.DEPLOY_DOCKER_IMAGE).select();
 		
 		new DefaultShell(OpenShiftLabel.Shell.DEPLOY_IMAGE_TO_OPENSHIFT);
@@ -114,38 +159,39 @@ public class DeployDockerImageTest {
 		
 		proceedThroughDeployImageToOpenShiftWizard();
 		
-		verifyDeployedHelloWorldDockerImage();	
+		verifyDeployedHelloWorldDockerImage(PROJECT2);	
 	}
 		
 	@Test
 	public void testDeployDockerImageFromDockerExplorer() {
-		selectProject(DatastoreOS3.PROJECT1, DatastoreOS3.PROJECT1_DISPLAYED_NAME);
+		selectProject(PROJECT1);
 		openDeployToOpenShiftWizardFromDockerExplorer();
 
 		proceedThroughDeployImageToOpenShiftWizard();
 		
-		verifyDeployedHelloWorldDockerImage();	
+		verifyDeployedHelloWorldDockerImage(PROJECT1);	
 	}
 	
 	/**
 	 * Verifies whether an application pod has been created and application is running successfully.
 	 */
-	private void verifyDeployedHelloWorldDockerImage() {
+	private void verifyDeployedHelloWorldDockerImage(String projectName) {
+		new OpenShiftExplorerView().getOpenShift3Connection(
+				openshiftConnectionRequirement.getConnection()).refresh();
 		try {
 			new WaitUntil(new OpenShiftResourceExists(Resource.POD, new StringContains("hello-openshift"),
-				ResourceState.RUNNING), TimePeriod.getCustom(240));
+				ResourceState.RUNNING, projectName), TimePeriod.getCustom(240));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("There should be a running application pod for a deployed docker image, "
 					+ "but it does not exist.");
 		}
 		
-		new OpenShiftExplorerView().getOpenShift3Connection().getProject(
-				DatastoreOS3.PROJECT1_DISPLAYED_NAME).getOpenShiftResources(
-						Resource.ROUTE).get(0).select();
+		new OpenShiftExplorerView().getOpenShift3Connection().getProject(projectName).
+				getOpenShiftResources(Resource.ROUTE).get(0).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.SHOW_IN_BROWSER).select();
 		
 		try {
-			new WaitUntil(new BrowserContainsText("Hello OpenShift!"), TimePeriod.LONG);
+			new WaitUntil(new BrowserContainsText("Hello OpenShift!"), TimePeriod.VERY_LONG);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Browser does not containg hello world content.");
 		}
@@ -186,20 +232,16 @@ public class DeployDockerImageTest {
 	 * @param projectName
 	 * @param projectDisplayName
 	 */
-	private void selectAndVerifyProjectProcessingFromOpenShiftExplorer(String projectName, 
-			String projectDisplayName) {
-		selectProject(projectName, projectDisplayName);
+	private void assertDockerImageIsProcessedCorrectlyWhenUsedFromOpenShiftExplorer(String projectName) {
+		selectProject(projectName);
 		new ContextMenu(OpenShiftLabel.ContextMenu.DEPLOY_DOCKER_IMAGE).select();
 		
 		new DefaultShell(OpenShiftLabel.Shell.DEPLOY_IMAGE_TO_OPENSHIFT);
 		
 		assertFalse("No project has been preselected.", new LabeledCombo("OpenShift Project: ").
 				getSelection().equals(""));
-		
-		String preselected = projectDisplayName == null ? projectName : projectDisplayName + 
-				" (" + projectName + ")";
 		assertTrue("Wrong project has been preselected.", new LabeledCombo("OpenShift Project: ").
-				getSelection().equals(preselected));
+				getSelection().equals(projectName));
 		
 		closeWizard();
 	}
@@ -210,12 +252,10 @@ public class DeployDockerImageTest {
 	 * @param projectName
 	 * @param projectDisplayName
 	 */
-	private void selectAndVerifyDataProcessingFromDockerExplorer(String projectName,
-			String projectDisplayName) {
-		selectProject(projectName, projectDisplayName);
+	private void assertDockerImageIsProcessedCorrectlyWhenUsedFromDockerExplorer(String projectName) {
+		selectProject(projectName);
 		openDeployToOpenShiftWizardFromDockerExplorer();
-		selectProjectAndVerifyDataProcessingInDeployToOpenShiftWizard(projectName,
-				projectDisplayName);
+		selectProjectAndVerifyDataProcessingInDeployToOpenShiftWizard(projectName);
 		closeWizard();
 	}	
 	
@@ -226,72 +266,23 @@ public class DeployDockerImageTest {
 	 * @param projectName
 	 * @param projectDisplayName
 	 */
-	private void selectProjectAndVerifyDataProcessingInDeployToOpenShiftWizard(String projectName, 
-			String projectDisplayName) {
-		String preselected = projectDisplayName == null ? projectName : projectDisplayName + 
-				" (" + projectName + ")";
-		
+	private void selectProjectAndVerifyDataProcessingInDeployToOpenShiftWizard(String projectName) {
 		assertTrue("Wrong project has been preselected.", new LabeledCombo("OpenShift Project: ").
-				getSelection().equals(preselected));
-		
+				getSelection().equals(projectName));		
 		assertTrue("Selected docker image should be used in wizard but it is not.",
 				new LabeledText(OpenShiftLabel.TextLabels.IMAGE_NAME).getText().contains(
 						HELLO_OS_DOCKER_IMAGE));
-		
 		assertTrue("Resource should be infered from image name but it is not",
 				new LabeledText(OpenShiftLabel.TextLabels.RESOURCE_NAME).getText().contains(
 						HELLO_OS_DOCKER_IMAGE.split("/")[2]));
 	}
 	
 	/**
-	 * Creates a new docker connection using autodetection. If this meant to be used 
-	 * on OS systems where autodetection does not work, changes are necessary.
-	 */
-	private static void createDockerConnection() {
-		View dockerExplorer = new WorkbenchView("Docker Explorer");
-		dockerExplorer.open();
-		ViewToolBar dockerToolBar = new ViewToolBar();
-		new DefaultToolItem(dockerToolBar, "Add Connection").click();;
-		
-		new DefaultShell("New Docker Connection");
-		
-		// Here goes more magic if this is supposed to run on various systems where autodetect does not work
-		
-		new FinishButton().click();
-		
-		new WaitWhile(new ShellWithTextIsAvailable("New Docker Connection"));
-	}
-	
-	/**
-	 * If hello world docker image does not exist, this method will pull it.
-	 */
-	private static void pullHelloImageIfDoesNotExist() {
-		new WorkbenchView("Docker Explorer").activate();
-		TreeItem imagesItem = new DefaultTree().getItems().get(0).getItem("Images");
-		try {
-			treeViewerHandler.getTreeItem(imagesItem, HELLO_OS_DOCKER_IMAGE);
-		} catch (RedDeerException ex) {
-			imagesItem.select();
-			new ContextMenu("Pull...").select();
-			
-			new DefaultShell("Pull Image");
-			new DefaultText().setText(HELLO_OS_DOCKER_IMAGE);
-			new FinishButton().click();
-			
-			
-			new WaitWhile(new ShellWithTextIsAvailable("Pull Image"));
-			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		}
-	}
-	
-	/**
 	 * Opens a Deploy Image to OpenShift wizard from context menu of a docker image
 	 */
 	private void openDeployToOpenShiftWizardFromDockerExplorer() {
-		new WorkbenchView("Docker Explorer").activate();
-		
-		TreeItem imagesItem = new DefaultTree().getItems().get(0).getItem("Images");
-		treeViewerHandler.getTreeItem(imagesItem, HELLO_OS_DOCKER_IMAGE).select();
+		dockerExplorer.getDockerConnection(DOCKER_CONNECTION).getImage(
+				HELLO_OS_DOCKER_IMAGE, TAG).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.DEPLOY_TO_OPENSHIFT).select();
 		
 		new DefaultShell(OpenShiftLabel.Shell.DEPLOY_IMAGE_TO_OPENSHIFT);
@@ -311,9 +302,10 @@ public class DeployDockerImageTest {
 	 * @param projectName
 	 * @param projectDisplayName
 	 */
-	private void selectProject(String projectName, String projectDisplayName) {
+	private void selectProject(String projectName) {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		String selectProject = projectDisplayName == null ? projectName : projectDisplayName;
-		explorer.getOpenShift3Connection().getProject(selectProject).select();
+		explorer.getOpenShift3Connection(openshiftConnectionRequirement.getConnection()).
+			getProject(projectName).select();
 	}
+	
 }
