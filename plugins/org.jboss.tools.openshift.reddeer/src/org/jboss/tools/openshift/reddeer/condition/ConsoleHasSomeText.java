@@ -11,26 +11,34 @@
 package org.jboss.tools.openshift.reddeer.condition;
 
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 
 /**
  * Condition notifies about not empty console.
  * 
+ * TODO replace this condition by RedDeer implementation of ConsoleHasText, once
+ * RedDeer implementation is updated
+ * 
  * @author mlabuda@redhat.com
  *
  */
-public class ConsoleHasText extends AbstractWaitCondition{
+public class ConsoleHasSomeText extends AbstractWaitCondition{
 
 	private ConsoleView consoleView;
 	
-	public ConsoleHasText() {
+	public ConsoleHasSomeText() {
 		consoleView = new ConsoleView();
 		consoleView.open();
 	}
 	
 	@Override
 	public boolean test() {
-		return !consoleView.getConsoleText().isEmpty();
+		try {
+			return !consoleView.getConsoleText().isEmpty();
+		} catch (RedDeerException ex) {
+			return false;
+		}
 	}
 
 	@Override

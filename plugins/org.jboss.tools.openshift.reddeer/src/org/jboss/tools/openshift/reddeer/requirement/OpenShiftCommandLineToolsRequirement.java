@@ -156,14 +156,14 @@ public class OpenShiftCommandLineToolsRequirement implements Requirement<OCBinar
 	private String getDownloadLink() {
 		if (Platform.OS_LINUX.equals(Platform.getOS())) {
 			if (Platform.getOSArch().equals(Platform.ARCH_X86)) {
-				return ClientVersion.LINUX_1_2_32.getDownloadLink();
+				return ClientVersion.LINUX_1_3_32.getDownloadLink();
 			} else { 
-				return ClientVersion.LINUX_1_2_64.getDownloadLink();
+				return ClientVersion.LINUX_1_3_64.getDownloadLink();
 			}
 		} else if (Platform.OS_WIN32.equals(Platform.getOSArch())){
-			return ClientVersion.WINDOWS_1_2_64.getDownloadLink();
+			return ClientVersion.WINDOWS_1_3_64.getDownloadLink();
 		} else if (Platform.OS_MACOSX.equals(Platform.getOSArch())){
-			return ClientVersion.MAC_1_2.getDownloadLink();
+			return ClientVersion.MAC_1_3.getDownloadLink();
 		} else {
 			return null;
 		}
@@ -184,7 +184,17 @@ public class OpenShiftCommandLineToolsRequirement implements Requirement<OCBinar
 		WINDOWS_1_2_64("https://github.com/openshift/origin/releases/download/"
 				+ "v1.2.0/openshift-origin-client-tools-v1.2.0-2e62fab-windows.zip"),
 		MAC_1_2("https://github.com/openshift/origin/releases/download/" 
-				+ "v1.2.0/openshift-origin-client-tools-v1.2.0-2e62fab-mac.zip");
+				+ "v1.2.0/openshift-origin-client-tools-v1.2.0-2e62fab-mac.zip"),
+		
+		LINUX_1_3_32("https://github.com/openshift/origin/releases/download/"
+				+ "v1.3.1/openshift-origin-client-tools-v1.3.1-dad658de7465ba8a234a4fb40b5b446a45a4cee1-linux-32bit.tar.gz"),
+		LINUX_1_3_64("https://github.com/openshift/origin/releases/download/"
+				+ "v1.3.1/openshift-origin-client-tools-v1.3.1-dad658de7465ba8a234a4fb40b5b446a45a4cee1-linux-64bit.tar.gz"),
+		WINDOWS_1_3_64("https://github.com/openshift/origin/releases/download/"
+				+ "v1.3.1/openshift-origin-client-tools-v1.3.1-dad658de7465ba8a234a4fb40b5b446a45a4cee1-windows.zip"),
+		MAC_1_3("https://github.com/openshift/origin/releases/download/"
+				+ "v1.3.1/openshift-origin-client-tools-v1.3.1-2748423-mac.zip");
+		
 		String url;
 		
 		private ClientVersion(String url) {

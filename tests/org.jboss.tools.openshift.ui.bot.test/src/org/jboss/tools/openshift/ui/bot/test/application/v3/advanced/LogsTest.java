@@ -13,23 +13,18 @@ package org.jboss.tools.openshift.ui.bot.test.application.v3.advanced;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.common.exception.RedDeerException;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
 import org.jboss.tools.openshift.reddeer.condition.ApplicationPodIsRunning;
-import org.jboss.tools.openshift.reddeer.condition.ConsoleHasText;
+import org.jboss.tools.openshift.reddeer.condition.ConsoleHasSomeText;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
-import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement.OCBinary;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
@@ -43,7 +38,7 @@ public class LogsTest extends AbstractCreateApplicationTest {
 	
 	@BeforeClass
 	public static void waitForApplication() {
-		new WaitUntil(new OpenShiftResourceExists(Resource.POD, "eap-app-1-build", ResourceState.SUCCEEDED), 
+		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE), 
 				TimePeriod.getCustom(600), true, TimePeriod.getCustom(8));
 		
 		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.VERY_LONG, true,
@@ -66,8 +61,11 @@ public class LogsTest extends AbstractCreateApplicationTest {
 		
 		ConsoleView consoleView = new ConsoleView();
 		
-		new WaitUntil(new ConsoleHasText(), TimePeriod.NORMAL, false);
-		new WaitUntil(new ConsoleHasNoChange(TimePeriod.getCustom(5)), TimePeriod.VERY_LONG);
+		new WaitUntil(new ConsoleHasSomeText() {
+			@Override public String errorMessage() {
+				return "Console of pod log is not opened or does not have text";
+			}}, TimePeriod.NORMAL);
+		new WaitUntil(new ConsoleHasNoChange(TimePeriod.getCustom(7)), TimePeriod.VERY_LONG);
 		
 		assertTrue("Console label is incorrect, it should contains project name and pod name.\n"
 						+ "but label is: " + consoleView.getConsoleLabel(), consoleView.getConsoleLabel().contains(
@@ -77,7 +75,7 @@ public class LogsTest extends AbstractCreateApplicationTest {
 	}
 	
 	@Test
-	public void testPodLogOfBuildPod() {
+	public void testPodLogOfCompletedBuildPod() {
 		TestUtils.setUpOcBinary();
 		
 		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1"), 
@@ -89,53 +87,22 @@ public class LogsTest extends AbstractCreateApplicationTest {
 				getProject().getOpenShiftResources(Resource.BUILD).get(0).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.BUILD_LOG).select();
 		
-		new WaitUntil(new ConsoleHasText(), TimePeriod.NORMAL, false);
-		new WaitUntil(new ConsoleHasNoChange(TimePeriod.getCustom(5)), TimePeriod.VERY_LONG);
-		
+		new WaitUntil(new ConsoleHasSomeText() {
+			@Override public String errorMessage() {
+				return "Console is not opened or does not have text. Could be failing because of JBIDE-23622.";
+			}}, TimePeriod.NORMAL);
+
 		ConsoleView consoleView = new ConsoleView();
 		assertTrue("Console label is incorrect, it should contains project name and name of build pod.\n"
 				+ "but label is: " + consoleView.getConsoleLabel(), consoleView.getConsoleLabel().contains(
 				DatastoreOS3.PROJECT1 + "\\eap-app-1-build"));
-		assertTrue("There should be info in log about successfull push of image.", 
-				consoleView.getConsoleText().contains("Successfully pushed"));
-	}
-	
-	@Test
-	public void testPodLogWithoutSetOCBinary() {
-		TestUtils.cleanUpOCBinary();
 		
-		ApplicationPodIsRunning applicationPodIsRunning = new ApplicationPodIsRunning();
-		new WaitUntil(applicationPodIsRunning, TimePeriod.LONG);
-		
-		OpenShiftResource pod  = new OpenShiftExplorerView().getOpenShift3Connection().getProject().
-			getOpenShiftResource(Resource.POD, applicationPodIsRunning.getApplicationPodName());
-		pod.select();
-		new ContextMenu(OpenShiftLabel.ContextMenu.POD_LOG).select();
-		
-		assertUnknownBinaryLocationShellIsShown();
-	}
-	
-	@Test
-	public void testBuildLogWithoutSetOCBinary() {
-		TestUtils.cleanUpOCBinary();
-		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		
-		explorer.activate();
-		explorer.getOpenShift3Connection().
-			getProject().getOpenShiftResources(Resource.BUILD).get(0).select();
-		new ContextMenu(OpenShiftLabel.ContextMenu.BUILD_LOG).select();
-		
-		assertUnknownBinaryLocationShellIsShown();
-	}
-	
-	private void assertUnknownBinaryLocationShellIsShown() {
 		try {
-			new DefaultShell(OpenShiftLabel.Shell.BINARY_LOCATION_UNKNOWN);
-			new OkButton().click();
-			
-			new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.BINARY_LOCATION_UNKNOWN));
-		} catch (RedDeerException ex) {
-			fail("There should an error dialog about unknown oc binary location.");
+			new WaitUntil(new org.jboss.reddeer.eclipse.condition.ConsoleHasText("Push successful"),
+				TimePeriod.getCustom(600));
+		} catch (WaitTimeoutExpiredException ex) {
+			fail("There should be output of succesful build in console log, but there is not.\n"
+					+ "Check whether output has not changed. Assumed output in the end of log is 'Push successful'");
 		}
 	}
 }

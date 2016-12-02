@@ -22,6 +22,7 @@ import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
+import org.jboss.tools.openshift.reddeer.wizard.v3.TemplateParameter;
 import org.jboss.tools.openshift.reddeer.wizard.v3.TemplatesCreator;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -30,8 +31,11 @@ import org.junit.BeforeClass;
 public class AbstractCreateApplicationTest {
 
 	public static String gitFolder = "jboss-eap-quickstarts";
-	public static String projectName = "jboss-kitchensink";
+	public static String projectName = "jboss-helloworld";
 	public static String buildConfigName = "eap-app";
+	
+	// context dir for new applications is helloworld
+	public static String CONTEXT_DIR = "helloworld";
 	
 	protected static TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 	
@@ -45,7 +49,8 @@ public class AbstractCreateApplicationTest {
 			new OpenShiftExplorerView().getOpenShift3Connection().createNewProject();
 		}
 		
-		new TemplatesCreator().createOpenShiftApplicationBasedOnServerTemplate(OpenShiftLabel.Others.EAP_TEMPLATE);
+		new TemplatesCreator().createOpenShiftApplicationBasedOnServerTemplate(
+				OpenShiftLabel.Others.EAP_TEMPLATE, new TemplateParameter("CONTEXT_DIR", "helloworld"));
 	}
 	
 	@AfterClass

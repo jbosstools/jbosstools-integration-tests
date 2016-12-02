@@ -12,7 +12,6 @@ package org.jboss.tools.openshift.reddeer.wizard.v3;
 
 import java.util.List;
 
-import org.eclipse.ui.actions.ImportResourcesAction;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;

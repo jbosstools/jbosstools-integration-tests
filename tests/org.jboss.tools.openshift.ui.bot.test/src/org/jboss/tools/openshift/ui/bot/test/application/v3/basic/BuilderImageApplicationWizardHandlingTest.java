@@ -18,6 +18,12 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.condition.WidgetIsFound;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
@@ -31,19 +37,33 @@ import org.jboss.reddeer.swt.impl.spinner.DefaultSpinner;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.common.reddeer.perspectives.JBossPerspective;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement.RequiredProject;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.wizard.page.EnvironmentVariableWizardPage;
-import org.jboss.tools.openshift.reddeer.wizard.page.ResourceLabelsWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.page.EnvironmentVariableWizardPage.EnvVar;
+import org.jboss.tools.openshift.reddeer.wizard.page.ResourceLabelsWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RequiredBasicConnection
+@RequiredProject(name="builderimagevalidationproject")
+@OpenPerspective(JBossPerspective.class)
+@RunWith(RedDeerSuite.class)
 public class BuilderImageApplicationWizardHandlingTest {
 
+	public static final String BUILDER_IMAGE = OpenShiftLabel.Others.EAP_BUILDER_IMAGE;
+	
+	@InjectRequirement
+	private OpenShiftProjectRequirement projectRequirement;
+	
 	private ResourceLabelsWizardPage resourceLabelPage = new ResourceLabelsWizardPage();
-	EnvironmentVariableWizardPage environmentVariablesPage = new EnvironmentVariableWizardPage();
+	private EnvironmentVariableWizardPage environmentVariablesPage = new EnvironmentVariableWizardPage();
 	
 	private EnvVar envVar = new EnvVar("varname1", "varvalue1");
 	private EnvVar envVar2 = new EnvVar("varname1", "varvalue2");
@@ -54,7 +74,7 @@ public class BuilderImageApplicationWizardHandlingTest {
 				
 	@Before
 	public void openNewApplicationWizard() {
-		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
+		new NewOpenShift3ApplicationWizard().openWizardFromExplorer(projectRequirement.getProjectName());
 	}
 	
 	@Test
@@ -72,7 +92,7 @@ public class BuilderImageApplicationWizardHandlingTest {
 	}
 	
 	private void selectBuilderImageAndAssertButtonsAvailability() {
-		new DefaultTreeItem(OpenShiftLabel.Others.EAP_BUILDER_IMAGE).select();
+		new DefaultTreeItem(BUILDER_IMAGE).select();
 		
 		assertTrue("Next button should be enabled if EAP builder image is selected.",
 				new NextButton().isEnabled());
@@ -269,57 +289,57 @@ public class BuilderImageApplicationWizardHandlingTest {
 	
 	@Test
 	public void testPorts() {
+		String defaultName = "8443-tcp";
+		String defaultServicePort = "8443";
+		String defaultPodPort = "8443";
+		String newName = "1234-tcp";
+		String newServicePort = "1234";
+		String newPodPort = "4321";
+		
 		nextToBuildConfigurationWizardPage();
 		next();
 		next();
 	
-		new PushButton(OpenShiftLabel.Button.ADD).click();
-		
-		new DefaultShell(OpenShiftLabel.Shell.SERVICE_PORTS);
-		new DefaultSpinner(OpenShiftLabel.TextLabels.SERVICE_PORT).setValue(6666);
-		new LabeledText(OpenShiftLabel.TextLabels.POD_PORT).setText("9999");
-		new OkButton().click();
-		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.SERVICE_PORTS));
-		
-		assertTrue("Table should containg new port mapping.", new DefaultTable().containsItem("6666-tcp"));
-		assertTrue("New pod mapping has incorrect mapped ports.", new DefaultTable().getItem("6666-tcp").getText(1)
-				.equals("6666") && new DefaultTable().getItem("6666-tcp").getText(2).equals("9999"));
-		
-		new DefaultTable().select("6666-tcp");
+		// Test edit of an existing pod
+		new DefaultTable().select(defaultName);
 		new PushButton(OpenShiftLabel.Button.EDIT).click();
 		
 		new DefaultShell(OpenShiftLabel.Shell.SERVICE_PORTS);
-		new LabeledText(OpenShiftLabel.TextLabels.POD_PORT).setText("6666");
+		new LabeledText(OpenShiftLabel.TextLabels.POD_PORT).setText(newPodPort);
+		new DefaultSpinner(OpenShiftLabel.TextLabels.SERVICE_PORT).setValue(Integer.valueOf(newServicePort));
 		new OkButton().click();
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.SERVICE_PORTS));
 		
-		assertTrue("Modified pod mapping has incorrect mapped ports.", new DefaultTable().getItem("6666-tcp").getText(1)
-				.equals("6666") && new DefaultTable().getItem("6666-tcp").getText(2).equals("6666"));
+		assertTrue("There should port mapping with name " + newName + ", but there is not.",
+				new WidgetIsFound<org.eclipse.swt.widgets.TableItem>(
+						new WithTextMatcher(newName)).test());
 		
-		new DefaultTable().select("8080-tcp");
-		new PushButton(OpenShiftLabel.Button.REMOVE).click();
+		TableItem portMapping = new DefaultTable().getItem(newName);
+		assertTrue("Modified pod mapping has incorrect mapped ports.", portMapping.getText(1)
+				.equals(newServicePort) && portMapping.getText(2).equals(newPodPort));
 		
-		new DefaultShell(OpenShiftLabel.Shell.REMOVE_PORT);
-		new YesButton().click();
-		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.REMOVE_PORT));
-		
-		assertFalse("Table should no longer contain removed mapped ports.",
-				new DefaultTable().containsItem("8080-tcp"));
-		assertTrue("Reset button should be enabled if default ports has been changed or removed.",
-				new PushButton(OpenShiftLabel.Button.RESET).isEnabled());
-		
+		// Test reset of pods
 		new PushButton(OpenShiftLabel.Button.RESET).click();
 		
 		new DefaultShell(OpenShiftLabel.Shell.RESET_PORTS);
 		new YesButton().click();
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.RESET_PORTS));
+		new WaitWhile(new JobIsRunning());
 		
-		assertTrue("There should previously removed port mapping in the table after reset.",
-				new DefaultTable().containsItem("8080-tcp"));
+		assertTrue("There should port mapping with name " + defaultName + ", but there is not.",
+				new WidgetIsFound<org.eclipse.swt.widgets.TableItem>(
+						new WithTextMatcher(defaultName)).test());
+		
+		portMapping = new DefaultTable().getItem(defaultName);
+		String resetServicePort = portMapping.getText(1);
+		String resetPodPort = portMapping.getText(2);
+		
+		assertTrue("There should default values for port named " + defaultName + "\n"
+				+ "Service port should be " + defaultServicePort + ", but it is " + resetServicePort 
+				+ " and pod port should be " + defaultPodPort +", but it is " + resetPodPort, 
+				resetServicePort.equals(defaultServicePort) && resetPodPort.equals(defaultPodPort));
 	}
 
 	@After
@@ -334,7 +354,7 @@ public class BuilderImageApplicationWizardHandlingTest {
 	  NAVIGATATION
 	***************/
 	public static void nextToBuildConfigurationWizardPage() {
-		new DefaultTreeItem(OpenShiftLabel.Others.EAP_BUILDER_IMAGE).select();
+		new DefaultTreeItem(BUILDER_IMAGE).select();
 		
 		new WaitUntil(new WidgetIsEnabled(new NextButton()));
 		

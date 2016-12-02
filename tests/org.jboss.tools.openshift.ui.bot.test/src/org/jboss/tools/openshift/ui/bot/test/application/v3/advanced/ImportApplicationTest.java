@@ -110,7 +110,7 @@ public class ImportApplicationTest extends AbstractCreateApplicationTest {
 		
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
-		assertTrue("There should be imported kitchen sink project, but there is not",
+		assertTrue("There should be imported " + projectName + "project, but there is not",
 				projectExplorer.containsProject(projectName));
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);

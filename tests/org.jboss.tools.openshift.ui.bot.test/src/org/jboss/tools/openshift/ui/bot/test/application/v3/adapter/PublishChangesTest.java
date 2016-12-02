@@ -1,5 +1,6 @@
 package org.jboss.tools.openshift.ui.bot.test.application.v3.adapter;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
@@ -8,8 +9,10 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
+import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -24,15 +27,20 @@ import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter;
 import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter.Version;
-import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.GithubWebhoookTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.create.AbstractCreateApplicationTest;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class PublishChangesTest extends AbstractCreateApplicationTest {
 
+	public static String PUBLISHED_CODE = "package org.jboss.as.quickstarts.helloworld;\n"
+			+ "public class HelloService {\n"
+			+ "String createHelloMessage(String name) { return \"Hello OpenShift \" + name + \"!\"; }"
+			+ "}";
+	
+	private String changedClass= "ROOT.war/WEB-INF/classes/org/jboss/as/quickstarts/helloworld/HelloService.class";
+	
 	@BeforeClass	
 	public static void waitForRunningApplication() {
 		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE),
@@ -62,22 +70,22 @@ public class PublishChangesTest extends AbstractCreateApplicationTest {
 	
 	private void changeProjectAndVerifyAutoPublish() {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
-		projectExplorer.getProject(projectName).getProjectItem("src", "main", "webapp", "index.xhtml").select();
-
-		new ContextMenu("Open With", "Text Editor").select();
-		TextEditor textEditor = new TextEditor("index.xhtml");
-		textEditor.setText(GithubWebhoookTest.webPageContent);
+		ProjectItem projectItem = projectExplorer.getProject(projectName).getProjectItem("Java Resources", "src/main/java",
+				"org.jboss.as.quickstarts.helloworld", "HelloService.java");
+		projectItem.select();
+		projectItem.open();
+		
+		TextEditor textEditor = new TextEditor("HelloService.java");
+		textEditor.setText(PUBLISHED_CODE);
 		textEditor.close(true);
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
-		
-		try {
-			new WaitUntil(new ConsoleHasText("ROOT.war/index.xhtml"), TimePeriod.LONG);
-		} catch (WaitTimeoutExpiredException ex) {
-			Assert.fail("Local changes performed to project have not been autopublished, or at least rsync "
-					+ "output in console view does not contain information about sending incremental list of "
-					+ "ROOT.war/index.xhtml to OpenShift");
-		}
+		new WaitUntil(new ConsoleHasNoChange(), TimePeriod.LONG);
+	
+		assertTrue("Local changes performed to project have not been autopublished, or at least rsync "
+					+ "output in console view does not contain information about sending incremental list of changes,"
+					+ "specifically with changed class " + changedClass,
+				new ConsoleView().getConsoleText().contains(changedClass));
 	}
 	
 	private void verifyChangesTookEffect() {
@@ -87,7 +95,7 @@ public class PublishChangesTest extends AbstractCreateApplicationTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		try {
-			new WaitUntil(new BrowserContainsText("OpenShift3"), TimePeriod.VERY_LONG);			
+			new WaitUntil(new BrowserContainsText("Hello OpenShift"), TimePeriod.VERY_LONG);			
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Application was not deployed successfully because it is not shown in web browser properly.");
 		}
