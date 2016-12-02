@@ -13,7 +13,7 @@
 	<artifactId>org.jboss.tools.easymport.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<swtbot.test.skip>false</swtbot.test.skip>
+		<skipTests>false</skipTests>
 		<usage_reporting_enabled>false</usage_reporting_enabled>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 	</properties>
