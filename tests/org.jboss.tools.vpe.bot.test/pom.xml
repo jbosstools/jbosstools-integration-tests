@@ -26,9 +26,6 @@
 		
 		<profile>
 			<id>check-pr</id>
-			<properties>
-				<suiteClass>org.jboss.tools.maven.ui.bot.test.MavenAllBotTests</suiteClass>
-			</properties>
 			<build>
 				<plugins>
 					<plugin>
