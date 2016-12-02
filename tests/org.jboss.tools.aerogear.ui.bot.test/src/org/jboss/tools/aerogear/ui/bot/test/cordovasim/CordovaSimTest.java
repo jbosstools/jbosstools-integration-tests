@@ -31,7 +31,7 @@ public class CordovaSimTest extends AerogearBotTest {
 	public static final String APP_TEXT="Apache Cordova application powered by Eclipse Thym";
 	
 	@AfterClass
-	public void closeCordova(){
+	public static void closeCordova(){
 		csController.stopCordovasim();
 	}
 	
