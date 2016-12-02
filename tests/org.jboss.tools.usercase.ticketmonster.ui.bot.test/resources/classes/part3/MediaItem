@@ -1,3 +1,0 @@
-private Long id;
-private MediaType mediaType;
-private String url;
