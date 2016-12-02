@@ -25,7 +25,7 @@
 		<examplesFolderWildFly>quickstart-10.x</examplesFolderWildFly>
 		<examplesFolderEAP>jboss-eap-7.0.0.GA-quickstarts</examplesFolderEAP>
 		<examplesFolderJavaEE>javaee7-samples-master</examplesFolderJavaEE>
-		<jbosstools.test.wildfly10.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.wildfly10.home>
+		<jbosstools.test.wildfly10.home>${requirementsDirectory}/wildfly-10.1.0.Final</jbosstools.test.wildfly10.home>
 		<jbosstools.test.eap7.home>${requirementsDirectory}/jboss-eap-7.0</jbosstools.test.eap7.home>
 		<jbosstools.test.jboss-eap-7.x.url>http://download.eng.brq.redhat.com/released/JBEAP-7/7.0.0/jboss-eap-7.0.0.zip</jbosstools.test.jboss-eap-7.x.url>
 		<surefire.timeout>18000</surefire.timeout>
@@ -125,7 +125,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>10.0.0.Final</version>
+											<version>10.1.0.Final</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>
@@ -236,7 +236,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>10.0.0.Final</version>
+											<version>10.1.0.Final</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>
@@ -299,7 +299,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>10.0.0.Final</version>
+											<version>10.1.0.Final</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>
@@ -412,7 +412,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>10.0.0.Final</version>
+											<version>10.1.0.Final</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>

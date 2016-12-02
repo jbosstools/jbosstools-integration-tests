@@ -15,7 +15,7 @@
 	<properties>
 		<rd.config>${project.build.outputDirectory}/config</rd.config>
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
-		<jbosstools.test.jboss-wildfly-10.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.jboss-wildfly-10.home>
+		<jbosstools.test.jboss-wildfly-10.home>${requirementsDirectory}/wildfly-10.1.0.Final</jbosstools.test.jboss-wildfly-10.home>
 		
 		<apache-cxf-2.x.dir>${requirementsDirectory}/apache-cxf-2.x</apache-cxf-2.x.dir>
 		<apache-cxf-2.x>${apache-cxf-2.x.dir}/apache-cxf-3.1.1/</apache-cxf-2.x>
@@ -141,7 +141,7 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>10.0.0.Final</version>
+									<version>10.1.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>

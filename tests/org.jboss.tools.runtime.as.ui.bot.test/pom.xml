@@ -28,11 +28,11 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<wildfly-10.0>${requirementsDirectory}/wildfly-10.0.0.Final/</wildfly-10.0>
-				<wildfly-web-10.0>${requirementsDirectory}/wildfly-servlet-10.0.0.Final/</wildfly-web-10.0>
-				<wildfly-9.0>${requirementsDirectory}/wildfly-9.0.0.Final/</wildfly-9.0>
-				<wildfly-web-9.0>${requirementsDirectory}/wildfly-servlet-9.0.0.Final/</wildfly-web-9.0>
-				<wildfly-8.1>${requirementsDirectory}/wildfly-8.1.0.Final/</wildfly-8.1>
+				<wildfly-10.0>${requirementsDirectory}/wildfly-10.1.0.Final/</wildfly-10.0>
+				<wildfly-web-10.0>${requirementsDirectory}/wildfly-servlet-10.1.0.Final/</wildfly-web-10.0>
+				<wildfly-9.0>${requirementsDirectory}/wildfly-9.0.2.Final/</wildfly-9.0>
+				<wildfly-web-9.0>${requirementsDirectory}/wildfly-servlet-9.0.2.Final/</wildfly-web-9.0>
+				<wildfly-8.1>${requirementsDirectory}/wildfly-8.2.1.Final/</wildfly-8.1>
 				<wildfly-8.0>${requirementsDirectory}/wildfly-8.0.0.Final/</wildfly-8.0>
 
 				<jboss-as-7>${requirementsDirectory}/jboss-as-7.1.1.Final/</jboss-as-7>
@@ -92,7 +92,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>8.1.0.Final</version>
+											<version>8.2.1.Final</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>
@@ -130,7 +130,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>9.0.0.Final</version>
+											<version>9.0.2.Final</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>
@@ -149,7 +149,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-servlet-dist</artifactId>
-											<version>10.0.0.Final</version>
+											<version>10.1.0.Final</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>
@@ -168,7 +168,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>10.0.0.Final</version>
+											<version>10.1.0.Final</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>
@@ -187,7 +187,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-servlet-dist</artifactId>
-											<version>9.0.0.Final</version>
+											<version>9.0.2.Final</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>
@@ -393,7 +393,7 @@
 			<id>smoke</id>
 			<properties>
 				<test.class>org.jboss.tools.runtime.as.ui.bot.test.SmokeSuite</test.class>
-				<wildfly-10.0>${requirementsDirectory}/wildfly-10.0.0.Final/</wildfly-10.0>
+				<wildfly-10.0>${requirementsDirectory}/wildfly-10.1.0.Final/</wildfly-10.0>
 				<req.java8.home>${java.home}</req.java8.home>
 				<reddeer.config>${project.build.directory}/../resources/generated_resources/java8.xml</reddeer.config>
 			</properties>
@@ -415,7 +415,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>10.0.0.Final</version>
+											<version>10.1.0.Final</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>

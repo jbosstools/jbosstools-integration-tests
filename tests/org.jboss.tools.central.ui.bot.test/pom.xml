@@ -14,7 +14,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<jbosstools.test.wildfly.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.wildfly.home>
+		<jbosstools.test.wildfly.home>${requirementsDirectory}/wildfly-10.1.0.Final</jbosstools.test.wildfly.home>
 		<wildflySystemProperties></wildflySystemProperties>
 		<eapSystemProperties></eapSystemProperties>
 		<jbosstools.test.jboss-eap-6.4.home>${requirementsDirectory}/jboss-eap-6.4</jbosstools.test.jboss-eap-6.4.home>
@@ -44,7 +44,7 @@
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>http://download.jboss.org/wildfly/10.0.0.Final/wildfly-10.0.0.Final.zip</url>
+									<url>http://download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.zip</url>
 									<unpack>true</unpack>
 								</configuration>
 							</execution>
