@@ -37,20 +37,38 @@ public class EnginePropertyPage extends PropertyPage{
 		return result;
 		
 	}
+	
 	/**
 	 * Returns all available engine versions
-	 * @return
+	 * @return list of versions
 	 */
 	public List<String> getAvailableVersions (Platform platform) {
+		return getAvailableVersions(platform, false);
+	}
+	
+	/**
+	 * Returns all available engine versions
+	 * @param platform
+	 * @param skipNightly - omit nightly versions if true
+	 * @return list of versions
+	 */
+	public List<String> getAvailableVersions (Platform platform, boolean skipNightly){
 		LinkedList<String> result = new LinkedList<String>();
 		List<TreeItem> tiVersions = new DefaultTree(1).getAllItems();
 		for (TreeItem tiVersion : tiVersions){
 			if(tiVersion.getText().contains(platform.toString())){
-				result.add(getVersionFromEgineName(tiVersion.getText()));
+				if(skipNightly){
+					if(!tiVersion.getText().contains("nightly")){
+						result.add(getVersionFromEgineName(tiVersion.getText()));
+					}
+				}else{
+					result.add(getVersionFromEgineName(tiVersion.getText()));
+				}
 			}
 		}
 		return result;
 	}
+	
 	/**
 	 * Checks version
 	 * @param version

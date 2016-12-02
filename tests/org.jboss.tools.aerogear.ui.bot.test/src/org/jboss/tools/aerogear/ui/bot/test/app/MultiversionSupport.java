@@ -46,7 +46,7 @@ public class MultiversionSupport extends AerogearBotTest {
 	@Before
 	public void setUp() {
 		createHTMLHybridMobileApplication(AerogearBotTest.CORDOVA_PROJECT_NAME, AerogearBotTest.CORDOVA_APP_NAME,
-				"org.jboss.example.cordova", "cordova-android@4.1.0");
+				"org.jboss.example.cordova", "cordova-android@5.2.1");
 
 		assertTrue(new ProjectExplorer().containsProject(AerogearBotTest.CORDOVA_PROJECT_NAME));
 	}
@@ -93,14 +93,18 @@ public class MultiversionSupport extends AerogearBotTest {
 		List<String> versions = enginePropertyPage.getAvailableVersions(Platform.android);
 		// if just one version is downloaded download second one
 		if (versions.size() == 1) {
-			downloadMobileEngine("cordova-android@3.7.0");
+			downloadMobileEngine("cordova-android@4.1.1");
 		}
 		// Check other version
-		versions = enginePropertyPage.getAvailableVersions(Platform.android);
+		versions = enginePropertyPage.getAvailableVersions(Platform.android, true);
 		versions.remove(propEngineVersion);
 		String newVersion = versions.get(0);
 		enginePropertyPage.checkVersion(newVersion, Platform.android);
 		projectPropertiesDialog.ok();
+		
+		//Save config.xml
+		new ConfigEditor(CORDOVA_APP_NAME).save();
+		
 		// Run project with new mobile engine version
 		console = new ConsoleView();
 		console.open();
