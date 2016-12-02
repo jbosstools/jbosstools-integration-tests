@@ -18,6 +18,7 @@
 		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties}</systemProperties>
 		<testDatabase>${project.build.directory}${file.separator}requirements</testDatabase>
 		<surefire.timeout>14400</surefire.timeout>
+		<suiteClass>org.jboss.tools.hibernate.ui.bot.test.HibernateAllTest</suiteClass>
 	</properties>
 	
 	
@@ -143,12 +144,6 @@
 		</plugins>
 	</build>
 	<profiles>
-		<profile>
-			<id>all-bot-tests</id>
-			<properties>
-				<suiteClass>org.jboss.tools.hibernate.ui.bot.test.HibernateAllTest</suiteClass>
-			</properties>
-		</profile>
 		<profile>
 			<id>smoke-tests</id>
 			<properties>
