@@ -204,13 +204,17 @@ public class CDKDevstudioBaseTest {
 				fail("Problem dialog occured when refreshing OpenShift connection");
 			} catch (WaitTimeoutExpiredException ex) {
 				// no dialog appeared, which is ok
+				log.info("Expected WaitTimeoutExpiredException occured");
+				ex.printStackTrace();
 			}
 			try {
 				treeViewerHandler.getTreeItem(connection.getTreeItem(), "OpenShift sample project");
 			} catch (JFaceLayerException ex) {
+				ex.printStackTrace();
 				fail("Could not find deployed sample OpenShift project");
 			}
 		} catch (RedDeerException ex) {
+			ex.printStackTrace();
 			fail("Could not open OpenShift connection for " + OPENSHIFT_USER_NAME +
 					" ended with exception: " + ex.getMessage());
 		}
@@ -221,20 +225,23 @@ public class CDKDevstudioBaseTest {
 		startServerAdapter();
 		DockerExplorerView dockerExplorer = new DockerExplorerView();
 		dockerExplorer.open();
-		DockerConnection connection = null;
-		try {
-			connection = dockerExplorer.getDockerConnection(DOCKER_DAEMON_CONNECTION);
-		} catch (EclipseLayerException ex) {
+		DockerConnection connection =  dockerExplorer.getDockerConnection(DOCKER_DAEMON_CONNECTION);
+		if (connection == null) {
 			fail("Could not find Docker connection " + DOCKER_DAEMON_CONNECTION);
 		}
 		connection.select();
 		connection.enableConnection();
+		connection.refresh();
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(30));
 		try {
-			assertTrue("Docker connection does not contain any other connections", connection.getImagesNames().size() > 0);
+			assertTrue("Docker connection does not contain any images", connection.getImagesNames().size() > 0);
 		} catch (WaitTimeoutExpiredException ex) {
+			ex.printStackTrace();
 			fail("WaitTimeoutExpiredException occurs when expanding"
 					+ " Docker connection " + DOCKER_DAEMON_CONNECTION);
+		} catch (JFaceLayerException jFaceExc) {
+			jFaceExc.printStackTrace();
+			fail(jFaceExc.getMessage());
 		}
  	}
 	
