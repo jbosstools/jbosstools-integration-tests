@@ -4,7 +4,7 @@ package org.jboss.tools.mylyn.reddeer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.equinox.security.ui.StoragePreferencePage;
@@ -75,7 +75,7 @@ public class TestSupport {
 		} 
 		catch (SWTLayerException swtle){
 			log.error("Unable to close the Secure Storage Dialog - " + swtle.getMessage());
-			log.error (swtle);				
+			swtle.printStackTrace();
 		}	
 	}
 	
