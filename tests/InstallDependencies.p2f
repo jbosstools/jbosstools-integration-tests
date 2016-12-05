@@ -113,11 +113,6 @@
         <repository location='http://download.jboss.org/jbosstools/neon/snapshots/updates/integration-tests/master/'/>
       </repositories>
     </iu>
-    <iu id='org.jboss.tools.usercase.ticketmonster.ui.bot.test' name='JBoss TicketMonster Integration Tests' version='4.3.0'>
-      <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/neon/snapshots/updates/integration-tests/master/'/>
-      </repositories>
-    </iu>
     <iu id='org.jboss.tools.jsf.reddeer' name='JSF Reddeer' version='4.3.0'>
       <repositories size='1'>
         <repository location='http://download.jboss.org/jbosstools/neon/snapshots/updates/integration-tests/master/'/>
