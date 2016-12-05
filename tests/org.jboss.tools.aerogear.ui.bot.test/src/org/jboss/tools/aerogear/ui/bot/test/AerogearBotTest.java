@@ -137,7 +137,7 @@ public class AerogearBotTest {
 		// TODO: Need to check presence of Android SDK installation
 		getProjectExplorer().selectProjects(projectName);
 		new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run on Android Emulator)")).select();
-		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 	public void runTreeItemOnAndroidDevice(String projectName) {
@@ -146,13 +146,13 @@ public class AerogearBotTest {
 		// TODO: Need to check presence of Android SDK installation
 		getProjectExplorer().selectProjects(projectName);
 		new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run on Android Device)")).select();
-		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 	public void runTreeItemWithCordovaSim(String projectName) {
 		getProjectExplorer().selectProjects(projectName);
 		new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run w/CordovaSim)")).select();
-		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new WaitUntil(new ConsoleHasNoChange(TimePeriod.LONG), TimePeriod.VERY_LONG);
 	}
 
