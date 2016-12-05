@@ -29,7 +29,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.workbench.api.View;
-import org.jboss.tools.openshift.reddeer.condition.ConsoleHasText;
+import org.jboss.tools.openshift.reddeer.condition.ConsoleHasSomeText;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
@@ -106,7 +106,7 @@ public class ID705TailFilesTest extends IDXXXCreateTestingApplication {
 		console.open();
 		
 		try {
-			new WaitUntil(new ConsoleHasText(), TimePeriod.LONG);
+			new WaitUntil(new ConsoleHasSomeText(), TimePeriod.LONG);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Console should not be empty.");
 		}

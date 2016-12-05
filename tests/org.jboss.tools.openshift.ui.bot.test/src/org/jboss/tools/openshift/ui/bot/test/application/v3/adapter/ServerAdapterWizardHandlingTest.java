@@ -18,6 +18,7 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsKilled;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.util.Display;
@@ -194,6 +195,8 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 		dialog.open();
 		page.selectType(OpenShiftLabel.Others.OS3_SERVER_ADAPTER);
 		dialog.next();
+		
+		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG);
 	}
 	
 	@After

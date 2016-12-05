@@ -48,10 +48,8 @@ public class CreateServerAdapterTest extends AbstractCreateApplicationTest {
 
 	@BeforeClass
 	public static void waitTillApplicationIsRunning() {
-		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1", ResourceState.RUNNING),
-				TimePeriod.getCustom(60), false);
 		new WaitWhile(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1", ResourceState.RUNNING),
-				TimePeriod.getCustom(360), false);
+				TimePeriod.getCustom(600));
 		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.LONG, false);
 	}
 	

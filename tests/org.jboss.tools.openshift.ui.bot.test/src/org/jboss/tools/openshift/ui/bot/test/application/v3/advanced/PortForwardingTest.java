@@ -46,8 +46,8 @@ public class PortForwardingTest extends AbstractCreateApplicationTest {
 	public static void setUpOCBinaryAndWaitForApplication() {
 		TestUtils.setUpOcBinary();
 		
-		new WaitUntil(new OpenShiftResourceExists(Resource.POD, "eap-app-1-build",
-				ResourceState.SUCCEEDED), TimePeriod.getCustom(600),
+		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1",
+				ResourceState.COMPLETE), TimePeriod.getCustom(600),
 				true, TimePeriod.getCustom(7));
 		
 		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.VERY_LONG,

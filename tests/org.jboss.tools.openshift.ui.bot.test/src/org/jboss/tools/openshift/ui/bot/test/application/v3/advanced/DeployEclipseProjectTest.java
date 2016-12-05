@@ -215,7 +215,7 @@ public class DeployEclipseProjectTest {
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		new WaitUntil(new OpenShiftResourceExists(Resource.POD, "eap-app-1-build", ResourceState.SUCCEEDED), 
+		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE), 
 				TimePeriod.getCustom(1000), true, TimePeriod.getCustom(8));
 		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.VERY_LONG, true,
 				TimePeriod.getCustom(5));

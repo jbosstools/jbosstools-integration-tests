@@ -334,7 +334,7 @@ public class OpenShiftLabel {
 	public static class Others {
 		public static final String CONNECT_TOOL_ITEM = "Connection...";
 		public static final String EAP_TEMPLATE = "eap64-basic-s2i (eap, javaee, java, jboss, xpaas) - openshift";
-		public static final String EAP_BUILDER_IMAGE = "jboss-eap64-openshift:1.2 (builder, eap, javaee, java, jboss, xpaas) - openshift";
+		public static final String EAP_BUILDER_IMAGE = "jboss-eap64-openshift:1.3 (builder, eap, javaee, java, jboss, xpaas) - openshift";
 		public static final String NODEJS_TEMPLATE = "nodejs-example (quickstart, nodejs) - openshift";
 		public static final String RED_HAT_CENTRAL = "Red Hat Central";
 		public static final String[] NEW_APP_MENU = {"File", "New", "OpenShift Application"};
