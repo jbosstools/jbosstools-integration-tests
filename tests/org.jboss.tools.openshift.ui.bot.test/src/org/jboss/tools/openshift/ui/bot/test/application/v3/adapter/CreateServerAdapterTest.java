@@ -15,6 +15,7 @@ import static org.junit.Assert.assertTrue;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsKilled;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -93,7 +94,7 @@ public class CreateServerAdapterTest extends AbstractCreateApplicationTest {
 		assertTrue("Service should be preselected for new OpenShift 3 server adapter",
 				new DefaultTreeItem(DatastoreOS3.PROJECT1, "eap-app deploymentConfig=eap-app").isSelected());
 		assertTrue("Eclipse project should be preselected automatically for new server adapter",
-				new LabeledText("Eclipse Project: ").getText().equals(projectName));
+				new LabeledText("Eclipse Project: ").getText().equals(PROJECT_NAME));
 		
 		new FinishButton().click();
 		
@@ -101,11 +102,11 @@ public class CreateServerAdapterTest extends AbstractCreateApplicationTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG, false);
 		
 		assertTrue("OpenShift 3 server adapter was not created.", 
-				new ServerAdapterExists(Version.OPENSHIFT3, buildConfigName).test());
+				new ServerAdapterExists(Version.OPENSHIFT3, BUILD_CONFIG).test());
 	}
 	
 	private void setAdapterDetailsAndCreateAdapterAndVerifyExistence() {
-		new LabeledText("Eclipse Project: ").setText(projectName);
+		new LabeledText("Eclipse Project: ").setText(PROJECT_NAME);
 		new DefaultTreeItem(DatastoreOS3.PROJECT1).getItems().get(0).select();
 		next();
 		
@@ -116,10 +117,10 @@ public class CreateServerAdapterTest extends AbstractCreateApplicationTest {
 		new FinishButton().click();
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.ADAPTER));
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG, false);
+		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG);
 		
 		assertTrue("OpenShift 3 server adapter was not created.", 
-				new ServerAdapterExists(Version.OPENSHIFT3, buildConfigName).test());
+				new ServerAdapterExists(Version.OPENSHIFT3, BUILD_CONFIG).test());
 	
 	}
 	
@@ -135,7 +136,7 @@ public class CreateServerAdapterTest extends AbstractCreateApplicationTest {
 	public void removeAdapterIfExists() {
 		try {
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-			new ServerAdapter(Version.OPENSHIFT3, buildConfigName).delete();
+			new ServerAdapter(Version.OPENSHIFT3, BUILD_CONFIG).delete();
 		} catch (OpenShiftToolsException ex) {
 			// do nothing, adapter does not exists
 		}

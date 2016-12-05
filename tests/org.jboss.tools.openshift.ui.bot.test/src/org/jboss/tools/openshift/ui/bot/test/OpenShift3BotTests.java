@@ -19,7 +19,6 @@ import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.CreateResou
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.DeleteResourceTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.DeployEclipseProjectTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.EditResourcesTest;
-import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.GithubWebhoookTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.HandleCustomTemplateTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.ImportApplicationTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.LogsTest;
@@ -95,7 +94,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	DeleteResourceTest.class,
 	TriggerBuildTest.class,
 	ImportApplicationTest.class,
-	GithubWebhoookTest.class,
 	PortForwardingTest.class,
 	LogsTest.class,
 	EditResourcesTest.class,

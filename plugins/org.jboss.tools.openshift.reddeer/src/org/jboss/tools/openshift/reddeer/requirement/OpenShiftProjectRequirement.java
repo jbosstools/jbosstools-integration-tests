@@ -81,7 +81,7 @@ public class OpenShiftProjectRequirement implements Requirement<RequiredProject>
 	public void fulfill() {
 		String projectName = DatastoreOS3.getValueOrDefault(projectSpec.name(), DatastoreOS3.TEST_PROJECT);
 		Connection connection = ConnectionUtils.getConnectionOrDefault(projectSpec.connectionURL());
-		assertNotNull(NLS.bind("No connecti {0} exists", projectSpec.connectionURL()), connection);
+		assertNotNull(NLS.bind("No connection {0} exists", projectSpec.connectionURL()), connection);
 
 		this.project = getOrCreateProject(projectName, connection);
 	}
@@ -98,7 +98,7 @@ public class OpenShiftProjectRequirement implements Requirement<RequiredProject>
 			/**
 			 * WORKAROUND: explorer wont get notified of the the new project and
 			 * therefore wont display it unless a manual refresh is done on the connection.
-			 * https://issues.jboss.org/browse/JBIDE-23184 remove this wait once
+			 * https://issues.jboss.org/browse/JBIDE-23513 remove this wait once
 			 * WatchManager is watching projects and notifies the ui.
 			 * 
 			 * @see WatchManager#KINDS

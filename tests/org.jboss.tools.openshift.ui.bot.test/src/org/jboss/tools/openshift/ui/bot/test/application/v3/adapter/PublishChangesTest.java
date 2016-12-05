@@ -7,6 +7,7 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsKilled;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
@@ -65,12 +66,13 @@ public class PublishChangesTest extends AbstractCreateApplicationTest {
 		new FinishButton().click();
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.SERVER_ADAPTER_SETTINGS));
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG, false);
+		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
 	private void changeProjectAndVerifyAutoPublish() {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
-		ProjectItem projectItem = projectExplorer.getProject(projectName).getProjectItem("Java Resources", "src/main/java",
+		ProjectItem projectItem = projectExplorer.getProject(PROJECT_NAME).getProjectItem("Java Resources", "src/main/java",
 				"org.jboss.as.quickstarts.helloworld", "HelloService.java");
 		projectItem.select();
 		projectItem.open();
@@ -105,7 +107,7 @@ public class PublishChangesTest extends AbstractCreateApplicationTest {
 	public static void removeAdapterAndApplication() {
 		try {
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-			new ServerAdapter(Version.OPENSHIFT3, buildConfigName).delete();
+			new ServerAdapter(Version.OPENSHIFT3, BUILD_CONFIG).delete();
 		} catch (OpenShiftToolsException ex) {
 			// do nothing, adapter does not exists
 		}

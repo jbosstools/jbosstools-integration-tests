@@ -41,7 +41,7 @@ public class CreateResourcesTest {
 	private String testProject;
 	private OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 	
-	private static final String RESOURCES_LOCATION = System.getProperty("user.dir") + 
+	public static final String RESOURCES_LOCATION = System.getProperty("user.dir") + 
 			File.separator + "resources";
 	
 	@Before

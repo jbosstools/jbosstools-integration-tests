@@ -43,7 +43,7 @@ public class OpenShift3Connection extends AbstractOpenShiftConnection {
 		activateOpenShiftExplorerView();
 		item.expand();
 		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		
 		return new OpenShiftProject(treeViewerHandler.getTreeItem(item, projectName));
 	}
@@ -75,7 +75,7 @@ public class OpenShift3Connection extends AbstractOpenShiftConnection {
 	
 	/**
 	 * Creates a new OpenShift project for a connection based on first project name and project
-	 * displayed name stored in {@link DatastoreOS3}. The project name is generated every 
+	 * displayed name stored in {@link DatastoreOS3.PROJECT1}. The project name is generated every 
 	 * time this method is called because of upstream issues.
 	 * 
 	 * @return OpenShift Project
@@ -83,6 +83,18 @@ public class OpenShift3Connection extends AbstractOpenShiftConnection {
 	public OpenShiftProject createNewProject() {
 		DatastoreOS3.generateProjectName();
 		return createNewProject(DatastoreOS3.PROJECT1, DatastoreOS3.PROJECT1_DISPLAYED_NAME);
+	}
+	
+	/**
+	 * Creates a new OpenShift project for a connection based on second project name stored
+	 * in {@link DatastoreOS3.PROJECT2}. The project name is generated every 
+	 * time this method is called because of upstream issues.
+	 * 
+	 * @return OpenShift Project
+	 */
+	public OpenShiftProject createNewProject2() {
+		DatastoreOS3.generateProject2Name();
+		return createNewProject(DatastoreOS3.PROJECT2, null);
 	}
 	
 	/**

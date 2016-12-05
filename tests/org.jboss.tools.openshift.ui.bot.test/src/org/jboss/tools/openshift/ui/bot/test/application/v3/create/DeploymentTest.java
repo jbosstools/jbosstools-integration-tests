@@ -36,7 +36,7 @@ public class DeploymentTest extends AbstractCreateApplicationTest {
 		
 		try {
 			new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE), 
-					TimePeriod.getCustom(360), true, TimePeriod.getCustom(7));
+					TimePeriod.getCustom(600), true, TimePeriod.getCustom(7));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("There should be a successful build of an application, but there is not.");
 		}
@@ -52,10 +52,11 @@ public class DeploymentTest extends AbstractCreateApplicationTest {
 		new ContextMenu(OpenShiftLabel.ContextMenu.SHOW_IN_WEB_BROWSER).select();
 		
 		try {
-			new WaitUntil(new BrowserContainsText("Welcome to JBoss!"), TimePeriod.VERY_LONG);
-			new BrowserEditor("kitchensink").close();
-		} catch (WaitTimeoutExpiredException ex) {
-			fail("Application was not deployed successfully because it is not shown in web browser properly.");
+			new WaitUntil(new BrowserContainsText("Hello World!"), TimePeriod.VERY_LONG);
+			new BrowserEditor("helloworld").close();
+		} catch (WaitTimeoutExpiredException ex) {		
+			fail("Application was not deployed successfully because it is not shown in web browser properly.\n"
+					+ ex.getMessage());
 		}
 	}
 }

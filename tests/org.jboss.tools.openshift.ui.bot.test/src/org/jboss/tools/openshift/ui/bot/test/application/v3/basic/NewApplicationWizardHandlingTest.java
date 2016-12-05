@@ -13,6 +13,8 @@ package org.jboss.tools.openshift.ui.bot.test.application.v3.basic;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.jboss.reddeer.common.exception.RedDeerException;
@@ -80,12 +82,19 @@ public class NewApplicationWizardHandlingTest {
 	
 	@Test
 	public void testSwitchProject() {
+		List<String> projects = new ArrayList<String>();
 		String project1Text = DatastoreOS3.PROJECT1_DISPLAYED_NAME + " (" + DatastoreOS3.PROJECT1 + ")";
-		String project2Text = DatastoreOS3.PROJECT2;
+		String project2Text = DatastoreOS3.PROJECT2; 
+		projects.add(project1Text);
+		projects.add(project2Text);
+		
 		LabeledCombo projectCombo = new LabeledCombo(OpenShiftLabel.TextLabels.PROJECT);
 		
-		assertTrue(projectCombo.getText().equals(project1Text));
-		assertTrue(projectCombo.getItems().contains(project2Text));
+		assertTrue("Project combo should contain projects " + 
+				Arrays.toString(projects.toArray()) + 
+				" but those projects are not there. Combo contains following projects: " +
+				Arrays.toString(projectCombo.getItems().toArray()),
+				projectCombo.getItems().contains(project2Text));
 		
 		projectCombo.setSelection(project2Text);
 		projectCombo.setSelection(project1Text);
