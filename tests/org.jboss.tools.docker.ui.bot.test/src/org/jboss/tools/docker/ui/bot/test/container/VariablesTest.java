@@ -23,12 +23,11 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunResourceVolumesVariablesPage;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -39,12 +38,6 @@ import org.junit.Test;
 
 public class VariablesTest extends AbstractDockerBotTest {
 	private static String imageName = "test_variables";
-
-	@Before
-	public void before() {
-		openDockerPerspective();
-		createConnection();
-	}
 
 	@Test
 	public void testVariables() {
@@ -87,7 +80,6 @@ public class VariablesTest extends AbstractDockerBotTest {
 		deleteContainer(imageName + "_run");
 		deleteImage(imageName);
 		deleteImage("busybox");
-		deleteConnection();
 	}
 
 }

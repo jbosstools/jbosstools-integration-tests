@@ -23,23 +23,15 @@ import org.junit.Test;
  * @author jkopriva
  *
  */
-
 public class PerspectiveTest extends AbstractDockerBotTest {
 
 	@Test
-	public void testPerspective() {
-		openDockerPerspective();
-	}
-	
-	@Test
 	public void testDockerExplorerViewPresent() {
-		openDockerPerspective();
 		new DockerExplorerView().open();
 	}
 	
 	@Test
 	public void testDockerImagesTabPresent() {
-		openDockerPerspective();
 		DockerImagesTab tab = new DockerImagesTab();
 		tab.open();
 		tab.refresh();
@@ -47,7 +39,6 @@ public class PerspectiveTest extends AbstractDockerBotTest {
 	
 	@Test
 	public void testDockerContainersTabPresent() {
-		openDockerPerspective();
 		DockerContainersTab tab = new DockerContainersTab();
 		tab.open();
 		tab.refresh();
@@ -55,7 +46,7 @@ public class PerspectiveTest extends AbstractDockerBotTest {
 
 	@After
 	public void clear() {
-		cleanupShells();
+		cleanUpWorkspace();
 	}
 
 }

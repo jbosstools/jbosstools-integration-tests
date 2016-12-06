@@ -225,7 +225,7 @@ public class CDKDevstudioBaseTest {
 		startServerAdapter();
 		DockerExplorerView dockerExplorer = new DockerExplorerView();
 		dockerExplorer.open();
-		DockerConnection connection =  dockerExplorer.getDockerConnection(DOCKER_DAEMON_CONNECTION);
+		DockerConnection connection =  dockerExplorer.getDockerConnectionByName(DOCKER_DAEMON_CONNECTION);
 		if (connection == null) {
 			fail("Could not find Docker connection " + DOCKER_DAEMON_CONNECTION);
 		}

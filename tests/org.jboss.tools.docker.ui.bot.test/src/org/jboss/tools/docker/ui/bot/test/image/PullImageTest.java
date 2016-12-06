@@ -19,7 +19,6 @@ import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -31,12 +30,6 @@ import org.junit.Test;
 public class PullImageTest extends AbstractDockerBotTest {
 	private String imageName = "busybox";
 	private String imageNameNoTag = "jboss/wildfly";
-
-	@Before
-	public void before() {
-		openDockerPerspective();
-		createConnection();
-	}
 
 	@Test
 	public void testPullImage() {
@@ -70,7 +63,6 @@ public class PullImageTest extends AbstractDockerBotTest {
 	@After
 	public void after() {
 		deleteImageContainerAfter(imageName,imageNameNoTag);
-		deleteConnection();
 	}
 
 }

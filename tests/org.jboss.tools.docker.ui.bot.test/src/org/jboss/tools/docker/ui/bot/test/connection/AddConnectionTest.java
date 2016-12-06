@@ -12,7 +12,6 @@
 package org.jboss.tools.docker.ui.bot.test.connection;
 
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,23 +19,17 @@ import org.junit.Test;
  * 
  * 
  * @author jkopriva
+ * @contributor adietish@redhat.com
  */
-
 public class AddConnectionTest extends AbstractDockerBotTest {
 
 	@Before
-	public void before() {
-		openDockerPerspective();
+	public void setUp() {
+		deleteAllConnections();
 	}
-
+	
 	@Test
 	public void testAddConnection() {
 		createConnection();
 	}
-
-	@After
-	public void after() {
-		deleteConnection();
-	}
-
 }

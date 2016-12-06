@@ -83,12 +83,12 @@ public class DeployDockerImageTest {
 	private static void prepareDockerConnection() {
 		dockerExplorer = new DockerExplorerView();
 		dockerExplorer.open();
-		List<String> connectionsNames = dockerExplorer.getDockerConnectionsNames();
+		List<String> connectionsNames = dockerExplorer.getDockerConnectionNames();
 		if (connectionsNames.isEmpty()) {
 			if (RunningPlatform.isWindows() || RunningPlatform.isOSX()) {
-				dockerExplorer.createDockerConnection(DOCKER_CONNECTION);
+				dockerExplorer.createDockerConnectionSearch(DOCKER_CONNECTION);
 			} else {
-				dockerExplorer.createDockerConnection(DOCKER_CONNECTION, 
+				dockerExplorer.createDockerConnectionUnix(DOCKER_CONNECTION, 
 						"unix:///var/run/docker.sock");
 			}
 		} else {
@@ -101,7 +101,7 @@ public class DeployDockerImageTest {
 	 */
 	private static void pullHelloImageIfDoesNotExist() {
 		DockerExplorerView dockerExplorer = new DockerExplorerView();
-		DockerConnection dockerConnection = dockerExplorer.getDockerConnection(DOCKER_CONNECTION); 
+		DockerConnection dockerConnection = dockerExplorer.getDockerConnectionByName(DOCKER_CONNECTION); 
 		if (dockerConnection.getImage(HELLO_OS_DOCKER_IMAGE, TAG) == null) {
 			dockerConnection.pullImage(HELLO_OS_DOCKER_IMAGE, TAG);
 		}
@@ -281,7 +281,7 @@ public class DeployDockerImageTest {
 	 * Opens a Deploy Image to OpenShift wizard from context menu of a docker image
 	 */
 	private void openDeployToOpenShiftWizardFromDockerExplorer() {
-		dockerExplorer.getDockerConnection(DOCKER_CONNECTION).getImage(
+		dockerExplorer.getDockerConnectionByName(DOCKER_CONNECTION).getImage(
 				HELLO_OS_DOCKER_IMAGE, TAG).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.DEPLOY_TO_OPENSHIFT).select();
 		

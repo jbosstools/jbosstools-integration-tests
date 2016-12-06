@@ -17,7 +17,6 @@ import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -32,12 +31,6 @@ public class DifferentRegistryTest extends AbstractDockerBotTest {
 	private String userName = "test";
 	private String password = "password";
 	private String imageName = "devstudio/atomicapp:latest";
-
-	@Before
-	public void before() {
-		openDockerPerspective();
-		createConnection();
-	}
 
 	@Test
 	public void testDifferentRegistry() {
@@ -57,7 +50,6 @@ public class DifferentRegistryTest extends AbstractDockerBotTest {
 	@After
 	public void after() {
 		deleteImageContainerAfter(serverAddress + "/devstudio/atomicapp");
-		deleteConnection();
 		deleteRegister(serverAddress);
 	}
 

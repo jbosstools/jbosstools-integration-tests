@@ -25,7 +25,6 @@ import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -36,11 +35,6 @@ import org.junit.Test;
 
 public class BuildImageTest extends AbstractDockerBotTest {
 	private static String imageName = "test_build";
-
-	@Before
-	public void before() {
-		prepareWorkspace();
-	}
 
 	@Test
 	public void testBuildImage() {
