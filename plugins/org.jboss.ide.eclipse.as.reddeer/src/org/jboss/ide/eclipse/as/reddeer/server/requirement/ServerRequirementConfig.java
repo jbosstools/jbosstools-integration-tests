@@ -37,10 +37,22 @@ public class ServerRequirementConfig implements IServerReqConfig {
 	public String getRuntime() {
 		return runtime;
 	}
+	
+	private static String safeProperty(String s) {
+		if( s != null && s.startsWith("${") && s.endsWith("}")) {
+			String key = s.substring(2, s.length()-1);
+			String v = System.getProperty(key);
+			if( v != null ) {
+				return v;
+			}
+		}
+		
+		return s;
+	}
 
 	@XmlElement(namespace="http://www.jboss.org/NS/ServerReq")
 	public void setRuntime(String runtime) {
-		this.runtime = runtime;
+		this.runtime = safeProperty(runtime);
 	}
 	
 	@XmlElement(namespace="http://www.jboss.org/NS/ServerReq")
@@ -85,7 +97,7 @@ public class ServerRequirementConfig implements IServerReqConfig {
 		
 		@XmlElement(namespace="http://www.jboss.org/NS/ServerReq")
 		public void setHost(String hostname) {
-			this.host = hostname;
+			this.host = safeProperty(hostname);
 		}
 		
 		public String getRemoteServerHome(){
@@ -94,7 +106,7 @@ public class ServerRequirementConfig implements IServerReqConfig {
 		
 		@XmlElement(namespace="http://www.jboss.org/NS/ServerReq", name="remote-server-home")
 		public void setRemoteServerHome(String home){
-			this.remoteServerHome = home;
+			this.remoteServerHome = safeProperty(home);
 		}
 		
 		public String getUsername(){
@@ -103,7 +115,7 @@ public class ServerRequirementConfig implements IServerReqConfig {
 		
 		@XmlElement(namespace="http://www.jboss.org/NS/ServerReq")
 		public void setUsername(String username){
-			this.username = username;
+			this.username = safeProperty(username);
 		}
 		
 		public String getPassword(){
@@ -112,7 +124,7 @@ public class ServerRequirementConfig implements IServerReqConfig {
 		
 		@XmlElement(namespace="http://www.jboss.org/NS/ServerReq")
 		public void setPassword(String password){
-			this.password = password;
+			this.password = safeProperty(password);
 		}
 		
 		public boolean getIsExternallyManaged(){
