@@ -28,9 +28,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<wildfly-10.0>${requirementsDirectory}/wildfly-10.0.0.Final/</wildfly-10.0>
 				<wildfly-web-10.0>${requirementsDirectory}/wildfly-servlet-10.0.0.Final/</wildfly-web-10.0>
-				<wildfly-9.0>${requirementsDirectory}/wildfly-9.0.0.Final/</wildfly-9.0>
 				<wildfly-web-9.0>${requirementsDirectory}/wildfly-servlet-9.0.0.Final/</wildfly-web-9.0>
 				<wildfly-8.1>${requirementsDirectory}/wildfly-8.1.0.Final/</wildfly-8.1>
 				<wildfly-8.0>${requirementsDirectory}/wildfly-8.0.0.Final/</wildfly-8.0>
@@ -119,7 +117,7 @@
 								</configuration>
 							</execution>
 							<execution>
-								<id>install-widlfly-9.0.0</id>
+								<id>install-widlfly-9</id>
 								<phase>pre-integration-test</phase>
 								<goals>
 									<goal>unpack</goal>
@@ -130,7 +128,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>9.0.0.Final</version>
+											<version>${jbosstools.test.wildfly-9.version}</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>
@@ -157,7 +155,7 @@
 								</configuration>
 							</execution>
 							<execution>
-								<id>install-widlfly-10.0.0</id>
+								<id>install-widlfly-10</id>
 								<phase>pre-integration-test</phase>
 								<goals>
 									<goal>unpack</goal>
@@ -168,7 +166,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>10.0.0.Final</version>
+											<version>${jbosstools.test.wildfly-10.version}</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>
@@ -226,8 +224,6 @@
 			<properties>
 				<test.class>org.jboss.tools.runtime.as.ui.bot.test.StableTestsSuite</test.class>
 
-				<jboss-eap-7.0>${requirementsDirectory}/jboss-eap-7.0/</jboss-eap-7.0>
-				<jboss-eap-6.4>${requirementsDirectory}/jboss-eap-6.4/</jboss-eap-6.4>
 				<jboss-eap-6.3>${requirementsDirectory}/jboss-eap-6.3/</jboss-eap-6.3>
 				<jboss-eap-6.2.x>${requirementsDirectory}/jboss-eap-6.2.x/jboss-eap-6.2</jboss-eap-6.2.x>
 				<jboss-eap-6.2>${requirementsDirectory}/jboss-eap-6.2/</jboss-eap-6.2>
@@ -243,24 +239,6 @@
 			</properties>
 			<build>
 				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>properties-maven-plugin</artifactId>
-						<version>1.0-alpha-2</version>
-						<executions>
-							<execution>
-								<phase>initialize</phase>
-								<goals>
-									<goal>read-project-properties</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration>
-							<files>
-								<file>${product-download-properties-file}</file>
-							</files>
-						</configuration>
-					</plugin>
 					<plugin>
 						<groupId>com.googlecode.maven-download-plugin</groupId>
 						<artifactId>download-maven-plugin</artifactId>
@@ -393,7 +371,6 @@
 			<id>smoke</id>
 			<properties>
 				<test.class>org.jboss.tools.runtime.as.ui.bot.test.SmokeSuite</test.class>
-				<wildfly-10.0>${requirementsDirectory}/wildfly-10.0.0.Final/</wildfly-10.0>
 				<req.java8.home>${java.home}</req.java8.home>
 				<reddeer.config>${project.build.directory}/../resources/generated_resources/java8.xml</reddeer.config>
 			</properties>
@@ -415,7 +392,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>10.0.0.Final</version>
+											<version>${jbosstools.test.wildfly-10.version}</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>
