@@ -19,7 +19,7 @@ import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunResourceVolumesVariablesPage;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
-import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
+import org.jboss.tools.docker.ui.bot.test.image.AbstractImageBotTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,40 +30,47 @@ import org.junit.Test;
  *
  */
 
-public class LabelsTest extends AbstractDockerBotTest {
-	private String imageName = "debian";
-	private String imageTag = "jessie";
-	private String containerName = "test_run_debian_label";
+public class LabelsTest extends AbstractImageBotTest {
+
+	private static final String CONTAINER_LABEL_VALUE = "bar";
+	private static final String CONTAINER_LABEL_KEY = "foo";
+	private static final String IMAGE_NAME = IMAGE_BUSYBOX;
+	private static final String IMAGE_TAG = "latest";
+	private static final String CONTAINER_NAME = "test_run_busybox_label";
+
+	@Before
+	public void before() {
+		pullImage(IMAGE_NAME, IMAGE_TAG);
+	}
 
 	@Test
 	public void testLabels() {
-		pullImage(imageName, imageTag);
-		DockerImagesTab imageTab = new DockerImagesTab();
-		imageTab.activate();
-		imageTab.refresh();
-		new WaitWhile(new JobIsRunning());
-		imageTab.runImage(imageName + ":" + imageTag);
+		DockerImagesTab imagesTab = openDockerImagesTab();
+		imagesTab.runImage(IMAGE_NAME + ":" + IMAGE_TAG);
+
 		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
-		firstPage.setName(this.containerName);
+		firstPage.setName(CONTAINER_NAME);
 		firstPage.setAllocatePseudoTTY();
 		firstPage.setKeepSTDINOpen();
 		firstPage.setGiveExtendedPrivileges();
 		firstPage.next();
 		ImageRunResourceVolumesVariablesPage secondPage = new ImageRunResourceVolumesVariablesPage();
-		secondPage.addLabel("foo", "bar");
+		secondPage.addLabel(CONTAINER_LABEL_KEY, CONTAINER_LABEL_VALUE);
 		secondPage.finish();
 		new WaitWhile(new JobIsRunning());
-		getConnection().getContainer(containerName).select();
+
+		getConnection().getContainer(CONTAINER_NAME).select();
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
 		propertiesView.selectTab("Inspect");
-		String labelProp = propertiesView.getProperty("Config", "Labels", "foo").getPropertyValue();
-		assertTrue("Container do not have label!", labelProp.equals("bar"));
+		String labelProp = propertiesView.getProperty("Config", "Labels", CONTAINER_LABEL_KEY).getPropertyValue();
+		assertTrue("Container does not have label " +  CONTAINER_LABEL_KEY + "!", labelProp.equals(CONTAINER_LABEL_VALUE));
 	}
 
 	@After
 	public void after() {
-		deleteImageContainerAfter(containerName,imageName + ":" + imageTag);
+		killRunningImageJobs();
+		deleteContainerIfExists(CONTAINER_NAME);
 	}
 
 }

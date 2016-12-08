@@ -15,54 +15,37 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
-import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
  * 
  * @author jkopriva
+ * @contributor adietish@redhat.com
  *
  */
 
-public class PullImageTest extends AbstractDockerBotTest {
-	private String imageName = "busybox";
-	private String imageNameNoTag = "jboss/wildfly";
+public class PullImageTest extends AbstractImageBotTest {
 
+	@Before
+	public void before() {
+		deleteImageIfExists(IMAGE_ALPINE_33);
+		deleteImageIfExists(IMAGE_BUSYBOX_LATEST);
+	}
+	
 	@Test
-	public void testPullImage() {
-		ConsoleView cview = new ConsoleView();
-		cview.open();
-		try {
-			cview.clearConsole();
-		} catch (CoreLayerException ex) {
-			// there's not clear console button, since nothing run before
-		}
-		pullImage(this.imageName);
+	public void testPullImageWithTag() {
+		clearConsole();
+		pullImage(IMAGE_ALPINE, "3.3", null);
 		new WaitWhile(new JobIsRunning());
-		assertTrue("Image has not been deployed!", imageIsDeployed(this.imageName));
+		assertTrue("Image has not been deployed!", imageIsDeployed(IMAGE_ALPINE_33));
 	}
 
 	@Test
 	public void testPullImageWithoutTag() {
-		ConsoleView cview = new ConsoleView();
-		cview.open();
-		try {
-			cview.clearConsole();
-		} catch (CoreLayerException ex) {
-			// there's not clear console button, since nothing run before
-		}
-		pullImage(this.imageNameNoTag);
+		clearConsole();
+		pullImage(IMAGE_BUSYBOX);
 		new WaitWhile(new JobIsRunning());
-		assertTrue("Image has not been deployed!", imageIsDeployed(this.imageNameNoTag));
-		assertTrue("Multiple images has been deployed!", deployedImagesCount(this.imageNameNoTag) == 1);
+		assertTrue("Image has not been deployed!", imageIsDeployed(IMAGE_BUSYBOX_LATEST));
 	}
-
-	@After
-	public void after() {
-		deleteImageContainerAfter(imageName,imageNameNoTag);
-	}
-
 }

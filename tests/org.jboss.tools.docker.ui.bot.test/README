@@ -12,6 +12,7 @@ Running in Eclipse
    -DdockerHubUsername=<username>
    -DdockerHubEmail=<email>
    -DdockerHubPassword=<password>
+   -DdockerComposePath=/usr/bin
    -DskipTests=false
 
 Running in Command Line

@@ -194,7 +194,7 @@ public class DockerConnection extends AbstractDockerExplorerItem {
 	public int deployedImagesCount(String imageName) {
 		int count = 0;
 		select();
-		List<String> imagesNames = getImagesNames();
+		List<String> imagesNames = getImagesNames(true);
 		for (String imageNameFromList : imagesNames) {
 			if (imageNameFromList.contains(imageName)) {
 				count++;
@@ -223,14 +223,38 @@ public class DockerConnection extends AbstractDockerExplorerItem {
 		}
 	}
 
+	/**
+	 * Returns all the names of all image, without the tag.
+	 * @return
+	 */
 	public List<String> getImagesNames() {
+		return getImagesNames(false);
+	}
+
+	public List<String> getImagesNames(boolean withTag) {
 		select();
 		List<String> imagesNames = new ArrayList<String>();
 		List<TreeItem> images = treeViewerHandler.getTreeItem(item, "Images").getItems();
 		for (TreeItem item : images) {
-			imagesNames.add(treeViewerHandler.getNonStyledText(item));
+			String imageName = treeViewerHandler.getNonStyledText(item);
+			if (withTag) {
+				String imageTag = getImageTag(item);
+				imagesNames.add(imageName + imageTag);
+			} else {
+				imagesNames.add(imageName);
+			}
+			
 		}
 		return imagesNames;
+	}
+
+	private String getImageTag(TreeItem item) {
+		String[] styledTexts = treeViewerHandler.getStyledTexts(item);
+		if (styledTexts == null
+				|| styledTexts.length == 0) {
+			return null;
+		}
+		return styledTexts[0];
 	}
 
 	public List<String> getContainersNames() {

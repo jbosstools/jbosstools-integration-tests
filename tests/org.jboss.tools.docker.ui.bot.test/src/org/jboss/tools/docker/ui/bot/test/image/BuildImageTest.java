@@ -8,22 +8,9 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-
 package org.jboss.tools.docker.ui.bot.test.image;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.File;
-import java.io.IOException;
-
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
-import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
 import org.junit.Test;
 
@@ -33,32 +20,22 @@ import org.junit.Test;
  *
  */
 
-public class BuildImageTest extends AbstractDockerBotTest {
-	private static String imageName = "test_build";
+public class BuildImageTest extends AbstractImageBotTest {
+
+	private static final String DOCKERFILE_FOLDER = "resources/test-build";
 
 	@Test
 	public void testBuildImage() {
-		DockerImagesTab imageTab = new DockerImagesTab();
-		imageTab.activate();
-		imageTab.refresh();
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
-		String dockerFilePath = "";
-		try {
-			dockerFilePath = (new File("resources/test-wildfly")).getCanonicalPath();
-		} catch (IOException ex) {
-			fail("Resource file not found!");
-		}
-		imageTab.buildImage(imageName, dockerFilePath);
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		ConsoleView consoleView = new ConsoleView();
-		consoleView.open();
-		assertFalse("Console has no output!", consoleView.getConsoleText().isEmpty());
-		assertTrue("Build has not been successful", consoleView.getConsoleText().contains("Successfully built"));
+		DockerImagesTab imageTab = openDockerImagesTab();
+
+		buildImage(IMAGE_TEST_BUILD, DOCKERFILE_FOLDER, imageTab);
+
+		assertConsoleSuccess();
 	}
 
 	@After
 	public void after() {
-		deleteImageContainerAfter(imageName, "jboss/base-jdk:8");
+		deleteImageContainer(IMAGE_TEST_BUILD);
 		cleanUpWorkspace();
 	}
 

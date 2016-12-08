@@ -13,44 +13,35 @@ package org.jboss.tools.docker.ui.bot.test.ui;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
-import org.junit.After;
+import org.jboss.tools.docker.ui.bot.test.image.AbstractImageBotTest;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
- * 
  * @author jkopriva
- *
+ * @contributor adietish@redhat.com
  */
+public class DifferentRegistryTest extends AbstractImageBotTest {
 
-public class DifferentRegistryTest extends AbstractDockerBotTest {
-	private String serverAddress = "registry.access.redhat.com";
-	private String email = "test@test.com";
-	private String userName = "test";
-	private String password = "password";
-	private String imageName = "devstudio/atomicapp:latest";
+	private static final String REGISTRY_SERVER_ADDRESS = "registry.access.redhat.com";
+	private static final String EMAIL = "test@test.com";
+	private static final String USERNAME = "test";
+	private static final String PASSWORD = "password";
+	private static final String IMAGE_NAME = "rhel7.2";
+
+	@Before
+	public void before() {
+		deleteImageIfExists(REGISTRY_SERVER_ADDRESS + "/" + IMAGE_NAME);
+		deleteRegisterIfExists(REGISTRY_SERVER_ADDRESS);
+	}
 
 	@Test
 	public void testDifferentRegistry() {
-		ConsoleView cview = new ConsoleView();
-		cview.open();
-		try {
-			cview.clearConsole();
-		} catch (CoreLayerException ex) {
-			// there's not clear console button, since nothing run before
-		}
-		setUpRegister(serverAddress, email, userName, password);
-		setSecureStorage(this.password);
-		pullImage(imageName, null, this.userName + "@" + serverAddress);
-		assertTrue("Image is not deployed!", imageIsDeployed("devstudio/atomicapp"));
-	}
-
-	@After
-	public void after() {
-		deleteImageContainerAfter(serverAddress + "/devstudio/atomicapp");
-		deleteRegister(serverAddress);
+		clearConsole();
+		setUpRegister(REGISTRY_SERVER_ADDRESS, EMAIL, USERNAME, PASSWORD);
+		setSecureStorage(PASSWORD);
+		pullImage(IMAGE_NAME, null, USERNAME + "@" + REGISTRY_SERVER_ADDRESS);
+		assertTrue("Image is not deployed!", imageIsDeployed(IMAGE_NAME));
 	}
 
 }

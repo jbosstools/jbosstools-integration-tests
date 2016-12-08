@@ -21,43 +21,39 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerContainersTab;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
-import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
+import org.jboss.tools.docker.ui.bot.test.image.AbstractImageBotTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 /**
- * 
  * @author jkopriva
+ * @contributor adietish@redhat.com
  *
  */
+public class PropertiesViewTest extends AbstractImageBotTest {
 
-public class PropertiesViewTest extends AbstractDockerBotTest {
-
-	private String imageName = "docker/whalesay";
-	private String containerName = "test_run_docker_whalesay";
+	private static final String IMAGE_NAME = IMAGE_BUSYBOX;
+	private static final String CONTAINER_NAME = "test_run_docker_busybox";
 
 	@Before
 	public void before() {
-		pullImage(this.imageName);
+		pullImage(IMAGE_NAME);
 	}
 
 	@Test
 	public void testContainerPropertiesTab() {
-		DockerImagesTab imageTab = new DockerImagesTab();
-		imageTab.activate();
-		imageTab.refresh();
-		new WaitWhile(new JobIsRunning());
-		imageTab.runImage(this.imageName);
+		DockerImagesTab imagesTab = openDockerImagesTab();
+		imagesTab.runImage(IMAGE_NAME);
 		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
-		firstPage.setName(this.containerName);
+		firstPage.setName(CONTAINER_NAME);
 		firstPage.finish();
 		new WaitWhile(new JobIsRunning());
 		DockerContainersTab containerTab = new DockerContainersTab();
 		containerTab.activate();
 		containerTab.refresh();
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
-		containerTab.select(containerName);
+		containerTab.select(CONTAINER_NAME);
 
 		// get values from Properties view
 		PropertiesView propertiesView = new PropertiesView();
@@ -71,10 +67,8 @@ public class PropertiesViewTest extends AbstractDockerBotTest {
 
 	@Test
 	public void testImagePropertiesTab() {
-		DockerImagesTab imageTab = new DockerImagesTab();
-		imageTab.activate();
-		imageTab.refresh();
-		imageTab.selectImage(imageName);
+		DockerImagesTab imagesTab = openDockerImagesTab();
+		imagesTab.selectImage(IMAGE_NAME);
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
 		try {
@@ -86,7 +80,6 @@ public class PropertiesViewTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		deleteImageContainerAfter(containerName,imageName);
+		deleteContainerIfExists(CONTAINER_NAME);
 	}
-
 }

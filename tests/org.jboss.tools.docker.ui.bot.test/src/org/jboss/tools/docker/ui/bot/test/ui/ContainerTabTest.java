@@ -11,6 +11,7 @@
 
 package org.jboss.tools.docker.ui.bot.test.ui;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -21,8 +22,9 @@ import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerContainersTab;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
-import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
+import org.jboss.tools.docker.ui.bot.test.image.AbstractImageBotTest;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -31,21 +33,22 @@ import org.junit.Test;
  *
  */
 
-public class ContainerTabTest extends AbstractDockerBotTest {
+public class ContainerTabTest extends AbstractImageBotTest {
 
-	private String imageName = "docker/whalesay";
-	private String containerName = "test_run_docker_whalesay";
+	private static final String IMAGE_NAME = IMAGE_BUSYBOX;
+	private static final String CONTAINER_NAME = "test_run_busybox";
+
+	@Before
+	public void before() {
+		pullImage(IMAGE_NAME);
+	}
 
 	@Test
 	public void testContainerTab() {
-		pullImage(this.imageName);
-		DockerImagesTab imageTab = new DockerImagesTab();
-		imageTab.activate();
-		imageTab.refresh();
-		new WaitWhile(new JobIsRunning());
-		imageTab.runImage(this.imageName);
+		DockerImagesTab imagesTab = openDockerImagesTab();
+		imagesTab.runImage(IMAGE_NAME);
 		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
-		firstPage.setName(this.containerName);
+		firstPage.setName(CONTAINER_NAME);
 		firstPage.finish();
 		new WaitWhile(new JobIsRunning());
 		DockerContainersTab containerTab = new DockerContainersTab();
@@ -62,19 +65,17 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 		String portsFromTable = "";
 		String statusFromTable = "";
 
-		for (TableItem item : containerTab.getTableItems()) {
-			if (item.getText(1).contains(imageName)) {
-				nameFromTable = item.getText();
-				imageFromTable = item.getText(1);
-				createdFromTable = item.getText(2);
-				commandFromTable = item.getText(3);
-				portsFromTable = item.getText(4);
-				statusFromTable = item.getText(5);
-				item.click();
-			}
-		}
+		TableItem item = getContainerItem(CONTAINER_NAME, containerTab);
+		assertNotNull("Container tab item " + CONTAINER_NAME + " was not found.", item);
+		nameFromTable = item.getText();
+		imageFromTable = item.getText(1);
+		createdFromTable = item.getText(2);
+		commandFromTable = item.getText(3);
+		portsFromTable = item.getText(4);
+		statusFromTable = item.getText(5);
+		item.click();
 
-		getConnection().getContainer(containerName).select();
+		getConnection().getContainer(CONTAINER_NAME).select();
 
 		// get values from Properties view
 		PropertiesView propertiesView = new PropertiesView();
@@ -88,24 +89,20 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 		String statusProp = propertiesView.getProperty("Status").getPropertyValue();
 
 		// compare values
-		assertTrue("Name in table and in Properties do not match!("+nameProp+"-"+nameFromTable+")", nameProp.contains(nameFromTable));
+		assertTrue("Name in table and in Properties do not match!("+nameProp+"-"+nameFromTable+")", nameFromTable.contains(nameProp));
 		assertTrue("Image in table and in Properties do not match!("+imageProp+"-"+imageFromTable+")", imageProp.equals(imageFromTable));
 		assertTrue("Created in table and in Properties do not match!("+createdProp+"-"+createdFromTable+")", createdProp.equals(createdFromTable));
 		assertTrue("Command in table and in Properties do not match!("+commandProp+"-"+commandFromTable+")", commandProp.startsWith(commandFromTable));
 		assertTrue("Ports in table and in Properties do not match!("+portsProp+"-"+portsFromTable+")", portsProp.startsWith(portsFromTable));
-		assertTrue("Status in table and in Properties do not match!("+statusProp+"-"+statusFromTable+")", statusProp.startsWith(statusFromTable));
+		assertTrue("Status in table and in Properties do not match!("+statusProp+"-"+statusFromTable+")", statusProp.startsWith(statusFromTable.substring(0, 9)));
 	}
 
 	@Test
 	public void testContainerTabSearch() {
-		pullImage(imageName);
-		DockerImagesTab imageTab = new DockerImagesTab();
-		imageTab.activate();
-		imageTab.refresh();
-		new WaitWhile(new JobIsRunning());
-		imageTab.runImage(imageName);
+		DockerImagesTab imagesTab = openDockerImagesTab();
+		imagesTab.runImage(IMAGE_NAME);
 		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
-		firstPage.setName(containerName);
+		firstPage.setName(CONTAINER_NAME);
 		firstPage.finish();
 		new WaitWhile(new JobIsRunning());
 		DockerContainersTab containerTab = new DockerContainersTab();
@@ -117,9 +114,18 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 		assertTrue("Search result is 0!", containerTab.getTableItems().size() > 0);
 	}
 
-	@After
-	public void after() {
-		deleteImageContainerAfter(containerName,imageName);
+	private TableItem getContainerItem(String containerName, DockerContainersTab containersTab) {
+		for (TableItem item : containersTab.getTableItems()) {
+			if (item.getText(0).contains(containerName)) {
+				return item;
+			}
+		}
+		return null;
 	}
 
+	@After
+	public void after() {
+		deleteContainerIfExists(CONTAINER_NAME);
+	}
+	
 }

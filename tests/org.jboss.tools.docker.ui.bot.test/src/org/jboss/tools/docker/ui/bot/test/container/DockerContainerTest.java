@@ -16,39 +16,37 @@ import static org.junit.Assert.assertTrue;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
-import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
+import org.jboss.tools.docker.ui.bot.test.image.AbstractImageBotTest;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
- * 
  * @author jkopriva
+ * @contributor adietish@redhat.com
  *
  */
 
-public class DockerContainerTest extends AbstractDockerBotTest {
-	private String imageName = "docker/whalesay";
-	private String containerName = "test_run";
+public class DockerContainerTest extends AbstractImageBotTest {
 
+	private static final String IMAGE_NAME = IMAGE_BUSYBOX;
+	private static final String CONTAINER_NAME = "test_run";
+
+	@Before
+	public void before() {
+		clearConsole();
+		pullImage(IMAGE_NAME);
+	}
+	
 	@Test
-	public void testDockerContainer() {
-		ConsoleView cview = new ConsoleView();
-		cview.open();
-		try {
-			cview.clearConsole();
-		} catch (CoreLayerException ex) {
-
-		}
-		pullImage(imageName);
-		assertTrue("Image has not been found!", imageIsDeployed(getCompleteImageName(imageName)));
-
-		getConnection().getImage(getCompleteImageName(imageName)).run();
+	public void testRunDockerContainer() {
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		assertTrue("Image has not been found!", imageIsDeployed(getCompleteImageName(IMAGE_NAME)));
+		getConnection().getImage(getCompleteImageName(IMAGE_NAME)).run();
 		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
-		firstPage.setName(this.containerName);
+		firstPage.setName(CONTAINER_NAME);
 		firstPage.finish();
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
 		new WaitWhile(new ConsoleHasNoChange());
@@ -57,7 +55,7 @@ public class DockerContainerTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		deleteImageContainerAfter(containerName, imageName);
+		deleteImageContainerAfter(CONTAINER_NAME);
 	}
 
 }

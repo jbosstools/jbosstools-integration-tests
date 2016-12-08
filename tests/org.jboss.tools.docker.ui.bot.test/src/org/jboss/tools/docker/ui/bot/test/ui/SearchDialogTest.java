@@ -25,53 +25,55 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageSearchPage;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageTagSelectionPage;
-import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
-import org.junit.After;
+import org.jboss.tools.docker.ui.bot.test.image.AbstractImageBotTest;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
  * 
  * @author jkopriva
+ * @contributor adietish@redhat.com
  *
  */
 
-public class SearchDialogTest extends AbstractDockerBotTest {
-	private String imageName = "busybox";
-	private String imageTag = "1.24";
-	private String expectedImageName = "busybox";
-	private String registryAddress = "https://index.docker.io";
+public class SearchDialogTest extends AbstractImageBotTest {
+	
+	private static final String IMAGE_NAME = IMAGE_BUSYBOX;
+	private static final String IMAGE_TAG = "1.24";
+	private static final String EXPECTED_IMAGE_NAME = "busybox";
 
+	@Before
+	public void before() {
+		deleteImageIfExists(IMAGE_NAME, IMAGE_TAG);
+	}
+	
 	@Test
 	public void testSearchDialog() {
 		getConnection()
-			.openImageSearchDialog(this.imageName, null, this.registryAddress);
+			.openImageSearchDialog(IMAGE_NAME, null, REGISTRY_URL);
 		ImageSearchPage pageOne = new ImageSearchPage();
 		pageOne.searchImage();
 		assertFalse("Search result is empty!", pageOne.getSearchResults().isEmpty());
-		assertTrue("Search result do not contains image:" + expectedImageName + "!",
-				pageOne.searchResultsContains(expectedImageName));
+		assertTrue("Search result do not contains image:" + EXPECTED_IMAGE_NAME + "!",
+				pageOne.searchResultsContains(EXPECTED_IMAGE_NAME));
 		pageOne.next();
 
 		new WaitWhile(new ProgressInformationShellIsActive(), TimePeriod.NORMAL);
 		AbstractWait.sleep(TimePeriod.getCustom(5));
 		ImageTagSelectionPage pageTwo = new ImageTagSelectionPage();
 		assertFalse("Search tags are empty!", pageTwo.getTags().isEmpty());
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
-		if (!pageTwo.tagsContains(imageTag)) {
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		if (!pageTwo.tagsContains(IMAGE_TAG)) {
 			pageTwo.cancel();
 			new CancelButton().click();
-			fail("Search results do not contains tag:" + imageTag + "!");
+			fail("Search results do not contain tag: " + IMAGE_TAG + "!");
 		}
-		pageTwo.selectTag(imageTag);
+		pageTwo.selectTag(IMAGE_TAG);
 		pageTwo.finish();
 		new DefaultShell("Pull Image");
 		new PushButton("Finish").click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
-
-	@After
-	public void after() {
-		deleteImageContainerAfter(imageName+":"+imageTag);
-	}
-
+	
+	
 }
