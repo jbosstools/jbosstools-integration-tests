@@ -84,6 +84,7 @@ public class DisableSecureStorageRequirement implements Requirement<DisableSecur
 	        storagePage.apply();
         } catch (WaitTimeoutExpiredException exc) {
         	log.error("Secure Storage preferences page has timed out");
+        	exc.printStackTrace();
         } finally {
 	        preferenceDialog.ok();
 		}

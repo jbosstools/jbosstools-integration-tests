@@ -47,7 +47,7 @@ public class CDEServer extends Server {
 		log.debug("Operate server's state: '" + menuItem + "'");
 		select();
 		new ContextMenu(menuItem).select();
-		new WaitUntil(new JobIsRunning(), TIMEOUT);
+		new WaitUntil(new JobIsRunning(), menuItem == "Restart" ? TimePeriod.getCustom(900) : TIMEOUT);
 		if (actualState == ServerState.STOPPING || actualState == ServerState.STOPPED) {
 			confirmSSLCertificateDialog();
 		}
