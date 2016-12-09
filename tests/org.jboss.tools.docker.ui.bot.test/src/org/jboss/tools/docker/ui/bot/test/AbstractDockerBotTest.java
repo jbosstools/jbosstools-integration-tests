@@ -13,13 +13,12 @@ package org.jboss.tools.docker.ui.bot.test;
 
 import static org.junit.Assert.fail;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.runtime.jobs.Job;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.handler.ShellHandler;
@@ -46,6 +45,8 @@ import org.junit.BeforeClass;
 
 public abstract class AbstractDockerBotTest {
 
+	private static final String DOCKER_UNIX_SOCKET = "unix:///var/run/docker.sock";
+
 	private static DockerExplorerView dockerView;
 
 	@BeforeClass
@@ -55,7 +56,7 @@ public abstract class AbstractDockerBotTest {
 
 	@AfterClass
 	public static void cleanUp() {
-		killPullingJobs();
+		killRunningJobs();
 		cleanupShells();
 	}
 
@@ -63,52 +64,27 @@ public abstract class AbstractDockerBotTest {
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
 
-	protected String executeCommand(String command) {
-		StringBuffer output = new StringBuffer();
-		Process p;
-		try {
-			p = Runtime.getRuntime().exec(command);
-			p.waitFor();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			String line = "";
-			while ((line = reader.readLine()) != null) {
-				output.append(line + "\n");
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return output.toString();
-	}
-
-	protected ArrayList<String> getIds(String stringWithIds) {
-		ArrayList<String> idList = new ArrayList<String>();
-		if (stringWithIds == null || stringWithIds.equals("")) {
-			return idList;
-		}
-
-		idList = new ArrayList<String>(Arrays.asList(stringWithIds.split("\\r?\\n")));
-		return idList;
-	}
-
 	protected static void openDockerPerspective() {
 		new DockerPerspective().open();
 		try {
 			new ShellWithTextIsAvailable("Docker Explorer");
 		} catch (SWTLayerException ex) {
-			fail("Docker Explorer not found in Docker tooling perspective");
+			fail("Docker Explorer not found in Docker tooling perspective. ");
 		}
 	}
 
 	protected static void createConnection() {
 		String dockerServerURI = System.getProperty("dockerServerURI");
 		String searchConnection = System.getProperty("searchConnection");
+		String unixSocket = System.getProperty("unixSocket");
 		if (searchConnection != null && !searchConnection.isEmpty() && searchConnection.equals("true")) {
 			createConnectionSearch("default");
-		} else if (dockerServerURI == null || dockerServerURI.isEmpty()) {
-			createConnectionSocket(System.getProperty("unixSocket"));
-		} else {
+		} else if (unixSocket != null && !unixSocket.isEmpty()) {
+			createConnectionSocket(unixSocket);
+		} else if (dockerServerURI != null && !dockerServerURI.isEmpty()) {
 			createConnectionTCP(dockerServerURI);
+		} else { // if no connection is specified, then use default linux socket
+			createConnectionSocket(DOCKER_UNIX_SOCKET);
 		}
 	}
 
@@ -117,8 +93,8 @@ public abstract class AbstractDockerBotTest {
 		dockerView.open();
 		if (!dockerView.getDockerConnectionsNames().contains(dockerServer)) {
 			dockerView.createDockerConnection(AuthenticationMethod.TCP_CONNECTION, dockerServer, null, dockerServer);
-			dockerView.getDockerConnection(dockerServer).enableConnection();
 		}
+		dockerView.getDockerConnection(dockerServer).enableConnection();
 	}
 
 	protected static void createConnectionSocket(String unixSocket) {
@@ -126,8 +102,8 @@ public abstract class AbstractDockerBotTest {
 		dockerView.open();
 		if (!dockerView.getDockerConnectionsNames().contains(unixSocket)) {
 			dockerView.createDockerConnection(AuthenticationMethod.UNIX_SOCKET, unixSocket, null, unixSocket);
-			dockerView.getDockerConnection(unixSocket).enableConnection();
 		}
+		dockerView.getDockerConnection(unixSocket).enableConnection();
 	}
 
 	protected static void createConnectionSearch(String connectionName) {
@@ -135,29 +111,45 @@ public abstract class AbstractDockerBotTest {
 		dockerView.open();
 		if (!dockerView.getDockerConnectionsNames().contains(connectionName)) {
 			dockerView.createDockerConnection(connectionName);
-			dockerView.getDockerConnection(connectionName).enableConnection();
 		}
+		dockerView.getDockerConnection(connectionName).enableConnection();
 	}
 
 	protected static void deleteConnection() {
+		checkConnection();
 		new DockerExplorerView().getDockerConnection(getDockerServer()).removeConnection();
 	}
 
+	protected static void checkConnection() {
+		if (new DockerExplorerView().getDockerConnection(getDockerServer()) == null) {
+			fail("Docker connection does not exist! Please check parameters.");
+		}
+	}
+
+	protected static String getCompleteImageName(String imageName) {
+		for (String image : new DockerExplorerView().getDockerConnection(getDockerServer()).getImagesNames()) {
+			if (image.contains(imageName)) {
+				imageName = image.replace(":", "");
+			}
+		}
+		return imageName;
+	}
+
 	protected static void deleteImage(String imageName) {
-		if (new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(imageName) != null) {
-			new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(imageName).remove();
+		String name = getCompleteImageName(imageName);
+		if (imageIsDeployed(name)) {
+			new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(name).remove();
 		} else {
-			fail("Image " + imageName + " does not exists!");
+			fail("Image " + imageName + ":latest" + "(" + name + ":latest)" + " does not exists!");
 		}
 	}
 
 	protected static void deleteImage(String imageName, String imageTag) {
-		new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(imageName, imageTag).remove();
-	}
-
-	protected static void deleteImages(String dockerServer, List<String> images) {
-		for (String image : images) {
-			deleteImage(image);
+		String name = getCompleteImageName(imageName);
+		if (new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(name, imageTag) != null) {
+			new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(name, imageTag).remove();
+		} else {
+			fail("Image " + imageName + ":" + imageTag + "(" + name + ":" + imageTag + ")" + " does not exists!");
 		}
 	}
 
@@ -169,30 +161,35 @@ public abstract class AbstractDockerBotTest {
 		return new DockerExplorerView().getDockerConnection(getDockerServer()).deployedImagesCount(imageName);
 	}
 
+	protected static boolean containerIsDeployed(String containerName) {
+		return new DockerExplorerView().getDockerConnection(getDockerServer()).containerIsDeployed(containerName);
+	}
+
 	protected static void deleteContainer(String containerName) {
-		if (new DockerExplorerView().getDockerConnection(getDockerServer()).getContainer(containerName) != null) {
+		if (containerIsDeployed(containerName)) {
 			new DockerExplorerView().getDockerConnection(getDockerServer()).getContainer(containerName).remove();
 		} else {
 			fail("Container " + containerName + " does not exists!");
 		}
 	}
 
-	protected static void deleteContainers(String dockerServer, List<String> containers) {
-		for (String container : containers) {
-			deleteContainer(container);
-		}
-	}
-
 	protected void pullImage(String imageName) {
-		new DockerExplorerView().getDockerConnection(getDockerServer()).pullImage(imageName);
+		pullImage(imageName, null, null);
 	}
 
 	protected void pullImage(String imageName, String imageTag) {
-		new DockerExplorerView().getDockerConnection(getDockerServer()).pullImage(imageName, imageTag, null);
+		pullImage(imageName, imageTag, null);
 	}
 
 	protected void pullImage(String imageName, String imageTag, String dockerRegister) {
-		new DockerExplorerView().getDockerConnection(getDockerServer()).pullImage(imageName, imageTag, dockerRegister);
+		checkConnection();
+		try {
+			new DockerExplorerView().getDockerConnection(getDockerServer()).pullImage(imageName, imageTag,
+					dockerRegister);
+		} catch (WaitTimeoutExpiredException ex) {
+			killRunningJobs();
+			fail("Timeout expired when pulling image:" + imageName + (imageTag == null ? "" : ":" + imageTag) + "!");
+		}
 	}
 
 	protected String createURL(String tail) {
@@ -213,6 +210,7 @@ public abstract class AbstractDockerBotTest {
 		RegistryAccountsPreferencePage page = new RegistryAccountsPreferencePage();
 		dialog.open();
 		dialog.select(page);
+		page.removeRegistry(serverAddress);
 		page.addRegistry(serverAddress, email, userName, password);
 		try {
 			new DefaultShell("New Registry Account").setFocus();
@@ -228,6 +226,7 @@ public abstract class AbstractDockerBotTest {
 		dialog.open();
 		dialog.select(page);
 		page.removeRegistry(serverAddress);
+		new WaitWhile(new JobIsRunning());
 		new OkButton().click();
 	}
 
@@ -241,23 +240,36 @@ public abstract class AbstractDockerBotTest {
 
 	protected void prepareWorkspace() {
 		openDockerPerspective();
-		deleteCreatedConnections();
+		deleteAllConnections();
 		createConnection();
 	}
 
 	protected void cleanUpWorkspace() {
 		cleanupShells();
+		killRunningJobs();
 		deleteConnection();
 	}
 
 	protected static String getDockerServer() {
-		if (System.getProperty("dockerServerURI") != null) {
-			return System.getProperty("dockerServerURI");
-		} else if (System.getProperty("unixSocket") != null) {
-			return System.getProperty("unixSocket");
+		if (System.getProperty("dockerServerURI") != null && !System.getProperty("dockerServerURI").isEmpty()) {
+			return getConnectionName(System.getProperty("dockerServerURI"));
+		} else if (System.getProperty("unixSocket") != null && !System.getProperty("unixSocket").isEmpty()) {
+			return getConnectionName(System.getProperty("unixSocket"));
 		} else {
-			return "default";
+			return getConnectionName("default");
 		}
+	}
+
+	private static String getConnectionName(String connectionName) {
+		dockerView = new DockerExplorerView();
+		dockerView.open();
+		for (String name : dockerView.getDockerConnectionsNames()) {
+			if (name.contains(connectionName)) {
+				connectionName = name;
+				break;
+			}
+		}
+		return connectionName;
 	}
 
 	public static void setSecureStorage(String password) {
@@ -271,26 +283,48 @@ public abstract class AbstractDockerBotTest {
 		} catch (CoreLayerException ex) {
 			new PushButton("OK").click();
 		} catch (SWTLayerException e) {
-			new DefaultShell("Secure Storage");
-			new LabeledText("Password:").setText(password);
-			new PushButton("OK").click();
+			try {
+				new DefaultShell("Secure Storage");
+				new LabeledText("Password:").setText(password);
+				new PushButton("OK").click();
+			} catch (SWTLayerException ex) {
+				// Secure storage password is set
+			}
 		}
 
 	}
 
-	public static void killPullingJobs() {
+	public static void killRunningJobs() {
 		Job[] currentJobs = Job.getJobManager().find(null);
 		for (Job job : currentJobs) {
-			if (job.getName().startsWith("Pulling docker image")) {
+			if (job.getName().startsWith("Pulling docker image") || job.getName().startsWith("Tagging Image")
+					|| job.getName().startsWith("Pushing Docker Image")) {
 				job.cancel();
 			}
 		}
 	}
 
-	public static void deleteCreatedConnections() {
+	public static void deleteAllConnections() {
 		List<String> connections = new DockerExplorerView().getDockerConnectionsNames();
 		for (String connection : connections) {
 			new DockerExplorerView().getDockerConnection(connection).removeConnection();
+		}
+	}
+
+	public static void deleteImageContainerAfter(String... imageContainerNames) {
+		checkConnection();
+		killRunningJobs();
+		for (String imageContainerName : imageContainerNames) {
+			if (imageIsDeployed(imageContainerName.split(":")[0])) {
+				if (!imageContainerName.contains(":")) {
+					deleteImage(imageContainerName);
+				} else {
+					deleteImage(imageContainerName.split(":")[0], imageContainerName.split(":")[1]);
+				}
+			}
+			if (containerIsDeployed(imageContainerName)) {
+				deleteContainer(imageContainerName);
+			}
 		}
 	}
 

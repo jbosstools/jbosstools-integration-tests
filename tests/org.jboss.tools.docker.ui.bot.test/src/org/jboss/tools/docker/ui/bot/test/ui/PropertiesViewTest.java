@@ -20,7 +20,6 @@ import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerContainersTab;
-import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
@@ -89,10 +88,7 @@ public class PropertiesViewTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		if (new DockerExplorerView().getDockerConnection(getDockerServer()).getContainer(containerName) != null) {
-			deleteContainer(this.containerName);
-		}
-		deleteImage("docker/whalesay");
+		deleteImageContainerAfter(containerName,imageName);
 		deleteConnection();
 	}
 

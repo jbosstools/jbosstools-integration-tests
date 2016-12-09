@@ -41,16 +41,20 @@ public class LaunchDockerImageTest extends AbstractDockerBotTest {
 	public void testLaunchConfiguration() {
 
 		pullImage(imageName);
+		String completeImageName = getCompleteImageName(imageName);
+		
+		new DockerExplorerView().getDockerConnection(getDockerServer()).enableConnection();
+		
 		RunDockerImageLaunchConfiguration runImageConf = new RunDockerImageLaunchConfiguration();
 		runImageConf.open();
 		runImageConf.createNewConfiguration(configurationName);
 		runImageConf.setContainerName(containerName);
-		runImageConf.selectImage(imageName + ":latest");
+		runImageConf.selectImage(completeImageName + ":latest");
 		runImageConf.setPrivilegedMode(true);
 		runImageConf.apply();
 		runImageConf.runConfiguration(configurationName);
 
-		assertTrue("Container is not deployed!",new DockerExplorerView().getDockerConnection(getDockerServer()).getContainer(containerName)!=null);
+		assertTrue("Container is not deployed!", containerIsDeployed(containerName));
 		runImageConf.open();
 		runImageConf.deleteRunConfiguration(configurationName);
 		runImageConf.close();
@@ -58,8 +62,7 @@ public class LaunchDockerImageTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		deleteContainer(containerName);
-		deleteImage(imageName);
+		deleteImageContainerAfter(containerName,imageName);
 		deleteConnection();
 	}
 
