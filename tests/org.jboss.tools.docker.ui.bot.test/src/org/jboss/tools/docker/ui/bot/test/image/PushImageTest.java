@@ -19,9 +19,11 @@ import java.io.File;
 import java.io.IOException;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.tools.docker.reddeer.condition.ImageIsDeployedCondition;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
@@ -56,6 +58,7 @@ public class PushImageTest extends AbstractDockerBotTest {
 			fail("At least one of credentials is null or empty! dockerHubUsername:" + dockerHubUsername + " dockerHubEmail:"
 					+ dockerHubEmail + " dockerHubPassword:" + dockerHubPassword + " Aborting test...");
 		}
+		getConnection();
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
 		imageTab.refresh();
@@ -78,6 +81,9 @@ public class PushImageTest extends AbstractDockerBotTest {
 		seconds = String.valueOf(date.getTime());
 		imageNewTag = imageTag + ":" + seconds;
 		getConnection().getImage(imageName).addTagToImage(imageNewTag);
+		new WaitUntil(
+				new ImageIsDeployedCondition(imageTag, seconds, getConnection()), 
+				TimePeriod.VERY_LONG);
 		getConnection().getImage(imageTag, seconds)
 				.pushImage(registryAccount, false, false);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
@@ -93,5 +99,4 @@ public class PushImageTest extends AbstractDockerBotTest {
 		deleteImageContainerAfter(imageNewTag);
 		cleanUpWorkspace();
 	}
-
 }

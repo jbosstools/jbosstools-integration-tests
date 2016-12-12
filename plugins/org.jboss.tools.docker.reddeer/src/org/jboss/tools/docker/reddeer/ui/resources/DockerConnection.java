@@ -13,6 +13,7 @@ package org.jboss.tools.docker.reddeer.ui.resources;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -79,13 +80,22 @@ public class DockerConnection extends AbstractDockerExplorerItem {
 			List<TreeItem> images = treeViewerHandler.getTreeItems(item, "Images", imageName + ":");
 
 			for (TreeItem item : images) {
-				if (treeViewerHandler.getStyledTexts(item)[0].trim().equals(tag)) {
+				if (hasTag(tag, item)) {
 					return new DockerImage(item);
 				}
 			}
 		} catch (JFaceLayerException ex) {
 		}
 		return null;
+	}
+
+	private boolean hasTag(String tag, TreeItem item) {
+		String[] styledTexts = treeViewerHandler.getStyledTexts(item);
+		if (styledTexts == null 
+				|| styledTexts.length == 0) {
+			return false;
+		}
+		return StringUtils.contains(styledTexts[0].trim(), tag);
 	}
 
 	/**
