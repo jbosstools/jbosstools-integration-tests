@@ -27,18 +27,18 @@ import java.util.List;
 import org.eclipse.core.runtime.Platform;
 
 public class FileUtils {
-	
-	public static void deleteDirectory(File dir) throws IOException{
-		if (!dir.exists()){
+
+	public static void deleteDirectory(File dir) throws IOException {
+		if (!dir.exists()) {
 			return;
 		}
-		Files.walkFileTree(Paths.get(dir.getAbsolutePath()), new SimpleFileVisitor<Path>(){
+		Files.walkFileTree(Paths.get(dir.getAbsolutePath()), new SimpleFileVisitor<Path>() {
 			@Override
 			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 				Files.delete(file);
 				return FileVisitResult.CONTINUE;
 			}
-			
+
 			@Override
 			public FileVisitResult postVisitDirectory(Path directory, IOException exc) throws IOException {
 				Files.delete(directory);
@@ -47,9 +47,7 @@ public class FileUtils {
 		});
 	}
 
-
-	public static void copyFileIntoProjectFolder(String projectName,
-			File file) {
+	public static void copyFileIntoProjectFolder(String projectName, File file) {
 		FileChannel inChannel = null;
 		FileChannel outChannel = null;
 
@@ -57,13 +55,12 @@ public class FileUtils {
 		FileInputStream istream = null;
 		FileOutputStream ostream = null;
 		try {
-			File out = new File(Platform.getLocation() + File.separator
-					+ projectName + File.separator + File.separator
+			File out = new File(Platform.getLocation() + File.separator + projectName + File.separator + File.separator
 					+ file.getName());
 
 			istream = new FileInputStream(file);
 			ostream = new FileOutputStream(out);
-				
+
 			inChannel = istream.getChannel();
 			outChannel = ostream.getChannel();
 
@@ -72,15 +69,15 @@ public class FileUtils {
 		} catch (IOException ioException) {
 
 		} finally {
-			try{
-				if (istream != null){
+			try {
+				if (istream != null) {
 					istream.close();
 				}
-				if (ostream != null){
+				if (ostream != null) {
 					ostream.close();
 				}
-			} catch (IOException ex){
-				
+			} catch (IOException ex) {
+
 			}
 		}
 	}

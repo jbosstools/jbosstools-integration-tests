@@ -1,11 +1,7 @@
 package org.jboss.tools.runtime.as.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.cdk2.DetectCDK2fromGit;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam22.CheckSeam22;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam22.DetectSeam22;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam23x.CheckSeam23x;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam23x.DetectSeam23x;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.cdk2.DetectCDK2;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap60x.DetectEAP60x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap60x.OperateEAP60x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap61x.DetectEAP61x;
@@ -22,8 +18,6 @@ import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap70.DetectEAP70;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap70.OperateEAP70;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.DetectJBoss7;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jboss7.OperateJBoss7;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp61x.DetectJPP61x;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.server.jpp61x.OperateJPP61x;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly10.DetectWildFly10;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly10.OperateWildFly10;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.server.wildfly10web.DetectWildFly10Web;
@@ -53,7 +47,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		ProjectRuntimeDownload.class,
 		ProductRuntimeDownload.class,
 		
-		DetectCDK2fromGit.class,
+		DetectCDK2.class,
 	
 		DetectWildFly10.class,
 		OperateWildFly10.class,
@@ -95,16 +89,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		OperateEAP61x.class,
 		
 		DetectEAP60x.class,
-		OperateEAP60x.class,
-		
-		DetectJPP61x.class,
-		OperateJPP61x.class,
-		
-		DetectSeam23x.class,
-		CheckSeam23x.class,
-		
-		DetectSeam22.class,
-		CheckSeam22.class
+		OperateEAP60x.class
 })
 public class StableTestsSuite {
 
