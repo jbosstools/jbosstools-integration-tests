@@ -11,6 +11,7 @@
 package org.jboss.tools.livereload.reddeer.condition;
 
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.jboss.reddeer.core.handler.WidgetHandler;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 
 public class BrowserContainsText extends AbstractWaitCondition{
@@ -25,6 +26,7 @@ public class BrowserContainsText extends AbstractWaitCondition{
 
 	@Override
 	public boolean test() {
+		WidgetHandler.getInstance().setFocus(ib.getSWTWidget());
 		return ib.getText().contains(text);
 	}
 	
