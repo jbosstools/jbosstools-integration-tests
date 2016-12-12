@@ -1,7 +1,7 @@
 package org.jboss.tools.runtime.as.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.runtime.as.ui.bot.test.detector.cdk2.DetectCDK2fromGit;
+import org.jboss.tools.runtime.as.ui.bot.test.detector.cdk2.DetectCDK2;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam22.CheckSeam22;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam22.DetectSeam22;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.seam.seam23.CheckSeam23;
@@ -36,7 +36,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 		ProjectRuntimeDownload.class,
 		
-		DetectCDK2fromGit.class,
+		DetectCDK2.class,
 		
 		DetectWildFly10.class,
 		OperateWildFly10.class,

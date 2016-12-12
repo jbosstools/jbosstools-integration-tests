@@ -3,6 +3,7 @@ package org.jboss.tools.runtime.as.ui.bot.test.detector.server.eap60x;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jboss.reddeer.requirements.jre.JRERequirement.JRE;
 import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
 import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
 import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
@@ -13,6 +14,7 @@ import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
  * @author rrabara
  *
  */
+@JRE(cleanup=true, value=1.7)
 public class DetectEAP60x extends DetectRuntimeTemplate {
 
 	public static final String SERVER_ID = "jboss-eap-6.0.x";
