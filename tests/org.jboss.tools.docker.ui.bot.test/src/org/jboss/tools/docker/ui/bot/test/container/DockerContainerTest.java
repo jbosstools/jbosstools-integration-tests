@@ -20,10 +20,8 @@ import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
-import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -36,15 +34,8 @@ public class DockerContainerTest extends AbstractDockerBotTest {
 	private String imageName = "docker/whalesay";
 	private String containerName = "test_run";
 
-	@Before
-	public void before() {
-		openDockerPerspective();
-		createConnection();
-	}
-
 	@Test
 	public void testDockerContainer() {
-		String dockerServer = getDockerServer();
 		ConsoleView cview = new ConsoleView();
 		cview.open();
 		try {
@@ -55,7 +46,7 @@ public class DockerContainerTest extends AbstractDockerBotTest {
 		pullImage(imageName);
 		assertTrue("Image has not been found!", imageIsDeployed(getCompleteImageName(imageName)));
 
-		new DockerExplorerView().getDockerConnection(dockerServer).getImage(getCompleteImageName(imageName)).run();
+		getConnection().getImage(getCompleteImageName(imageName)).run();
 		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
 		firstPage.setName(this.containerName);
 		firstPage.finish();
@@ -67,7 +58,6 @@ public class DockerContainerTest extends AbstractDockerBotTest {
 	@After
 	public void after() {
 		deleteImageContainerAfter(containerName, imageName);
-		deleteConnection();
 	}
 
 }

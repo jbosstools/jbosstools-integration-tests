@@ -22,7 +22,6 @@ import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -36,12 +35,6 @@ public class ExposePortTest extends AbstractDockerBotTest {
 	private String imageName = "jboss/wildfly";
 	private String imageTag = "10.0.0.Final";
 	private String containerName = "test_run_wildfly";
-
-	@Before
-	public void before() {
-		openDockerPerspective();
-		createConnection();
-	}
 
 	@Test
 	public void testExposePort() throws IOException {
@@ -67,7 +60,6 @@ public class ExposePortTest extends AbstractDockerBotTest {
 	public void after() {
 		deleteContainer(containerName);
 		deleteImage(imageName, imageTag);
-		deleteConnection();
 	}
 
 }

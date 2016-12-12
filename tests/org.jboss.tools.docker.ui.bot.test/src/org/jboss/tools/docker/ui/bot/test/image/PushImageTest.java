@@ -22,11 +22,9 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -36,23 +34,23 @@ import org.junit.Test;
  */
 
 public class PushImageTest extends AbstractDockerBotTest {
+
+	private static final String DOCKER_HUB_PASSWORD = "dockerHubPassword";
+	private static final String DOCKER_HUB_EMAIL = "dockerHubEmail";
+	private static final String DOCKER_HUB_USERNAME = "dockerHubUsername";
+
 	private static String imageName = "test_push";
-	private static String registryAccount = System.getProperty("dockerHubUsername") + "@https://index.docker.io";
+	private static String registryAccount = System.getProperty(DOCKER_HUB_USERNAME) + "@https://index.docker.io";
 	private static String registryAddress = "https://index.docker.io";
-	private static String imageTag = System.getProperty("dockerHubUsername") + "/variables";
+	private static String imageTag = System.getProperty(DOCKER_HUB_USERNAME) + "/variables";
 	private String seconds = "";
 	private String imageNewTag = "";
 
-	@Before
-	public void before() {
-		prepareWorkspace();
-	}
-
 	@Test
 	public void pushImage() {
-		String dockerHubUsername = System.getProperty("dockerHubUsername");
-		String dockerHubEmail = System.getProperty("dockerHubEmail");
-		String dockerHubPassword = System.getProperty("dockerHubPassword");
+		String dockerHubUsername = System.getProperty(DOCKER_HUB_USERNAME);
+		String dockerHubEmail = System.getProperty(DOCKER_HUB_EMAIL);
+		String dockerHubPassword = System.getProperty(DOCKER_HUB_PASSWORD);
 		if (dockerHubUsername == null || dockerHubUsername.isEmpty() || dockerHubEmail == null
 				|| dockerHubEmail.isEmpty() || dockerHubPassword == null || dockerHubPassword.isEmpty()) {
 			fail("At least one of credentials is null or empty! dockerHubUsername:" + dockerHubUsername + " dockerHubEmail:"
@@ -79,12 +77,12 @@ public class PushImageTest extends AbstractDockerBotTest {
 		java.util.Date date = new java.util.Date();
 		seconds = String.valueOf(date.getTime());
 		imageNewTag = imageTag + ":" + seconds;
-		new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(imageName).addTagToImage(imageNewTag);
-		new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(imageTag, seconds)
+		getConnection().getImage(imageName).addTagToImage(imageNewTag);
+		getConnection().getImage(imageTag, seconds)
 				.pushImage(registryAccount, false, false);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		deleteImage(imageTag, seconds);
-		new DockerExplorerView().getDockerConnection(getDockerServer()).pullImage(imageTag, seconds, registryAddress);
+		getConnection().pullImage(imageTag, seconds, registryAddress);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		assertTrue("Image has not been pushed/pulled!", imageIsDeployed(imageTag));
 	}

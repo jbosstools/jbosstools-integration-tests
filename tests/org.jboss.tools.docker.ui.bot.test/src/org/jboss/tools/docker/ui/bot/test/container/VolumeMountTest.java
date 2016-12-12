@@ -21,12 +21,11 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunResourceVolumesVariablesPage;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -43,12 +42,6 @@ public class VolumeMountTest extends AbstractDockerBotTest {
 	private String deploymentPath = "resources/wildfly-deployments";
 	private String containerPath = "/opt/jboss/wildfly/standalone/deployments/";
 	private String quickstartURL = "wildfly-helloworld";
-
-	@Before
-	public void before() {
-		openDockerPerspective();
-		createConnection();
-	}
 
 	@Test
 	public void testVolumeMount() throws IOException {
@@ -85,7 +78,6 @@ public class VolumeMountTest extends AbstractDockerBotTest {
 	public void after() {
 		deleteContainer(this.containerName);
 		deleteImage(imageName, imageTag);
-		deleteConnection();
 	}
 
 }

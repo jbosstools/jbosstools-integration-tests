@@ -7,6 +7,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.junit,
+ org.eclipse.linuxtools.docker.ui;bundle-version="2.1.0",
  org.jboss.reddeer.go,
  org.jboss.tools.docker.reddeer;bundle-version="[4.4.2,4.5.0)",
  org.jboss.reddeer.eclipse,
@@ -14,7 +15,8 @@ Require-Bundle: org.junit,
  org.jboss.reddeer.workbench,
  org.jboss.reddeer.junit,
  org.jboss.reddeer.core,
- org.jboss.ide.eclipse.as.reddeer
+ org.jboss.ide.eclipse.as.reddeer,
+ org.apache.commons.lang;bundle-version="2.6.0"
 Import-Package: org.eclipse.core.resources
 Eclipse-BundleShape: jar
 

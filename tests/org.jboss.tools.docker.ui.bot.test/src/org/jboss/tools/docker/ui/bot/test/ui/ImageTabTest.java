@@ -18,11 +18,9 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -34,12 +32,6 @@ import org.junit.Test;
 public class ImageTabTest extends AbstractDockerBotTest {
 
 	private String imageName = "hello-world";
-
-	@Before
-	public void before() {
-		openDockerPerspective();
-		createConnection();
-	}
 
 	@Test
 	public void testImageTab() {
@@ -65,7 +57,7 @@ public class ImageTabTest extends AbstractDockerBotTest {
 		}
 		idFromTable = idFromTable.replace("sha256:", "");
 
-		new DockerExplorerView().getDockerConnection(getDockerServer()).getImage(getCompleteImageName(imageName)).select();
+		getConnection().getImage(getCompleteImageName(imageName)).select();
 
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
@@ -96,7 +88,6 @@ public class ImageTabTest extends AbstractDockerBotTest {
 	@After
 	public void after() {
 		deleteImageContainerAfter(imageName);
-		deleteConnection();
 	}
 
 }

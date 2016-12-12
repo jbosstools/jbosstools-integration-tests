@@ -39,8 +39,6 @@ public class PropertiesViewTest extends AbstractDockerBotTest {
 
 	@Before
 	public void before() {
-		openDockerPerspective();
-		createConnection();
 		pullImage(this.imageName);
 	}
 
@@ -89,7 +87,6 @@ public class PropertiesViewTest extends AbstractDockerBotTest {
 	@After
 	public void after() {
 		deleteImageContainerAfter(containerName,imageName);
-		deleteConnection();
 	}
 
 }

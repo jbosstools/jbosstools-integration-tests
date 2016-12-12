@@ -17,11 +17,9 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
-import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -35,12 +33,6 @@ public class PrivilegedModeTest extends AbstractDockerBotTest {
 	private String imageName = "debian";
 	private String imageTag = "jessie";
 	private String containerName = "test_run_debian";
-
-	@Before
-	public void before() {
-		openDockerPerspective();
-		createConnection();
-	}
 
 	@Test
 	public void testPrivilegedMode() {
@@ -57,7 +49,7 @@ public class PrivilegedModeTest extends AbstractDockerBotTest {
 		firstPage.setGiveExtendedPrivileges();
 		firstPage.finish();
 		new WaitWhile(new JobIsRunning());
-		new DockerExplorerView().getDockerConnection(getDockerServer()).getContainer(containerName).select();
+		getConnection().getContainer(containerName).select();
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
 		propertiesView.selectTab("Inspect");
@@ -69,7 +61,6 @@ public class PrivilegedModeTest extends AbstractDockerBotTest {
 	public void after() {
 		deleteContainer(this.containerName);
 		deleteImage(imageName, imageTag);
-		deleteConnection();
 	}
 
 }

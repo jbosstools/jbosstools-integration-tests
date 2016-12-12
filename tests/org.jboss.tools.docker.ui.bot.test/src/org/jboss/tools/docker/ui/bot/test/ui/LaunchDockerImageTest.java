@@ -13,11 +13,9 @@ package org.jboss.tools.docker.ui.bot.test.ui;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.reddeer.ui.RunDockerImageLaunchConfiguration;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -31,19 +29,13 @@ public class LaunchDockerImageTest extends AbstractDockerBotTest {
 	private String containerName = "test_variables";
 	private String configurationName = "test_configuration";
 
-	@Before
-	public void before() {
-		openDockerPerspective();
-		createConnection();
-	}
-
 	@Test
 	public void testLaunchConfiguration() {
 
 		pullImage(imageName);
 		String completeImageName = getCompleteImageName(imageName);
 		
-		new DockerExplorerView().getDockerConnection(getDockerServer()).enableConnection();
+		getConnection().enableConnection();
 		
 		RunDockerImageLaunchConfiguration runImageConf = new RunDockerImageLaunchConfiguration();
 		runImageConf.open();
@@ -63,7 +55,6 @@ public class LaunchDockerImageTest extends AbstractDockerBotTest {
 	@After
 	public void after() {
 		deleteImageContainerAfter(containerName,imageName);
-		deleteConnection();
 	}
 
 }

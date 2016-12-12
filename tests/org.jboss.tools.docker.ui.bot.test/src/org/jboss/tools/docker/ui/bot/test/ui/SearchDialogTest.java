@@ -25,10 +25,8 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageSearchPage;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageTagSelectionPage;
-import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -43,17 +41,10 @@ public class SearchDialogTest extends AbstractDockerBotTest {
 	private String expectedImageName = "busybox";
 	private String registryAddress = "https://index.docker.io";
 
-	@Before
-	public void before() {
-		openDockerPerspective();
-		createConnection();
-	}
-
 	@Test
 	public void testSearchDialog() {
-		checkConnection();
-		new DockerExplorerView().getDockerConnection(getDockerServer()).openImageSearchDialog(this.imageName, null,
-				this.registryAddress);
+		getConnection()
+			.openImageSearchDialog(this.imageName, null, this.registryAddress);
 		ImageSearchPage pageOne = new ImageSearchPage();
 		pageOne.searchImage();
 		assertFalse("Search result is empty!", pageOne.getSearchResults().isEmpty());
@@ -81,7 +72,6 @@ public class SearchDialogTest extends AbstractDockerBotTest {
 	@After
 	public void after() {
 		deleteImageContainerAfter(imageName+":"+imageTag);
-		deleteConnection();
 	}
 
 }

@@ -27,11 +27,14 @@ import org.jboss.tools.docker.reddeer.ui.resources.DockerConnection;
 /**
  * 
  * @author jkopriva@redhat.com, mlabuda@redhat.com
+ * @contributor adietish@redhat.com
  *
  */
-
 public class DockerExplorerView extends WorkbenchView {
 
+	public static final String SCHEME_TERMINATOR = "://";
+	public static final String SCHEME_TCP = "tcp";
+	public static final String SCHEME_HTTP = "http";
 	private TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 
 	public DockerExplorerView() {
@@ -43,13 +46,13 @@ public class DockerExplorerView extends WorkbenchView {
 	 * 
 	 * @return list of docker connections names
 	 */
-	public List<String> getDockerConnectionsNames() {
+	public List<String> getDockerConnectionNames() {
 		activate();
 		List<String> connectionsNames = new ArrayList<String>();
 		try {
 			List<TreeItem> connections = new DefaultTree().getItems();
 			for (TreeItem item : connections) {
-				connectionsNames.add(treeViewerHandler.getNonStyledText(item));
+				connectionsNames.add(getName(item));
 			}
 		} catch (CoreLayerException ex) {
 			// no connections in view
@@ -57,14 +60,31 @@ public class DockerExplorerView extends WorkbenchView {
 		return connectionsNames;
 	}
 
-	public boolean connectionExist(String connectionName) {
-		return getDockerConnectionsNames().contains(connectionName);
+	private String getName(TreeItem item) {
+		return treeViewerHandler.getNonStyledText(item);
+	}
+
+	private String getHost(TreeItem item) {
+		String[] styledTexts = treeViewerHandler.getStyledTexts(item);
+		if (styledTexts == null
+				|| styledTexts.length == 0) {
+			return null;
+		}
+		return styledTexts[0].replaceAll("[\\(\\)]", "");
+	}
+
+	public boolean connectionExistForName(String connectionName) {
+		return getDockerConnectionByName(connectionName) != null;
+	}
+
+	public boolean connectionExistForHost(String host) {
+		return getDockerConnectionByHost(host) != null;
 	}
 
 	public void refreshView() {
-		List<String> connections = getDockerConnectionsNames();
+		List<String> connections = getDockerConnectionNames();
 		for (String connection : connections) {
-			getDockerConnection(connection).refresh();
+			getDockerConnectionByName(connection).refresh();
 		}
 	}
 
@@ -73,7 +93,7 @@ public class DockerExplorerView extends WorkbenchView {
 	 * Connection socket with name "default".
 	 * 
 	 */
-	public void createDockerConnection(String connectionName) {
+	public void createDockerConnectionSearch(String connectionName) {
 		activate();
 		NewDockerConnectionPage connectionWizard = new NewDockerConnectionPage();
 		connectionWizard.open();
@@ -88,7 +108,7 @@ public class DockerExplorerView extends WorkbenchView {
 	 * @param unixSocket
 	 *            unix socket of a docker daemon
 	 */
-	public void createDockerConnection(String connectionName, String unixSocket) {
+	public void createDockerConnectionUnix(String connectionName, String unixSocket) {
 		createDockerConnection(AuthenticationMethod.UNIX_SOCKET, unixSocket, null, connectionName);
 	}
 
@@ -101,7 +121,7 @@ public class DockerExplorerView extends WorkbenchView {
 	 * @param certificatePath
 	 *            path to a certificate
 	 */
-	public void createDockerConnection(String connectionName, String tcpURI, String certificatePath) {
+	public void createDockerConnectionURI(String connectionName, String tcpURI, String certificatePath) {
 		createDockerConnection(AuthenticationMethod.TCP_CONNECTION, tcpURI, certificatePath, connectionName);
 	}
 
@@ -125,11 +145,9 @@ public class DockerExplorerView extends WorkbenchView {
 		NewDockerConnectionPage connectionWizard = new NewDockerConnectionPage();
 		connectionWizard.open();
 		connectionWizard.setConnectionName(connectionName);
-		if (AuthenticationMethod.TCP_CONNECTION.equals(authMethod) && authentificationCertificatePath != null) {
+		if (AuthenticationMethod.TCP_CONNECTION.equals(authMethod)) {
 			connectionWizard.setTcpConnection(unixSocketOrTcpURI, authentificationCertificatePath, false);
-		} else if (AuthenticationMethod.TCP_CONNECTION.equals(authMethod) && authentificationCertificatePath == null) {
-			connectionWizard.setTcpConnection(unixSocketOrTcpURI);
-		} else {
+		} else if (AuthenticationMethod.UNIX_SOCKET.equals(authMethod)) {
 			connectionWizard.setUnixSocket(unixSocketOrTcpURI);
 		}
 		connectionWizard.finish();
@@ -140,13 +158,62 @@ public class DockerExplorerView extends WorkbenchView {
 	 * 
 	 * @return DockerConnection with specific name or null if does not exist.
 	 */
-	public DockerConnection getDockerConnection(String connectionName) {
+	public DockerConnection getDockerConnectionByName(String connectionName) {
 		activate();
 		try {
 			return new DockerConnection(treeViewerHandler.getTreeItem(new DefaultTree(), connectionName));
 		} catch (JFaceLayerException ex) {
 			return null;
 		}
+	}
+
+	public DockerConnection getDockerConnectionByHost(String host) {
+		activate();
+		try {
+			List<TreeItem> connections = new DefaultTree().getItems();
+			for (TreeItem item : connections) {
+				if (equalHosts(host, getHost(item))) {
+					return new DockerConnection(item);
+				}
+			}
+		} catch (CoreLayerException ex) {
+			// no connections in view
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns {@code true} if the 2 given hosts are equal. 
+	 * TCP and HTTP schemes are considered as equivalent.
+	 * 
+	 * @param host1
+	 * @param host2
+	 * @return returns true if the host1 is equal to host2
+	 */
+	private boolean equalHosts(String host1, String host2) {
+		if (host1 == null) {
+			return host2 == null;
+		}
+		
+		if (host1.equals(host2)) {
+			return true;
+		}
+		
+		int schemeIndex1 = host1.indexOf(':');
+		if (schemeIndex1 >= 0) {
+			int schemeIndex2 = host2.indexOf(SCHEME_TERMINATOR);
+			if (schemeIndex2 >= 0) {
+				String scheme1 = host1.substring(0, schemeIndex1);
+				String scheme2 = host2.substring(0, schemeIndex2);
+				if ((SCHEME_HTTP.equals(scheme1) || SCHEME_TCP.equals(scheme1))
+						&& (SCHEME_HTTP.equals(scheme2) || SCHEME_TCP.equals(scheme2))) {
+					String hostAddr1 = host1.substring(schemeIndex1 + SCHEME_TERMINATOR.length(), host1.length());
+					String hostAddr2 = host2.substring(schemeIndex2 + SCHEME_TERMINATOR.length(), host2.length());
+					return hostAddr1.equals(hostAddr2);
+				}
+			}
+		}
+		return false;
 	}
 
 }

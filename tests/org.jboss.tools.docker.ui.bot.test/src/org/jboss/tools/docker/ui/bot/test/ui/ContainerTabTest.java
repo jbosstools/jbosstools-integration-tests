@@ -20,11 +20,9 @@ import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerContainersTab;
-import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -37,12 +35,6 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 
 	private String imageName = "docker/whalesay";
 	private String containerName = "test_run_docker_whalesay";
-
-	@Before
-	public void before() {
-		openDockerPerspective();
-		createConnection();
-	}
 
 	@Test
 	public void testContainerTab() {
@@ -82,7 +74,7 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 			}
 		}
 
-		new DockerExplorerView().getDockerConnection(getDockerServer()).getContainer(containerName).select();
+		getConnection().getContainer(containerName).select();
 
 		// get values from Properties view
 		PropertiesView propertiesView = new PropertiesView();
@@ -128,7 +120,6 @@ public class ContainerTabTest extends AbstractDockerBotTest {
 	@After
 	public void after() {
 		deleteImageContainerAfter(containerName,imageName);
-		deleteConnection();
 	}
 
 }

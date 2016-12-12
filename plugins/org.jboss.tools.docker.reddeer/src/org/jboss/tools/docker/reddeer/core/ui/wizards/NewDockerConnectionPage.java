@@ -35,7 +35,6 @@ import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
  * @author jkopriva@redhat.com
  *
  */
-
 public class NewDockerConnectionPage extends WizardPage {
 	private static final String NEW_DOCKER_CONNECTION_SHELL = "New Docker Connection";
 
@@ -66,7 +65,6 @@ public class NewDockerConnectionPage extends WizardPage {
 		setConnectionName(unixSocket);
 		new CheckBox("Use custom connection settings:").toggle(true);
 		new LabeledText("Location:").setText(unixSocket);
-
 	}
 
 	public void setTcpConnection(String uri) {

@@ -16,9 +16,8 @@ import static org.junit.Assert.assertTrue;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunResourceVolumesVariablesPage;
-import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
@@ -35,12 +34,6 @@ public class LabelsTest extends AbstractDockerBotTest {
 	private String imageName = "debian";
 	private String imageTag = "jessie";
 	private String containerName = "test_run_debian_label";
-
-	@Before
-	public void before() {
-		openDockerPerspective();
-		createConnection();
-	}
 
 	@Test
 	public void testLabels() {
@@ -60,7 +53,7 @@ public class LabelsTest extends AbstractDockerBotTest {
 		secondPage.addLabel("foo", "bar");
 		secondPage.finish();
 		new WaitWhile(new JobIsRunning());
-		new DockerExplorerView().getDockerConnection(getDockerServer()).getContainer(containerName).select();
+		getConnection().getContainer(containerName).select();
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
 		propertiesView.selectTab("Inspect");
@@ -71,7 +64,6 @@ public class LabelsTest extends AbstractDockerBotTest {
 	@After
 	public void after() {
 		deleteImageContainerAfter(containerName,imageName + ":" + imageTag);
-		deleteConnection();
 	}
 
 }

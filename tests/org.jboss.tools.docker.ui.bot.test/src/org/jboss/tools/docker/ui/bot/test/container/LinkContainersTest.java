@@ -18,14 +18,12 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunResourceVolumesVariablesPage;
-import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
+import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.reddeer.ui.DockerTerminal;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -40,12 +38,6 @@ public class LinkContainersTest extends AbstractDockerBotTest {
 	private String imageTag = "latest";
 	private String containerNameDB = "test_run_mariadb";
 	private String containerNameClient = "test_connect_mariadb";
-
-	@Before
-	public void before() {
-		openDockerPerspective();
-		createConnection();
-	}
 
 	@Test
 	public void testLinkContainers() {
@@ -74,7 +66,7 @@ public class LinkContainersTest extends AbstractDockerBotTest {
 	}
 
 	public String getDBAddress() {
-		new DockerExplorerView().getDockerConnection(getDockerServer()).getContainer(containerNameDB).select();
+		getConnection().getContainer(containerNameDB).select();
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
 		propertiesView.selectTab("Inspect");
@@ -108,7 +100,6 @@ public class LinkContainersTest extends AbstractDockerBotTest {
 	@After
 	public void after() {
 		deleteImageContainerAfter(containerNameClient, containerNameDB, imageName + ":" + imageTag);
-		deleteConnection();
 	}
 
 }

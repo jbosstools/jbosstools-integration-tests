@@ -40,7 +40,6 @@ import org.jboss.tools.docker.reddeer.preferences.DockerComposePreferencePage;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -53,11 +52,6 @@ public class ComposeTest extends AbstractDockerBotTest {
 	private static String imageName = "test_compose";
 	private static final String URL = "http://0.0.0.0:5000/";
 	private static final String DOCKER_COMPOSE_PATH = "/usr/local/bin";
-
-	@Before
-	public void before() {
-		prepareWorkspace();
-	}
 
 	@Test
 	public void testCompose() {

@@ -22,7 +22,6 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -36,11 +35,6 @@ public class ImageTagTest extends AbstractDockerBotTest {
 	private static String imageNameToPull = "busybox:latest";
 	private static String imageTag = "testtag";
 	private static String imageTagUppercase = "UPPERCASETAG";
-
-	@Before
-	public void before() {
-		prepareWorkspace();
-	}
 
 	@Test
 	public void testAddRemoveTagToImage() {
