@@ -16,26 +16,27 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.matcher.WithTextMatchers;
 import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.core.matcher.WithTextMatchers;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.preferences.MavenUserPreferencePage;
 import org.jboss.tools.maven.reddeer.profiles.SelectProfilesDialog;
@@ -44,7 +45,6 @@ import org.jboss.tools.maven.reddeer.wizards.MavenImportWizard;
 import org.jboss.tools.maven.reddeer.wizards.MavenImportWizardFirstPage;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -83,6 +83,16 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 		mu.setUserSettings(new File("resources/usersettings/settings.xml").getCanonicalPath());
 		mu.apply();
 		preferenceDialog.ok();
+		createProjects();
+	}
+	
+	private static void createProjects() throws IOException {
+		Files.createDirectory(Paths.get("resources/projects/simple-jar"));
+		Files.createDirectory(Paths.get("resources/projects/simple-jar1"));
+		Files.createDirectory(Paths.get("resources/projects/simple-jar2"));
+		Files.copy(Paths.get("resources/projects/pom.xml"), Paths.get("resources/projects/simple-jar/pom.xml"));
+		Files.copy(Paths.get("resources/projects/pom1.xml"), Paths.get("resources/projects/simple-jar1/pom.xml"));
+		Files.copy(Paths.get("resources/projects/pom2.xml"), Paths.get("resources/projects/simple-jar2/pom.xml"));
 		importMavenProject("resources/projects/simple-jar/pom.xml");
 		importMavenProject("resources/projects/simple-jar1/pom.xml");
 		importMavenProject("resources/projects/simple-jar2/pom.xml");
