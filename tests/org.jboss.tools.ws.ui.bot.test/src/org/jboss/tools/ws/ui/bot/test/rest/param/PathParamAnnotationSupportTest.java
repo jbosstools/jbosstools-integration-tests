@@ -18,16 +18,19 @@ import javax.ws.rs.PathParam;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * {@link PathParam} annotation support test<br/><br/>
  * 
  * @author Radoslav Rabara
  */
+@RunWith(RedDeerSuite.class)
 public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 
 	/**

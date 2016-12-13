@@ -22,6 +22,7 @@ Export-Package: org.jboss.tools.common.reddeer.label,
  org.jboss.tools.common.reddeer.perspectives,
  org.jboss.tools.common.reddeer.preferences,
  org.jboss.tools.common.reddeer.propertieseditor,
+ org.jboss.tools.common.reddeer.requirements,
  org.jboss.tools.common.reddeer.utils
 Import-Package: org.apache.log4j
 Eclipse-BundleShape: jar

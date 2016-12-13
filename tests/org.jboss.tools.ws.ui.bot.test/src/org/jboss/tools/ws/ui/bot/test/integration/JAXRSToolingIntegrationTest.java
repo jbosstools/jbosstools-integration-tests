@@ -16,6 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
@@ -24,12 +25,14 @@ import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView.RequestType;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * 
  * @author jjankovi
  *
  */
+@RunWith(RedDeerSuite.class)
 @JBossServer(state=ServerReqState.RUNNING, cleanup=false)
 @OpenPerspective(JavaEEPerspective.class)
 public class JAXRSToolingIntegrationTest extends RESTfulTestBase {

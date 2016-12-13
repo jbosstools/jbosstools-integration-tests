@@ -17,9 +17,11 @@ import javax.ws.rs.MatrixParam;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * {@link MatrixParam} annotation support test<br/><br/>
@@ -27,6 +29,7 @@ import org.junit.Test;
  * @author jjankovi
  * @author Radoslav Rabara
  */
+@RunWith(RedDeerSuite.class)
 public class MatrixParamAnnotationSupportTest extends RESTfulTestBase {
 
 	private final String projectName = "matrix1";

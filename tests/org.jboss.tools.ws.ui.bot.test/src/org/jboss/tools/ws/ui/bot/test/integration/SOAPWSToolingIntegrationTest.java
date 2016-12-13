@@ -17,6 +17,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.ws.reddeer.swt.condition.WsTesterNotEmptyResponseText;
@@ -26,6 +27,7 @@ import org.jboss.tools.ws.ui.bot.test.soap.SOAPTestBase;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Class for testing SOAP integration in Web Service Tester
@@ -33,6 +35,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@RunWith(RedDeerSuite.class)
 @AutoBuilding(value = false, cleanup = true)
 public class SOAPWSToolingIntegrationTest extends SOAPTestBase {
 

@@ -15,6 +15,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.hamcrest.core.Is;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
@@ -31,6 +32,7 @@ import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Test if adding JAX-RS facet into project causes enabling
@@ -39,6 +41,7 @@ import org.junit.Test;
  * @author jjankovi
  *
  */
+@RunWith(RedDeerSuite.class)
 public class JAXRSFacetTest extends RESTfulTestBase {
 
 	private static String wsProjectName = "jaxrsFacet";
@@ -69,7 +72,7 @@ public class JAXRSFacetTest extends RESTfulTestBase {
 	
 	private void checkJAXRSTooling() {
 		RESTfulWebServicesNode restWebServicesNode = new RESTfulWebServicesNode(wsProjectName);
-		AbstractWait.sleep(TimePeriod.getCustom(3));
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		assertThat("Different count of rest services was expected", 
 				restWebServicesNode.getWebServices().size(), Is.is(1));
 	}

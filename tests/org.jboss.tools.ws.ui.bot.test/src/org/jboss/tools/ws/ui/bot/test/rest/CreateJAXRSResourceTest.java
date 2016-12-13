@@ -13,6 +13,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
@@ -23,12 +24,14 @@ import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSResourceWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Tests operates on JAX-RS Resource wizard
  * 
  * @author Radoslav Rabara
  */
+@RunWith(RedDeerSuite.class)
 @JBossServer(state=ServerReqState.PRESENT)
 public class CreateJAXRSResourceTest extends RESTfulTestBase {
 

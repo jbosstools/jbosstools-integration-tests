@@ -14,6 +14,7 @@ import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -21,6 +22,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Testing support for custom Name-Binding annotation
@@ -32,6 +34,7 @@ import org.junit.Test;
  * @see http://tools.jboss.org/documentation/whatsnew/jbosstools/4.2.0.Beta1.html#webservices
  * @since JBT 4.2.0.Beta1
  */
+@RunWith(RedDeerSuite.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
 @AutoBuilding(value = false, cleanup = true)
 public class FiltersInterceptorsSupportTest extends RESTfulTestBase {

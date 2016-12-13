@@ -1,11 +1,13 @@
 package org.jboss.tools.ws.ui.bot.test.cxf;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.ws.reddeer.ui.preferences.WsCxf2xPreferencePage;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
 import org.jboss.tools.ws.ui.bot.test.wsclient.WSClientTestTemplate;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
 /**
  * Test Web Service Client with CXF Service Runtime, tests inherited from
@@ -14,6 +16,7 @@ import org.junit.BeforeClass;
  * @author Radoslav Rabara
  * 
  */
+@RunWith(RedDeerSuite.class)
 public class CxfWsClientTest extends WSClientTestTemplate {
 
 	private static final String CXF_HOME_LOCATION;

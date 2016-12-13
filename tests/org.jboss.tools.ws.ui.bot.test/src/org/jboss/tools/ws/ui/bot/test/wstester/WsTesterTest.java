@@ -30,6 +30,7 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
@@ -46,12 +47,14 @@ import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Tests for Web Service Tester
  *
  * @author jlukas
  */
+@RunWith(RedDeerSuite.class)
 public class WsTesterTest {
 
 	private static final String SERVICE_URL = "http://www.webservicex.net/BibleWebservice.asmx";

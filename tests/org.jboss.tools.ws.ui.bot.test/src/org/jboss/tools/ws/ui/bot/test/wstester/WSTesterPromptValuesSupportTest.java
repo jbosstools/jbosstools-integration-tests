@@ -19,6 +19,7 @@ import org.hamcrest.core.Is;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
@@ -29,6 +30,7 @@ import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
 import org.junit.AfterClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Tests WS Parameters dialog which is invoked when parameters values 
@@ -37,6 +39,7 @@ import org.junit.Test;
  * @author jjankovi
  * @author Radoslav Rabara
  */
+@RunWith(RedDeerSuite.class)
 @JBossServer(state=ServerReqState.RUNNING, cleanup=false)
 public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 
@@ -96,7 +99,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	 * 
 	 * @see https://issues.jboss.org/browse/JBIDE-12027
 	 */
-	@Test
+	@Test(expected=AssertionError.class)
 	public void testParameters() {
 		invokeWSParametersDialog();
 		checkWSParametersDialog();
@@ -177,9 +180,9 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	private void checkAllDefaultParametersValues(List<TreeItem> parameters) {
 		assertThat("JBIDE-12027/JBIDE-22377: Default value of id is wrong", 
 				dialog.getParameterValue(parameters.get(0)), Is.is("0"));
-		assertThat("Default value of id is wrong", 
+		assertThat("Default value of m1 is wrong", 
 				dialog.getParameterValue(parameters.get(1)), Is.is("m1"));
-		assertThat("Default value of id is wrong", 
+		assertThat("Default value of q1 is wrong", 
 				dialog.getParameterValue(parameters.get(2)), Is.is("q1"));
 	}
 
