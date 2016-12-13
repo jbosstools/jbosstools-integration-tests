@@ -11,7 +11,8 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Dtest.configurations.dir=${configurations.dir}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties}
+			-Dtest.configurations.dir=${configurations.dir}</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 		<suiteClass>org.jboss.tools.aerogear.ui.bot.test.AerogearAllBotTests</suiteClass>
 	</properties>
@@ -44,6 +45,36 @@
 		</plugins>
 	</build>
 	<profiles>
+		<profile>
+			<id>aerogear-check-pr</id>
+			<properties>
+				<suiteClass>org.jboss.tools.aerogear.ui.bot.test.AerogearAllBotTests</suiteClass>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<configuration>
+							<dependency-resolution>
+								<extraRequirements>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<artifactId>org.jboss.tools.aerogear.thym.feature.feature.group</artifactId>
+										<version>0.0.0</version>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<artifactId>org.jboss.tools.cordovasim.feature.feature.group</artifactId>
+										<version>0.0.0</version>
+									</requirement>
+								</extraRequirements>
+							</dependency-resolution>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 		<profile>
 			<id>cordovasim-check-pr</id>
 			<properties>

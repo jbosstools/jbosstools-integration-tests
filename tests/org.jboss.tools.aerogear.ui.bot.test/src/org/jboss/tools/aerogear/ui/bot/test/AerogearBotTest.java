@@ -32,6 +32,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -171,6 +172,7 @@ public class AerogearBotTest {
 
 	@After
 	public void tearDown() {
+		ShellHandler.getInstance().closeAllNonWorbenchShells();
 		new CleanWorkspaceRequirement().fulfill();
 	}
 
