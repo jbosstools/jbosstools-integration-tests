@@ -95,7 +95,7 @@ public class LogsTest extends AbstractCreateApplicationTest {
 		ConsoleView consoleView = new ConsoleView();
 		assertTrue("Console label is incorrect, it should contains project name and name of build pod.\n"
 				+ "but label is: " + consoleView.getConsoleLabel(), consoleView.getConsoleLabel().contains(
-				DatastoreOS3.PROJECT1 + "\\eap-app-1-build"));
+				DatastoreOS3.PROJECT1 + "\\eap-app-1-build\n Could be failing because of JBIDE-23622."));
 		
 		try {
 			new WaitUntil(new org.jboss.reddeer.eclipse.condition.ConsoleHasText("Push successful"),

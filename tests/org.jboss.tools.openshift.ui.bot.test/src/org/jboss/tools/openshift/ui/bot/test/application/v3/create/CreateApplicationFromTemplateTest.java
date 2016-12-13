@@ -16,7 +16,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.List;
 
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -28,10 +27,8 @@ import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWi
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.button.NoButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -62,7 +59,8 @@ import org.junit.Test;
 public class CreateApplicationFromTemplateTest {
 	
 	private String gitFolder = "jboss-eap-quickstarts";
-	private String projectName = "jboss-kitchensink";
+	private String helloworldProject = "jboss-helloworld";
+	private String kitchensinkProject = "jboss-kitchensink";
 	
 	private static final String TESTS_PROJECT = "org.jboss.tools.openshift.ui.bot.test";
 	private static final String TESTS_PROJECT_LOCATION = System.getProperty("user.dir");
@@ -93,13 +91,19 @@ public class CreateApplicationFromTemplateTest {
 	@Before
 	public void setUp() {
 		TestUtils.cleanupGitFolder(gitFolder);
-		if (new ProjectExists(projectName).test()) {
-			new ProjectExplorer().getProject(projectName).delete(true);
-		}
+		deleteProject(kitchensinkProject);
+		deleteProject(helloworldProject);
+		
 		genericWebhookURL = null;
 		githubWebhookURL = null;
 		srcRepoURI = null;
 		applicationName = null;
+	}
+	
+	private void deleteProject(String name) {
+		if (new ProjectExists(name).test()) {
+			new ProjectExplorer().getProject(name).delete(true);
+		}
 	}
 	
 	@Test
@@ -124,7 +128,7 @@ public class CreateApplicationFromTemplateTest {
 		assertTrue("Defined resource button should be enabled", 
 				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
 		
-		completeApplicationCreationAndVerify();
+		completeApplicationCreationAndVerify(helloworldProject);
 	}
 	
 	@Test
@@ -138,7 +142,7 @@ public class CreateApplicationFromTemplateTest {
 		assertTrue("Defined resource button should be enabled", 
 				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
 		
-		completeApplicationCreationAndVerify();
+		completeApplicationCreationAndVerify(helloworldProject);
 	}
 	
 	@Test
@@ -150,7 +154,7 @@ public class CreateApplicationFromTemplateTest {
 		assertTrue("Defined resource button should be enabled", 
 				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
 		
-		completeApplicationCreationAndVerify();
+		completeApplicationCreationAndVerify(helloworldProject);
 	}
 	
 	@Test
@@ -158,10 +162,10 @@ public class CreateApplicationFromTemplateTest {
 		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
 		new DefaultTree().selectItems(new DefaultTreeItem(OpenShiftLabel.Others.EAP_TEMPLATE));
 		
-		completeApplicationCreationAndVerify();
+		completeApplicationCreationAndVerify(kitchensinkProject);
 	}
 	
-	private void completeApplicationCreationAndVerify() {
+	private void completeApplicationCreationAndVerify(String projectName) {
 		completeWizardAndVerify();
 		importApplicationAndVerify(projectName);
 		verifyCreatedApplication();
@@ -228,22 +232,12 @@ public class CreateApplicationFromTemplateTest {
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
 		new FinishButton().click();
 		
-		try {
-			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CHEATSHEET), TimePeriod.LONG);
-			
-			new DefaultShell(OpenShiftLabel.Shell.CHEATSHEET);
-			new CheckBox(0).click();
-			new NoButton().click();
-			
-			new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CHEATSHEET));
-		} catch (WaitTimeoutExpiredException ex) {
-			// do nothing if cheat sheet is not provided
-		}
-		
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
 		
-		assertTrue("Project Explorer should contain imported project kitchensink",
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		new WaitUntil(new ProjectExists(projectName, new ProjectExplorer()), TimePeriod.LONG, false);
+		assertTrue("Project Explorer should contain imported project jboss-helloworld",
 				projectExplorer.containsProject(projectName));
 	}
 	
@@ -285,15 +279,13 @@ public class CreateApplicationFromTemplateTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.reopen();
 		
+		deleteProject(kitchensinkProject);
+		deleteProject(helloworldProject);
+		
 		OpenShift3Connection connection  = explorer.getOpenShift3Connection();
 		connection.getProject().delete();
 		
 		connection.createNewProject();
-		
-		ProjectExplorer projectExplorer = new ProjectExplorer();
-		if (projectExplorer.containsProject(projectName)) {
-			projectExplorer.getProject(projectName).delete(true);
-		}
 	}
 	
 	@AfterClass

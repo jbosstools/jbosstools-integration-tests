@@ -18,8 +18,6 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
@@ -220,15 +218,8 @@ public class TemplatesCreator {
 		
 		new WaitWhile(new TreeIsAvailable());
 		
-		final org.eclipse.swt.widgets.Text text = new DefaultText().getSWTWidget();
-		Display.syncExec(new ResultRunnable<Boolean>() {
-
-			@Override
-			public Boolean run() {
-				text.setText(templateLocalPath);
-				return true;
-			}
-		});
+		new LabeledText(OpenShiftLabel.TextLabels.SELECT_LOCAL_TEMPLATE).setText(templateLocalPath);
+			
 	}
 
 	private void selectServerTemplate(String templateName) {

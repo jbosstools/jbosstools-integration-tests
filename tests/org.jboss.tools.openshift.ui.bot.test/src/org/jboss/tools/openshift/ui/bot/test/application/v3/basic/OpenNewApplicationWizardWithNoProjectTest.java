@@ -39,6 +39,8 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.openshift.reddeer.requirement.CleanOpenShiftConnectionRequirement.CleanConnection;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
@@ -46,27 +48,17 @@ import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
+@RequiredBasicConnection
+@CleanConnection
 public class OpenNewApplicationWizardWithNoProjectTest {
 
 	private String projectName;
-	
+
 	@Before
 	public void generateProjectName() {
 		projectName = "tmp-project" + System.currentTimeMillis();
-	}
-	
-	@BeforeClass
-	public static void removeProjects() {
-		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.open();
-		
-		OpenShift3Connection connection = explorer.getOpenShift3Connection();
-		connection.getProject().delete();
-		connection.getProject(DatastoreOS3.PROJECT2).delete();
-		connection.refresh();
 	}
 	
 	@Test
@@ -169,7 +161,8 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 		new WaitWhile(new JobIsRunning());
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
-		assertTrue("Created project was not preselected for a new OpenShift application",
+		assertTrue("Created project was not preselected for a new OpenShift application. Could be failing because "
+				+ "of https://issues.jboss.org/browse/JBIDE-21593.",
 				new LabeledCombo(OpenShiftLabel.TextLabels.PROJECT).getSelection().equals(projectName));
 		
 		closeWizard();
@@ -228,13 +221,13 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 	}
 	
 	@AfterClass
-	public static void recreateProjects() {
+	public static void createProjects() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
 		OpenShift3Connection connection = explorer.getOpenShift3Connection();
 		connection.createNewProject();
-		connection.createNewProject(DatastoreOS3.PROJECT2);
+		connection.createNewProject2();
 	}
 
 	private void clearLog() {

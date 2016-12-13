@@ -337,6 +337,7 @@ public class OpenShiftLabel {
 		public static final String EAP_BUILDER_IMAGE = "jboss-eap64-openshift:1.3 (builder, eap, javaee, java, jboss, xpaas) - openshift";
 		public static final String NODEJS_TEMPLATE = "nodejs-example (quickstart, nodejs) - openshift";
 		public static final String RED_HAT_CENTRAL = "Red Hat Central";
+		public static final String MAVEN_MIRROR_URL = "MAVEN_MIRROR_URL";
 		public static final String[] NEW_APP_MENU = {"File", "New", "OpenShift Application"};
 		public static final String OPENSHIFT_APP = "OpenShift Application";
 		public static final String OPENSHIFT_CENTRAL_SCRIPT = "$(\"#wizards\" ).find('a').filter(\""

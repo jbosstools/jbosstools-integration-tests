@@ -67,8 +67,7 @@ import org.junit.Test;
 
 public class DeployEclipseProjectTest {
 
-	private static String EAP_APP_REPO_URI = "git@github.com:mlabuda/jboss-eap-application.git";
-	private static String HTTPS_REPO = "https://github.com/mlabuda/jboss-eap-application";
+	private static String HTTPS_REPO = "https://github.com/mlabuda/jboss-eap-application.git";
 	private static String GIT_NAME = "jboss-eap-application";
 	private static String PROJECT_NAME = "jboss-javaee6-webapp";
 	
@@ -94,7 +93,7 @@ public class DeployEclipseProjectTest {
 		
 		nextWizardPage();
 		
-		new LabeledText("URI:").setText(EAP_APP_REPO_URI);
+		new LabeledText("URI:").setText(HTTPS_REPO);
 		
 		nextWizardPage();
 		nextWizardPage();
@@ -104,7 +103,7 @@ public class DeployEclipseProjectTest {
 		
 		new FinishButton().click();
 	
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		new WaitUntil(new ProjectExists(PROJECT_NAME), TimePeriod.LONG);
 	}
 	
@@ -182,7 +181,7 @@ public class DeployEclipseProjectTest {
 	}
 	
 	@Test
-	public void testDeployExistingEclipseProjectToOpenShift() {
+	public void testCorrectTemplateParamValuesWhenTemplateIsSelectedFirst() {
 		NewOpenShift3ApplicationWizard wizard = new NewOpenShift3ApplicationWizard();
 		wizard.openWizardFromExplorer();
 		
@@ -191,19 +190,45 @@ public class DeployEclipseProjectTest {
 		
 		wizard.next();
 		
-		//https://github.com/mlabuda/jboss-eap-application
-		new DefaultTable().getItem(TemplateParametersTest.SOURCE_REPOSITORY_URL).select();
+		assertTrue("Wrong source repository URL is shown for eclipse project being deployed on "
+				+ "OpenShift based on eap template. Could be failing because of https://issues.jboss.org/browse/JBIDE-23639.",
+				new DefaultTable().getItem(TemplateParametersTest.SOURCE_REPOSITORY_URL).getText(1).equals(HTTPS_REPO));
+		assertTrue("Wrong source repository REF is shown for eclipse project being deployed on "
+				+ "OpenShift based on eap template. Could be failing because of https://issues.jboss.org/browse/JBIDE-23639.",
+				new DefaultTable().getItem(TemplateParametersTest.SOURCE_REPOSITORY_REF).getText(1).equals("master"));
 		
-		new WaitUntil(new WidgetIsEnabled(new PushButton(OpenShiftLabel.Button.EDIT)));
+		wizard.cancel();
+	}
+	
+	@Test
+	public void testCorrectTemplateParamsValuesWhenEclipseProjectIsSelectedFirst() {
+		NewOpenShift3ApplicationWizard wizard = new NewOpenShift3ApplicationWizard();
+		wizard.openWizardFromExplorer();
 		
-		new PushButton(OpenShiftLabel.Button.EDIT).click();
+		new DefaultText().setText(PROJECT_NAME);
+		new DefaultTreeItem(OpenShiftLabel.Others.EAP_TEMPLATE).select();
 		
-		new DefaultShell(OpenShiftLabel.Shell.EDIT_TEMPLATE_PARAMETER);
-		new DefaultText().setText(HTTPS_REPO);
-		new OkButton().click();
+		wizard.next();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_TEMPLATE_PARAMETER));
+		assertTrue("Wrong source repository URL is shown for eclipse project being deployed on "
+				+ "OpenShift based on eap template.",
+				new DefaultTable().getItem(TemplateParametersTest.SOURCE_REPOSITORY_URL).getText(1).equals(HTTPS_REPO));
+		assertTrue("Wrong source repository REF is shown for eclipse project being deployed on "
+				+ "OpenShift based on eap template.",
+				new DefaultTable().getItem(TemplateParametersTest.SOURCE_REPOSITORY_REF).getText(1).equals("master"));
 		
+		wizard.cancel();
+	}
+	
+	@Test
+	public void testDeployExistingEclipseProjectToOpenShiftSelectProjectFirst() {
+		NewOpenShift3ApplicationWizard wizard = new NewOpenShift3ApplicationWizard();
+		wizard.openWizardFromExplorer();
+		
+		new DefaultTreeItem(OpenShiftLabel.Others.EAP_TEMPLATE).select();
+		new DefaultText().setText(PROJECT_NAME);
+		
+		wizard.next();
 		wizard.next();
 		wizard.finish();
 		

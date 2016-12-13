@@ -31,6 +31,7 @@ public class DatastoreOS3 {
 	public static final String KEY_AUTHMETHOD = "openshift.authmethod";
 	private static final String KEY_TOKEN = "openshift.token";
 	public static final String KEY_PASSWORD = "openshift.password";
+	public static final String KEY_NEXUS_MIRROR = "openshift.nexus.mirror";
 	
 	static {
 		assertTrue("Please add '-D" + KEY_SERVER + "=[host]' to your launch arguments", StringUtils.isNotBlank(System.getProperty(KEY_SERVER)));
@@ -51,15 +52,16 @@ public class DatastoreOS3 {
 	public static String PASSWORD = System.getProperty(KEY_PASSWORD);
 	public static String TOKEN = System.getProperty(KEY_TOKEN);
 	public static String PUBLIC_OS3_SERVER = "https://console.preview.openshift.com";
+	public static String NEXUS_MIRROR_URL = System.getProperty(KEY_NEXUS_MIRROR);
 	public static AuthenticationMethod AUTH_METHOD = AuthenticationMethod.valueOfIgnoreCase(System.getProperty(KEY_AUTHMETHOD));
 	
 	// github credentials
 	public static final String GIT_USERNAME = System.getProperty("github.username", "openshift-tools-testing-account");
 	public static final String GIT_PASSWORD = System.getProperty("github.password");
 	
-	public static String PROJECT1 = "project-name" + System.currentTimeMillis();
+	public static String PROJECT1 = "project-name01-" + System.currentTimeMillis();
 	public static String PROJECT1_DISPLAYED_NAME = "displayedName-" + System.currentTimeMillis();
-	public static final String PROJECT2 = "project-name02";
+	public static String PROJECT2 = "project-name02-" + System.currentTimeMillis();
 	public static final String TEST_PROJECT = "test-project";
 
 	
@@ -71,10 +73,15 @@ public class DatastoreOS3 {
 	 */
 	public static void generateProjectName() {
 		long seed = System.currentTimeMillis();
-		PROJECT1 = "generated-name" + seed;
+		PROJECT1 = "project-name01-" + seed;
 		PROJECT1_DISPLAYED_NAME = "displayedName-" + seed;
 	}
 
+	public static void generateProject2Name() {
+		long seed = System.currentTimeMillis();
+		PROJECT2 = "project-name02-" + seed;
+	}
+	
 	public static String getValueOrDefault(String value, String defaultValue) {
 		if (StringUtils.isBlank(value)) {
 			return defaultValue;

@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test.application.v3.create;
 
+import java.io.File;
+
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -24,24 +26,30 @@ import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.jboss.tools.openshift.reddeer.wizard.v3.TemplateParameter;
 import org.jboss.tools.openshift.reddeer.wizard.v3.TemplatesCreator;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.CreateResourcesTest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 @OCBinary
 public class AbstractCreateApplicationTest {
 
-	public static String gitFolder = "jboss-eap-quickstarts";
-	public static String projectName = "jboss-helloworld";
-	public static String buildConfigName = "eap-app";
+	public static String GIT_FOLDER = "jboss-eap-quickstarts";
+	public static String PROJECT_NAME = "jboss-helloworld";
+	public static String BUILD_CONFIG = "eap-app";
+	public static String TEMPLATE_PATH = CreateResourcesTest.RESOURCES_LOCATION +
+			File.separator + "eap64-basic-s2i.json";
 	
-	// context dir for new applications is helloworld
+	public static String DEFAULT_NEXUS_MIRROR = "http://10.8.175.83:8081/nexus/content/groups/all-in-one/";
+	
+	// template params
 	public static String CONTEXT_DIR = "helloworld";
+	public static String SOURCE_REPO_URL = "https://github.com/mlabuda/jboss-eap-quickstarts";
 	
 	protected static TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 	
 	@BeforeClass
 	public static void setUp() {
-		TestUtils.cleanupGitFolder(gitFolder);
+		TestUtils.cleanupGitFolder(GIT_FOLDER);
 		TestUtils.setUpOcBinary();
 		
 		// If project does not exists, e.g. something went south in recreation earlier, create it
@@ -49,8 +57,42 @@ public class AbstractCreateApplicationTest {
 			new OpenShiftExplorerView().getOpenShift3Connection().createNewProject();
 		}
 		
-		new TemplatesCreator().createOpenShiftApplicationBasedOnServerTemplate(
-				OpenShiftLabel.Others.EAP_TEMPLATE, new TemplateParameter("CONTEXT_DIR", "helloworld"));
+		if (getNexusMirror() != null) {
+			new TemplatesCreator().createOpenShiftApplicationBasedOnLocalTemplate(
+				TEMPLATE_PATH, new TemplateParameter(OpenShiftLabel.Others.MAVEN_MIRROR_URL, getNexusMirror()));
+		} else {
+			new TemplatesCreator().createOpenShiftApplicationBasedOnLocalTemplate(TEMPLATE_PATH);
+		}
+	}
+	
+	/**
+	 * Gets URL of Nexus Mirror. At first look up if user provided 
+	 * nexus mirror URL by property {@link DatastoreOS3.KEY_NEXUS_MIRROR}. If
+	 * none provided, try to use default, which is stored in 
+	 * {@link AbstractCreateApplicationTest.DEFAULT_NEXUS_MIRROR}. If none of 
+	 * the above works, use default, official nexus and this method returns null.
+	 */
+	private static String getNexusMirror() {
+		if (isNexusMirrorProvided()) {
+			return DatastoreOS3.NEXUS_MIRROR_URL;
+		} else {
+			if (isDefaultNexusMirrorWorking()) {
+				return DEFAULT_NEXUS_MIRROR;
+			} else {
+				return null;
+			}
+		}
+	}
+	
+	private static boolean isNexusMirrorProvided() {
+		if (DatastoreOS3.NEXUS_MIRROR_URL == null || DatastoreOS3.NEXUS_MIRROR_URL.equals("")) {
+			return false;
+		}
+		return TestUtils.isURLAccessible(DatastoreOS3.NEXUS_MIRROR_URL);
+	}
+	
+	private static boolean isDefaultNexusMirrorWorking() {
+		return TestUtils.isURLAccessible(DEFAULT_NEXUS_MIRROR);
 	}
 	
 	@AfterClass
@@ -72,8 +114,8 @@ public class AbstractCreateApplicationTest {
 		connection.createNewProject();
 		
 		ProjectExplorer projectExplorer = new ProjectExplorer();
-		if (projectExplorer.containsProject(projectName)) {
-			projectExplorer.getProject(projectName).delete(true);
+		if (projectExplorer.containsProject(PROJECT_NAME)) {
+			projectExplorer.getProject(PROJECT_NAME).delete(true);
 		}
 	}
 }

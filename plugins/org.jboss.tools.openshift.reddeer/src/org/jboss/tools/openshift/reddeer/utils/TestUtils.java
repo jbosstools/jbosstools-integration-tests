@@ -12,6 +12,8 @@ package org.jboss.tools.openshift.reddeer.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import org.eclipse.jgit.api.Git;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -108,4 +110,20 @@ public class TestUtils {
 		file.delete();
 	}
 
+	/**
+	 * Finds out whether a URL returns HTTP OK or not.
+	 * 
+	 * @param URL URL to find out whether is accessible 
+	 * @return true if URL is accesible with HTTP OK exit code (200), false otherwise
+	 */
+	public static boolean isURLAccessible(String URL) {
+		try {
+            HttpURLConnection.setFollowRedirects(false);
+            HttpURLConnection connection = (HttpURLConnection) new URL(URL).openConnection();
+            connection.setRequestMethod("HEAD");
+            return (connection.getResponseCode() == HttpURLConnection.HTTP_OK);
+        } catch (Exception e) {
+            return false;
+        }
+	}
 }

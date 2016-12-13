@@ -13,7 +13,7 @@ package org.jboss.tools.openshift.ui.bot.test.application.v3.adapter;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.exception.RedDeerException;
+import org.eclipse.swt.widgets.Shell;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -21,6 +21,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsKilled;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.lookup.ShellLookup;
 import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -30,6 +31,7 @@ import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -46,16 +48,15 @@ import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.create.AbstractCreateApplicationTest;
 import org.junit.After;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTest {
 
 	@BeforeClass
 	public static void waitTillApplicationIsRunning() {
-		new WaitWhile(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE),
-				TimePeriod.getCustom(360), false);
-		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.LONG, false);
+		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE),
+				TimePeriod.getCustom(600));
+		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.LONG);
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
@@ -70,7 +71,7 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 	
 	@Test
 	public void testProjectSelectedInProjectExplorerIsPreselected() {
-		new ProjectExplorer().selectProjects(projectName);
+		new ProjectExplorer().selectProjects(PROJECT_NAME);
 		
 		openNewServerAdapterWizard();
 		next();
@@ -85,25 +86,26 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 		});
 		
 		assertTrue("Selected project from workspace should be preselected",		
-				eclipseProject.equals(projectName));
+				eclipseProject.equals(PROJECT_NAME));
 	}
 	
 	@Test
-	@Ignore
 	public void testPodPathWidgetAccessibility() {
 		openNewServerAdapterWizard();
 		next();
 		
 		new PushButton(OpenShiftLabel.Button.ADVANCED_OPEN).click();
 		
+		new CheckBox("Use inferred Pod Deployment Path").toggle(false);
+		
 		LabeledText podPath = new LabeledText("Pod Deployment Path: ");
-		String podPathText = podPath.getText();
+		String podDeploymentPath = "/opt/eap/standalone/deployments/";
 		podPath.setText("");
 		
 		assertFalse("Next button should be disable if pod path is empty is selected.",
 				nextButtonIsEnabled());
 		
-		podPath.setText(podPathText);
+		podPath.setText(podDeploymentPath);
 		
 		assertTrue("Next button should be reeenabled if pod path is correctly filled in.",
 				nextButtonIsEnabled());
@@ -193,23 +195,20 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 		NewServerWizardPage page = new NewServerWizardPage();
 		
 		dialog.open();
+		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);	
 		page.selectType(OpenShiftLabel.Others.OS3_SERVER_ADAPTER);
 		dialog.next();
-		
-		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG);
 	}
 	
 	@After
 	public void closeShell() {
-		try {
-			// if shell is opened, close it
+		Shell shell = ShellLookup.getInstance().getShell(OpenShiftLabel.Shell.ADAPTER);
+		if (shell != null) {
 			new DefaultShell(OpenShiftLabel.Shell.ADAPTER);
 			new CancelButton().click();
-			
 			new WaitWhile(new ShellWithTextIsActive(OpenShiftLabel.Shell.ADAPTER));
-			new WaitWhile(new JobIsRunning());
-		} catch (RedDeerException ex) {
-			// do nothing
 		}
+	
+		new WaitWhile(new JobIsRunning());
 	}
 }

@@ -45,11 +45,11 @@ public class ImportApplicationTest extends AbstractCreateApplicationTest {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
 		
-		if (projectExplorer.containsProject(projectName)) {
-			projectExplorer.getProject(projectName).delete(true);
+		if (projectExplorer.containsProject(PROJECT_NAME)) {
+			projectExplorer.getProject(PROJECT_NAME).delete(true);
 		}
 		
-		TestUtils.cleanupGitFolder(gitFolder);
+		TestUtils.cleanupGitFolder(GIT_FOLDER);
 	}
 	
 	@Test
@@ -73,7 +73,7 @@ public class ImportApplicationTest extends AbstractCreateApplicationTest {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
 		assertTrue("There should be imported kitchen sink project, but there is not",
-				projectExplorer.containsProject(projectName));
+				projectExplorer.containsProject(PROJECT_NAME));
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
@@ -110,8 +110,8 @@ public class ImportApplicationTest extends AbstractCreateApplicationTest {
 		
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
-		assertTrue("There should be imported " + projectName + "project, but there is not",
-				projectExplorer.containsProject(projectName));
+		assertTrue("There should be imported " + PROJECT_NAME + "project, but there is not",
+				projectExplorer.containsProject(PROJECT_NAME));
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}

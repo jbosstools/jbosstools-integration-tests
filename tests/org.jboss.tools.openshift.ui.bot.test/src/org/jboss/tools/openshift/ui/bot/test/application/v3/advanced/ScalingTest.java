@@ -179,7 +179,8 @@ public class ScalingTest {
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Pods have not been scaled, amount of current and desired pods do " 
 					+ "not match. Desired amount:" + podAmount 
-					+ ". Real amount of replicas: " + PodsAreDeployed.getReplicasInfo(project, rcName));
+					+ ". Real amount of replicas: " + PodsAreDeployed.getReplicasInfo(project, rcName) +
+					". Could be failing because of https://issues.jboss.org/browse/JBIDE-23638");
 		}
 	}
 }
