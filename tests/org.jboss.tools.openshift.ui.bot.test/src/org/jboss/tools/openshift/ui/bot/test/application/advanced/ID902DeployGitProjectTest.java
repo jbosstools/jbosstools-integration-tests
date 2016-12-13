@@ -32,7 +32,7 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
-import org.jboss.tools.openshift.reddeer.utils.SecureStorage;
+import org.jboss.tools.openshift.reddeer.utils.SystemProperties;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.wizard.v2.NewOpenShift2ApplicationWizard;
@@ -105,7 +105,7 @@ public class ID902DeployGitProjectTest {
 		
 		try {
 			new DefaultShell(OpenShiftLabel.Shell.SECURE_STORAGE_PASSWORD);
-			new DefaultText(0).setText(SecureStorage.PASSWORD);
+			new DefaultText(0).setText(SystemProperties.SECURE_STORAGE_PASSWORD);
 			
 			new WaitUntil(new WidgetIsEnabled(new OkButton()));
 			

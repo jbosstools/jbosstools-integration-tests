@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.jgit.api.Git;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -108,6 +109,13 @@ public class TestUtils {
 		}
 		
 		file.delete();
+	}
+	
+	public static String getValueOrDefault(String value, String defaultValue) {
+		if (StringUtils.isBlank(value)) {
+			return defaultValue;
+		}
+		return value;
 	}
 
 	/**

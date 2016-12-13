@@ -10,7 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.reddeer.utils;
 
-import static org.junit.Assert.assertNotNull;
+import static org.jboss.tools.openshift.reddeer.utils.SystemProperties.KEY_SERVER;
+import static org.jboss.tools.openshift.reddeer.utils.SystemProperties.KEY_USERNAME;
+import static org.jboss.tools.openshift.reddeer.utils.SystemProperties.getRequiredProperty;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -19,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.AuthenticationMethod;
 
 /**
- * Storage for OpenShift v3 credentials.
+ * Storage for settings that are used in the OpenShift 3 integration tests.
  * 
  * @author mlabuda@redhat.com
  * @author adietish@redhat.com
@@ -27,16 +29,16 @@ import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.Authenticati
  */
 public class DatastoreOS3 {
 	
-	private static final String KEY_SERVER = "openshift.server";
-	public static final String KEY_AUTHMETHOD = "openshift.authmethod";
+	private static final String KEY_AUTHMETHOD = "openshift.authmethod";
 	private static final String KEY_TOKEN = "openshift.token";
 	public static final String KEY_PASSWORD = "openshift.password";
 	public static final String KEY_NEXUS_MIRROR = "openshift.nexus.mirror";
 	
 	static {
-		assertTrue("Please add '-D" + KEY_SERVER + "=[host]' to your launch arguments", StringUtils.isNotBlank(System.getProperty(KEY_SERVER)));
-		AuthenticationMethod authMethod = AuthenticationMethod.safeValueOf(System.getProperty(KEY_AUTHMETHOD));
-		assertNotNull("Please add '-D" + KEY_AUTHMETHOD + "=[basic|oauth]' to your launch arguments", authMethod);
+		AuthenticationMethod authMethod = AuthenticationMethod.safeValueOf(
+				getRequiredProperty(KEY_AUTHMETHOD, 
+						new String[] { "basic", "oauth" }, 
+						"Please add '-D" + KEY_AUTHMETHOD + "=[basic|oauth]' to your launch arguments"));
 		if (AuthenticationMethod.BASIC.equals(authMethod)) { 
 			assertTrue("Please add '-D" + KEY_PASSWORD + "=[password]'", 
 					StringUtils.isNotBlank(System.getProperty(KEY_PASSWORD)));
@@ -46,9 +48,10 @@ public class DatastoreOS3 {
 		}
 	}
 
-	// used for basic authentization
-	public static String SERVER = System.getProperty(KEY_SERVER);
-	public static String USERNAME = System.getProperty("openshift.username");
+	// used for basic authentication
+	public static final String SERVER = getRequiredProperty(KEY_SERVER,
+			"Please add '-D" + KEY_SERVER + "=[host]' to your launch arguments");
+	public static String USERNAME = System.getProperty(KEY_USERNAME);
 	public static String PASSWORD = System.getProperty(KEY_PASSWORD);
 	public static String TOKEN = System.getProperty(KEY_TOKEN);
 	public static String PUBLIC_OS3_SERVER = "https://console.preview.openshift.com";
@@ -65,8 +68,9 @@ public class DatastoreOS3 {
 	public static final String TEST_PROJECT = "test-project";
 
 	
-	public static String TEMPLATE_PATH = new File("").getAbsolutePath() + File.separator + 
-			"resources" + File.separator + "eap64-basic-s2i.json";
+	public static String TEMPLATE_PATH = new File("").getAbsolutePath() 
+			+ File.separator + "resources" 
+			+ File.separator + "eap64-basic-s2i.json";
 	
 	/**
 	 * Generates a new project name for DatastoreOS3.PROJECT1 variable.
@@ -80,13 +84,6 @@ public class DatastoreOS3 {
 	public static void generateProject2Name() {
 		long seed = System.currentTimeMillis();
 		PROJECT2 = "project-name02-" + seed;
-	}
-	
-	public static String getValueOrDefault(String value, String defaultValue) {
-		if (StringUtils.isBlank(value)) {
-			return defaultValue;
-		}
-		return value;
 	}
 
 }

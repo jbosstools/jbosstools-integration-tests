@@ -49,6 +49,7 @@ import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftServiceRequirement.RequiredService;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
+import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftProject;
@@ -97,7 +98,7 @@ public class OpenShiftServiceRequirement implements Requirement<RequiredService>
 	public void fulfill() {
 		this.connection = ConnectionUtils.getConnectionOrDefault(serviceSpec.connectionURL());
 		assertNotNull(NLS.bind("No connection for {0} exists", serviceSpec.connectionURL()), connection);
-		final String projectName = DatastoreOS3.getValueOrDefault(serviceSpec.project(), DatastoreOS3.TEST_PROJECT);
+		final String projectName = TestUtils.getValueOrDefault(serviceSpec.project(), DatastoreOS3.TEST_PROJECT);
 		assertTrue(NLS.bind("No project {0} exists on server {1}", projectName, connection.getHost()), 
 				OpenShiftResourceUtils.hasProject(projectName, connection));
 		final String serviceName = serviceSpec.service();

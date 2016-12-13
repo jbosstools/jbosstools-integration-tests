@@ -29,7 +29,7 @@ public class ID103CreateNewConnectionTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.openConnectionShellViaToolItem();
 		explorer.connectToOpenShift2(DatastoreOS2.SERVER, DatastoreOS2.USERNAME,
-				System.getProperty("openshift.password"), false, false, false);
+				DatastoreOS2.PASSWORD, false, false, false);
 		
 		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER);	
 	}
@@ -41,8 +41,8 @@ public class ID103CreateNewConnectionTest {
 		explorer.openConnectionShell();
 		
 		explorer.connectToOpenShift2(DatastoreOS2.SERVER, DatastoreOS2.USERNAME, 
-				System.getProperty("openshift.password"), false, false, true);
-		
+				DatastoreOS2.PASSWORD, false, false, true);
+
 		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER);
 	}	
 }

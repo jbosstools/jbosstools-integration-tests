@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.reddeer.view;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import org.apache.commons.lang.StringUtils;
@@ -38,6 +39,7 @@ import org.jboss.tools.openshift.core.connection.Connection;
 import org.jboss.tools.openshift.reddeer.exception.OpenShiftToolsException;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.view.resources.AbstractOpenShiftConnection;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift2Connection;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 
@@ -223,6 +225,18 @@ public class OpenShiftExplorerView extends WorkbenchView {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public <C extends AbstractOpenShiftConnection> C getOpenShiftConnection(String username, String server, ServerType serverType) {
+		AbstractOpenShiftConnection connection = null;
+		if (ServerType.OPENSHIFT_2.equals(serverType)) {
+			connection = getOpenShift2Connection(username, server);
+		} else if (ServerType.OPENSHIFT_3.equals(serverType)) {
+			connection = getOpenShift3Connection(server, username);
+		}
+		assertNotNull("connection type " + serverType + " is not recognized", connection);
+		return (C) connection;
+	}
+
 	/**
 	 * Gets OpenShift 2 connection for a specified user.
 	 * 
