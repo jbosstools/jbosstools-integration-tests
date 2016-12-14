@@ -11,9 +11,10 @@
 package org.jboss.tools.archives.ui.bot.test;
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.ide.eclipse.archives.ui.test.bot.ArchivesTestBase;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
@@ -21,9 +22,9 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.tools.archives.reddeer.archives.ui.ArchivePublishDialog;
-import org.jboss.tools.archives.reddeer.archives.ui.ProjectArchivesExplorer;
-import org.jboss.tools.archives.reddeer.component.Archive;
+import org.jboss.tools.archives.ui.test.reddeer.component.Archive;
+import org.jboss.tools.archives.ui.test.reddeer.uimodel.ArchivePublishDialog;
+import org.jboss.tools.archives.ui.test.reddeer.uimodel.ProjectArchivesExplorer;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

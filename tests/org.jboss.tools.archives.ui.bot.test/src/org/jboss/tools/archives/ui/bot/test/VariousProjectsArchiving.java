@@ -12,6 +12,7 @@ package org.jboss.tools.archives.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.ide.eclipse.archives.ui.test.bot.ArchivesTestBase;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
