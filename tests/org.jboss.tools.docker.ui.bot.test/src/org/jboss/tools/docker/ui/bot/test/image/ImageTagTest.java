@@ -87,14 +87,15 @@ public class ImageTagTest extends AbstractDockerBotTest {
 			new OkButton().click();
 			assertFalse("Image tag has been added!", imageTab.getImageTags(IMAGE_NAME).contains(IMAGE_TAG));
 		} else {
-			assertTrue("Image tag has not been added!", imageTab.getImageTags(IMAGE_NAME).contains(IMAGE_TAG_UPPERCASE));
+			assertTrue("Image tag has not been added!",
+					imageTab.getImageTags(IMAGE_NAME).contains(IMAGE_TAG_UPPERCASE));
 		}
 	}
 
 	/**
 	 * Returns {@code true} if the running docker daemon matches at least the
 	 * given major and minor version. Returns {@code false} otherwise.
-	 * 
+	 *
 	 * @param majorVersion
 	 * @param minorVersion
 	 * @return
@@ -105,9 +106,9 @@ public class ImageTagTest extends AbstractDockerBotTest {
 		String daemonVersion = infoTab.getProperty("Version").getPropertyValue();
 		assertTrue("Could not retrieve docker daemon version.", !StringUtils.isBlank(daemonVersion));
 		String[] versionComponents = daemonVersion.split("\\.");
-		assertTrue("Could not evaluate docker daemon version " + daemonVersion, 
-				versionComponents == null || versionComponents.length >= 2); 
-		int actualMajorVersion = Integer.parseInt(versionComponents[0]); 			
+		assertTrue("Could not evaluate docker daemon version " + daemonVersion,
+				versionComponents == null || versionComponents.length >= 2);
+		int actualMajorVersion = Integer.parseInt(versionComponents[0]);
 		if (actualMajorVersion > majorVersion) {
 			return true;
 		}
