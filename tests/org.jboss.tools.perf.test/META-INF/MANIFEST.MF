@@ -8,10 +8,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.junit;bundle-version="4.8.1",
  org.apache.log4j;bundle-version="1.2.15",
- org.jboss.reddeer.go,
  org.jboss.tools.common.reddeer;bundle-version="[4.4.2,4.5.0)",
  org.jboss.tools.maven.reddeer;bundle-version=4.3.0,
- org.jboss.reddeer.junit,
+ org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
  org.jboss.tools.perf.test.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

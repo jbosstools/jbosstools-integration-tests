@@ -4,7 +4,7 @@ Bundle-Name: Maven Reddeer
 Bundle-SymbolicName: org.jboss.tools.maven.reddeer;singleton:=true
 Bundle-Version: 4.4.2.qualifier
 Bundle-Activator: org.jboss.tools.maven.reddeer.Activator
-Require-Bundle: org.jboss.reddeer.go;bundle-version="1.0.0",
+Require-Bundle:  org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
  org.jboss.tools.runtime.reddeer,
  org.jboss.tools.runtime.ui;bundle-version="3.0.0",
  org.jboss.tools.foundation.ui;bundle-version="1.1.0"

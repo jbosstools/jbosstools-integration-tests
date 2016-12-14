@@ -6,18 +6,10 @@ Bundle-Version: 4.4.2.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: JBoss by Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.jboss.reddeer.common;bundle-version="0.7.0",
- org.jboss.reddeer.swt,
- org.jboss.reddeer.eclipse,
+Require-Bundle:  org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
  org.junit;bundle-version="4.8.2",
- org.jboss.reddeer.junit;bundle-version="0.7.0",
  org.jboss.tools.maven.reddeer;bundle-version="[4.4.2,4.5.0)",
- org.jboss.reddeer.core,
- org.jboss.reddeer.jface;bundle-version="0.7.0",
  org.jboss.tools.central.reddeer;bundle-version="[4.4.2,4.5.0)",
- org.jboss.reddeer.workbench;bundle-version="0.7.0",
- org.jboss.reddeer.junit.extension;bundle-version="0.7.0",
- org.jboss.reddeer.requirements,
  org.jboss.ide.eclipse.as.reddeer
 Import-Package: org.eclipse.wst.server.ui.internal.view.servers,
  org.jboss.reddeer.requirements.server
