@@ -36,34 +36,34 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 		ProjectRuntimeDownload.class,
 		
-		DetectCDK2.class,
+//		DetectCDK2.class,
 		
 		DetectWildFly10.class,
 		OperateWildFly10.class,
-		
-		DetectWildFly10Web.class,
-		OperateWildFly10Web.class,
-		
-		DetectWildFly90.class,
-		OperateWildFly90.class,
-		
-		DetectWildFly90Web.class,
-		OperateWildFly90Web.class,
-		
-		DetectWildFly81.class,
-		OperateWildFly81.class,
-		
-		DetectWildFly8.class,
-		OperateWildFly8.class,
-		
-		DetectJBoss7.class,
-		OperateJBoss7.class,
-		
-		DetectSeam23.class,
-		CheckSeam23.class,
-		
-		DetectSeam22.class,
-		CheckSeam22.class
+//		
+//		DetectWildFly10Web.class,
+//		OperateWildFly10Web.class,
+//		
+//		DetectWildFly90.class,
+//		OperateWildFly90.class,
+//		
+//		DetectWildFly90Web.class,
+//		OperateWildFly90Web.class,
+//		
+//		DetectWildFly81.class,
+//		OperateWildFly81.class,
+//		
+//		DetectWildFly8.class,
+//		OperateWildFly8.class,
+//		
+//		DetectJBoss7.class,
+//		OperateJBoss7.class,
+//		
+//		DetectSeam23.class,
+//		CheckSeam23.class,
+//		
+//		DetectSeam22.class,
+//		CheckSeam22.class
 })
 public class ProjectTestsSuite {
 
