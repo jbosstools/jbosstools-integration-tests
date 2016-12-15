@@ -70,10 +70,10 @@ public abstract class AbstractFeatureBaseTest extends DesignFlowElementsTestTemp
 	@After
 	@Override
 	public void closeEditor() {
+		super.closeEditor();
 		if (getProject().containsItem(JOB_XML_FILE_FULL_PATH)) {
 			getProject().getProjectItem(JOB_XML_FILE_FULL_PATH).delete();
 		}
-		super.closeEditor();
 	}
 
 	/**

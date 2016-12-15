@@ -12,6 +12,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.list.DefaultList;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 /**
@@ -81,6 +82,7 @@ public class NewBatchArtifactWizardPage extends WizardPage {
 	public void addProperty(String name){
 		new PushButton("Add").click();
 		new WaitUntil(new ShellWithTextIsAvailable("Add Property"));
+		new DefaultShell("Add Property").setFocus();
 		new LabeledText("Field name:").setText(name);
 		new OkButton().click();
 		new WaitWhile(new ShellWithTextIsAvailable("Add Property"));

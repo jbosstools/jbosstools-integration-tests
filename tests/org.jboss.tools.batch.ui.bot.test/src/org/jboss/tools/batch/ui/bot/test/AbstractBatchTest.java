@@ -19,11 +19,11 @@ import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.OperationCanceledException;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.core.resources.Project;
@@ -109,16 +109,15 @@ public abstract class AbstractBatchTest {
 	 */
 	protected static void removeProject(Logger log) {
 		log.info("Removing " + PROJECT_NAME);
-		IProject project = ResourcesPlugin.getPlugin().getWorkspace().getRoot().getProject(PROJECT_NAME);
+		// temporary workaround until upstream patch is applied (eclipse bug 478634)
 		try {
-			project.delete(true, true, null);
-		} catch (CoreException coreExc) {
-			log.error("Could not delete project or its content");
-			throw new RedDeerException("Project delete operation was not possible to process");
-		} catch (OperationCanceledException cancelExc) {
-			log.error("Delete operation was canceled");
-			throw new RedDeerException("Project delete operation was canceled");
-		}
+			org.jboss.reddeer.direct.project.Project.delete(PROJECT_NAME, true, true);
+		} catch (RuntimeException exc) {
+			log.error("RuntimeException occured during deleting project");
+			exc.printStackTrace();
+			log.info("Deleting project second time ...");
+			org.jboss.reddeer.direct.project.Project.delete(PROJECT_NAME, true, true);
+		} 
 		new WaitWhile(new JobIsRunning());
 	}
 	
