@@ -4,12 +4,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
-import org.jboss.tools.runtime.as.ui.bot.test.matcher.RuntimeMatcher;
+import org.jboss.tools.runtime.as.ui.bot.test.model.Runtime;
+import org.jboss.tools.runtime.as.ui.bot.test.model.RuntimeMatcher;
 import org.junit.After;
 import org.junit.Test;
 
-public abstract class CheckSeamRuntimeTemplate extends RuntimeDetectionTestCase {
+public abstract class CheckSeamRuntimeTemplate extends RuntimeDetectionUtility {
 
 	protected abstract Runtime getExpectedRuntime();
 	

@@ -7,10 +7,6 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.fail;
 
 import org.jboss.ide.eclipse.as.reddeer.matcher.ServerConsoleContainsNoExceptionMatcher;
-import org.jboss.ide.eclipse.as.reddeer.server.editor.JBossServerEditor;
-import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
-import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
-import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.JBossRuntimeWizardPage;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -23,9 +19,6 @@ import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.requirements.jre.JRERequirement;
 import org.jboss.reddeer.swt.condition.ShellIsActive;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -33,7 +26,6 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 /**
  * Checks if the given server can be started, restarted, stopped and deleted
@@ -42,19 +34,23 @@ import org.junit.Test;
  * @author Lucia Jelinkova
  * @author Radoslav Rabara
  */
-public abstract class OperateServerTemplate {
+public class OperateServerTemplate {
 
 	private final Logger LOGGER = Logger.getLogger(this.getClass());
 	
 	private ServersView serversView = new ServersView();
 	private ConsoleView consoleView = new ConsoleView();
 
-	protected abstract String getServerName();
+	private String serverName;
+	public OperateServerTemplate(String serverName) {
+		this.serverName = serverName;
+	}
 	
-	@InjectRequirement
-	JRERequirement jre;
+	private String getServerName() {
+		return serverName;
+	}
+	
 
-	@Test
 	public void operateServer() {
 		serverIsPresentInServersView();
 		new WaitWhile(new JobIsRunning());
@@ -91,18 +87,7 @@ public abstract class OperateServerTemplate {
 			}
 		}
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		//Select JavaSE-1.7 as execution runtime
-		JBossServerView jBossServerView = new JBossServerView();
-		JBossServer server = jBossServerView.getServer(getServerName());
-		JBossServerEditor editor = server.open();
-		JBossRuntimeWizardPage editRuntimeEnvironment = editor.editRuntimeEnvironment();
-		editRuntimeEnvironment.setAlternateJRE(getJavaName());
-		new WizardDialog().finish();
-		editor.save();
-	}
-
-	private String getJavaName() {
-		return jre.getJREName();
+		// Do not change JREs. We want defaults to "just work"
 	}
 
 	@After

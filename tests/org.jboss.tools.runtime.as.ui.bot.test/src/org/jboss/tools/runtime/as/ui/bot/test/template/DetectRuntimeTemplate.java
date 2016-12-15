@@ -11,24 +11,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hamcrest.core.Is;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.tools.runtime.as.ui.bot.test.RuntimeProperties;
-import org.jboss.tools.runtime.as.ui.bot.test.dialog.preferences.SearchingForRuntimesDialog;
-import org.jboss.tools.runtime.as.ui.bot.test.entity.Runtime;
-import org.jboss.tools.runtime.as.ui.bot.test.matcher.RuntimeMatcher;
-import org.jboss.tools.runtime.core.model.RuntimePath;
-import org.jboss.tools.runtime.ui.RuntimeUIActivator;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.jboss.tools.runtime.as.ui.bot.test.model.Runtime;
+import org.jboss.tools.runtime.as.ui.bot.test.model.RuntimeMatcher;
+import org.jboss.tools.runtime.as.ui.bot.test.model.ui.SearchingForRuntimesDialog;
 import org.junit.FixMethodOrder;
-import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 /**
@@ -45,55 +32,28 @@ import org.junit.runners.MethodSorters;
  * @author Radoslav Rabara
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)//first detectRuntime and then removePath
-public abstract class DetectRuntimeTemplate extends RuntimeDetectionTestCase {
+public class DetectRuntimeTemplate extends RuntimeDetectionUtility {
 	
-	private SearchingForRuntimesDialog searchingForRuntimesDialog;
-
-	protected abstract String getPathID();
-
-	protected abstract List<Runtime> getExpectedRuntimes();
-	
-	@BeforeClass
-	public static void setupClass(){
-		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
-		preferenceDialog.open();
-		RuntimePreferencePage runtimePage = new RuntimePreferencePage();
-		preferenceDialog.select(runtimePage);
-		runtimePage.removeAllRuntimes();
-		preferenceDialog.ok();
-		
-		//delete all servers (because of CDK server)
-		ServersView serversView = new ServersView();
-		serversView.open();
-		List<Server> servers = serversView.getServers();
-		for (Server server : servers) {
-			server.delete();
-		}
-	}
-
-	@Test
-	public void detectRuntime(){
-		String path = RuntimeProperties.getInstance().getRuntimePath(getPathID());
-		assertTrue("Path doesn't exists", new File(path).exists());
-		searchingForRuntimesDialog = addPath(path);
+	public static void detectRuntime(String path, List<Runtime> expected) {
+		assertTrue("Path " + path + " doesn't exists", new File(path).exists());
+		SearchingForRuntimesDialog searchingForRuntimesDialog = addPath(path);
 		
 		List<Runtime> runtimes = searchingForRuntimesDialog.getRuntimes();
 		
 		searchingForRuntimesDialog.ok();
 		runtimeDetectionPage.ok();
 		
-		assertCountOfRuntimes(runtimes, path);
-		assertThatExpectedRuntimesArePresent(runtimes);
+		assertCountOfRuntimes(searchingForRuntimesDialog, expected, runtimes, path);
+		assertThatExpectedRuntimesArePresent(expected, runtimes);
 	}
 
-	@Test
-	public void removePath() {
+	
+	public static void removePath(String requiredPath) {
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
 		preferenceDialog.select(runtimeDetectionPage);
 						
 		List<String> allPaths = runtimeDetectionPage.getAllPaths();
-		String requiredPath = new File(RuntimeProperties.getInstance().getRuntimePath(getPathID())).getAbsolutePath();
 		assertTrue("Expected is presence of path " + requiredPath + " but there are:\n"
 				+ Arrays.toString(allPaths.toArray()), allPaths.contains(requiredPath));
 		
@@ -105,44 +65,25 @@ public abstract class DetectRuntimeTemplate extends RuntimeDetectionTestCase {
 		
 		assertThat("Not all paths were removed. There are " + Arrays.toString(allPaths.toArray()), allPaths.size(), Is.is(0));
 	}
+
 	
-	@After
-	public void closeShells(){
-		//close opened shells
-		String[] openedShells = new String[]{
-				SearchingForRuntimesDialog.DIALOG_TITLE,
-				WorkbenchPreferenceDialog.DIALOG_TITLE};
-		for(String title : openedShells) {
-			if(new ShellWithTextIsAvailable(title).test()) {
-				new DefaultShell(title);
-				new PushButton("Cancel").click();
-			}
-		}
-	}
-	
-	@AfterClass
-	public static void cleanPaths() {
-		// make sure that paths were removed
-		for (RuntimePath path : RuntimeUIActivator.getDefault().getModel().getRuntimePaths()){
-			RuntimeUIActivator.getDefault().getModel().removeRuntimePath(path);
-		}
-	}
-	
-	private void assertCountOfRuntimes(List<Runtime> runtimes, String path) {
+	private static void assertCountOfRuntimes(SearchingForRuntimesDialog dialog,
+			List<Runtime> expected,
+			List<Runtime> runtimes, String path) {
 		int size = runtimes.size();
-		int expectedSize = getExpectedRuntimes().size();
+		int expectedSize = expected.size();
 		if(size > 0) {
 			assertThat("Expected " + expectedSize + " but there were " + size
-					+ ":\nExpected runtimes: "+Arrays.toString(getExpectedRuntimes().toArray())
+					+ ":\nExpected runtimes: "+Arrays.toString(expected.toArray())
 					+ "\nBut there were " + Arrays.toString(runtimes.toArray()), size, is(expectedSize));
 		} else {
-			searchingForRuntimesDialog.cancel();
+			dialog.cancel();
 			fail("No runtime detected in folder: " + path);
 		}
 	}
 	
-	private void assertThatExpectedRuntimesArePresent(List<Runtime> runtimes) {
-		for (Runtime runtime : getExpectedRuntimes()){
+	private static void assertThatExpectedRuntimesArePresent(List<Runtime> expected, List<Runtime> runtimes) {
+		for (Runtime runtime : expected){
 			assertThat(runtimes, hasItem(new RuntimeMatcher(runtime)));
 		}
 	}
