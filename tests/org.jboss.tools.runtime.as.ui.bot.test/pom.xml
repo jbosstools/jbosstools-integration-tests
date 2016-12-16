@@ -12,9 +12,10 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
+		<reddeer.config>${project.build.directory}/../resources</reddeer.config>
 		<surefire.timeout>7200</surefire.timeout>
 		<productProperties></productProperties>
-		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${reddeer.config} ${productProperties}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${reddeer.config} -Dreq.java6.home=${req.java6.home} -Dreq.java7.home=${req.java7.home} -Dreq.java8.home=${req.java8.home} ${productProperties}</systemProperties>
 	</properties>
 
 	<profiles>

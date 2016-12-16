@@ -1,6 +1,7 @@
 package org.jboss.tools.runtime.as.ui.bot.test.detector;
 
 import org.jboss.tools.runtime.as.ui.bot.test.template.RuntimeDetectionUtility;
+import org.junit.Test;
 
 /**
  * Tests the case when the runtime path contains two identical server runtimes with Seam.  
@@ -9,6 +10,11 @@ import org.jboss.tools.runtime.as.ui.bot.test.template.RuntimeDetectionUtility;
  *
  */
 public class RuntimeDuplications extends RuntimeDetectionUtility {
+	
+	@Test
+	public void blahtest(){
+	}
+	
 //
 //	private File tmpServerPath;
 //	

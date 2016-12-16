@@ -43,6 +43,7 @@ public class InvalidCredentialProductDownloadTest {
 		
 		new DefaultShell("Download Runtimes");
 		new CancelButton().click();
+		new CancelButton().click();
 	}
 	
 
