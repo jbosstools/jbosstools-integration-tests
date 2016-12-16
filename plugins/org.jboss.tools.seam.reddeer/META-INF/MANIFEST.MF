@@ -6,13 +6,8 @@ Bundle-Version: 4.4.2.qualifier
 Bundle-Activator: org.jboss.tools.seam.reddeer.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.jboss.reddeer.swt,
- org.jboss.reddeer.jface,
- org.jboss.reddeer.eclipse,
- org.jboss.reddeer.core,
- org.jboss.reddeer.common,
- org.junit;bundle-version="4.8.1",
- org.jboss.reddeer.workbench;bundle-version="0.6.0"
+ org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
+ org.junit;bundle-version="4.8.1"
 Export-Package: 
  org.jboss.tools.seam.reddeer.preferences,
  org.jboss.tools.seam.reddeer.wizards,

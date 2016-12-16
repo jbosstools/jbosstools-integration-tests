@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.ui,
  org.hamcrest.core,
  org.junit,
  org.eclipse.core.resources,
- org.jboss.reddeer.go;bundle-version="1.1.0",
+ org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
  org.jboss.tools.maven.reddeer,
  org.jboss.tools.common.reddeer
 Bundle-ActivationPolicy: lazy

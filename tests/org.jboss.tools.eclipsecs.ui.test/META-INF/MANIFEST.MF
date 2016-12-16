@@ -6,14 +6,7 @@ Bundle-Version: 4.4.2.qualifier
 Bundle-Activator: org.jboss.tools.eclipsecs.ui.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.jboss.reddeer.direct,
- org.jboss.reddeer.eclipse,
- org.jboss.reddeer.jface,
- org.jboss.reddeer.junit,
- org.jboss.reddeer.core,
- org.jboss.reddeer.swt,
- org.jboss.reddeer.workbench,
- org.jboss.reddeer.common,
+ org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
  org.junit
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

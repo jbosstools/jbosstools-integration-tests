@@ -20,7 +20,7 @@ Export-Package: org.jboss.tools.cdi.reddeer,
  org.jboss.tools.cdi.reddeer.cdi.text.ext.hyperlink.xpl
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.jboss.reddeer.go;bundle-version="1.1.0",
+ org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
  org.jboss.tools.common.reddeer,
  org.junit,
  org.eclipse.text,
