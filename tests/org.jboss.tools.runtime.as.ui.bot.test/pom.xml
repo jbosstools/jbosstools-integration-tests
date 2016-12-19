@@ -90,9 +90,6 @@
 			<id>smoke</id>
 			<properties>
 				<test.class>org.jboss.tools.runtime.as.ui.bot.test.AllTestsSuite</test.class>
-				<req.java6.home>${java.home}</req.java6.home>
-				<req.java7.home>${java.home}</req.java7.home>
-				<req.java8.home>${java.home}</req.java8.home>
 				<runtimes.suite.scope>smoke</runtimes.suite.scope>
 			</properties>
 		</profile>
