@@ -187,13 +187,13 @@ public class OpenShiftCommandLineToolsRequirement implements Requirement<OCBinar
 				+ "v1.2.0/openshift-origin-client-tools-v1.2.0-2e62fab-mac.zip"),
 		
 		LINUX_1_3_32("https://github.com/openshift/origin/releases/download/"
-				+ "v1.3.1/openshift-origin-client-tools-v1.3.1-dad658de7465ba8a234a4fb40b5b446a45a4cee1-linux-32bit.tar.gz"),
+				+ "v1.3.2/openshift-origin-client-tools-v1.3.2-ac1d579-linux-32bit.tar.gz"),
 		LINUX_1_3_64("https://github.com/openshift/origin/releases/download/"
-				+ "v1.3.1/openshift-origin-client-tools-v1.3.1-dad658de7465ba8a234a4fb40b5b446a45a4cee1-linux-64bit.tar.gz"),
+				+ "v1.3.2/openshift-origin-client-tools-v1.3.2-ac1d579-linux-64bit.tar.gz"),
 		WINDOWS_1_3_64("https://github.com/openshift/origin/releases/download/"
-				+ "v1.3.1/openshift-origin-client-tools-v1.3.1-dad658de7465ba8a234a4fb40b5b446a45a4cee1-windows.zip"),
+				+ "v1.3.2/openshift-origin-client-tools-v1.3.2-ac1d579-windows.zip"),
 		MAC_1_3("https://github.com/openshift/origin/releases/download/"
-				+ "v1.3.1/openshift-origin-client-tools-v1.3.1-2748423-mac.zip");
+				+ "v1.3.2/openshift-origin-client-tools-v1.3.2-ac1d579-mac.zip");
 		
 		String url;
 		
