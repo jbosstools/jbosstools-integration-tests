@@ -25,6 +25,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.jsf.reddeer.ui.ImportJSFWarWizard;
@@ -35,7 +36,9 @@ import org.jboss.tools.jsf.ui.test.utils.JSFTestUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
 @DoNotUseVPE
 @JBossServer(type = ServerReqType.EAP7x, state = ServerReqState.RUNNING)
 public class ExportImportWARTest {

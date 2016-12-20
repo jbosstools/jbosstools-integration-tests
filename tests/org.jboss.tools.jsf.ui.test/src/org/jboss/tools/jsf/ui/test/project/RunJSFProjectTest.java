@@ -33,6 +33,7 @@ import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
 import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.jsf.ui.test.requirement.DoNotUseVPERequirement.DoNotUseVPE;
 import org.jboss.tools.jsf.ui.test.utils.JSFTestUtils;
@@ -40,9 +41,11 @@ import org.jboss.tools.jsf.ui.test.utils.ModuleIsInState;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
+@RunWith(RedDeerSuite.class)
 @DoNotUseVPE
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
 @JBossServer(type = ServerReqType.EAP7x, state = ServerReqState.RUNNING)
@@ -97,7 +100,7 @@ public class RunJSFProjectTest {
 	ServerModule module = server.getModule(projectName);
 	ModuleIsInState moduleIsInStateCondition = new ModuleIsInState(ServerState.STARTED, ServerPublishState.SYNCHRONIZED, module);
 	try{
-	    new WaitUntil(moduleIsInStateCondition, TimePeriod.SHORT);
+	    new WaitUntil(moduleIsInStateCondition, TimePeriod.NORMAL);
 	}catch(WaitTimeoutExpiredException ex){
 	    fail("Module is not in state STARTED, SYNCHRONIZED");
 	}
