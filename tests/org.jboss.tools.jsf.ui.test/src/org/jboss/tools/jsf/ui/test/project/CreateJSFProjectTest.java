@@ -21,14 +21,17 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.jsf.ui.test.requirement.DoNotUseVPERequirement.DoNotUseVPE;
 import org.jboss.tools.jsf.ui.test.utils.JSFTestUtils;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
+@RunWith(RedDeerSuite.class)
 @DoNotUseVPE
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
 @JBossServer(type = ServerReqType.EAP7x, state = ServerReqState.PRESENT)
