@@ -3,6 +3,7 @@ package org.jboss.tools.runtime.as.ui.bot.test.parametized.server;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.jboss.reddeer.eclipse.jdt.ui.preferences.JREsPreferencePage;
 import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
@@ -12,6 +13,7 @@ import org.jboss.tools.cdk.reddeer.requirements.DisableSecureStorageRequirement.
 import org.jboss.tools.runtime.as.ui.bot.test.Activator;
 import org.jboss.tools.runtime.as.ui.bot.test.SuiteConstants;
 import org.jboss.tools.runtime.as.ui.bot.test.download.RuntimeDownloadTestUtility;
+import org.jboss.tools.runtime.as.ui.bot.test.reddeer.Runtime;
 import org.jboss.tools.runtime.as.ui.bot.test.reddeer.util.DetectRuntimeTemplate;
 import org.jboss.tools.runtime.as.ui.bot.test.reddeer.util.OperateServerTemplate;
 import org.junit.After;
@@ -148,6 +150,7 @@ public class ServerRuntimesTest {
     	DetectRuntimeTemplate.removePath(getDownloadPath().getAbsolutePath());
     }
 
+    
     
     @Test
     public void operate(){
