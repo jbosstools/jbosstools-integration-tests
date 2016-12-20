@@ -1,11 +1,11 @@
-package org.jboss.tools.runtime.as.ui.bot.test.template;
+package org.jboss.tools.runtime.as.ui.bot.test.reddeer.util;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.tools.runtime.as.ui.bot.test.model.Runtime;
-import org.jboss.tools.runtime.as.ui.bot.test.model.RuntimeMatcher;
+import org.jboss.tools.runtime.as.ui.bot.test.reddeer.Runtime;
+import org.jboss.tools.runtime.as.ui.bot.test.reddeer.RuntimeMatcher;
 import org.junit.After;
 import org.junit.Test;
 

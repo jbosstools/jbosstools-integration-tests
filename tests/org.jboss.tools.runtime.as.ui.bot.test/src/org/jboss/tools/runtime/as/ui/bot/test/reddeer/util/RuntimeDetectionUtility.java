@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.as.ui.bot.test.template;
+package org.jboss.tools.runtime.as.ui.bot.test.reddeer.util;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -11,10 +11,10 @@ import java.util.List;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.tools.runtime.as.ui.bot.test.model.ui.RuntimeDetectionPreferencePage;
-import org.jboss.tools.runtime.as.ui.bot.test.model.ui.SeamPreferencePage;
-import org.jboss.tools.runtime.as.ui.bot.test.model.ui.SearchingForRuntimesDialog;
 import org.jboss.tools.runtime.as.ui.bot.test.parametized.CleanEnvironmentUtils;
+import org.jboss.tools.runtime.as.ui.bot.test.reddeer.ui.RuntimeDetectionPreferencePage;
+import org.jboss.tools.runtime.as.ui.bot.test.reddeer.ui.SeamPreferencePage;
+import org.jboss.tools.runtime.as.ui.bot.test.reddeer.ui.SearchingForRuntimesDialog;
 import org.jboss.tools.runtime.core.model.RuntimePath;
 import org.jboss.tools.runtime.ui.RuntimeUIActivator;
 

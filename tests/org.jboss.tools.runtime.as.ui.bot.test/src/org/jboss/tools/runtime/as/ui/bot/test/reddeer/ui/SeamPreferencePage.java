@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.as.ui.bot.test.model.ui;
+package org.jboss.tools.runtime.as.ui.bot.test.reddeer.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.tools.runtime.as.ui.bot.test.model.Runtime;
+import org.jboss.tools.runtime.as.ui.bot.test.reddeer.Runtime;
 
 public class SeamPreferencePage extends PreferencePage {
 

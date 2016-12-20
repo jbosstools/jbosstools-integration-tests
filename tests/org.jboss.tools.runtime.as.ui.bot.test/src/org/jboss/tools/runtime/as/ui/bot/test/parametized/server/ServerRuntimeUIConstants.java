@@ -1,16 +1,18 @@
-package org.jboss.tools.runtime.as.ui.bot.test.parametized;
+package org.jboss.tools.runtime.as.ui.bot.test.parametized.server;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.eclipse.core.runtime.IPath;
 import org.jboss.tools.runtime.as.ui.bot.test.Activator;
-import org.jboss.tools.runtime.as.ui.bot.test.model.Runtime;
+import org.jboss.tools.runtime.as.ui.bot.test.SuiteConstants;
+import org.jboss.tools.runtime.as.ui.bot.test.parametized.MatrixUtils;
+import org.jboss.tools.runtime.as.ui.bot.test.reddeer.Runtime;
 
-public class DownloadRuntimeUIConstants {
+public class ServerRuntimeUIConstants {
 
 	/*
 	 * DL RT Strings
@@ -58,14 +60,16 @@ public class DownloadRuntimeUIConstants {
 			WF_821, WF_902, WF_10_1_0};
 
 	
-	public static final String[] FREE_DOWNLOADS = new String[] {GATE_IN_3_6, JBAS_328, JBAS_405, JBAS_423,
-			JBAS_501, JBAS_510, JBAS_600, JBAS_701, JBAS_702, JBAS_710, JBAS_711, WF_800, WF_810,
+	public static final String[] FREE_DOWNLOADS = new String[] {
+			GATE_IN_3_6, JBAS_328, JBAS_405, JBAS_423, JBAS_501, JBAS_510, JBAS_600, 
+			JBAS_701, JBAS_702, JBAS_710, JBAS_711, WF_800, WF_810,
 			WF_820, WF_821, WF_901, WF_902, WF_10_0_0, WF_10_1_0};
 
 //	public static final String[] MANUAL_DOWNLOAD = new String[]{JPP_600,JBEAP_600, JBEAP_601};
 
-	public static final String[] ZERO_DOLLAR = new String[] { JPP_610, JBEAP_610, JBEAP_620, JBEAP_630, JBEAP_640,
-			JBEAP_700, };
+	public static final String[] ZERO_DOLLAR = new String[] { 
+			JPP_610, JBEAP_610, JBEAP_620,
+			JBEAP_630, JBEAP_640,JBEAP_700, };
 
 	public static final String[] ALL_DOWNLOADS = Stream
 			.concat(Arrays.stream(FREE_DOWNLOADS), Arrays.stream(ZERO_DOLLAR)).toArray(String[]::new);
@@ -114,37 +118,14 @@ public class DownloadRuntimeUIConstants {
 		expectations = map;
 	}
 
-	public static IPath getStateFolder() {
-		IPath stateLoc = Activator.getDefault().getStateLocation();
-		IPath servers = stateLoc.append("servers");
-		return servers;
-	}
-
-	public static IPath getDownloadPath(String runtimeString) {
-		IPath servers = getStateFolder();
-		servers.toFile().mkdirs();
-		String serverFolder = runtimeString.replaceAll("[^A-Za-z0-9]", "");
-		IPath serverFolderPath = servers.append(serverFolder);
-		return serverFolderPath;
-	}
-
-	public static File getDownloadFolder(String runtimeString) {
-		IPath p = getDownloadPath(runtimeString);
-		p.toFile().mkdirs();
-		return p.toFile();
-	}
-
 	private static List<Runtime> asList(Runtime r) {
 		return Arrays.asList(new Runtime[] { r });
 	}
 
-	private static List<Runtime> asList(Runtime[] r) {
-		return Arrays.asList(r);
-	}
 
 	private static Runtime createRuntime(String key, String name, String version, String type, String suffix) {
 		return new Runtime(name, version, type,
-				DownloadRuntimeUIConstants.getDownloadPath(key).append(suffix).toOSString());
+				Activator.getDownloadPath(key).append(suffix).toOSString());
 	}
 
 	public static List<Runtime> getRuntimesForDownloadable(String dlRuntimeString) {
@@ -153,5 +134,31 @@ public class DownloadRuntimeUIConstants {
 		}
 		return expectations.get(dlRuntimeString);
 	}
+	
+	
+	
+    public static Collection<Object[]> getParametersForScope(String scope){
+    	ArrayList<Object[]> ret;
+    	Object[] free = new Object[]{SuiteConstants.FREE};
+    	Object[] zeroDollar = new Object[]{SuiteConstants.ZERO_DOLLAR};
+    	
+    	
+    	if( SuiteConstants.SCOPE_MAJORS.equals(scope)) { 
+    		// latest from majors only, ie one of 4.x, 5.x, 6.x, each one being newest in the stream
+    		ret = MatrixUtils.toMatrix(new Object[][]{LATEST_MAJORS_FREE_DOWNLOADS, free});
+    	} else if( SuiteConstants.SCOPE_FREE.equals(scope)) {
+    		// ALL free
+    		ret = MatrixUtils.toMatrix(new Object[][]{FREE_DOWNLOADS, free});
+    	} else if( SuiteConstants.SCOPE_ALL.equals(scope)) {
+			ret = MatrixUtils.toMatrix(new Object[][] { FREE_DOWNLOADS, free});
+			ArrayList<Object[]> ret2 = MatrixUtils.toMatrix(new Object[][] { ZERO_DOLLAR, zeroDollar});
+			ret.addAll(ret2);
+    	} else {
+        	// If smoke test
+    		ret = MatrixUtils.toMatrix(new Object[][]{SMOKETEST_DOWNLOADS, free});
+    	}
+    	return ret;
+    }
+	
 
 }

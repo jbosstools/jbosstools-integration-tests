@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.as.ui.bot.test.model.ui;
+package org.jboss.tools.runtime.as.ui.bot.test.reddeer.ui;
 
 import static org.junit.Assert.assertTrue;
 

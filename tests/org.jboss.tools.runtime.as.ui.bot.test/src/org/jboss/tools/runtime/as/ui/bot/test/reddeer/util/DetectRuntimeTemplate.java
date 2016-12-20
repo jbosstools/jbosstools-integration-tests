@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.as.ui.bot.test.template;
+package org.jboss.tools.runtime.as.ui.bot.test.reddeer.util;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -12,11 +12,9 @@ import java.util.List;
 
 import org.hamcrest.core.Is;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.tools.runtime.as.ui.bot.test.model.Runtime;
-import org.jboss.tools.runtime.as.ui.bot.test.model.RuntimeMatcher;
-import org.jboss.tools.runtime.as.ui.bot.test.model.ui.SearchingForRuntimesDialog;
-import org.junit.FixMethodOrder;
-import org.junit.runners.MethodSorters;
+import org.jboss.tools.runtime.as.ui.bot.test.reddeer.Runtime;
+import org.jboss.tools.runtime.as.ui.bot.test.reddeer.RuntimeMatcher;
+import org.jboss.tools.runtime.as.ui.bot.test.reddeer.ui.SearchingForRuntimesDialog;
 
 /**
  * Common scenario for runtime detection tests.
@@ -31,7 +29,6 @@ import org.junit.runners.MethodSorters;
  * @author Petr Suchy
  * @author Radoslav Rabara
  */
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)//first detectRuntime and then removePath
 public class DetectRuntimeTemplate extends RuntimeDetectionUtility {
 	
 	public static void detectRuntime(String path, List<Runtime> expected) {

@@ -1,6 +1,6 @@
 package org.jboss.tools.runtime.as.ui.bot.test.detector;
 
-import org.jboss.tools.runtime.as.ui.bot.test.template.RuntimeDetectionUtility;
+import org.jboss.tools.runtime.as.ui.bot.test.reddeer.util.RuntimeDetectionUtility;
 import org.junit.Test;
 
 /**

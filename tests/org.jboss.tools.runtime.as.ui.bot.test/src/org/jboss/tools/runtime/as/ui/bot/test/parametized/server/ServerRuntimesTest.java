@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.as.ui.bot.test.parametized;
+package org.jboss.tools.runtime.as.ui.bot.test.parametized.server;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -9,9 +9,11 @@ import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFa
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.cdk.reddeer.requirements.DisableSecureStorageRequirement.DisableSecureStorage;
+import org.jboss.tools.runtime.as.ui.bot.test.Activator;
+import org.jboss.tools.runtime.as.ui.bot.test.SuiteConstants;
 import org.jboss.tools.runtime.as.ui.bot.test.download.RuntimeDownloadTestUtility;
-import org.jboss.tools.runtime.as.ui.bot.test.template.DetectRuntimeTemplate;
-import org.jboss.tools.runtime.as.ui.bot.test.template.OperateServerTemplate;
+import org.jboss.tools.runtime.as.ui.bot.test.reddeer.util.DetectRuntimeTemplate;
+import org.jboss.tools.runtime.as.ui.bot.test.reddeer.util.OperateServerTemplate;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -50,7 +52,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
  *  starts without the user needing to customize or change the jre at all. 
  *  
  *  Adding new runtimes to the test is as easy as modifying 
- *  DownloadRuntimeUIConstants. You should:
+ *  ServerRuntimeUIConstants. You should:
  *    1) Declare a constant representing the UI string to download a given runtime
  *    2) Add that constant to the various arrays it should belong to (free, smoke, etc)
  *    3) Add a line to the initialize() method representing the various expected dl-rt values
@@ -61,46 +63,12 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)//first acquireAndDetect, then detect, then operate
 @DisableSecureStorage
-public class ParameterizedDownloadRuntimeTest {
+public class ServerRuntimesTest {
 
-	
-	public static final String SYSPROP_KEY = "runtimes.suite.scope";
-	public static final String SCOPE_SMOKE = "smoke";
-	public static final String SCOPE_MAJORS = "latestMajors";
-	public static final String SCOPE_FREE = "allFree";
-	public static final String SCOPE_ALL = "all";
-	
-	
-	
-	private static boolean FREE = true;
-	private static boolean ZERO_DOLLAR = false;
-	
-	
     @Parameters
     public static Collection<Object[]> data(){
-    	ArrayList<Object[]> ret;
-    	
-    	String propVal = System.getProperty(SYSPROP_KEY);
-    	
-    	if( SCOPE_MAJORS.equals(propVal)) { 
-    		// latest from majors only, ie one of 4.x, 5.x, 6.x, each one being newest in the stream
-    		ret = MatrixUtils.toMatrix(
-        			new Object[][]{DownloadRuntimeUIConstants.LATEST_MAJORS_FREE_DOWNLOADS, new Object[]{FREE}});
-    	} else if( SCOPE_FREE.equals(propVal)) {
-    		// ALL free
-    		ret = MatrixUtils.toMatrix(
-        			new Object[][]{DownloadRuntimeUIConstants.FREE_DOWNLOADS, new Object[]{FREE}});
-    	} else if( SCOPE_ALL.equals(propVal)) {
-			ret = MatrixUtils
-					.toMatrix(new Object[][] { DownloadRuntimeUIConstants.FREE_DOWNLOADS, new Object[] { FREE } });
-			ArrayList<Object[]> ret2 = MatrixUtils
-					.toMatrix(new Object[][] { DownloadRuntimeUIConstants.ZERO_DOLLAR, new Object[] { ZERO_DOLLAR } });
-			ret.addAll(ret2);
-    	} else {
-        	// If smoke test
-    		ret = MatrixUtils.toMatrix(
-        			new Object[][]{DownloadRuntimeUIConstants.SMOKETEST_DOWNLOADS, new Object[]{FREE}});
-    	}
+    	String scope = System.getProperty(SuiteConstants.SYSPROP_KEY);
+    	ArrayList<Object[]> ret = (ArrayList<Object[]>) ServerRuntimeUIConstants.getParametersForScope(scope);
     	return ret;
     }
     
@@ -154,26 +122,20 @@ public class ParameterizedDownloadRuntimeTest {
     private String runtimeString;
     private boolean dlType;
 
-    public ParameterizedDownloadRuntimeTest(String type, boolean free) {
+    public ServerRuntimesTest(String type, boolean free) {
     	runtimeString = type;
     	dlType = free;
     }
     
-    
-    
-    
     protected File getDownloadPath() {
-    	return DownloadRuntimeUIConstants.getDownloadFolder(runtimeString);
+    	return Activator.getDownloadFolder(runtimeString);
     }
     
-    
-
-
     @Test
     public void acquireAndDetect(){
         System.out.println(runtimeString);
         RuntimeDownloadTestUtility util = new RuntimeDownloadTestUtility(getDownloadPath());
-    	if( dlType == FREE) {
+    	if( dlType == SuiteConstants.FREE) {
     		util.downloadRuntimeNoCredentials(runtimeString);
     	} else {
     		util.downloadRuntimeWithCredentials(runtimeString);
@@ -182,16 +144,16 @@ public class ParameterizedDownloadRuntimeTest {
     
     @Test
     public void detect(){
-    	DetectRuntimeTemplate.detectRuntime(getDownloadPath().getAbsolutePath(), DownloadRuntimeUIConstants.getRuntimesForDownloadable(runtimeString));
+    	DetectRuntimeTemplate.detectRuntime(getDownloadPath().getAbsolutePath(), ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString));
     	DetectRuntimeTemplate.removePath(getDownloadPath().getAbsolutePath());
     }
 
     
     @Test
     public void operate(){
-    	DetectRuntimeTemplate.detectRuntime(getDownloadPath().getAbsolutePath(), DownloadRuntimeUIConstants.getRuntimesForDownloadable(runtimeString));
+    	DetectRuntimeTemplate.detectRuntime(getDownloadPath().getAbsolutePath(), ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString));
     	DetectRuntimeTemplate.removePath(getDownloadPath().getAbsolutePath());
-    	String serverName = DownloadRuntimeUIConstants.getRuntimesForDownloadable(runtimeString).get(0).getName();
+    	String serverName = ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString).get(0).getName();
     	OperateServerTemplate operate = new OperateServerTemplate(serverName);
     	operate.setUp();
     	try {
@@ -209,7 +171,7 @@ public class ParameterizedDownloadRuntimeTest {
     
     @AfterClass
     public static void postClass() {
-    	new RuntimeDownloadTestUtility(DownloadRuntimeUIConstants.getStateFolder().toFile()).clean(true);
+    	new RuntimeDownloadTestUtility(Activator.getStateFolder().toFile()).clean(true);
     }
         
 

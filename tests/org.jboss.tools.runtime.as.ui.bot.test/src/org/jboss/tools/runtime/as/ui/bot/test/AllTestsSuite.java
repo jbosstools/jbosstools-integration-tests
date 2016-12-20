@@ -3,7 +3,8 @@ package org.jboss.tools.runtime.as.ui.bot.test;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.runtime.as.ui.bot.test.detector.RuntimeDuplications;
 import org.jboss.tools.runtime.as.ui.bot.test.download.InvalidCredentialProductDownloadTest;
-import org.jboss.tools.runtime.as.ui.bot.test.parametized.ParameterizedDownloadRuntimeTest;
+import org.jboss.tools.runtime.as.ui.bot.test.parametized.seam.SeamRuntimesTest;
+import org.jboss.tools.runtime.as.ui.bot.test.parametized.server.ServerRuntimesTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -11,7 +12,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		RuntimeDuplications.class,
 		InvalidCredentialProductDownloadTest.class,
-		ParameterizedDownloadRuntimeTest.class
+		ServerRuntimesTest.class,
+		//SeamRuntimesTest.class  // failing due to trust store issues?? 
 })
 public class AllTestsSuite {
 

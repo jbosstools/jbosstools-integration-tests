@@ -20,7 +20,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.common.reddeer.utils.FileUtils;
 import org.jboss.tools.runtime.as.ui.bot.test.parametized.CleanEnvironmentUtils;
-import org.jboss.tools.runtime.as.ui.bot.test.template.RuntimeDetectionUtility;
+import org.jboss.tools.runtime.as.ui.bot.test.reddeer.util.RuntimeDetectionUtility;
 import org.jboss.tools.runtime.reddeer.wizard.TaskWizardFirstPage;
 import org.jboss.tools.runtime.reddeer.wizard.TaskWizardLoginPage;
 import org.jboss.tools.runtime.reddeer.wizard.TaskWizardSecondPage;

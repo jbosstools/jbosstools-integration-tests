@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.as.ui.bot.test.template;
+package org.jboss.tools.runtime.as.ui.bot.test.reddeer.util;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -24,8 +24,6 @@ import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.junit.After;
-import org.junit.Before;
 
 /**
  * Checks if the given server can be started, restarted, stopped and deleted
@@ -77,7 +75,6 @@ public class OperateServerTemplate {
 		}
 	}
 
-	@Before
 	public void setUp(){
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		serversView.open();
@@ -90,7 +87,6 @@ public class OperateServerTemplate {
 		// Do not change JREs. We want defaults to "just work"
 	}
 
-	@After
 	public void cleanServerAndConsoleView() {
 		try{
 			LOGGER.step("Trying to close shell \"Warning: server process not terminated\"");

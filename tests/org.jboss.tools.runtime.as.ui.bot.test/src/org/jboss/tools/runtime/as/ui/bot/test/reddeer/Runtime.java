@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.as.ui.bot.test.model;
+package org.jboss.tools.runtime.as.ui.bot.test.reddeer;
 
 import java.io.File;
 
