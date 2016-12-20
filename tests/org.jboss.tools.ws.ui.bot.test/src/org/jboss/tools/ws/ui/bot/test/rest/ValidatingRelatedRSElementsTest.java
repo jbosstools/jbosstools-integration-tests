@@ -1,10 +1,12 @@
 package org.jboss.tools.ws.ui.bot.test.rest;
 
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Testing validation of related JAX-RS elements.
@@ -14,6 +16,7 @@ import org.junit.Test;
  * @see http://tools.jboss.org/documentation/whatsnew/jbosstools/4.2.0.Beta3.html#validating-related-jax-rs-elements
  * @since 4.2.0.Beta3
  */
+@RunWith(RedDeerSuite.class)
 @AutoBuilding(value = false, cleanup = true)
 public class ValidatingRelatedRSElementsTest extends RESTfulTestBase {
 

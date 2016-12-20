@@ -4,12 +4,15 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.common.reddeer.requirements.JavaFoldingRequirement.JavaFolding;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Testing support for custom Name Binding annotation<br/><br/>
@@ -21,8 +24,10 @@ import org.junit.Test;
  * @see http://tools.jboss.org/documentation/whatsnew/jbosstools/4.2.0.Beta1.html#webservices
  * @since JBT 4.2.0.Beta1
  */
+@RunWith(RedDeerSuite.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
 @AutoBuilding(value = false, cleanup = true)
+@JavaFolding(false)
 public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 	
 	@Override

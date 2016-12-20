@@ -10,10 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.webservice;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Test operates on Web Service Wizard with bottom up process of creating web
@@ -22,6 +24,7 @@ import org.junit.Test;
  * @author jlukas
  *
  */
+@RunWith(RedDeerSuite.class)
 public class BottomUpWSTest extends WebServiceTestBase {
 
 	// http://localhost:8080/BottomUpWS/ClassA?wsdl

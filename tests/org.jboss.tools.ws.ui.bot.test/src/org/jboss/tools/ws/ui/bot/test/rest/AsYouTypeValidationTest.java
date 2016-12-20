@@ -12,6 +12,7 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.keyboard.Keyboard;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.Marker;
@@ -19,6 +20,7 @@ import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Testing as-you-type validation.
@@ -28,6 +30,7 @@ import org.junit.Test;
  * @see http://tools.jboss.org/documentation/whatsnew/jbosstools/4.2.0.Beta3.html#as-you-type-validation
  * @since 4.2.0.Beta3
  */
+@RunWith(RedDeerSuite.class)
 public class AsYouTypeValidationTest extends RESTfulTestBase {
 
 	@After

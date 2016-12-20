@@ -15,6 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.hamcrest.core.IsEqual;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
@@ -23,21 +24,25 @@ import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView.RequestType;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
 @JBossServer(state=ServerReqState.RUNNING, cleanup=false)
 public class XmlJsonFormattingTest extends RESTfulTestBase {
 
 	private static String projectName = "usersRestManager";
 	private WsTesterView wsTesterView;
 
+	private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
+	
 	private final static String XML_RESPONSE_FORMAT = 
-			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-			"<collection>\n    <user>\n        <id>1</id>\n        " +
-			"<name>James</name>\n        <phoneNumber>6545646</phoneNumber>" +
-			"\n    </user>\n    <user>\n        <id>2</id>\n        " +
-			"<name>John</name>\n        <phoneNumber>8546544</phoneNumber>\n    " +
-			"</user>\n    <user>\n        <id>3</id>\n        <name>Paul</name>" +
-			"\n        <phoneNumber>1287475</phoneNumber>\n    </user>\n</collection>\n";	
+			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + LINE_SEPARATOR +
+			"<collection>" + LINE_SEPARATOR + "    <user>" + LINE_SEPARATOR + "        <id>1</id>" + LINE_SEPARATOR + "        " +
+			"<name>James</name>" + LINE_SEPARATOR + "        <phoneNumber>6545646</phoneNumber>" +
+			"" + LINE_SEPARATOR + "    </user>" + LINE_SEPARATOR + "    <user>" + LINE_SEPARATOR + "        <id>2</id>" + LINE_SEPARATOR + "        " +
+			"<name>John</name>" + LINE_SEPARATOR + "        <phoneNumber>8546544</phoneNumber>" + LINE_SEPARATOR + "    " +
+			"</user>" + LINE_SEPARATOR + "    <user>" + LINE_SEPARATOR + "        <id>3</id>" + LINE_SEPARATOR + "        <name>Paul</name>" +
+			"" + LINE_SEPARATOR + "        <phoneNumber>1287475</phoneNumber>" + LINE_SEPARATOR + "    </user>" + LINE_SEPARATOR + "</collection>" + LINE_SEPARATOR;	
 
 	private final static String JSON_RESPONSE_FORMAT = 
 			"[\r\n{\r\n    \"id\":1,\r\n    \"name\":\"James\"," +

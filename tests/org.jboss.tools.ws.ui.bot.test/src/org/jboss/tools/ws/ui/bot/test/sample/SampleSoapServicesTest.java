@@ -23,6 +23,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.ui.wizards.ws.ui.SampleWebServiceWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.ws.ui.SimpleWebServiceWizard;
@@ -32,6 +33,7 @@ import org.jboss.tools.ws.ui.bot.test.utils.ResourceHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
 import org.jboss.tools.ws.ui.bot.test.wsclient.WSClient;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Tests for Sample/Simple Web Service wizard
@@ -40,6 +42,7 @@ import org.junit.Test;
  * @author Jan Richter
  *
  */
+@RunWith(RedDeerSuite.class)
 public class SampleSoapServicesTest extends SOAPTestBase {
 
 	private static final String SOAP_REQUEST = getSoapRequest(

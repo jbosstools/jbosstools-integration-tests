@@ -19,6 +19,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.IServerFamily;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
@@ -31,6 +32,7 @@ import org.jboss.tools.ws.reddeer.ui.preferences.JBossWSRuntimePreferencePage;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * JBossWS Preference Page is tested with following approaches:
@@ -42,6 +44,7 @@ import org.junit.Test;
  * @author jjankovi
  * @author Radoslav Rabara
  */
+@RunWith(RedDeerSuite.class)
 @JBossServer(state=ServerReqState.PRESENT)
 public class JBossWSPreferencesTest {
 

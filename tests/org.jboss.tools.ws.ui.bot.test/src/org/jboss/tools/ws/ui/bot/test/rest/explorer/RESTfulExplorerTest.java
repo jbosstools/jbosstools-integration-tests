@@ -17,15 +17,18 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Test operates on exploring RESTFul services in RESTful explorer
  * 
  * @author jjankovi
  */
+@RunWith(RedDeerSuite.class)
 public class RESTfulExplorerTest extends RESTfulTestBase {
 
 	private static final String REST_BASIC_PROJECT_NAME = "restBasic";

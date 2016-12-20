@@ -62,6 +62,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	XmlJsonFormattingTest.class,
 	JAXRSToolingIntegrationTest.class,
 })
-public class RESTWSBotTests extends AbstractTestSuite {
+public class RESTWSBotTests {
 
 }

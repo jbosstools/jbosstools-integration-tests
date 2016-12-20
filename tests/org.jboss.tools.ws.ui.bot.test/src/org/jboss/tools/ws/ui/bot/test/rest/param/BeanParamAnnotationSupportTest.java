@@ -9,6 +9,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
@@ -16,6 +17,7 @@ import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * 
@@ -27,6 +29,7 @@ import org.junit.Test;
  * @since JBT 4.2.0 Beta3
  * @see https://issues.jboss.org/browse/JBIDE-16825
  */
+@RunWith(RedDeerSuite.class)
 @JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
 @AutoBuilding(value = false, cleanup = true)
 public class BeanParamAnnotationSupportTest extends RESTfulTestBase {

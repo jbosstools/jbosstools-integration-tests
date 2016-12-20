@@ -32,6 +32,7 @@ import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -45,6 +46,7 @@ import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.runner.RunWith;
 
 /**
  * Basic test base for all web service bot tests
@@ -52,6 +54,7 @@ import org.junit.Before;
  * @author jjankovi
  * 
  */
+@RunWith(RedDeerSuite.class)
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer()
 public class WSTestBase {

@@ -13,10 +13,14 @@ package org.jboss.tools.ws.ui.bot.test.rest.param;
 
 import java.util.List;
 
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
+import org.junit.ComparisonFailure;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
 public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 
 	private String paramName = "param";
@@ -61,7 +65,7 @@ public class DefaultValueAnnotationSupportTest extends RESTfulTestBase {
 	 * 
 	 * @see https://issues.jboss.org/browse/JBIDE-12027
 	 */
-	@Test
+	@Test(expected=ComparisonFailure.class)
 	public void testPathParamDefaultValue() {
 		/* prepare project */
 		importWSTestProject("default3");

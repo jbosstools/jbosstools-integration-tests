@@ -11,15 +11,14 @@ import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.tools.common.reddeer.requirements.JavaFoldingRequirement.JavaFolding;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
-import org.jboss.tools.ws.ui.bot.test.utils.EclipseCDIHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 
 /**
  * Test base for SOAP web service tests
@@ -29,6 +28,7 @@ import org.junit.BeforeClass;
  */
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state = ServerReqState.RUNNING, cleanup = false)
+@JavaFolding(false)
 public abstract class SOAPTestBase {
 
 	@InjectRequirement
@@ -54,11 +54,6 @@ public abstract class SOAPTestBase {
 
 	protected void setLevel(SliderLevel level) {
 		this.level = level;
-	}
-	
-	@BeforeClass
-	public static void initialize() {
-		EclipseCDIHelper.disableFolding();
 	}
 	
 	@Before

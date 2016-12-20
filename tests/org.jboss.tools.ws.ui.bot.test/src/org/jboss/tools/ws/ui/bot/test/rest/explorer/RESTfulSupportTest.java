@@ -3,11 +3,13 @@ package org.jboss.tools.ws.ui.bot.test.rest.explorer;
 import static org.junit.Assert.assertNotNull;
 
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Test checks if context menu 'Add RESTful Support' works properly
@@ -17,6 +19,7 @@ import org.junit.Test;
  * 
  * @see https://issues.jboss.org/browse/JBIDE-16329
  */
+@RunWith(RedDeerSuite.class)
 public class RESTfulSupportTest extends RESTfulTestBase {
 
 	protected String getWsProjectName() {

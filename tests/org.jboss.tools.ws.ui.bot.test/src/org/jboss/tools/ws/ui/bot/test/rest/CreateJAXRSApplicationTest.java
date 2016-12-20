@@ -14,6 +14,7 @@ import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
@@ -25,12 +26,14 @@ import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * Tests operates on JAX-RS Application wizard
  * 
  * @author Radoslav Rabara
  */
+@RunWith(RedDeerSuite.class)
 @JBossServer(state=ServerReqState.PRESENT)
 public class CreateJAXRSApplicationTest extends WSTestBase {
 
@@ -45,6 +48,8 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 	private final String APPLICATION_PATH = "/app/path";
 	
 	private final String ERROR_SOURCE_FOLDER_NAME_IS_EMPTY = " Source folder name is empty.";
+	
+	private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
 	
 	@Override
     protected String getWsProjectName() {
@@ -254,23 +259,23 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 	}
 	
 	private void assertThatWebXmlContainsRequiredText() {
-		final String WEB_XML_TEXT = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+		final String WEB_XML_TEXT = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + LINE_SEPARATOR
 		+ "<web-app xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
 				+ "xmlns=\"http://xmlns.jcp.org/xml/ns/javaee\" xsi:schemaLocation=\"http://xmlns.jcp.org/xml/ns/javaee "
-				+ "http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd\" id=\"WebApp_ID\" version=\"3.1\">\n"
-		+ "  <display-name>" + getWsProjectName() + "</display-name>\n"
-		+ "  <welcome-file-list>\n"
-		+ "    <welcome-file>index.html</welcome-file>\n"
-		+ "    <welcome-file>index.htm</welcome-file>\n"
-		+ "    <welcome-file>index.jsp</welcome-file>\n"
-		+ "    <welcome-file>default.html</welcome-file>\n"
-		+ "    <welcome-file>default.htm</welcome-file>\n"
-		+ "    <welcome-file>default.jsp</welcome-file>\n"
-		+ "  </welcome-file-list>\n"
-		+ "  <servlet-mapping>\n"
-		+ "    <servlet-name>javax.ws.rs.core.Application</servlet-name>\n"
-		+ "    <url-pattern>/app/path</url-pattern>\n"
-		+ "  </servlet-mapping>\n"
+				+ "http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd\" id=\"WebApp_ID\" version=\"3.1\">" + LINE_SEPARATOR
+		+ "  <display-name>" + getWsProjectName() + "</display-name>" + LINE_SEPARATOR
+		+ "  <welcome-file-list>" + LINE_SEPARATOR
+		+ "    <welcome-file>index.html</welcome-file>" + LINE_SEPARATOR
+		+ "    <welcome-file>index.htm</welcome-file>" + LINE_SEPARATOR
+		+ "    <welcome-file>index.jsp</welcome-file>" + LINE_SEPARATOR
+		+ "    <welcome-file>default.html</welcome-file>" + LINE_SEPARATOR
+		+ "    <welcome-file>default.htm</welcome-file>" + LINE_SEPARATOR
+		+ "    <welcome-file>default.jsp</welcome-file>" + LINE_SEPARATOR
+		+ "  </welcome-file-list>" + LINE_SEPARATOR
+		+ "  <servlet-mapping>" + LINE_SEPARATOR
+		+ "    <servlet-name>javax.ws.rs.core.Application</servlet-name>" + LINE_SEPARATOR
+		+ "    <url-pattern>/app/path</url-pattern>" + LINE_SEPARATOR
+		+ "  </servlet-mapping>" + LINE_SEPARATOR
 		+ "</web-app>";
 		
 		assertThat(getWebXmlContent(), Is.is(WEB_XML_TEXT));
