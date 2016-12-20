@@ -11,35 +11,34 @@
 
 package org.jboss.tools.docker.ui.bot.test;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.jobs.Job;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.jface.preference.PreferenceDialog;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.docker.reddeer.perspective.DockerPerspective;
-import org.jboss.tools.docker.reddeer.preferences.RegistryAccountsPreferencePage;
 import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.reddeer.ui.resources.AuthenticationMethod;
 import org.jboss.tools.docker.reddeer.ui.resources.DockerConnection;
-import org.jboss.tools.docker.reddeer.ui.resources.DockerImage;
+import org.jboss.tools.docker.ui.bot.test.container.VolumeMountTest;
 import org.junit.AfterClass;
 import org.junit.runner.RunWith;
 
@@ -53,6 +52,9 @@ import org.junit.runner.RunWith;
 @OpenPerspective(DockerPerspective.class)
 public abstract class AbstractDockerBotTest {
 
+	private static final String JOB_PUSHING_DOCKER_IMAGE = "Pushing Docker Image";
+	private static final String JOB_TAGGING_IMAGE = "Tagging Image";
+	private static final String JOB_PULLING_DOCKER_IMAGE = "Pulling docker image";
 	private static final String SYSPROP_DOCKER_MACHINE_NAME = "dockerMachineName";
 	private static final String SYSPROP_DOCKER_SERVER_URI = "dockerServerURI";
 	private static final String SYSPROP_UNIX_SOCKET = "unixSocket";
@@ -63,7 +65,7 @@ public abstract class AbstractDockerBotTest {
 	
 	@AfterClass
 	public static void afterClass() {
-		killRunningJobs();
+		killRunningImageJobs();
 		cleanupShells();
 	}
 
@@ -122,76 +124,6 @@ public abstract class AbstractDockerBotTest {
 		this.connection = null;
 	}
 
-	protected String getCompleteImageName(String imageName) {
-		for (String image : getConnection().getImagesNames()) {
-			if (image.contains(imageName)) {
-				imageName = image.replace(":", "");
-			}
-		}
-		return imageName;
-	}
-
-	protected void deleteImage(String imageName) {
-		String name = getCompleteImageName(imageName);
-		if (imageIsDeployed(name)) {
-			getConnection().getImage(name).remove();
-		} else {
-			fail("Image " + imageName + ":latest" + "(" + name + ":latest)" + " does not exists!");
-		}
-	}
-
-	protected void deleteImage(String imageName, String imageTag) {
-		String completeImageName = getCompleteImageName(imageName);
-		DockerImage image = getConnection().getImage(completeImageName, imageTag);
-		if (image == null) {
-			fail("Image " + imageName + ":" + imageTag + "(" + completeImageName + ":" + imageTag + ")" + " does not exists!");
-		}
-		image.remove();
-	}
-
-	protected void deleteImages(String dockerServer, List<String> images) {
-		for (String image : images) {
-			deleteImage(image);
-		}
-	}
-
-	protected boolean imageIsDeployed(String imageName) {
-		return getConnection().imageIsDeployed(imageName);
-	}
-
-	protected int deployedImagesCount(String imageName) {
-		return getConnection().deployedImagesCount(imageName);
-	}
-
-	protected boolean containerIsDeployed(String containerName) {
-		return getConnection().containerIsDeployed(containerName);
-	}
-
-	protected void deleteContainer(String containerName) {
-		if (containerIsDeployed(containerName)) {
-			getConnection().getContainer(containerName).remove();
-		} else {
-			fail("Container " + containerName + " does not exists!");
-		} 
-	}
-
-	protected void pullImage(String imageName) {
-		pullImage(imageName, null, null);
-	}
-
-	protected void pullImage(String imageName, String imageTag) {
-		pullImage(imageName, imageTag, null);
-	}
-
-	protected void pullImage(String imageName, String imageTag, String dockerRegister) {
-		try {
-			getConnection().pullImage(imageName, imageTag, dockerRegister);
-		} catch (WaitTimeoutExpiredException ex) {
-			killRunningJobs();
-			fail("Timeout expired when pulling image:" + imageName + (imageTag == null ? "" : ":" + imageTag) + "!");
-		}
-	}
-
 	protected String createURL(String tail) {
 		String dockerServerURI = System.getProperty(SYSPROP_DOCKER_SERVER_URI);
 		String serverURI = null;
@@ -207,31 +139,6 @@ public abstract class AbstractDockerBotTest {
 		return serverURI.substring(0, serverURI.lastIndexOf(":")) + tail;
 	}
 
-	protected static void setUpRegister(String serverAddress, String email, String userName, String password) {
-		PreferenceDialog dialog = new WorkbenchPreferenceDialog();
-		RegistryAccountsPreferencePage page = new RegistryAccountsPreferencePage();
-		dialog.open();
-		dialog.select(page);
-		page.removeRegistry(serverAddress);
-		page.addRegistry(serverAddress, email, userName, password);
-		try {
-			new DefaultShell("New Registry Account").setFocus();
-		} catch (SWTLayerException e) {
-			new DefaultShell("Preferences").setFocus();
-		}
-		new OkButton().click();
-	}
-
-	protected static void deleteRegister(String serverAddress) {
-		PreferenceDialog dialog = new WorkbenchPreferenceDialog();
-		RegistryAccountsPreferencePage page = new RegistryAccountsPreferencePage();
-		dialog.open();
-		dialog.select(page);
-		page.removeRegistry(serverAddress);
-		new WaitWhile(new JobIsRunning());
-		new OkButton().click();
-	}
-
 	protected List<String> getImages(String dockerServer) {
 		return getConnection().getImagesNames();
 	}
@@ -240,12 +147,9 @@ public abstract class AbstractDockerBotTest {
 		return getConnection().getContainersNames();
 	}
 
-	protected void prepareWorkspace() {
-	}
-
 	protected void cleanUpWorkspace() {
 		cleanupShells();
-		killRunningJobs();
+		killRunningImageJobs();
 	}
 
 	private String getServer() {
@@ -290,28 +194,16 @@ public abstract class AbstractDockerBotTest {
 
 	}
 
-	public static void killRunningJobs() {
+	/**
+	 * Kills all running jobs that are pulling, tagging or pushing images.
+	 */
+	public static void killRunningImageJobs() {
 		Job[] currentJobs = Job.getJobManager().find(null);
 		for (Job job : currentJobs) {
-			if (job.getName().startsWith("Pulling docker image") || job.getName().startsWith("Tagging Image")
-					|| job.getName().startsWith("Pushing Docker Image")) {
+			if (job.getName().startsWith(JOB_PULLING_DOCKER_IMAGE) 
+					|| job.getName().startsWith(JOB_TAGGING_IMAGE)
+					|| job.getName().startsWith(JOB_PUSHING_DOCKER_IMAGE)) {
 				job.cancel();
-			}
-		}
-	}
-
-	public void deleteImageContainerAfter(String... imageContainerNames) {
-		killRunningJobs();
-		for (String imageContainerName : imageContainerNames) {
-			if (imageIsDeployed(imageContainerName.split(":")[0])) {
-				if (!imageContainerName.contains(":")) {
-					deleteImage(imageContainerName);
-				} else {
-					deleteImage(imageContainerName.split(":")[0], imageContainerName.split(":")[1]);
-				}
-			}
-			if (containerIsDeployed(imageContainerName)) {
-				deleteContainer(imageContainerName);
 			}
 		}
 	}
@@ -337,6 +229,7 @@ public abstract class AbstractDockerBotTest {
 		if (connection == null) {
 			createConnection();
 		}
+		connection.enableConnection();
 		return connection;
 	}
 
@@ -360,5 +253,52 @@ public abstract class AbstractDockerBotTest {
 		for (String name : new DockerExplorerView().getDockerConnectionNames()) {
 			getConnectionByName(name).removeConnection();;
 		}
+	}
+
+	protected void clearConsole() {
+		ConsoleView cview = new ConsoleView();
+		cview.open();
+		try {
+			cview.clearConsole();
+		} catch (CoreLayerException ex) {
+			// swallow intentionally
+		}
+	}
+
+	protected PropertiesView openPropertiesTab(String tabName) {
+		PropertiesView propertiesView = new PropertiesView();
+		propertiesView.open();
+		propertiesView.selectTab(tabName);
+		return propertiesView;
+	}
+
+	protected String getResourceAsString(String path) throws IOException {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		IOUtils.copy(VolumeMountTest.class.getResourceAsStream("/" + path), out);
+		return new String(out.toByteArray());
+	}
+
+	/**
+	 * Returns {@code true} if the running docker daemon matches at least the
+	 * given major and minor version. Returns {@code false} otherwise.
+	 * 
+	 * @param majorVersion
+	 * @param minorVersion
+	 * @return
+	 */
+	protected boolean isDockerDaemon(int majorVersion, int minorVersion) {
+		getConnection().select();
+		PropertiesView infoTab = openPropertiesTab("Info");
+		String daemonVersion = infoTab.getProperty("Version").getPropertyValue();
+		assertTrue("Could not retrieve docker daemon version.", !StringUtils.isBlank(daemonVersion));
+		String[] versionComponents = daemonVersion.split("\\.");
+		assertTrue("Could not evaluate docker daemon version " + daemonVersion, 
+				versionComponents == null || versionComponents.length >= 2); 
+		int actualMajorVersion = Integer.parseInt(versionComponents[0]); 			
+		if (actualMajorVersion > majorVersion) {
+			return true;
+		}
+		int actualMinorVersion = Integer.parseInt(versionComponents[1]);
+		return actualMinorVersion >= minorVersion;
 	}
 }

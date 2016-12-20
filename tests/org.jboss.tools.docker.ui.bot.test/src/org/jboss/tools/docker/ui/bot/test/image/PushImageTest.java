@@ -13,39 +13,35 @@ package org.jboss.tools.docker.ui.bot.test.image;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
-import java.io.File;
-import java.io.IOException;
-
+import org.apache.commons.lang.StringUtils;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.tools.docker.reddeer.condition.ImageIsDeployedCondition;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
-import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
 import org.junit.After;
 import org.junit.Test;
 
 /**
  * 
  * @author jkopriva
+ * @contributor adietish@redhat.com
  *
  */
 
-public class PushImageTest extends AbstractDockerBotTest {
+public class PushImageTest extends AbstractImageBotTest {
 
+	private static final String DOCKERFILE_FOLDER = "resources/test-variables";
 	private static final String DOCKER_HUB_PASSWORD = "dockerHubPassword";
 	private static final String DOCKER_HUB_EMAIL = "dockerHubEmail";
 	private static final String DOCKER_HUB_USERNAME = "dockerHubUsername";
 
-	private static String imageName = "test_push";
-	private static String registryAccount = System.getProperty(DOCKER_HUB_USERNAME) + "@https://index.docker.io";
-	private static String registryAddress = "https://index.docker.io";
-	private static String imageTag = System.getProperty(DOCKER_HUB_USERNAME) + "/variables";
-	private String seconds = "";
+	private static final String IMAGE_NAME = "test_push";
+	private static final String REGISTRY_ACCOUNT = System.getProperty(DOCKER_HUB_USERNAME) + "@https://index.docker.io";
+	private static final String IMAGE_TAG = System.getProperty(DOCKER_HUB_USERNAME) + "/variables";
+
 	private String imageNewTag = "";
 
 	@Test
@@ -53,49 +49,39 @@ public class PushImageTest extends AbstractDockerBotTest {
 		String dockerHubUsername = System.getProperty(DOCKER_HUB_USERNAME);
 		String dockerHubEmail = System.getProperty(DOCKER_HUB_EMAIL);
 		String dockerHubPassword = System.getProperty(DOCKER_HUB_PASSWORD);
-		if (dockerHubUsername == null || dockerHubUsername.isEmpty() || dockerHubEmail == null
-				|| dockerHubEmail.isEmpty() || dockerHubPassword == null || dockerHubPassword.isEmpty()) {
-			fail("At least one of credentials is null or empty! dockerHubUsername:" + dockerHubUsername + " dockerHubEmail:"
-					+ dockerHubEmail + " dockerHubPassword:" + dockerHubPassword + " Aborting test...");
-		}
-		getConnection();
-		DockerImagesTab imageTab = new DockerImagesTab();
-		imageTab.activate();
-		imageTab.refresh();
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
-		String dockerFilePath = "";
-		try {
-			dockerFilePath = (new File("resources/test-variables")).getCanonicalPath();
-		} catch (IOException ex) {
-			fail("Resource file not found!");
-		}
-		imageTab.buildImage(imageName, dockerFilePath);
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		ConsoleView consoleView = new ConsoleView();
-		consoleView.open();
-		assertFalse("Console has no output!", consoleView.getConsoleText().isEmpty());
-		assertTrue("Build has not been successful", consoleView.getConsoleText().contains("Successfully built"));
-		setUpRegister(registryAddress, dockerHubEmail, dockerHubUsername, dockerHubPassword);
+
+		assertFalse("At least one of credentials is null or empty! "
+				+ "dockerHubUsername:" + dockerHubUsername 
+				+ " dockerHubEmail:" + dockerHubEmail 
+				+ " dockerHubPassword:" + dockerHubPassword 
+				+ " Aborting test...",
+				StringUtils.isBlank(dockerHubUsername)
+				|| StringUtils.isBlank(dockerHubEmail)  
+				|| StringUtils.isBlank(dockerHubPassword));
+
+		DockerImagesTab imagesTab = openDockerImagesTab();
+		buildImage(IMAGE_NAME, DOCKERFILE_FOLDER, imagesTab);
+		assertConsoleSuccess();
+
+		setUpRegister(REGISTRY_URL, dockerHubEmail, dockerHubUsername, dockerHubPassword);
 		setSecureStorage("password");
-		java.util.Date date = new java.util.Date();
-		seconds = String.valueOf(date.getTime());
-		imageNewTag = imageTag + ":" + seconds;
-		getConnection().getImage(imageName).addTagToImage(imageNewTag);
+		String seconds = String.valueOf(new java.util.Date().getTime());
+		this.imageNewTag = IMAGE_TAG + ":" + seconds;
+		getConnection().getImage(IMAGE_NAME).addTagToImage(imageNewTag);
 		new WaitUntil(
-				new ImageIsDeployedCondition(imageTag, seconds, getConnection()), 
+				new ImageIsDeployedCondition(IMAGE_TAG, seconds, getConnection()), 
 				TimePeriod.VERY_LONG);
-		getConnection().getImage(imageTag, seconds)
-				.pushImage(registryAccount, false, false);
+		getConnection().getImage(IMAGE_TAG, seconds).pushImage(REGISTRY_ACCOUNT, false, false);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		deleteImage(imageTag, seconds);
-		getConnection().pullImage(imageTag, seconds, registryAddress);
+		deleteImage(IMAGE_TAG, seconds);
+		getConnection().pullImage(IMAGE_TAG, seconds, REGISTRY_URL);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		assertTrue("Image has not been pushed/pulled!", imageIsDeployed(imageTag));
+		assertTrue("Image has not been pushed/pulled!", imageIsDeployed(IMAGE_TAG));
 	}
 
 	@After
 	public void after() {
-		deleteRegister(registryAddress);
+		deleteRegister(REGISTRY_URL);
 		deleteImageContainerAfter(imageNewTag);
 		cleanUpWorkspace();
 	}

@@ -20,7 +20,7 @@ import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
-import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
+import org.jboss.tools.docker.ui.bot.test.image.AbstractImageBotTest;
 import org.junit.After;
 import org.junit.Test;
 
@@ -30,36 +30,42 @@ import org.junit.Test;
  *
  */
 
-public class ExposePortTest extends AbstractDockerBotTest {
+public class ExposePortTest extends AbstractImageBotTest {
 
-	private String imageName = "jboss/wildfly";
-	private String imageTag = "10.0.0.Final";
-	private String containerName = "test_run_wildfly";
+	private static final String IMAGE_NAME = "fnichol/uhttpd";
+	private static final String IMAGE_TAG = "latest";
+	private static final String CONTAINER_NAME = "test_run_uhttpd";
+	private static final String EXPOSED_PORT = "80";
 
 	@Test
 	public void testExposePort() throws IOException {
-		pullImage(imageName, imageTag);
-		DockerImagesTab imageTab = new DockerImagesTab();
-		imageTab.activate();
-		imageTab.refresh();
-		new WaitWhile(new JobIsRunning());
-		imageTab.runImage(imageName + ":" + imageTag);
+		pullImage(IMAGE_NAME, IMAGE_TAG);
+		DockerImagesTab imagesTab = openDockerImagesTab();
+		runContainer(IMAGE_NAME, IMAGE_TAG, CONTAINER_NAME, imagesTab);
+
+		assertPortIsAccessible(EXPOSED_PORT);
+	}
+
+	private void assertPortIsAccessible(String exposedPort) {
+		BrowserView browserView = new BrowserView();
+		browserView.open();
+		String url = createURL(":" + exposedPort);
+		DeployOnServer.checkBrowserForErrorPage(browserView, url);
+	}
+
+	private void runContainer(String imageName, String imageTag, String containerName, DockerImagesTab imagesTab) {
+		imagesTab.runImage(imageName + ":" + imageTag);
 		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
 		firstPage.setName(containerName);
 		firstPage.setPublishAllExposedPorts(false);
 		firstPage.finish();
 		new WaitWhile(new JobIsRunning());
 		new WaitWhile(new ConsoleHasNoChange());
-		BrowserView browserView = new BrowserView();
-		browserView.open();
-		String url = createURL(":8080");
-		DeployOnServer.checkBrowserForErrorPage(browserView, url);
 	}
 
 	@After
 	public void after() {
-		deleteContainer(containerName);
-		deleteImage(imageName, imageTag);
+		deleteContainerIfExists(CONTAINER_NAME);
 	}
 
 }

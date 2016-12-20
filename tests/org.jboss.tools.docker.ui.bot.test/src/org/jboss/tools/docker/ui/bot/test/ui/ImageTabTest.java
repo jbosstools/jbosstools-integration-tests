@@ -19,7 +19,7 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
-import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
+import org.jboss.tools.docker.ui.bot.test.image.AbstractImageBotTest;
 import org.junit.After;
 import org.junit.Test;
 
@@ -29,13 +29,13 @@ import org.junit.Test;
  *
  */
 
-public class ImageTabTest extends AbstractDockerBotTest {
+public class ImageTabTest extends AbstractImageBotTest {
 
-	private String imageName = "hello-world";
+	private static final String IMAGE_NAME = "hello-world";
 
 	@Test
 	public void testImageTab() {
-		pullImage(this.imageName);
+		pullImage(IMAGE_NAME);
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
 		imageTab.refresh();
@@ -47,7 +47,7 @@ public class ImageTabTest extends AbstractDockerBotTest {
 		String sizeFromTable = "";
 
 		for (TableItem item : imageTab.getTableItems()) {
-			if (item.getText(1).contains(imageName)) {
+			if (item.getText(1).contains(IMAGE_NAME)) {
 				idFromTable = item.getText();
 				repoTagsFromTable = item.getText(1);
 				createdFromTable = item.getText(2);
@@ -57,7 +57,7 @@ public class ImageTabTest extends AbstractDockerBotTest {
 		}
 		idFromTable = idFromTable.replace("sha256:", "");
 
-		getConnection().getImage(getCompleteImageName(imageName)).select();
+		getConnection().getImage(getCompleteImageName(IMAGE_NAME)).select();
 
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
@@ -74,7 +74,7 @@ public class ImageTabTest extends AbstractDockerBotTest {
 	}
 
 	public void testImageTabSearch() {
-		pullImage(this.imageName);
+		pullImage(IMAGE_NAME);
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
 		imageTab.refresh();
@@ -87,7 +87,7 @@ public class ImageTabTest extends AbstractDockerBotTest {
 
 	@After
 	public void after() {
-		deleteImageContainerAfter(imageName);
+		deleteImageContainerAfter(IMAGE_NAME);
 	}
 
 }

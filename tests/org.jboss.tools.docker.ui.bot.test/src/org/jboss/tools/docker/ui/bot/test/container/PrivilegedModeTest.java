@@ -18,49 +18,47 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
-import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
+import org.jboss.tools.docker.ui.bot.test.image.AbstractImageBotTest;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
  * 
  * @author jkopriva
+ * @contributor adietish@redhat.com
  *
  */
+public class PrivilegedModeTest extends AbstractImageBotTest {
 
-public class PrivilegedModeTest extends AbstractDockerBotTest {
+	private static final String IMAGE_NAME = IMAGE_BUSYBOX;
+	private static final String IMAGE_TAG = IMAGE_TAG_LATEST;
+	private static final String CONTAINER_NAME = "test_run_busybox";
 
-	private String imageName = "debian";
-	private String imageTag = "jessie";
-	private String containerName = "test_run_debian";
-
+	@Before
+	public void before() {
+		pullImage(IMAGE_NAME,IMAGE_TAG);
+	}
+	
 	@Test
 	public void testPrivilegedMode() {
-		pullImage(imageName,imageTag);
-		DockerImagesTab imageTab = new DockerImagesTab();
-		imageTab.activate();
-		imageTab.refresh();
-		new WaitWhile(new JobIsRunning());
-		imageTab.runImage(imageName + ":" + imageTag);
+		DockerImagesTab imagesTab = openDockerImagesTab();
+		imagesTab.runImage(IMAGE_NAME + ":" + IMAGE_TAG);
 		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
-		firstPage.setName(this.containerName);
+		firstPage.setName(CONTAINER_NAME);
 		firstPage.setAllocatePseudoTTY();
 		firstPage.setKeepSTDINOpen();
 		firstPage.setGiveExtendedPrivileges();
 		firstPage.finish();
 		new WaitWhile(new JobIsRunning());
-		getConnection().getContainer(containerName).select();
-		PropertiesView propertiesView = new PropertiesView();
-		propertiesView.open();
-		propertiesView.selectTab("Inspect");
+		getConnection().getContainer(CONTAINER_NAME).select();
+		PropertiesView propertiesView = openPropertiesTab("Inspect");
 		String privilegedProp = propertiesView.getProperty("HostConfig", "Privileged").getPropertyValue();
 		assertTrue("Container is not running in privileged mode!", privilegedProp.equals("true"));
 	}
 
 	@After
 	public void after() {
-		deleteContainer(this.containerName);
-		deleteImage(imageName, imageTag);
+		deleteContainerIfExists(CONTAINER_NAME);
 	}
-
 }

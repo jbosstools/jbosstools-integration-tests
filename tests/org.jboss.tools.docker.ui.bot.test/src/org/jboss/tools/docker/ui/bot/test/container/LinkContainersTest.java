@@ -22,8 +22,9 @@ import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunResourceVolumesVar
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.reddeer.ui.DockerTerminal;
-import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
+import org.jboss.tools.docker.ui.bot.test.image.AbstractImageBotTest;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -32,31 +33,30 @@ import org.junit.Test;
  *
  */
 
-public class LinkContainersTest extends AbstractDockerBotTest {
+public class LinkContainersTest extends AbstractImageBotTest {
 
-	private String imageName = "mariadb";
-	private String imageTag = "latest";
-	private String containerNameDB = "test_run_mariadb";
-	private String containerNameClient = "test_connect_mariadb";
+	private static final String IMAGE_NAME = "mariadb";
+	private static final String IMAGE_TAG = "latest";
+	private static final String CONTAINER_NAME_DB = "test_run_mariadb";
+	private static final String CONTAINER_NAME_CLIENT = "test_connect_mariadb";
+
+	@Before
+	public void before() {
+		pullImage(IMAGE_NAME, IMAGE_TAG);
+	}
 
 	@Test
 	public void testLinkContainers() {
-		pullImage(imageName, imageTag);
-		runDatabase();
-		runClient(getDBAddress());
+		runDatabase(IMAGE_NAME + ":" + IMAGE_TAG, CONTAINER_NAME_DB);
+		runClient(IMAGE_NAME + ":" + IMAGE_TAG, CONTAINER_NAME_CLIENT, CONTAINER_NAME_DB, getDBAddress(CONTAINER_NAME_DB));
 	}
 
-	public void runDatabase() {
-		DockerImagesTab imageTab = new DockerImagesTab();
-		imageTab.activate();
-		imageTab.refresh();
-		new WaitWhile(new JobIsRunning());
-		imageTab.runImage(imageName + ":" + imageTag);
-		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
-		firstPage.setName(this.containerNameDB);
+	public void runDatabase(String image, String containerName) {
+		DockerImagesTab imagesTab = openDockerImagesTab();
+		imagesTab.runImage(image);
+		ImageRunSelectionPage firstPage = openImageRunSelectionPage(containerName, false);
 		firstPage.setEntrypoint("docker-entrypoint.sh");
 		firstPage.setCommand("mysqld");
-		firstPage.setPublishAllExposedPorts(false);
 		firstPage.next();
 		ImageRunResourceVolumesVariablesPage secondPage = new ImageRunResourceVolumesVariablesPage();
 		secondPage.addEnviromentVariable("MYSQL_ROOT_PASSWORD", "password");
@@ -65,41 +65,48 @@ public class LinkContainersTest extends AbstractDockerBotTest {
 		new WaitWhile(new ConsoleHasNoChange());
 	}
 
-	public String getDBAddress() {
-		getConnection().getContainer(containerNameDB).select();
+	public String getDBAddress(String containerName) {
+		getConnection().getContainer(containerName).select();
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
 		propertiesView.selectTab("Inspect");
 		return propertiesView.getProperty("NetworkSettings", "IPAddress").getPropertyValue();
 	}
 
-	public void runClient(String dbAddress) {
+	public void runClient(String image, String containerNameClient, String containerNameDb, String dbAddress) {
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
 		imageTab.refresh();
 		new WaitWhile(new JobIsRunning());
-		imageTab.runImage(imageName + ":" + imageTag);
-		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
-		firstPage.setName(this.containerNameClient);
+		imageTab.runImage(image);
+		ImageRunSelectionPage firstPage = openImageRunSelectionPage(containerNameClient, false);
 		firstPage.setEntrypoint("docker-entrypoint.sh");
 		firstPage.setCommand("mysql -h" + dbAddress + " -P3306 -uroot -ppassword");
-		firstPage.addLinkToContainer(containerNameDB, "mysql");
+		firstPage.addLinkToContainer(containerNameDb, "mysql");
 		firstPage.setPublishAllExposedPorts();
 		firstPage.setKeepSTDINOpen();
 		firstPage.setAllocatePseudoTTY();
 		try {
 			firstPage.finish();
 		} catch (WaitTimeoutExpiredException ex) {
-
+			// swallow intentionall
+			// TODO: add logging
 		}
 		DockerTerminal dt = new DockerTerminal();
 		dt.activate();
 		assertTrue("No output from terminal!", !dt.getTextFromPage("/" + containerNameClient).isEmpty());
 	}
 
-	@After
-	public void after() {
-		deleteImageContainerAfter(containerNameClient, containerNameDB, imageName + ":" + imageTag);
+	private ImageRunSelectionPage openImageRunSelectionPage(String containerName, boolean publishAllExposedPorts) {
+		ImageRunSelectionPage page = new ImageRunSelectionPage();
+		page.setName(containerName);
+		page.setPublishAllExposedPorts(publishAllExposedPorts);
+		return page;
 	}
 
+	@After
+	public void after() {
+		deleteContainerIfExists(CONTAINER_NAME_DB);
+		deleteContainerIfExists(CONTAINER_NAME_CLIENT);
+	}
 }

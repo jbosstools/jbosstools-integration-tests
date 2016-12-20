@@ -11,75 +11,50 @@
 
 package org.jboss.tools.docker.ui.bot.test.container;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.File;
-import java.io.IOException;
-
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunResourceVolumesVariablesPage;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
-import org.jboss.tools.docker.ui.bot.test.AbstractDockerBotTest;
+import org.jboss.tools.docker.ui.bot.test.image.AbstractImageBotTest;
 import org.junit.After;
 import org.junit.Test;
 
 /**
  * 
  * @author jkopriva
- *
+ * @contributor adietish@redhat.com
  */
 
-public class VariablesTest extends AbstractDockerBotTest {
-	private static String imageName = "test_variables";
+public class VariablesTest extends AbstractImageBotTest {
+	
+	private static final String IMAGE_NAME = "test_variables";
+	private static final String CONTAINER_NAME = "run_" + IMAGE_NAME;
 
 	@Test
 	public void testVariables() {
-		DockerImagesTab imageTab = new DockerImagesTab();
-		imageTab.activate();
-		imageTab.refresh();
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
-		String dockerFilePath = "";
-		try {
-			dockerFilePath = (new File("resources/test-variables")).getCanonicalPath();
-		} catch (IOException ex) {
-			fail("Resource file not found!");
-		}
-		imageTab.buildImage(imageName, dockerFilePath);
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		ConsoleView consoleView = new ConsoleView();
-		consoleView.open();
-		assertFalse("Console has no output!", consoleView.getConsoleText().isEmpty());
-		assertTrue("Build has not been successful", consoleView.getConsoleText().contains("Successfully built"));
-
-		imageTab.activate();
-		imageTab.refresh();
+		DockerImagesTab imagesTab = openDockerImagesTab();
+		buildImage(IMAGE_NAME, "resources/test-variables", imagesTab);
+		assertConsoleSuccess();
+		
+		imagesTab.activate();
+		imagesTab.refresh();
 		new WaitWhile(new JobIsRunning());
-		imageTab.runImage(imageName);
+		imagesTab.runImage(IMAGE_NAME);
 		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
-		firstPage.setName(imageName + "_run");
+		firstPage.setName(CONTAINER_NAME);
 		firstPage.next();
 		ImageRunResourceVolumesVariablesPage secondPage = new ImageRunResourceVolumesVariablesPage();
 		secondPage.addEnviromentVariable("FOO", "barbarbar");
 		secondPage.finish();
 		new WaitWhile(new JobIsRunning());
-		new WaitWhile(new ConsoleHasNoChange());
-		ConsoleView cview = new ConsoleView();
-		cview.open();
-		assertTrue("Console do not contain expected output!", cview.getConsoleText().contains("FOO is barbarbar"));
+		assertConsoleContains("FOO is barbarbar");
 	}
 
 	@After
 	public void after() {
-		deleteContainer(imageName + "_run");
-		deleteImage(imageName);
-		deleteImage("busybox");
+		deleteContainer(CONTAINER_NAME);
+		deleteImage(IMAGE_NAME);
 	}
 
 }
