@@ -32,7 +32,7 @@ public class DockerContainersTab extends WorkbenchView {
 		super("Docker Containers");
 	}
 
-	public TableItem getDockerImage(String dockerContainerName) {
+	public TableItem getDockerContainer(String dockerContainerName) {
 		this.activate();
 		for (TableItem item : getTableItems()) {
 			if (item.getText().equals(dockerContainerName)) {
@@ -54,7 +54,7 @@ public class DockerContainersTab extends WorkbenchView {
 	}
 
 	public void select(String containerName) {
-		getDockerImage(containerName).select();
+		getDockerContainer(containerName).select();
 	}
 
 	public void searchContainer(String containerName) {

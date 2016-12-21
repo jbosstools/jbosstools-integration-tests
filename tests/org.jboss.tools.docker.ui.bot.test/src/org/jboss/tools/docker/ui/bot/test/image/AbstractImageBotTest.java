@@ -52,7 +52,21 @@ public class AbstractImageBotTest extends AbstractDockerBotTest {
 	protected static final String IMAGE_BUSYBOX = "busybox";
 	protected static final String IMAGE_BUSYBOX_LATEST = IMAGE_BUSYBOX + NAME_TAG_SEPARATOR + IMAGE_TAG_LATEST;
 	protected static final String IMAGE_ALPINE = "alpine";
+	protected static final String IMAGE_ALPINE_TAG = "3.3";
 	protected static final String IMAGE_ALPINE_33 = IMAGE_ALPINE + NAME_TAG_SEPARATOR + "3.3";
+	
+	protected static final String IMAGE_CIRROS = "cirros";
+	protected static final String IMAGE_CIRROS_TAG = "0.3.4";
+	
+	protected static final String IMAGE_UHTTPD = "fnichol/uhttpd";
+	
+	protected static final String IMAGE_HELLO_WORLD = "hello-world";
+	
+	protected static final String REGISTRY_SERVER_ADDRESS = "registry.access.redhat.com";
+	
+	protected static final String IMAGE_RHEL = "rhel7.2";
+	
+	protected static final String DOCKERFILE_FOLDER = "resources/test-build";
 
 	protected static final String REGISTRY_URL = "https://index.docker.io";
 	
@@ -77,6 +91,7 @@ public class AbstractImageBotTest extends AbstractDockerBotTest {
 	protected void buildImage(String imageName, String dockerFileFolder, DockerImagesTab imageTab) {
 		try {
 			String dockerFilePath = new File(dockerFileFolder).getCanonicalPath();
+			getConnection();
 			imageTab.buildImage(imageName, dockerFilePath);
 			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		} catch (IOException ex) {
@@ -243,8 +258,7 @@ public class AbstractImageBotTest extends AbstractDockerBotTest {
 	}
 
 	protected String getContainerIP(String containerName) {
-		getConnection().getContainer(containerName).select();
-		PropertiesView propertiesView = openPropertiesTab("Inspect");
+		PropertiesView propertiesView = openPropertiesTabForContainer("Inspect", containerName);
 		return propertiesView.getProperty("NetworkSettings", "IPAddress").getPropertyValue();
 	}
 }

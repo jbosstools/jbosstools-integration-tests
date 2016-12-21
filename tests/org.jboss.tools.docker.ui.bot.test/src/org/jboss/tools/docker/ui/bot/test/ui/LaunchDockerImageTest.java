@@ -31,18 +31,17 @@ import org.junit.Test;
 
 public class LaunchDockerImageTest extends AbstractImageBotTest {
 
-	private static final String IMAGE_NAME = "hello-world";
 	private static final String CONTAINER_NAME = "test_variables";
 	private static final String CONFIGURATION_NAME = "test_configuration";
 
 	@Before
 	public void before() {
-		pullImage(IMAGE_NAME);
+		pullImage(IMAGE_HELLO_WORLD);
 	}
 
 	@Test
 	public void testLaunchConfiguration() {
-		String imageName = getCompleteImageName(IMAGE_NAME);
+		String imageName = getCompleteImageName(IMAGE_HELLO_WORLD);
 
 		RunDockerImageLaunchConfiguration runImageConf = new RunDockerImageLaunchConfiguration();
 		runDockerImageLaunchConfiguration(

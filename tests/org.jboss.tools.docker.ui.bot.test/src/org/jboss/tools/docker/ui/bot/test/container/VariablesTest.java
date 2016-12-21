@@ -33,6 +33,7 @@ public class VariablesTest extends AbstractImageBotTest {
 
 	@Test
 	public void testVariables() {
+		getConnection();
 		DockerImagesTab imagesTab = openDockerImagesTab();
 		buildImage(IMAGE_NAME, "resources/test-variables", imagesTab);
 		assertConsoleSuccess();

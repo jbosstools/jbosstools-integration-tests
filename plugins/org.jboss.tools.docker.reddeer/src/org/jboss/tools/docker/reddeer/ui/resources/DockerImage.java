@@ -71,7 +71,7 @@ public class DockerImage extends AbstractDockerExplorerItem {
 	public void addTagToImage(String newTag) {
 		select();
 		new ContextMenu("Add Tag").select();
-		new DefaultShell("");
+		new DefaultShell("Tag Image");
 		new LabeledText("New Tag:").setText(newTag);
 		new FinishButton().click();
 	}

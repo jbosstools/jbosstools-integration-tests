@@ -73,13 +73,11 @@ public class ContainerTabTest extends AbstractImageBotTest {
 		commandFromTable = item.getText(3);
 		portsFromTable = item.getText(4);
 		statusFromTable = item.getText(5);
-		item.click();
-
-		getConnection().getContainer(CONTAINER_NAME).select();
 
 		// get values from Properties view
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
+		getConnection().getContainer(CONTAINER_NAME).select();
 		propertiesView.selectTab("Info");
 		String nameProp = propertiesView.getProperty("Names").getPropertyValue();
 		String imageProp = propertiesView.getProperty("Image").getPropertyValue();

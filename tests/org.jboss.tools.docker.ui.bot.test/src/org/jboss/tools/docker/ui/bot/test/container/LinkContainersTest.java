@@ -13,12 +13,10 @@ package org.jboss.tools.docker.ui.bot.test.container;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunResourceVolumesVariablesPage;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.jboss.tools.docker.reddeer.ui.DockerTerminal;
@@ -35,66 +33,14 @@ import org.junit.Test;
 
 public class LinkContainersTest extends AbstractImageBotTest {
 
-	private static final String IMAGE_NAME = "mariadb";
-	private static final String IMAGE_TAG = "latest";
-	private static final String CONTAINER_NAME_DB = "test_run_mariadb";
-	private static final String CONTAINER_NAME_CLIENT = "test_connect_mariadb";
+	private static final String IMAGE_ALPINE_CURL = "byrnedo/alpine-curl";
+	private static final String CONTAINER_NAME_HTTP_SERVER = "test_run_httpd";
+	private static final String CONTAINER_NAME_CLIENT_ALPINE = "test_connect_httpd";
 
 	@Before
 	public void before() {
-		pullImage(IMAGE_NAME, IMAGE_TAG);
-	}
-
-	@Test
-	public void testLinkContainers() {
-		runDatabase(IMAGE_NAME + ":" + IMAGE_TAG, CONTAINER_NAME_DB);
-		runClient(IMAGE_NAME + ":" + IMAGE_TAG, CONTAINER_NAME_CLIENT, CONTAINER_NAME_DB, getDBAddress(CONTAINER_NAME_DB));
-	}
-
-	public void runDatabase(String image, String containerName) {
-		DockerImagesTab imagesTab = openDockerImagesTab();
-		imagesTab.runImage(image);
-		ImageRunSelectionPage firstPage = openImageRunSelectionPage(containerName, false);
-		firstPage.setEntrypoint("docker-entrypoint.sh");
-		firstPage.setCommand("mysqld");
-		firstPage.next();
-		ImageRunResourceVolumesVariablesPage secondPage = new ImageRunResourceVolumesVariablesPage();
-		secondPage.addEnviromentVariable("MYSQL_ROOT_PASSWORD", "password");
-		secondPage.finish();
-		new WaitWhile(new JobIsRunning());
-		new WaitWhile(new ConsoleHasNoChange());
-	}
-
-	public String getDBAddress(String containerName) {
-		getConnection().getContainer(containerName).select();
-		PropertiesView propertiesView = new PropertiesView();
-		propertiesView.open();
-		propertiesView.selectTab("Inspect");
-		return propertiesView.getProperty("NetworkSettings", "IPAddress").getPropertyValue();
-	}
-
-	public void runClient(String image, String containerNameClient, String containerNameDb, String dbAddress) {
-		DockerImagesTab imageTab = new DockerImagesTab();
-		imageTab.activate();
-		imageTab.refresh();
-		new WaitWhile(new JobIsRunning());
-		imageTab.runImage(image);
-		ImageRunSelectionPage firstPage = openImageRunSelectionPage(containerNameClient, false);
-		firstPage.setEntrypoint("docker-entrypoint.sh");
-		firstPage.setCommand("mysql -h" + dbAddress + " -P3306 -uroot -ppassword");
-		firstPage.addLinkToContainer(containerNameDb, "mysql");
-		firstPage.setPublishAllExposedPorts();
-		firstPage.setKeepSTDINOpen();
-		firstPage.setAllocatePseudoTTY();
-		try {
-			firstPage.finish();
-		} catch (WaitTimeoutExpiredException ex) {
-			// swallow intentionall
-			// TODO: add logging
-		}
-		DockerTerminal dt = new DockerTerminal();
-		dt.activate();
-		assertTrue("No output from terminal!", !dt.getTextFromPage("/" + containerNameClient).isEmpty());
+		pullImage(IMAGE_ALPINE_CURL);
+		pullImage(IMAGE_UHTTPD);
 	}
 
 	private ImageRunSelectionPage openImageRunSelectionPage(String containerName, boolean publishAllExposedPorts) {
@@ -104,9 +50,56 @@ public class LinkContainersTest extends AbstractImageBotTest {
 		return page;
 	}
 
+	@Test
+	public void testLinkContainers() {
+		runUhttpServer(IMAGE_UHTTPD, CONTAINER_NAME_HTTP_SERVER);
+		runAlpineLinux(IMAGE_ALPINE_CURL, CONTAINER_NAME_CLIENT_ALPINE);
+
+	}
+
+	public void runUhttpServer(String imageName, String containerName) {
+		DockerImagesTab imagesTab = openDockerImagesTab();
+		imagesTab.runImage(imageName);
+		ImageRunSelectionPage firstPage = openImageRunSelectionPage(containerName, false);
+		firstPage.setName(containerName);
+		firstPage.setPublishAllExposedPorts(false);
+		firstPage.finish();
+		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new ConsoleHasNoChange());
+	}
+
+	public void runAlpineLinux(String imageName, String containerName) {
+		String serverAddress = getHttpServerAddress(CONTAINER_NAME_HTTP_SERVER);
+		DockerImagesTab imagesTab = openDockerImagesTab();
+		imagesTab.runImage(imageName);
+		ImageRunSelectionPage firstPage = openImageRunSelectionPage(containerName, false);
+		firstPage.setName(containerName);
+		firstPage.setCommand(serverAddress + ":80");
+		firstPage.addLinkToContainer(CONTAINER_NAME_HTTP_SERVER, "http_server");
+		firstPage.setPublishAllExposedPorts(false);
+		firstPage.setAllocatePseudoTTY();
+		firstPage.setKeepSTDINOpen();
+		firstPage.finish();
+		new WaitWhile(new JobIsRunning());
+		DockerTerminal dt = new DockerTerminal();
+		dt.open();
+		String terminalText = dt.getTextFromPage("/" + containerName);
+		assertTrue("No output from terminal!", !terminalText.isEmpty());
+		assertTrue("Containers are not linked!", !terminalText.contains("Connection refused"));
+	}
+
+	private String getHttpServerAddress(String containerName) {
+		PropertiesView propertiesView = new PropertiesView();
+		propertiesView.open();
+		getConnection().getContainer(containerName).select();
+		propertiesView.selectTab("Inspect");
+		return propertiesView.getProperty("NetworkSettings", "IPAddress").getPropertyValue();
+	}
+
 	@After
 	public void after() {
-		deleteContainerIfExists(CONTAINER_NAME_DB);
-		deleteContainerIfExists(CONTAINER_NAME_CLIENT);
+		deleteContainerIfExists(CONTAINER_NAME_CLIENT_ALPINE);
+		deleteContainerIfExists(CONTAINER_NAME_HTTP_SERVER);
+		deleteImageIfExists(IMAGE_ALPINE_CURL);
 	}
 }

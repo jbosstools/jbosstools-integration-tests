@@ -13,6 +13,8 @@ package org.jboss.tools.docker.reddeer.ui;
 
 import java.util.List;
 
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.api.TableItem;
@@ -20,6 +22,7 @@ import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -49,28 +52,34 @@ public class DockerImagesTab extends WorkbenchView {
 	}
 
 	public void refresh() {
+		activate();
 		new DefaultToolItem("Refresh (F5)").click();
 
 	}
 
 	public List<TableItem> getTableItems() {
+		activate();
 		return new DefaultTable().getItems();
 
 	}
 
 	public void buildImage(String name, String directory) {
+		activate();
 		new DefaultToolItem("Build Image").click();
-		new LabeledText("Name:").setText(name);
+		new WaitUntil(new ShellWithTextIsAvailable(""));
+		new LabeledText("Image Name:").setText(name);
 		new LabeledText("Directory:").setText(directory);
 		new FinishButton().click();
 	}
 
 	public void runImage(String imageName) {
+		activate();
 		selectImage(imageName);
 		new ContextMenu("Run...").select();
 	}
 
 	public String getImageTags(String imageName) {
+		activate();
 		TableItem image = getDockerImage(imageName);
 		return image.getText(1);
 	}
@@ -78,6 +87,7 @@ public class DockerImagesTab extends WorkbenchView {
 	public void addTagToImage(String imageName, String newTag) {
 		selectImage(imageName);
 		new ContextMenu("Add Tag").select();
+		new DefaultShell("Tag Image");
 		new LabeledText("New Tag:").setText(newTag);
 		new FinishButton().click();
 	}
@@ -99,6 +109,7 @@ public class DockerImagesTab extends WorkbenchView {
 	}
 
 	public void selectImage(String imageName) {
+		activate();
 		TableItem image = getDockerImage(imageName);
 		image.select();
 	}

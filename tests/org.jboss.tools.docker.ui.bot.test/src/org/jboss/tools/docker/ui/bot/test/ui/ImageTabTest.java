@@ -31,11 +31,9 @@ import org.junit.Test;
 
 public class ImageTabTest extends AbstractImageBotTest {
 
-	private static final String IMAGE_NAME = "hello-world";
-
 	@Test
 	public void testImageTab() {
-		pullImage(IMAGE_NAME);
+		pullImage(IMAGE_HELLO_WORLD);
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
 		imageTab.refresh();
@@ -47,7 +45,7 @@ public class ImageTabTest extends AbstractImageBotTest {
 		String sizeFromTable = "";
 
 		for (TableItem item : imageTab.getTableItems()) {
-			if (item.getText(1).contains(IMAGE_NAME)) {
+			if (item.getText(1).contains(IMAGE_HELLO_WORLD)) {
 				idFromTable = item.getText();
 				repoTagsFromTable = item.getText(1);
 				createdFromTable = item.getText(2);
@@ -57,7 +55,7 @@ public class ImageTabTest extends AbstractImageBotTest {
 		}
 		idFromTable = idFromTable.replace("sha256:", "");
 
-		getConnection().getImage(getCompleteImageName(IMAGE_NAME)).select();
+		getConnection().getImage(getCompleteImageName(IMAGE_HELLO_WORLD)).select();
 
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
@@ -74,7 +72,7 @@ public class ImageTabTest extends AbstractImageBotTest {
 	}
 
 	public void testImageTabSearch() {
-		pullImage(IMAGE_NAME);
+		pullImage(IMAGE_HELLO_WORLD);
 		DockerImagesTab imageTab = new DockerImagesTab();
 		imageTab.activate();
 		imageTab.refresh();
@@ -87,7 +85,7 @@ public class ImageTabTest extends AbstractImageBotTest {
 
 	@After
 	public void after() {
-		deleteImageContainerAfter(IMAGE_NAME);
+		deleteImageContainerAfter(IMAGE_HELLO_WORLD);
 	}
 
 }
