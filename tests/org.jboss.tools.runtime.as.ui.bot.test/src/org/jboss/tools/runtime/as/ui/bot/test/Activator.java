@@ -1,6 +1,7 @@
 package org.jboss.tools.runtime.as.ui.bot.test;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -73,5 +74,13 @@ public class Activator extends AbstractUIPlugin {
 		return p.toFile();
 	}
 
-	
+
+
+	 public static String getPathToFileWithinPlugin(String fileName) {
+		try {
+			return new File(fileName).getCanonicalPath();
+		} catch (IOException e) {
+			throw new IllegalStateException("Cannot locate file " + fileName + " in plugin " + PLUGIN_ID);
+		}
+	 }
 }

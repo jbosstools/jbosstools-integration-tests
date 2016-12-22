@@ -63,6 +63,21 @@ public class OperateServerTemplate {
 		deleteServer();
 	}
 	
+	public void startServerSafe() {
+		serverIsPresentInServersView();
+		new WaitWhile(new JobIsRunning());
+		new WaitUntil(new ServerHasState("Stopped"));
+		LOGGER.step("Starting server");
+		startServer();
+	}
+
+	public void stopAndDeleteServer() {
+		LOGGER.step("Stopping server");
+		stopServer();
+		LOGGER.step("Deleting server");
+		deleteServer();
+	}
+	
 	private void serverIsPresentInServersView() {
 		ServersView sw = new ServersView();
 		sw.open();

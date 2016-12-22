@@ -1,21 +1,29 @@
 package org.jboss.tools.runtime.as.ui.bot.test.parametized.server;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
+import org.eclipse.ui.PlatformUI;
+import org.jboss.ide.eclipse.as.reddeer.server.editor.JBossServerEditor;
+import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServer;
+import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
+import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.eclipse.jdt.ui.preferences.JREsPreferencePage;
 import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.cdk.reddeer.requirements.DisableSecureStorageRequirement.DisableSecureStorage;
 import org.jboss.tools.runtime.as.ui.bot.test.Activator;
 import org.jboss.tools.runtime.as.ui.bot.test.SuiteConstants;
 import org.jboss.tools.runtime.as.ui.bot.test.download.RuntimeDownloadTestUtility;
-import org.jboss.tools.runtime.as.ui.bot.test.reddeer.Runtime;
+import org.jboss.tools.runtime.as.ui.bot.test.parametized.server.ServerRuntimeUIConstants.EditorPort;
 import org.jboss.tools.runtime.as.ui.bot.test.reddeer.util.DetectRuntimeTemplate;
-import org.jboss.tools.runtime.as.ui.bot.test.reddeer.util.OperateServerTemplate;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -148,27 +156,80 @@ public class ServerRuntimesTest {
     public void detect(){
     	DetectRuntimeTemplate.detectRuntime(getDownloadPath().getAbsolutePath(), ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString));
     	DetectRuntimeTemplate.removePath(getDownloadPath().getAbsolutePath());
-    }
-
-    
-    
-    @Test
-    public void operate(){
-    	DetectRuntimeTemplate.detectRuntime(getDownloadPath().getAbsolutePath(), ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString));
-    	DetectRuntimeTemplate.removePath(getDownloadPath().getAbsolutePath());
+    	
+    	
+    	// Let's also verify the ports situation in the editor
     	String serverName = ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString).get(0).getName();
-    	OperateServerTemplate operate = new OperateServerTemplate(serverName);
-    	operate.setUp();
-    	try {
-    		operate.operateServer();
-    	} finally {
-    		operate.cleanServerAndConsoleView();
-    	}
+		JBossServer server = new JBossServerView().getServer(serverName);
+		JBossServerEditor editor = server.open();
+		
+		EditorPort[] ports = ServerRuntimeUIConstants.getPorts(runtimeString);
+		assertNotNull(ports);
+		for( int i = 0; i < ports.length; i++ ) {
+			assertThat(new LabeledText(ports[i].getLabel()).getText(), is(ports[i].getValue()));
+		}
     }
+    
+    
+    
+//
+//    
+//    
+//    @Test
+//    public void operate(){
+//    	DetectRuntimeTemplate.detectRuntime(getDownloadPath().getAbsolutePath(), ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString));
+//    	DetectRuntimeTemplate.removePath(getDownloadPath().getAbsolutePath());
+//    	String serverName = ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString).get(0).getName();
+//    	OperateServerTemplate operate = new OperateServerTemplate(serverName);
+//    	operate.setUp();
+//    	try {
+//    		operate.operateServer();
+//    	} finally {
+//    		operate.cleanServerAndConsoleView();
+//    	}
+//    }
+//
+//    @Test
+//    public void operateDeploy(){
+//    	DetectRuntimeTemplate.detectRuntime(getDownloadPath().getAbsolutePath(), ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString));
+//    	DetectRuntimeTemplate.removePath(getDownloadPath().getAbsolutePath());
+//    	String serverName = ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString).get(0).getName();
+//    	OperateServerTemplate operate = new OperateServerTemplate(serverName);
+//    	operate.setUp();
+//    	try {
+//    		operate.startServerSafe();
+//    		DeployJSPProjectTemplate djsppt = new DeployJSPProjectTemplate();
+//    		djsppt.clearConsole();
+//    		JBossServer jbs = djsppt.getServer(serverName);
+//    		djsppt.importProject("jsp-project", "projects/jsp-project.zip", serverName + " Runtime");
+//    		
+//    		String depString = ServerRuntimeUIConstants.getDeployString(runtimeString, "jsp-project", ".war");
+//    		djsppt.deployProject("jsp-project", serverName, depString);
+//    		
+//    		// Now try a hot-deploy
+//    		djsppt.hotDeployment("jsp-project");
+//    		
+//    		// Now try to undeploy
+//    		String undepString = ServerRuntimeUIConstants.getUndeployString(runtimeString, "jsp-project", ".war");
+//    		djsppt.undeployProject(serverName, "jsp-project", undepString);
+//    		
+//    	} finally {
+//    		// Cleanup everything
+//    		operate.stopAndDeleteServer();
+//    		operate.cleanServerAndConsoleView();
+//    	}
+//    }
 
+    
 
     @After
     public void postTest() {
+    	Display.syncExec(new Runnable() {
+			@Override
+			public void run() {
+		    	PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeAllEditors(true);
+			}
+		});
     	new RuntimeDownloadTestUtility(getDownloadPath()).clean(false);
     }
     

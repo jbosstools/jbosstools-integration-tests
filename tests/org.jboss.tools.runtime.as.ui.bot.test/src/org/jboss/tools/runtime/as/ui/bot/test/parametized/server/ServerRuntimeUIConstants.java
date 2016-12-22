@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.eclipse.osgi.util.NLS;
 import org.jboss.tools.runtime.as.ui.bot.test.Activator;
 import org.jboss.tools.runtime.as.ui.bot.test.SuiteConstants;
 import org.jboss.tools.runtime.as.ui.bot.test.parametized.MatrixUtils;
@@ -76,36 +77,43 @@ public class ServerRuntimeUIConstants {
 
 	public static final String[] SMOKETEST_DOWNLOADS = new String[] { WF_902, WF_10_1_0 };
 
-	private static HashMap<String, List<Runtime>> expectations = null;
+	private static HashMap<String, ModelWrapper> expectations = null;
 
 	private static void initialize() {
-		HashMap<String, List<Runtime>> map = new HashMap<String, List<Runtime>>();
-		map.put(GATE_IN_3_6, asList(createRuntime(GATE_IN_3_6, "GateIn 3.6", "3.6", "GateIn", "GateIn-3.6.0.Final-jbossas7")));
-		map.put(JBAS_328, asList(createRuntime(JBAS_328, "JBoss AS 3.2", "3.2", "AS", "jboss-3.2.8.SP1")));
-		map.put(JBAS_405, asList(createRuntime(JBAS_405, "JBoss AS 4.0", "4.0", "AS", "jboss-4.0.5.GA")));
-		map.put(JBAS_423, asList(createRuntime(JBAS_423, "JBoss AS 4.2", "4.2", "AS", "jboss-4.2.3.GA")));
-		map.put(JBAS_501, asList(createRuntime(JBAS_501, "JBoss AS 5.0", "5.0", "AS", "jboss-5.0.1.GA")));
-		map.put(JBAS_510, asList(createRuntime(JBAS_510, "JBoss AS 5.1", "5.1", "AS", "jboss-5.1.0.GA")));
-		map.put(JBAS_600, asList(createRuntime(JBAS_600, "JBoss AS 6.0", "6.0", "AS", "jboss-6.0.0.Final")));
-		map.put(JBAS_701, asList(createRuntime(JBAS_701, "JBoss AS 7.0", "7.0", "AS", "jboss-as-7.0.1.Final")));
-		map.put(JBAS_702, asList(createRuntime(JBAS_702, "JBoss AS 7.0", "7.0", "AS", "jboss-as-7.0.2.Final")));
-		map.put(JBAS_710, asList(createRuntime(JBAS_710, "JBoss AS 7.1", "7.1", "AS", "jboss-as-7.1.0.Final")));
-		map.put(JBAS_711, asList(createRuntime(JBAS_711, "JBoss AS 7.1", "7.1", "AS", "jboss-as-7.1.1.Final")));
-		map.put(WF_800, asList(createRuntime(WF_800, "WildFly 8.0", "8.0", "WildFly", "wildfly-8.0.0.Final")));
-		map.put(WF_810, asList(createRuntime(WF_810, "WildFly 8.1", "8.1", "WildFly", "wildfly-8.1.0.Final")));
-		map.put(WF_820, asList(createRuntime(WF_820, "WildFly 8.2", "8.2", "WildFly", "wildfly-8.2.1.Final")));
-		map.put(WF_821, asList(createRuntime(WF_821, "WildFly 8.2", "8.2", "WildFly", "wildfly-8.2.1.Final")));
-		map.put(WF_900, asList(createRuntime(WF_900, "WildFly 9.0", "9.0", "WildFly", "wildfly-9.0.0.Final")));
-		map.put(WF_901, asList(createRuntime(WF_901, "WildFly 9.0", "9.0", "WildFly", "wildfly-9.0.1.Final")));
-		map.put(WF_902, asList(createRuntime(WF_902, "WildFly 9.0", "9.0", "WildFly", "wildfly-9.0.2.Final")));
-		map.put(WF_10_0_0, asList(createRuntime(WF_10_0_0, "WildFly 10.0", "10.0", "WildFly", "wildfly-10.0.0.Final")));
-		map.put(WF_10_1_0, asList(createRuntime(WF_10_1_0, "WildFly 10.1", "10.1", "WildFly", "wildfly-10.1.0.Final")));
-		map.put(JBEAP_610, asList(createRuntime(JBEAP_610, "Red Hat JBoss EAP 6.1", "6.1", "EAP", "jboss-eap-6.1")));
-		map.put(JBEAP_620, asList(createRuntime(JBEAP_620, "Red Hat JBoss EAP 6.2", "6.2", "EAP", "jboss-eap-6.2")));
-		map.put(JBEAP_630, asList(createRuntime(JBEAP_630, "Red Hat JBoss EAP 6.3", "6.3", "EAP", "jboss-eap-6.3")));
-		map.put(JBEAP_640, asList(createRuntime(JBEAP_640,"Red Hat JBoss EAP 6.4", "6.4", "EAP", "jboss-eap-6.4")));
-		map.put(JBEAP_700, asList(createRuntime(JBEAP_700, "Red Hat JBoss EAP 7.0", "7.0", "EAP", "jboss-eap-7.0")));
-		map.put(JPP_610, asList(createRuntime(JPP_610, "JBoss Portal 6.1", "6.1", "JPP", "jboss-jpp-6.1")));
+		HashMap<String, ModelWrapper> map = new HashMap<String,ModelWrapper>();
+		expectations = map;
+		
+		
+		addEntry(JBAS_328, 		"JBoss AS 3.2", 		"3.2", 	"AS", 		"jboss-3.2.8.SP1",				LEGACY_DEPLOY, LEGACY_UNDEPLOY, legacyEditorPorts());
+		addEntry(JBAS_405, 		"JBoss AS 4.0", 		"4.0", 	"AS", 		"jboss-4.0.5.GA", 				LEGACY_DEPLOY, LEGACY_UNDEPLOY, legacyEditorPorts());
+		addEntry(JBAS_423, 		"JBoss AS 4.2", 		"4.2", 	"AS", 		"jboss-4.2.3.GA", 				LEGACY_DEPLOY, LEGACY_UNDEPLOY, legacyEditorPorts());
+		addEntry(JBAS_501, 		"JBoss AS 5.0", 		"5.0", 	"AS", 		"jboss-5.0.1.GA", 				LEGACY_DEPLOY, LEGACY_UNDEPLOY, legacyEditorPorts());
+		addEntry(JBAS_510, 		"JBoss AS 5.1", 		"5.1", 	"AS", 		"jboss-5.1.0.GA", 				LEGACY_DEPLOY, LEGACY_UNDEPLOY, legacyEditorPorts());
+		addEntry(JBAS_600, 		"JBoss AS 6.0", 		"6.0", 	"AS", 		"jboss-6.0.0.Final", 			LEGACY_DEPLOY, LEGACY_UNDEPLOY, as6EditorPorts());
+		
+		
+		addEntry(GATE_IN_3_6, 	"GateIn 3.6", 			"3.6",	"GateIn", 	"GateIn-3.6.0.Final-jbossas7", 	STANDARD_DEPLOY, STANDARD_UNDEPLOY, as7EditorPorts());
+
+		
+		addEntry(JBAS_701, 		"JBoss AS 7.0", 		"7.0", 	"AS", 		"jboss-as-7.0.1.Final", 		STANDARD_DEPLOY, STANDARD_UNDEPLOY, as7EditorPorts());
+		addEntry(JBAS_702, 		"JBoss AS 7.0",			"7.0", 	"AS", 		"jboss-as-7.0.2.Final", 		STANDARD_DEPLOY, STANDARD_UNDEPLOY, as7EditorPorts());
+		addEntry(JBAS_710, 		"JBoss AS 7.1",			"7.1", 	"AS", 		"jboss-as-7.1.0.Final", 		STANDARD_DEPLOY, STANDARD_UNDEPLOY, as7EditorPorts());
+		addEntry(JBAS_711, 		"JBoss AS 7.1", 		"7.1", 	"AS", 		"jboss-as-7.1.1.Final", 		STANDARD_DEPLOY, STANDARD_UNDEPLOY, as7EditorPorts());
+		addEntry(WF_800, 		"WildFly 8.0",		 	"8.0", 	"WildFly", 	"wildfly-8.0.0.Final", 			STANDARD_DEPLOY, STANDARD_UNDEPLOY, wfEditorPorts());
+		addEntry(WF_810, 		"WildFly 8.1",		 	"8.1", 	"WildFly", 	"wildfly-8.1.0.Final", 			STANDARD_DEPLOY, STANDARD_UNDEPLOY, wfEditorPorts());
+		addEntry(WF_820, 		"WildFly 8.2",		 	"8.2", 	"WildFly", 	"wildfly-8.2.0.Final", 			STANDARD_DEPLOY, STANDARD_UNDEPLOY, wfEditorPorts());
+		addEntry(WF_821, 		"WildFly 8.2",		 	"8.2", 	"WildFly", 	"wildfly-8.2.1.Final", 			STANDARD_DEPLOY, STANDARD_UNDEPLOY, wfEditorPorts());
+		addEntry(WF_900, 		"WildFly 9.0",		 	"9.0", 	"WildFly", 	"wildfly-9.0.0.Final", 			STANDARD_DEPLOY, STANDARD_UNDEPLOY, wfEditorPorts());
+		addEntry(WF_901, 		"WildFly 9.0",		 	"9.0", 	"WildFly", 	"wildfly-9.0.1.Final", 			STANDARD_DEPLOY, STANDARD_UNDEPLOY, wfEditorPorts());
+		addEntry(WF_902, 		"WildFly 9.0",		 	"9.0", 	"WildFly", 	"wildfly-9.0.2.Final", 			STANDARD_DEPLOY, STANDARD_UNDEPLOY, wfEditorPorts());
+		addEntry(WF_10_0_0, 	"WildFly 10.0",			"10.0", "WildFly", 	"wildfly-10.0.0.Final",			STANDARD_DEPLOY, STANDARD_UNDEPLOY, wfEditorPorts());
+		addEntry(WF_10_1_0, 	"WildFly 10.1",			"10.1", "WildFly", 	"wildfly-10.1.0.Final", 		STANDARD_DEPLOY, STANDARD_UNDEPLOY, wfEditorPorts());
+		addEntry(JBEAP_610, 	"Red Hat JBoss EAP 6.1", "6.1",	"EAP", 		"jboss-eap-6.1", 				STANDARD_DEPLOY, STANDARD_UNDEPLOY, as7EditorPorts());
+		addEntry(JBEAP_620, 	"Red Hat JBoss EAP 6.2", "6.2",	"EAP", 		"jboss-eap-6.2", 				STANDARD_DEPLOY, STANDARD_UNDEPLOY, as7EditorPorts());
+		addEntry(JBEAP_630, 	"Red Hat JBoss EAP 6.3", "6.3",	"EAP",		"jboss-eap-6.3", 				STANDARD_DEPLOY, STANDARD_UNDEPLOY, as7EditorPorts());
+		addEntry(JBEAP_640, 	"Red Hat JBoss EAP 6.4", "6.4",	"EAP", 		"jboss-eap-6.4", 				STANDARD_DEPLOY, STANDARD_UNDEPLOY, as7EditorPorts());
+		addEntry(JBEAP_700, 	"Red Hat JBoss EAP 7.0", "7.0",	"EAP", 		"jboss-eap-7.0", 				STANDARD_DEPLOY, STANDARD_UNDEPLOY, wfEditorPorts());
+		addEntry(JPP_610, 		"JBoss Portal 6.1",		"6.1", "JPP", 		"jboss-jpp-6.1", 				STANDARD_DEPLOY, STANDARD_UNDEPLOY, as7EditorPorts());
 		
 		
 		// TODO manual downloads
@@ -115,9 +123,80 @@ public class ServerRuntimeUIConstants {
 
 		
 
-		expectations = map;
 	}
 
+	
+	public static EditorPort[] legacyEditorPorts() {
+		return new EditorPort[] { new EditorPort("Web", "8080"), new EditorPort("JNDI", "1099")};
+	}
+	public static EditorPort[] as7EditorPorts() {
+		return new EditorPort[] { new EditorPort("Web", "8080"), new EditorPort("Management", "9999")};
+	}
+	public static EditorPort[] wfEditorPorts() {
+		return new EditorPort[] { new EditorPort("Web", "8080"), new EditorPort("Management", "9990")};
+	}
+	public static EditorPort[] as6EditorPorts() {
+		return new EditorPort[] { new EditorPort("Web", "8080"), new EditorPort("JNDI", "1099"), new EditorPort("JMX RMI", "1090")};
+	}
+	
+	public static class EditorPort {
+		private String label, value;
+		public EditorPort(String k, String v) {
+			this.label = k;
+			this.value = v;
+		}
+		public String getLabel() {
+			return label;
+		}
+		public String getValue() {
+			return value;
+		}
+	}
+	
+	private static interface IStringFormatter {
+		public String getString(String projectName, String suffix);
+	}
+	private static class PatternFormatter implements IStringFormatter {
+		private String pattern;
+		private int numReplace;
+		public PatternFormatter(String pattern, int numReplace) {
+			this.pattern = pattern;
+			this.numReplace = numReplace;
+		}
+		public String getString(String projectName, String suffix) {
+			if( numReplace == 1 )
+				return NLS.bind(pattern, projectName);
+			return NLS.bind(pattern, projectName, suffix);
+		}
+	}
+	private static final IStringFormatter LEGACY_DEPLOY = new PatternFormatter("deploy, ctxPath=/{0}", 1);
+	private static final IStringFormatter LEGACY_UNDEPLOY = new PatternFormatter("undeploy, ctxPath=/{0}", 1);
+	private static final IStringFormatter STANDARD_DEPLOY = new PatternFormatter("Deployed \"{0}{1}\"",2);
+	private static final IStringFormatter STANDARD_UNDEPLOY = new PatternFormatter("Undeployed \"{0}{1}\"",2);
+	
+	private static class ModelWrapper {
+		List<Runtime> runtimes;
+		IStringFormatter deployString;
+		IStringFormatter undeployString;
+		EditorPort[] ports;
+		public ModelWrapper(List<Runtime> runtimes, IStringFormatter deployString, IStringFormatter undeployString, EditorPort[] ports) {
+			this.runtimes = runtimes;
+			this.deployString = deployString;
+			this.undeployString = undeployString;
+			this.ports = ports;
+		}
+	}
+	
+	
+	
+	private static void addEntry(String key, String name, String version, String type, String suffix, 
+			IStringFormatter deployString, IStringFormatter undeployString,
+			EditorPort[] ports) {
+		List<Runtime> l = asList(createRuntime(key, name, version, type, suffix));
+		ModelWrapper mw = new ModelWrapper(l, deployString, undeployString, ports);
+		expectations.put(key, mw);
+	}
+	
 	private static List<Runtime> asList(Runtime r) {
 		return Arrays.asList(new Runtime[] { r });
 	}
@@ -132,9 +211,35 @@ public class ServerRuntimeUIConstants {
 		if (expectations == null) {
 			initialize();
 		}
-		return expectations.get(dlRuntimeString);
+		ModelWrapper mw = expectations.get(dlRuntimeString);
+		return mw == null ? null : mw.runtimes;
 	}
 	
+	
+	public static String getDeployString(String dlRuntimeString, String projectName, String suffix) {
+		if (expectations == null) {
+			initialize();
+		}
+		ModelWrapper mw = expectations.get(dlRuntimeString);
+		return mw == null ? null : mw.deployString.getString(projectName, suffix);
+	}
+
+	public static String getUndeployString(String dlRuntimeString, String projectName, String suffix) {
+		if (expectations == null) {
+			initialize();
+		}
+		ModelWrapper mw = expectations.get(dlRuntimeString);
+		return mw == null ? null : mw.undeployString.getString(projectName, suffix);
+	}
+
+	public static EditorPort[] getPorts(String dlRuntimeString) {
+		if (expectations == null) {
+			initialize();
+		}
+		ModelWrapper mw = expectations.get(dlRuntimeString);
+		return mw == null ? null : mw.ports;
+		
+	}
 	
 	
     public static Collection<Object[]> getParametersForScope(String scope){

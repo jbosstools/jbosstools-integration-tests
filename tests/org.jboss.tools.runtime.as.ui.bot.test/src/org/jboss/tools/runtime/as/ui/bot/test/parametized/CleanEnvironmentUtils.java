@@ -2,6 +2,10 @@ package org.jboss.tools.runtime.as.ui.bot.test.parametized;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.wst.server.ui.RuntimePreferencePage;
@@ -40,8 +44,21 @@ public class CleanEnvironmentUtils {
 		cleanPaths();
 		cleanServers();
 		cleanServerRuntimes();
+		deleteAllProjects();
 	}
 
+	public static void deleteAllProjects() {
+		IProject[] all = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+		for(int i = 0; i < all.length; i++ ) {
+			try {
+				all[i].delete(true, new NullProgressMonitor());
+			} catch (CoreException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public static void deleteServersAndRuntimes() {
 		cleanServers();
 		cleanServerRuntimes();
