@@ -159,7 +159,7 @@ public class ServerRuntimesTest {
     	
     	
     	// Let's also verify the ports situation in the editor
-    	String serverName = ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString).get(0).getName();
+    	String serverName = ServerRuntimeUIConstants.getServerName(runtimeString);
 		JBossServer server = new JBossServerView().getServer(serverName);
 		JBossServerEditor editor = server.open();
 		
@@ -170,7 +170,7 @@ public class ServerRuntimesTest {
 		}
     }
     
-    
+
     
 //
 //    
@@ -179,7 +179,7 @@ public class ServerRuntimesTest {
 //    public void operate(){
 //    	DetectRuntimeTemplate.detectRuntime(getDownloadPath().getAbsolutePath(), ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString));
 //    	DetectRuntimeTemplate.removePath(getDownloadPath().getAbsolutePath());
-//    	String serverName = ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString).get(0).getName();
+//    	String serverName = ServerRuntimeUIConstants.getServerName(runtimeString);
 //    	OperateServerTemplate operate = new OperateServerTemplate(serverName);
 //    	operate.setUp();
 //    	try {
@@ -193,7 +193,7 @@ public class ServerRuntimesTest {
 //    public void operateDeploy(){
 //    	DetectRuntimeTemplate.detectRuntime(getDownloadPath().getAbsolutePath(), ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString));
 //    	DetectRuntimeTemplate.removePath(getDownloadPath().getAbsolutePath());
-//    	String serverName = ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString).get(0).getName();
+//    	String serverName = ServerRuntimeUIConstants.getServerName(runtimeString);
 //    	OperateServerTemplate operate = new OperateServerTemplate(serverName);
 //    	operate.setUp();
 //    	try {

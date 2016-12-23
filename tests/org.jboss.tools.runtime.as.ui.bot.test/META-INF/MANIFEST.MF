@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: AS Runtime UI Bot Tests
-Bundle-SymbolicName: org.jboss.tools.runtime.as.ui.bot.test;singleton:=true
+Bundle-SymbolicName: org.jboss.tools.runtime.as.ui.bot.test
 Bundle-Version: 4.4.2.qualifier
 Bundle-ActivationPolicy: lazy
 Eclipse-BundleShape: jar
@@ -21,6 +21,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.runtime.reddeer;bundle-version="[4.4.2,4.5.0)",
  org.jboss.ide.eclipse.as.reddeer;bundle-version="4.4.2",
  org.jboss.tools.cdk.reddeer;bundle-version="4.4.2",
- org.eclipse.core.resources;bundle-version="3.11.0"
+ org.eclipse.core.resources;bundle-version="3.11.0",
+ org.jboss.tools.archives.reddeer;bundle-version="3.6.103",
+ org.jboss.ide.eclipse.archives.ui.test;bundle-version="3.6.103"
 Bundle-Activator: org.jboss.tools.runtime.as.ui.bot.test.Activator
 

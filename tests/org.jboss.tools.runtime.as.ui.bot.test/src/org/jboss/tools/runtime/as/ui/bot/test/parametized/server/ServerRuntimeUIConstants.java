@@ -240,7 +240,10 @@ public class ServerRuntimeUIConstants {
 		return mw == null ? null : mw.ports;
 		
 	}
-	
+    public static String getServerName(String runtimeString) {
+    	String serverName = ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString).get(0).getName();
+    	return serverName;
+    }
 	
     public static Collection<Object[]> getParametersForScope(String scope){
     	ArrayList<Object[]> ret;

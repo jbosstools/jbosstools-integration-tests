@@ -1,4 +1,4 @@
-package org.jboss.tools.runtime.as.ui.bot.test.reddeer.ui;
+package org.jboss.tools.runtime.as.ui.bot.test.parametized.seam;
 
 import java.util.ArrayList;
 import java.util.List;
