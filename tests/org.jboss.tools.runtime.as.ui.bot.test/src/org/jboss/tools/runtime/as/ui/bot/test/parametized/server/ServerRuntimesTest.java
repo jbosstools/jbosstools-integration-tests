@@ -23,7 +23,9 @@ import org.jboss.tools.runtime.as.ui.bot.test.Activator;
 import org.jboss.tools.runtime.as.ui.bot.test.SuiteConstants;
 import org.jboss.tools.runtime.as.ui.bot.test.download.RuntimeDownloadTestUtility;
 import org.jboss.tools.runtime.as.ui.bot.test.parametized.server.ServerRuntimeUIConstants.EditorPort;
+import org.jboss.tools.runtime.as.ui.bot.test.reddeer.util.DeployJSPProjectTemplate;
 import org.jboss.tools.runtime.as.ui.bot.test.reddeer.util.DetectRuntimeTemplate;
+import org.jboss.tools.runtime.as.ui.bot.test.reddeer.util.OperateServerTemplate;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -172,53 +174,53 @@ public class ServerRuntimesTest {
     
 
     
-//
-//    
-//    
-//    @Test
-//    public void operate(){
-//    	DetectRuntimeTemplate.detectRuntime(getDownloadPath().getAbsolutePath(), ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString));
-//    	DetectRuntimeTemplate.removePath(getDownloadPath().getAbsolutePath());
-//    	String serverName = ServerRuntimeUIConstants.getServerName(runtimeString);
-//    	OperateServerTemplate operate = new OperateServerTemplate(serverName);
-//    	operate.setUp();
-//    	try {
-//    		operate.operateServer();
-//    	} finally {
-//    		operate.cleanServerAndConsoleView();
-//    	}
-//    }
-//
-//    @Test
-//    public void operateDeploy(){
-//    	DetectRuntimeTemplate.detectRuntime(getDownloadPath().getAbsolutePath(), ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString));
-//    	DetectRuntimeTemplate.removePath(getDownloadPath().getAbsolutePath());
-//    	String serverName = ServerRuntimeUIConstants.getServerName(runtimeString);
-//    	OperateServerTemplate operate = new OperateServerTemplate(serverName);
-//    	operate.setUp();
-//    	try {
-//    		operate.startServerSafe();
-//    		DeployJSPProjectTemplate djsppt = new DeployJSPProjectTemplate();
-//    		djsppt.clearConsole();
-//    		JBossServer jbs = djsppt.getServer(serverName);
-//    		djsppt.importProject("jsp-project", "projects/jsp-project.zip", serverName + " Runtime");
-//    		
-//    		String depString = ServerRuntimeUIConstants.getDeployString(runtimeString, "jsp-project", ".war");
-//    		djsppt.deployProject("jsp-project", serverName, depString);
-//    		
-//    		// Now try a hot-deploy
-//    		djsppt.hotDeployment("jsp-project");
-//    		
-//    		// Now try to undeploy
-//    		String undepString = ServerRuntimeUIConstants.getUndeployString(runtimeString, "jsp-project", ".war");
-//    		djsppt.undeployProject(serverName, "jsp-project", undepString);
-//    		
-//    	} finally {
-//    		// Cleanup everything
-//    		operate.stopAndDeleteServer();
-//    		operate.cleanServerAndConsoleView();
-//    	}
-//    }
+
+    
+    
+    @Test
+    public void operate(){
+    	DetectRuntimeTemplate.detectRuntime(getDownloadPath().getAbsolutePath(), ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString));
+    	DetectRuntimeTemplate.removePath(getDownloadPath().getAbsolutePath());
+    	String serverName = ServerRuntimeUIConstants.getServerName(runtimeString);
+    	OperateServerTemplate operate = new OperateServerTemplate(serverName);
+    	operate.setUp();
+    	try {
+    		operate.operateServer();
+    	} finally {
+    		operate.cleanServerAndConsoleView();
+    	}
+    }
+
+    @Test
+    public void operateDeploy(){
+    	DetectRuntimeTemplate.detectRuntime(getDownloadPath().getAbsolutePath(), ServerRuntimeUIConstants.getRuntimesForDownloadable(runtimeString));
+    	DetectRuntimeTemplate.removePath(getDownloadPath().getAbsolutePath());
+    	String serverName = ServerRuntimeUIConstants.getServerName(runtimeString);
+    	OperateServerTemplate operate = new OperateServerTemplate(serverName);
+    	operate.setUp();
+    	try {
+    		operate.startServerSafe();
+    		DeployJSPProjectTemplate djsppt = new DeployJSPProjectTemplate();
+    		djsppt.clearConsole();
+    		JBossServer jbs = djsppt.getServer(serverName);
+    		djsppt.importProject("jsp-project", "projects/jsp-project.zip", serverName + " Runtime");
+    		
+    		String depString = ServerRuntimeUIConstants.getDeployString(runtimeString, "jsp-project", ".war");
+    		djsppt.deployProject("jsp-project", serverName, depString);
+    		
+    		// Now try a hot-deploy
+    		djsppt.hotDeployment("jsp-project");
+    		
+    		// Now try to undeploy
+    		String undepString = ServerRuntimeUIConstants.getUndeployString(runtimeString, "jsp-project", ".war");
+    		djsppt.undeployProject(serverName, "jsp-project", undepString);
+    		
+    	} finally {
+    		// Cleanup everything
+    		operate.stopAndDeleteServer();
+    		operate.cleanServerAndConsoleView();
+    	}
+    }
 
     
 
