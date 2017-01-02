@@ -43,6 +43,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
 public class WildFlyImportQuickstartsTest extends AbstractImportQuickstartsTest {
 	public static final String SERVER_NAME = "WildFly";
+	public static final String BLACKLIST_FILE = "resources/servers/wildfly-blacklist";
 
 	@Parameters(name = "{0}")
 	public static Collection<Quickstart> data() {
@@ -58,7 +59,7 @@ public class WildFlyImportQuickstartsTest extends AbstractImportQuickstartsTest 
 	 */
 	@Test
 	public void quickstartTest() {
-		runQuickstarts(qstart, SERVER_NAME);
+		runQuickstarts(qstart, SERVER_NAME,BLACKLIST_FILE);
 	}
 
 

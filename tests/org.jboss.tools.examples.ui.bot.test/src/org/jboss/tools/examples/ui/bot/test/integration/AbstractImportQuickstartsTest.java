@@ -18,6 +18,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -36,6 +37,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.handler.ShellHandler;
+import org.jboss.reddeer.core.util.FileUtil;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -78,6 +80,7 @@ public abstract class AbstractImportQuickstartsTest {
 
 	protected static String SERVER_NAME = "";
 	protected QuickstartsReporter reporter = QuickstartsReporter.getInstance();
+	protected String blacklistFileContents = "";
 	protected static LogView errorLogView;
 
 	private static final Logger log = Logger.getLogger(AbstractImportQuickstartsTest.class);
@@ -208,18 +211,6 @@ public abstract class AbstractImportQuickstartsTest {
 			}
 		};
 		for (File f : file.listFiles(directoryFilter)) {
-			// if (f.getAbsolutePath().contains("picketlink") ||
-			// f.getAbsolutePath().contains("wsat")) { // JBIDE-18497
-			// // Picketlink
-			// // quickstart
-			// // is
-			// // not
-			// // working
-			// QuickstartsReporter.getInstance().addError(new
-			// Quickstart("Picketlink", f.getAbsolutePath()),
-			// "Picketlink was skipped due to JBIDE-18497");
-			// continue;
-			// }
 			if (!f.getPath().contains("/.")) {
 				if (specificQuickstarts.size() == 0 || specificQuickstarts.contains(f.getName())) {
 					log.info("PROCESSING " + f.getAbsolutePath());
@@ -244,22 +235,35 @@ public abstract class AbstractImportQuickstartsTest {
 		new ConsoleView().clearConsole();
 	}
 
-	protected void runQuickstarts(Quickstart qstart, String serverName) {
-		try {
-			importQuickstart(qstart);
-			importTestUtilsIfNeeded(qstart);
-			if (!isError() && System.getProperty("deployOnServer") != null
-					&& System.getProperty("deployOnServer").equals("true")) {
-				checkServerStatus();
-				deployUndeployQuickstart(qstart, SERVER_NAME);
+	protected void runQuickstarts(Quickstart qstart, String serverName, String blacklistFile) {
+		loadBlacklistFile(blacklistFile);
+		if (!blacklistFileContents.contains(qstart.getName())) {
+			try {
+				importQuickstart(qstart);
+				importTestUtilsIfNeeded(qstart);
+				if (!isError() && System.getProperty("deployOnServer") != null
+						&& System.getProperty("deployOnServer").equals("true")) {
+					checkServerStatus();
+					deployUndeployQuickstart(qstart, SERVER_NAME);
+				}
+			} catch (NoProjectException ex) {
+				// there was no project in this directory. Pass the test.
+				return;
 			}
-		} catch (NoProjectException ex) {
-			// there was no project in this directory. Pass the test.
-			return;
+			checkForWarnings(qstart);
+			checkForErrors(qstart);
+			checkErrorLog(qstart);
 		}
-		checkForWarnings(qstart);
-		checkForErrors(qstart);
-		checkErrorLog(qstart);
+	}
+
+	private void loadBlacklistFile(String blacklistFile) {
+		String pathToFile = "";
+		try {
+			pathToFile = new File(blacklistFile).getCanonicalPath();
+			blacklistFileContents = FileUtil.readFile(pathToFile);
+		} catch (IOException ex) {
+			fail("Blacklist file not found! Path is: " + pathToFile);
+		}
 	}
 
 	protected static void createReports() {

@@ -39,6 +39,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 @JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.EAP7x)
 public class EAPImportQuickstartsTest extends AbstractImportQuickstartsTest {
 	public static final String SERVER_NAME ="Enterprise Application Platform";
+	public static final String BLACKLIST_FILE = "resources/servers/eap-blacklist";
 
 	@Parameters(name = "{0}")
 	public static Collection<Quickstart> data() {
@@ -54,7 +55,7 @@ public class EAPImportQuickstartsTest extends AbstractImportQuickstartsTest {
 	 */
 	@Test
 	public void quickstartTest() {
-		runQuickstarts(qstart, SERVER_NAME);
+		runQuickstarts(qstart, SERVER_NAME, BLACKLIST_FILE);
 	}
 
 
