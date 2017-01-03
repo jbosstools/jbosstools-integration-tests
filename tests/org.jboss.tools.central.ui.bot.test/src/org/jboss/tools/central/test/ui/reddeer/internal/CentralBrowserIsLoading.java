@@ -14,6 +14,13 @@ package org.jboss.tools.central.test.ui.reddeer.internal;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.central.reddeer.api.JavaScriptHelper;
 
+/**
+ * 
+ * @author rhopp
+ *
+ */
+
+
 public class CentralBrowserIsLoading extends AbstractWaitCondition{
 
 	@Override

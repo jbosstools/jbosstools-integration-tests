@@ -14,13 +14,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<jbosstools.test.wildfly.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.wildfly.home>
-		<wildflySystemProperties></wildflySystemProperties>
-		<eapSystemProperties></eapSystemProperties>
-		<jbosstools.test.jboss-eap-6.4.home>${requirementsDirectory}/jboss-eap-6.4</jbosstools.test.jboss-eap-6.4.home>
-		<jbosstools.test.jboss-eap-7.0.home>${requirementsDirectory}/jboss-eap-7.0</jbosstools.test.jboss-eap-7.0.home>
-		<rd.config>${project.build.directory}/classes/server_properties</rd.config>
-		<systemProperties>${integrationTestsSystemProperties} ${wildflySystemProperties} ${eapSystemProperties} -Dusage_reporting_enabled=false -Drd.config=${rd.config} -Dmaven.config.file=${project.build.directory}/classes/settings.xml</systemProperties>
+		<systemProperties>-Dmaven.config.file=${project.build.directory}/classes/settings.xml</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 		<test.class>org.jboss.tools.central.test.ui.reddeer.AllTestsSuite</test.class>
 	</properties>
@@ -31,27 +25,6 @@
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.googlecode.maven-download-plugin</groupId>
-						<artifactId>download-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>install-wildfly-10</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>wget</goal>
-								</goals>
-								<configuration>
-									<url>http://download.jboss.org/wildfly/10.0.0.Final/wildfly-10.0.0.Final.zip</url>
-									<unpack>true</unpack>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
 		</profile>
 		<profile>
 			<id>pr-check</id>
@@ -103,34 +76,6 @@
 								<file>${product-download-properties-file}</file>
 							</files>
 						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>com.googlecode.maven-download-plugin</groupId>
-						<artifactId>download-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>install-eap-64</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>wget</goal>
-								</goals>
-								<configuration>
-									<url>${jbosstools.test.eap64.url}</url>
-									<unpack>true</unpack>
-								</configuration>
-							</execution>
-							<execution>
-								<id>install-eap-70</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>wget</goal>
-								</goals>
-								<configuration>
-									<url>${jbosstools.test.eap70.url}</url>
-									<unpack>true</unpack>
-								</configuration>
-							</execution>
-						</executions>
 					</plugin>
 				</plugins>
 			</build>

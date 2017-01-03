@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2016 Red Hat, Inc.
+ * Copyright (c) 2007-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -27,6 +27,13 @@ import org.jboss.tools.central.reddeer.api.JavaScriptHelper;
 import org.jboss.tools.central.test.ui.reddeer.internal.CentralBrowserIsLoading;
 import org.junit.Before;
 import org.junit.Test;
+
+/**
+ * 
+ * @author rhopp
+ * @contributor jkopriva@redhat.com
+ *
+ */
 
 public class DnDTest {
 

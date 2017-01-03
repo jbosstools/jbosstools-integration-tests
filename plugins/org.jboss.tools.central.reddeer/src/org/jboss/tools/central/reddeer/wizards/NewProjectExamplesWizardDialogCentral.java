@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.central.reddeer.wizards;
 
 
@@ -25,6 +35,13 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.uiforms.impl.formtext.DefaultFormText;
 import org.jboss.tools.central.reddeer.exception.CentralException;
 import org.jboss.tools.central.reddeer.projects.CentralExampleProject;
+
+/**
+ * 
+ * @author rhopp
+ *
+ */
+
 
 public class NewProjectExamplesWizardDialogCentral extends WizardDialog {
 
