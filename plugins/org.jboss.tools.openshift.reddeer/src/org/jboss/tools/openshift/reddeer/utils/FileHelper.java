@@ -25,6 +25,7 @@ import java.util.zip.ZipFile;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
+import org.apache.commons.lang.StringUtils;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.tools.openshift.reddeer.exception.OpenShiftToolsException;
 
@@ -87,10 +88,11 @@ public class FileHelper {
 		} catch (IOException ex) {
 			throw new OpenShiftToolsException("Exception occured while processing zip file.\n" + ex.getMessage());
 		}
+		String extractedDirectory = StringUtils.chomp(zipArchive.getName(), ".zip");	
 		Enumeration<? extends ZipEntry> entries = zipfile.entries();
 		while (entries.hasMoreElements()) {
 			ZipEntry entry = (ZipEntry) entries.nextElement();
-			unzipEntry(zipfile, entry, outputDirectory);
+			unzipEntry(zipfile, entry, new File(outputDirectory, extractedDirectory));
 		}
 	}
 	
