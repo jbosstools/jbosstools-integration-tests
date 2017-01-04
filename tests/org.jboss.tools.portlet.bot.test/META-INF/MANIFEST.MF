@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.jboss.tools.portlet.bot.test
+Bundle-SymbolicName: org.jboss.tools.portlet.bot.test;singleton:=true
+Bundle-Version: 4.4.2.qualifier
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: Red Hat
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit,
+ org.jboss.reddeer.go;bundle-version="[1.1.0,2.0.0)",
+ org.jboss.ide.eclipse.as.reddeer;bundle-version="4.4.2",
+ org.jboss.tools.central.reddeer;bundle-version="4.4.2",
+ org.jboss.tools.common.reddeer;bundle-version="4.4.2"
+
