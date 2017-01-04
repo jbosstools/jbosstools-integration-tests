@@ -22,6 +22,7 @@ import org.jboss.tools.docker.ui.bot.test.container.PrivilegedModeTest;
 import org.jboss.tools.docker.ui.bot.test.container.VariablesTest;
 import org.jboss.tools.docker.ui.bot.test.container.VolumeMountTest;
 import org.jboss.tools.docker.ui.bot.test.image.BuildImageTest;
+import org.jboss.tools.docker.ui.bot.test.image.DeleteImagesAfter;
 import org.jboss.tools.docker.ui.bot.test.image.HierarchyViewTest;
 import org.jboss.tools.docker.ui.bot.test.image.ImageTagTest;
 import org.jboss.tools.docker.ui.bot.test.image.PullImageTest;
@@ -66,7 +67,9 @@ import org.junit.runners.Suite;
 	PropertiesViewTest.class,
 	PushImageTest.class,
 	LaunchDockerImageTest.class,
-	ComposeTest.class
+	ComposeTest.class,
+	
+	DeleteImagesAfter.class
 })
 public class DockerAllBotTest {
 

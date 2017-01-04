@@ -268,6 +268,23 @@ public abstract class AbstractDockerBotTest {
 	protected PropertiesView openPropertiesTab(String tabName) {
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
+		getConnection().select();
+		propertiesView.selectTab(tabName);
+		return propertiesView;
+	}
+	
+	protected PropertiesView openPropertiesTabForImage(String tabName, String imageName) {
+		PropertiesView propertiesView = new PropertiesView();
+		propertiesView.open();
+		getConnection().getImage(imageName).select();
+		propertiesView.selectTab(tabName);
+		return propertiesView;
+	}
+	
+	protected PropertiesView openPropertiesTabForContainer(String tabName, String containerName) {
+		PropertiesView propertiesView = new PropertiesView();
+		propertiesView.open();
+		getConnection().getContainer(containerName).select();;
 		propertiesView.selectTab(tabName);
 		return propertiesView;
 	}
@@ -287,8 +304,8 @@ public abstract class AbstractDockerBotTest {
 	 * @return
 	 */
 	protected boolean isDockerDaemon(int majorVersion, int minorVersion) {
-		getConnection().select();
 		PropertiesView infoTab = openPropertiesTab("Info");
+		getConnection().select();
 		String daemonVersion = infoTab.getProperty("Version").getPropertyValue();
 		assertTrue("Could not retrieve docker daemon version.", !StringUtils.isBlank(daemonVersion));
 		String[] versionComponents = daemonVersion.split("\\.");

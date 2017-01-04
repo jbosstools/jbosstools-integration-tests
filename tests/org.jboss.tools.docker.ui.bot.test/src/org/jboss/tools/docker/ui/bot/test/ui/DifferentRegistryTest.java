@@ -23,15 +23,13 @@ import org.junit.Test;
  */
 public class DifferentRegistryTest extends AbstractImageBotTest {
 
-	private static final String REGISTRY_SERVER_ADDRESS = "registry.access.redhat.com";
 	private static final String EMAIL = "test@test.com";
 	private static final String USERNAME = "test";
 	private static final String PASSWORD = "password";
-	private static final String IMAGE_NAME = "rhel7.2";
 
 	@Before
 	public void before() {
-		deleteImageIfExists(REGISTRY_SERVER_ADDRESS + "/" + IMAGE_NAME);
+		deleteImageIfExists(REGISTRY_SERVER_ADDRESS + "/" + IMAGE_RHEL);
 		deleteRegisterIfExists(REGISTRY_SERVER_ADDRESS);
 	}
 
@@ -40,8 +38,8 @@ public class DifferentRegistryTest extends AbstractImageBotTest {
 		clearConsole();
 		setUpRegister(REGISTRY_SERVER_ADDRESS, EMAIL, USERNAME, PASSWORD);
 		setSecureStorage(PASSWORD);
-		pullImage(IMAGE_NAME, null, USERNAME + "@" + REGISTRY_SERVER_ADDRESS);
-		assertTrue("Image is not deployed!", imageIsDeployed(IMAGE_NAME));
+		pullImage(IMAGE_RHEL, null, USERNAME + "@" + REGISTRY_SERVER_ADDRESS);
+		assertTrue("Image is not deployed!", imageIsDeployed(IMAGE_RHEL));
 	}
 
 }

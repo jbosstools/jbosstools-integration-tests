@@ -51,8 +51,7 @@ public class PrivilegedModeTest extends AbstractImageBotTest {
 		firstPage.setGiveExtendedPrivileges();
 		firstPage.finish();
 		new WaitWhile(new JobIsRunning());
-		getConnection().getContainer(CONTAINER_NAME).select();
-		PropertiesView propertiesView = openPropertiesTab("Inspect");
+		PropertiesView propertiesView = openPropertiesTabForContainer("Inspect", CONTAINER_NAME);
 		String privilegedProp = propertiesView.getProperty("HostConfig", "Privileged").getPropertyValue();
 		assertTrue("Container is not running in privileged mode!", privilegedProp.equals("true"));
 	}

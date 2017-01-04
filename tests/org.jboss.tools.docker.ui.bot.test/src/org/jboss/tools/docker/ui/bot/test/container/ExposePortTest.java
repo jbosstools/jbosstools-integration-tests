@@ -32,16 +32,14 @@ import org.junit.Test;
 
 public class ExposePortTest extends AbstractImageBotTest {
 
-	private static final String IMAGE_NAME = "fnichol/uhttpd";
-	private static final String IMAGE_TAG = "latest";
 	private static final String CONTAINER_NAME = "test_run_uhttpd";
 	private static final String EXPOSED_PORT = "80";
 
 	@Test
 	public void testExposePort() throws IOException {
-		pullImage(IMAGE_NAME, IMAGE_TAG);
+		pullImage(IMAGE_UHTTPD, IMAGE_TAG_LATEST);
 		DockerImagesTab imagesTab = openDockerImagesTab();
-		runContainer(IMAGE_NAME, IMAGE_TAG, CONTAINER_NAME, imagesTab);
+		runContainer(IMAGE_UHTTPD, IMAGE_TAG_LATEST, CONTAINER_NAME, imagesTab);
 
 		assertPortIsAccessible(EXPOSED_PORT);
 	}

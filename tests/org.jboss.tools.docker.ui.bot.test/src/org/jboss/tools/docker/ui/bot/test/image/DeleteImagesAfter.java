@@ -1,3 +1,4 @@
+
 /*******************************************************************************
  * Copyright (c) 2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
@@ -8,34 +9,27 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
+
 package org.jboss.tools.docker.ui.bot.test.image;
 
-import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
-import org.junit.After;
 import org.junit.Test;
 
 /**
+ * This class is deleting all used images in tests. Images are not deleted after
+ * every test to speed up the suite.
  * 
  * @author jkopriva
- *
+ * 
  */
-
-public class BuildImageTest extends AbstractImageBotTest {
+public class DeleteImagesAfter extends AbstractImageBotTest {
 
 	@Test
-	public void testBuildImage() {
-		getConnection();
-		DockerImagesTab imageTab = openDockerImagesTab();
-
-		buildImage(IMAGE_TEST_BUILD, DOCKERFILE_FOLDER, imageTab);
-
-		assertConsoleSuccess();
+	public void deleteUsedImages() {
+		deleteImageIfExists(IMAGE_ALPINE, IMAGE_ALPINE_TAG);
+		deleteImageIfExists(IMAGE_BUSYBOX);
+		deleteImageIfExists(IMAGE_CIRROS, IMAGE_CIRROS_TAG);
+		deleteImageIfExists(IMAGE_UHTTPD);
+		deleteImageIfExists(IMAGE_HELLO_WORLD);
+		deleteImageIfExists(REGISTRY_SERVER_ADDRESS + "/" + IMAGE_RHEL);
 	}
-
-	@After
-	public void after() {
-		deleteImageContainer(IMAGE_TEST_BUILD);
-		cleanUpWorkspace();
-	}
-
 }

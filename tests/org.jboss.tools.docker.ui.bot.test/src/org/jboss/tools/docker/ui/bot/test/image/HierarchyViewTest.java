@@ -19,6 +19,8 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.docker.reddeer.ui.DockerImageHierarchyTab;
+import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
+import org.junit.After;
 import org.junit.Test;
 
 /**
@@ -29,38 +31,43 @@ import org.junit.Test;
  */
 
 public class HierarchyViewTest extends AbstractImageBotTest {
+	private static final int DAEMON_MAJOR_VERSION = 11;
+	private static final int DAEMON_MINOR_VERSION = 1;
 
-	private static final String IMAGE_CIRROS_VERSION = "0.3.4";
-	private static final String IMAGE_CIRROS = "docker.io/cirros";
-	
 	@Test
 	public void testHierarchyView() {
-		pullImage(IMAGE_CIRROS, IMAGE_CIRROS_VERSION, null);
-		
+		getConnection();
+		DockerImagesTab imageTab = openDockerImagesTab();
+
+		buildImage(IMAGE_TEST_BUILD, DOCKERFILE_FOLDER, imageTab);
+
 		DockerImageHierarchyTab hierarchyTab = openDockerImageHierarchyTab();
 		List<TreeItem> treeItems = hierarchyTab.getTreeItems();
-		compareTextInFirstNode(treeItems, "<none>:<none>");
+		compareTextInFirstNode(treeItems, "alpine:3.3");
 		List<TreeItem> treeItems2 = treeItems.get(0).getItems();
-		compareTextInFirstNode(treeItems2, "<none>:<none>");
-		List<TreeItem> treeItems3 = treeItems2.get(0).getItems();
-		compareTextInFirstNode(treeItems3, "<none>:<none>");
-		List<TreeItem> treeItems4 = treeItems3.get(0).getItems();
-		compareTextInFirstNode(treeItems4, "<none>:<none>");
-		List<TreeItem> treeItems5 = treeItems4.get(0).getItems();
-		compareTextInFirstNode(treeItems5, IMAGE_CIRROS + NAME_TAG_SEPARATOR + IMAGE_CIRROS_VERSION);
+		compareTextInFirstNode(treeItems2, IMAGE_TEST_BUILD + NAME_TAG_SEPARATOR + IMAGE_TAG_LATEST);
 	}
 
 	public void compareTextInFirstNode(List<TreeItem> treeItems, String expectedValue) {
 		String nodeText = treeItems.get(0).getText().replaceAll("\\(.*\\)", "").trim();
+		if (isDockerDaemon(DAEMON_MAJOR_VERSION, DAEMON_MINOR_VERSION)) {
+			nodeText = nodeText.replaceAll("docker.io/", "");	//On older deamons is this prefix
+		}
 		assertTrue("Hierarchy view contains string: " + nodeText + ", but it is expected: " + expectedValue,
 				nodeText.startsWith(expectedValue));
 	}
 
 	private DockerImageHierarchyTab openDockerImageHierarchyTab() {
-		getConnection().getImage(IMAGE_CIRROS, IMAGE_CIRROS_VERSION).openImageHierarchy();
+		getConnection().getImage(IMAGE_TEST_BUILD).openImageHierarchy();
 		new WaitWhile(new ShellWithTextIsAvailable("Docker Image Hierarchy"));
 		DockerImageHierarchyTab hierarchyTab = new DockerImageHierarchyTab();
 		hierarchyTab.open();
 		return hierarchyTab;
+	}
+
+	@After
+	public void after() {
+		deleteImageContainerAfter(IMAGE_TEST_BUILD);
+		cleanUpWorkspace();
 	}
 }

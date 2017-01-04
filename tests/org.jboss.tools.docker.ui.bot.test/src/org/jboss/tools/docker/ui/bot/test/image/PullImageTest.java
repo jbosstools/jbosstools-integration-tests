@@ -31,6 +31,7 @@ public class PullImageTest extends AbstractImageBotTest {
 	public void before() {
 		deleteImageIfExists(IMAGE_ALPINE_33);
 		deleteImageIfExists(IMAGE_BUSYBOX_LATEST);
+		getConnection();
 	}
 	
 	@Test

@@ -35,8 +35,6 @@ import org.junit.Test;
  */
 public class VolumeMountTest extends AbstractImageBotTest {
 
-	private static final String IMAGE_NAME = "fnichol/uhttpd";
-	private static final String IMAGE_TAG = "latest";
 	private static final String CONTAINER_NAME = "test_mount_volumes";
 	private static final String VOLUME_PATH = "resources/test-volumes";
 	private static final String CONTAINER_PATH = "/www";
@@ -46,13 +44,13 @@ public class VolumeMountTest extends AbstractImageBotTest {
 	
 	@Before
 	public void before() {
-		pullImage(IMAGE_NAME, IMAGE_TAG);
+		pullImage(IMAGE_UHTTPD, IMAGE_TAG_LATEST);
 	}
 	
 	@Test
 	public void testVolumeMount() throws IOException {
 		DockerImagesTab imagesTab = openDockerImagesTab();
-		imagesTab.runImage(IMAGE_NAME + ":" + IMAGE_TAG);
+		imagesTab.runImage(IMAGE_UHTTPD + ":" + IMAGE_TAG_LATEST);
 
 		ImageRunSelectionPage firstPage = new ImageRunSelectionPage();
 		firstPage.setName(CONTAINER_NAME);

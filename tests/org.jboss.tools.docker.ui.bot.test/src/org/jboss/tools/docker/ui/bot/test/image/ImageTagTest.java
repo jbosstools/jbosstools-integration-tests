@@ -11,13 +11,12 @@
 
 package org.jboss.tools.docker.ui.bot.test.image;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
 import org.junit.After;
 import org.junit.Before;
@@ -36,9 +35,6 @@ public class ImageTagTest extends AbstractImageBotTest {
 	private static final String IMAGE_NAME_TO_PULL = IMAGE_BUSYBOX_LATEST;
 	private static final String IMAGE_TAG = "testtag";
 	private static final String IMAGE_TAG_UPPERCASE = "UPPERCASETAG";
-	// docker daemon 1.11 errors with uppercase tags, priors dont
-	private static final int DAEMON_MAJOR_VERSION = 1; 
-	private static final int DAEMON_MINOR_VERSION = 11;
 
 	@Before
 	public void before() {
@@ -47,7 +43,7 @@ public class ImageTagTest extends AbstractImageBotTest {
 		new WaitWhile(new JobIsRunning());
 		assertTrue("Image has not been deployed!", imageIsDeployed(IMAGE_NAME));
 	}
-	
+
 	@Test
 	public void testAddRemoveTagToImage() {
 		DockerImagesTab imagesTab = openDockerImagesTab();
@@ -60,7 +56,7 @@ public class ImageTagTest extends AbstractImageBotTest {
 		new WaitWhile(new JobIsRunning());
 		assertTrue("ImageTaghasNotBeenRemoved", !imagesTab.getImageTags(IMAGE_NAME).contains(IMAGE_TAG));
 	}
-	
+
 	/**
 	 * Tries to add an uppercase tag to an image. This errors in docker daemon
 	 * >= 1.11 while it succeeds in older versions.
@@ -69,16 +65,11 @@ public class ImageTagTest extends AbstractImageBotTest {
 	@Test
 	public void testAddUpperCaseTagToImage() {
 		DockerImagesTab imagesTab = openDockerImagesTab();
-		imagesTab.addTagToImage(IMAGE_NAME, IMAGE_TAG_UPPERCASE);
-
-		if (isDockerDaemon(DAEMON_MAJOR_VERSION, DAEMON_MINOR_VERSION)) {
-			// docker daemon >= 1.11
-			new DefaultShell("Error tagging image to <" + IMAGE_TAG_UPPERCASE + ">");
-			new OkButton().click();
-			assertFalse("Image tag has been added!", imagesTab.getImageTags(IMAGE_NAME).contains(IMAGE_TAG));
-		} else {
-			assertTrue("Image tag has not been added!",
-					imagesTab.getImageTags(IMAGE_NAME).contains(IMAGE_TAG_UPPERCASE));
+		try {
+			imagesTab.addTagToImage(IMAGE_NAME, IMAGE_TAG_UPPERCASE);
+		} catch (WaitTimeoutExpiredException ex) {
+			new CancelButton().click();
+			// swallowing, it is not possible to tag image with upper case
 		}
 	}
 

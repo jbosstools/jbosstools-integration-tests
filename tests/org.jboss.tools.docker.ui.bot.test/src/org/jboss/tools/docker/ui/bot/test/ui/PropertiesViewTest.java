@@ -11,13 +11,10 @@
 
 package org.jboss.tools.docker.ui.bot.test.ui;
 
-import static org.junit.Assert.fail;
-
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageRunSelectionPage;
 import org.jboss.tools.docker.reddeer.ui.DockerContainersTab;
 import org.jboss.tools.docker.reddeer.ui.DockerImagesTab;
@@ -55,14 +52,10 @@ public class PropertiesViewTest extends AbstractImageBotTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
 		containerTab.select(CONTAINER_NAME);
 
-		// get values from Properties view
+		// open Properties view
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
-		try {
-			propertiesView.selectTab("Info");
-		} catch (SWTLayerException ex) {
-			fail("Properties tab Info is not opened, is image selected in Images Tab?");
-		}
+		propertiesView.selectTab("Info");
 	}
 
 	@Test
@@ -71,11 +64,7 @@ public class PropertiesViewTest extends AbstractImageBotTest {
 		imagesTab.selectImage(IMAGE_NAME);
 		PropertiesView propertiesView = new PropertiesView();
 		propertiesView.open();
-		try {
-			propertiesView.selectTab("Info");
-		} catch (SWTLayerException ex) {
-			fail("Properties tab Info is not opened, is image selected in Images Tab?");
-		}
+		propertiesView.selectTab("Info");
 	}
 
 	@After
