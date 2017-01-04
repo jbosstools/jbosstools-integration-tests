@@ -43,7 +43,11 @@ public class ApplicationPodIsRunning extends AbstractWaitCondition {
 	public ApplicationPodIsRunning() {
 		OpenShiftExplorerView explorer  = new OpenShiftExplorerView();
 		explorer.open();
-		project = explorer.getOpenShift3Connection().getProject();
+		this.project = explorer.getOpenShift3Connection().getProject();
+	}
+
+	public ApplicationPodIsRunning(OpenShiftProject project) {
+		this.project = project;
 	}
 
 	@Override
