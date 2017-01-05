@@ -15,6 +15,8 @@ import org.eclipse.gef.ui.views.palette.PalettePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Event;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.handler.BrowserHandler;
 import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.core.util.ResultRunnable;
@@ -23,6 +25,8 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.ui.dialogs.FilteredPreferenceDialog;
 import org.jboss.tools.vpe.preview.editor.VpvEditorPart;
 import org.jboss.tools.vpe.reddeer.VisualEditor;
+import org.jboss.tools.vpe.reddeer.condition.VPVBackIsEnabled;
+import org.jboss.tools.vpe.reddeer.condition.VPVForwardIsEnabled;
 import org.jboss.tools.vpe.reddeer.resref.core.VpvResourcesDialog;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -138,6 +142,7 @@ public class VPVEditor extends VisualEditor{
 	}
 	
 	public void back(){
+		new WaitUntil(new VPVBackIsEnabled(this),TimePeriod.SHORT);
 		new DefaultToolItem("Back").click();
 	}
 	
@@ -146,6 +151,7 @@ public class VPVEditor extends VisualEditor{
 	}
 	
 	public void forward(){
+		new WaitUntil(new VPVForwardIsEnabled(this),TimePeriod.SHORT);
 		new DefaultToolItem("Forward").click();
 	}
 	
