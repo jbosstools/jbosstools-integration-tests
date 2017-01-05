@@ -12,6 +12,7 @@ package org.jboss.tools.vpe.bot.test.html5.jquery;
 
 import static org.junit.Assert.*;
 
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
@@ -20,6 +21,8 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.jst.reddeer.palette.JQueryMobilePalette;
 import org.jboss.tools.vpe.bot.test.VPETestBase;
+import org.jboss.tools.vpe.reddeer.condition.VPVBackIsEnabled;
+import org.jboss.tools.vpe.reddeer.condition.VPVForwardIsEnabled;
 import org.jboss.tools.vpe.reddeer.matcher.TextTooltipMatcher;
 import org.jboss.tools.vpe.reddeer.preview.editor.VPVEditor;
 import org.junit.BeforeClass;
@@ -47,12 +50,16 @@ public class MultiPageNavigation extends VPETestBase{
 		String page1 = ".*viewId=[0-9]#page1";
 		checkCurrentPage(vpvEditor, page0);
 		vpvEditor.evaluateScript("document.getElementById('pageButton').click()");
+		new WaitUntil(new VPVBackIsEnabled(vpvEditor));
+		new WaitWhile(new VPVForwardIsEnabled(vpvEditor));
 		assertTrue(vpvEditor.isBackEnabled());
 		assertFalse(vpvEditor.isForwardEnabled());
 		checkCurrentPage(vpvEditor, page1);
 		vpvEditor.back();
 		
 		checkCurrentPage(vpvEditor, page0);
+		new WaitWhile(new VPVBackIsEnabled(vpvEditor));
+		new WaitUntil(new VPVForwardIsEnabled(vpvEditor));
 		assertTrue(vpvEditor.isForwardEnabled());
 		assertFalse(vpvEditor.isBackEnabled());
 		vpvEditor.forward();
