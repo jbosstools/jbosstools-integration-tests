@@ -19,9 +19,11 @@ import java.util.List;
 
 import org.jboss.ide.eclipse.as.reddeer.server.deploy.DeployOnServer;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -48,6 +50,10 @@ public class DeployScaffoldDBTest extends WizardTestBase {
 	private List<String> tableNames = new ArrayList<String>();
 
 	private static final String PACKAGE = GROUPID + ".model";
+	
+	@InjectRequirement 
+	private static ServerRequirement sr;
+	private static final String SERVER_NAME = sr.getServerNameLabelText(sr.getConfig());
 
 	@BeforeClass
 	public static void startSakila() {
@@ -70,7 +76,6 @@ public class DeployScaffoldDBTest extends WizardTestBase {
 	}
 
 	public void setProjectAndParameters(ScaffoldType type) {
-		createNewProject();
 		createJBOSSDatasource();
 		jpaSetup();
 		jpaGenerateEntities();
@@ -131,7 +136,7 @@ public class DeployScaffoldDBTest extends WizardTestBase {
 	}
 
 	public void deployOnServer() {
-		new DeployOnServer().deployUndeployProjectToServer(PROJECT_NAME, "WildFly 10.x Server");
+		new DeployOnServer().deployUndeployProjectToServer(PROJECT_NAME, SERVER_NAME);
 	}
 
 }

@@ -23,6 +23,7 @@ import org.jboss.tools.forge2.ui.bot.wizard.test.JPAEntitiesFromTablesTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.JPAEntityWizardTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.JPAFieldWizardTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.JPASetupWizardTest;
+import org.jboss.tools.forge2.ui.bot.wizard.test.LinkWorkspaceSelectionTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.ProjectNewWizardTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.RESTSetupWizardTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.ScaffoldSetupWizardTest;
@@ -53,7 +54,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ConnectionProfileWizardTest.class,
 	JPAEntitiesFromTablesTest.class,
 	InstallAddonTest.class,
-	DeployScaffoldDBTest.class
+	DeployScaffoldDBTest.class,
+	LinkWorkspaceSelectionTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class Forge2AllTest {

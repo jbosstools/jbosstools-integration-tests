@@ -113,6 +113,19 @@ public class ForgeConsoleView extends WorkbenchView{
 		new DefaultStyledText().setText(text);
 	}
 	
+	/**
+	 * Toggle button Link With Editor in Forge Console View.
+	 * 
+	 * @author jkopriva@redhat.com
+	 */
+	public void linkWithEditorToggle(boolean toggle){
+		open();
+		ViewToolBar tb = new ViewToolBar();
+		RegexMatcher rm = new RegexMatcher("Link.*");
+		WithTooltipTextMatcher tm = new WithTooltipTextMatcher(rm);
+		new DefaultToolItem(tb, 0, tm).toggle(toggle);		
+	}
+	
 	private class ConsoleHasTextWidget extends AbstractWaitCondition{
 
 		@Override
