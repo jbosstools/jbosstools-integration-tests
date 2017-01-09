@@ -1,23 +1,28 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
+
 package org.jboss.tools.central.test.ui.reddeer;
 
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.ui.IViewReference;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.core.lookup.WorkbenchPartLookup;
 import org.jboss.reddeer.core.util.Display;
@@ -28,23 +33,17 @@ import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
-import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.tools.central.reddeer.api.ExamplesOperator;
 import org.jboss.tools.central.reddeer.api.JavaScriptHelper;
 import org.jboss.tools.central.reddeer.wizards.NewProjectExamplesWizardDialogCentral;
 import org.jboss.tools.central.test.ui.reddeer.internal.CentralBrowserIsLoading;
 import org.jboss.tools.central.test.ui.reddeer.internal.ErrorsReporter;
+import org.jboss.tools.common.reddeer.utils.StackTraceUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -54,23 +53,28 @@ import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
+/**
+ * 
+ * @author rhopp
+ * @contributor jkopriva@redhat.com
+ *
+ */
+
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
-@JBossServer(type = ServerReqType.ANY, state = ServerReqState.RUNNING)
 public class HTML5Parameterized {
 
 	private static final String CENTRAL_LABEL = "Red Hat Central";
+	private static final String SEARCH_STRING = "eap-7.0.0.GA";
+	private static final String MAVEN_SETTINGS_PATH = System.getProperty("maven.config.file");
+	
 	private static DefaultEditor centralEditor;
 	private static InternalBrowser browser;
 	private static ErrorsReporter reporter = ErrorsReporter.getInstance();
-	private static ExamplesOperator operator = ExamplesOperator.getInstance();
 	private static JavaScriptHelper jsHelper = JavaScriptHelper.getInstance();
 	private static Logger log = new Logger(HTML5Parameterized.class);
 	private ProjectExplorer projectExplorer;
 
-	@InjectRequirement
-	ServerRequirement req;
-	
-	@Parameters(name="{0}")
+	@Parameters(name = "{0}")
 	public static Collection<CentralProject> data() {
 		closeWelcomeScreen();
 		List<CentralProject> resultList = new ArrayList<CentralProject>();
@@ -80,15 +84,11 @@ public class HTML5Parameterized {
 		browser = new InternalBrowser();
 		jsHelper.setBrowser(browser);
 		new WaitWhile(new CentralBrowserIsLoading(), TimePeriod.LONG);
-		jsHelper.searchFor("eap-7.0.0.GA");
+		jsHelper.searchFor(SEARCH_STRING);
 		do {
 			String[] examples = jsHelper.getExamples();
 			for (String exampleName : examples) {
-				if (!(exampleName.equals("app-client") || exampleName.equals("cluster-ha-singleton")
-						|| exampleName.equals("ejb-asynchronous") || exampleName.equals("ejb-timer"))) {
-					resultList.add(new CentralProject(exampleName, jsHelper.getDescriptionForExample(exampleName)));
-				}
-
+				resultList.add(new CentralProject(exampleName, jsHelper.getDescriptionForExample(exampleName)));
 			}
 			jsHelper.nextPage();
 		} while (jsHelper.hasNext());
@@ -111,11 +111,11 @@ public class HTML5Parameterized {
 			}
 		}
 	}
-	
+
 	@BeforeClass
-	public static void setupClass(){
+	public static void setupClass() {
 		closeWelcomeScreen();
-		String mvnConfigFileName = new File("target/classes/settings.xml").getAbsolutePath();
+		String mvnConfigFileName = new File(MAVEN_SETTINGS_PATH).getAbsolutePath();
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
 		MavenSettingsPreferencePage prefPage = new MavenSettingsPreferencePage();
@@ -129,7 +129,7 @@ public class HTML5Parameterized {
 		projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
 	}
-	
+
 	@After
 	public void teardown() {
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
@@ -142,22 +142,21 @@ public class HTML5Parameterized {
 		new DefaultEditor(CENTRAL_LABEL);
 	}
 
-	
 	@AfterClass
 	public static void teardownClass() {
 		reporter.generateReport();
 	}
-	
+
 	@Parameter
 	public CentralProject project;
 
 	@Test
-	public void testik() {
-		log.error("Processing example: "+project.getName());
-		log.error("\twith description: "+project.getDescription());
+	public void testProject() {
+		log.error("Processing example: " + project.getName());
+		log.error("\twith description: " + project.getDescription());
 		processExample(project.getName(), project.getDescription());
 	}
-	
+
 	/**
 	 * Imports current example, checks for warnings/errors, tries to deploy it
 	 * to server and finally deletes it.
@@ -168,7 +167,7 @@ public class HTML5Parameterized {
 		boolean skip = false;
 		jsHelper.searchFor(description);
 		String[] examples = jsHelper.getExamples();
-		if (examples.length>1){
+		if (examples.length > 1) {
 			fail("Muj fail! :-D");
 		}
 		// import
@@ -176,7 +175,7 @@ public class HTML5Parameterized {
 			importExample(exampleName);
 		} catch (Exception e) {
 			skip = true;
-			fail("Error importing example: " + stacktraceToString(e));
+			fail("Error importing example: " + StackTraceUtils.stackTraceToString(e));
 		}
 
 		org.jboss.tools.central.reddeer.projects.Project currentProject;
@@ -185,38 +184,11 @@ public class HTML5Parameterized {
 			currentProject = new org.jboss.tools.central.reddeer.projects.Project(exampleName, getProjectName());
 			// check for errors/warning
 			checkErrorLog(currentProject);
-			// try to deploy
-			try {
-				operator.deployProject(currentProject.getProjectName(), req.getServerNameLabelText(req.getConfig()));
-				if (!exampleName.equals("ejb-security")) { // due to native
-															// window popping up
-					operator.checkDeployedProject(currentProject.getProjectName(),
-							req.getServerNameLabelText(req.getConfig()));
-				}
-			} catch (CoreLayerException cle) {
-				new OkButton().click();
-				// log error
-				fail("Unable to deploy example: " + currentProject.getName() + "("
-						+ currentProject.getProjectName() + ")"+"\nReason: "+stacktraceToString(cle));
-			}
 		}
 		// delete
 		ShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ProjectExplorer().deleteAllProjects(true);
-		ServersView serversView = new ServersView();
-		serversView.open();
-		Server server = serversView.getServer(req.getServerNameLabelText(req.getConfig()));
-		List<ServerModule> modules = server.getModules();
-		for (ServerModule serverModule : modules) {
-			serverModule.remove();
-		}
 
-	}
-
-	private String stacktraceToString(Exception e) {
-		StringWriter sw = new StringWriter();
-		e.printStackTrace(new PrintWriter(sw));
-		return sw.toString();
 	}
 
 	private void importExample(String exampleName) {
@@ -234,14 +206,13 @@ public class HTML5Parameterized {
 		StringBuilder sb = new StringBuilder("Errors after project example import\n");
 		boolean errorsArePresent = false;
 		for (Problem error : pv.getProblems(ProblemType.ERROR)) {
-//			reporter.addError(p, error.getDescription());
-			sb.append(error.getDescription()+"\n");
+			sb.append(error.getDescription() + "\n");
 			errorsArePresent = true;
 		}
 		for (Problem warning : pv.getProblems(ProblemType.WARNING)) {
 			reporter.addWarning(p, warning.getDescription());
 		}
-		if (errorsArePresent){
+		if (errorsArePresent) {
 			fail(sb.toString());
 		}
 
@@ -252,4 +223,5 @@ public class HTML5Parameterized {
 		List<Project> projects = projectExplorer.getProjects();
 		return projects.get(0).getName();
 	}
+	
 }

@@ -15,6 +15,12 @@ import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 
+/**
+ * 
+ * @author rhopp
+ *
+ */
+
 public class OfflineSupportPreferencePage extends PreferencePage {
 
 	public OfflineSupportPreferencePage() {

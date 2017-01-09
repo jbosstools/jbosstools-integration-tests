@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.central.test.ui.reddeer;
 
 import static org.junit.Assert.assertFalse;
@@ -8,16 +18,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.eclipse.m2e.core.ui.preferences.MavenSettingsPreferencePage;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
@@ -31,18 +36,22 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-@JBossServer(type = ServerReqType.ANY, state = ServerReqState.RUNNING)
+/**
+ * 
+ * @author rhopp
+ * @contributor jkopriva@redhat.com
+ *
+ */
+
 public class ArchetypesTest {
 
 	private static final String CENTRAL_LABEL = "Red Hat Central";
+	private static final String MAVEN_SETTINGS_PATH = System.getProperty("maven.config.file");
 	private static Map<org.jboss.tools.central.reddeer.projects.Project, List<String>> projectWarnings = new HashMap<org.jboss.tools.central.reddeer.projects.Project, List<String>>();
 	
-	@InjectRequirement
-	ServerRequirement req;
-
 	@BeforeClass
 	public static void setup() {
-		String mvnConfigFileName = new File("target/classes/settings.xml").getAbsolutePath();
+		String mvnConfigFileName = new File(MAVEN_SETTINGS_PATH).getAbsolutePath();
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
 		MavenSettingsPreferencePage prefPage = new MavenSettingsPreferencePage();
@@ -118,11 +127,6 @@ public class ArchetypesTest {
 	
 	private void importArchetypeProject(ArchetypeProject project) {
 		ExamplesOperator.getInstance().importArchetypeProject(project);
-		ExamplesOperator.getInstance().deployProject(project.getProjectName(),
-				req.getServerNameLabelText(req.getConfig()));
-		ExamplesOperator.getInstance().checkDeployedProject(
-				project.getProjectName(),
-				req.getServerNameLabelText(req.getConfig()));
 		projectWarnings.put(project, ExamplesOperator.getInstance().getAllWarnings());
 	}
 }
