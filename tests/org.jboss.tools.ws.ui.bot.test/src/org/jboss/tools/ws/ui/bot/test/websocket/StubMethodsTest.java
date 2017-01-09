@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper.createProject;
-import static org.jboss.tools.ws.ui.bot.test.websocket.StubMethodsHelper.*;
+import static org.jboss.tools.ws.ui.bot.test.websocket.WebSocketHelper.*;
 import static org.jboss.tools.ws.ui.bot.test.websocket.StubMethodsTest.Constants.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

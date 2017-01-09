@@ -187,11 +187,6 @@ public class WSTestBase {
 	 * Cleans All Projects
 	 */
 	protected static void cleanAllProjects() {
-		new WaitWhile(new JobIsRunning());
-		new ShellMenu(IDELabel.Menu.PROJECT, "Clean...").select();
-		new DefaultShell("Clean");
-		new RadioButton("Clean all projects").click();
-		new PushButton(IDELabel.Button.OK).click();
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG, false);
+		ProjectHelper.cleanAllProjects();
 	}
 }
