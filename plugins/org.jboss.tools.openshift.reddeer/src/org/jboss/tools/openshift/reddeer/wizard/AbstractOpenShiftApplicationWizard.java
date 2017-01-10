@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.reddeer.wizard;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -23,12 +24,14 @@ import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
+import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.tools.central.reddeer.wait.CentralIsLoaded;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 
 /**
@@ -63,16 +66,30 @@ public abstract class AbstractOpenShiftApplicationWizard {
 		
 		new NextButton().click();
 		
+		signToOpenShiftAndClickNext();
+		
+		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
+	}
+
+	private void signToOpenShiftAndClickNext() {
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		
 		selectConnection(username, server, new DefaultCombo(0));
 		
 		new NextButton().click();
+		processUntrustedSSLCertificate();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
-		
-		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
+	}
+
+	private void processUntrustedSSLCertificate() {
+		try{
+			new WaitUntil(new ShellWithTextIsAvailable("Untrusted SSL Certificate"), TimePeriod.SHORT);
+			new YesButton().click();
+		}catch (WaitTimeoutExpiredException ex){
+			//do nothing SSL Certificate shell did not appear.
+		}
 	}
 
 	private void selectConnection(String username, String server, Combo connectionCombo) {
@@ -91,18 +108,14 @@ public abstract class AbstractOpenShiftApplicationWizard {
 	public void openWizardFromCentral() {
 		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.RED_HAT_CENTRAL).click();
 		
+		new WaitUntil(new CentralIsLoaded());
+		
 		new InternalBrowser().execute(OpenShiftLabel.Others.OPENSHIFT_CENTRAL_SCRIPT);
 	
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
 				TimePeriod.LONG);
-		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		
-		selectConnection(username, null, new DefaultCombo());
-		
-		new NextButton().click();
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
+		signToOpenShiftAndClickNext();
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD).setFocus();
 	}
