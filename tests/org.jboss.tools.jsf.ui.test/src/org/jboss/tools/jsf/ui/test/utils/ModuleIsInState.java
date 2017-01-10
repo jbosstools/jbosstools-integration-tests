@@ -18,19 +18,19 @@ import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState
 
 public class ModuleIsInState extends AbstractWaitCondition {
 
-    private ServerState state;
-    private ServerPublishState publishState;
-    private ServerModule module;
+	private ServerState state;
+	private ServerPublishState publishState;
+	private ServerModule module;
 
-    public ModuleIsInState(ServerState state, ServerPublishState publishState, ServerModule module) {
-	this.state = state;
-	this.publishState = publishState;
-	this.module = module;
-    }
-    
-    @Override
-    public boolean test() {
-	ModuleLabel label = module.getLabel();
-	return label.getState().equals(state) && label.getPublishState().equals(publishState);
-    }
+	public ModuleIsInState(ServerState state, ServerPublishState publishState, ServerModule module) {
+		this.state = state;
+		this.publishState = publishState;
+		this.module = module;
+	}
+
+	@Override
+	public boolean test() {
+		ModuleLabel label = module.getLabel();
+		return label.getState().equals(state) && label.getPublishState().equals(publishState);
+	}
 }

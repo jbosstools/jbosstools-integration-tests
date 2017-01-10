@@ -8,8 +8,8 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-
 package org.jboss.tools.jsf.reddeer;
+
 /**
  * JSF Project Type
  * @author Vlado Pakan

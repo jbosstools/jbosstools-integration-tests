@@ -43,77 +43,77 @@ import org.junit.runner.RunWith;
 @JBossServer(type = ServerReqType.EAP7x, state = ServerReqState.RUNNING)
 public class ExportImportWARTest {
 
-    private static final String PROJECT_NAME = "JSFProject";
-    private static final String NEW_PROJECT_NAME = "ImportedJSFProject";
-    private static final String WAR_FILE_LOCATION = "target/exported.war";
-    private static ProjectExplorer projectExplorer;
+	private static final String PROJECT_NAME = "JSFProject";
+	private static final String NEW_PROJECT_NAME = "ImportedJSFProject";
+	private static final String WAR_FILE_LOCATION = "target/exported.war";
+	private static ProjectExplorer projectExplorer;
 
-    @InjectRequirement
-    static ServerRequirement serverReq;
+	@InjectRequirement
+	static ServerRequirement serverReq;
 
-    @BeforeClass
-    public static void setupClass() {
-	JSFTestUtils.createJSFProject(PROJECT_NAME, "JSF 2.2", "JSFKickStartWithoutLibs");
-	projectExplorer = new ProjectExplorer();
-    }
-
-    @AfterClass
-    public static void teardownClass() {
-	removeModulesFromServer();
-
-	projectExplorer.open();
-	projectExplorer.deleteAllProjects(true);
-    }
-
-    @Test
-    public void exportToWarAndImportBackAgainTest() {
-	projectExplorer.open();
-	Project project = projectExplorer.getProject(PROJECT_NAME);
-	project.select();
-
-	exportProject();
-	verifyExportedProject();
-
-	importProject();
-	verifyImportedProject();
-    }
-
-    private static void removeModulesFromServer() {
-	ServersView serversView = new ServersView();
-	serversView.open();
-	Server server = serversView.getServer(serverReq.getServerNameLabelText(serverReq.getConfig()));
-	server.getModules().forEach(serverModule -> serverModule.remove());
-    }
-
-    private void verifyImportedProject() {
-	projectExplorer.open();
-	try {
-	    projectExplorer.getProject(NEW_PROJECT_NAME);
-	} catch (EclipseLayerException ex) {
-	    fail("Project is not imported into workspace.");
+	@BeforeClass
+	public static void setupClass() {
+		JSFTestUtils.createJSFProject(PROJECT_NAME, "JSF 2.2", "JSFKickStartWithoutLibs");
+		projectExplorer = new ProjectExplorer();
 	}
-    }
 
-    private void importProject() {
-	ImportJSFWarWizard importDialog = new ImportJSFWarWizard();
-	importDialog.open();
-	ImportWebWarWizardPage importPage = new ImportWebWarWizardPage();
-	importPage.setWarLocation(new File(WAR_FILE_LOCATION).getAbsolutePath());
-	importPage.setName(NEW_PROJECT_NAME);
-	importDialog.finish();
-    }
+	@AfterClass
+	public static void teardownClass() {
+		removeModulesFromServer();
 
-    private void verifyExportedProject() {
-	File file = new File(WAR_FILE_LOCATION);
-	assertTrue(file.exists());
-    }
+		projectExplorer.open();
+		projectExplorer.deleteAllProjects(true);
+	}
 
-    private void exportProject() {
-	new ContextMenu("Export", "WAR file").select();
-	WebComponentExportWizardPage exportDialog = new WebComponentExportWizardPage();
-	exportDialog.setWebProject(PROJECT_NAME);
-	exportDialog.setDestination(new File(WAR_FILE_LOCATION).getAbsolutePath());
-	exportDialog.toggleOverwriteExistingFile(true);
-	exportDialog.finish();
-    }
+	@Test
+	public void exportToWarAndImportBackAgainTest() {
+		projectExplorer.open();
+		Project project = projectExplorer.getProject(PROJECT_NAME);
+		project.select();
+
+		exportProject();
+		verifyExportedProject();
+
+		importProject();
+		verifyImportedProject();
+	}
+
+	private static void removeModulesFromServer() {
+		ServersView serversView = new ServersView();
+		serversView.open();
+		Server server = serversView.getServer(serverReq.getServerNameLabelText(serverReq.getConfig()));
+		server.getModules().forEach(serverModule -> serverModule.remove());
+	}
+
+	private void verifyImportedProject() {
+		projectExplorer.open();
+		try {
+			projectExplorer.getProject(NEW_PROJECT_NAME);
+		} catch (EclipseLayerException ex) {
+			fail("Project is not imported into workspace.");
+		}
+	}
+
+	private void importProject() {
+		ImportJSFWarWizard importDialog = new ImportJSFWarWizard();
+		importDialog.open();
+		ImportWebWarWizardPage importPage = new ImportWebWarWizardPage();
+		importPage.setWarLocation(new File(WAR_FILE_LOCATION).getAbsolutePath());
+		importPage.setName(NEW_PROJECT_NAME);
+		importDialog.finish();
+	}
+
+	private void verifyExportedProject() {
+		File file = new File(WAR_FILE_LOCATION);
+		assertTrue(file.exists());
+	}
+
+	private void exportProject() {
+		new ContextMenu("Export", "WAR file").select();
+		WebComponentExportWizardPage exportDialog = new WebComponentExportWizardPage();
+		exportDialog.setWebProject(PROJECT_NAME);
+		exportDialog.setDestination(new File(WAR_FILE_LOCATION).getAbsolutePath());
+		exportDialog.toggleOverwriteExistingFile(true);
+		exportDialog.finish();
+	}
 }

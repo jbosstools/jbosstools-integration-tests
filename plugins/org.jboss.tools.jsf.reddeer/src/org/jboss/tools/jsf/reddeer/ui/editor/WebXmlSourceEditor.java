@@ -12,13 +12,15 @@ package org.jboss.tools.jsf.reddeer.ui.editor;
 
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+
 /**
  * RedDeer implementation of web.xml file source editor
+ * 
  * @author vlado pakan
  *
  */
-public class WebXmlSourceEditor extends TextEditor{
-	public WebXmlSourceEditor (ITextEditor textEditor){
+public class WebXmlSourceEditor extends TextEditor {
+	public WebXmlSourceEditor(ITextEditor textEditor) {
 		super(textEditor);
 	}
 }

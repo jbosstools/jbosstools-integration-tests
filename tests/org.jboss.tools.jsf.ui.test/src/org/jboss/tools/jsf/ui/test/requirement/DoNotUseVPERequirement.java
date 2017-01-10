@@ -9,6 +9,7 @@
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
 package org.jboss.tools.jsf.ui.test.requirement;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -22,46 +23,46 @@ import org.jboss.tools.jsf.ui.test.requirement.DoNotUseVPERequirement.DoNotUseVP
 
 public class DoNotUseVPERequirement implements Requirement<DoNotUseVPE> {
 
-    private WorkbenchPreferenceDialog prefDialog;
+	private WorkbenchPreferenceDialog prefDialog;
 
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target(ElementType.TYPE)
-    @Documented
-    public @interface DoNotUseVPE {
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	@Documented
+	public @interface DoNotUseVPE {
 
-    }
+	}
 
-    @Override
-    public boolean canFulfill() {
-	return true;
-    }
+	@Override
+	public boolean canFulfill() {
+		return true;
+	}
 
-    @Override
-    public void fulfill() {
-	ExtendedFileEditorsPreferencePage prefPage = openPreferencePage();
-	prefPage.selectFileType("*.html");
-	prefPage.makeEditorDefault("Text Editor");
-	prefPage.selectFileType("*.xhtml");
-	prefPage.makeEditorDefault("Text Editor");
-	prefDialog.ok();
-    }
+	@Override
+	public void fulfill() {
+		ExtendedFileEditorsPreferencePage prefPage = openPreferencePage();
+		prefPage.selectFileType("*.html");
+		prefPage.makeEditorDefault("Text Editor");
+		prefPage.selectFileType("*.xhtml");
+		prefPage.makeEditorDefault("Text Editor");
+		prefDialog.ok();
+	}
 
-    private ExtendedFileEditorsPreferencePage openPreferencePage() {
-	ExtendedFileEditorsPreferencePage prefPage = new ExtendedFileEditorsPreferencePage();
-	prefDialog = new WorkbenchPreferenceDialog();
-	prefDialog.open();
-	prefDialog.select(prefPage);
-	return prefPage;
-    }
+	private ExtendedFileEditorsPreferencePage openPreferencePage() {
+		ExtendedFileEditorsPreferencePage prefPage = new ExtendedFileEditorsPreferencePage();
+		prefDialog = new WorkbenchPreferenceDialog();
+		prefDialog.open();
+		prefDialog.select(prefPage);
+		return prefPage;
+	}
 
-    @Override
-    public void setDeclaration(DoNotUseVPE declaration) {
-	// nothing to do here.	
-    }
+	@Override
+	public void setDeclaration(DoNotUseVPE declaration) {
+		// nothing to do here.
+	}
 
-    @Override
-    public void cleanUp() {
-	//no need to cleanup
-    }
+	@Override
+	public void cleanUp() {
+		// no need to cleanup
+	}
 
 }

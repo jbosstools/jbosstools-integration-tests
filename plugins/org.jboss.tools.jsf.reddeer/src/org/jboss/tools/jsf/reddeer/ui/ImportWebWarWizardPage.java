@@ -15,16 +15,16 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 
 public class ImportWebWarWizardPage extends WizardPage {
 
-    public void setWarLocation(String location){
-	new LabeledText("*.war Location:*").setText(location);
-    }
-    
-    public void setName(String name){
-	new LabeledText("Name:*").setText(name);
-    }
-    
-    public void setContextPath(String contextPath){
-	new LabeledText("Context Path:*").setText(contextPath);
-    }
-    
+	public void setWarLocation(String location) {
+		new LabeledText("*.war Location:*").setText(location);
+	}
+
+	public void setName(String name) {
+		new LabeledText("Name:*").setText(name);
+	}
+
+	public void setContextPath(String contextPath) {
+		new LabeledText("Context Path:*").setText(contextPath);
+	}
+
 }

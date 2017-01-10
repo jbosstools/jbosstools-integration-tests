@@ -19,25 +19,25 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 
 public class WebComponentExportWizardPage extends DefaultShell {
 
-    public WebComponentExportWizardPage() {
-	super("Export");
-    }
-    
-    public void setWebProject(String project){
-	new LabeledCombo("Web project:").setSelection(project);
-    }
-    
-    public void setDestination(String destination){
-	new LabeledCombo("Destination:").setText(destination);
-    }
-    
-    public void toggleOverwriteExistingFile(boolean checked){
-	new CheckBox("Overwrite existing file").toggle(checked);
-    }
-    
-    public void finish(){
-	new FinishButton().click();
-	new WaitWhile(new JobIsRunning());
-    }
+	public WebComponentExportWizardPage() {
+		super("Export");
+	}
+
+	public void setWebProject(String project) {
+		new LabeledCombo("Web project:").setSelection(project);
+	}
+
+	public void setDestination(String destination) {
+		new LabeledCombo("Destination:").setText(destination);
+	}
+
+	public void toggleOverwriteExistingFile(boolean checked) {
+		new CheckBox("Overwrite existing file").toggle(checked);
+	}
+
+	public void finish() {
+		new FinishButton().click();
+		new WaitWhile(new JobIsRunning());
+	}
 
 }

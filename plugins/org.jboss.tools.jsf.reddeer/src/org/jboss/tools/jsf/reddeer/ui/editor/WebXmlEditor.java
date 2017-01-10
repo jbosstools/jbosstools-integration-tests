@@ -30,21 +30,23 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.common.model.ui.editor.EditorPartWrapper;
+
 /**
  * RedDeer implementation of web.xml file editor
+ * 
  * @author vlado pakan
  *
  */
 public class WebXmlEditor extends DefaultEditor {
-	
-	  private static final String SESSION_CONFIG_NODE =  "session-config";
-	  private static final String WELCOME_FILE_LIST_NODE = "welcome-file-list";
-	  private static final String JSP_CONFIG_NODE = "JSP Config"; 
-	  private static final String LOGIN_CONFIG_NODE = "login-config"; 
-	  private static final String LOCALE_ENCODING_MAPPING_LIST = "locale-encoding-mapping-list"; 
-	  private static final String SERVLETS_NODE = "Servlets";
-	  
-	  private String title;
+
+	private static final String SESSION_CONFIG_NODE = "session-config";
+	private static final String WELCOME_FILE_LIST_NODE = "welcome-file-list";
+	private static final String JSP_CONFIG_NODE = "JSP Config";
+	private static final String LOGIN_CONFIG_NODE = "login-config";
+	private static final String LOCALE_ENCODING_MAPPING_LIST = "locale-encoding-mapping-list";
+	private static final String SERVLETS_NODE = "Servlets";
+
+	private String title;
 
 	public WebXmlEditor(String title) {
 		super(title);
@@ -78,42 +80,42 @@ public class WebXmlEditor extends DefaultEditor {
 		return new WebXmlSourceEditor(iTextEditor);
 	}
 
-	public TreeItem selectSessionConfigNode(){
-		TreeItem tiToSelect = getWebXmlTreeItem(title,WebXmlEditor.SESSION_CONFIG_NODE);
+	public TreeItem selectSessionConfigNode() {
+		TreeItem tiToSelect = getWebXmlTreeItem(title, WebXmlEditor.SESSION_CONFIG_NODE);
 		tiToSelect.select();
 		return tiToSelect;
 	}
-	
-	public TreeItem selectWelcomeFileListNode(){
-		TreeItem tiToSelect = getWebXmlTreeItem(title,WebXmlEditor.WELCOME_FILE_LIST_NODE);
+
+	public TreeItem selectWelcomeFileListNode() {
+		TreeItem tiToSelect = getWebXmlTreeItem(title, WebXmlEditor.WELCOME_FILE_LIST_NODE);
 		tiToSelect.select();
 		return tiToSelect;
 	}
-	
-	public TreeItem selectJspConfigNode(){
-		TreeItem tiToSelect = getWebXmlTreeItem(title,WebXmlEditor.JSP_CONFIG_NODE);
+
+	public TreeItem selectJspConfigNode() {
+		TreeItem tiToSelect = getWebXmlTreeItem(title, WebXmlEditor.JSP_CONFIG_NODE);
 		tiToSelect.select();
 		return tiToSelect;
 	}
-	
-	public TreeItem selectLoginConfigNode(){
-		TreeItem tiToSelect = getWebXmlTreeItem(title,WebXmlEditor.LOGIN_CONFIG_NODE);
+
+	public TreeItem selectLoginConfigNode() {
+		TreeItem tiToSelect = getWebXmlTreeItem(title, WebXmlEditor.LOGIN_CONFIG_NODE);
 		tiToSelect.select();
 		return tiToSelect;
 	}
-	
-	public TreeItem selectLocaleEncodingMappingListNode(){
-		TreeItem tiToSelect = getWebXmlTreeItem(title,WebXmlEditor.LOCALE_ENCODING_MAPPING_LIST);
+
+	public TreeItem selectLocaleEncodingMappingListNode() {
+		TreeItem tiToSelect = getWebXmlTreeItem(title, WebXmlEditor.LOCALE_ENCODING_MAPPING_LIST);
 		tiToSelect.select();
 		return tiToSelect;
 	}
-	
-	public TreeItem selectServletsNode(){
-		TreeItem tiToSelect = getWebXmlTreeItem(title,WebXmlEditor.SERVLETS_NODE);
+
+	public TreeItem selectServletsNode() {
+		TreeItem tiToSelect = getWebXmlTreeItem(title, WebXmlEditor.SERVLETS_NODE);
 		tiToSelect.select();
 		return tiToSelect;
 	}
-	
+
 	public TreeItem getWebXmlTreeItem(String... path) {
 		return new DefaultTreeItem(getWebXmlTree(), path);
 	}
@@ -122,8 +124,8 @@ public class WebXmlEditor extends DefaultEditor {
 		activateTreeTab();
 		return new DefaultTree();
 	}
-	
-	public void addServlet(String servletName, String displayName, String servleteClass , String servletDescription){
+
+	public void addServlet(String servletName, String displayName, String servleteClass, String servletDescription) {
 		selectServletsNode();
 		new PushButton("Add...").click();
 		new DefaultShell("Add Servlet");
@@ -134,8 +136,8 @@ public class WebXmlEditor extends DefaultEditor {
 		new FinishButton().click();
 		new WaitWhile(new ShellWithTextIsAvailable("Add Servlet"));
 	}
-	
-	public void addServletMapping(String servletName, String urlPattern){
+
+	public void addServletMapping(String servletName, String urlPattern) {
 		selectServletsNode();
 		new PushButton(1, new WithMnemonicTextMatcher("Add...")).click();
 		new DefaultShell("Add Servlet Mapping");
