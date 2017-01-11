@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Maven UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.maven.ui.bot.test;singleton:=true
-Bundle-Version: 4.4.2.qualifier
+Bundle-Version: 4.4.3.qualifier
 Bundle-Activator: org.jboss.tools.maven.ui.bot.test.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
