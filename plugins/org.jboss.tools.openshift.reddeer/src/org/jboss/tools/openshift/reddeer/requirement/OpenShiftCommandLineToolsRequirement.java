@@ -62,6 +62,7 @@ public class OpenShiftCommandLineToolsRequirement implements Requirement<OCBinar
 	@Override
 	public void fulfill() {
 		if (!OCBinaryFile.get().getFile().exists()) {
+			// symlink does not exist or exists but points to inexistent file
 			File downloadedOCBinary = downloadAndExtractOpenShiftClient();
 			createSymlink(downloadedOCBinary);
 		} else {
@@ -71,6 +72,7 @@ public class OpenShiftCommandLineToolsRequirement implements Requirement<OCBinar
 
 	private void createSymlink(File downloadedOCBinary) {
 		try {
+			Files.deleteIfExists(Paths.get(OCBinaryFile.get().getFile().toURI()));
 			Files.createSymbolicLink(OCBinaryFile.get().getFile().toPath(), Paths.get(downloadedOCBinary.getAbsolutePath()));
 		} catch (IOException e) {
 			throw new OpenShiftToolsException(NLS.bind("Could not symlink {0} to {1}:\n{2}", 
@@ -91,7 +93,7 @@ public class OpenShiftCommandLineToolsRequirement implements Requirement<OCBinar
 	private File downloadAndExtractOpenShiftClient() {
 		LOGGER.info("Creating directory binaries");
 		File outputDirectory = new File(CLIENT_TOOLS_DESTINATION);
-		FileHelper.createDirectory(outputDirectory );
+		FileHelper.createDirectory(outputDirectory);
 
 		String fileName = downloadArchive(getDownloadLink());
 		String extractedDirectory = extractArchive(fileName, outputDirectory);
