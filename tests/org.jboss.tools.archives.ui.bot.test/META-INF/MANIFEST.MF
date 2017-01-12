@@ -8,12 +8,14 @@ Require-Bundle: org.eclipse.core.runtime,
  org.junit;bundle-version="4.8.1",
  org.apache.log4j;bundle-version="1.2.15",
  org.eclipse.ui;bundle-version="3.6.0",
- org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
+ org.jboss.reddeer.go;bundle-version="1.1.0",
+ org.jboss.reddeer.jface;bundle-version="1.1.0",
  org.jboss.tools.common.reddeer;bundle-version="[4.4.2,4.5.0)",
- org.jboss.tools.archives.reddeer;bundle-version="[4.4.2,4.5.0)",
  org.eclipse.core.resources;bundle-version="3.6.0",
  org.jboss.ide.eclipse.as.reddeer;bundle-version="[4.4.2,4.5.0)",
- org.apache.commons.io
+ org.apache.commons.io,
+ org.jboss.ide.eclipse.archives.ui.test;bundle-version="3.6.102",
+ org.jboss.tools.archives.reddeer
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: JBoss by Red Hat
