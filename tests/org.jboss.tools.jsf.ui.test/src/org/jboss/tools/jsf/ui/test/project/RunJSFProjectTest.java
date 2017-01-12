@@ -8,7 +8,6 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-
 package org.jboss.tools.jsf.ui.test.project;
 
 import static org.junit.Assert.fail;
@@ -51,71 +50,71 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 @JBossServer(type = ServerReqType.EAP7x, state = ServerReqState.RUNNING)
 public class RunJSFProjectTest {
 
-    protected static final String PROJECT_NAME_BASE = "JSFTestProject";
+	protected static final String PROJECT_NAME_BASE = "JSFTestProject";
 
-    private String jsfEnvironment;
-    private String template;
-    private String projectName;
-    
-    @InjectRequirement
-    ServerRequirement serverReq;
+	private String jsfEnvironment;
+	private String template;
+	private String projectName;
 
-    @Parameters(name="{0} {1}")
-    public static Collection<String[]> data() {
-	return Arrays.asList(
-		new String[][] { { "JSF 1.2", "JSFKickStartWithoutLibs" }, { "JSF 2.2", "JSFKickStartWithoutLibs" },
-			{ "JSF 1.2 with Facelets", "FaceletsKickStartWithoutLibs" } });
-    }
+	@InjectRequirement
+	ServerRequirement serverReq;
 
-    public RunJSFProjectTest(String jsfEnvironment, String template) {
-	this.jsfEnvironment = jsfEnvironment;
-	this.template = template;
-	this.projectName = (PROJECT_NAME_BASE+jsfEnvironment).replaceAll("\\s", "");
-    }
-    
-    
-    @Before
-    public void setup(){
-	JSFTestUtils.createJSFProject(projectName, jsfEnvironment, template, false);
-    }
-    
-    @After
-    public void teardown(){
-	ProjectExplorer projectExplorer = new ProjectExplorer();
-	projectExplorer.open();
-	Project project = projectExplorer.getProject(projectName);
-	project.delete(true);
-	JSFTestUtils.checkErrorLog();
-    }
-    
-    @Test
-    public void deployProjectTest(){
-	deployProject();
-	
-	checkDeployedProject();
-    }
-
-    private void checkDeployedProject() {
-	Server server = getServer();
-	ServerModule module = server.getModule(projectName);
-	ModuleIsInState moduleIsInStateCondition = new ModuleIsInState(ServerState.STARTED, ServerPublishState.SYNCHRONIZED, module);
-	try{
-	    new WaitUntil(moduleIsInStateCondition, TimePeriod.NORMAL);
-	}catch(WaitTimeoutExpiredException ex){
-	    fail("Module is not in state STARTED, SYNCHRONIZED");
+	@Parameters(name = "{0} {1}")
+	public static Collection<String[]> data() {
+		return Arrays.asList(
+				new String[][] {{"JSF 1.2", "JSFKickStartWithoutLibs"}, {"JSF 2.2", "JSFKickStartWithoutLibs"},
+						{"JSF 1.2 with Facelets", "FaceletsKickStartWithoutLibs"}});
 	}
-    }
 
-    private void deployProject() {
-	Server server = getServer();
-	ModifyModulesDialog addAndRemoveModulesDialog = server.addAndRemoveModules();
-	ModifyModulesPage modifyModulesPage = new ModifyModulesPage();
-	modifyModulesPage.add(projectName);
-	addAndRemoveModulesDialog.finish();
-    }
+	public RunJSFProjectTest(String jsfEnvironment, String template) {
+		this.jsfEnvironment = jsfEnvironment;
+		this.template = template;
+		this.projectName = (PROJECT_NAME_BASE + jsfEnvironment).replaceAll("\\s", "");
+	}
 
-    private Server getServer() {
-	ServersView serversView = new ServersView();
-	return serversView.getServer(serverReq.getServerNameLabelText(serverReq.getConfig()));
-    }
+	@Before
+	public void setup() {
+		JSFTestUtils.createJSFProject(projectName, jsfEnvironment, template, false);
+	}
+
+	@After
+	public void teardown() {
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
+		Project project = projectExplorer.getProject(projectName);
+		project.delete(true);
+		JSFTestUtils.checkErrorLog();
+	}
+
+	@Test
+	public void deployProjectTest() {
+		deployProject();
+
+		checkDeployedProject();
+	}
+
+	private void checkDeployedProject() {
+		Server server = getServer();
+		ServerModule module = server.getModule(projectName);
+		ModuleIsInState moduleIsInStateCondition = new ModuleIsInState(ServerState.STARTED,
+				ServerPublishState.SYNCHRONIZED, module);
+		try {
+			new WaitUntil(moduleIsInStateCondition, TimePeriod.NORMAL);
+		} catch (WaitTimeoutExpiredException ex) {
+			fail("Module is not in state STARTED, SYNCHRONIZED");
+		}
+	}
+
+	private void deployProject() {
+		Server server = getServer();
+		ModifyModulesDialog addAndRemoveModulesDialog = server.addAndRemoveModules();
+		ModifyModulesPage modifyModulesPage = new ModifyModulesPage();
+		modifyModulesPage.add(projectName);
+		addAndRemoveModulesDialog.finish();
+	}
+
+	private Server getServer() {
+		ServersView serversView = new ServersView();
+		return serversView.getServer(serverReq.getServerNameLabelText(serverReq.getConfig()));
+	}
 }

@@ -8,7 +8,6 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-
 package org.jboss.tools.jsf.ui.test.project;
 
 import static org.junit.Assert.assertTrue;
@@ -37,45 +36,45 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 @JBossServer(type = ServerReqType.EAP7x, state = ServerReqState.PRESENT)
 public class CreateJSFProjectTest {
 
-    protected static final String PROJECT_NAME_BASE = "JSFTestProject";
+	protected static final String PROJECT_NAME_BASE = "JSFTestProject";
 
-    private String jsfEnvironment;
-    private String template;
-    private String projectName;
+	private String jsfEnvironment;
+	private String template;
+	private String projectName;
 
-    @Parameters(name="{0} {1}")
-    public static Collection<String[]> data() {
-	return Arrays.asList(
-		new String[][] { { "JSF 1.2", "JSFKickStartWithoutLibs" }, { "JSF 2.2", "JSFKickStartWithoutLibs" },
-			{ "JSF 1.2 with Facelets", "FaceletsKickStartWithoutLibs" } });
-    }
+	@Parameters(name = "{0} {1}")
+	public static Collection<String[]> data() {
+		return Arrays.asList(
+				new String[][] {{"JSF 1.2", "JSFKickStartWithoutLibs"}, {"JSF 2.2", "JSFKickStartWithoutLibs"},
+						{"JSF 1.2 with Facelets", "FaceletsKickStartWithoutLibs"}});
+	}
 
-    public CreateJSFProjectTest(String jsfEnvironment, String template) {
-	this.jsfEnvironment = jsfEnvironment;
-	this.template = template;
-	this.projectName = (PROJECT_NAME_BASE+jsfEnvironment).replaceAll("\\s", "");
-    }
+	public CreateJSFProjectTest(String jsfEnvironment, String template) {
+		this.jsfEnvironment = jsfEnvironment;
+		this.template = template;
+		this.projectName = (PROJECT_NAME_BASE + jsfEnvironment).replaceAll("\\s", "");
+	}
 
-    @Test
-    public void createProjectTest() {
+	@Test
+	public void createProjectTest() {
 
-	JSFTestUtils.createJSFProject(projectName, jsfEnvironment, template);
-	
-	ProjectExplorer projectExplorer = new ProjectExplorer();
-	projectExplorer.open();
-	assertTrue(projectExplorer.containsProject(projectName));
-	
-	JSFTestUtils.checkProblemsView();
-	
-	JSFTestUtils.checkErrorLog();
-    }
+		JSFTestUtils.createJSFProject(projectName, jsfEnvironment, template);
 
-    @After
-    public void teardown() {
-	// delete test project
-	ProjectExplorer projectExplorer = new ProjectExplorer();
-	Project project = projectExplorer.getProject(projectName);
-	project.delete(true);
-    }
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
+		assertTrue(projectExplorer.containsProject(projectName));
+
+		JSFTestUtils.checkProblemsView();
+
+		JSFTestUtils.checkErrorLog();
+	}
+
+	@After
+	public void teardown() {
+		// delete test project
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		Project project = projectExplorer.getProject(projectName);
+		project.delete(true);
+	}
 
 }

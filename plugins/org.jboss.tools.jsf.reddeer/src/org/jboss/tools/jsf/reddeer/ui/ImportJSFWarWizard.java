@@ -14,8 +14,8 @@ import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 
 public class ImportJSFWarWizard extends ImportWizardDialog {
 
-    public ImportJSFWarWizard() {
-	super("Other", "JSF Project From *.war");
-    }
-    
+	public ImportJSFWarWizard() {
+		super("Other", "JSF Project From *.war");
+	}
+
 }
