@@ -15,7 +15,6 @@
 	<modules>
 		<module>org.jboss.ide.eclipse.as.reddeer</module>
 		<module>org.jboss.tools.aerogear.reddeer</module>
-		<module>org.jboss.tools.archives.reddeer</module>
 		<module>org.jboss.tools.arquillian.reddeer</module>
 		<module>org.jboss.tools.batch.reddeer</module>
 		<module>org.jboss.tools.browsersim.reddeer</module>

@@ -12,22 +12,12 @@
         <repository location='http://download.jboss.org/jbosstools/neon/snapshots/updates/integration-tests/master/'/>
       </repositories>
     </iu>
-    <iu id='org.jboss.tools.archives.ui.bot.test' name='Archives UI Bot Tests' version='4.3.0'>
-      <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/neon/snapshots/updates/integration-tests/master/'/>
-      </repositories>
-    </iu>
     <iu id='org.jboss.tools.arquillian.ui.bot.test' name='Arquillian UI Tests' version='4.3.0'>
       <repositories size='1'>
         <repository location='http://download.jboss.org/jbosstools/neon/snapshots/updates/integration-tests/master/'/>
       </repositories>
     </iu>
     <iu id='org.jboss.tools.runtime.as.ui.bot.test' name='AS Runtime UI Bot Tests' version='4.3.0'>
-      <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/neon/snapshots/updates/integration-tests/master/'/>
-      </repositories>
-    </iu>
-    <iu id='org.jboss.ide.eclipse.as.ui.bot.test' name='AS UI Bot Tests' version='4.3.0'>
       <repositories size='1'>
         <repository location='http://download.jboss.org/jbosstools/neon/snapshots/updates/integration-tests/master/'/>
       </repositories>

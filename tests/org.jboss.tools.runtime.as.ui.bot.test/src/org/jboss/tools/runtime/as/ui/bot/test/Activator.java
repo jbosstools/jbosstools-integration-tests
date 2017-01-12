@@ -1,5 +1,9 @@
 package org.jboss.tools.runtime.as.ui.bot.test;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -47,4 +51,36 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 
+	
+	
+
+	public static IPath getStateFolder() {
+		IPath stateLoc = Activator.getDefault().getStateLocation();
+		IPath servers = stateLoc.append("servers");
+		return servers;
+	}
+
+	public static IPath getDownloadPath(String runtimeString) {
+		IPath servers = getStateFolder();
+		servers.toFile().mkdirs();
+		String serverFolder = runtimeString.replaceAll("[^A-Za-z0-9]", "");
+		IPath serverFolderPath = servers.append(serverFolder);
+		return serverFolderPath;
+	}
+
+	public static File getDownloadFolder(String runtimeString) {
+		IPath p = getDownloadPath(runtimeString);
+		p.toFile().mkdirs();
+		return p.toFile();
+	}
+
+
+
+	 public static String getPathToFileWithinPlugin(String fileName) {
+		try {
+			return new File(fileName).getCanonicalPath();
+		} catch (IOException e) {
+			throw new IllegalStateException("Cannot locate file " + fileName + " in plugin " + PLUGIN_ID);
+		}
+	 }
 }
