@@ -12,16 +12,19 @@ package org.jboss.tools.batch.ui.bot.test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.fail;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.jboss.reddeer.common.exception.RedDeerException;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Platform;
 import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -38,7 +41,7 @@ import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardPage;
 
 public abstract class AbstractBatchTest {
 
-	protected static final String PROJECT_NAME = "batch-test-project";
+	private static final String PROJECT_NAME = "batch-test-project";
 
 	protected static final String JAVA_FOLDER = "src/main/java";
 	
@@ -73,32 +76,38 @@ public abstract class AbstractBatchTest {
 	protected static Project getProject(){
 		PackageExplorer explorer = new PackageExplorer();
 		explorer.open();
-		return explorer.getProject(PROJECT_NAME);
+		return explorer.getProject(getProjectName());
+	}
+	
+	protected static String getProjectName() {
+		return PROJECT_NAME;
 	}
 	
 	/**
-	 * Method for test classes initialization, imports batch test project and creates
+	 * Test environment initialization, imports batch test project and creates
 	 * its job XML configuration file.
 	 * @param log class logger from which method was called
 	 */
-	protected static void initTestResources(Logger log) {
-		log.info("Import archive project " + PROJECT_NAME);
-		importProject();
+	protected static void initTestResources(Logger log, String projectPath) {
+		log.info("Import archive project " + projectPath);
+		log.info("Name of the project " + PROJECT_NAME);
+		importProject(projectPath);
 		new WaitWhile(new JobIsRunning());
 		getProject().select();
+		log.info("Create empty batch-job xml file");
 		createJobXMLFile(JOB_ID);
 	}
 	
 	/**
 	 * Imports zip test project
 	 */
-	private static void importProject() {
+	private static void importProject(String projectPath) {
 		ExternalProjectImportWizardDialog dialog = new ExternalProjectImportWizardDialog();
 		dialog.open();
 		
 		WizardProjectsImportPage page = new WizardProjectsImportPage();
-		page.setArchiveFile(Activator.getPathToFileWithinPlugin("projects/batch-test-project.zip"));
-		page.selectProjects(PROJECT_NAME);
+		page.setArchiveFile(Activator.getPathToFileWithinPlugin(projectPath));
+		page.selectProjects(getProjectName());
 		
 		dialog.finish(TimePeriod.VERY_LONG);
 	}
@@ -108,17 +117,95 @@ public abstract class AbstractBatchTest {
 	 * @param log class logger from which method was called
 	 */
 	protected static void removeProject(Logger log) {
-		log.info("Removing " + PROJECT_NAME);
+		log.info("Removing " + getProjectName());
 		// temporary workaround until upstream patch is applied (eclipse bug 478634)
 		try {
-			org.jboss.reddeer.direct.project.Project.delete(PROJECT_NAME, true, true);
+			org.jboss.reddeer.direct.project.Project.delete(getProjectName(), true, true);
 		} catch (RuntimeException exc) {
 			log.error("RuntimeException occured during deleting project");
 			exc.printStackTrace();
 			log.info("Deleting project second time ...");
-			org.jboss.reddeer.direct.project.Project.delete(PROJECT_NAME, true, true);
+			org.jboss.reddeer.direct.project.Project.delete(getProjectName(), true, true);
 		} 
 		new WaitWhile(new JobIsRunning());
+	}
+	
+	protected void setupJobXML() {
+		if (!getProject().containsItem(JOB_XML_FILE_FULL_PATH)) {
+			getProject().select();
+			createJobXMLFile(JOB_ID);
+		}		
+	}
+	
+	protected void removeJobXML() {
+		if (getProject().containsItem(JOB_XML_FILE_FULL_PATH)) {
+			getProject().getProjectItem(JOB_XML_FILE_FULL_PATH).delete();
+		}		
+	}
+	
+	/**
+	 * Provide bundle resource absolute path
+	 * @param pluginId - plugin id
+	 * @param path - resource relative path
+	 * @return resource absolute path
+	 */
+	public static String getResourceAbsolutePath(String pluginId, String... path) {
+
+		// Construct path
+		StringBuilder builder = new StringBuilder();
+		for (String fragment : path) {
+			builder.append("/" + fragment);
+		}
+
+		String filePath = "";
+		try {
+			filePath = FileLocator.toFileURL(
+					Platform.getBundle(pluginId).getEntry("/")).getFile()
+					+ "resources" + builder.toString();
+			File file = new File(filePath);
+			if (!file.isFile()) {
+				filePath = FileLocator.toFileURL(
+						Platform.getBundle(pluginId).getEntry("/")).getFile()
+						+ builder.toString();
+			}
+		} catch (IOException ex) {
+			String message = filePath + " resource file not found";
+			//log.error(message);
+			fail(message);
+		}
+
+		return filePath;
+	}
+	
+	/**
+	 * Read test file to string
+	 * @param filePath file path
+	 * @return content of the file
+	 * @throws IOException
+	 */
+	public String readTextFileToString(String filePath) throws IOException {
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(filePath));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			StringBuilder sb = new StringBuilder();
+			String line = br.readLine();
+
+			while (line != null) {
+				sb.append(line);				
+				line = br.readLine();
+				if (line != null)
+					sb.append("\n");
+			}
+			String everything = sb.toString();
+			return everything;
+		} finally {
+			br.close();
+		}
 	}
 	
 	/**
@@ -136,31 +223,33 @@ public abstract class AbstractBatchTest {
 		dialog.finish();
 	}
 
-	protected void assertNoProblems() {
+	public static void assertNoProblems() {
 		log.step("Assert there are no problems");
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
 		
+		new WaitUntil(new JobIsRunning(), TimePeriod.SHORT, false);
+		
 		List<Problem> problems = null;
 		try {
 			problems = problemsView.getProblems(ProblemType.ANY);
-			assertThat(getUniqueProblemsSize(problems), is(0));
+			assertThat(problems.size(), is(0));
 		} catch (AssertionError e){
 			String message = "Found unexpected problems\n";
 			for (Problem problem : problems){
-				message += "\t" + problem.getProblemType() + ": " + problem.getDescription() + "(" + problem.getResource() + ")\n";
+				message += "\t" + problem.getProblemType() + ": " + problem.getDescription() +
+						"(" + problem.getResource() + " at line " + problem.getLocation() + ")\n";
 			}
 			throw new AssertionError(message, e);
 		}
 	}
 	
-	protected void assertNumberOfProblems(int error, int warning) {
+	public static void assertNumberOfProblems(int error, int warning) {
 		log.step("Assert there are no problems");
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
 		
-		// TODO Fix the hard-coded wait
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		new WaitUntil(new JobIsRunning(), TimePeriod.SHORT, false);
 		
 		List<Problem> problems = null;
 		try {
@@ -172,18 +261,17 @@ public abstract class AbstractBatchTest {
 		} catch (AssertionError e){
 			String message = "Found unexpected problems\n";
 			for (Problem problem : problems){
-				message += "\t" + problem.getProblemType() + ": " + problem.getDescription() + "(" + problem.getResource() + ")\n";
+				message += "\t" + problem.getProblemType() + ": " + problem.getDescription() + 
+						"(" + problem.getResource() + " at line " + problem.getLocation() + ")\n";
 			}
 			throw new AssertionError(message, e);
 		}
 	}
 	
-	private int getUniqueProblemsSize(List<Problem> problems) {
+	private static int getUniqueProblemsSize(List<Problem> problems) {
 		List<Problem> uniqueProblems = new ArrayList<Problem>();
 		for (Problem problem : problems) {
 			boolean contains = false;
-			// hardcoded way how to find out that custom class object is in list
-			// TODO implement necessary methods into Reddeer's problem class (equals, hashcode)
 			for (Problem item : uniqueProblems) {
 				if (isSameProblem(problem, item)) {
 					contains = true;
@@ -197,7 +285,7 @@ public abstract class AbstractBatchTest {
 		return uniqueProblems.size();
 	} 
 	
-	private boolean isSameProblem(Problem x, Problem y) {
+	private static boolean isSameProblem(Problem x, Problem y) {
 		return x.getType().equals(y.getType()) && 
 				x.getResource().equals(y.getResource()) && 
 				x.getDescription().equals(y.getDescription()) &&

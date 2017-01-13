@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2016 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.batch.reddeer.editor.jobxml;
 
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -6,6 +16,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.jboss.tools.batch.reddeer.editor.BatchExceptionType;
 import org.jboss.tools.batch.reddeer.editor.design.BatchEditorTable;
 
 /**
@@ -48,6 +59,18 @@ public class JobXMLEditorDesignPage {
 
 	public void addStep(String id) {
 		addFlowElement(STEP, id);
+	}
+	
+	public void addJobListener(String ref) {
+		selectNode(JOB, "Listeners");
+		new ContextMenu("Add Job Listener").select();
+		new DefaultText(new DefaultSection("<Listener>"), 0).setText(ref);
+	}
+	
+	public void addFlowElementListener(String [] path, String ref) {
+		selectNode(path);
+		new ContextMenu("Add Step Listener").select();
+		new DefaultText(new DefaultSection("<Listener>"), 0).setText(ref);
 	}
 
 	public void addBatchlet(String stepID, String ref) {
@@ -101,15 +124,21 @@ public class JobXMLEditorDesignPage {
 		BatchEditorTable table = new BatchEditorTable("Properties");
 		table.addItem(propertyName, value.toString());
 	}
-
-	public void addExceptionClass(String stepID, String artifact, String sectionName, String exceptionType,
-			String exceptionClass) {
+	
+	public void addExceptionClass(String stepID, String artifact, String sectionName,
+			String exceptionType, String exceptionClass, BatchExceptionType type)
+	{
 		selectNode(JOB, "Flow Elements", stepID, artifact);
 		DefaultSection section = new DefaultSection(sectionName);
 		new CheckBox(section, exceptionType).toggle(true);
 		
-		BatchEditorTable table = new BatchEditorTable(sectionName);
+		BatchEditorTable table = new BatchEditorTable(sectionName, type.getIndex());
 		table.addItem(exceptionClass);
+	}
+
+	public void addExceptionClass(String stepID, String artifact, String sectionName,
+			String exceptionType, String exceptionClass) {
+		addExceptionClass(stepID, artifact, sectionName, exceptionType, exceptionClass, BatchExceptionType.INCLUDE);
 	}
 
 	private void addFlowElement(String name, String id) {

@@ -19,6 +19,7 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.tools.batch.reddeer.editor.BatchExceptions;
 import org.jboss.tools.batch.reddeer.wizard.BatchArtifacts;
 import org.junit.After;
 import org.junit.Test;
@@ -180,12 +181,5 @@ public class RenameTest extends AbstractFeatureBaseTest {
 				BatchExceptions.SKIPPABLE.getType(), getPackage() + "." + EXCEPTION_ID);
 
 		editor.save();
-	}
-
-	private static void deleteItemIfExists(String... path) {
-		if (getProject().containsItem(path)) {
-			ProjectItem item = getProject().getProjectItem(path);
-			item.delete();
-		}
 	}
 }

@@ -22,7 +22,7 @@ public class CreateJobXMLFileTest extends AbstractBatchTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		initTestResources(log);
+		initTestResources(log, "projects/" + getProjectName() + ".zip");
 	}
 	
 	@AfterClass

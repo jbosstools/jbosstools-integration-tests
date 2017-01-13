@@ -10,22 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.batch.ui.bot.test.editor.features;
 
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
 import org.jboss.reddeer.eclipse.ui.search.SearchResult;
 import org.jboss.reddeer.eclipse.ui.search.SearchView;
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.batch.reddeer.wizard.BatchArtifacts;
-import org.jboss.tools.batch.reddeer.wizard.NewBatchArtifactWizardDialog;
-import org.jboss.tools.batch.reddeer.wizard.NewBatchArtifactWizardPage;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignFlowElementsTestTemplate;
 import org.junit.After;
 import org.junit.Before;
@@ -59,21 +51,16 @@ public abstract class AbstractFeatureBaseTest extends DesignFlowElementsTestTemp
 
 	@Before
 	@Override
-	public void setupEditor() {
-		if (!getProject().containsItem(JOB_XML_FILE_FULL_PATH)) {
-			getProject().select();
-			createJobXMLFile(JOB_ID);
-		}
-		super.setupEditor();
+	public void setUp() {
+		setupJobXML();
+		setupEditor();;
 	}
 
 	@After
 	@Override
-	public void closeEditor() {
-		super.closeEditor();
-		if (getProject().containsItem(JOB_XML_FILE_FULL_PATH)) {
-			getProject().getProjectItem(JOB_XML_FILE_FULL_PATH).delete();
-		}
+	public void tearDown() {
+		closeEditor();
+		removeJobXML();
 	}
 
 	/**
@@ -146,60 +133,5 @@ public abstract class AbstractFeatureBaseTest extends DesignFlowElementsTestTemp
 
 		}
 		return result;
-	}
-
-	protected boolean createExceptionClass(String exceptionID) {
-		NewJavaClassWizardDialog dialog = new NewJavaClassWizardDialog();
-		dialog.open();
-
-		NewJavaClassWizardPage page = new NewJavaClassWizardPage();
-		page.setSourceFolder(PROJECT_NAME + "/" + JAVA_FOLDER);
-		page.setPackage(getPackage());
-		page.setName(exceptionID);
-		new LabeledText("Superclass:").setText("java.lang.Exception");
-		return dialogFinished(dialog);
-	}
-
-	protected boolean createBatchArtifactWithProperty(BatchArtifacts artifact, String name, String propertyName) {
-		NewBatchArtifactWizardDialog dialog = new NewBatchArtifactWizardDialog();
-		dialog.open();
-
-		NewBatchArtifactWizardPage page = new NewBatchArtifactWizardPage();
-		page.setSourceFolder(PROJECT_NAME + "/" + JAVA_FOLDER);
-		page.setPackage(getPackage());
-		page.setName(name);
-		page.addProperty(propertyName);
-		page.setArtifact(artifact);
-		return dialogFinished(dialog);
-	}
-
-	private boolean dialogFinished(NewWizardDialog dialog) {
-		if (dialog.isFinishEnabled()) {
-			dialog.finish();
-			return true;
-		} else {
-			dialog.cancel();
-			return false;
-		}
-	}
-
-	// to avoid reporting problems in problem view
-	protected void addDefaultSerialVersionID(String filename, int line) {
-		TextEditor editor = new TextEditor(filename);
-		editor.activate();
-
-		editor.insertLine(line, "\n\tprivate static final long serialVersionUID = 1L;\n");
-		editor.save();
-	}
-
-	protected void closeEditor(String name) {
-		try {
-			TextEditor javaEditor = new TextEditor(name);
-			if (javaEditor.isActive()) {
-				javaEditor.close();
-			}
-		} catch (WaitTimeoutExpiredException e) {
-			// print exception, do nothing
-		}
 	}
 }

@@ -8,27 +8,27 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.batch.ui.bot.test.editor.features;
+package org.jboss.tools.batch.reddeer.editor;
 
-public enum BatchExceptions {
-	SKIPPABLE("Skippable Exception Classes", "Skippable-exception-classes"), RETRYABLE("Retryable Exception Classes", "Retryable-exception-classes"), NOROLLBACK(
-			"No Rollback Exception Classes", "No-rollback-exception-classes");
+public enum BatchExceptionType {
 
-	private final String sectionName;
-	private final String type;
+	INCLUDE(0, "Includes:"),
+	EXCLUDE(1, "Excludes:");
 	
-	private BatchExceptions(String sectionName, String type) {
-		this.sectionName = sectionName;
+	private int index;
+	private String type;
+	
+	private BatchExceptionType(int index, String type) {
+		this.index = index;
 		this.type = type;
 	}
-
-	public String getSectionName() {
-		return sectionName;
+	
+	public int getIndex() {
+		return index;
 	}
-
+	
 	public String getType() {
 		return type;
 	}
-
 	
 }
