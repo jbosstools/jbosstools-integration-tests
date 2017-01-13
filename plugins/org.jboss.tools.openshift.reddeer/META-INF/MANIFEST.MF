@@ -17,7 +17,8 @@ Require-Bundle:
  org.apache.commons.compress,
  org.apache.commons.lang;bundle-version="2.6.0",
  org.jboss.tools.openshift.core;bundle-version="3.3.0",
- org.jboss.tools.openshift.client;bundle-version="3.3.0"
+ org.jboss.tools.openshift.client;bundle-version="3.3.0",
+ org.jboss.tools.central.reddeer;bundle-version="4.4.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Eclipse-BundleShape: jar
