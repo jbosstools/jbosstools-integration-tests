@@ -15,6 +15,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,11 +34,11 @@ public class PullImageTest extends AbstractImageBotTest {
 		deleteImageIfExists(IMAGE_BUSYBOX_LATEST);
 		getConnection();
 	}
-	
+
 	@Test
 	public void testPullImageWithTag() {
 		clearConsole();
-		pullImage(IMAGE_ALPINE, "3.3", null);
+		pullImage(IMAGE_ALPINE, IMAGE_ALPINE_TAG, null);
 		new WaitWhile(new JobIsRunning());
 		assertTrue("Image has not been deployed!", imageIsDeployed(IMAGE_ALPINE_33));
 	}
@@ -48,5 +49,18 @@ public class PullImageTest extends AbstractImageBotTest {
 		pullImage(IMAGE_BUSYBOX);
 		new WaitWhile(new JobIsRunning());
 		assertTrue("Image has not been deployed!", imageIsDeployed(IMAGE_BUSYBOX_LATEST));
+		assertTrue("Multiple tags of the same image has been deployed, not only latest tag!",
+				deployedImagesCount(IMAGE_BUSYBOX) == 1);
+	}
+
+	@After
+	public void after() {
+		// cleanup for testPullImageWithoutTag()
+		for (String imageName : getConnection().getImagesNames(true)) {
+			if (imageName.contains(IMAGE_BUSYBOX)) {
+				deleteImageContainer(imageName);// cleanup for testPullImageWithoutTag()
+			}
+		}
+		cleanUpWorkspace();
 	}
 }
