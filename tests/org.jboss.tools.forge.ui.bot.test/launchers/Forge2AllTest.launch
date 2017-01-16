@@ -32,7 +32,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.forge.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dusage_reporting_enabled=false -Ddatabase.path=${string_prompt:-Ddatabase.path:/home/psrna/data/sakila-h2} -Drd.config=resources/servers/wildfly-10.xml"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dusage_reporting_enabled=false -Ddatabase.path=${string_prompt:Sakila DB, e.g. &quot;/home/jkopriva/git/sakila-h2&quot;:/} -Drd.config=resources/servers/wildfly-10.xml"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="com.jboss.devstudio.core.product"/>
 <stringAttribute key="rd.launch.property.rd.captureScreenshot" value="true"/>

@@ -23,6 +23,7 @@ import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.table.AbstractTableItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -37,6 +38,7 @@ public class InstallAddonTest extends WizardTestBase {
 	private static String ADDON_NAME = "RichFaces";
 	private static String ADDON_PACKAGE_NAME = "org.richfaces.forge:richfaces";
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testAddonInstall() {
 		WizardDialog dialog = getWizardDialog(INSTALL_ADDON_DIALOG_NAME, "(" + INSTALL_ADDON_DIALOG_NAME + ").*");
@@ -60,9 +62,9 @@ public class InstallAddonTest extends WizardTestBase {
 		dialogRemove.cancel();
 	}
 
-	@Override
-	public void cleanup() {
-		super.cleanup();
+	@Before
+	public void prepare() {
+		newProject(PROJECT_NAME);
 	}
 
 	public class AllTableMatcher extends BaseMatcher<TableItem> {

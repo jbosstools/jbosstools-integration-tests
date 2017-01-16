@@ -30,6 +30,7 @@ import org.eclipse.ui.services.IServiceLocator;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.core.util.Display;
@@ -42,6 +43,7 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.forge.reddeer.condition.ProjectIsSelected;
 import org.jboss.tools.forge.reddeer.ui.wizard.ConnectionProfileWizardPage;
 import org.jboss.tools.forge.reddeer.view.ForgeConsoleView;
 import org.jboss.tools.forge.ui.bot.test.util.DatabaseUtils;
@@ -327,4 +329,12 @@ public abstract class WizardTestBase {
 		page.setHibernateDialect(H2_DIALECT);
 		dialog.finish(TimePeriod.LONG);
 	}
+	
+	public void setFocusOnProject(){
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(PROJECT_NAME).select();
+		new WaitWhile(new ProjectIsSelected(PROJECT_NAME),TimePeriod.NORMAL, false, TimePeriod.getCustom(5));//Selecting project is not always immediately, when Forge is running 
+	}
+
 }
