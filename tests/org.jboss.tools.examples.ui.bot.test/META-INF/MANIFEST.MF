@@ -10,6 +10,6 @@ Require-Bundle:  org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
  org.junit;bundle-version="4.8.2",
  org.jboss.tools.maven.reddeer;bundle-version="[4.4.2,4.5.0)",
  org.jboss.tools.central.reddeer;bundle-version="[4.4.2,4.5.0)",
- org.jboss.ide.eclipse.as.reddeer
+ org.jboss.ide.eclipse.as.reddeer;bundle-version="[3.2.3,3.3.0)"
 Import-Package: org.eclipse.wst.server.ui.internal.view.servers,
  org.jboss.reddeer.requirements.server
