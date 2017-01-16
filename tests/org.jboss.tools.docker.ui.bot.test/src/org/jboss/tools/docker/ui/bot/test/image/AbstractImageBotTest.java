@@ -53,7 +53,7 @@ public class AbstractImageBotTest extends AbstractDockerBotTest {
 	protected static final String IMAGE_BUSYBOX_LATEST = IMAGE_BUSYBOX + NAME_TAG_SEPARATOR + IMAGE_TAG_LATEST;
 	protected static final String IMAGE_ALPINE = "alpine";
 	protected static final String IMAGE_ALPINE_TAG = "3.3";
-	protected static final String IMAGE_ALPINE_33 = IMAGE_ALPINE + NAME_TAG_SEPARATOR + "3.3";
+	protected static final String IMAGE_ALPINE_33 = IMAGE_ALPINE + NAME_TAG_SEPARATOR + IMAGE_ALPINE_TAG;
 	
 	protected static final String IMAGE_CIRROS = "cirros";
 	protected static final String IMAGE_CIRROS_TAG = "0.3.4";
