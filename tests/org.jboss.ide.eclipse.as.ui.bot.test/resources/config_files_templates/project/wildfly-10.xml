@@ -13,7 +13,7 @@
 			<server:type>
 				<server:familyWildFly version="10.x"></server:familyWildFly>
 			</server:type>
-			<server:runtime>${jbosstools.test.jboss-wildfly-10.home}</server:runtime>
+			<server:runtime>${requirementsDirectory}/${jbosstools.test.wildfly-10.dir}</server:runtime>
 		</server:jboss-server-requirement>
 		
 		 <jre:jre-requirement name="test">

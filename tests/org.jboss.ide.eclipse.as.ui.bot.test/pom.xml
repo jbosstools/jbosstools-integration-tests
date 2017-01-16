@@ -27,31 +27,11 @@
 		<reddeer.project.config>${project.build.outputDirectory}/project</reddeer.project.config>
 		<reddeer.product.config>${project.build.outputDirectory}/product</reddeer.product.config>
 		<reddeer.config>${reddeer.project.config}</reddeer.config>
-		<jbosstools.test.jboss-as-3.2.home>${requirementsDirectory}/jboss-3.2.8.SP1</jbosstools.test.jboss-as-3.2.home>
-		<jbosstools.test.jboss-as-4.0.home>${requirementsDirectory}/jboss-4.0.5.GA</jbosstools.test.jboss-as-4.0.home>
-		<jbosstools.test.jboss-as-4.2.home>${requirementsDirectory}/jboss-4.2.3.GA</jbosstools.test.jboss-as-4.2.home>
-		<jbosstools.test.jboss-as-5.0.home>${requirementsDirectory}/jboss-5.0.1.GA</jbosstools.test.jboss-as-5.0.home>
-		<jbosstools.test.jboss-as-5.1.home>${requirementsDirectory}/jboss-5.1.0.GA</jbosstools.test.jboss-as-5.1.home>
-		<jbosstools.test.jboss-as-6.x.home>${requirementsDirectory}/jboss-6.1.0.Final</jbosstools.test.jboss-as-6.x.home>
-		<jbosstools.test.jboss-as-7.0.home>${requirementsDirectory}/jboss-as-7.0.2.Final</jbosstools.test.jboss-as-7.0.home>
-		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
-		<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.2.0.Final</jbosstools.test.jboss-wildfly-8.home>
-		<jbosstools.test.jboss-wildfly-9.home>${requirementsDirectory}/wildfly-9.0.1.Final</jbosstools.test.jboss-wildfly-9.home>
-		<jbosstools.test.jboss-wildfly-10.home>${requirementsDirectory}/wildfly-10.0.0.CR2</jbosstools.test.jboss-wildfly-10.home>
-		<jbosstools.test.jboss-eap-4.home>${requirementsDirectory}/jboss-eap-4.3/jboss-as</jbosstools.test.jboss-eap-4.home>
-		<jbosstools.test.jboss-eap-5.home>${requirementsDirectory}/jboss-eap-5.2/jboss-as</jbosstools.test.jboss-eap-5.home>
-		<jbosstools.test.jboss-eap-6.0.home>${requirementsDirectory}/jboss-eap-6.0</jbosstools.test.jboss-eap-6.0.home>
-		<jbosstools.test.jboss-eap-6.x.home>${requirementsDirectory}/jboss-eap-6.4</jbosstools.test.jboss-eap-6.x.home>
-		<jbosstools.test.jboss-eap-7.x.home>${requirementsDirectory}/jboss-eap-7.0</jbosstools.test.jboss-eap-7.x.home>
 		<!-- Requirements JRE properties -->
 		<req.java.version>1.8</req.java.version>
 		<req.java.home>${env.JAVA_HOME}</req.java.home>
-		<!-- Server download URL property files configuration -->
-		<project-download-properties-file>${project.basedir}/properties/projects-download.properties</project-download-properties-file>
-		<product-download-properties-file>${project.basedir}/properties/products-download.properties</product-download-properties-file>
-		<download-properties-file>${project-download-properties-file}</download-properties-file>
 		<!-- Command line arguments for tycho surefire tests -->
-		<runtimesProperties>-Drd.config=${reddeer.config} -Dreq.java.version=${req.java.version} -Dreq.java.home=${req.java.home} -Djbosstools.test.jboss-as-3.2.home=${jbosstools.test.jboss-as-3.2.home} -Djbosstools.test.jboss-as-4.0.home=${jbosstools.test.jboss-as-4.0.home} -Djbosstools.test.jboss-as-4.2.home=${jbosstools.test.jboss-as-4.2.home} -Djbosstools.test.jboss-as-5.0.home=${jbosstools.test.jboss-as-5.0.home} -Djbosstools.test.jboss-as-5.1.home=${jbosstools.test.jboss-as-5.1.home} -Djbosstools.test.jboss-as-6.x.home=${jbosstools.test.jboss-as-6.x.home} -Djbosstools.test.jboss-as-7.0.home=${jbosstools.test.jboss-as-7.0.home} -Djbosstools.test.jboss-as-7.1.home=${jbosstools.test.jboss-as-7.1.home} -Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home} -Djbosstools.test.jboss-wildfly-9.home=${jbosstools.test.jboss-wildfly-9.home} -Djbosstools.test.jboss-wildfly-10.home=${jbosstools.test.jboss-wildfly-10.home} -Djbosstools.test.jboss-eap-4.home=${jbosstools.test.jboss-eap-4.home} -Djbosstools.test.jboss-eap-5.home=${jbosstools.test.jboss-eap-5.home} -Djbosstools.test.jboss-eap-6.0.home=${jbosstools.test.jboss-eap-6.0.home} -Djbosstools.test.jboss-eap-6.x.home=${jbosstools.test.jboss-eap-6.x.home} -Djbosstools.test.jboss-eap-7.x.home=${jbosstools.test.jboss-eap-7.x.home}</runtimesProperties>
+		<runtimesProperties>-Drd.config=${reddeer.config} -Dreq.java.version=${req.java.version} -Dreq.java.home=${req.java.home}</runtimesProperties>
 		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties}</systemProperties>
 	</properties>
 
@@ -67,25 +47,6 @@
 			</resource>
 		</resources>
 		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>properties-maven-plugin</artifactId>
-				<version>1.0-alpha-2</version>
-				<executions>
-					<execution>
-						<phase>initialize</phase>
-						<goals>
-							<goal>read-project-properties</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<files>
-						<file>${download-properties-file}</file>
-					</files>
-				</configuration>
-			</plugin>
-								
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
 				<artifactId>download-maven-plugin</artifactId>
@@ -138,7 +99,8 @@
 			<id>projects</id>
 			<activation>
 				<property>
-					<name>!test.profile</name>
+					<name>test.profile</name>
+					<value>projects</value>
 				</property>
 			</activation>
 			<properties>
@@ -294,8 +256,7 @@
 			<id>projects-stable</id>
 			<activation>
 				<property>
-					<name>test.profile</name>
-					<value>projects-stable</value>
+					<name>!test.profile</name>
 				</property>
 			</activation>
 			<properties>
@@ -308,7 +269,7 @@
 						<artifactId>download-maven-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>install-as-6.1.0</id>
+								<id>install-as-6.1</id>
 								<phase>pre-integration-test</phase>
 								<goals>
 									<goal>wget</goal>
@@ -320,7 +281,7 @@
 								</configuration>
 							</execution>
 							<execution>
-								<id>install-as-7.0.2</id>
+								<id>install-as-7.0</id>
 								<phase>pre-integration-test</phase>
 								<goals>
 									<goal>wget</goal>
@@ -332,7 +293,7 @@
 								</configuration>
 							</execution>
 							<execution>
-								<id>install-as-7.1.1</id>
+								<id>install-as-7.1</id>
 								<phase>pre-integration-test</phase>
 								<goals>
 									<goal>wget</goal>
@@ -775,7 +736,6 @@
 			<properties>
 				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.allsuites.products.ProductsTestsSuite</test.class>
 				<reddeer.config>${reddeer.product.config}</reddeer.config>
-				<download-properties-file>${product-download-properties-file}</download-properties-file>
 			</properties>
 			<build>
 				<plugins>
@@ -859,7 +819,6 @@
 			<properties>
 				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.allsuites.products.EAP4TestsSuite</test.class>
 				<reddeer.config>${reddeer.product.config}/eap-4.3.xml</reddeer.config>
-				<download-properties-file>${product-download-properties-file}</download-properties-file>
 			</properties>
 			<build>
 				<plugins>
@@ -895,7 +854,6 @@
 			<properties>
 				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.allsuites.products.EAP5TestsSuite</test.class>
 				<reddeer.config>${reddeer.product.config}/eap-5.x.xml</reddeer.config>
-				<download-properties-file>${product-download-properties-file}</download-properties-file>
 			</properties>
 			<build>
 				<plugins>
@@ -931,7 +889,6 @@
 			<properties>
 				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.allsuites.products.EAP60TestsSuite</test.class>
 				<reddeer.config>${reddeer.product.config}/eap-6.0.xml</reddeer.config>
-				<download-properties-file>${product-download-properties-file}</download-properties-file>
 			</properties>
 			<build>
 				<plugins>
@@ -967,7 +924,6 @@
 			<properties>
 				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.allsuites.products.EAP6xTestsSuite</test.class>
 				<reddeer.config>${reddeer.product.config}/eap-6.x.xml</reddeer.config>
-				<download-properties-file>${product-download-properties-file}</download-properties-file>
 			</properties>
 			<build>
 				<plugins>
@@ -1003,7 +959,6 @@
 			<properties>
 				<test.class>org.jboss.ide.eclipse.as.ui.bot.test.allsuites.products.EAP7TestsSuite</test.class>
 				<reddeer.config>${reddeer.product.config}/eap-7.x.xml</reddeer.config>
-				<download-properties-file>${product-download-properties-file}</download-properties-file>
 			</properties>
 			<build>
 				<plugins>

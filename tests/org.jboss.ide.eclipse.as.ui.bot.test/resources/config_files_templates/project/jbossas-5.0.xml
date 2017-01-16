@@ -13,7 +13,7 @@
 			<server:type>
 				<server:familyAS version="5.0"></server:familyAS>
 			</server:type>
-			<server:runtime>${jbosstools.test.jboss-as-5.0.home}</server:runtime>
+			<server:runtime>${requirementsDirectory}/${jbosstools.test.jboss-as-5.0.dir}</server:runtime>
 		</server:jboss-server-requirement>
 		
 		 <jre:jre-requirement name="test">

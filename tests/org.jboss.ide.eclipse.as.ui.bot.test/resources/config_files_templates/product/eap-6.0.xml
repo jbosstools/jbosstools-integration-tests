@@ -13,7 +13,7 @@
 			<server:type>
 				<server:familyEAP version="6.0"></server:familyEAP>
 			</server:type>
-			<server:runtime>${jbosstools.test.jboss-eap-6.0.home}</server:runtime>
+			<server:runtime>${requirementsDirectory}/${jbosstools.test.jboss-eap-6.0.dir}</server:runtime>
 		</server:jboss-server-requirement>
 		
 		 <jre:jre-requirement name="test">

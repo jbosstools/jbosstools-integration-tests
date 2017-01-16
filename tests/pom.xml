@@ -25,6 +25,7 @@
 		<test.installPath.OSX></test.installPath.OSX>
 		<devstudio.repository>https://devstudio.redhat.com/10.0/snapshots/updates/</devstudio.repository>
 		<testProduct>com.jboss.devstudio.core.product</testProduct>
+		<product-download-properties-file>../resources/product-download.properties</product-download-properties-file>
 	</properties>
 
 	<profiles>
@@ -106,6 +107,43 @@
 				<test.installPath.OSX>/devstudio.app/Contents/Eclipse/</test.installPath.OSX>
 			</properties>
 		</profile>
+		
+		<!-- Use a small hack - we want to set this plugin once here, instead of
+		every sub-module's pom. But then it's also executed for the test module
+		itself which fails - the file cannot be found. The profile ensures it is
+		only executed in the sub-modules. -->
+		<profile>
+			<id>project-download-properties</id>
+			<activation>
+				<file>
+					<exists>../resources/projects-download.properties</exists>
+				</file>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>properties-maven-plugin</artifactId>
+						<version>1.0.0</version>
+						<executions>
+							<execution>
+								<id>download-properties</id>
+								<phase>initialize</phase>
+								<goals>
+									<goal>read-project-properties</goal>
+								</goals>
+								<configuration>
+									<files>
+										<file>../resources/projects-download.properties</file>
+										<file>${product-download-properties-file}</file>
+									</files>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 
 		<profile>
 			<id>install-base</id>
@@ -185,6 +223,7 @@
 			</repositories>
 		</profile>
 	</profiles>
+	
     <build>
 		<plugins>
 			<plugin>
