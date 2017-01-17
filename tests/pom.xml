@@ -39,7 +39,6 @@
 			</activation>
 			<modules>
 				<module>org.jboss.tools.aerogear.ui.bot.test</module>
-				<module>org.jboss.tools.archives.ui.bot.test</module>
 				<module>org.jboss.tools.arquillian.ui.bot.test</module>
 				<module>org.jboss.tools.batch.ui.bot.test</module>
 				<module>org.jboss.tools.cdi.bot.test</module>
