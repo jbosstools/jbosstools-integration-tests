@@ -10,7 +10,7 @@ Require-Bundle: org.junit,
  org.eclipse.linuxtools.docker.ui;bundle-version="2.1.0",
  org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
  org.jboss.tools.docker.reddeer;bundle-version="[4.4.2,4.5.0)",
- org.jboss.ide.eclipse.as.reddeer,
+ org.jboss.ide.eclipse.as.reddeer;bundle-version="[3.2.3,3.3.0)",
  org.apache.commons.lang;bundle-version="2.6.0",
  org.apache.commons.io;bundle-version="2.2.0"
 Import-Package: org.eclipse.core.resources
