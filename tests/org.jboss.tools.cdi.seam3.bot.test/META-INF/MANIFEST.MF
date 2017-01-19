@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
  org.jboss.ide.eclipse.as.reddeer;bundle-version="[3.2.3,3.3.0)",
  org.jboss.tools.cdi.reddeer;bundle-version="[4.4.2,4.5.0)",
- org.jboss.tools.common.reddeer
+ org.jboss.tools.common.reddeer;bundle-version="[3.8.3,3.9.0)"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-BundleShape: jar
