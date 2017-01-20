@@ -11,29 +11,24 @@
 
 package org.jboss.tools.deltaspike.ui.bot.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.tools.deltaspike.ui.bot.test.condition.SpecificProblemExists;
+import org.jboss.tools.deltaspike.ui.bot.test.exception.DeltaspikeTestInFailureException;
 import org.junit.After;
 import org.junit.Test;
 
 /**
- * Test @ConfigProperty annotation, two approaches:
+ * Test @ConfigProperty annotation, two approaches:<br>
  * 
- * 1. When config property is a valid injection point
+ * 1. When config property is a valid injection point<br> 
  * 2. When config property is not a valid injection point
  * 
  * @author jjankovi
@@ -42,54 +37,51 @@ import org.junit.Test;
 public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 
 	private RegexMatcher validationProblemRegexMatcher = new RegexMatcher("No bean is eligible.*");
-	
+
 	@InjectRequirement
 	private ServerRequirement sr;
-	
+
 	@After
 	public void closeAllEditors() {
 		deleteAllProjects();
 	}
 
-	
 	@Test
 	public void testInjectSupportedConfigProperty() {
-		
+
 		String projectName = "configProperty-support";
-		importDeltaspikeProject(projectName,sr);
-		
-		new WaitUntil(new SpecificProblemExists(
-				validationProblemRegexMatcher), TimePeriod.LONG);
+		importDeltaspikeProject(projectName, sr);
 
-		insertIntoFile(projectName, "test", "Test.java", 7, 0, 
-				"@ConfigProperty(name = \"boolean\") \n");
-		insertIntoFile(projectName, "test", "Test.java", 2, 0, 
+		new WaitUntil(new SpecificProblemExists(validationProblemRegexMatcher), TimePeriod.LONG);
+
+		insertIntoFile(projectName, "test", "Test.java", 7, 0, "@ConfigProperty(name = \"boolean\") \n");
+		insertIntoFile(projectName, "test", "Test.java", 2, 0,
 				"import org.apache.deltaspike.core.api.config.ConfigProperty; \n");
-		
-		new WaitWhile(new SpecificProblemExists(
-				validationProblemRegexMatcher), TimePeriod.LONG);
-		
+
+		new WaitWhile(new SpecificProblemExists(validationProblemRegexMatcher), TimePeriod.LONG);
+
 	}
-	
-	@Test
-	public void testInjectUnsupportedConfigProperty() {
-		
-		String projectName = "configProperty-unsupport";
-		importDeltaspikeProject(projectName,sr);
-		
-		new WaitUntil(new SpecificProblemExists(
-				validationProblemRegexMatcher), TimePeriod.LONG);
 
-		insertIntoFile(projectName, "test", "Test.java", 8, 0, 
-				"@ConfigProperty(name = \"boolean\") \n");
-		insertIntoFile(projectName, "test", "Test.java", 2, 0, 
+	@Test(expected = DeltaspikeTestInFailureException.class)
+	public void testInjectUnsupportedConfigProperty() {
+
+		String projectName = "configProperty-unsupport";
+		importDeltaspikeProject(projectName, sr);
+
+		try {
+			new WaitUntil(new SpecificProblemExists(validationProblemRegexMatcher), TimePeriod.LONG);
+		} catch (WaitTimeoutExpiredException ex) {
+			throw new DeltaspikeTestInFailureException("JBIDE-13554 should be fixed now.");
+		}
+		
+		insertIntoFile(projectName, "test", "Test.java", 8, 0, "@ConfigProperty(name = \"boolean\") \n");
+		insertIntoFile(projectName, "test", "Test.java", 2, 0,
 				"import org.apache.deltaspike.core.api.config.ConfigProperty; \n");
-		try{
-			new WaitWhile(new SpecificProblemExists(
-					validationProblemRegexMatcher), TimePeriod.NORMAL);
-		} catch(WaitTimeoutExpiredException ex){
+		try {
+			new WaitWhile(new SpecificProblemExists(validationProblemRegexMatcher), TimePeriod.NORMAL);
+		} catch (WaitTimeoutExpiredException ex) {
 			fail("this is known issue JBIDE-13554");
 		}
 	}
-	
+
 }
