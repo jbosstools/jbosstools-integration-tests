@@ -79,14 +79,14 @@ public class HTML5EditorHighlight extends VPETestBase{
 	private void selectAndCheckHighlight(TextEditor te, String textToSelect, String highlight){
 		te.selectText(textToSelect);
 		VPVEditor editor = new VPVEditor();
-		new WaitUntil(new VPEditorHasTextSelected(editor));
+		new WaitUntil(new VPEditorHasTextSelected(editor, highlight));
 		assertEquals(highlight,editor.getSelectedTextInBrowser());
 	}
 	
 	private void setCursorAndCheckHighlight(TextEditor te, int cursorPosition, String highlight){
 		te.setCursorPosition(cursorPosition);
 		VPVEditor editor = new VPVEditor();
-		new WaitUntil(new VPEditorHasTextSelected(editor));
+		new WaitUntil(new VPEditorHasTextSelected(editor,highlight));
 		assertEquals(highlight,editor.getSelectedTextInBrowser());
 	}
 	
