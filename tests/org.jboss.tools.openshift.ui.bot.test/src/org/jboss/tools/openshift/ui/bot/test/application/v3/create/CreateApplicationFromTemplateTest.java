@@ -16,6 +16,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.List;
 
+import org.hamcrest.Matcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -24,6 +25,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ProjectExists;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
@@ -42,6 +44,11 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
+import org.jboss.tools.openshift.reddeer.enums.ResourceState;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement.RequiredProject;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
@@ -56,238 +63,268 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+@RequiredBasicConnection
+@RequiredProject
 public class CreateApplicationFromTemplateTest {
-	
+
 	private String gitFolder = "jboss-eap-quickstarts";
 	private String helloworldProject = "jboss-helloworld";
 	private String kitchensinkProject = "jboss-kitchensink";
-	
-	private static final String TESTS_PROJECT = "org.jboss.tools.openshift.ui.bot.test";
-	private static final String TESTS_PROJECT_LOCATION = System.getProperty("user.dir");
+
+	private static final String TESTS_PROJECT = "os3projectWithResources";
+	private static final String TESTS_PROJECT_LOCATION = new File("resources/os3projectWithResources")
+			.getAbsolutePath();
 	private static final String URL = "https://raw.githubusercontent.com/jbosstools/"
 			+ "jbosstools-integration-tests/master/tests/org.jboss.tools.openshift.ui.bot.test/"
 			+ "resources/eap64-basic-s2i.json";
-	
+
 	private String genericWebhookURL;
 	private String githubWebhookURL;
-	
+
 	private String srcRepoURI;
 	private String applicationName;
-	
+
+	@InjectRequirement
+	private OpenShiftProjectRequirement projectReq;
+
+	@InjectRequirement
+	private OpenShiftConnectionRequirement connectionReq;
+
 	@BeforeClass
-	public static void importTestsProject()  {		
+	public static void importTestsProject() {
 		new ExternalProjectImportWizardDialog().open();
 		new DefaultCombo().setText(TESTS_PROJECT_LOCATION);
 		new PushButton("Refresh").click();
-		
+
 		new WaitUntil(new WidgetIsEnabled(new FinishButton()));
-		
+
 		new FinishButton().click();
-		
+
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new WaitUntil(new ProjectExists(TESTS_PROJECT), TimePeriod.LONG);
 	}
-	
+
 	@Before
 	public void setUp() {
 		TestUtils.cleanupGitFolder(gitFolder);
 		deleteProject(kitchensinkProject);
 		deleteProject(helloworldProject);
-		
+
 		genericWebhookURL = null;
 		githubWebhookURL = null;
 		srcRepoURI = null;
 		applicationName = null;
 	}
-	
+
 	private void deleteProject(String name) {
 		if (new ProjectExists(name).test()) {
 			new ProjectExplorer().getProject(name).delete(true);
 		}
 	}
-	
+
 	@Test
 	public void createApplicationFromLocalWorkspaceTemplate() {
-		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
+		new NewOpenShift3ApplicationWizard().openWizardFromExplorer(projectReq.getProject().getDisplayName());
 		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
 		new PushButton(OpenShiftLabel.Button.BROWSE_WORKSPACE).click();
-		
+
 		new DefaultShell(OpenShiftLabel.Shell.SELECT_OPENSHIFT_TEMPLATE);
-		new DefaultTreeItem("org.jboss.tools.openshift.ui.bot.test", "resources", 
-				"eap64-basic-s2i.json").select();
+		new DefaultTreeItem(TESTS_PROJECT, "eap64-basic-s2i.json").select();
 		new OkButton().click();
-		
-		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);		
+
+		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		assertTrue("Template from workspace is not correctly shown in text field containing its path",
-				new LabeledText(OpenShiftLabel.TextLabels.SELECT_LOCAL_TEMPLATE).getText().
-					equals("${workspace_loc:" + File.separator + "org.jboss.tools.openshift.ui.bot.test"
-							+ File.separator + "resources" + File.separator + "eap64-basic-s2i.json}"));
+				new LabeledText(OpenShiftLabel.TextLabels.SELECT_LOCAL_TEMPLATE).getText().equals("${workspace_loc:"
+						+ File.separator + TESTS_PROJECT + File.separator + "eap64-basic-s2i.json}"));
 
 		new WaitUntil(new WidgetIsEnabled(new CancelButton()));
-		
-		assertTrue("Defined resource button should be enabled", 
+
+		assertTrue("Defined resource button should be enabled",
 				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
-		
+
 		completeApplicationCreationAndVerify(helloworldProject);
 	}
-	
+
 	@Test
 	public void createApplicationFromLocalFileSystemTemplate() {
-		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
+		new NewOpenShift3ApplicationWizard().openWizardFromExplorer(projectReq.getProject().getDisplayName());
 		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
 		new LabeledText(OpenShiftLabel.TextLabels.SELECT_LOCAL_TEMPLATE).setText(
-				TESTS_PROJECT_LOCATION + File.separator + "resources"
-				+ File.separator + "eap64-basic-s2i.json");
-		
-		assertTrue("Defined resource button should be enabled", 
+				TESTS_PROJECT_LOCATION + File.separator + "eap64-basic-s2i.json");
+
+		assertTrue("Defined resource button should be enabled",
 				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
-		
+
 		completeApplicationCreationAndVerify(helloworldProject);
 	}
-	
+
 	@Test
 	public void createApplicationFromTemplateProvidedByURL() {
-		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
+		new NewOpenShift3ApplicationWizard().openWizardFromExplorer(projectReq.getProject().getDisplayName());
 		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
 		new LabeledText(OpenShiftLabel.TextLabels.SELECT_LOCAL_TEMPLATE).setText(URL);
-		
-		assertTrue("Defined resource button should be enabled", 
+
+		assertTrue("Defined resource button should be enabled",
 				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
-		
+
 		completeApplicationCreationAndVerify(helloworldProject);
 	}
-	
+
 	@Test
 	public void testCreateApplicationFromServerTemplate() {
-		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
+		new NewOpenShift3ApplicationWizard().openWizardFromExplorer(projectReq.getProject().getDisplayName());
 		new DefaultTree().selectItems(new DefaultTreeItem(OpenShiftLabel.Others.EAP_TEMPLATE));
-		
+
 		completeApplicationCreationAndVerify(kitchensinkProject);
 	}
-	
+
 	private void completeApplicationCreationAndVerify(String projectName) {
 		completeWizardAndVerify();
 		importApplicationAndVerify(projectName);
 		verifyCreatedApplication();
 	}
-	
+
 	private void completeWizardAndVerify() {
 		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
-		
+
 		new NextButton().click();
-		
+
 		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
-		
+
 		String srcRepoRef = new DefaultTable().getItem(TemplateParametersTest.SOURCE_REPOSITORY_REF).getText(1);
 		srcRepoURI = new DefaultTable().getItem(TemplateParametersTest.SOURCE_REPOSITORY_URL).getText(1);
 		String contextDir = new DefaultTable().getItem(TemplateParametersTest.CONTEXT_DIR).getText(1);
 		applicationName = new DefaultTable().getItem(TemplateParametersTest.APPLICATION_NAME).getText(1);
 		new NextButton().click();
-		
+
 		new WaitWhile(new WidgetIsEnabled(new NextButton()), TimePeriod.LONG);
-		
+
 		new FinishButton().click();
-		
+
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.APPLICATION_SUMMARY), TimePeriod.LONG);
-		
+
 		new DefaultShell(OpenShiftLabel.Shell.APPLICATION_SUMMARY);
-		
-		assertTrue(TemplateParametersTest.SOURCE_REPOSITORY_REF + " is not same as the one shown in "
-				+ "New OpenShift Application wizard.", new DefaultTable().getItem(
-						TemplateParametersTest.SOURCE_REPOSITORY_REF).getText(1).equals(srcRepoRef));
-		assertTrue(TemplateParametersTest.SOURCE_REPOSITORY_URL.split(" ")[0] + " is not same as the one shown in "
-				+ "New OpenShift Application wizard.", new DefaultTable().getItem(
-						TemplateParametersTest.SOURCE_REPOSITORY_URL.split(" ")[0]).getText(1).equals(srcRepoURI));
-		assertTrue(TemplateParametersTest.CONTEXT_DIR + " is not same as the one shown in New OpenShift"
-				+ " Application wizard.", new DefaultTable().getItem(TemplateParametersTest.CONTEXT_DIR).
-					getText(1).equals(contextDir));
-		assertTrue(TemplateParametersTest.APPLICATION_NAME.split(" ")[0] + " is not same as the one shown in "
-				+ "New OpenShift Application wizard.", new DefaultTable().getItem(
-						TemplateParametersTest.APPLICATION_NAME.split(" ")[0]).getText(1).equals(applicationName));
+
+		assertTrue(
+				TemplateParametersTest.SOURCE_REPOSITORY_REF + " is not same as the one shown in "
+						+ "New OpenShift Application wizard.",
+				new DefaultTable().getItem(TemplateParametersTest.SOURCE_REPOSITORY_REF).getText(1).equals(srcRepoRef));
+		assertTrue(
+				TemplateParametersTest.SOURCE_REPOSITORY_URL.split(" ")[0] + " is not same as the one shown in "
+						+ "New OpenShift Application wizard.",
+				new DefaultTable().getItem(TemplateParametersTest.SOURCE_REPOSITORY_URL.split(" ")[0]).getText(1)
+						.equals(srcRepoURI));
+		assertTrue(
+				TemplateParametersTest.CONTEXT_DIR + " is not same as the one shown in New OpenShift"
+						+ " Application wizard.",
+				new DefaultTable().getItem(TemplateParametersTest.CONTEXT_DIR).getText(1).equals(contextDir));
+		assertTrue(
+				TemplateParametersTest.APPLICATION_NAME.split(" ")[0] + " is not same as the one shown in "
+						+ "New OpenShift Application wizard.",
+				new DefaultTable().getItem(TemplateParametersTest.APPLICATION_NAME.split(" ")[0]).getText(1)
+						.equals(applicationName));
 		assertFalse(TemplateParametersTest.GENERIC_SECRET.split(" ")[0] + " should be generated and non-empty.",
 				new DefaultTable().getItem(TemplateParametersTest.GENERIC_SECRET.split(" ")[0]).getText(1).isEmpty());
-		assertFalse(TemplateParametersTest.GITHUB_SECRET.split(" ")[0] + " should be generated and non-empty.", 
+		assertFalse(TemplateParametersTest.GITHUB_SECRET.split(" ")[0] + " should be generated and non-empty.",
 				new DefaultTable().getItem(TemplateParametersTest.GITHUB_SECRET.split(" ")[0]).getText(1).isEmpty());
-		
+
 		new DefaultLink("Click here to display the webhooks available to automatically trigger builds.").click();
-		
+
 		new DefaultShell(OpenShiftLabel.Shell.WEBHOOK_TRIGGERS);
 		genericWebhookURL = new DefaultText(0).getText();
 		githubWebhookURL = new DefaultText(1).getText();
-		
+
 		assertFalse("Generic webhook URL should not be empty.", genericWebhookURL.isEmpty());
 		assertFalse("GitHub webhook URL should not be empty.", githubWebhookURL.isEmpty());
-		
+
 		new OkButton().click();
-		
+
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.WEBHOOK_TRIGGERS));
-		
+
 		new DefaultShell(OpenShiftLabel.Shell.APPLICATION_SUMMARY);
 		new OkButton().click();
 	}
-	
+
 	public static void importApplicationAndVerify(String projectName) {
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION));
-		
+
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
 		new FinishButton().click();
-		
+
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
-		
+
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		new WaitUntil(new ProjectExists(projectName, new ProjectExplorer()), TimePeriod.LONG, false);
 		assertTrue("Project Explorer should contain imported project jboss-helloworld",
 				projectExplorer.containsProject(projectName));
 	}
-	
+
 	private void verifyCreatedApplication() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
-		OpenShiftProject project = explorer.getOpenShift3Connection().getProject();
+		OpenShiftProject project = explorer.getOpenShift3Connection()
+				.getProject(projectReq.getProject().getDisplayName());
 		project.refresh();
-		
+
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(120));
-		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD_CONFIG), TimePeriod.LONG, false);
-		
+		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD_CONFIG, (Matcher<String>) null,
+				ResourceState.UNSPECIFIED, projectReq.getProject().getDisplayName()), TimePeriod.LONG, false);
+
 		List<OpenShiftResource> buildConfig = project.getOpenShiftResources(Resource.BUILD_CONFIG);
 		assertTrue("There should be precisely 1 build config for created application, but there is following amount"
 				+ " of build configs: " + buildConfig.size(), buildConfig.size() == 1);
-		assertTrue("There should be application name and git URI in build config tree item, but they are not."
-				+ "Application name is '" + applicationName + "' and git URI is '" + srcRepoURI + "', but build "
-						+ "config has name '" + buildConfig.get(0).getName() + "'",
-				buildConfig.get(0).getPropertyValue("Labels", "application").equals(applicationName) && 
-				buildConfig.get(0).getPropertyValue("Source", "URI").equals(srcRepoURI));
-		
+		assertTrue(
+				"There should be application name and git URI in build config tree item, but they are not."
+						+ "Application name is '" + applicationName + "' and git URI is '" + srcRepoURI
+						+ "', but build " + "config has name '" + buildConfig.get(0).getName() + "'",
+				buildConfig.get(0).getPropertyValue("Labels", "application").equals(applicationName)
+						&& buildConfig.get(0).getPropertyValue("Source", "URI").equals(srcRepoURI));
+
 		List<OpenShiftResource> imageStream = project.getOpenShiftResources(Resource.IMAGE_STREAM);
 		assertTrue("There should be precisely 1 image stream for created application, but there is following amount"
 				+ " of image streams: " + imageStream.size(), imageStream.size() == 1);
-	
+
 		List<OpenShiftResource> routes = project.getOpenShiftResources(Resource.ROUTE);
 		assertTrue("There should be precisely 1 route for created application, but there is following amount"
 				+ " of routes:" + routes.size(), routes.size() == 1);
 		assertTrue("Generated (default) route should contain application name, but it's not contained.",
 				routes.get(0).getName().equals(applicationName));
-		
+
 		List<OpenShiftResource> services = project.getOpenShiftResources(Resource.SERVICE);
 		assertTrue("There should be precisely 1 service for created application, but there is following amount"
 				+ " of services: " + services.size(), services.size() == 1);
 	}
-	
+
 	@After
 	public void tearDown() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.reopen();
-		
+
 		deleteProject(kitchensinkProject);
 		deleteProject(helloworldProject);
-		
-		OpenShift3Connection connection  = explorer.getOpenShift3Connection();
-		connection.getProject().delete();
-		
-		connection.createNewProject();
+
+		OpenShift3Connection connection = explorer.getOpenShift3Connection();
+		cleanup(connection.getProject(projectReq.getProject().getDisplayName()));
 	}
-	
+
+	private void cleanup(OpenShiftProject project) {
+		List<OpenShiftResource> services = project.getOpenShiftResources(Resource.SERVICE);
+		services.forEach(resource -> resource.delete());
+
+		List<OpenShiftResource> routes = project.getOpenShiftResources(Resource.ROUTE);
+		routes.forEach(route -> route.delete());
+
+		List<OpenShiftResource> imageStreams = project.getOpenShiftResources(Resource.IMAGE_STREAM);
+		imageStreams.forEach(imageStream -> imageStream.delete());
+
+		List<OpenShiftResource> buildConfigs = project.getOpenShiftResources(Resource.BUILD_CONFIG);
+		buildConfigs.forEach(buildConfig -> buildConfig.delete());
+
+		List<OpenShiftResource> deploymentConfigs = project.getOpenShiftResources(Resource.DEPLOYMENT_CONFIG);
+		deploymentConfigs.forEach(deploymentConfig -> deploymentConfig.delete());
+	}
+
 	@AfterClass
 	public static void deleteTestsProjectFromWorkspace() {
 		new ProjectExplorer().getProject(TESTS_PROJECT).delete(false);
