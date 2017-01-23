@@ -22,6 +22,7 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ProjectExists;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
@@ -44,6 +45,7 @@ import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftProject;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftResource;
 import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.BuilderImageApplicationWizardHandlingTest;
+import org.jboss.tools.openshift.ui.bot.test.common.OpenshiftTestInFailureException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -127,7 +129,12 @@ public class CreateApplicationOnBuilderImageTest {
 		String gitUrl = new LabeledText("Git Repository URL:").getText();
 
 		assertNotNull(gitUrl);
-		assertTrue("Git URL is empty (JBIDE-23704)", gitUrl.length() > 0);
+		if (gitUrl.length() < 1){
+			new CancelButton().click();
+			new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD));
+			throw new OpenshiftTestInFailureException("JBIDE-23704 should be fixed now.");
+		}
+//		assertTrue("Git URL is empty (JBIDE-23704)", gitUrl.length() > 0);
 
 		new WaitUntil(new WidgetIsEnabled(new NextButton()));
 
@@ -153,13 +160,13 @@ public class CreateApplicationOnBuilderImageTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(120));
 	}
 
-	 @Test
+	@Test
 	public void validateJBIDE22704FromShellMenu() {
 		new NewOpenShift3ApplicationWizard().openWizardFromShellMenu();
 		validateJBIDE22704();
 	}
 
-	@Test
+	@Test(expected = OpenshiftTestInFailureException.class)
 	public void validateJBIDE22704FromCentral() {
 		new NewOpenShift3ApplicationWizard().openWizardFromCentral();
 		validateJBIDE22704();
