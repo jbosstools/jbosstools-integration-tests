@@ -8,19 +8,21 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/
-package org.jboss.tools.cdk.ui.bot.test;
+package org.jboss.tools.jsf.ui.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.jsf.ui.test.project.CreateJSFProjectTest;
+import org.jboss.tools.jsf.ui.test.project.ExportImportWARTest;
+import org.jboss.tools.jsf.ui.test.project.RunJSFProjectTest;
 import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RedDeerSuite.class)
-@Suite.SuiteClasses({
-	CDKDevstudioBaseTest.class
-})
-/**
- * @author ondrej dockal
- */
-public class CDKAllTestsSuite {
+@SuiteClasses({
+    CreateJSFProjectTest.class,
+    RunJSFProjectTest.class,
+    ExportImportWARTest.class
+    })
+public class SmokeTestsSuite {
 
 }

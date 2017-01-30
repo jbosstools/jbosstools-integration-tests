@@ -21,6 +21,6 @@ import org.junit.runners.Suite;
 /**
  * @author ondrej dockal
  */
-public class CDKAllTestsSuite {
+public class CDKSmokeTestsSuite {
 
 }

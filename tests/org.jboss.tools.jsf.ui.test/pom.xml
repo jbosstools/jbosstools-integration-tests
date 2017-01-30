@@ -21,6 +21,19 @@
 
 	<profiles>
 		<profile>
+			<id>all-tests</id>
+			<properties>
+				<test.class>org.jboss.tools.jsf.ui.test.AllTestsSuite</test.class>
+			</properties>			
+		</profile>
+		<profile>
+			<id>smoke-tests</id>
+			<properties>
+				<test.class>org.jboss.tools.jsf.ui.test.SmokeTestsSuite</test.class>
+			</properties>			
+		</profile>
+	
+		<profile>
 			<id>product</id>
 			<activation>
 				<property>
@@ -80,6 +93,7 @@
 					<testClass>${test.class}</testClass>
 				</configuration>
 			</plugin>
+
 		</plugins>
 		
 		<resources>
