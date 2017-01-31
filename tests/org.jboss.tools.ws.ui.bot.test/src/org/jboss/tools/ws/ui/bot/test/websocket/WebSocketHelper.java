@@ -12,23 +12,30 @@ package org.jboss.tools.ws.ui.bot.test.websocket;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.SWT;
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
 import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.workbench.impl.editor.Marker;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 
+
 import java.util.*;
 
+import static org.jboss.tools.ws.ui.bot.test.utils.ClassHelper.*;
 import static org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper.createClass;
+import static org.jboss.tools.ws.ui.bot.test.websocket.NameBindingTest.Constants.CLASS_NAME_ANNOTATION;
+import static org.jboss.tools.ws.ui.bot.test.websocket.NameBindingTest.Constants.CLASS_NAME_FILTER;
 import static org.jboss.tools.ws.ui.bot.test.websocket.StubMethodsTest.Constants.*;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-class StubMethodsHelper {
+class WebSocketHelper {
 
 	/**
 	 * Shell with this label is used. Initialized in first usage (requires opened editor).
@@ -171,14 +178,10 @@ class StubMethodsHelper {
 		text.insertText(3, 0, annotation);
 
 		//set cursor position at the first line in the class, column 0
-		int firstLineInClassIndex = getLineOfClassDefinition(editor) + 1;
+		int firstLineInClassIndex = getClassDefinitionLine(editor) + 1;
 		editor.setCursorPosition(firstLineInClassIndex, 0);
 
 		return editor;
-	}
-
-	static int getLineOfClassDefinition(TextEditor editor) {
-		return editor.getLineOfText("public class");
 	}
 
 	//Prefixes methods:
@@ -192,7 +195,7 @@ class StubMethodsHelper {
 	}
 
 	static void setPrefixIntoFirstClassLine(TextEditor editor, String prefix) {
-		int firstLineInClassIndex = getLineOfClassDefinition(editor) + 1;
+		int firstLineInClassIndex = getClassDefinitionLine(editor) + 1;
 		new DefaultStyledText().insertText(firstLineInClassIndex, 0, prefix);
 		
 		//jump to the end of the line
@@ -201,12 +204,12 @@ class StubMethodsHelper {
 
 	static void clearFirstClassLine(TextEditor editor) {
 		delFirstClassLine(editor);
-		int firstLineInClassIndex = getLineOfClassDefinition(editor) + 1;
+		int firstLineInClassIndex = getClassDefinitionLine(editor) + 1;
 		new DefaultStyledText().insertText(firstLineInClassIndex, 0, System.lineSeparator());
 	}
 
 	static void delFirstClassLine(TextEditor editor) {
-		int firstLineInClassIndex = getLineOfClassDefinition(editor) + 1;
+		int firstLineInClassIndex = getClassDefinitionLine(editor) + 1;
 		editor.selectLine(firstLineInClassIndex);
 		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.DEL);
 	}
@@ -214,4 +217,84 @@ class StubMethodsHelper {
 	static int countImports(TextEditor editor) {
 		return StringUtils.countMatches(editor.getText(), "import ");
 	}
+
+	static void enableJAXRSSupport(String projectName) {
+		ProjectExplorer pe = new ProjectExplorer();
+		ExplorerItemPropertyDialog dialog = new ExplorerItemPropertyDialog(pe.getProject(projectName));
+		dialog.open();
+		dialog.select("JAX-RS");
+		new CheckBox().toggle(true);
+		dialog.ok();
+	}
+
+	static TextEditor prepareCustomAnnotationEditor(String projectName) {
+		TextEditor annotationEditor = createClass(projectName,
+				NameBindingTest.Constants.PROJECT_PACKAGE, NameBindingTest.Constants.CLASS_NAME_ANNOTATION);
+
+		//replace 'class' with '@interface'
+		String replacedCode = new DefaultStyledText().getText().replaceAll("public class", "public @interface");
+		new DefaultStyledText().setText(replacedCode);
+
+		addClassAnnotation(annotationEditor, "@NameBinding", "import javax.ws.rs.NameBinding;");
+
+		addClassAnnotation(annotationEditor, "@Target({ ElementType.TYPE, ElementType.METHOD })", "import java.lang.annotation.Target;");
+		addImport(annotationEditor, "import java.lang.annotation.ElementType;");
+
+		addClassAnnotation(annotationEditor, "@Retention(value = RetentionPolicy.RUNTIME)", "import java.lang.annotation.Retention;");
+		addImport(annotationEditor, "import java.lang.annotation.RetentionPolicy;");
+
+		annotationEditor.save();
+		return annotationEditor;
+	}
+
+	static TextEditor prepareAppEditor(String projectName) {
+		TextEditor appEditor = createClass(projectName,
+				NameBindingTest.Constants.PROJECT_PACKAGE, NameBindingTest.Constants.CLASS_NAME_APP);
+
+		//add 'extends' def part
+		String replacedCode = new DefaultStyledText().getText()
+				.replaceAll("public class " + NameBindingTest.Constants.CLASS_NAME_APP,
+						"public class " + NameBindingTest.Constants.CLASS_NAME_APP + " extends Application");
+		new DefaultStyledText().setText(replacedCode);
+		addImport(appEditor, "import javax.ws.rs.core.Application;");
+
+		addClassAnnotation(appEditor, "@ApplicationPath(\"/app\")", "import javax.ws.rs.ApplicationPath;");
+		addClassAnnotation(appEditor, "@" + CLASS_NAME_ANNOTATION);
+
+		appEditor.save();
+		return appEditor;
+	}
+
+	static TextEditor prepareFilterEditor(String projectName) {
+		TextEditor filterEditor = createClass(projectName,
+				NameBindingTest.Constants.PROJECT_PACKAGE, NameBindingTest.Constants.CLASS_NAME_FILTER);
+
+		//add 'implements' def part
+		String replacedCode = new DefaultStyledText().getText()
+				.replaceAll("public class " + CLASS_NAME_FILTER,
+						"public class " + CLASS_NAME_FILTER + " implements ContainerResponseFilter");
+		new DefaultStyledText().setText(replacedCode);
+		addImport(filterEditor, "import javax.ws.rs.container.ContainerResponseFilter;");
+
+		addClassAnnotation(filterEditor, "@Provider", "import javax.ws.rs.ext.Provider;");
+		addClassAnnotation(filterEditor, "@" + CLASS_NAME_ANNOTATION);
+
+		replacedCode = new DefaultStyledText().getText()
+				.replaceAll("implements ContainerResponseFilter \\{",
+						"implements ContainerResponseFilter	{\n" +
+								"\t@Override\n" +
+								"\tpublic void filter(ContainerRequestContext requestContext,\n" +
+								"                     ContainerResponseContext responseContext)\n" +
+								"\t\t\tthrows IOException {\n" +
+								"\t\t// ...\n" +
+								"\t}");
+		new DefaultStyledText().setText(replacedCode);
+		addImport(filterEditor, "import javax.ws.rs.container.ContainerRequestContext;");
+		addImport(filterEditor, "import javax.ws.rs.container.ContainerResponseContext;");
+		addImport(filterEditor, "import java.io.IOException;");
+
+		filterEditor.save();
+		return filterEditor;
+	}
+
 }
