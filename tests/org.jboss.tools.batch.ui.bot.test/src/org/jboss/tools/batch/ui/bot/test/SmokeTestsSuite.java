@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat, Inc.
+ * Copyright (c) 2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -16,7 +16,14 @@ import org.jboss.tools.batch.ui.bot.test.editor.design.DesignChunkStepElementTes
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignDecisionElementTest;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignFlowElementTest;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignSplitElementTest;
-import org.jboss.tools.batch.ui.bot.test.editor.features.CheckExistingReferenceTest;
+import org.jboss.tools.batch.ui.bot.test.editor.features.RenameTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceBatchPropertyTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceClassAttributeTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceElementLoopingTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceLevelReferenctingTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceRefAttributeTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceRestartAttributeTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceUniqueIDTest;
 import org.jboss.tools.batch.ui.bot.test.wizard.CreateArtifactWithPropertiesTest;
 import org.jboss.tools.batch.ui.bot.test.wizard.CreateBatchXMLArtifactTest;
 import org.jboss.tools.batch.ui.bot.test.wizard.CreateClassloaderArtifactTest;
@@ -37,8 +44,15 @@ import org.junit.runners.Suite.SuiteClasses;
 	DesignDecisionElementTest.class,
 	DesignFlowElementTest.class,
 	DesignSplitElementTest.class,
-	CheckExistingReferenceTest.class
+	RenameTest.class,
+	ValidateSourceUniqueIDTest.class,
+	ValidateSourceBatchPropertyTest.class,
+	ValidateSourceRefAttributeTest.class,
+	ValidateSourceClassAttributeTest.class,
+	ValidateSourceElementLoopingTest.class,
+	ValidateSourceLevelReferenctingTest.class,
+	ValidateSourceRestartAttributeTest.class
 	})
-public class SmokeSuite {
+public class SmokeTestsSuite {
 
 }

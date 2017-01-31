@@ -17,13 +17,13 @@
 		<profile>
 			<id>smoke-tests</id>
 			<properties>
-				<suiteClass>org.jboss.tools.freemarker.ui.bot.test.SmokeSuite</suiteClass>
+				<suiteClass>org.jboss.tools.freemarker.ui.bot.test.SmokeTestsSuite</suiteClass>
 			</properties>
 		</profile>
 		<profile>
 			<id>all-tests</id>
 			<properties>
-				<suiteClass>org.jboss.tools.freemarker.ui.bot.test.AllSuite</suiteClass>
+				<suiteClass>org.jboss.tools.freemarker.ui.bot.test.AllTestsSuite</suiteClass>
 			</properties>
 		</profile>
 		<profile>

@@ -20,7 +20,7 @@
 		<profile>
 			<id>smoke-tests</id>
 			<properties>
-				<suiteClass>org.jboss.tools.batch.ui.bot.test.SmokeSuite</suiteClass>
+				<suiteClass>org.jboss.tools.batch.ui.bot.test.SmokeTestsSuite</suiteClass>
 			</properties>
 		</profile>
 		<profile>
