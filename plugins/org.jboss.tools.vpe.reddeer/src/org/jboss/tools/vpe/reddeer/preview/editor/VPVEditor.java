@@ -84,6 +84,16 @@ public class VPVEditor extends VisualEditor{
 		});
 	}
 	
+	public Boolean executeScript(final String script){
+		return Display.syncExec(new ResultRunnable<Boolean>() {
+			
+			@Override
+			public Boolean run() {
+				return getBrowser().execute(script);
+			}
+		});
+	}
+	
 	public void clickInBrowser(String text){
 		Object[] coord = (Object[])evaluateScript("var elements = document.getElementsByTagName('*'); var i;"
 				+ "for(i=0; i<elements.length; i++){ "

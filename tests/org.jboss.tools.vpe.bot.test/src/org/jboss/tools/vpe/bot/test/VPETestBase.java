@@ -15,10 +15,12 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import org.jboss.reddeer.common.platform.RunningPlatform;
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
@@ -30,7 +32,6 @@ import org.jboss.reddeer.eclipse.wst.html.ui.wizard.NewHTMLWizard;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 @CleanWorkspace
@@ -38,52 +39,40 @@ public class VPETestBase {
 	
 	protected static String PROJECT_NAME = "WebProject";
 	
-	private static String noLogEntry = "No log entry found within maximum log size .*";
-	
-	private static List<ErrorInLog> errors;
-	
 	@BeforeClass
 	public static void prepareWorkspaceBase(){
 		if(!new WorkbenchShell().isMaximized()){
 			new WorkbenchShell().maximize();
+			new WorkbenchShell().setFocus();
 		}
-		errors = null;
-		openErrorLog().deleteLog();
-	}
-	
-	@AfterClass
-	public static void checkErrorLog(){
-		List<LogMessage> msgs = openErrorLog().getErrorMessages();
 		
-		if(errors != null){
-			assertEquals(errors.size(),  msgs.size());
-			for(LogMessage lm: msgs){
-				for(ErrorInLog er: errors){
-					if(lm.getMessage().contains(er.getMessage()) && lm.getPlugin().equals(er.getPlugin())){
-						break;
-					}
-					fail("Unexpected error "+lm);
-				}
+		//tern -@CleanWorkspace cannot delete project on windows because tern process is locking files
+		//lets try again
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		if(pe.getProjects().size() > 0){
+			AbstractWait.sleep(TimePeriod.NORMAL);
+			pe.deleteAllProjects();
+			for (Project project : pe.getProjects()){
+				org.jboss.reddeer.direct.project.Project.delete(project.getName(), true, true);
 			}
-		} else {
-			if(msgs.size() == 1){
-				if(!msgs.get(0).getMessage().matches(noLogEntry)){
-					fail("There's error in error log "+msgs.get(0));
+			if(pe.getProjects().size() > 0){
+				LogView lw = new LogView();
+				lw.open();
+				List<LogMessage> messages = lw.getErrorMessages();
+				if(messages.size() > 0){
+					for(LogMessage m: messages){
+						String message = m.getMessage();
+						String stack = m.getStackTrace();
+						String plg = m.getPlugin();
+						System.out.println(plg + message + stack);
+					}
+					
 				}
-			} else {
-				assertEquals(0, msgs.size());
+				fail("Could not delete projects");
 			}
 		}
-	}
-	
-	protected static void expectedErrors(List<ErrorInLog> errors){
-		VPETestBase.errors = errors;
-	}
-	
-	private static LogView openErrorLog(){
-		LogView lw = new LogView();
-		lw.open();
-		return lw;
+		
 	}
 	
 	public static void createWebProject() {
@@ -92,6 +81,22 @@ public class VPETestBase {
 		WebProjectFirstPage fp  = new WebProjectFirstPage();
 		fp.setProjectName(PROJECT_NAME);
 		//fp.setTargetRuntime(sr.getRuntimeNameLabelText(sr.getConfig()));
+		if(!ww.isFinishEnabled()){
+			ww.cancel();
+			LogView lw = new LogView();
+			lw.open();
+			List<LogMessage> messages = lw.getErrorMessages();
+			if(messages.size() > 0){
+				for(LogMessage m: messages){
+					String message = m.getMessage();
+					String stack = m.getStackTrace();
+					String plg = m.getPlugin();
+					System.out.println(plg + message + stack);
+				}
+				
+			}
+			fail("Could not create project - unsuccessful delete");
+		}
 		ww.finish();
 		new WaitUntil(new JobIsRunning(),TimePeriod.NORMAL, false);
 		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
@@ -141,6 +146,10 @@ public class VPETestBase {
 	
 	public static boolean isLinux(){
 		return RunningPlatform.isLinux();
+	}
+	
+	public static boolean isOSX(){
+		return RunningPlatform.isOSX();
 	}
 	
 	public static boolean isGTK2(){
