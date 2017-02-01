@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
+import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.tools.jst.reddeer.web.ui.NewXHTMLFileWizardPage;
 import org.jboss.tools.jst.reddeer.web.ui.NewXHTMLWizard;
 import org.jboss.tools.jst.reddeer.web.ui.editor.jspeditor.JSPMultiPageEditor;
@@ -28,22 +30,57 @@ import org.junit.Test;
 public class JSFEngineTest extends VPETestBase {
 
 	private String testPageName = "jstTestPage.xhtml";
+	private static String noLogEntry = "No log entry found within maximum log size .*";
+	private static List<ErrorInLog> errors;
 
 	@BeforeClass
 	public static void createProject() {
 		String errorMessage;
-		if(isLinux()){
+		if (isLinux()) {
 			errorMessage = "You currently have Visual editor configured to have better HTML5";
+		} else if (isOSX()) {
+			errorMessage = null;
 		} else {
 			errorMessage = "Visual Page Editor has experimental support for Windows 64-bit";
 		}
-		
-		ErrorInLog el = new ErrorInLog(errorMessage,"org.jboss.tools.vpe.preview.core");
-		List<ErrorInLog> errors = new ArrayList<ErrorInLog>();
-		errors.add(el);
-		errors.add(el);
-		expectedErrors(errors);
+
+		if (errorMessage != null) {
+			ErrorInLog el = new ErrorInLog(errorMessage, "org.jboss.tools.vpe.preview.core");
+			errors = new ArrayList<ErrorInLog>();
+			errors.add(el);
+			errors.add(el);
+		}
 		createWebProject();
+		openErrorLog().deleteLog();
+	}
+	
+	public void checkErrorLog() {
+		List<LogMessage> msgs = openErrorLog().getErrorMessages();
+		if (errors != null) {
+			assertEquals(errors.size(), msgs.size());
+			for (LogMessage lm : msgs) {
+				for (ErrorInLog er : errors) {
+					if (lm.getMessage().contains(er.getMessage()) && lm.getPlugin().equals(er.getPlugin())) {
+						break;
+					}
+					fail("Unexpected error " + lm);
+				}
+			}
+		} else {
+			if (msgs.size() == 1) {
+				if (!msgs.get(0).getMessage().matches(noLogEntry)) {
+					fail("There's error in error log " + msgs.get(0));
+				}
+			} else {
+				assertEquals(0, msgs.size());
+			}
+		}
+	}
+
+	private static LogView openErrorLog() {
+		LogView lw = new LogView();
+		lw.open();
+		return lw;
 	}
 
 	@Test
@@ -54,6 +91,13 @@ public class JSFEngineTest extends VPETestBase {
 		xp.setFileName(testPageName);
 		xp.selectParentFolder(PROJECT_NAME);
 		xw.finish();
+		if (isOSX()) { // JSF editor is not supported on mac
+			JSPMultiPageEditor editor = new JSPMultiPageEditor();
+			assertFalse(editor.hasPreviewTab());
+			assertFalse(editor.hasVisualSourceTab());
+			assertTrue(editor.hasSourceTab());
+		}
+
 		if (isGTK2()) {
 
 			EngineDialog ed = new EngineDialog();
@@ -92,6 +136,7 @@ public class JSFEngineTest extends VPETestBase {
 			editor = new JSPMultiPageEditor();
 			assertEquals(testPageName, editor.getTitle());
 		}
+		checkErrorLog();
 
 	}
 

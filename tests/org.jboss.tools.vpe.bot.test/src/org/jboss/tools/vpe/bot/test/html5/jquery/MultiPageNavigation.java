@@ -12,9 +12,13 @@ package org.jboss.tools.vpe.bot.test.html5.jquery;
 
 import static org.junit.Assert.*;
 
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.api.Shell;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
@@ -44,47 +48,102 @@ public class MultiPageNavigation extends VPETestBase{
 	public void testMultiPageNavigation(){
 		createMultiPage();
 		VPVEditor vpvEditor = new VPVEditor();
+		new WaitUntil(new JQueryIsReady(vpvEditor));
 		assertFalse(vpvEditor.isBackEnabled());
 		assertFalse(vpvEditor.isForwardEnabled());
-		String page0 = ".*viewId=[0-9]";
-		String page1 = ".*viewId=[0-9]#page1";
-		checkCurrentPage(vpvEditor, page0);
-		vpvEditor.evaluateScript("document.getElementById('pageButton').click()");
+		String page0 = "page-1";
+		String page1 = "page1";
+		new WaitUntil(new SiteHasTitle(vpvEditor, page0, page1), TimePeriod.LONG);
+		new WaitUntil(new ElementIsFound(vpvEditor, "pageButton"));
+		//we still have to wait because Windows browser sucks
+		AbstractWait.sleep(TimePeriod.NORMAL);
+		boolean executed = vpvEditor.executeScript("$(\"#pageButton\").click()");
+		assertTrue(executed);
+		new WaitUntil(new JQueryIsReady(vpvEditor));
 		new WaitUntil(new VPVBackIsEnabled(vpvEditor));
 		new WaitWhile(new VPVForwardIsEnabled(vpvEditor));
 		assertTrue(vpvEditor.isBackEnabled());
 		assertFalse(vpvEditor.isForwardEnabled());
-		checkCurrentPage(vpvEditor, page1);
+		new WaitUntil(new SiteHasTitle(vpvEditor, page1, page0), TimePeriod.LONG);
 		vpvEditor.back();
-		
-		checkCurrentPage(vpvEditor, page0);
+		new WaitUntil(new JQueryIsReady(vpvEditor));
+		new WaitUntil(new SiteHasTitle(vpvEditor, page0, page1), TimePeriod.LONG);
 		new WaitWhile(new VPVBackIsEnabled(vpvEditor));
 		new WaitUntil(new VPVForwardIsEnabled(vpvEditor));
 		assertTrue(vpvEditor.isForwardEnabled());
 		assertFalse(vpvEditor.isBackEnabled());
 		vpvEditor.forward();
-		checkCurrentPage(vpvEditor, page1);
+		new WaitUntil(new JQueryIsReady(vpvEditor));
+		new WaitUntil(new SiteHasTitle(vpvEditor, page1, page0), TimePeriod.LONG);
 	}
 	
 	private void createMultiPage(){
 		VPVEditor vpvEditor = new VPVEditor();
 		JQueryMobilePalette jqp = vpvEditor.getPalette();
 		jqp.activateTool("Page", "jQuery Mobile");
-		new DefaultShell("Insert Tag");
+		//TODO implement this wizard for o.j.t.common.reddeer
+		Shell s = new DefaultShell("Insert Tag");
 		new FinishButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable("Insert Tag"));
+		new WaitWhile(new ShellIsAvailable(s));
 		jqp.activateTool("Button", "jQuery Mobile");
-		new DefaultShell("Insert Tag");
+		s = new DefaultShell("Insert Tag");
 		new LabeledText("URL (href):").setText("#page1");
 		new DefaultText(new TextTooltipMatcher("Generate")).setText("pageButton");
 		new FinishButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable("Insert Tag"));
+		new WaitWhile(new ShellIsAvailable(s));
 	}
 	
-	private void checkCurrentPage(VPVEditor vpvEditor, String expectedPage){
-		String browserURL = vpvEditor.getBrowserURL();
-		assertTrue("URL is "+browserURL+" but we expect it to end with "+expectedPage,browserURL.matches(expectedPage));
-	
+	private class ElementIsFound extends AbstractWaitCondition {
+		
+		private VPVEditor editor;
+		private String script;
+		
+		public ElementIsFound(VPVEditor editor, String elementId) {
+			this.editor = editor;
+			this.script = "return !!document.getElementById('" +elementId+ "')";
+		}
+
+		@Override
+		public boolean test() {
+			return (Boolean) editor.evaluateScript(script);
+		}
+		
 	}
+	
+	private class SiteHasTitle extends AbstractWaitCondition {
+		
+		private VPVEditor editor;
+		private String visiblePage;
+		private String hiddenPage;
+		
+		public SiteHasTitle(VPVEditor editor, String visiblePage, String hiddenPage) {
+			this.editor = editor;
+			this.visiblePage = visiblePage;
+			this.hiddenPage = hiddenPage;
+		}
+		
+		@Override
+		public boolean test(){
+			Boolean visible = (Boolean)editor.evaluateScript("return $(\"#"+visiblePage+"\").is(\":visible\")");
+			Boolean hidden = (Boolean)editor.evaluateScript("return $(\"#"+hiddenPage+"\").is(\":visible\")");
+			return visible && !hidden;
+		}
+	}
+	
+	private class JQueryIsReady extends AbstractWaitCondition {
+		
+		private VPVEditor editor;
+		
+		public JQueryIsReady(VPVEditor editor) {
+			this.editor = editor;
+		}
+		
+		@Override
+		public boolean test(){
+			return (Boolean)editor.evaluateScript("return jQuery.isReady");
+		}
+		
+	}
+	
 
 }
