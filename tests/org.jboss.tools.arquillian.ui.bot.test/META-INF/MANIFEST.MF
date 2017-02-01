@@ -9,10 +9,10 @@ Require-Bundle: org.eclipse.ui,
  org.junit,
  org.hamcrest.core,
  org.jboss.ide.eclipse.as.reddeer;bundle-version="[3.2.3,3.3.0)",
- org.jboss.tools.maven.reddeer;bundle-version="[4.4.2,4.5.0)",
+ org.jboss.tools.maven.reddeer;bundle-version="[1.8.3,1.9.0)",
  org.jboss.tools.arquillian.reddeer;bundle-version="[4.4.2,4.5.0)",
  org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
- org.jboss.tools.central.reddeer;bundle-version="[4.4.2,4.5.0)" 
+ org.jboss.tools.central.reddeer;bundle-version="[2.1.3,2.2.0)" 
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.eclipse.core.resources
