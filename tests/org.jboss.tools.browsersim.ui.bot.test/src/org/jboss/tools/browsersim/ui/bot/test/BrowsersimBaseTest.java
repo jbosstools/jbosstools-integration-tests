@@ -21,7 +21,7 @@ import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.browsersim.reddeer.BrowserSimController;
+import org.jboss.tools.browsersim.reddeer.BrowserSimLauncher;
 import org.jboss.tools.browsersim.rmi.IBrowsersimHandler;
 import org.jboss.tools.jst.reddeer.wst.html.ui.wizard.NewHTMLFileWizardDialog;
 import org.jboss.tools.jst.reddeer.wst.html.ui.wizard.NewHTMLFileWizardHTMLPage;
@@ -34,12 +34,12 @@ public class BrowsersimBaseTest {
 	
 	@AfterClass
 	public static void stopBrowsersim(){
-		BrowserSimController bsController = new BrowserSimController();
+		BrowserSimLauncher bsController = new BrowserSimLauncher();
 		bsController.stopBrowsersim();
 	}
 	
 	public static void launchBrowsersim(ContextMenu menu) throws RemoteException{
-		BrowserSimController bsController = new BrowserSimController();
+		BrowserSimLauncher bsController = new BrowserSimLauncher();
 		bsHandler = bsController.launchBrowserSim(menu);
 		
 		setProperBrowsersimLocation();

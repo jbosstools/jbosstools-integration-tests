@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.aerogear.reddeer.ui.config;
+package org.jboss.tools.aerogear.reddeer.thym.ui.config;
 
 import static org.junit.Assert.assertTrue;
 
@@ -72,9 +72,6 @@ public class ConfigEditor extends AbstractEditor{
 				new EditorPartClassMatcher(org.eclipse.thym.ui.config.internal.ConfigEditor.class), 
 				new EditorPartTitleMatcher(new WithTextMatcher(title))));
 		editor = (org.eclipse.thym.ui.config.internal.ConfigEditor) editorPart;
-		// workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=506123
-		// save config.xml
-		save();
 	}
 
 	/**

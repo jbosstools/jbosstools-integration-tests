@@ -20,7 +20,8 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.tools.aerogear.reddeer.ui.preferences.AndroidPreferencesPage;
+import org.jboss.tools.aerogear.reddeer.thym.android.ui.preferences.AndroidPreferencesPage;
+import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.ThymPlatform;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
 import org.jboss.tools.aerogear.ui.bot.test.utils.AndroidDevelopmentTools;
 import org.junit.Before;
@@ -45,7 +46,7 @@ public class RunOnAndroid extends AerogearBotTest {
 	@Before
 	public void setUp() {
 		createHTMLHybridMobileApplication(AerogearBotTest.CORDOVA_PROJECT_NAME, AerogearBotTest.CORDOVA_APP_NAME,
-				"org.jboss.example.cordova", "cordova-android@4.1.0");
+				"org.jboss.example.cordova", ThymPlatform.ANDROID, "cordova-android@4.1.0");
 
 		assertTrue(new ProjectExplorer().containsProject(AerogearBotTest.CORDOVA_PROJECT_NAME));
 	}

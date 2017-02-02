@@ -16,18 +16,17 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.jboss.tools.aerogear.reddeer.ui.config.ConfigEditor;
-import org.jboss.tools.aerogear.reddeer.ui.properties.EnginePropertyPage;
-import org.jboss.tools.aerogear.reddeer.ui.properties.EnginePropertyPage.Platform;
+import org.jboss.tools.aerogear.reddeer.cordovasim.CordovaSimLauncher;
+import org.jboss.tools.aerogear.reddeer.thym.ui.config.ConfigEditor;
+import org.jboss.tools.aerogear.reddeer.thym.ui.properties.EnginePropertyPage;
+import org.jboss.tools.aerogear.reddeer.thym.ui.properties.EnginePropertyPage.Platform;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.tools.browsersim.reddeer.BrowserSimHandler;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,7 +45,7 @@ public class MultiversionSupport extends AerogearBotTest {
 	@Before
 	public void setUp() {
 		createHTMLHybridMobileApplication(AerogearBotTest.CORDOVA_PROJECT_NAME, AerogearBotTest.CORDOVA_APP_NAME,
-				"org.jboss.example.cordova", "cordova-android@5.2.1");
+				"org.jboss.example.cordova");
 
 		assertTrue(new ProjectExplorer().containsProject(AerogearBotTest.CORDOVA_PROJECT_NAME));
 	}
@@ -59,7 +58,7 @@ public class MultiversionSupport extends AerogearBotTest {
 	@Test
 	public void testMultiversionSupport() {
 		// Update index.js to display cordova version to console
-		new ProjectExplorer().getProject(CORDOVA_PROJECT_NAME).getProjectItem("www", "js", "index.js").open();
+		getProjectExplorer().getProject(CORDOVA_PROJECT_NAME).getProjectItem("www", "js", "index.js").open();
 		DefaultEditor jsEditor = new DefaultEditor("index.js");
 		String jsString = new DefaultStyledText().getText();
 		jsString = jsString.replaceFirst("app\\.receivedEvent\\('deviceready'\\);",
@@ -68,22 +67,19 @@ public class MultiversionSupport extends AerogearBotTest {
 		new DefaultStyledText().setText(jsString);
 		jsEditor.save();
 		jsEditor.close();
-		new ProjectExplorer().getProject(CORDOVA_PROJECT_NAME).getProjectItem("config.xml").open();
+		getProjectExplorer().getProject(CORDOVA_PROJECT_NAME).getProjectItem("config.xml").open();
 		// Add device plugin to project
 		ConfigEditor configEditor = new ConfigEditor(CORDOVA_APP_NAME);
 		configEditor.addPlugin("cordova-plugin-device");
-		new ProjectExplorer().selectProjects(CORDOVA_PROJECT_NAME);
-		runTreeItemWithCordovaSim(CORDOVA_PROJECT_NAME);
-		BrowserSimHandler.closeAllRunningInstances();
+		runCordovaSim(CORDOVA_PROJECT_NAME);
+		CordovaSimLauncher.stopCordovasim();
 		ConsoleView console = new ConsoleView();
 		console.open();
 		String consoleEngineVersion = parseConsoleTextForVersion(console.getConsoleText());
 		assertNotNull("Cordova Engine version was not displayed in console", consoleEngineVersion);
 		// change mobile engine version for project
-		ProjectExplorer projectExplorer = new ProjectExplorer();
-		projectExplorer.open();
 		ExplorerItemPropertyDialog projectPropertiesDialog = new ExplorerItemPropertyDialog(
-				projectExplorer.getProject(CORDOVA_PROJECT_NAME));
+				 getProjectExplorer().getProject(CORDOVA_PROJECT_NAME));
 		projectPropertiesDialog.open();
 		EnginePropertyPage enginePropertyPage = new EnginePropertyPage();
 		projectPropertiesDialog.select(enginePropertyPage);
@@ -109,9 +105,8 @@ public class MultiversionSupport extends AerogearBotTest {
 		console = new ConsoleView();
 		console.open();
 		console.clearConsole();
-		new ProjectExplorer().selectProjects(CORDOVA_PROJECT_NAME);
-		runTreeItemWithCordovaSim(CORDOVA_PROJECT_NAME);
-		BrowserSimHandler.closeAllRunningInstances();
+		runCordovaSim(CORDOVA_PROJECT_NAME);
+		CordovaSimLauncher.stopCordovasim();
 		consoleEngineVersion = parseConsoleTextForVersion(new ConsoleView().getConsoleText());
 		assertEquals("Expected mobile engine version was " + newVersion + " but actual is " + consoleEngineVersion,
 				newVersion, consoleEngineVersion);
