@@ -32,6 +32,7 @@ public interface IBrowsersimHandler extends Remote{
 	public boolean isLivereloadEnabled() throws RemoteException;
 	public void setBrowsersimLocation(int x, int y) throws RemoteException;
 	public Point getBrowsersimSize() throws RemoteException;
+	public void getBrowser() throws RemoteException;
 	
 
 }

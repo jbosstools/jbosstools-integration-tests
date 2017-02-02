@@ -18,9 +18,12 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: jar
 Bundle-Vendor: JBoss by Red Hat
-Export-Package: org.jboss.tools.aerogear.reddeer.ui.config,
- org.jboss.tools.aerogear.reddeer.ui.preferences,
- org.jboss.tools.aerogear.reddeer.ui.properties,
- org.jboss.tools.aerogear.reddeer.ui.wizard,
- org.jboss.tools.aerogear.reddeer.ui.wizard.export,
- org.jboss.tools.aerogear.reddeer.cordovasim
+Export-Package: org.jboss.tools.aerogear.reddeer.cordovasim,
+ org.jboss.tools.aerogear.reddeer.feedhenry.ui.cordova.preferences,
+ org.jboss.tools.aerogear.reddeer.feedhenry.ui.cordova.wizards,
+ org.jboss.tools.aerogear.reddeer.thym.android.ui.preferences,
+ org.jboss.tools.aerogear.reddeer.thym.ui.config,
+ org.jboss.tools.aerogear.reddeer.thym.ui.engine,
+ org.jboss.tools.aerogear.reddeer.thym.ui.properties,
+ org.jboss.tools.aerogear.reddeer.thym.ui.wizard.export,
+ org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project

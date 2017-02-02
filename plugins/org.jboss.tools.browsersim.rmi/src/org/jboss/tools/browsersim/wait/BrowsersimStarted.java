@@ -10,13 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.browsersim.wait;
 
-import org.jboss.tools.browsersim.rmi.BrowsersimHandler;
+import org.jboss.tools.browsersim.rmi.IBrowsersimHandler;
 
 public class BrowsersimStarted extends AbstractWaitCondition{
 	
-	private BrowsersimHandler handler;
+	private IBrowsersimHandler handler;
 	
-	public BrowsersimStarted(BrowsersimHandler handler) {
+	public BrowsersimStarted(IBrowsersimHandler handler) {
 		this.handler = handler;
 	}
 
