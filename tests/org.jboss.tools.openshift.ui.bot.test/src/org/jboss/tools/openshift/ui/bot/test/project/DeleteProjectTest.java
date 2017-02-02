@@ -12,80 +12,87 @@ package org.jboss.tools.openshift.ui.bot.test.project;
 
 import static org.junit.Assert.assertFalse;
 
+import org.apache.commons.lang.StringUtils;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v3.OpenShift3NativeProjectUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
-import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
+@RequiredBasicConnection
 public class DeleteProjectTest {
+
+	@InjectRequirement
+	OpenShiftConnectionRequirement connectionReq;
 
 	private boolean projectExists;
 	
+	@Before
+	public void setup(){
+		if (!projectExists) {
+			OpenShift3NativeProjectUtils.getOrCreateProject(DatastoreOS3.TEST_PROJECT, StringUtils.EMPTY, StringUtils.EMPTY,
+					connectionReq.getConnection());
+		}
+	}
+
 	@Test
 	public void testDeleteProjectViaContextMenu() {
 		projectExists = true;
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
-		
+
 		OpenShift3Connection connection = explorer.getOpenShift3Connection();
-		connection.getProject().delete();
-		
+		connection.getProject(DatastoreOS3.TEST_PROJECT).delete();
+
 		projectExists = false;
-		
-		assertFalse("Project is still presented in OpenShift explorer under a connection.", 
-				connection.projectExists(DatastoreOS3.PROJECT1_DISPLAYED_NAME));
+
+		assertFalse("Project is still presented in OpenShift explorer under a connection.",
+				connection.projectExists(DatastoreOS3.TEST_PROJECT));
 	}
-	
+
 	@Test
 	public void testDeleteProjectViaManageProjectsShell() {
 		projectExists = true;
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
-		
+
 		OpenShift3Connection connection = explorer.getOpenShift3Connection();
 		connection.select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.MANAGE_OS_PROJECTS).select();
-		
+
 		new DefaultShell(OpenShiftLabel.Shell.MANAGE_OS_PROJECTS);
-		new DefaultTable().getItem(DatastoreOS3.PROJECT1).select();
+		new DefaultTable().getItem(DatastoreOS3.TEST_PROJECT).select();
 		new PushButton(OpenShiftLabel.Button.REMOVE).click();
-		
+
 		new DefaultShell(OpenShiftLabel.Shell.DELETE_RESOURCE);
 		new OkButton().click();
-		
+
 		projectExists = false;
-		
+
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.DELETE_OS_PROJECT), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		
-		assertFalse("There should not be present project in the table.", 
-				new DefaultTable().containsItem(DatastoreOS3.PROJECT1));
+
+		assertFalse("There should not be present project in the table.",
+				new DefaultTable().containsItem(DatastoreOS3.TEST_PROJECT));
 		new OkButton().click();
-		
+
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.MANAGE_OS_PROJECTS), TimePeriod.LONG);
-		
-		assertFalse("Project is still presented in OpenShift explorer under a connection.", 
-				connection.projectExists(DatastoreOS3.PROJECT1_DISPLAYED_NAME));
-	}
-	
-	@After
-	public void recreateProject() {
-		if (!projectExists) {
-			OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-			explorer.reopen();
-			
-			explorer.getOpenShift3Connection().createNewProject();
-		}
+
+		assertFalse("Project is still presented in OpenShift explorer under a connection.",
+				connection.projectExists(DatastoreOS3.TEST_PROJECT));
 	}
 }
