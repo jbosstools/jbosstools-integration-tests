@@ -9,7 +9,7 @@ Require-Bundle: org.junit,
  org.eclipse.ui.workbench,
  org.jboss.tools.openshift.reddeer;bundle-version="[3.3.2, 3.4.0)",
  org.jboss.tools.docker.reddeer,
- org.jboss.tools.cdk.reddeer,
+ org.jboss.tools.cdk.reddeer;bundle-version="[3.3.2,3.4.0)",
  org.jboss.tools.openshift.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: jar
