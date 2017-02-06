@@ -19,6 +19,7 @@ import java.util.List;
 import org.hamcrest.core.StringContains;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.platform.RunningPlatform;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -26,8 +27,12 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
+import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.junit.screenshot.CaptureScreenshotException;
+import org.jboss.reddeer.junit.screenshot.ScreenshotCapturer;
+import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
@@ -61,6 +66,8 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class DeployDockerImageTest {
 	
+	private static final Logger LOGGER = new Logger(DeployDockerImageTest.class);
+	
 	@InjectRequirement
 	private static OpenShiftConnectionRequirement openshiftConnectionRequirement;
 	
@@ -76,8 +83,40 @@ public class DeployDockerImageTest {
 	@BeforeClass
 	public static void setUp() {
 		prepareDockerConnection();
-		pullHelloImageIfDoesNotExist();
+		try {
+			pullHelloImageIfDoesNotExist();
+		} catch (JFaceLayerException ex) {
+			String newExceptionMessage = debugDockerImageTest();
+			throw new RuntimeException(newExceptionMessage, ex);
+		}
 		createProjects();
+	}
+
+	/**
+	 * Auxiliary method for helping with debugging JBIDE-23841.
+	 * This method maximizes Docker explorer view, captures screenshot and restores the view back.
+	 * It also gathers some info and returns it.
+	 * 
+	 */
+	
+	private static String debugDockerImageTest() {
+		String message = "";
+		DockerExplorerView dockerExplorerView = new DockerExplorerView();
+		dockerExplorerView.maximize();
+		try {
+			ScreenshotCapturer.getInstance().captureScreenshot("DeployDockerImageTest#setup");
+		} catch (CaptureScreenshotException e) {
+			//Capturing screenshot was not successfull. No big deal.
+			LOGGER.debug("Capturing screenshot was not succesfull.");
+		}
+		dockerExplorerView.restore();
+		List<String> names = dockerExplorerView.getDockerConnectionNames();
+		for (String name : names) {
+			DockerConnection connection = dockerExplorerView.getDockerConnectionByName(name);
+			TreeItem treeItem = connection.getTreeItem();
+			message += "TreeItem for connection \"" + name + "\": " + treeItem.getText()+"\n";
+		}
+		return message;
 	}
 	
 	private static void prepareDockerConnection() {
