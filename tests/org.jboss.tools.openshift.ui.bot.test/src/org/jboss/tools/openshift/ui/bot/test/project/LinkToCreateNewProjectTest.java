@@ -31,8 +31,8 @@ import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.junit.After;
 import org.junit.Test;
 
-@CleanConnection
 @RequiredBasicConnection
+@CleanConnection
 public class LinkToCreateNewProjectTest {
 	
 	private String projectName = "testproject";

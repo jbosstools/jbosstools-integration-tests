@@ -13,12 +13,16 @@ package org.jboss.tools.openshift.ui.bot.test.project;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement.RequiredProject;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftProject;
 import org.junit.Test;
 
+@RequiredBasicConnection
+@RequiredProject
 public class ProjectPropertiesTest {
 
 	@Test
@@ -27,7 +31,7 @@ public class ProjectPropertiesTest {
 		explorer.open();
 		
 		OpenShift3Connection connection = explorer.getOpenShift3Connection();
-		OpenShiftProject project = connection.getProject();
+		OpenShiftProject project = connection.getProject(DatastoreOS3.TEST_PROJECT);
 		project.select();
 		project.openProperties();
 		project.selectTabbedProperty("Details");
@@ -38,12 +42,12 @@ public class ProjectPropertiesTest {
 		String namespace = propertiesView.getProperty("Basic", "Namespace").getPropertyValue();
 		
 		assertTrue("Property displayed name is not correct. Property is " + displayedName +
-				" but was expected " + DatastoreOS3.PROJECT1_DISPLAYED_NAME, 
-				displayedName.equals(DatastoreOS3.PROJECT1_DISPLAYED_NAME)); 
+				" but was expected " + DatastoreOS3.TEST_PROJECT, 
+				displayedName.equals(DatastoreOS3.TEST_PROJECT)); 
 		assertTrue("Property name is not correct. Property is " + name
-				 + " but was expected " + DatastoreOS3.PROJECT1, name.equals(DatastoreOS3.PROJECT1));
+				 + " but was expected " + DatastoreOS3.TEST_PROJECT, name.equals(DatastoreOS3.TEST_PROJECT));
 		assertTrue("Property namespace is not correct. Property is " + namespace 
-				 + " but was expected " + DatastoreOS3.PROJECT1, namespace.equals(DatastoreOS3.PROJECT1));
+				 + " but was expected " + DatastoreOS3.TEST_PROJECT, namespace.equals(DatastoreOS3.TEST_PROJECT));
 	}
 	
 }
