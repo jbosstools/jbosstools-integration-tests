@@ -10,8 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.openshift.reddeer.utils.CleanUpOS3;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
+import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftProject;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.CreateServerAdapterTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.PublishChangesTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.ServerAdapterWizardHandlingTest;
@@ -46,6 +52,7 @@ import org.jboss.tools.openshift.ui.bot.test.project.LinkToCreateNewProjectTest;
 import org.jboss.tools.openshift.ui.bot.test.project.ProjectNameValidationTest;
 import org.jboss.tools.openshift.ui.bot.test.project.ProjectPropertiesTest;
 import org.jboss.tools.openshift.ui.bot.test.project.ResourcesTest;
+import org.junit.AfterClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -104,11 +111,31 @@ import org.junit.runners.Suite.SuiteClasses;
 	// Server adapter
 	ServerAdapterWizardHandlingTest.class,
 	CreateServerAdapterTest.class,
-	PublishChangesTest.class,
-	
-	// Clean up
-	CleanUpOS3.class
+	PublishChangesTest.class
 })
 public class OpenShift3SmokeBotTests {
+	
+	@AfterClass
+	public static void cleanUp() {
+		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
+		explorer.open();
+		OpenShift3Connection connection = explorer.getOpenShift3Connection();
 
+		if (connection != null) {
+			for (OpenShiftProject project : connection.getAllProjects()) {
+				safeDeleteProject(project, connection);
+			}
+
+			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		}
+	}
+
+	private static void safeDeleteProject(OpenShiftProject project, OpenShift3Connection connection) {
+		try {
+			connection.refresh();
+			project.delete();
+		} catch (RedDeerException e) {
+			// swallow intentionally
+		}
+	}
 }
