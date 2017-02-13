@@ -51,12 +51,14 @@ public class PropertiesDialog {
 	 * Confirms and closes the dialog.
 	 */
 	public void finish() {
+		new DefaultShell(IDELabel.Shell.PROPERTIES_FOR + " " + projectName);
 		new PushButton(IDELabel.Button.OK).click();
 		new WaitWhile(new ShellWithTextIsAvailable(IDELabel.Shell.PROPERTIES_FOR + " " + projectName), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning());
 	}
 	
 	public void finish(TimePeriod timeout) {
+        new DefaultShell(IDELabel.Shell.PROPERTIES_FOR + " " + projectName);
 		new PushButton(IDELabel.Button.OK).click();
 		new WaitWhile(new ShellWithTextIsAvailable(IDELabel.Shell.PROPERTIES_FOR + " " + projectName), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), timeout);

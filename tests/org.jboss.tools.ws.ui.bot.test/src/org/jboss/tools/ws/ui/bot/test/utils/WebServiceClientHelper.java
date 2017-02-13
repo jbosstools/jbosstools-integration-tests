@@ -62,6 +62,7 @@ public class WebServiceClientHelper {
 		if (pkg != null && pkg.trim().length()>0) {
 			wizard.next();
 			new WaitWhile(new ShellWithTextIsAvailable("Progress Information"));
+			new DefaultShell("Web Service Client");
 			page.setPackageName(pkg);
 		}
 
