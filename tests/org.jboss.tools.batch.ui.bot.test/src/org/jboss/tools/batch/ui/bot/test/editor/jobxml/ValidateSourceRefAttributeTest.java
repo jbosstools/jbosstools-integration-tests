@@ -104,9 +104,13 @@ public class ValidateSourceRefAttributeTest extends AbstractJobXMLSourceTest {
 		referenceCheck(ANALYZER_REF);		
 	}
 	
-	@Test
+	@Test(expected=CustomAssertionErrorJBIDE23656.class)
 	public void testStepListener() {
-		referenceCheck(STEP_LISTENER_REF);
-		emptyReferenceCheck(STEP_LISTENER_REF);
+		try {
+			referenceCheck(STEP_LISTENER_REF);
+			emptyReferenceCheck(STEP_LISTENER_REF);
+		} catch (AssertionError e) {
+			throw new CustomAssertionErrorJBIDE23656();
+		}
 	}
 }
