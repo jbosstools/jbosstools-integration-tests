@@ -14,6 +14,7 @@ package org.jboss.tools.jst.ui.bot.test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,6 +61,10 @@ import org.jboss.tools.jst.reddeer.tern.ui.TernModulesPropertyPage;
 import org.jboss.tools.jst.reddeer.wst.jsdt.ui.wizard.NewJSFileWizardDialog;
 import org.jboss.tools.jst.reddeer.wst.jsdt.ui.wizard.NewJSFileWizardPage;
 import org.junit.runner.RunWith;
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchesListener;
+import org.eclipse.debug.core.model.IProcess;
 
 /**
  * TestBase Class for JST tests
@@ -291,5 +296,42 @@ public class JSTTestBase {
 			}
 		}
 		return var;
+	}
+
+	public void terminatePrcs(IProcess[] prcs){
+		
+		for(IProcess p : prcs){
+			try {
+				p.terminate();
+			} catch (DebugException e) {
+				fail(e.getMessage());
+			}
+			assertTrue("Proces:" + p.getLabel() + " not terminated!", p.isTerminated());
+		}
+	}
+	
+	public class NodeJSLaunchListener implements ILaunchesListener{
+		
+		private ILaunch launch;
+		
+		public ILaunch getNodeJSLaunch(){
+			return launch;
+		}
+
+		@Override
+		public void launchesAdded(ILaunch[] arg0) {
+			this.launch=arg0[0];
+		}
+
+		@Override
+		public void launchesChanged(ILaunch[] arg0) {
+			
+		}
+
+		@Override
+		public void launchesRemoved(ILaunch[] arg0) {
+			
+		}
+
 	}
 }
