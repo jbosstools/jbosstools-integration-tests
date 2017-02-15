@@ -37,7 +37,7 @@ import org.junit.Test;
 public class DeleteProjectTest {
 
 	@InjectRequirement
-	OpenShiftConnectionRequirement connectionReq;
+	private OpenShiftConnectionRequirement connectionReq;
 
 	private boolean projectExists;
 	

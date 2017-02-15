@@ -43,6 +43,7 @@ import org.jboss.tools.openshift.reddeer.requirement.CleanOpenShiftConnectionReq
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.junit.After;
@@ -83,6 +84,7 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 		}
 		
 		new NextButton().click();
+		TestUtils.acceptSSLCertificate();		
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
 

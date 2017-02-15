@@ -13,6 +13,7 @@ package org.jboss.tools.openshift.ui.bot.test.application.v3.basic;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.apache.commons.lang.StringUtils;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -20,6 +21,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.condition.TableContainsItem;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
@@ -33,12 +35,17 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v3.OpenShift3NativeProjectUtils;
 import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+@RequiredBasicConnection
 public class TemplateParametersTest {
 
 	public static final String APPLICATION_DOMAIN = "APPLICATION_DOMAIN";
@@ -59,8 +66,13 @@ public class TemplateParametersTest {
 	public static final String PERSONAL_GIT_REPO_URI = "https://github.com/mlabuda/jboss-eap-quickstarts";
 	public static final String SECRET_VALUE = "(generated)";
 	
+	@InjectRequirement
+	private OpenShiftConnectionRequirement connectionReq;
+	
 	@Before
 	public void openTemplateParametersWizardPage() {
+		OpenShift3NativeProjectUtils.getOrCreateProject(DatastoreOS3.PROJECT1,
+				DatastoreOS3.PROJECT1_DISPLAYED_NAME, StringUtils.EMPTY, connectionReq.getConnection());
 		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
 		new DefaultTree().selectItems(new DefaultTreeItem(OpenShiftLabel.Others.EAP_TEMPLATE));
 		
