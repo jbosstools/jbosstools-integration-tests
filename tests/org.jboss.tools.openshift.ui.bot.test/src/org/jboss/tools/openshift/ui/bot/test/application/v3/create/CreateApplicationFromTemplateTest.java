@@ -17,11 +17,14 @@ import java.io.File;
 import java.util.List;
 
 import org.hamcrest.Matcher;
+import org.hamcrest.core.StringStartsWith;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.condition.ProjectExists;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
@@ -29,6 +32,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -48,6 +52,7 @@ import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement;
+import org.jboss.tools.openshift.reddeer.requirement.CleanOpenShiftConnectionRequirement.CleanConnection;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement.RequiredProject;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
@@ -64,6 +69,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 @RequiredBasicConnection
+@CleanConnection
 @RequiredProject
 public class CreateApplicationFromTemplateTest {
 
@@ -249,6 +255,11 @@ public class CreateApplicationFromTemplateTest {
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION));
 
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
+		try {
+			new CheckBox(new WithTextMatcher(new StringStartsWith("Reuse"))).toggle(true);
+		} catch (CoreLayerException ex) {
+			// git directory is not in use 
+		}
 		new FinishButton().click();
 
 		ProjectExplorer projectExplorer = new ProjectExplorer();
@@ -309,20 +320,10 @@ public class CreateApplicationFromTemplateTest {
 	}
 
 	private void cleanup(OpenShiftProject project) {
-		List<OpenShiftResource> services = project.getOpenShiftResources(Resource.SERVICE);
-		services.forEach(resource -> resource.delete());
-
-		List<OpenShiftResource> routes = project.getOpenShiftResources(Resource.ROUTE);
-		routes.forEach(route -> route.delete());
-
-		List<OpenShiftResource> imageStreams = project.getOpenShiftResources(Resource.IMAGE_STREAM);
-		imageStreams.forEach(imageStream -> imageStream.delete());
-
-		List<OpenShiftResource> buildConfigs = project.getOpenShiftResources(Resource.BUILD_CONFIG);
-		buildConfigs.forEach(buildConfig -> buildConfig.delete());
-
-		List<OpenShiftResource> deploymentConfigs = project.getOpenShiftResources(Resource.DEPLOYMENT_CONFIG);
-		deploymentConfigs.forEach(deploymentConfig -> deploymentConfig.delete());
+		for (Resource resourceType : Resource.values()) {
+			List<OpenShiftResource> resources = project.getOpenShiftResources(resourceType);
+			resources.forEach(resource -> resource.delete());
+		}
 	}
 
 	@AfterClass

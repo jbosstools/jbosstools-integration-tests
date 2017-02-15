@@ -15,6 +15,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -22,7 +23,7 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ProjectExists;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.swt.condition.ShellIsAvailable;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
@@ -32,13 +33,14 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.tools.openshift.reddeer.condition.OpenShiftProjectExists;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
+import org.jboss.tools.openshift.reddeer.utils.v3.OpenShift3NativeProjectUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftProject;
@@ -57,16 +59,16 @@ public class CreateApplicationOnBuilderImageTest {
 	private String projectName = "jboss-kitchensink";
 	private String applicationName;
 
+	@InjectRequirement
+	private OpenShiftConnectionRequirement connectionReq;
+	
 	@Before
 	public void setUp() {
+		OpenShift3NativeProjectUtils.getOrCreateProject(DatastoreOS3.PROJECT1,
+				DatastoreOS3.PROJECT1_DISPLAYED_NAME, StringUtils.EMPTY, connectionReq.getConnection());
 		TestUtils.cleanupGitFolder(gitFolder);
 		if (new ProjectExists(projectName).test()) {
 			new ProjectExplorer().getProject(projectName).delete(true);
-		}
-		// If project does not exists, e.g. something went south in recreation
-		// earlier, create it
-		if (!new OpenShiftProjectExists(DatastoreOS3.PROJECT1_DISPLAYED_NAME).test()) {
-			new OpenShiftExplorerView().getOpenShift3Connection().createNewProject();
 		}
 	}
 
@@ -179,8 +181,6 @@ public class CreateApplicationOnBuilderImageTest {
 
 		OpenShift3Connection connection = explorer.getOpenShift3Connection();
 		connection.getProject().delete();
-
-		connection.createNewProject();
 
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		if (projectExplorer.containsProject(projectName)) {

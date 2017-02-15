@@ -19,6 +19,7 @@ import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftProjectExists;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement.OCBinary;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
@@ -31,6 +32,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 @OCBinary
+@RequiredBasicConnection
 public class AbstractCreateApplicationTest {
 
 	public static String GIT_FOLDER = "jboss-eap-quickstarts";
@@ -46,7 +48,7 @@ public class AbstractCreateApplicationTest {
 	public static String SOURCE_REPO_URL = "https://github.com/mlabuda/jboss-eap-quickstarts";
 	
 	protected static TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
-	
+
 	@BeforeClass
 	public static void setUp() {
 		TestUtils.cleanupGitFolder(GIT_FOLDER);
