@@ -29,7 +29,7 @@ import org.junit.Test;
 public class ResourcesTest {
 
 	@InjectRequirement
-	OpenShiftConnectionRequirement connectionReq;
+	private OpenShiftConnectionRequirement connectionReq;
 
 	@Test
 	public void testResourcesExistence() {

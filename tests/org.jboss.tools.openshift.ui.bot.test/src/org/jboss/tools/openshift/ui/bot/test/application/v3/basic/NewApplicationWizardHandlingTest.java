@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
@@ -26,6 +27,7 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.core.util.Display;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
@@ -37,17 +39,30 @@ import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement;
+import org.jboss.tools.openshift.reddeer.requirement.CleanOpenShiftConnectionRequirement.CleanConnection;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.v3.OpenShift3NativeProjectUtils;
 import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+@RequiredBasicConnection
+@CleanConnection
 public class NewApplicationWizardHandlingTest {
 
+	@InjectRequirement
+	private OpenShiftConnectionRequirement connectionReq;
+	
 	@Before
 	public void openNewApplicationWizard() {
+		OpenShift3NativeProjectUtils.getOrCreateProject(DatastoreOS3.PROJECT1,
+				DatastoreOS3.PROJECT1_DISPLAYED_NAME, StringUtils.EMPTY, connectionReq.getConnection());
+		OpenShift3NativeProjectUtils.getOrCreateProject(DatastoreOS3.PROJECT2,
+				StringUtils.EMPTY, StringUtils.EMPTY, connectionReq.getConnection());
 		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
 	}
 	
@@ -84,7 +99,7 @@ public class NewApplicationWizardHandlingTest {
 	public void testSwitchProject() {
 		List<String> projects = new ArrayList<String>();
 		String project1Text = DatastoreOS3.PROJECT1_DISPLAYED_NAME + " (" + DatastoreOS3.PROJECT1 + ")";
-		String project2Text = DatastoreOS3.PROJECT2; 
+		String project2Text = DatastoreOS3.PROJECT2 + " (" + DatastoreOS3.PROJECT2 + ")"; 
 		projects.add(project1Text);
 		projects.add(project2Text);
 		
