@@ -40,11 +40,12 @@ public class DeleteProjectTest {
 	private OpenShiftConnectionRequirement connectionReq;
 
 	private boolean projectExists;
+	private static final String PROJECT_NAME = DatastoreOS3.TEST_PROJECT + "-delete";
 	
 	@Before
 	public void setup(){
 		if (!projectExists) {
-			OpenShift3NativeProjectUtils.getOrCreateProject(DatastoreOS3.TEST_PROJECT, StringUtils.EMPTY, StringUtils.EMPTY,
+			OpenShift3NativeProjectUtils.getOrCreateProject(PROJECT_NAME, StringUtils.EMPTY, StringUtils.EMPTY,
 					connectionReq.getConnection());
 		}
 	}
@@ -56,12 +57,12 @@ public class DeleteProjectTest {
 		explorer.open();
 
 		OpenShift3Connection connection = explorer.getOpenShift3Connection();
-		connection.getProject(DatastoreOS3.TEST_PROJECT).delete();
+		connection.getProject(PROJECT_NAME).delete();
 
 		projectExists = false;
 
 		assertFalse("Project is still presented in OpenShift explorer under a connection.",
-				connection.projectExists(DatastoreOS3.TEST_PROJECT));
+				connection.projectExists(PROJECT_NAME));
 	}
 
 	@Test
@@ -75,7 +76,7 @@ public class DeleteProjectTest {
 		new ContextMenu(OpenShiftLabel.ContextMenu.MANAGE_OS_PROJECTS).select();
 
 		new DefaultShell(OpenShiftLabel.Shell.MANAGE_OS_PROJECTS);
-		new DefaultTable().getItem(DatastoreOS3.TEST_PROJECT).select();
+		new DefaultTable().getItem(PROJECT_NAME).select();
 		new PushButton(OpenShiftLabel.Button.REMOVE).click();
 
 		new DefaultShell(OpenShiftLabel.Shell.DELETE_RESOURCE);
@@ -87,12 +88,12 @@ public class DeleteProjectTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
 		assertFalse("There should not be present project in the table.",
-				new DefaultTable().containsItem(DatastoreOS3.TEST_PROJECT));
+				new DefaultTable().containsItem(PROJECT_NAME));
 		new OkButton().click();
 
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.MANAGE_OS_PROJECTS), TimePeriod.LONG);
 
 		assertFalse("Project is still presented in OpenShift explorer under a connection.",
-				connection.projectExists(DatastoreOS3.TEST_PROJECT));
+				connection.projectExists(PROJECT_NAME));
 	}
 }
