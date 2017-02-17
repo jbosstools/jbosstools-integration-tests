@@ -12,7 +12,9 @@ package org.jboss.tools.openshift.ui.bot.test.application.v3.advanced;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -30,7 +32,9 @@ import org.jboss.tools.openshift.reddeer.condition.ApplicationPodIsRunning;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
+import org.jboss.tools.openshift.reddeer.requirement.CleanOpenShiftConnectionRequirement.CleanConnection;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement.OCBinary;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
@@ -40,6 +44,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 @OCBinary
+@RequiredBasicConnection
+@CleanConnection
 public class PortForwardingTest extends AbstractCreateApplicationTest {
 
 	@BeforeClass
@@ -60,6 +66,7 @@ public class PortForwardingTest extends AbstractCreateApplicationTest {
 		
 		PushButton startAllButton = new PushButton(OpenShiftLabel.Button.START_ALL);
 		PushButton stopAllButton = new PushButton(OpenShiftLabel.Button.STOP_ALL);
+		OkButton okButton = new OkButton();
 		
 		assertTrue("Button Start All should be enabled at this point.", startAllButton.isEnabled());
 		assertFalse("Button Stop All should be disabled at this point.", stopAllButton.isEnabled());
@@ -67,18 +74,27 @@ public class PortForwardingTest extends AbstractCreateApplicationTest {
 		startAllButton.click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitUntil(new WidgetIsEnabled(new OkButton()));
-		
-		assertFalse("Button Start All should be disabled at this point.", startAllButton.isEnabled());
+		new WaitUntil(new WidgetIsEnabled(okButton));
+
+		try {
+			new WaitWhile(new WidgetIsEnabled(startAllButton), TimePeriod.getCustom(5));
+		} catch (WaitTimeoutExpiredException ex) {
+			fail("Button Start All should be disabled at this point.");
+		}
 		assertTrue("Button Stop All should be enabled at this point.", stopAllButton.isEnabled());
 		
 		stopAllButton.click();
 		
+		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new DefaultShell(OpenShiftLabel.Shell.APPLICATION_PORT_FORWARDING);
-		new WaitUntil(new WidgetIsEnabled(new OkButton()));
-		
-		assertTrue("Button Start All should be enabled at this point.", startAllButton.isEnabled());
+		new WaitUntil(new WidgetIsEnabled(okButton));
+
+		try {
+			new WaitUntil(new WidgetIsEnabled(startAllButton), TimePeriod.getCustom(5));
+		} catch (WaitTimeoutExpiredException ex) {
+			fail("Button Start All should be enabled at this point.");
+		}
 		assertFalse("Button Stop All should be disabled at this point.", stopAllButton.isEnabled());
 	}
 	

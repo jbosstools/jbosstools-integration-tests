@@ -12,6 +12,9 @@ package org.jboss.tools.openshift.ui.bot.test.application.v3.adapter;
 
 import static org.junit.Assert.assertTrue;
 
+import org.hamcrest.core.Is;
+import org.hamcrest.core.StringContains;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -37,6 +40,7 @@ import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.exception.OpenShiftToolsException;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter;
 import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter.Version;
@@ -46,6 +50,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class CreateServerAdapterTest extends AbstractCreateApplicationTest {
+	
+	private static final String JOB_NAME = "Refreshing server adapter list";
 
 	@BeforeClass
 	public static void waitTillApplicationIsRunning() {
@@ -117,7 +123,18 @@ public class CreateServerAdapterTest extends AbstractCreateApplicationTest {
 		new FinishButton().click();
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.ADAPTER));
-		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG);
+		
+		boolean jobExists = false;
+		try {
+			new WaitUntil(new JobIsRunning(new StringContains(JOB_NAME)), TimePeriod.getCustom(5));
+			jobExists = true;
+		} catch (WaitTimeoutExpiredException e) {
+			// job is not running, do nothing
+		}
+		
+		if (jobExists) {
+			new WaitUntil(new JobIsKilled(JOB_NAME), TimePeriod.LONG);
+		}
 		
 		assertTrue("OpenShift 3 server adapter was not created.", 
 				new ServerAdapterExists(Version.OPENSHIFT3, BUILD_CONFIG).test());
@@ -128,6 +145,7 @@ public class CreateServerAdapterTest extends AbstractCreateApplicationTest {
 		new WaitUntil(new WidgetIsEnabled(new NextButton()));
 		
 		new NextButton().click();
+		TestUtils.acceptSSLCertificate();
 
 		new WaitUntil(new WidgetIsEnabled(new BackButton()));
 	}

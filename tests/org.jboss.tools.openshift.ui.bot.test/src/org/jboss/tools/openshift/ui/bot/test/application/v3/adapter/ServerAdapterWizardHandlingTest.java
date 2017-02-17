@@ -45,6 +45,7 @@ import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
+import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.create.AbstractCreateApplicationTest;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -185,6 +186,7 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 	
 	private void next() {
 		new NextButton().click();
+		TestUtils.acceptSSLCertificate();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new WaitUntil(new WidgetIsEnabled(new BackButton()));
