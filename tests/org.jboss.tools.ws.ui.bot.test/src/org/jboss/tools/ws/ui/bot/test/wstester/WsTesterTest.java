@@ -311,7 +311,7 @@ public class WsTesterTest {
 		LOGGER.log(Level.FINE, "REST response: {0}", rsp);
 		LOGGER.log(Level.FINE, "Response headers: {0}", Arrays.asList(rspHeaders));
 		Assert.assertTrue(rsp.trim().length() > 0);
-		checkResponse(rsp, "Invalid API key");
+		checkResponse(rsp, "Invalid authentication informations");
 	}
 
 	private String readResource(InputStream is) {

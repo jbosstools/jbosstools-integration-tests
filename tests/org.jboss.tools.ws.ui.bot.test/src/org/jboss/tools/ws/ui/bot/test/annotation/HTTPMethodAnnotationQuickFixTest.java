@@ -10,6 +10,7 @@ import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoB
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.common.reddeer.requirements.JavaFoldingRequirement.JavaFolding;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
@@ -24,6 +25,7 @@ import org.junit.runner.RunWith;
 @JBossServer(state=ServerReqState.STOPPED)
 @OpenPerspective(JavaEEPerspective.class)
 @AutoBuilding(value = false, cleanup = true)
+@JavaFolding(false)
 public class HTTPMethodAnnotationQuickFixTest extends RESTfulTestBase {
 
 	@Override

@@ -263,6 +263,7 @@ public class ProjectHelper {
 		ExternalProjectImportWizardDialog importDialog = new ExternalProjectImportWizardDialog();
 		importDialog.open();
 		WizardProjectsImportPage importPage = new WizardProjectsImportPage();
+		new WizardProjectsImportPage();
 		importPage.setRootDirectory(projectLocation);
 		assertFalse("There is no project to import", importPage.getProjects().isEmpty());
 		importPage.selectAllProjects();

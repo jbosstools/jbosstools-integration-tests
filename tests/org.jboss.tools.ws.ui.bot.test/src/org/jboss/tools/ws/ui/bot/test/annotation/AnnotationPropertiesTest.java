@@ -24,6 +24,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.common.reddeer.requirements.JavaFoldingRequirement.JavaFolding;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.reddeer.ui.views.AnnotationPropertiesView;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
@@ -41,6 +42,7 @@ import org.junit.runner.RunWith;
  * 
  */
 @RunWith(RedDeerSuite.class)
+@JavaFolding(false)
 public class AnnotationPropertiesTest extends RESTfulTestBase {
 
 	@Override
