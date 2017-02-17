@@ -71,7 +71,7 @@ public class DeploymentHelper {
 		}
 		LOGGER.info("done after: " + (System.currentTimeMillis() - t) + "ms.");
 		assertEquals("Service was not sucessfully deployed, WSDL '" + wsdlURL
-				+ "' was not found", HttpURLConnection.HTTP_OK, rsp);
+				+ "' was not found. Code " + rsp, HttpURLConnection.HTTP_OK, rsp);
 	}
 	
 	/**
