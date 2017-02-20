@@ -67,6 +67,7 @@ public class PortForwardingTest extends AbstractCreateApplicationTest {
 		startAllButton.click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new DefaultShell(OpenShiftLabel.Shell.APPLICATION_PORT_FORWARDING);
 		new WaitUntil(new WidgetIsEnabled(new OkButton()));
 		
 		assertFalse("Button Start All should be disabled at this point.", startAllButton.isEnabled());

@@ -48,6 +48,7 @@ import org.jboss.tools.openshift.reddeer.utils.v3.OpenShift3NativeProjectUtils;
 import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 @RequiredBasicConnection
@@ -56,6 +57,12 @@ public class NewApplicationWizardHandlingTest {
 
 	@InjectRequirement
 	private OpenShiftConnectionRequirement connectionReq;
+	
+	@BeforeClass
+	public static void updateProjectName() {
+		DatastoreOS3.generateProjectName();
+		DatastoreOS3.generateProject2Name();
+	}
 	
 	@Before
 	public void openNewApplicationWizard() {
