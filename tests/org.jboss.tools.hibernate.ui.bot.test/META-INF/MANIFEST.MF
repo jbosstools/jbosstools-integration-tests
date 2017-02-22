@@ -12,7 +12,9 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.common.ui,
  org.eclipse.datatools.connectivity,
  org.jboss.tools.hibernate.reddeer;bundle-version="[4.4.2,4.5.0)",
- org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)"
+ org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
+ org.jboss.reddeer.eclipse,
+ org.jboss.tools.common.reddeer
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: jar

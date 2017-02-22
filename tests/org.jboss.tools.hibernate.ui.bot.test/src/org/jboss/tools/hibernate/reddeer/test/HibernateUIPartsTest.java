@@ -1,15 +1,24 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.*;
 
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
-import org.jboss.tools.hibernate.reddeer.console.HibernateConfigurationView;
+import org.jboss.tools.hibernate.reddeer.console.views.DynamicSQLPreviewView;
+import org.jboss.tools.hibernate.reddeer.console.views.KnownConfigurationsView;
+import org.jboss.tools.hibernate.reddeer.console.views.QueryPageTabView;
+import org.jboss.tools.hibernate.reddeer.console.views.QueryParametersView;
 import org.jboss.tools.hibernate.reddeer.perspective.HibernatePerspective;
-import org.jboss.tools.hibernate.reddeer.view.DynamicSQLPreviewView;
-import org.jboss.tools.hibernate.reddeer.view.QueryPageTabView;
-import org.jboss.tools.hibernate.reddeer.view.QueryParametersView;
 import org.junit.After;
 import org.junit.Test;
 
@@ -19,9 +28,6 @@ import org.junit.Test;
  *
  */
 public class HibernateUIPartsTest {
-
-	
-	private static final Logger log = Logger.getLogger(HibernateUIPartsTest.class);
 	
 	@After
 	public void after() {
@@ -30,7 +36,7 @@ public class HibernateUIPartsTest {
 		p.reset();
 	}
 	
-	@Test
+	
 	/**
 	 * Tests Hibernate perspective
 	 * Tests Hibernate views
@@ -39,14 +45,11 @@ public class HibernateUIPartsTest {
 	 * - Hibernate Query Result
 	 * - Query Parameters 
 	 */
+	@Test
 	public void testHibernateViews() {
-		log.step("Check Hibernate Console Configurations view");
-		checkView(new HibernateConfigurationView());
-		log.step("Check Dynamic SQL Preview View");
+		checkView(new KnownConfigurationsView());
 		checkView(new DynamicSQLPreviewView());
-		log.step("Check Query Page Tab View");
 		checkView(new QueryPageTabView());
-		log.step("Check Query Parameters View");
 		checkView(new QueryParametersView());
 	}
 	
@@ -55,7 +58,6 @@ public class HibernateUIPartsTest {
 	 */
 	@Test
 	public void testHibernatePerspective() {
-		log.step("Check Hibernate perspective");
 		HibernatePerspective p = new HibernatePerspective();
 		p.open();
 		p.reset();
@@ -68,17 +70,11 @@ public class HibernateUIPartsTest {
 	 * @param given view
 	 */
 	private void checkView(WorkbenchView view) {
-		log.step("Open view");
 		view.open();
-		log.step("Maximize view");
 		view.maximize();
-		log.step("Restore view");
 		view.restore();
-		log.step("Minimize view");
 		view.minimize();
-		log.step("Restore view");
 		view.restore();
-		log.step("Close view");
 		view.close();		
 	}
 	
