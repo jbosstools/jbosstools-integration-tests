@@ -1,14 +1,24 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.test;
 
 import java.lang.annotation.Annotation;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement;
@@ -19,17 +29,18 @@ import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.tools.hibernate.reddeer.console.KnownConfigurationsView;
-import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
-import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
-import org.jboss.tools.hibernate.reddeer.factory.HibernateToolsFactory;
-import org.jboss.tools.hibernate.reddeer.factory.ProjectConfigurationFactory;
-import org.jboss.tools.hibernate.reddeer.wizard.ConsoleConfigurationCreationWizardPage;
-import org.jboss.tools.hibernate.reddeer.wizard.HibernateConsoleConnectionType;
-import org.jboss.tools.hibernate.reddeer.wizard.HibernateConsoleType;
+import org.jboss.tools.hibernate.reddeer.console.EditConfigurationMainPage;
+import org.jboss.tools.hibernate.reddeer.console.EditConfigurationShell;
+import org.jboss.tools.hibernate.reddeer.console.views.KnownConfigurationsView;
+import org.jboss.tools.hibernate.ui.bot.test.factory.ConnectionProfileFactory;
+import org.jboss.tools.hibernate.ui.bot.test.factory.DriverDefinitionFactory;
+import org.jboss.tools.hibernate.ui.bot.test.factory.ProjectConfigurationFactory;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
+import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
 
 /**
@@ -37,15 +48,29 @@ import org.junit.runner.RunWith;
  * @author Jiri Peterka
  */
 @RunWith(RedDeerSuite.class)
+@UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
 @Database(name="testdb")
 public class MappingDiagramTest extends HibernateRedDeerTest {
 
-	private String prj; 
-	private String hbVersion;
-	private String jpaVersion;
-	private Map<String,String> libraryPathMap;
+	@Parameter
+	public String prj; 
+	@Parameter(1)
+	public String hbVersion;
+	@Parameter(2)
+	public String jpaVersion;
 	
-	private static final Logger log = Logger.getLogger(MappingDiagramTest.class);
+	@Parameters(name="hibernate {1}")
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+        		{"mvn-hibernate35-ent","3.5","2.0"},
+        		{"mvn-hibernate36-ent","3.6","2.0"},
+        		{"mvn-hibernate40-ent","4.0","2.0"},
+        		{"mvn-hibernate43-ent","4.3","2.1"},
+        		{"mvn-hibernate50-ent","5.0","2.1"},
+        		{"mvn-hibernate51-ent","5.1","2.1"},
+        		{"mvn-hibernate52-ent","5.2","2.1"},
+           });
+    }
 	
     @InjectRequirement    
     private DatabaseRequirement dbRequirement; 
@@ -58,135 +83,31 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
   	}
 
 	@Test
-    public void testMappingDiagram35() {
-    	setParams("mvn-hibernate35-ent","3.5","2.0", null);
-    	testMappingDiagramMaven();
-    }
-
-    @Test
-    public void testMappingDiagram36() {
-    	setParams("mvn-hibernate36-ent","3.6","2.0", null);
-    	testMappingDiagramMaven();
-    }
-    
-    @Test
-    public void testMappingDiagram40() {
-    	setParams("mvn-hibernate40-ent","4.0","2.0", null);
-    	testMappingDiagramMaven();
-    }
-
-    @Test
-    public void testMappingDiagram43() {
-    	setParams("mvn-hibernate43-ent","4.3","2.1", null);
-    	testMappingDiagramMaven();
-    }
-    
-    @Test
-    public void testMappingDiagram50() {
-    	setParams("mvn-hibernate50-ent","5.0","2.1", null);
-    	testMappingDiagramMaven();
-    }
-    
-    @Test
-    public void testMappingDiagram51() {
-    	setParams("mvn-hibernate51-ent","5.1","2.1", null);
-    	testMappingDiagramMaven();
-    }
-    
-    @Test
-    public void testMappingDiagram52() {
-    	setParams("mvn-hibernate52-ent","5.2","2.1", null);
-    	testMappingDiagramMaven();
-    }
-
-    @Test
-    public void testMappingDiagramEcl35() {
-    	Map<String,String> libraries = new HashMap<>();
-    	libraries.putAll(hibernate35LibMap);
-    	libraries.put("h2-1.3.161.jar", null);
-    	setParams("ecl-hibernate35-ent","3.5","2.0", libraries);
-    	testMappingDiagramEclipse();
-    }
- 
-    @Test
-    public void testMappingDiagramEcl36() {
-    	Map<String,String> libraries = new HashMap<>();
-    	libraries.putAll(hibernate36LibMap);
-    	libraries.put("h2-1.3.161.jar", null);
-    	setParams("ecl-hibernate36-ent","3.6","2.0", libraries);
-    	testMappingDiagramEclipse();
-    }
-    
-    @Test
-    public void testMappingDiagramEcl40() {
-    	Map<String,String> libraries = new HashMap<>();
-    	libraries.putAll(hibernate43LibMap);
-    	libraries.put("h2-1.3.161.jar", null);
-    	setParams("ecl-hibernate40-ent","4.3","2.0", libraries);
-    	testMappingDiagramEclipse();
-    }
-
-    private void setParams(String prj, String hbVersion, String jpaVersion, Map<String,String> libraryPathMap) {
-    	this.prj = prj;
-    	this.hbVersion = hbVersion;
-    	this.jpaVersion = jpaVersion;
-    	this.libraryPathMap = libraryPathMap;
-    }
-
-    private void testMappingDiagramMaven() {    	
-    	prepareMavenProject();
-    	testMappingDiagram();
-    }
-    
-    private void testMappingDiagramEclipse() {
-    	prepareEclipseProject();
-    	testMappingDiagram();
+    public void testMappingDiagram() {
+		prepareMavenProject();
+		checkMappingDiagram();
     }
     
 	public void prepareMavenProject() {
-		log.step("Import test project");
     	importMavenProject(prj);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		
-		log.step("Create database driver definition");
 		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
-		log.step("Create database connection profile ");
 		ConnectionProfileFactory.createConnectionProfile(cfg);
-		//log.step("Convert project to faceted form");
-		//ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
-		log.step("Set JPA facets to Hibernate Platform");
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
-		
-		log.step("Open and set hibernate console configuration");
 
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		v.open();
-		v.openConsoleConfiguration(prj);
-				
-		ConsoleConfigurationCreationWizardPage p = new ConsoleConfigurationCreationWizardPage();
-		p.setProject(prj);
-		p.setHibernateConsoleType(HibernateConsoleType.JPA);
-		p.setHibernateConsoleConnectionType(HibernateConsoleConnectionType.JPA);
-		p.setHibernateVersion(hbVersion);		
-		p.ok();
-	}
-
-    
-    private void prepareEclipseProject() {    	
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		log.step("Import test project");
-    	importProject(prj, libraryPathMap);
+		EditConfigurationShell confShell = v.openConsoleConfiguration(prj);
 		
-		log.step("Create database driver definition");
-		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
-		log.step("Create database connection profile ");
-		ConnectionProfileFactory.createConnectionProfile(cfg);
-    	
-    	log.step("Create hibernate console configuartion file");
-    	HibernateToolsFactory.createConfigurationFile(cfg, prj, "hibernate.cfg.xml", false);
+		EditConfigurationMainPage mainPage = confShell.getMainPage();
+		mainPage.setProject(prj);
+		mainPage.setType("JPA (jdk 1.5+)");
+		mainPage.setDatabaseConnection("[JPA Project Configured Connection]");
+		mainPage.setHibernateVersion(hbVersion);
+		confShell.ok();
 	}
 
-	private void testMappingDiagram() {
+	private void checkMappingDiagram() {
 		AutoBuilding ab = new AutoBuilding() {
 			
 			@Override
@@ -226,13 +147,11 @@ public class MappingDiagramTest extends HibernateRedDeerTest {
 	}
 	
 	private void openMappingDiagram(){
-		log.step("Open Hibernate Console Configuration view");
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		
 		v.open();
 		v.selectConsole(prj);
-
-		log.step("Open Mapping diagram");
+		
 		ContextMenu mappingMenu = new ContextMenu("Mapping Diagram");
 		mappingMenu.select();
 	}

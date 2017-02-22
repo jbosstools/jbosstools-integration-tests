@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -22,7 +32,6 @@ import org.jboss.tools.hibernate.reddeer.test.JPAUIPartsTest;
 import org.jboss.tools.hibernate.reddeer.test.JpaAnnotationGenerationTest;
 import org.jboss.tools.hibernate.reddeer.test.MappingDiagramTest;
 import org.jboss.tools.hibernate.reddeer.test.MappingFileTest;
-import org.jboss.tools.hibernate.reddeer.test.MavenizedProjectTest;
 import org.jboss.tools.hibernate.reddeer.test.PersistenceXMLFileTest;
 import org.jboss.tools.hibernate.reddeer.test.RevengFileTest;
 import org.jboss.tools.hibernate.reddeer.test.TablesFromJPAEntitiesGeneration;
@@ -32,32 +41,31 @@ import org.junit.runners.Suite;
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
 
-	AntFileExportTest.class, //35
-	CodeGenerationConfigurationTest.class, //650s //400
+	AntFileExportTest.class,
+	CodeGenerationConfigurationTest.class,
 	CodeGenerationKeyWordsTest.class,
-	ConnectionProfileTest.class, //6
-	ConsoleConfigurationFileTest.class, //200s
-	ConsoleConfigurationTest.class, //60
-	CreateJPAProjectTest.class, //24
-	CriteriaEditorTest.class, //500s //240 
-	CriteriaEditorCodeAssistTest.class, //470s
+	ConnectionProfileTest.class,
+	ConsoleConfigurationFileTest.class,
+	ConsoleConfigurationTest.class,
+	CreateJPAProjectTest.class,
+	CriteriaEditorTest.class,
+	CriteriaEditorCodeAssistTest.class,
 	EntityValidationTest.class,
-	JPADetailsViewTest.class, //55
+	JPADetailsViewTest.class,
 	HibernateUIPartsTest.class,
-	JPAEntityGenerationTest.class, //550s
+	JPAEntityGenerationTest.class,
 	
-	JPAFacetTest.class, //25
-	JPAUIPartsTest.class, //4
-	HQLEditorTest.class, //920s //157
-	HQLEditorCodeAssistTest.class, //300s //160
-	JBossDatasourceTest.class,  //12
-	JpaAnnotationGenerationTest.class, //30
-	MappingDiagramTest.class, //350s //200
-	MappingFileTest.class, //40
-	MavenizedProjectTest.class, //15
-	PersistenceXMLFileTest.class, //25
-	RevengFileTest.class, //15
-	TablesFromJPAEntitiesGeneration.class	 //900s //440
+	JPAFacetTest.class,
+	JPAUIPartsTest.class,
+	HQLEditorTest.class,
+	HQLEditorCodeAssistTest.class,
+	JBossDatasourceTest.class,
+	JpaAnnotationGenerationTest.class, 
+	MappingDiagramTest.class,
+	MappingFileTest.class,
+	PersistenceXMLFileTest.class, 
+	RevengFileTest.class,
+	TablesFromJPAEntitiesGeneration.class
 	
 
 })

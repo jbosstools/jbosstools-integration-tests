@@ -48,45 +48,6 @@
 							<unpack>false</unpack>
 						</configuration>
 					</execution>
-					<execution>
-						<id>hibernate35</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>wget</goal>
-						</goals>
-						<configuration>
-							<skip>${skipTests}</skip>
-							<url>https://sourceforge.net/projects/hibernate/files/hibernate3/3.5.3-Final/hibernate-distribution-3.5.3-Final-dist.zip</url>
-							<outputDirectory>${project.build.directory}/requirements</outputDirectory>
-							<unpack>true</unpack>
-						</configuration>
-					</execution>
-					<execution>
-						<id>hibernate36</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>wget</goal>
-						</goals>
-						<configuration>
-							<skip>${skipTests}</skip>
-							<url>https://sourceforge.net/projects/hibernate/files/hibernate3/3.6.10.Final/hibernate-distribution-3.6.10.Final-dist.zip</url>
-							<outputDirectory>${project.build.directory}/requirements</outputDirectory>
-							<unpack>true</unpack>
-						</configuration>
-					</execution>
-					<execution>
-						<id>hibernate40</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>wget</goal>
-						</goals>
-						<configuration>
-							<skip>${skipTests}</skip>
-							<url>https://sourceforge.net/projects/hibernate/files/hibernate4/4.3.11.Final/hibernate-release-4.3.11.Final.zip</url>
-							<outputDirectory>${project.build.directory}/requirements</outputDirectory>
-							<unpack>true</unpack>
-						</configuration>
-					</execution>
 				</executions>
 			</plugin>
 			<plugin>

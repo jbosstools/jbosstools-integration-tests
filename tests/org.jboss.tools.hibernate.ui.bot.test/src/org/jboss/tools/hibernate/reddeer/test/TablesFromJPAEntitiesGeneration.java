@@ -1,12 +1,21 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -14,16 +23,19 @@ import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
-import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
-import org.jboss.tools.hibernate.reddeer.factory.HibernateToolsFactory;
-import org.jboss.tools.hibernate.reddeer.factory.ProjectConfigurationFactory;
-import org.jboss.tools.hibernate.reddeer.wizard.GenerateDdlWizard;
-import org.jboss.tools.hibernate.reddeer.wizard.GenerateDdlWizardPage;
+import org.jboss.tools.hibernate.reddeer.jpt.ui.wizard.GenerateDdlWizard;
+import org.jboss.tools.hibernate.reddeer.jpt.ui.wizard.GenerateDdlWizardPage;
+import org.jboss.tools.hibernate.ui.bot.test.factory.ConnectionProfileFactory;
+import org.jboss.tools.hibernate.ui.bot.test.factory.DriverDefinitionFactory;
+import org.jboss.tools.hibernate.ui.bot.test.factory.ProjectConfigurationFactory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
+import org.junit.runners.Parameterized.UseParametersRunnerFactory;
+import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 
 /**
  * Generates ddl and tables from Entities
@@ -31,19 +43,37 @@ import org.junit.runner.RunWith;
  * @author Jiri Peterka
  */
 @RunWith(RedDeerSuite.class)
+@UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
 @Database(name = "testdb")
 public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
-
-	private String prj;
-	private String hbVersion;
-	private String jpaVersion;
-	private Map<String,String> libraryPathMap;
-
-	private static final Logger log = Logger.getLogger(TablesFromJPAEntitiesGeneration.class);
 	
-	private final String DDL_FILE = "output.ddl";
 	@InjectRequirement
 	private DatabaseRequirement dbRequirement;
+
+	@Parameter
+	public String prj;
+	@Parameter(1)
+	public String hbVersion;
+	@Parameter(2)
+	public String jpaVersion;
+	@Parameter(3)
+	public boolean useConsole;
+	
+	private final String DDL_FILE = "output.ddl";
+	
+	@Parameters(name="hibernate {1} use console: {3}")
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+        		{"mvn-hibernate35-ent","3.5","2.0", true}, {"mvn-hibernate35-ent","3.5","2.0", false}, 
+        		{"mvn-hibernate36-ent","3.6","2.0", true}, {"mvn-hibernate36-ent","3.6","2.0", false}, 
+        		{"mvn-hibernate40-ent","4.0","2.0", true}, {"mvn-hibernate40-ent","4.0","2.0", false},
+        		{"mvn-hibernate43-ent","4.3","2.1", true}, {"mvn-hibernate43-ent","4.3","2.1", false},
+        		{"mvn-hibernate50-ent","5.0","2.1", true}, {"mvn-hibernate50-ent","5.0","2.1", false},
+        		{"mvn-hibernate51-ent","5.1","2.1", true}, {"mvn-hibernate51-ent","5.1","2.1", false},
+        		{"mvn-hibernate52-ent","5.2","2.1", true}, {"mvn-hibernate52-ent","5.2","2.1", false}
+           });
+    }
+	
 	
 	@After
 	public void cleanUp() {
@@ -52,158 +82,10 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 		deleteAllProjects();
 	}
 	
-    // use console
     @Test
-    public void testDDLGenerationWithConsole35() {
-    	setParams("mvn-hibernate35-ent","3.5","2.0",null);
-    	testDDLGenerationMvn(true);
+    public void testDDLGeneration() {
+    	testDDLGenerationMvn(useConsole);
     }
-    
-    @Test
-    public void testDDLGenerationWithConsole36() {
-    	setParams("mvn-hibernate36-ent","3.6","2.0",null);
-    	testDDLGenerationMvn(true);
-    }
-    
-    @Test
-    public void testDDLGenerationWithConsole40() {
-    	setParams("mvn-hibernate40-ent","4.0","2.0",null);
-    	testDDLGenerationMvn(true);
-    }
-    
-    @Test
-    public void testDDLGenerationWithConsole43() {
-    	setParams("mvn-hibernate43-ent","4.3","2.1",null);
-    	testDDLGenerationMvn(true);
-    }
-    
-    @Test
-    public void testDDLGenerationWithConsole50() {
-    	setParams("mvn-hibernate50-ent","5.0","2.1",null);
-    	testDDLGenerationMvn(true);
-    }
-    
-    @Test
-    public void testDDLGenerationWithConsole51() {
-    	setParams("mvn-hibernate51-ent","5.1","2.1",null);
-    	testDDLGenerationMvn(true);
-    }
-    
-    @Test
-    public void testDDLGenerationWithConsole52() {
-    	setParams("mvn-hibernate52-ent","5.2","2.1",null);
-    	testDDLGenerationMvn(true);
-    }
-   
-    @Test
-    public void testDDLGenerationWithConsoleEcl35() {
-    	Map<String,String> libraries = new HashMap<>();
-    	libraries.putAll(hibernate35LibMap);
-    	libraries.put("h2-1.3.161.jar", null);
-    	setParams("ecl-hibernate35-ent","3.5","2.0",libraries);
-    	testDDLGenerationEcl(true);
-    }
-    
-    @Test
-    public void testDDLGenerationWithConsoleEcl36() {
-    	Map<String,String> libraries = new HashMap<>();
-    	libraries.putAll(hibernate36LibMap);
-    	libraries.put("h2-1.3.161.jar", null);
-    	setParams("ecl-hibernate36-ent","3.6","2.0", libraries);
-    	testDDLGenerationEcl(true);
-    }
-    
-    @Test
-    public void testDDLGenerationWithConsoleEcl40() {
-    	Map<String,String> libraries = new HashMap<>();
-    	libraries.putAll(hibernate43LibMap);
-    	libraries.put("h2-1.3.161.jar", null);
-    	setParams("ecl-hibernate40-ent","4.3","2.0", libraries);
-    	testDDLGenerationEcl(true);
-    }
-    
-    // don't use console
-    @Test
-    public void testDDLGenerationWithoutConsole35() {
-    	setParams("mvn-hibernate35-ent","3.5","2.0",null);
-    	testDDLGenerationMvn(false);
-    }
-    
-    @Test
-    public void testDDLGenerationWithoutConsole36() {
-    	setParams("mvn-hibernate36-ent","3.6","2.0",null);
-    	testDDLGenerationMvn(false);
-    }
-    
-    @Test
-    public void testDDLGenerationWithoutConsole40() {
-    	setParams("mvn-hibernate40-ent","4.0","2.0",null);
-    	testDDLGenerationMvn(false);
-    }
-    
-    @Test
-    public void testDDLGenerationWithoutConsole43() {
-    	setParams("mvn-hibernate43-ent","4.3","2.1",null);
-    	testDDLGenerationMvn(false);
-    }
-    
-    @Test
-    public void testDDLGenerationWithoutConsole50() {
-    	setParams("mvn-hibernate50-ent","5.0","2.1",null);
-    	testDDLGenerationMvn(false);
-    }
-    
-    @Test
-    public void testDDLGenerationWithoutConsole51() {
-    	setParams("mvn-hibernate51-ent","5.1","2.1",null);
-    	testDDLGenerationMvn(false);
-    }
-    
-    @Test
-    public void testDDLGenerationWithoutConsole52() {
-    	setParams("mvn-hibernate52-ent","5.2","2.1",null);
-    	testDDLGenerationMvn(false);
-    }
-      
-    @Test
-    public void testDDLGenerationWithoutConsoleEcl35() {
-    	Map<String,String> libraries = new HashMap<>();
-    	libraries.putAll(hibernate35LibMap);
-    	libraries.put("h2-1.3.161.jar", null);
-    	setParams("ecl-hibernate35-ent","3.5","2.0",libraries);
-    	testDDLGenerationEcl(false);
-    }
-    
-    @Test
-    public void testDDLGenerationWithoutConsoleEcl36() {
-    	Map<String,String> libraries = new HashMap<>();
-    	libraries.putAll(hibernate36LibMap);
-    	libraries.put("h2-1.3.161.jar", null);
-    	setParams("ecl-hibernate36-ent","3.6","2.0", libraries);
-    	testDDLGenerationEcl(false);
-    }
-
-    @Test
-    public void testDDLGenerationWithoutConsoleEcl40() {
-    	Map<String,String> libraries = new HashMap<>();
-    	libraries.putAll(hibernate43LibMap);
-    	libraries.put("h2-1.3.161.jar", null);
-    	setParams("ecl-hibernate40-ent","4.3","2.0", libraries);
-    	testDDLGenerationEcl(false);
-    }
-    
-
-    private void setParams(String prj, String hbVersion, String jpaVersion, Map<String,String> libraryPathMap) {
-    	this.prj = prj;
-    	this.hbVersion = hbVersion;
-    	this.jpaVersion = jpaVersion;
-    	this.libraryPathMap = libraryPathMap;
-    }
-    
-    private void testDDLGenerationEcl(boolean useConsole) {
-    	prepareEclipseProject();
-    	testDDLGeneration(useConsole,hbVersion,"src");
-    }    
     
     private void testDDLGenerationMvn(boolean useConsole) {
     	prepareMavenProject();
@@ -217,14 +99,12 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 		pe.selectProjects(prj);
 		GenerateDdlWizard w = new GenerateDdlWizard();
 		w.open();
-		log.step("Open Generate Tables from Entitities wizard");
 		GenerateDdlWizardPage p = new GenerateDdlWizardPage();
 		p.setFileName(DDL_FILE);
 		p.setUseConsoleConfiguration(useConsole);
 		if (!useConsole) {
 			p.setHibernateVersion(hbVersion);
 		}
-		log.step("Click finish to generate ddl");
 		w.finish();
 
 		pe.open();
@@ -239,36 +119,11 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 	}
 
 	private void prepareMavenProject() {
-		log.step("Import test project");
 		importMavenProject(prj);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		log.step("Create database driver definition");
 		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
-		log.step("Create connection profile definition");
 		ConnectionProfileFactory.createConnectionProfile(cfg);
-		//log.step("Convert project to faceted from");
-		//ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
-		log.step("Set JPA facets to Hibernate Platform");
 		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
-	}
-    
-    private void prepareEclipseProject() {    	
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		log.step("Import test projects");
-    	importProject(prj, libraryPathMap);
-
-		log.step("Create database driver definition");
-		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
-		log.step("Create connection profile definition");
-		ConnectionProfileFactory.createConnectionProfile(cfg);
-    	
-		//log.step("Convert project to faceted from");
-		//ProjectConfigurationFactory.convertProjectToFacetsForm(prj);
-		log.step("Set JPA facets to Hibernate Platform");
-		ProjectConfigurationFactory.setProjectFacetForDB(prj, cfg, jpaVersion);
-    	
-    	log.step("Create hibernate console configuartion file");
-    	HibernateToolsFactory.createConfigurationFile(cfg, prj, "hibernate.cfg.xml", false);
 	}
 	
 	private void checkDDLContent(String text) {

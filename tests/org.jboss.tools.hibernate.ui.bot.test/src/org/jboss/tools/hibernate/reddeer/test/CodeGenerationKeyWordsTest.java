@@ -12,11 +12,17 @@ package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
@@ -25,57 +31,53 @@ import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.workbench.impl.editor.Marker;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.hibernate.reddeer.condition.EntityIsGenerated;
+import org.jboss.tools.hibernate.reddeer.console.wizards.NewReverseEngineeringFileWizard;
+import org.jboss.tools.hibernate.reddeer.console.wizards.TableFilterWizardPage;
 import org.jboss.tools.hibernate.reddeer.dialog.LaunchConfigurationsDialog;
-import org.jboss.tools.hibernate.reddeer.editor.RevengEditor;
-import org.jboss.tools.hibernate.reddeer.factory.HibernateToolsFactory;
-import org.jboss.tools.hibernate.reddeer.wizard.NewReverseEngineeringFileWizard;
-import org.jboss.tools.hibernate.reddeer.wizard.TableFilterWizardPage;
+import org.jboss.tools.hibernate.reddeer.mapper.editors.ReverseEngineeringEditor;
+import org.jboss.tools.hibernate.ui.bot.test.factory.HibernateToolsFactory;
+import org.junit.After;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
+import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
+@RunWith(RedDeerSuite.class)
+@UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
 @Database(name = "testdb")
+
+//https://issues.jboss.org/browse/JBIDE-22283 works for hibernate >= 4.3
 public class CodeGenerationKeyWordsTest extends HibernateRedDeerTest {
 
 	@InjectRequirement
 	private DatabaseRequirement dbRequirement;
 
-	private String prj;
-	private String hbVersion;
+	@Parameter
+	public String prj;
+	@Parameter(1)
+	public String hbVersion;
+	
+	@Parameters(name="hibernate {1}")
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+        		{"mvn-hibernate43","4.3"},
+        		{"mvn-hibernate50","5.0"},
+        		{"mvn-hibernate51","5.1"},
+        		{"mvn-hibernate52","5.2"}
+           });
+    }
+    
+    @After
+    public void deleteAll(){
+    	new CleanWorkspaceRequirement().fulfill();
+    }
 
 	@Test
-	public void testHibernateGenerateConfiguration52() {
-		setParams("mvn-hibernate52", "5.2", "2.1");
+	public void testHibernateGenerateConfiguration() {
 		prepareMvn();
 		createAndRunHibernateGenerationConfiguration(true, "src/main/java");
 		checkGeneratedEntities("src/main/java");
-	}
-	
-	@Test
-	public void testHibernateGenerateConfiguration51() {
-		setParams("mvn-hibernate51", "5.1", "2.1");
-		prepareMvn();
-		createAndRunHibernateGenerationConfiguration(true, "src/main/java");
-		checkGeneratedEntities("src/main/java");
-	}
-	
-	@Test
-	public void testHibernateGenerateConfiguration50() {
-		setParams("mvn-hibernate50", "5.0", "2.1");
-		prepareMvn();
-		createAndRunHibernateGenerationConfiguration(true, "src/main/java");
-		checkGeneratedEntities("src/main/java");
-	}
-	
-	@Test
-	public void testHibernateGenerateConfiguration43() {
-		setParams("mvn-hibernate43", "4.3", "2.1");
-		prepareMvn();
-		createAndRunHibernateGenerationConfiguration(true, "src/main/java");
-		checkGeneratedEntities("src/main/java");
-	}
-
-	private void setParams(String prj, String hbVersion, String jpaVersion) {
-		this.prj = prj;
-		this.hbVersion = hbVersion;
 	}
 
 	private void prepareMvn() {
@@ -138,7 +140,7 @@ public class CodeGenerationKeyWordsTest extends HibernateRedDeerTest {
 		page.pressInclude();
 		wizard.finish();
 
-		RevengEditor re = new RevengEditor();
+		ReverseEngineeringEditor re = new ReverseEngineeringEditor();
 		re.activateSourceTab();
 
 		DefaultStyledText ds = new DefaultStyledText();

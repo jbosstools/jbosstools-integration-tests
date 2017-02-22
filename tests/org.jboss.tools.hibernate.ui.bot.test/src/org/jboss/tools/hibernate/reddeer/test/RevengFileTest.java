@@ -1,21 +1,28 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.test;
 
-import org.jboss.reddeer.common.logging.Logger;
+
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.handler.EditorHandler;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.tools.hibernate.reddeer.console.NewConfigurationLocationPage;
-import org.jboss.tools.hibernate.reddeer.console.NewConfigurationSettingPage;
-import org.jboss.tools.hibernate.reddeer.console.NewHibernateConfigurationWizard;
-import org.jboss.tools.hibernate.reddeer.editor.RevengEditor;
-import org.jboss.tools.hibernate.reddeer.wizard.NewReverseEngineeringFileWizard;
-import org.jboss.tools.hibernate.reddeer.wizard.TableFilterWizardPage;
+import org.jboss.tools.hibernate.reddeer.console.wizards.NewConfigurationFirstPage;
+import org.jboss.tools.hibernate.reddeer.console.wizards.NewConfigurationWizard;
+import org.jboss.tools.hibernate.reddeer.console.wizards.NewConfigurationWizardPage;
+import org.jboss.tools.hibernate.reddeer.console.wizards.NewReverseEngineeringFileWizard;
+import org.jboss.tools.hibernate.reddeer.console.wizards.TableFilterWizardPage;
+import org.jboss.tools.hibernate.reddeer.mapper.editors.ReverseEngineeringEditor;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,34 +38,34 @@ import org.junit.runner.RunWith;
 @Database(name="testdb")
 public class RevengFileTest extends HibernateRedDeerTest {
 
-	private String PROJECT_NAME = "revengfiletest";
+	
+	//TODO use latest
+	private String PROJECT_NAME = "mvn-hibernate52";
+	private String hbVersion = "5.2";
 	@InjectRequirement
     private DatabaseRequirement dbRequirement;
 	
-	private static final Logger log = Logger.getLogger(RevengFileTest.class);
-	
 	@Before 
 	public void prepare() {
-		log.step("Import test project");
 		importMavenProject(PROJECT_NAME);
 		prepareConsoleConfiguration();
 	}
 	
 	public void prepareConsoleConfiguration() {
-		log.step("Create hibernate configuration file with console configuration");
-		NewHibernateConfigurationWizard wizard = new NewHibernateConfigurationWizard();
+		NewConfigurationWizard wizard = new NewConfigurationWizard();
 		wizard.open();
-		NewConfigurationLocationPage p1 = new NewConfigurationLocationPage();
-		p1.setLocation(PROJECT_NAME,"src");		
+		NewConfigurationFirstPage p1 = new NewConfigurationFirstPage();
+		p1.setLocation(PROJECT_NAME,"src","main","java");		
 		wizard.next();
 
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		NewConfigurationSettingPage p2 = new NewConfigurationSettingPage();
+		NewConfigurationWizardPage p2 = new NewConfigurationWizardPage();
 		p2.setDatabaseDialect("H2");
 		p2.setDriverClass(cfg.getDriverClass());
 		p2.setConnectionURL(cfg.getJdbcString());
 		p2.setUsername(cfg.getUsername());		
 		p2.setCreateConsoleConfiguration(true);
+		p2.setHibernateVersion(hbVersion);
 		
 		wizard.finish();
 	}
@@ -69,7 +76,6 @@ public class RevengFileTest extends HibernateRedDeerTest {
 		pe.open();
 		pe.selectProjects(PROJECT_NAME);		
 		
-		log.step("Create hibernate reverese engineering via reveng wizard");
 		NewReverseEngineeringFileWizard wizard = new NewReverseEngineeringFileWizard();
 		wizard.open();
 		wizard.next();
@@ -77,15 +83,9 @@ public class RevengFileTest extends HibernateRedDeerTest {
 		page.setConsoleConfiguration(PROJECT_NAME);
 		page.refreshDatabaseSchema();
 		page.pressInclude();
-		log.step("Finish wizard to create a file");
 		wizard.finish();
-
-		EditorHandler.getInstance().closeAll(false);
-		pe.open();
-		new DefaultTreeItem(PROJECT_NAME,"hibernate.reveng.xml").doubleClick();
-		new DefaultEditor("Hibernate Reverse Engineering Editor").activate();
 		
-		RevengEditor re = new RevengEditor();
+		ReverseEngineeringEditor re = new ReverseEngineeringEditor();
 		re.activateDesignTab();
 		re.activateOverviewTab();
 		re.activateSourceTab();

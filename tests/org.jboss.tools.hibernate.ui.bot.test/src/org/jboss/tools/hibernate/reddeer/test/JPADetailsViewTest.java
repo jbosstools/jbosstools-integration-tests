@@ -1,9 +1,18 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
@@ -12,10 +21,10 @@ import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
-import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
-import org.jboss.tools.hibernate.reddeer.factory.ProjectConfigurationFactory;
 import org.jboss.tools.hibernate.reddeer.view.JPADetailsView;
+import org.jboss.tools.hibernate.ui.bot.test.factory.ConnectionProfileFactory;
+import org.jboss.tools.hibernate.ui.bot.test.factory.DriverDefinitionFactory;
+import org.jboss.tools.hibernate.ui.bot.test.factory.ProjectConfigurationFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,24 +39,17 @@ import org.junit.runner.RunWith;
 @Database(name = "testdb")
 public class JPADetailsViewTest extends HibernateRedDeerTest {
 
-	private final String PRJ = "mvn-hibernate50-ent";
+	//TODO use latest
+	private final String PRJ = "mvn-hibernate52-ent";
 	@InjectRequirement
 	private DatabaseRequirement dbRequirement;
-	
-	private static final Logger log = Logger.getLogger(JPADetailsViewTest.class);
 
 	@Before
 	public void testConnectionProfile() {
-		log.step("Import test project");
 		importMavenProject(PRJ);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		log.step("Create database driver definition");
 		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
-		log.step("Create database connection profile");
 		ConnectionProfileFactory.createConnectionProfile(cfg);
-		//log.step("Convert project to faceted form");
-		//ProjectConfigurationFactory.convertProjectToFacetsForm(PRJ);
-		log.step("Set project facet for JPA");
 		ProjectConfigurationFactory.setProjectFacetForDB(PRJ, cfg);
 	}
 	
@@ -60,18 +62,12 @@ public class JPADetailsViewTest extends HibernateRedDeerTest {
 	@Test
 	public void testJPADetailView() {
 
-		log.step("Open entity");
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		try{
-			pe.getProject(PRJ).getProjectItem("Java Resources","src/main/java","org.gen","Actor.java").open();
-		} catch (RedDeerException e) {
-			fail("Entities not generated, possible cause https://issues.jboss.org/browse/JBIDE-19175");
-		}
+		pe.getProject(PRJ).getProjectItem("Java Resources","src/main/java","org.gen","Actor.java").open();
 		TextEditor textEditor = new TextEditor("Actor.java");
 		textEditor.setCursorPosition(20, 1);		
 
-		log.step("Open JPA view and check content");
 		JPADetailsView jpaDetailsView = new JPADetailsView();
 		jpaDetailsView.open();
 					

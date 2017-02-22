@@ -1,13 +1,23 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.fail;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Collection;
 
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
@@ -20,14 +30,17 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.hibernate.reddeer.condition.EntityIsGenerated;
+import org.jboss.tools.hibernate.reddeer.console.wizards.NewReverseEngineeringFileWizard;
+import org.jboss.tools.hibernate.reddeer.console.wizards.TableFilterWizardPage;
 import org.jboss.tools.hibernate.reddeer.dialog.LaunchConfigurationsDialog;
-import org.jboss.tools.hibernate.reddeer.editor.RevengEditor;
-import org.jboss.tools.hibernate.reddeer.factory.HibernateToolsFactory;
-import org.jboss.tools.hibernate.reddeer.wizard.NewReverseEngineeringFileWizard;
-import org.jboss.tools.hibernate.reddeer.wizard.TableFilterWizardPage;
+import org.jboss.tools.hibernate.reddeer.mapper.editors.ReverseEngineeringEditor;
+import org.jboss.tools.hibernate.ui.bot.test.factory.HibernateToolsFactory;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
+import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
 
 /**
@@ -35,212 +48,64 @@ import org.junit.runner.RunWith;
  * @author Jiri Peterka
  */
 @RunWith(RedDeerSuite.class)
+@UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
 @Database(name="testdb")
 public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
 
     @InjectRequirement    
     private DatabaseRequirement dbRequirement;
     
-	private String prj; 
-	private String hbVersion;
-	private Map<String,String> libraryPathMap;
+    @Parameter
+	public String prj; 
+    @Parameter(1)
+	public String hbVersion;
 	
-	private static final Logger log = Logger.getLogger(CodeGenerationConfigurationTest.class);
+	
+	@Parameters(name="hibernate {1}")
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+        		{"mvn-hibernate35","3.5"},
+        		{"mvn-hibernate36","3.6"},
+        		{"mvn-hibernate40","4.0"},
+        		{"mvn-hibernate43","4.3"},
+        		{"mvn-hibernate50","5.0"},
+        		{"mvn-hibernate51","5.1"},
+        		{"mvn-hibernate52","5.2"},
+           });
+    }
 	
 	@After
 	public void cleanUp() {
 		deleteAllProjects();
 	}
-
-	// Mavenized projects
+	
     @Test
-    public void testHibernateGenerateConfiguration35() {
-    	setParams("mvn-hibernate35","3.5","2.0", null);
-    	createHibernateGenerationConfigurationMvn(false);
+    public void testHibernateGenerateConfiguration() {
+    	createHibernateGenerationConfiguration(false);
     }
     
     @Test
-    public void testHibernateGenerateConfiguration36() {
-    	setParams("mvn-hibernate36","3.6","2.0", null);
-    	createHibernateGenerationConfigurationMvn(false);
-    }
-    
-    @Test
-    public void testHibernateGenerateConfiguration40() {
-    	setParams("mvn-hibernate40","4.0","2.0", null);
-    	createHibernateGenerationConfigurationMvn(false);
-    }
-    
-    @Test
-    public void testHibernateGenerateConfiguration43() {
-    	setParams("mvn-hibernate43","4.3","2.1", null);
-    	createHibernateGenerationConfigurationMvn(false);
-    }
-    
-    @Test
-    public void testHibernateGenerateConfiguration50() {
-    	setParams("mvn-hibernate50","5.0","2.1", null);
-    	createHibernateGenerationConfigurationMvn(false);
-    }
-    
-    @Test
-    public void testHibernateGenerateConfiguration51() {
-    	setParams("mvn-hibernate51","5.1","2.1", null);
-    	createHibernateGenerationConfigurationMvn(false);
-    }
-    
-    @Test
-    public void testHibernateGenerateConfiguration52() {
-    	setParams("mvn-hibernate52","5.2","2.1", null);
-    	createHibernateGenerationConfigurationMvn(false);
-    }
-    
-    @Test
-    public void testHibernateGenerateConfigurationWithReveng35() {
-    	setParams("mvn-hibernate35","3.5","2.0", null);
-    	createHibernateGenerationConfigurationMvn(true);
-    }
-        
-    @Test
-    public void testHibernateGenerateConfigurationWithReveng36() {
-    	setParams("mvn-hibernate36","3.6","2.0", null);
-     	createHibernateGenerationConfigurationMvn(true);
-    }
-    
-    @Test
-    public void testHibernateGenerateConfigurationWithReveng40() {
-    	setParams("mvn-hibernate40","4.0","2.0", null);
-    	createHibernateGenerationConfigurationMvn(true);
-    }
-    
-    @Test
-    public void testHibernateGenerateConfigurationWithReveng43() {
-    	setParams("mvn-hibernate43","4.3","2.1", null);
-    	createHibernateGenerationConfigurationMvn(true);
-    }
-    
-    @Test
-    public void testHibernateGenerateConfigurationWithReveng50() {
-    	setParams("mvn-hibernate50","5.0","2.1", null);
-    	createHibernateGenerationConfigurationMvn(true);
-    }
-    
-    @Test
-    public void testHibernateGenerateConfigurationWithReveng51() {
-    	setParams("mvn-hibernate51","5.1","2.1", null);
-    	createHibernateGenerationConfigurationMvn(true);
-    }
-    
-    @Test
-    public void testHibernateGenerateConfigurationWithReveng52() {
-    	setParams("mvn-hibernate52","5.2","2.1", null);
-    	createHibernateGenerationConfigurationMvn(true);
-    }
-    
-    // Non-mavenized projects
-    @Test
-    public void testHibernateGenerateConfigurationEcl35() {
-    	Map<String,String> libraries = new HashMap<>();
-    	libraries.putAll(hibernate35LibMap);
-    	libraries.put("h2-1.3.161.jar", null);
-    	setParams("ecl-hibernate35-ent","3.5","2.0", libraries);
-    	createHibernateGenerationConfigurationEcl(false);
-    }
- 
-    @Test
-    public void testHibernateGenerateConfigurationEcl36() {
-    	Map<String,String> libraries = new HashMap<>();
-    	libraries.putAll(hibernate36LibMap);
-    	libraries.put("h2-1.3.161.jar", null);
-    	setParams("ecl-hibernate36-ent","3.6","2.0", libraries);
-    	createHibernateGenerationConfigurationEcl(false);
-    }
-    
-    @Test
-    public void testHibernateGenerateConfigurationEcl40() {
-    	Map<String,String> libraries = new HashMap<>();
-    	libraries.putAll(hibernate43LibMap);
-    	libraries.put("h2-1.3.161.jar", null);
-    	setParams("ecl-hibernate40-ent","4.3","2.0", libraries);
-    	createHibernateGenerationConfigurationEcl(false);
-    }
-    @Test
-    public void testHibernateGenerateConfigurationRelEcl35() {
-    	Map<String,String> libraries = new HashMap<>();
-    	libraries.putAll(hibernate35LibMap);
-    	libraries.put("h2-1.3.161.jar", null);
-    	setParams("ecl-hibernate35-ent","3.5","2.0", libraries);
-    	createHibernateGenerationConfigurationEcl(true);
-    }
- 
-    @Test
-    public void testHibernateGenerateConfigurationRelEcl36() {
-    	Map<String,String> libraries = new HashMap<>();
-    	libraries.putAll(hibernate36LibMap);
-    	libraries.put("h2-1.3.161.jar", null);
-    	setParams("ecl-hibernate36-ent","3.6","2.0", libraries);
-    	createHibernateGenerationConfigurationEcl(true);
-    }
-    
-    @Test
-    public void testHibernateGenerateConfigurationRelEcl40() {
-    	Map<String,String> libraries = new HashMap<>();
-    	libraries.putAll(hibernate43LibMap);
-    	libraries.put("h2-1.3.161.jar", null);
-    	setParams("ecl-hibernate40-ent","4.3","2.0", libraries);
-    	createHibernateGenerationConfigurationEcl(true);
+    public void testHibernateGenerateConfigurationWithReveng() {
+    	createHibernateGenerationConfiguration(true);
     }
 
     
 	private void prepareMvn() {
-		
-		log.step("Import maven project");
     	importMavenProject(prj);
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		log.step("Create Hibernate configuration file with Hibernate Console");
 		HibernateToolsFactory.createConfigurationFile(cfg, prj, "hibernate.cfg.xml", true);
-		log.step("Set hibernate version in Hibernate Console");
 		HibernateToolsFactory.setHibernateVersion(prj, hbVersion);
 	}
-
-	private void prepareEcl() {
-		
-		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		log.step("Import hibernatelib and java project");	
-    	importProject(prj, libraryPathMap);
-    	
-    	log.step("Create Hibernate configuration file with Hibernate Console");
-		HibernateToolsFactory.createConfigurationFile(cfg, prj, "hibernate.cfg.xml", true);
-		log.step("Set Hibernate Version in Hibernate Console");
-		HibernateToolsFactory.setHibernateVersion(prj, hbVersion);
-		log.step("Hibernate console in Hibernate Settings in Project Properties");
-		setHibernateSettings(prj);
-	}
-
-	
-    private void setParams(String prj, String hbVersion, String jpaVersion, Map<String,String> libraryPathMap) {
-    	this.prj = prj;
-    	this.hbVersion = hbVersion;
-    	this.libraryPathMap = libraryPathMap;
-    }
     
-    private void createHibernateGenerationConfigurationMvn(boolean reveng) {
+    private void createHibernateGenerationConfiguration(boolean reveng) {
     	prepareMvn();
     	createHibernateGenerationConfiguration(reveng,"src/main/java");
-    }
-    
-    private void createHibernateGenerationConfigurationEcl(boolean reveng) {
-    	prepareEcl();
-     	createHibernateGenerationConfiguration(reveng, "src");
     }
     	
     private void createHibernateGenerationConfiguration(boolean reveng, String src) {    	
     	if (reveng) {
-    		log.step("Create hibernate reverse engineer file");
     		createRevengFile();
     	}
-    	
-    	log.step("Create Hibernate Code generation configuration");
     	LaunchConfigurationsDialog dlg = new LaunchConfigurationsDialog();
     	dlg.open();
     	dlg.createNewConfiguration();
@@ -249,11 +114,10 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     	dlg.setPackage("org.gen");
     	dlg.setReverseFromJDBC(true);    	
     	if (reveng) dlg.setRevengFile(prj,"hibernate.reveng.xml");
-    	new DefaultShell(LaunchConfigurationsDialog.DIALOG_TITLE).setFocus();
+    	new DefaultShell(LaunchConfigurationsDialog.DIALOG_TITLE);
     	dlg.selectExporter(0);
     	dlg.selectExporter(1);
     	dlg.apply();
-    	log.step("Click run to generate code");
     	dlg.run();
     	
     	checkGeneratedEntities(src);
@@ -263,9 +127,7 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     	PackageExplorer pe = new PackageExplorer();    
     	pe.open();    	
     	try {
-    		//AbstractWait.sleep(TimePeriod.NORMAL);
     		new WaitUntil(new EntityIsGenerated(prj, src, "org.gen", "Actor.java"));
-    		//new WaitUntil(new ProjectContainsProjectItem(pe.getProject(prj), src,"org.gen","Actor.java"));
     		pe.getProject(prj).getProjectItem(src,"org.gen","Actor.java").open();
     	}
     	catch (RedDeerException e) {
@@ -293,7 +155,7 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
 		pe.getProject(prj).getProjectItem("hibernate.reveng.xml").open();
 		new DefaultEditor("Hibernate Reverse Engineering Editor").activate();
 		
-		RevengEditor re = new RevengEditor();
+		ReverseEngineeringEditor re = new ReverseEngineeringEditor();
 		re.activateDesignTab();
 		re.activateOverviewTab();
 		re.activateTableFiltersTab();
