@@ -1,20 +1,35 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.*;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.hibernate.reddeer.common.XPathHelper;
-import org.jboss.tools.hibernate.reddeer.editor.Hibernate3CompoundEditor;
-import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingElementsSelectionPage2;
-import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingFilePage;
-import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingFileWizard;
-import org.jboss.tools.hibernate.reddeer.wizard.NewHibernateMappingPreviewPage;
+import org.jboss.tools.hibernate.reddeer.jdt.ui.wizards.NewHibernateMappingElementsSelectionPage2;
+import org.jboss.tools.hibernate.reddeer.jdt.ui.wizards.NewHibernateMappingFilePage;
+import org.jboss.tools.hibernate.reddeer.jdt.ui.wizards.NewHibernateMappingFileWizard;
+import org.jboss.tools.hibernate.reddeer.jdt.ui.wizards.NewHibernateMappingPreviewPage;
+import org.jboss.tools.hibernate.reddeer.ui.xml.editor.Hibernate3CompoundEditor;
+import org.jboss.tools.hibernate.ui.bot.test.XPathHelper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,14 +44,32 @@ import org.junit.runner.RunWith;
 @Database(name="testdb")
 public class MappingFileTest extends HibernateRedDeerTest {
 	
-	public static final String PRJ = "java-hb-mapping-prj";
-	
-	private static final Logger log = Logger.getLogger(MappingFileTest.class);
+	//TODO use latest
+	public static final String PRJ = "mvn-hibernate52";
+	public static final String PCKG = "org.test";
+	public static final String PCKG_CLZ = "org.test.clazz";
     
 	@Before
 	public void prepare() {
-		log.step("Import test project");
-		importProject(PRJ, null);
+		importMavenProject(PRJ);
+		
+		try {
+			Path dogLocation = new File("resources/classes/Dog.java").toPath();
+			Path ownerLocation = new File("resources/classes/Owner.java").toPath();
+			new File("target/"+PRJ+"/src/main/java/org/test").mkdirs();
+			Files.copy(dogLocation, new FileOutputStream("target/"+PRJ+"/src/main/java/org/test/Dog.java"));
+			Files.copy(ownerLocation, new FileOutputStream("target/"+PRJ+"/src/main/java/org/test/Owner.java"));
+			
+			new File("target/"+PRJ+"/src/main/java/org/test/clazz").mkdirs();
+			Path ownerClazzLocation = new File("resources/classes/Owner.javaclazz").toPath();
+			Files.copy(ownerClazzLocation, new FileOutputStream("target/"+PRJ+"/src/main/java/org/test/clazz/Owner.java"));
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail("Unable to find pom "+PRJ);
+		}
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(PRJ).refresh();
 	}
 	
 	@After
@@ -46,64 +79,55 @@ public class MappingFileTest extends HibernateRedDeerTest {
 	
 	@Test
 	public void createMappingFileFromPackage() {
-		
-		log.step("Select package with POJO model classes");
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(PRJ).getProjectItem("src","org.mapping.model.pkg").select();
+		pe.getProject(PRJ).getProjectItem("Java Resources","src/main/java",PCKG).select();
 		
-		log.step("Open Hibernate mapping file wizard and go thorugh it");
 		NewHibernateMappingFileWizard wizard = new NewHibernateMappingFileWizard();
 		wizard.open();
 		NewHibernateMappingElementsSelectionPage2 selPage = new NewHibernateMappingElementsSelectionPage2();
-		selPage.selectItem("org.mapping.model.pkg");
+		selPage.selectItem(PCKG);
 		wizard.next();
 		NewHibernateMappingFilePage files = new NewHibernateMappingFilePage();
-		files.selectClasses("Owner");
+		assertEquals(2, files.getClasses().size());
 		wizard.next();
 		NewHibernateMappingPreviewPage preview = new NewHibernateMappingPreviewPage();
 		assertTrue("Preview text cannot be empty", !preview.getPreviewText().equals(""));
-		log.step("Finish wizard to create mapping files");
 		wizard.finish();
 		
-		log.step("Check the files");
 		pe.open();
 		
-		String clazz = "org.mapping.model.pkg";
-		
 		assertTrue("Hbm.xml not generated: Known issue(s): JBIDE-18769, JBIDE-20042",
-				pe.getProject(PRJ).containsItem("src",clazz,"Dog.hbm.xml"));
+				pe.getProject(PRJ).containsItem("Java Resources","src/main/java",PCKG,"Dog.hbm.xml"));
 		
-		pe.getProject(PRJ).getProjectItem("src",clazz,"Dog.hbm.xml").open();
+		pe.getProject(PRJ).getProjectItem("Java Resources","src/main/java",PCKG,"Dog.hbm.xml").open();
 		Hibernate3CompoundEditor hme = new Hibernate3CompoundEditor("Dog.hbm.xml");
 		hme.activateSourceTab();
 		String sourceText = hme.getSourceText();
 
 		
 		XPathHelper xph = XPathHelper.getInstance();
-		String table = xph.getMappingFileTable(clazz + ".Dog", sourceText);
+		String table = xph.getMappingFileTable(PCKG + ".Dog", sourceText);
 		assertTrue(table.equals("DOG"));
 		
 		pe.open();	
-		pe.getProject(PRJ).getProjectItem("src",clazz,"Owner.hbm.xml").open();
+		pe.getProject(PRJ).getProjectItem("Java Resources","src/main/java",PCKG,"Owner.hbm.xml").open();
 
 		hme = new Hibernate3CompoundEditor("Owner.hbm.xml");
 		hme.activateSourceTab();
 		sourceText = hme.getSourceText();
 
-		table = xph.getMappingFileTable(clazz + ".Owner", sourceText);
+		table = xph.getMappingFileTable(PCKG + ".Owner", sourceText);
 		assertEquals("OWNER", table);
 	}
 	
 	@Test
 	public void createMappingFileFromFile() {
 		
-		log.step("Select POJO model class");
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(PRJ).getProjectItem("src","org.mapping.model.file","Owner.java").select();
+		pe.getProject(PRJ).getProjectItem("Java Resources","src/main/java",PCKG_CLZ,"Owner.java").select();
 		
-		log.step("Open Hibernate mapping file wizard and go thorugh it");
 		NewHibernateMappingFileWizard wizard = new NewHibernateMappingFileWizard();
 		wizard.open();
 		NewHibernateMappingElementsSelectionPage2 selPage = new NewHibernateMappingElementsSelectionPage2();
@@ -114,17 +138,14 @@ public class MappingFileTest extends HibernateRedDeerTest {
 		wizard.next();
 		NewHibernateMappingPreviewPage preview = new NewHibernateMappingPreviewPage();
 		assertTrue("Preview text cannot be empty", !preview.getPreviewText().equals(""));
-		log.step("Finish wizard to create mapping file");
 		wizard.finish();
 		
-		log.step("Check the file");
 		pe.open();
-		String clazz = "org.mapping.model.file";
 		
 		assertTrue("Hbm.xml not generated: Known issue(s): JBIDE-18769, JBIDE-20042",
-				pe.getProject(PRJ).containsItem("src",clazz,"Owner.hbm.xml"));
+				pe.getProject(PRJ).containsItem("Java Resources","src/main/java",PCKG_CLZ,"Owner.hbm.xml"));
 
-		pe.getProject(PRJ).getProjectItem("src",clazz,"Owner.hbm.xml").open();
+		pe.getProject(PRJ).getProjectItem("Java Resources","src/main/java",PCKG_CLZ,"Owner.hbm.xml").open();
 		
 		String fileName = "Owner.hbm.xml";
 		Hibernate3CompoundEditor hme = new Hibernate3CompoundEditor(fileName);
@@ -132,14 +153,14 @@ public class MappingFileTest extends HibernateRedDeerTest {
 		String sourceText = hme.getSourceText();
 		
 		XPathHelper xph = XPathHelper.getInstance();
-		String table = xph.getMappingFileTable(clazz + ".Owner", sourceText);
+		String table = xph.getMappingFileTable(PCKG_CLZ + ".Owner", sourceText);
 		assertEquals("OWNER", table);
 	}
 	
 	//JBIDE-21766
 	@Test
 	public void createMappingFilePackageWithNoConfig(){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		ExplorerItemPropertyDialog pd = new ExplorerItemPropertyDialog(pe.getProject(PRJ));
 		pd.open();
@@ -152,7 +173,7 @@ public class MappingFileTest extends HibernateRedDeerTest {
 	//JBIDE-21766
 	@Test
 	public void createMappingFileWithNoConfig(){
-		PackageExplorer pe = new PackageExplorer();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		ExplorerItemPropertyDialog pd = new ExplorerItemPropertyDialog(pe.getProject(PRJ));
 		pd.open();

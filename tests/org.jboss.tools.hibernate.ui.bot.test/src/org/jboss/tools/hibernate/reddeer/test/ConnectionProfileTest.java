@@ -1,13 +1,22 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.test;
 
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.tools.hibernate.reddeer.factory.ConnectionProfileFactory;
-import org.jboss.tools.hibernate.reddeer.factory.DriverDefinitionFactory;
+import org.jboss.tools.hibernate.ui.bot.test.factory.ConnectionProfileFactory;
+import org.jboss.tools.hibernate.ui.bot.test.factory.DriverDefinitionFactory;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +34,6 @@ public class ConnectionProfileTest {
 
     @InjectRequirement
     private DatabaseRequirement dbRequirement;
-    private static final Logger log = Logger.getLogger(ConnectionProfileTest.class);
     
     @After
 	public void cleanUp() {
@@ -36,10 +44,7 @@ public class ConnectionProfileTest {
 	@Test
 	public void testConnectionProfile() {
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-		
-		log.step("Create database driver definition");
 		DriverDefinitionFactory.createDatabaseDriverDefinition(cfg);
-		log.step("Create connection profile");
 		ConnectionProfileFactory.createConnectionProfile(cfg);		
 	}
 	
