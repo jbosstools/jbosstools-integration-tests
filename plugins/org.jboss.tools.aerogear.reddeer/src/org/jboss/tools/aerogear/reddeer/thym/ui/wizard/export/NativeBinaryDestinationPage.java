@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.aerogear.reddeer.ui.wizard.export;
+package org.jboss.tools.aerogear.reddeer.thym.ui.wizard.export;
 
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.jface.wizard.WizardPage;
@@ -17,14 +17,14 @@ import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
-import org.jboss.tools.aerogear.reddeer.ui.preferences.AndroidPreferencesPage;
+import org.jboss.tools.aerogear.reddeer.thym.android.ui.preferences.AndroidPreferencesPage;
 
 /**
- * RedDeer implementation of Export Native Mobile Project Wizard page
+ * RedDeer implementation of Export Mobile Application Wizard page
  * @author Vlado Pakan
  *
  */
-public class ExportNativePlatformProjectPage extends WizardPage{
+public class NativeBinaryDestinationPage extends WizardPage{
   
   private static final Logger log = Logger.getLogger(AndroidPreferencesPage.class);
   /**

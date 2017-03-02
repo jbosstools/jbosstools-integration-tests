@@ -17,33 +17,35 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
+import static org.junit.Assert.*;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.condition.ShellIsAvailable;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.tools.aerogear.reddeer.ui.config.ConfigEditor;
-import org.jboss.tools.aerogear.reddeer.ui.wizard.NewTHYMProjectWizard;
+import org.jboss.tools.aerogear.reddeer.cordovasim.CordovaSimLauncher;
+import org.jboss.tools.aerogear.reddeer.thym.ui.config.ConfigEditor;
+import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.EngineConfigurationPage;
+import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.NewHybridProjectWizard;
+import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.ThymPlatform;
+import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.WizardNewHybridProjectCreationPage;
+import org.jboss.tools.cordovasim.rmi.ICordovasimHandler;
 import org.junit.After;
 import org.junit.BeforeClass;
 
@@ -54,6 +56,7 @@ import org.junit.BeforeClass;
  * @author Pavol Srna
  * 
  */
+@CleanWorkspace
 public class AerogearBotTest {
 	protected static final String CORDOVA_PROJECT_NAME = "CordovaTestProject";
 	protected static final String CORDOVA_APP_NAME = "CordovaTestApp";
@@ -66,6 +69,15 @@ public class AerogearBotTest {
 			ws.maximize();
 		}
 	}
+	
+	@After
+	public void tearDown() {
+		new CleanWorkspaceRequirement().fulfill();
+	}
+	
+	public static void createHTMLHybridMobileApplication(String projectName, String appName, String appId) {
+		createHTMLHybridMobileApplication(projectName, appName, appId, ThymPlatform.ANDROID, getLatestCordovaAndroid());
+	}
 
 	/**
 	 * Creates a new hybrid mobile project in workspace.
@@ -77,57 +89,30 @@ public class AerogearBotTest {
 	 *            - cordova-platform@version e.g. ("cordova-android@4.1.1",
 	 *            "cordova-ios@3.9.0" ..)
 	 */
-	public void createHTMLHybridMobileApplication(String projectName, String appName, String appId, String engine) {
+	public static void createHTMLHybridMobileApplication(String projectName, String appName, String appId, ThymPlatform engine, 
+			String engineVersion) {
 
-		NewTHYMProjectWizard w = new NewTHYMProjectWizard();
+		NewHybridProjectWizard w = new NewHybridProjectWizard();
 		w.open();
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new LabeledText("Project name:").setText(projectName);
-		new LabeledText("Name:").setText(appName);
-		new LabeledText("ID:").setText(appId);
+		
+		WizardNewHybridProjectCreationPage hpFirstPage = new WizardNewHybridProjectCreationPage();
+		hpFirstPage.setProjectName(projectName);
+		hpFirstPage.setAppName(appName);
+		hpFirstPage.setAppID(appId);
 		w.next();
-
-		String platform = engine.split("@")[0];
-
-		if (platform.contains("android")) {
-			DefaultTreeItem tiAndroid = new DefaultTreeItem("Android");
-			tiAndroid.expand();
-			try {
-				tiAndroid.getItem(engine).setChecked(true);
-			} catch (CoreLayerException e) {
-				// no item, need to download
-				downloadMobileEngine(engine); // download required version
-				tiAndroid = new DefaultTreeItem("Android");
-				tiAndroid.expand();
-				// select downloaded
-				tiAndroid.getItem(engine).setChecked(true);
-			}
-		} else if (engine.contains("ios")) {
-			DefaultTreeItem tiIOS = new DefaultTreeItem("iOS (XCode)");
-			tiIOS.expand();
-			try {
-				tiIOS.getItem(engine).setChecked(true);
-			} catch (CoreLayerException e) {
-				// no item, need to download
-				downloadMobileEngine(engine); // download required version
-				tiIOS = new DefaultTreeItem("iOS (XCode)");
-				tiIOS.expand();
-				// select downloaded
-				tiIOS.getItem(engine).setChecked(true);
-			}
+		
+		EngineConfigurationPage confPage = new EngineConfigurationPage();
+		List<ThymPlatform> availableEngines = confPage.getAvailableEngines();
+		assertTrue("Engine '"+engine.getText()+"' is not available",availableEngines.contains(engine));
+		List<String> availableVersions = confPage.getAvailableVersions(engine);
+		
+		if(!availableVersions.contains(engineVersion)){
+			//download requested version if not available
+			confPage.downloadEngineVersion(engine, engineVersion);
 		}
+		
+		confPage.selectEngine(engine, engineVersion);
 		w.finish();
-
-		// workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=502146
-		// close dialog
-		try {
-			Shell problemShell = new DefaultShell("Problem Occurred");
-			new PushButton("OK").click();
-			new WaitWhile(new ShellIsAvailable(problemShell));
-		} catch (SWTLayerException e) {
-			// expected, shell may not be shown in all cases
-		}
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		//check if config editor was opened & close
 		new ConfigEditor(appName).close();
 	}
@@ -150,11 +135,11 @@ public class AerogearBotTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
-	public void runTreeItemWithCordovaSim(String projectName) {
+	public ICordovasimHandler runCordovaSim(String projectName) {
 		getProjectExplorer().selectProjects(projectName);
-		new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run w/CordovaSim)")).select();
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitUntil(new ConsoleHasNoChange(TimePeriod.LONG), TimePeriod.VERY_LONG);
+		CordovaSimLauncher csLauncher = new CordovaSimLauncher();
+		return csLauncher.launchCordovaSim(
+				new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run w/CordovaSim)")));
 	}
 
 	/**
@@ -168,12 +153,6 @@ public class AerogearBotTest {
 		// check if correct editor was opened
 		new ConfigEditor(appName);
 		new WaitWhile(new JobIsRunning());
-	}
-
-	@After
-	public void tearDown() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
-		new CleanWorkspaceRequirement().fulfill();
 	}
 
 	/**
@@ -294,10 +273,14 @@ public class AerogearBotTest {
 		return runningJavaProcesses.size();
 	}
 
-	private ProjectExplorer getProjectExplorer() {
+	public ProjectExplorer getProjectExplorer() {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		return pe;
+	}
+	
+	protected static String getLatestCordovaAndroid(){
+		return (String)System.getProperty("cordova.android","cordova-android@5.2.2");
 	}
 
 }

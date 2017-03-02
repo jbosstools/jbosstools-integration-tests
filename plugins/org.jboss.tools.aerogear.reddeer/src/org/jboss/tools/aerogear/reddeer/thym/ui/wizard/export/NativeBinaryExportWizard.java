@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.aerogear.reddeer.ui.wizard.export;
+package org.jboss.tools.aerogear.reddeer.thym.ui.wizard.export;
 
 import org.jboss.reddeer.jface.wizard.ExportWizardDialog;
 
@@ -17,12 +17,12 @@ import org.jboss.reddeer.jface.wizard.ExportWizardDialog;
  * @author Vlado Pakan
  *
  */
-public class ExportMobileApplicationWizard extends ExportWizardDialog{
+public class NativeBinaryExportWizard extends ExportWizardDialog{
   
   private static final String[] PATH = new String[]{"Mobile", "Export Mobile Application"};
   
-  public ExportMobileApplicationWizard (){
-    super(ExportMobileApplicationWizard.PATH);
+  public NativeBinaryExportWizard (){
+    super(NativeBinaryExportWizard.PATH);
   }
 
 }
