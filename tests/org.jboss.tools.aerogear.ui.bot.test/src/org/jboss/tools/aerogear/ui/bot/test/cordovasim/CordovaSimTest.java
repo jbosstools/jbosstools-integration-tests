@@ -14,11 +14,7 @@ import static org.junit.Assert.*;
 
 import java.rmi.RemoteException;
 
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.tools.aerogear.reddeer.cordovasim.CordovaSimController;
+import org.jboss.tools.aerogear.reddeer.cordovasim.CordovaSimLauncher;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
 import org.jboss.tools.cordovasim.rmi.ICordovasimHandler;
 import org.junit.AfterClass;
@@ -27,24 +23,19 @@ import org.junit.Test;
 public class CordovaSimTest extends AerogearBotTest {
 	
 	protected static ICordovasimHandler csHandler;
-	private static CordovaSimController csController = new CordovaSimController();
 	public static final String APP_TEXT="Apache Cordova application powered by Eclipse Thym";
 	
 	@AfterClass
 	public static void closeCordova(){
-		csController.stopCordovasim();
+		CordovaSimLauncher.stopCordovasim();
 	}
 	
 	@Test
 	public void cordovaSimAppIsLoaded() throws RemoteException{
 		createHTMLHybridMobileApplication(AerogearBotTest.CORDOVA_PROJECT_NAME, AerogearBotTest.CORDOVA_APP_NAME,
-				"org.jboss.example.cordova", "cordova-android@4.1.0");
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.getProject(AerogearBotTest.CORDOVA_PROJECT_NAME).select();
+				"org.jboss.example.cordova");
 		
-		ContextMenu m = new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run w/CordovaSim)"));
-		csHandler = csController.launchCordovaSim(m);
+		ICordovasimHandler csHandler = runCordovaSim(CORDOVA_PROJECT_NAME);
 		String appText = csHandler.getBrowserText();
 		assertTrue("Cordova app text is browser "+appText, csHandler.getBrowserText().contains(APP_TEXT));
 	}

@@ -8,7 +8,7 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.aerogear.reddeer.ui.preferences;
+package org.jboss.tools.aerogear.reddeer.thym.android.ui.preferences;
 
 import org.jboss.reddeer.jface.preference.PreferencePage;
 import org.jboss.reddeer.common.logging.Logger;

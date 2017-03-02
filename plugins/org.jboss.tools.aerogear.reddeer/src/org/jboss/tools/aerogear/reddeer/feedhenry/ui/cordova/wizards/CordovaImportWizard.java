@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2013 Red Hat, Inc.
+ * Copyright (c) 2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -8,18 +8,21 @@
  * Contributors:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.aerogear.ui.bot.test;
+package org.jboss.tools.aerogear.reddeer.feedhenry.ui.cordova.wizards;
 
-import org.jboss.tools.aerogear.ui.bot.test.app.RunOnAndroid;
-import org.jboss.tools.aerogear.ui.bot.test.export.ExportMobileApplication;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite.SuiteClasses;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
 
-@SuiteClasses({ 
-  ExportMobileApplication.class,
-  RunOnAndroid.class })
-@RunWith(RedDeerSuite.class)
-public class AerogearNonMvnReadyBotTests {
+/**
+ * Reddeer implementation for Import Cordova Application wizard.
+ * @author Pavol Srna
+ *
+ */
+public class CordovaImportWizard extends ImportWizardDialog {
 
+	/**
+	 * Constructs the wizard with FeedHenry > Import Cordova Application
+	 */
+	public CordovaImportWizard() {
+		super("FeedHenry", "Import Cordova Application");
+	}
 }

@@ -13,8 +13,8 @@ package org.jboss.tools.aerogear.ui.bot.test.export;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.tools.aerogear.reddeer.ui.wizard.export.ExportMobileApplicationPage;
-import org.jboss.tools.aerogear.reddeer.ui.wizard.export.ExportMobileApplicationWizard;
+import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.export.NativeBinaryDestinationPage;
+import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.export.NativeBinaryExportWizard;
 import org.junit.Test;
 /**
  * Checks export of Hybrid Mobile project as Mobile application 
@@ -25,9 +25,9 @@ public class ExportMobileApplication extends ExportMobileTest {
 	@Test
 	public void testExportMobileApplication() {
 	  new ProjectExplorer().selectProjects(CORDOVA_PROJECT_NAME);
-	  ExportMobileApplicationWizard exportMobileApplicationWizard = new ExportMobileApplicationWizard();
+	  NativeBinaryExportWizard exportMobileApplicationWizard = new NativeBinaryExportWizard();
 	  exportMobileApplicationWizard.open();
-	  ExportMobileApplicationPage exportMobileApplicationPage = new ExportMobileApplicationPage();
+	  NativeBinaryDestinationPage exportMobileApplicationPage = new NativeBinaryDestinationPage();
 	  assertTrue("Project " + CORDOVA_PROJECT_NAME + " has to be selected",
 	    exportMobileApplicationPage.isProject(CORDOVA_PROJECT_NAME));
 	  exportMobileApplicationPage.setPlatform("Android",true);

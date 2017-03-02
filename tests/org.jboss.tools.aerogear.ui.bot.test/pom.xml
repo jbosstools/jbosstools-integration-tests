@@ -11,10 +11,10 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties}
-			-Dtest.configurations.dir=${configurations.dir}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dtest.configurations.dir=${configurations.dir} -Dcordova.android=${cordova.android}</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 		<suiteClass>org.jboss.tools.aerogear.ui.bot.test.AerogearAllBotTests</suiteClass>
+		<cordova.android>cordova-android@5.2.2</cordova.android>
 	</properties>
 
 	<build>

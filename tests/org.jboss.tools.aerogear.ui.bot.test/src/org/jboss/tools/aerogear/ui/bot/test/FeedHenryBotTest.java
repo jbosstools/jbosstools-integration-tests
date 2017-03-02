@@ -23,8 +23,8 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.tools.aerogear.reddeer.ui.preferences.FeedHenryPreferencesPage;
-import org.jboss.tools.aerogear.reddeer.ui.wizard.ImportCordovaApplicationWizard;
+import org.jboss.tools.aerogear.reddeer.feedhenry.ui.cordova.preferences.FeedHenryPreferencesPage;
+import org.jboss.tools.aerogear.reddeer.feedhenry.ui.cordova.wizards.CordovaImportWizard;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
@@ -56,7 +56,7 @@ public class FeedHenryBotTest {
 	}
 
 	public static void importApp(String project, String appName) {
-		ImportCordovaApplicationWizard w = new ImportCordovaApplicationWizard();
+		CordovaImportWizard w = new CordovaImportWizard();
 		w.open();
 		new WaitUntil(new TreeHasChildren(new DefaultTree()), TimePeriod.VERY_LONG);
 		new DefaultTreeItem(project, appName).setChecked(true);

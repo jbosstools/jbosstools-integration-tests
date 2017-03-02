@@ -23,7 +23,7 @@ public class OpenConfigEditor extends AerogearBotTest {
 	@Test
 	public void canOpenConfigXmlEditor() {
 		createHTMLHybridMobileApplication(AerogearBotTest.CORDOVA_PROJECT_NAME, AerogearBotTest.CORDOVA_APP_NAME,
-				"org.jboss.example.cordova", "cordova-android@4.1.0");
+				"org.jboss.example.cordova");
 		assertTrue(new ProjectExplorer().containsProject(AerogearBotTest.CORDOVA_PROJECT_NAME));
 		openInConfigEditor(CORDOVA_PROJECT_NAME, AerogearBotTest.CORDOVA_APP_NAME, "config.xml");
 

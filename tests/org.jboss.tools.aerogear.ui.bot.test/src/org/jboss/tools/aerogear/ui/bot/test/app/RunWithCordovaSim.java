@@ -14,8 +14,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.tools.aerogear.reddeer.cordovasim.CordovaSimLauncher;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
-import org.jboss.tools.browsersim.reddeer.BrowserSimHandler;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,20 +25,14 @@ public class RunWithCordovaSim extends AerogearBotTest {
 	@Before
 	public void setUp() {
 		createHTMLHybridMobileApplication(AerogearBotTest.CORDOVA_PROJECT_NAME, AerogearBotTest.CORDOVA_APP_NAME,
-				"org.jboss.example.cordova", "cordova-android@4.1.0");
+				"org.jboss.example.cordova");
 
 		assertTrue(new ProjectExplorer().containsProject(AerogearBotTest.CORDOVA_PROJECT_NAME));
 	}
 
 	@Test
 	public void canRunWithCordovaSim() {
-		new ProjectExplorer().selectProjects(CORDOVA_PROJECT_NAME);
-		final String cordovaSimProcessName = "CordovaSimRunner";
-		int countBrowserSimmProcesses = countJavaProcess(cordovaSimProcessName);
-		// this also asserts that CordovaSim runs without error within JBT
-		runTreeItemWithCordovaSim(CORDOVA_PROJECT_NAME);
-		assertTrue("No new CordovaSimm process was started",
-				countBrowserSimmProcesses + 1 == countJavaProcess(cordovaSimProcessName));
-		BrowserSimHandler.closeAllRunningInstances();
+		runCordovaSim(CORDOVA_PROJECT_NAME);
+		CordovaSimLauncher.stopCordovasim();
 	}
 }
