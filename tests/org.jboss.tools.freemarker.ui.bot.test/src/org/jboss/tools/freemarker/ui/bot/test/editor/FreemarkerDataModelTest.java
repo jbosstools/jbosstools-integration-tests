@@ -29,7 +29,22 @@ public class FreemarkerDataModelTest extends AbstractFreemarkerTest {
 		log.step("Run DataModel java class to check resulting output");
 		checkFreemMarkerOutput(true, 
 				"resources/results/data-model.txt", 
-				"", new String[] {"src", projectName, "DataModelTest.java"});
+				"Full name: John Smith\r\n"
+				+ "Age: 27\r\n"
+				+ "Male: true\r\n"
+				+ "Date of Birth: 1989.01.01\r\n"
+				+ "######\r\n"
+				+ "Full name: Alan Baker\r\n"
+				+ "Age: 28\r\n"
+				+ "Male: true\r\n"
+				+ "Date of Birth: 1990.01.01\r\n"
+				+ "######\r\n"
+				+ "Full name: Amy Tailor\r\n"
+				+ "Age: 29\r\n"
+				+ "Male: false\r\n"
+				+ "Date of Birth: 1991.01.01\r\n"
+				+ "######\r\n",
+				new String[] {"src", projectName, "DataModelTest.java"});
 		checkErrorLog();			
 	}
 	

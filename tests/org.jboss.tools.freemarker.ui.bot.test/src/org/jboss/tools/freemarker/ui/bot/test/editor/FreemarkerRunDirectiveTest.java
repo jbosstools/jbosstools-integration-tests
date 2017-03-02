@@ -26,7 +26,10 @@ public class FreemarkerRunDirectiveTest extends AbstractFreemarkerTest {
 	@Test 
 	public void autoEscDirectiveTest() {
 		log.step("Run AutoEscTest java class to check resulting output");
-		checkFreemMarkerOutput(false, "&amp;\n&\n&amp;\n", "", new String[] {"src", projectName, "AutoEscTest.java"});
+		checkFreemMarkerOutput(false,
+				"&amp;\n&\n&amp;\n",
+				"&amp;\r\n&\r\n&amp;\r\n",
+				new String[] {"src", projectName, "AutoEscTest.java"});
 		checkErrorLog();
 	}
 	
@@ -35,7 +38,8 @@ public class FreemarkerRunDirectiveTest extends AbstractFreemarkerTest {
 		log.step("Run CompressTest java class to check resulting output");
 		checkFreemMarkerOutput(true, 
 				"resources/results/compress.txt", 
-				"", new String[] {"src", projectName, "CompressTest.java"});
+				"(1 2 3 4 5\r\nmoo\ntest only\r\nI said, test only)",
+				new String[] {"src", projectName, "CompressTest.java"});
 		checkErrorLog();		
 	}
 	
@@ -44,7 +48,7 @@ public class FreemarkerRunDirectiveTest extends AbstractFreemarkerTest {
 		log.step("Run FunctionTest java class to check resulting output");
 		checkFreemMarkerOutput(true, 
 				"resources/results/function.txt", 
-				"", new String[] {"src", projectName, "FunctionTest.java"});
+				"15\r\n15\r\n25\r\nN/A", new String[] {"src", projectName, "FunctionTest.java"});
 		checkErrorLog();		
 	}
 	
@@ -53,7 +57,9 @@ public class FreemarkerRunDirectiveTest extends AbstractFreemarkerTest {
 		log.step("Run FunctionTest java class to check resulting output");
 		checkFreemMarkerOutput(true, 
 				"resources/results/include.txt", 
-				"", new String[] {"src", projectName, "IncludeTest.java"});
+				"<h1>Header 1 text</h1>\r\n<p>Yeah.</p>\r\n<hr>\r\n"
+				+ "Copyright 2015-2016 Bart Wolf<br>\r\nAll rights reserved.",
+				new String[] {"src", projectName, "IncludeTest.java"});
 		checkErrorLog();		
 	}
 	
@@ -62,7 +68,7 @@ public class FreemarkerRunDirectiveTest extends AbstractFreemarkerTest {
 		log.step("Run IfTest java class to check resulting output");
 		checkFreemMarkerOutput(false, 
 				"x=1\nx!=1, y=1", 
-				"", new String[] {"src", projectName, "IfTest.java"});
+				"x=1\r\nx!=1, y=1\r\n", new String[] {"src", projectName, "IfTest.java"});
 		checkErrorLog();		
 	}
 	
@@ -71,7 +77,10 @@ public class FreemarkerRunDirectiveTest extends AbstractFreemarkerTest {
 		log.step("Run NoParse java class to check resulting output");
 		checkFreemMarkerOutput(true, 
 				"resources/results/noparse.txt", 
-				"", new String[] {"src", projectName, "NoParseTest.java"});
+				"<#list animals as animal>\r\n<tr>"
+				+ "<td>${animal.name}<td>"
+				+ "${animal.price} Euros\r\n</#list>\r\n",
+				new String[] {"src", projectName, "NoParseTest.java"});
 		checkErrorLog();			
 	}
 	
@@ -80,7 +89,8 @@ public class FreemarkerRunDirectiveTest extends AbstractFreemarkerTest {
 		log.step("Run Setting java class to check resulting output");
 		checkFreemMarkerOutput(true, 
 				"resources/results/settings.txt", 
-				"", new String[] {"src", projectName, "SettingTest.java"});
+				"1.2\r\n1,2\r\ntrue, false\r\nY, N",
+				new String[] {"src", projectName, "SettingTest.java"});
 		checkErrorLog();		
 	}
 	
@@ -89,7 +99,9 @@ public class FreemarkerRunDirectiveTest extends AbstractFreemarkerTest {
 		log.step("Run List java class to check resulting output");
 		checkFreemMarkerOutput(true, 
 				"resources/results/list.txt", 
-				"", new String[] {"src", projectName, "ListTest.java"});
+				"<p>Alan</p>\r\n<p>Benjamin</p>\r\n"
+				+ "<p>Cecile</p>\r\n<p>No users</p>\r\n",
+				new String[] {"src", projectName, "ListTest.java"});
 		checkErrorLog();		
 	}
 }
