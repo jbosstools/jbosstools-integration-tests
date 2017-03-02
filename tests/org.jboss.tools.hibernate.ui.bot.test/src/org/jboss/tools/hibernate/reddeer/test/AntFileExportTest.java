@@ -1,27 +1,29 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.test;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.hibernate.reddeer.factory.HibernateToolsFactory;
+import org.jboss.tools.hibernate.reddeer.codegen.ExportAntCodeGenWizard;
+import org.jboss.tools.hibernate.reddeer.codegen.ExportAntCodeGenWizardPage;
+import org.jboss.tools.hibernate.reddeer.dialog.LaunchConfigurationsDialog;
 import org.jboss.tools.hibernate.reddeer.perspective.HibernatePerspective;
-import org.jboss.tools.hibernate.reddeer.wizard.ExportAntCodeGenWizard;
-import org.jboss.tools.hibernate.reddeer.wizard.ExportAntCodeGenWizardPage;
+import org.jboss.tools.hibernate.ui.bot.test.factory.HibernateToolsFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +40,6 @@ public class AntFileExportTest extends HibernateRedDeerTest {
 	private final String PRJ = "antconfiguration";
 	private final String GEN_NAME = "genconfiguration";
 	private final String ANTFILE_NAME = "build.xml";
-	private static final Logger log = Logger.getLogger(AntFileExportTest.class);
 	
 
     @InjectRequirement    
@@ -47,11 +48,7 @@ public class AntFileExportTest extends HibernateRedDeerTest {
     @Before
 	public void testConnectionProfile() {
     	DatabaseConfiguration cfg = dbRequirement.getConfiguration();
-    	
-    	log.step("Import project with hibernate configuration and hibernate code generation configuration");
     	importProject(PRJ, null);		
-		
-    	log.step("Create configuration file for the project");
 		HibernateToolsFactory.createConfigurationFile(cfg, PRJ, "hibernate.cfg.xml", true);
 	}
     
@@ -61,35 +58,27 @@ public class AntFileExportTest extends HibernateRedDeerTest {
     	HibernatePerspective p = new HibernatePerspective();
     	p.open();
     	
-    	new ShellMenu("Run", "Hibernate Code Generation...","Hibernate Code Generation Configurations...").select();
-    	new WaitUntil(new ShellWithTextIsAvailable("Hibernate Code Generation Configurations"));
-    	new DefaultTreeItem("Hibernate Code Generation",GEN_NAME).select();
-    	new LabeledCombo("Console configuration:").setSelection(PRJ);
-    	
-    	new PushButton("Apply").click();
-    	new PushButton("Close").click();
-    	
-    	new WaitWhile(new ShellWithTextIsAvailable("Hibernate Code Generation Configurations"));
-    	new WaitWhile(new JobIsRunning());
+    	LaunchConfigurationsDialog launchDialog = new LaunchConfigurationsDialog();
+    	launchDialog.open();
+    	launchDialog.selectHibernateCodeGeneration(GEN_NAME);
+    	launchDialog.selectConfiguration(PRJ);
+    	launchDialog.apply();
+    	launchDialog.close();
     	    	
     	PackageExplorer pe = new PackageExplorer();    
     	pe.open();
     	pe.selectProjects(PRJ);
     	
-    	log.step("Open export wizard (Export ->  Hibernate -> Ant Code Generation)");
     	ExportAntCodeGenWizard w = new ExportAntCodeGenWizard();
     	w.open();
     	ExportAntCodeGenWizardPage page = new ExportAntCodeGenWizardPage();
     	page.setHibernateGenConfiguration(GEN_NAME);
     	page.setAntFileName(ANTFILE_NAME);
     	
-    	log.step("Click finish to export ant file");
     	w.finish();
-    	new WaitWhile(new JobIsRunning());  	
     	
-    	log.step("Open the exported ant file");
     	pe.open();
-    	new DefaultTreeItem(PRJ,ANTFILE_NAME).doubleClick();
+    	pe.getProject(PRJ).getProjectItem(ANTFILE_NAME).open();
     	
     	assertTrue("Ant file cannot be ampty", new TextEditor(ANTFILE_NAME).getText().length() > 0);
     }

@@ -1,9 +1,19 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.Collection;
 
-import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
@@ -11,15 +21,18 @@ import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationMainPage;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationMainPage.PredefinedConnection;
+import org.jboss.tools.hibernate.reddeer.console.views.KnownConfigurationsView;
+import org.jboss.tools.hibernate.reddeer.console.wizards.NewConfigurationFirstPage;
+import org.jboss.tools.hibernate.reddeer.console.wizards.NewConfigurationWizard;
+import org.jboss.tools.hibernate.reddeer.console.wizards.NewConfigurationWizardPage;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationShell;
-import org.jboss.tools.hibernate.reddeer.console.KnownConfigurationsView;
-import org.jboss.tools.hibernate.reddeer.console.NewConfigurationLocationPage;
-import org.jboss.tools.hibernate.reddeer.console.NewConfigurationSettingPage;
-import org.jboss.tools.hibernate.reddeer.console.NewHibernateConfigurationWizard;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
+import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
 /**
  * Console configuration test
@@ -28,17 +41,35 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
+@UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
 @Database(name="testdb")
 public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 
-	private String PROJECT_NAME = "consoletest";
-	protected  Map<String,String> libraries = new HashMap<String, String>() {{
-	    put("hsqldb-2.3.4.jar",null);
-	}};
-	private String HIBERNATE_CFG_FILE="/" + PROJECT_NAME + "/src/hibernate.cfg.xml";
+	@Parameter
+	public String prjName;
+	
+	@Parameter(1)
+	public String hbVersion;
+	
+	private String HIBERNATE_CFG_FILE="src/hibernate.cfg.xml";
 	private String CONSOLE_NAME="hibernateconsoletest";
 	
-	private static final Logger log = Logger.getLogger(ConsoleConfigurationTest.class);
+	
+	
+	
+	
+	@Parameters(name="hibernate {1}")
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][] {
+        		{"mvn-hibernate35", "3.5"}, 
+        		{"mvn-hibernate36", "3.6"}, 
+        		{"mvn-hibernate40", "4.0"}, 
+        		{"mvn-hibernate43", "4.3"}, 
+        		{"mvn-hibernate50", "5.0"}, 
+        		{"mvn-hibernate51", "5.1"},
+        		{"mvn-hibernate52", "5.2"}
+           });
+    }
 	
     @InjectRequirement    
     private DatabaseRequirement dbRequirement;
@@ -46,8 +77,7 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 	
 	@Before 
 	public void prepare() {
-		log.step("Import test project");
-		importProject(PROJECT_NAME,libraries);			
+		importMavenProject(prjName);	
 	}
 	
 	@After 
@@ -60,85 +90,43 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 	}
 	
 	@Test 
-	public void testConsoleConfiguration35() {
-		createConsoleConfiguration("3.5");
-	}
-
-	@Test 
-	public void testConsoleConfiguration36() {
-		createConsoleConfiguration("3.6");
-	}
-
-	@Test 
-	public void testConsoleConfiguration40() {
-		createConsoleConfiguration("4.0");
-	}
-
-	@Test 
-	public void testConsoleConfiguration43() {
-		createConsoleConfiguration("4.3");
-	}
-	
-	@Test 
-	public void testConsoleConfiguration50() {
-		createConsoleConfiguration("5.0");
-	}
-	
-	@Test 
-	public void testConsoleConfiguration51() {
-		createConsoleConfiguration("5.1");
-	}
-	
-	@Test 
-	public void testConsoleConfiguration52() {
-		createConsoleConfiguration("5.2");
-	}
-	
-	private void createConsoleConfiguration(String hibernateVersion) {
-		prepareConsoleConfigurationFile(hibernateVersion);
-		prepareConsoleConfiguration(hibernateVersion);
+	public void testConsoleConfiguration() {
+		prepareConsoleConfigurationFile(hbVersion);
+		prepareConsoleConfiguration(hbVersion);
 	}
 	
 	public void prepareConsoleConfigurationFile(String hibernateVersion) {		
 		DatabaseConfiguration cfg = dbRequirement.getConfiguration();
 		
-		log.step("Open Hibernate Configuration File wizard");
-		NewHibernateConfigurationWizard wizard = new NewHibernateConfigurationWizard();
+		NewConfigurationWizard wizard = new NewConfigurationWizard();
 		wizard.open();
-		log.step("Set hibernate configuration values");
-		NewConfigurationLocationPage p1 = new NewConfigurationLocationPage();
-		p1.setLocation(PROJECT_NAME,"src");
+		NewConfigurationFirstPage p1 = new NewConfigurationFirstPage();
+		p1.setLocation(prjName,"src");
 		wizard.next();
 
-		NewConfigurationSettingPage p2 = new NewConfigurationSettingPage();
+		NewConfigurationWizardPage p2 = new NewConfigurationWizardPage();
 		p2.setDatabaseDialect("H2");
 		p2.setDriverClass(cfg.getDriverClass());
 		p2.setConnectionURL(cfg.getJdbcString());
 		p2.setUsername(cfg.getUsername());
 		p2.setHibernateVersion(hibernateVersion);
-		log.step("Finish");
 		wizard.finish();
 	}
 
 	public void prepareConsoleConfiguration(String hibernateVersion) {
-		log.step("Open Hibernate Console Configuration view");
 		KnownConfigurationsView v = new KnownConfigurationsView();
 		v.open();
-		log.step("Add new configuration");
-		v.triggerAddConfigurationDialog();
+		EditConfigurationShell s = v.addConfiguration();
 		
-		EditConfigurationShell s = new EditConfigurationShell();
 		s.setName(CONSOLE_NAME);		
 				
 		EditConfigurationMainPage p = s.getMainPage();		
 				
-		p.setProject(PROJECT_NAME);
-		p.setDatabaseConnection(PredefinedConnection.JPA_PROJECT_CONFIGURED_CONNECTION);
+		p.setProject(prjName);
 		p.setDatabaseConnection(PredefinedConnection.HIBERNATE_CONFIGURED_CONNECTION);		
-		p.setConfigurationFile(HIBERNATE_CFG_FILE);
+		p.setConfigurationFile("/"+prjName+"/"+HIBERNATE_CFG_FILE);
 		p.setHibernateVersion(hibernateVersion);
 		//ANY ERROR IN WIZARD ??
-		log.step("Press OK");
 		s.ok();
 		
 		v.open();
@@ -146,6 +134,6 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		s2.close();
 		
 		v.open();
-		v.selectNode(CONSOLE_NAME,"Database","SAKILA.PUBLIC","ACTOR"); //TODO FIX THIS - SEE INSIDE
+		v.selectNode(CONSOLE_NAME,"Database","SAKILA.PUBLIC","ACTOR");
 	}
 }
