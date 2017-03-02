@@ -31,8 +31,8 @@ import org.jboss.tools.forge.reddeer.ui.wizard.EntitiesFromTablesWizardFirstPage
 import org.jboss.tools.forge.reddeer.ui.wizard.EntitiesFromTablesWizardSecondPage;
 import org.jboss.tools.forge.ui.bot.test.util.DatabaseUtils;
 import org.jboss.tools.forge.ui.bot.test.util.ScaffoldType;
-import org.jboss.tools.hibernate.reddeer.wizard.JBossDatasourceWizard;
-import org.jboss.tools.hibernate.reddeer.wizard.NewJBossDatasourceWizardPage;
+import org.jboss.tools.hibernate.reddeer.wizard.NewDSXMLWizard;
+import org.jboss.tools.hibernate.reddeer.wizard.WizardNewDSXMLFileCreationPage;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -98,9 +98,9 @@ public class DeployScaffoldDBTest extends WizardTestBase {
 	}
 
 	public void createJBOSSDatasource() {
-		JBossDatasourceWizard wizard = new JBossDatasourceWizard();
+		NewDSXMLWizard wizard = new NewDSXMLWizard();
 		wizard.open();
-		NewJBossDatasourceWizardPage page = new NewJBossDatasourceWizardPage();
+		WizardNewDSXMLFileCreationPage page = new WizardNewDSXMLFileCreationPage();
 		page.setConnectionProfile(PROFILE_NAME);
 		page.setParentFolder("/" + PROJECT_NAME + "/src/main/resources");
 		new PushButton("Finish").click();

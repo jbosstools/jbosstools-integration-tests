@@ -1,12 +1,19 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.dialog;
 
 import org.eclipse.swt.widgets.Shell;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.core.handler.WidgetHandler;
-import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -29,7 +36,7 @@ import org.jboss.tools.hibernate.reddeer.perspective.HibernatePerspective;
  *
  * @author Jiri Peterka
  */
-public class LaunchConfigurationsDialog {
+public class LaunchConfigurationsDialog extends DefaultShell{
 
 	public static final String DIALOG_TITLE = "Hibernate Code Generation Configurations";
 
@@ -41,7 +48,7 @@ public class LaunchConfigurationsDialog {
     	p.open();
     	
     	new ShellMenu("Run", "Hibernate Code Generation...","Hibernate Code Generation Configurations...").select();
-    	new DefaultShell(DIALOG_TITLE);
+    	swtShell = new DefaultShell(DIALOG_TITLE).getSWTWidget();
 	}
 
 	/**
@@ -50,6 +57,10 @@ public class LaunchConfigurationsDialog {
 	public void createNewConfiguration() {
 		new DefaultTreeItem("Hibernate Code Generation").select();
 		new DefaultToolItem("New launch configuration").click();
+	}
+	
+	public void selectHibernateCodeGeneration(String genName){
+		new DefaultTreeItem("Hibernate Code Generation", genName).select();
 	}
 		
 	/**
@@ -124,27 +135,16 @@ public class LaunchConfigurationsDialog {
 	 */
 	public void apply() {
 		new PushButton("Apply").click();
-	}
-	
-
-	/**
-	 * Presses Ok button on the Dialog. 
-	 */
-	public void ok() {
-		new WaitUntil(new ShellWithTextIsAvailable(DIALOG_TITLE));
-		PushButton ok = new PushButton("OK");
-		new WaitUntil(new WidgetIsEnabled(ok));
-		ok.click();
-		new WaitWhile(new ShellWithTextIsAvailable(DIALOG_TITLE)); 
+		new WaitWhile(new JobIsRunning());
 	}
 
 	/**
-	 * Presses Cancel button on the Dialog. 
+	 * Presses Close button on the Dialog. 
 	 */
-	public void cancel() {
-		CancelButton cancel = new CancelButton();
-		cancel.click();
-		new WaitWhile(new ShellWithTextIsAvailable(DIALOG_TITLE));
+	public void close() {
+		new PushButton("Close").click();
+		new WaitWhile(new ShellIsAvailable(this)); 
+		new WaitWhile(new JobIsRunning());
 	}
 	
 	/**
