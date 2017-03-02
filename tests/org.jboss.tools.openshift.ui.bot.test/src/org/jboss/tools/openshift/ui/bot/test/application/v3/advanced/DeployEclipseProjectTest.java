@@ -13,6 +13,7 @@ package org.jboss.tools.openshift.ui.bot.test.application.v3.advanced;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.apache.commons.lang.StringUtils;
 import org.hamcrest.core.StringContains;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
@@ -26,6 +27,7 @@ import org.jboss.reddeer.eclipse.condition.ProjectExists;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.api.Browser;
 import org.jboss.reddeer.swt.condition.PageIsLoaded;
 import org.jboss.reddeer.swt.condition.TableContainsItem;
@@ -53,8 +55,12 @@ import org.jboss.tools.openshift.reddeer.condition.OpenShiftProjectExists;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
+import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
+import org.jboss.tools.openshift.reddeer.utils.v3.OpenShift3NativeProjectUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftResource;
@@ -62,14 +68,19 @@ import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizar
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.TemplateParametersTest;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+@RequiredBasicConnection
 public class DeployEclipseProjectTest {
 
 	private static String HTTPS_REPO = "https://github.com/mlabuda/jboss-eap-application.git";
 	private static String GIT_NAME = "jboss-eap-application";
 	private static String PROJECT_NAME = "jboss-javaee6-webapp";
+	
+	@InjectRequirement
+	private OpenShiftConnectionRequirement connectionReq;
 	
 	@BeforeClass
 	public static void importEAPProjectAndStashChanges() {
@@ -79,6 +90,12 @@ public class DeployEclipseProjectTest {
 		importProject();
 	
 		commitChanges();
+	}
+	
+	@Before
+	public void setUp() {
+		OpenShift3NativeProjectUtils.getOrCreateProject(DatastoreOS3.PROJECT1,
+				DatastoreOS3.PROJECT1_DISPLAYED_NAME, StringUtils.EMPTY, connectionReq.getConnection());
 	}
 	
 	private static void importProject() {
@@ -134,6 +151,14 @@ public class DeployEclipseProjectTest {
 		new WorkbenchView("Git Staging").activate();
 		new DefaultStyledText().setText("Commit from IDE");
 		new PushButton(OpenShiftLabel.Button.COMMIT).click();
+		
+		try {
+			// no files were changed
+			new DefaultShell("Committing is not possible");
+			new OkButton().click();
+		} catch (RedDeerException ex) {
+			// do nothing
+		}
 		
 		new WaitWhile(new JobIsRunning());
 	}

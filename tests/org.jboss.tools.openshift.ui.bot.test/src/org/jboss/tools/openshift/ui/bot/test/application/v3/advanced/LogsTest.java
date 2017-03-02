@@ -28,7 +28,9 @@ import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.common.reddeer.perspectives.JBossPerspective;
 import org.jboss.tools.openshift.reddeer.condition.ConsoleHasSomeText;
+import org.jboss.tools.openshift.reddeer.condition.PodsAreDeployed;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
+import org.jboss.tools.openshift.reddeer.requirement.CleanOpenShiftConnectionRequirement.CleanConnection;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement.OCBinary;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
@@ -50,6 +52,7 @@ import org.junit.runner.RunWith;
 @OpenPerspective(JBossPerspective.class)
 @OCBinary
 @RequiredBasicConnection()
+@CleanConnection
 @RequiredProject()
 @RequiredService(service=OpenShiftResources.EAP_SERVICE, template=OpenShiftResources.EAP_TEMPLATE)
 public class LogsTest {
@@ -78,9 +81,12 @@ public class LogsTest {
 		explorer.open();
 		explorer.activate();
 		
-		this.consoleView = new ConsoleView();
-		this.consoleView.open();
+		OpenShift3Connection os3Connection = explorer.getOpenShift3Connection(requiredConnection.getConnection());		
+		new WaitUntil(new PodsAreDeployed(os3Connection.getProject(requiredProject.getProjectName()),
+				requiredService.getReplicationController().getName(), 1));
 		
+		this.consoleView = new ConsoleView();
+		this.consoleView.open();		
 	}
 
 	@Test
