@@ -83,6 +83,7 @@ public abstract class AbstractJobXMLSourceTest extends DesignFlowElementsTestTem
 		String textToFind = referencingParam + referenceID;
 		int offset = editor.getSourcePage().getPositionOfText(textToFind, index);
 		if (offset != -1) {
+			editor.activate();
 			editor.getSourcePage().setCursorPosition(offset + textToFind.length());
 			KeyboardFactory.getKeyboard().type("x");
 			editor.save();
