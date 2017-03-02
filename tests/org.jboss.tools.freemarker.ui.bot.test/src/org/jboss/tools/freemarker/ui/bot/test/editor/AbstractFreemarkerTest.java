@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.freemarker.ui.bot.test.editor;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
@@ -344,9 +343,7 @@ public abstract class AbstractFreemarkerTest {
 		String consoleText = cv.getConsoleText();
 		
 		if (!consoleText.equals(outputExpected)) {
-			log.error("Console text doesn't correspond with expected text");
-			log.dump("Console text:\n" + consoleText);
-			log.dump("Expected text:\n" + outputExpected);
+
 		}
 		// workaround for slightly different format on Windows
 		compareConsoleToOutput(consoleText, outputExpected, alternateOutput);
@@ -364,16 +361,32 @@ public abstract class AbstractFreemarkerTest {
 	 */
 	private void compareConsoleToOutput(String console, String output, String alternateOutput) {
 		if (RunningPlatform.isWindows() && alternateOutput != null && alternateOutput.length() > 0) {
-			log.info("Testing alternative output for windows platform: " + alternateOutput);
-			assertTrue("Console text does not contains expected text", 
-					console.contains(alternateOutput));
-		} else if (console.equals(output)) {
-			log.info("Console text corresponds to expected output");
-		} else if (console.trim().equals(output.trim())) {
-			log.info("Console text corresponds to expected output after trimming");
-		} else {
-			fail("Console text does not corresponds to the expected output");
+			log.info("Testing alternative output for windows platform: \n" + alternateOutput);
+			output = alternateOutput.replaceAll("(\\r|\\n|\\r\\n)+", System.lineSeparator());
+			console = console.replaceAll("(\\r|\\n|\\r\\n)+", System.lineSeparator());
 		}
+		checkOutput(console, output);
+	}
+	
+	/**
+	 * Compares two test outputs and reports error if text objects does not match
+	 * after calling equals, equals (with trimmed text) and contains with trimmed methods
+	 * @param consoleText text obtained from console
+	 * @param expectedText 
+	 */
+	private void checkOutput(String consoleText, String expectedText) {
+		if (consoleText.equals(expectedText)) {
+			log.info("Console text corresponds to expected output");
+		} else if (consoleText.trim().equals(expectedText.trim())) {
+			log.info("Console text corresponds to expected output after trimming");
+		} else if (consoleText.trim().contains(expectedText.trim())) {
+			log.info("Console text contains expected output after trimming");
+		} else {
+			log.error("Console text doesn't correspond with expected text");
+			log.dump("Console text:\n" + consoleText);
+			log.dump("Expected text:\n" + expectedText);
+			fail("Console text does not corresponds to the expected output");
+		}		
 	}
 	
 	/**
