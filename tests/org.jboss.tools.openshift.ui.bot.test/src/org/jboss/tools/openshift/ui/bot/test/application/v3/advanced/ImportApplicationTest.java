@@ -91,6 +91,7 @@ public class ImportApplicationTest extends AbstractCreateApplicationTest {
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
 		
 		new NextButton().click();
+		TestUtils.acceptSSLCertificate();
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 			

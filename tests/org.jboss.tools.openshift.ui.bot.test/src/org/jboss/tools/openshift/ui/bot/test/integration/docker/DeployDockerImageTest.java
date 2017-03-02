@@ -33,6 +33,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.junit.screenshot.CaptureScreenshotException;
 import org.jboss.reddeer.junit.screenshot.ScreenshotCapturer;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.TreeContainsItem;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
@@ -130,6 +131,13 @@ public class DeployDockerImageTest {
 				dockerExplorer.createDockerConnectionUnix(DOCKER_CONNECTION, 
 						"unix:///var/run/docker.sock");
 			}
+		} else if (RunningPlatform.isLinux() && connectionsNames.size() > 1) {
+			for (String name : connectionsNames) {
+				if (name.startsWith("unix:///var/run/docker.sock")) {
+					DOCKER_CONNECTION = name;
+					break;
+				}
+			}
 		} else {
 			DOCKER_CONNECTION = connectionsNames.get(0);
 		}
@@ -140,7 +148,12 @@ public class DeployDockerImageTest {
 	 */
 	private static void pullHelloImageIfDoesNotExist() {
 		DockerExplorerView dockerExplorer = new DockerExplorerView();
-		DockerConnection dockerConnection = dockerExplorer.getDockerConnectionByName(DOCKER_CONNECTION); 
+		DockerConnection dockerConnection = dockerExplorer.getDockerConnectionByName(DOCKER_CONNECTION);
+		
+		dockerConnection.getTreeItem().expand();
+		new WaitWhile(new TreeContainsItem(dockerConnection.getTreeItem().getParent(),
+				dockerConnection.getTreeItem().getText(), "Loading..."));
+		
 		if (dockerConnection.getImage(HELLO_OS_DOCKER_IMAGE, TAG) == null) {
 			dockerConnection.pullImage(HELLO_OS_DOCKER_IMAGE, TAG);
 		}
@@ -219,7 +232,7 @@ public class DeployDockerImageTest {
 				openshiftConnectionRequirement.getConnection()).refresh();
 		try {
 			new WaitUntil(new OpenShiftResourceExists(Resource.POD, new StringContains("hello-openshift"),
-				ResourceState.RUNNING, projectName), TimePeriod.getCustom(240));
+				ResourceState.RUNNING, projectName), TimePeriod.VERY_LONG);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("There should be a running application pod for a deployed docker image, "
 					+ "but it does not exist.");
