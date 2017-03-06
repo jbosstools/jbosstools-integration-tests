@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
  org.jboss.ide.eclipse.as.reddeer;bundle-version="[3.2.3,3.3.0)",
  org.jboss.tools.livereload.core,
- org.eclipse.wst.server.core
+ org.eclipse.wst.server.core,
+ com.spotify.docker.client;bundle-version="3.4.0"
 Bundle-ClassPath: .
 Export-Package: org.jboss.tools.livereload.reddeer,
  org.jboss.tools.livereload.reddeer.requirement,

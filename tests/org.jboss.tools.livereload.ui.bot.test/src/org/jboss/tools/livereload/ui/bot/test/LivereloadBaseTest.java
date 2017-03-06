@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.livereload.ui.bot.test;
 
+import java.util.List;
+
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -18,9 +21,12 @@ import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
 import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPublishState;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
+import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.YesButton;
@@ -31,6 +37,7 @@ import org.jboss.tools.jst.reddeer.wst.html.ui.wizard.NewHTMLFileWizardDialog;
 import org.jboss.tools.jst.reddeer.wst.html.ui.wizard.NewHTMLFileWizardHTMLPage;
 import org.junit.BeforeClass;
 
+@CleanWorkspace
 public class LivereloadBaseTest {
 	
 	public static final String PROJECT_NAME="WebProject";
@@ -70,6 +77,15 @@ public class LivereloadBaseTest {
 		new WaitUntil(new ConsoleHasText("Deployed \""+projectName+".war\""),TimePeriod.LONG);
 	}
 	
+	public void deployProjectToRemoteServer(String server, String projectName){
+		ServersView sw = new ServersView();
+		sw.open();
+		ModifyModulesDialog md = sw.getServer(server).addAndRemoveModules();
+		new ModifyModulesPage().add(projectName);
+		md.finish();
+		new WaitUntil(new ModuleIsDeployed(server, projectName), TimePeriod.LONG);
+	}
+	
 	public void injectLivereload(String server, String projectName){
 		ServersView sw = new ServersView();
 		sw.open();
@@ -78,10 +94,36 @@ public class LivereloadBaseTest {
 		Shell s =new DefaultShell("LiveReload");
 		new YesButton().click();
 		new WaitWhile(new ShellIsAvailable(s));
-		new WaitWhile(new JobIsRunning());
-		
+		new WaitWhile(new JobIsRunning());		
 		new DefaultShell("Open").close();
 		new WaitWhile(new JobIsRunning());
+	}
+	
+	private class ModuleIsDeployed extends AbstractWaitCondition {
+		
+		private String server;
+		private String module;
+		
+		public ModuleIsDeployed(String server, String module) {
+			this.server = server;
+			this.module = module;
+		}
+
+		@Override
+		public boolean test() {
+			ServersView sw = new ServersView();
+			sw.open();
+			List<ServerModule> modules = sw.getServer(server).getModules();
+			if(modules == null || modules.isEmpty()) {
+				return false;
+			}
+			for(ServerModule m: modules) {
+				return m.getLabel().getName().equals(module) && m.getLabel().getPublishState().equals(ServerPublishState.SYNCHRONIZED);
+			}
+			return false;
+			
+		}
+		
 	}
 
 }
