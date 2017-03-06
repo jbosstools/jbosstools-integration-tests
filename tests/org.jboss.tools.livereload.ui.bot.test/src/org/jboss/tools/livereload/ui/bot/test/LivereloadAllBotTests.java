@@ -16,7 +16,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({	
-	LivereloadTest.class
+	LivereloadTest.class,
+	LivereloadRemoteServerTest.class
 })
 public class LivereloadAllBotTests {
 
