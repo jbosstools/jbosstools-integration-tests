@@ -59,7 +59,6 @@
 				<module>org.jboss.tools.mylyn.ui.bot.test</module>
 				<module>org.jboss.tools.openshift.ui.bot.test</module>
 				<module>org.jboss.tools.portlet.bot.test</module>
-				<module>org.jboss.tools.seam.ui.bot.test</module>
 				<module>org.jboss.tools.vpe.bot.test</module>
 				<module>org.jboss.tools.ws.ui.bot.test</module>
 				<module>org.jboss.tools.perf.test</module>
