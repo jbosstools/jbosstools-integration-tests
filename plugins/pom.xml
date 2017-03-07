@@ -21,8 +21,6 @@
 		<module>org.jboss.tools.easymport.reddeer</module>
 		<module>org.jboss.tools.forge.reddeer</module>
 		<module>org.jboss.tools.hibernate.reddeer</module>
-		<module>org.jboss.tools.jst.ui.bot</module>
-		<module>org.jboss.tools.ui.bot.ext</module>
 		<module>org.jboss.tools.jst.reddeer</module>
 		<module>org.jboss.tools.seam.reddeer</module>
 		<module>org.jboss.tools.perf.test.core</module>
