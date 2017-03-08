@@ -45,7 +45,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.List;
 import java.util.Map;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -145,6 +144,8 @@ public class HibernateRedDeerTest {
 		deleteHibernateConfigurations();
 		CleanWorkspaceRequirement req = new CleanWorkspaceRequirement();
 		req.fulfill();
+		deleteHibernateConfigurations();
+		//windows is not able to delete sometimes due to locked files
 	}
 	
 	protected void prepareMvn(String project, String hbVersion) {
@@ -170,7 +171,6 @@ public class HibernateRedDeerTest {
 			v.deleteConsoleConfiguration(i.getText());
 		}
 	}
-	
 }	
 
 
