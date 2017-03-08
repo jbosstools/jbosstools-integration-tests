@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.jpt.ui.wizard;
 
+import java.util.List;
+
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
@@ -54,5 +56,25 @@ public class GenerateDdlWizardPage extends WizardPage {
 	public void setHibernateVersion(String hbVersion) {
 		LabeledCombo lc = new LabeledCombo("Hibernate Version:");
 		lc.setSelection(hbVersion);
+	}
+	
+	public void setConsoleConfiguration(String configuration){
+		new LabeledCombo("Console configuration:").setSelection(configuration);
+	}
+	
+	public String getConsoleConfiguration(){
+		return new LabeledCombo("Console configuration:").getSelection();
+	}
+	
+	public List<String> getConsoleConfigurations(){
+		return new LabeledCombo("Console configuration:").getItems();
+	}
+	
+	public boolean isHibernateVersionEnabled(){
+		return new LabeledCombo("Hibernate Version:").isEnabled();
+	}
+	
+	public boolean isConsoleConfigurationEnabled(){
+		return new LabeledCombo("Console configuration:").isEnabled();
 	}
 }

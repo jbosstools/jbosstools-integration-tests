@@ -31,11 +31,13 @@ public class SelectConnectionProfileDialog extends DefaultShell{
 	public void ok(){
 		new OkButton().click();
 		new WaitWhile(new ShellIsAvailable(this));
+		new DefaultShell("");
 	}
 	
 	public void cancel(){
 		new CancelButton().click();
 		new WaitWhile(new ShellIsAvailable(this));
+		new DefaultShell("");
 	}
 
 }

@@ -84,7 +84,9 @@ public class CodeGenerationConfigurationTest extends HibernateRedDeerTest {
     	createHibernateGenerationConfiguration(false);
     }
     
-    @Test
+    
+    //https://issues.jboss.org/browse/JBIDE-23993
+    @Test(expected = AssertionError.class)
     public void testHibernateGenerateConfigurationWithReveng() {
     	createHibernateGenerationConfiguration(true);
     }
