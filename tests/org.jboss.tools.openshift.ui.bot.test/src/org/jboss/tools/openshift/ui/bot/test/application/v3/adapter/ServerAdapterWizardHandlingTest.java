@@ -57,23 +57,22 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 	public static void waitTillApplicationIsRunning() {
 		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE),
 				TimePeriod.getCustom(600));
-		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.LONG);
-		
+		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.VERY_LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
-	
+
 	@Test
 	public void testPreselectedConnectionForNewOpenShift3ServerAdapter() {
 		openNewServerAdapterWizard();
-		
+
 		assertTrue("There should be preselected an existing OpenShift 3 connection in new server adapter wizard.",
 				new LabeledCombo(OpenShiftLabel.TextLabels.CONNECTION).getSelection().contains(DatastoreOS3.USERNAME));
 	}
-	
+
 	@Test
 	public void testProjectSelectedInProjectExplorerIsPreselected() {
 		new ProjectExplorer().selectProjects(PROJECT_NAME);
-		
+
 		openNewServerAdapterWizard();
 		next();
 
@@ -83,98 +82,90 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 			public String run() {
 				return new LabeledText("Eclipse Project: ").getSWTWidget().getText();
 			}
-			
+
 		});
-		
-		assertTrue("Selected project from workspace should be preselected",		
-				eclipseProject.equals(PROJECT_NAME));
+
+		assertTrue("Selected project from workspace should be preselected", eclipseProject.equals(PROJECT_NAME));
 	}
-	
+
 	@Test
 	public void testPodPathWidgetAccessibility() {
 		openNewServerAdapterWizard();
 		next();
-		
+
 		new PushButton(OpenShiftLabel.Button.ADVANCED_OPEN).click();
-		
+
 		new CheckBox("Use inferred Pod Deployment Path").toggle(false);
-		
+
 		LabeledText podPath = new LabeledText("Pod Deployment Path: ");
 		String podDeploymentPath = "/opt/eap/standalone/deployments/";
 		podPath.setText("");
-		
-		assertFalse("Next button should be disable if pod path is empty is selected.",
-				nextButtonIsEnabled());
-		
+
+		assertFalse("Next button should be disable if pod path is empty is selected.", nextButtonIsEnabled());
+
 		podPath.setText(podDeploymentPath);
-		
-		assertTrue("Next button should be reeenabled if pod path is correctly filled in.",
-				nextButtonIsEnabled());
+
+		assertTrue("Next button should be reeenabled if pod path is correctly filled in.", nextButtonIsEnabled());
 	}
-	
+
 	@Test
 	public void testApplicationSelectionWidgetAccessibility() {
 		openNewServerAdapterWizard();
 		next();
-		
+
 		new DefaultTreeItem(DatastoreOS3.PROJECT1).select();
-		
-		assertFalse("Next button should be disable if no application is selected.",
-				nextButtonIsEnabled());
-		
+
+		assertFalse("Next button should be disable if no application is selected.", nextButtonIsEnabled());
+
 		new DefaultTreeItem(DatastoreOS3.PROJECT1).getItems().get(0).select();
-		
+
 		assertTrue("Next button should be enabled if application for a new server adapter is created.",
 				nextButtonIsEnabled());
 	}
-	
+
 	@Test
 	public void testFinishButtonAccessibility() {
 		openNewServerAdapterWizard();
-		
+
 		assertFalse("Finish button should be disabled on new server "
 				+ "adapter wizard page where selection of a connection is done, "
 				+ "because there are still missing details to successfully create a new"
 				+ "OpenShift 3 server adapter.", buttonIsEnabled(new FinishButton()));
 	}
-	
+
 	@Test
 	public void testSourcePathWidgetAccessibility() {
 		openNewServerAdapterWizard();
-		
+
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		
+
 		next();
-		
+
 		new PushButton(OpenShiftLabel.Button.ADVANCED_OPEN).click();
-		
+
 		LabeledText srcPath = new LabeledText("Source Path: ");
 		String srcPathText = srcPath.getText();
 		srcPath.setText("");
-		
-		assertFalse("Next button should be disable if source path is empty is selected.",
-				nextButtonIsEnabled());
-		
+
+		assertFalse("Next button should be disable if source path is empty is selected.", nextButtonIsEnabled());
+
 		srcPath.setText(srcPathText);
-		
-		assertTrue("Next button should be reeenabled if source path is correctly filled in.",
-				nextButtonIsEnabled());
-		
+
+		assertTrue("Next button should be reeenabled if source path is correctly filled in.", nextButtonIsEnabled());
+
 		srcPath.setText("invalid path");
-		
-		assertFalse("Next button should be disabled if source path is invalid or not existing.",
-				nextButtonIsEnabled());
-		
+
+		assertFalse("Next button should be disabled if source path is invalid or not existing.", nextButtonIsEnabled());
+
 		srcPath.setText(srcPathText);
-		
-		assertTrue("Next button should be reeenabled if source path is correctly filled in.",
-				nextButtonIsEnabled());
+
+		assertTrue("Next button should be reeenabled if source path is correctly filled in.", nextButtonIsEnabled());
 	}
-	
+
 	private boolean nextButtonIsEnabled() {
 		return buttonIsEnabled(new NextButton());
 	}
-	
+
 	private boolean buttonIsEnabled(Button button) {
 		try {
 			new WaitUntil(new WidgetIsEnabled(button), TimePeriod.getCustom(5));
@@ -183,25 +174,25 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 			return false;
 		}
 	}
-	
+
 	private void next() {
 		new NextButton().click();
 		TestUtils.acceptSSLCertificate();
-		
+
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new WaitUntil(new WidgetIsEnabled(new BackButton()));
 	}
-	
+
 	private void openNewServerAdapterWizard() {
 		NewServerWizardDialog dialog = new NewServerWizardDialog();
 		NewServerWizardPage page = new NewServerWizardPage();
-		
+
 		dialog.open();
-		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);	
+		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
 		page.selectType(OpenShiftLabel.Others.OS3_SERVER_ADAPTER);
 		dialog.next();
 	}
-	
+
 	@After
 	public void closeShell() {
 		Shell shell = ShellLookup.getInstance().getShell(OpenShiftLabel.Shell.ADAPTER);
@@ -210,7 +201,7 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 			new CancelButton().click();
 			new WaitWhile(new ShellWithTextIsActive(OpenShiftLabel.Shell.ADAPTER));
 		}
-	
+
 		new WaitWhile(new JobIsRunning());
 	}
 }

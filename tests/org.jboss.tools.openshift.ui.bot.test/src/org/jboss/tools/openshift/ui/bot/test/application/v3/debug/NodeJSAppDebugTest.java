@@ -34,7 +34,6 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.DebugPerspective;
@@ -133,7 +132,7 @@ public class NodeJSAppDebugTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 
 		assertTrue("OpenShift 3 server adapter was not created.",
-				new ServerAdapterExists(Version.OPENSHIFT3, OpenShiftResources.NODEJS_SERVICE).test());
+				new ServerAdapterExists(Version.OPENSHIFT3, OpenShiftResources.NODEJS_SERVICE, "Service").test());
 
 		// restart in debug
 		this.adapter = new ServerAdapter(Version.OPENSHIFT3, OpenShiftResources.NODEJS_SERVICE);
