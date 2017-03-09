@@ -91,7 +91,7 @@ public class PublishChangesTest extends AbstractCreateApplicationTest {
 	}
 	
 	private void verifyChangesTookEffect() {
-		new ServerAdapter(Version.OPENSHIFT3, "eap-app").select();
+		new ServerAdapter(Version.OPENSHIFT3, "eap-app", "Service").select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.SHOW_IN_WEB_BROWSER).select();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
