@@ -14,9 +14,11 @@
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
-		<systemProperties>${integrationTestsSystemProperties} -Dvagrantfile.path=${vagrantfile.path} -Ddevelopers.username=${developers.username} -Ddevelopers.password=${developers.password}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dvagrantfile.path=${vagrantfile.path} -Ddevelopers.username=${developers.username} -Ddevelopers.password=${developers.password} -Dminishift.path=${minishift.path} -Dminishift.hypervisor=${minishift.hypervisor}</systemProperties>
 		<developers.username></developers.username>
 		<vagrantfile.path></vagrantfile.path>
+		<minishift.path></minishift.path>
+		<minishift.hypervisor></minishift.hypervisor>
 	</properties>
 	
 	<profiles>
