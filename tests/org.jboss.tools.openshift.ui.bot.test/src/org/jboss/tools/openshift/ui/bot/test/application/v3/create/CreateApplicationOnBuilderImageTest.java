@@ -136,7 +136,6 @@ public class CreateApplicationOnBuilderImageTest {
 			new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD));
 			throw new OpenshiftTestInFailureException("JBIDE-23704 should be fixed now.");
 		}
-//		assertTrue("Git URL is empty (JBIDE-23704)", gitUrl.length() > 0);
 
 		new WaitUntil(new WidgetIsEnabled(new NextButton()));
 
@@ -168,7 +167,7 @@ public class CreateApplicationOnBuilderImageTest {
 		validateJBIDE22704();
 	}
 
-	@Test(expected = OpenshiftTestInFailureException.class)
+	@Test
 	public void validateJBIDE22704FromCentral() {
 		new NewOpenShift3ApplicationWizard().openWizardFromCentral();
 		validateJBIDE22704();
