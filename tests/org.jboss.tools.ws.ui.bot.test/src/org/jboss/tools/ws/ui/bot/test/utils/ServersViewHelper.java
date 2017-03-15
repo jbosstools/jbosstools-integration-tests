@@ -166,7 +166,6 @@ public class ServersViewHelper {
 		
 		public ProjectIsDeployed(String projectName, String serverName) {
 			view.activate();
-			new WaitUntil(new ServerExists(serverName), TimePeriod.getCustom(2));
 			Server server = view.getServer(serverName);
 			module = server.getModule(projectName);
 		}
