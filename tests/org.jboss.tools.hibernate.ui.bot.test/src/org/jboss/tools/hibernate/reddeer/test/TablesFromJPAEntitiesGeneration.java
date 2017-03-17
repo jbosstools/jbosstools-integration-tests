@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.hibernate.reddeer.test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -102,7 +102,15 @@ public class TablesFromJPAEntitiesGeneration extends HibernateRedDeerTest {
 		GenerateDdlWizardPage p = new GenerateDdlWizardPage();
 		p.setFileName(DDL_FILE);
 		p.setUseConsoleConfiguration(useConsole);
+		if(useConsole){
+			assertTrue(p.isConsoleConfigurationEnabled());
+			assertFalse(p.isHibernateVersionEnabled());
+			p.setConsoleConfiguration(prj);
+		}
+		
 		if (!useConsole) {
+			assertFalse(p.isConsoleConfigurationEnabled());
+			assertTrue(p.isHibernateVersionEnabled());
 			p.setHibernateVersion(hbVersion);
 		}
 		w.finish();

@@ -13,12 +13,17 @@ package org.jboss.tools.hibernate.reddeer.test;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.db.DatabaseConfiguration;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement;
 import org.jboss.reddeer.requirements.db.DatabaseRequirement.Database;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationMainPage;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationMainPage.PredefinedConnection;
 import org.jboss.tools.hibernate.reddeer.console.views.KnownConfigurationsView;
@@ -44,6 +49,8 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
 @Database(name="testdb")
 public class ConsoleConfigurationTest extends HibernateRedDeerTest {
+	
+	private Logger log = Logger.getLogger(ConsoleConfigurationTest.class);
 
 	@Parameter
 	public String prjName;
@@ -134,6 +141,14 @@ public class ConsoleConfigurationTest extends HibernateRedDeerTest {
 		s2.close();
 		
 		v.open();
-		v.selectNode(CONSOLE_NAME,"Database","SAKILA.PUBLIC","ACTOR");
+		try{
+			v.selectNode(CONSOLE_NAME,"Database","SAKILA.PUBLIC","ACTOR");
+		} catch (WaitTimeoutExpiredException e) {
+			log.info("Wait timeout occured, try rebuilding console config");
+			v.selectConsole(CONSOLE_NAME);
+			new ContextMenu("Rebuild configuration").select();
+			new WaitWhile(new JobIsRunning());
+			v.selectNode(CONSOLE_NAME,"Database","SAKILA.PUBLIC","ACTOR");
+		}
 	}
 }
