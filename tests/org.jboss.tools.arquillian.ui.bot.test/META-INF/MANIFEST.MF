@@ -1,7 +1,7 @@
 Bundle-ManifestVersion: 2
 Bundle-Name: Arquillian UI Tests
 Bundle-SymbolicName: org.jboss.tools.arquillian.ui.bot.test
-Bundle-Version: 4.4.3.qualifier
+Bundle-Version: 4.4.4.qualifier
 Bundle-Activator: org.jboss.tools.arquillian.ui.bot.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.apache.log4j,

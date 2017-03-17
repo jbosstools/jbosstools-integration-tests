@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.jboss.tools.integration-tests</groupId>
 		<artifactId>tests</artifactId>
-		<version>4.4.3-SNAPSHOT</version>
+		<version>4.4.4-SNAPSHOT</version>
 	</parent>
 
 	<groupId>org.jboss.tools.easymport.tests</groupId>
