@@ -1,15 +1,19 @@
+/*******************************************************************************
+ * Copyright (c) 2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation    
+ ******************************************************************************/
+
 package org.jboss.tools.arquillian.ui.bot.test.project;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.tools.arquillian.ui.bot.reddeer.support.AddArquillianSupportDialog;
 import org.jboss.tools.arquillian.ui.bot.test.AbstractArquillianTestCase;
-import org.jboss.tools.maven.reddeer.wizards.MavenProjectWizard;
-import org.jboss.tools.maven.reddeer.wizards.MavenProjectWizardThirdPage;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -25,38 +29,10 @@ import org.junit.Test;
 @OpenPerspective(JavaPerspective.class)
 public class CreateArquillianProject extends AbstractArquillianTestCase{
 
-	private static final Logger log = Logger.getLogger(CreateArquillianProject.class);
-	
-	@Before
-	public void setupProject(){
-		log.step("Create maven project with name " + PROJECT_NAME);
-		MavenProjectWizard wizard = new MavenProjectWizard();
-		wizard.open();
-		
-		// Check "Create a simple project"
-		new CheckBox().toggle(true);
-		wizard.next();
-		
-		MavenProjectWizardThirdPage thirdPage = new MavenProjectWizardThirdPage();
-		thirdPage.setGAV(PROJECT_NAME, PROJECT_NAME, null);
-		
-		wizard.finish();
-		
-		forceMavenRepositoryUpdate();
-	}
-
 	@Test
 	public void testProjectCreation(){
-		addArquillianSupport();
+		prepareProject();
 		checkProblems();
 	}
 
-	private void addArquillianSupport() {
-		log.step("Add Arquillian support");
-		Project project = getProject();
-		
-		AddArquillianSupportDialog dialog = new AddArquillianSupportDialog();
-		dialog.open(project);
-		dialog.ok();
-	}
 }
