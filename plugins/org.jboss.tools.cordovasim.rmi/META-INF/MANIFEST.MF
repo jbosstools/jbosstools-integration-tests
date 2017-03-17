@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Cordovasim RMI
 Bundle-SymbolicName: org.jboss.tools.cordovasim.rmi
-Bundle-Version: 4.4.3.qualifier
+Bundle-Version: 4.4.4.qualifier
 Bundle-Vendor: JBoss by Red Hat
 Require-Bundle: org.eclipse.swt,
  org.jboss.tools.browsersim.ui,

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: VPE UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.vpe.bot.test
-Bundle-Version: 4.4.3.qualifier
+Bundle-Version: 4.4.4.qualifier
 Bundle-Activator: org.jboss.tools.vpe.bot.test.Activator
 Require-Bundle: org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
  org.jboss.reddeer.gef;bundle-version="1.1.0",
