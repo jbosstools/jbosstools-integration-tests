@@ -27,6 +27,7 @@ import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationShell;
 
@@ -99,6 +100,7 @@ public class KnownConfigurationsView extends WorkbenchView
 		Shell deleteShell = new DefaultShell("Delete console configuration");
 		new OkButton().click();
 		new WaitWhile(new ShellIsAvailable(deleteShell));
+		new WaitWhile(new JobIsRunning());
 	}
 	
 	public List<TreeItem> getConsoleConfigurations(){
