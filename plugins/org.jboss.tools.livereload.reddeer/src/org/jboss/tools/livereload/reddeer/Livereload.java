@@ -29,6 +29,9 @@ public class Livereload {
 		Map<Subscriber, List<EventFilter>> subs = EventService.getInstance().getSubscribers();
 		for(Subscriber s: subs.keySet()){
 			if(s instanceof LiveReloadServerBehaviour){
+				if(((LiveReloadServerBehaviour)s).getServer().getServerState() != IServer.STATE_STARTED){
+					continue;
+				}
 				Map<IServer, LiveReloadProxyServer> servers = ((LiveReloadServerBehaviour)s).getProxyServers();
 				for(IServer srv: servers.keySet()){
 					return servers.get(srv).getProxyPort();
