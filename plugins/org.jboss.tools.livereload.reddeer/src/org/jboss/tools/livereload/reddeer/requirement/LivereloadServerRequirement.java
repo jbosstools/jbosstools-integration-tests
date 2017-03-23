@@ -16,6 +16,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerWizardPageWithErrorCheck;
+import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.requirements.server.ConfiguredServerInfo;
@@ -46,15 +48,24 @@ public class LivereloadServerRequirement extends ServerReqBase implements Requir
 
 	@Override
 	public void fulfill() {
-		lastServerConfiguration = new ConfiguredServerInfo(server.name(), null);
-		NewServerWizardDialog serverW = new NewServerWizardDialog();
-		serverW.open();
-		NewServerWizardPageWithErrorCheck sp = new NewServerWizardPageWithErrorCheck();
-			
-		sp.selectType("Basic","LiveReload Server");
-		sp.setName(server.name());
-		serverW.finish();
-		setupServerState(server.state(), lastServerConfiguration);
+		ServersView sw = new ServersView();
+		sw.open();
+		try{
+			sw.getServer(server.name());
+			//already exists, do nothing
+		} catch (EclipseLayerException e) {
+			lastServerConfiguration = new ConfiguredServerInfo(server.name(), null);
+			NewServerWizardDialog serverW = new NewServerWizardDialog();
+			serverW.open();
+			NewServerWizardPageWithErrorCheck sp = new NewServerWizardPageWithErrorCheck();
+				
+			sp.selectType("Basic","LiveReload Server");
+			sp.setName(server.name());
+			serverW.finish();
+			setupServerState(server.state(), lastServerConfiguration);
+		}
+		
+		
 		
 	}
 
@@ -68,7 +79,11 @@ public class LivereloadServerRequirement extends ServerReqBase implements Requir
 
 	@Override
 	public void cleanUp() {
-		// TODO Auto-generated method stub
+		if(server.cleanup()){
+			ServersView sw = new ServersView();
+			sw.open();
+			sw.getServer(lastServerConfiguration.getServerName()).delete(true);
+		}
 		
 	}
 	

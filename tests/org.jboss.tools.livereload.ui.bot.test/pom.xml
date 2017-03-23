@@ -14,7 +14,7 @@
 	<properties>
 		<suiteClass>org.jboss.tools.livereload.ui.bot.test.LivereloadAllBotTests</suiteClass>
 		<systemProperties>-Drd.logCollectorEnabled=false -Drd.config=target/classes/servers</systemProperties>
-		<jbosstools.test.wildfly8.home>${requirementsDirectory}/wildfly-8.1.0.Final</jbosstools.test.wildfly8.home>
+		<jbosstools.test.wildfly.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.wildfly.home>
 	</properties>
 
 	<build>
@@ -43,7 +43,7 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>8.1.0.Final</version>
+									<version>10.0.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
@@ -81,6 +81,28 @@
 									</requirement>
 								</extraRequirements>
 							</dependency-resolution>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>osx-docker</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-surefire-plugin</artifactId>
+						<configuration>
+							<environmentVariables>
+								<DOCKER_TLS_VERIFY>0</DOCKER_TLS_VERIFY>
+								<DOCKER_HOST>unix:///var/run/docker.sock</DOCKER_HOST>
+							</environmentVariables>
 						</configuration>
 					</plugin>
 				</plugins>
