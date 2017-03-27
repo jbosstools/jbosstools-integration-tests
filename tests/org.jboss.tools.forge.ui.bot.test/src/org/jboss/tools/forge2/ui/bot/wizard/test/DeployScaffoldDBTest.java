@@ -14,6 +14,7 @@ package org.jboss.tools.forge2.ui.bot.wizard.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +22,22 @@ import org.jboss.ide.eclipse.as.reddeer.server.deploy.DeployOnServer;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.forge.reddeer.ui.wizard.EntitiesFromTablesWizardFirstPage;
 import org.jboss.tools.forge.reddeer.ui.wizard.EntitiesFromTablesWizardSecondPage;
 import org.jboss.tools.forge.ui.bot.test.util.DatabaseUtils;
@@ -51,13 +62,15 @@ public class DeployScaffoldDBTest extends WizardTestBase {
 
 	private static final String PACKAGE = GROUPID + ".model";
 	
+	private static String SERVER_NAME = "";
+	
 	@InjectRequirement 
 	private static ServerRequirement sr;
-	private static final String SERVER_NAME = sr.getServerNameLabelText(sr.getConfig());
 
 	@BeforeClass
 	public static void startSakila() {
 		startSakilaDatabase();
+		SERVER_NAME = sr.getServerNameLabelText(sr.getConfig());
 	}
 
 	@Before
@@ -77,7 +90,7 @@ public class DeployScaffoldDBTest extends WizardTestBase {
 
 	public void setProjectAndParameters(ScaffoldType type) {
 		createJBOSSDatasource();
-		jpaSetup();
+		jpaSetup(PROJECT_NAME);
 		jpaGenerateEntities();
 		generateScaffold(type);
 		deployOnServer();
@@ -106,8 +119,16 @@ public class DeployScaffoldDBTest extends WizardTestBase {
 		new PushButton("Finish").click();
 	}
 
-	public void jpaSetup() {
-		persistenceSetup(PROJECT_NAME);
+	public void jpaSetup(String projectName) {
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.selectProjects(projectName); // this will set context for forge
+		WizardDialog wd = getWizardDialog("jpa-setup", "(JPA: Setup).*");
+		Combo combo = new DefaultCombo();
+		combo.setSelection("Wildfly Application Server");
+		wd.finish();
+		File persistence = new File(WORKSPACE + "/" + projectName + "/src/main/resources/META-INF/persistence.xml");
+		assertTrue("persistence.xml file does not exist", persistence.exists());
+		updateProject(PROJECT_NAME,true);
 	}
 
 	public void jpaGenerateEntities() {
@@ -128,15 +149,32 @@ public class DeployScaffoldDBTest extends WizardTestBase {
 		}
 		secondPage.selectAll();
 		dialog.finish();
+		updateProject(PROJECT_NAME,true);
 	}
 
 	public void generateScaffold(ScaffoldType type) {
 		scaffoldSetup(PROJECT_NAME, type);
 		createScaffold(PROJECT_NAME, type);
+		updateProject(PROJECT_NAME,true);
 	}
 
 	public void deployOnServer() {
-		new DeployOnServer().deployUndeployProjectToServer(PROJECT_NAME, SERVER_NAME);
+		DeployOnServer ds = new DeployOnServer();
+		ds.deployProject(PROJECT_NAME, SERVER_NAME);
+		ds.restartServer(SERVER_NAME);
+		ds.checkDeployedProject(PROJECT_NAME, SERVER_NAME);
+		ds.deployUndeployProjectToServer(PROJECT_NAME, SERVER_NAME);
 	}
-
+	
+	public static void updateProject(String projectName,boolean forceDependencies){
+		PackageExplorer pexplorer = new PackageExplorer();
+		pexplorer.open();
+		pexplorer.getProject(projectName).select();
+		new ContextMenu("Maven","Update Project...").select();
+		new WaitUntil(new ShellWithTextIsAvailable("Update Maven Project"),TimePeriod.LONG);
+		new CheckBox("Force Update of Snapshots/Releases").toggle(forceDependencies);
+		new PushButton("OK").click();
+		new WaitWhile(new ShellWithTextIsAvailable("Update Maven Project"),TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
+	}
 }
