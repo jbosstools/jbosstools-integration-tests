@@ -108,7 +108,7 @@ public class CreateServerAdapterTest extends AbstractCreateApplicationTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG, false);
 		
 		assertTrue("OpenShift 3 server adapter was not created.", 
-				new ServerAdapterExists(Version.OPENSHIFT3, BUILD_CONFIG).test());
+				new ServerAdapterExists(Version.OPENSHIFT3, BUILD_CONFIG, "Service").test());
 	}
 	
 	private void setAdapterDetailsAndCreateAdapterAndVerifyExistence() {
@@ -137,7 +137,7 @@ public class CreateServerAdapterTest extends AbstractCreateApplicationTest {
 		}
 		
 		assertTrue("OpenShift 3 server adapter was not created.", 
-				new ServerAdapterExists(Version.OPENSHIFT3, BUILD_CONFIG).test());
+				new ServerAdapterExists(Version.OPENSHIFT3, BUILD_CONFIG, "Service").test());
 	
 	}
 	
@@ -154,7 +154,7 @@ public class CreateServerAdapterTest extends AbstractCreateApplicationTest {
 	public void removeAdapterIfExists() {
 		try {
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-			new ServerAdapter(Version.OPENSHIFT3, BUILD_CONFIG).delete();
+			new ServerAdapter(Version.OPENSHIFT3, BUILD_CONFIG, "Service").delete();
 		} catch (OpenShiftToolsException ex) {
 			// do nothing, adapter does not exists
 		}
