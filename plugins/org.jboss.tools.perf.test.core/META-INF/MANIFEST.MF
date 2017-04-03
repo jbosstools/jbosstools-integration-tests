@@ -8,17 +8,10 @@ Bundle-ClassPath: .,
  resources/perftestlibs/sigar-1.6.5.132.jar,
  resources/perftestlibs/perf-test-client-0.0.1.jar,
  resources/perftestlibs/perf-test-objects-0.0.1.jar
-Bundle-Activator: org.jboss.tools.perf.test.core.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Eclipse-RegisterBuddy: org.apache.log4j
-Eclipse-BundleShape: jar
 Bundle-Localization: plugin
 Bundle-Vendor: JBoss by Red Hat
-Require-Bundle: org.eclipse.ui.workbench,
- org.eclipse.osgi,
- org.eclipse.core.runtime,
- org.junit;bundle-version="4.1.0",
- org.apache.log4j;bundle-version="1.2.0",
- org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)"
+Require-Bundle: org.junit;bundle-version="4.1.0",
+ org.jboss.reddeer.junit;bundle-version="[1.2.0,2.0.0)"
 Export-Package: org.jboss.tools.perf.test.core.reddeer
