@@ -195,21 +195,32 @@
 						
     </profiles>
 
-    <repositories>
- 
-        <repository>
-            <id>mylyn</id>
-            <url>http://download.jboss.org/jbosstools/updates/requirements/luna/201406120900-RC4/</url>
-            <layout>p2</layout>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
+	<repositories>
 
-    </repositories>
+		<repository>
+			<id>mylyn</id>
+			<url>http://download.jboss.org/jbosstools/updates/requirements/luna/201406120900-RC4/</url>
+			<layout>p2</layout>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>jira-connector</id>
+			<url>http://update.atlassian.com/atlassian-eclipse-plugin/rest/e3.7</url>
+			<layout>p2</layout>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+
+	</repositories>
 
 </project>
 
