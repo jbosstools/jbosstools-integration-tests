@@ -151,6 +151,7 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 			new WaitWhile(new ShellWithTextIsAvailable("Web Service"));
 			new WaitWhile(new JobIsRunning());
 		} else {
+			new DefaultShell("Web Service");
 			wizard.finish();
 		}
 

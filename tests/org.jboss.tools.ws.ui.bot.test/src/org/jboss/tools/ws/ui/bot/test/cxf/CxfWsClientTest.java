@@ -1,6 +1,7 @@
 package org.jboss.tools.ws.ui.bot.test.cxf;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.ws.reddeer.ui.preferences.WsCxf2xPreferencePage;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
@@ -55,6 +56,7 @@ public class CxfWsClientTest extends WSClientTestTemplate {
 		new WorkbenchPreferenceDialog().open();
 		new WorkbenchPreferenceDialog().select(cxfPreferencePage);
 		cxfPreferencePage.add(CXF_HOME_LOCATION);
+		new DefaultShell("Preferences");
 		cxfPreferencePage.select(CXF_HOME_LOCATION);
 		new WorkbenchPreferenceDialog().ok();
 	}
