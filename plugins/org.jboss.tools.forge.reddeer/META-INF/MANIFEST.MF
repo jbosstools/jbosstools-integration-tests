@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Forge RedDeer
 Bundle-SymbolicName: org.jboss.tools.forge.reddeer
-Bundle-Version: 4.4.3.qualifier
+Bundle-Version: 4.4.100.qualifier
 Bundle-Activator: org.jboss.tools.forge.reddeer.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",

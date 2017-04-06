@@ -3,12 +3,12 @@ Eclipse-RegisterBuddy: org.apache.log4j
 Bundle-ManifestVersion: 2
 Bundle-Name: Mylyn UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.mylyn.ui.bot.test
-Bundle-Version: 4.4.3.qualifier
+Bundle-Version: 4.4.100.qualifier
 Bundle-Activator: org.jboss.tools.mylyn.ui.bot.test.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.apache.log4j,
- org.jboss.tools.mylyn.reddeer;bundle-version="[4.4.2,4.5.0)",
+ org.jboss.tools.mylyn.reddeer;bundle-version="[4.4.2,4.5.0]",
  org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

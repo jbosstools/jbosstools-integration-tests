@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: RedDeer API for Hibernate UI Tests
 Bundle-SymbolicName: org.jboss.tools.hibernate.reddeer
-Bundle-Version: 4.4.3.qualifier
+Bundle-Version: 4.4.100.qualifier
 Bundle-Activator: org.jboss.tools.hibernate.reddeer.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -10,7 +10,7 @@ Require-Bundle: org.eclipse.ui,
  org.junit,
  org.eclipse.core.resources,
  org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
- org.jboss.tools.common.reddeer;bundle-version="[3.8.3,3.9.0)"
+ org.jboss.tools.common.reddeer;bundle-version="[3.9.0,3.10.0)"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.jboss.tools.hibernate.reddeer,

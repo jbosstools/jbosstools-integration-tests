@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Batch UI Tests
 Bundle-SymbolicName: org.jboss.tools.batch.ui.bot.test
-Bundle-Version: 4.4.3.qualifier
+Bundle-Version: 4.4.100.qualifier
 Require-Bundle: org.eclipse.ui,
  org.apache.log4j,
  org.eclipse.core.runtime,
  org.junit,
  org.hamcrest.core,
- org.jboss.tools.batch.reddeer;bundle-version="[4.4.2,4.5.0)",
+ org.jboss.tools.batch.reddeer;bundle-version="[4.4.2,4.5.0]",
  org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
  org.eclipse.swt
 Bundle-ActivationPolicy: lazy

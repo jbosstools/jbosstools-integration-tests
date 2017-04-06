@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.jboss.tools.integration-tests</groupId>
 		<artifactId>plugins</artifactId>
-		<version>4.4.3-SNAPSHOT</version>
+		<version>4.4.100-SNAPSHOT</version>
 	</parent>	
 	<groupId>org.jboss.tools.docker</groupId>
 	<artifactId>org.jboss.tools.docker.reddeer</artifactId>

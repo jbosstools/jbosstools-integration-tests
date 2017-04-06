@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: RedDeer API for CDI UI Tests
 Bundle-SymbolicName: org.jboss.tools.cdi.reddeer
-Bundle-Version: 4.4.3.qualifier
+Bundle-Version: 4.4.100.qualifier
 Bundle-Activator: org.jboss.tools.cdi.reddeer.Activator
 Export-Package: org.jboss.tools.cdi.reddeer,
  org.jboss.tools.cdi.reddeer.annotation,
@@ -22,7 +22,7 @@ Export-Package: org.jboss.tools.cdi.reddeer,
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
- org.jboss.tools.common.reddeer;bundle-version="[3.8.3,3.9.0)",
+ org.jboss.tools.common.reddeer;bundle-version="[3.9.0,3.10.0)",
  org.junit,
  org.eclipse.text,
  org.eclipse.ui.workbench.texteditor,
