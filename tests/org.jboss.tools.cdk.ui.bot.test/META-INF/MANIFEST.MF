@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.jboss.tools.cdk.ui.bot.test
 Bundle-Version: 4.4.4.qualifier
 Bundle-Vendor: Red Hat
 Require-Bundle: org.junit,
- org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
+ org.jboss.reddeer.go;bundle-version="[2.0.0,2.1.0)",
  org.eclipse.ui.workbench,
  org.jboss.tools.openshift.reddeer;bundle-version="[3.3.2, 3.4.0)",
  org.jboss.tools.docker.reddeer,
