@@ -53,9 +53,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	CDISetupWizardTest.class,
 	ConnectionProfileWizardTest.class,
 	JPAEntitiesFromTablesTest.class,
-	InstallAddonTest.class,
 	DeployScaffoldDBTest.class,
-	LinkWorkspaceSelectionTest.class
+	LinkWorkspaceSelectionTest.class,
+	InstallAddonTest.class
 })
 @RunWith(RedDeerSuite.class)
 public class Forge2AllTest {

@@ -79,6 +79,8 @@ public class LinkWorkspaceSelectionTest extends WizardTestBase {
 		pe.getProject(PROJECT_NAME).getProjectItem("src", "main", "webapp", "WEB-INF", "beans.xml").open();
 		forgeConsoleView.open();
 		new WaitUntil(new ForgeConsoleHasNoChange(), TimePeriod.LONG);
+		forgeConsoleView = new ForgeConsoleView();
+		forgeConsoleView.open();
 		String consoleText = forgeConsoleView.getConsoleText();
 		assertTrue(consoleText.endsWith("[beans.xml]$ "));
 		pe.getProject(PROJECT_NAME).select();

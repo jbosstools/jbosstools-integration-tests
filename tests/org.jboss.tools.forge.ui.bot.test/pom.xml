@@ -11,9 +11,10 @@
 	<artifactId>org.jboss.tools.forge.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>-Ddatabase.path=${test.database} -Djbosstools.test.wildfly10.home=${jbosstools.test.wildfly10.home} -Drd.config=${reddeer.config} </systemProperties>
+		<systemProperties>-Ddatabase.path=${test.database} -Djbosstools.test.wildfly10.home=${jbosstools.test.wildfly10.home} -Drd.config=${reddeer.config}</systemProperties>
 		<reddeer.config>${project.build.directory}/classes/servers/wildfly-10.xml</reddeer.config>
 		<jbosstools.test.wildfly10.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.wildfly10.home>
+		<test.database>${project.build.directory}/database/sakila-h2-master</test.database>
 	</properties>
 	<build>
 		<resources>
@@ -80,6 +81,25 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>download-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>h2-DB</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<skip>${skipTests}</skip>
+							<url>https://github.com/maxandersen/sakila-h2/archive/master.zip</url>
+							<outputDirectory>${project.build.directory}/database</outputDirectory>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<profiles>
@@ -101,6 +121,34 @@
 			<properties>
 				<test.database>${test.database}</test.database>
 			</properties>
+		</profile>
+		<profile>
+			<id>check-pr</id>
+			<properties>
+				<suiteClass>org.jboss.tools.forge2.ui.bot.test.suite.SmokeSuite</suiteClass>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-surefire-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>smoke</id>
+			<properties>
+				<suiteClass>org.jboss.tools.forge2.ui.bot.test.suite.SmokeSuite</suiteClass>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-surefire-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
 

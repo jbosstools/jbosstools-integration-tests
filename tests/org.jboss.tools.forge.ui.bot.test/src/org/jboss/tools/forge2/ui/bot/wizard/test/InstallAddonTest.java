@@ -32,30 +32,33 @@ import org.junit.Test;
  * @author jkopriva@redhat.com
  *
  */
+
 public class InstallAddonTest extends WizardTestBase {
 	private static String INSTALL_ADDON_DIALOG_NAME = "Install an Addon from the catalog";
 	private static String REMOVE_ADDON_DIALOG_NAME = "Remove an Addon";
 	private static String ADDON_NAME = "RichFaces";
 	private static String ADDON_PACKAGE_NAME = "org.richfaces.forge:richfaces";
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testAddonInstall() {
 		WizardDialog dialog = getWizardDialog(INSTALL_ADDON_DIALOG_NAME, "(" + INSTALL_ADDON_DIALOG_NAME + ").*");
 		new DefaultCombo().setSelection(ADDON_NAME);
 		new WaitWhile(new JobIsRunning());
-		dialog.finish(TimePeriod.VERY_LONG);
+		dialog.finish(TimePeriod.getCustom(1000)); //could take a very long time
 		WizardDialog dialogRemove = getWizardDialog(REMOVE_ADDON_DIALOG_NAME, "(" + REMOVE_ADDON_DIALOG_NAME + ").*");
 		Table table = new DefaultTable();
 		String addonFullName = "";
-		for (TableItem item : table.getItems(new AllTableMatcher(ADDON_PACKAGE_NAME))) {
-			addonFullName = item.getText();
+		for (TableItem item : table.getItems()) {
+			System.out.println("neconeco" + item.getText());
+			if (item.getText().toLowerCase().contains(ADDON_NAME.toLowerCase())) {
+				addonFullName = item.getText();
+			}
 		}
 		assertTrue("Addon is not installed!", !"".equals(addonFullName));
 		table.select(addonFullName);
 		table.getItem(addonFullName).setChecked(true);
 		dialogRemove.finish();
-		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(600));
 		dialogRemove = getWizardDialog(REMOVE_ADDON_DIALOG_NAME, "(" + REMOVE_ADDON_DIALOG_NAME + ").*");
 		table = new DefaultTable();
 		assertTrue("Addon has not been removed!", !table.containsItem(addonFullName));
