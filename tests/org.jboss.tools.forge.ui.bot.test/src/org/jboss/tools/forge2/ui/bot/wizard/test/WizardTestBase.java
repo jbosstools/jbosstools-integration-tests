@@ -32,6 +32,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -333,8 +334,14 @@ public abstract class WizardTestBase {
 	public void setFocusOnProject(){
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(PROJECT_NAME).select();
-		new WaitWhile(new ProjectIsSelected(PROJECT_NAME),TimePeriod.NORMAL, false, TimePeriod.getCustom(5));//Selecting project is not always immediately, when Forge is running 
+		if (pe.containsProject(PROJECT_NAME)){
+			pe.getProject(PROJECT_NAME).select();
+			try {
+				new WaitWhile(new ProjectIsSelected(PROJECT_NAME),TimePeriod.NORMAL, false, TimePeriod.getCustom(5));//Selecting project is not always immediately, when Forge is running
+			} catch (CoreLayerException ex){
+				//swallowing - project has been deleted
+			}
+		}
 	}
 
 }
