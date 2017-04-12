@@ -25,6 +25,7 @@ import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.LogsTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.PortForwardingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.ScalingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.TriggerBuildTest;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.OSExplorerResourceTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.BuilderImageApplicationWizardHandlingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.LabelsTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.NewApplicationWizardHandlingTest;
@@ -92,6 +93,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	
 	// Application handling
 	DeleteResourceTest.class,
+	OSExplorerResourceTest.class,
 	TriggerBuildTest.class,
 	ImportApplicationTest.class,
 	PortForwardingTest.class,
