@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
@@ -168,7 +168,7 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		runJavaApplication();
 
 		// wait until the client ends (prints the last line)
-		new WaitUntil(new ConsoleHasText("Call Over!"), TimePeriod.NORMAL);
+		new WaitUntil(new ConsoleHasText("Call Over!"), TimePeriod.DEFAULT);
 
 		ConsoleView cw = new ConsoleView();
 		String consoleOutput = cw.getConsoleText();
@@ -204,7 +204,7 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		} catch (CoreException e) {
 			LOGGER.log(Level.WARNING, e.getMessage(), e);
 		}
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT);
 	}
 
 	/**

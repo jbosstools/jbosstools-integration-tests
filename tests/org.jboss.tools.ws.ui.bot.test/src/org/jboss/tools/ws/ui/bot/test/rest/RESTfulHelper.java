@@ -14,11 +14,11 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.swt.api.Menu;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -46,16 +46,16 @@ public class RESTfulHelper {
 		
 		page.apply();
 		
-		new WaitUntil(new ShellWithTextIsAvailable("Validator Settings Changed"), TimePeriod.SHORT, false);
-		if(new ShellWithTextIsAvailable("Validator Settings Changed").test()) {
+		new WaitUntil(new ShellIsAvailable("Validator Settings Changed"), TimePeriod.SHORT, false);
+		if(new ShellIsAvailable("Validator Settings Changed").test()) {
 			new DefaultShell("Validator Settings Changed");
 			new PushButton("Yes").click();
-			new WaitWhile(new ShellWithTextIsAvailable("Validator Settings Changed"), TimePeriod.NORMAL);
+			new WaitWhile(new ShellIsAvailable("Validator Settings Changed"), TimePeriod.DEFAULT);
 		}
 
 		dialog.ok();
 		
-		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
+		new WaitUntil(new JobIsRunning(), TimePeriod.DEFAULT, false);
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(20), false);
 	}
 
@@ -69,8 +69,8 @@ public class RESTfulHelper {
 
 	public boolean isRestSupportEnabled(String wsProjectName) {
 		Project project = new ProjectExplorer().getProject(wsProjectName);
-		return project.containsItem(RESTfulLabel.REST_WS_NODE)
-				|| project.containsItem(RESTfulLabel.REST_WS_BUILD_NODE);
+		return project.containsResource(RESTfulLabel.REST_WS_NODE)
+				|| project.containsResource(RESTfulLabel.REST_WS_BUILD_NODE);
 	}
 
 	private void configureRestSupport(String wsProjectName,
@@ -81,6 +81,6 @@ public class RESTfulHelper {
 				enableRestSupport ? RESTfulLabel.ADD_REST_SUPPORT : RESTfulLabel.REMOVE_REST_SUPPORT);
 		menu.select();
 
-		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
+		new WaitUntil(new JobIsRunning(), TimePeriod.DEFAULT, false);
 	}
 }

@@ -7,8 +7,8 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.requirements.server.ServerReqState;

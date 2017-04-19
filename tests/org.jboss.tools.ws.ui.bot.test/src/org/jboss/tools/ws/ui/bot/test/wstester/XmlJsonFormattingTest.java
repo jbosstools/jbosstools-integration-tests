@@ -90,8 +90,6 @@ public class XmlJsonFormattingTest extends RESTfulTestBase {
 
 		runRestServiceOnServer(getProperRestService(restWebServicesNode, format));
 
-		assertWebServiceTesterIsActive();
-
 		invokeMethodInWSTester(wsTesterView, RequestType.GET);
 
 		assertThat(wsTesterView.getResponseBody(), 

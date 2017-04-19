@@ -18,7 +18,7 @@ import java.util.List;
 import org.hamcrest.core.Is;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -127,7 +127,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 		testerView.open();
 		testerView.invoke();
 
-		new WaitUntil(new ShellWithTextIsAvailable(WSTesterParametersDialog.DIALOG_TITLE));
+		new WaitUntil(new ShellIsAvailable(WSTesterParametersDialog.DIALOG_TITLE));
 
 		dialog = new WSTesterParametersDialog();
 	}

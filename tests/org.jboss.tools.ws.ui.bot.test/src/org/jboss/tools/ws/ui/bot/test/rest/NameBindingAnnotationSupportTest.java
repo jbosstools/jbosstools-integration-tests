@@ -2,8 +2,8 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.requirements.server.ServerReqState;

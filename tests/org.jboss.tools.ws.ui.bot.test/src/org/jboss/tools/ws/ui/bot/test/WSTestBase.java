@@ -12,7 +12,6 @@
 package org.jboss.tools.ws.ui.bot.test;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -23,10 +22,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
@@ -34,13 +30,6 @@ import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPag
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
 import org.junit.After;
@@ -99,11 +88,11 @@ public class WSTestBase {
 	}
 
 	protected static String getConfiguredRuntimeName() {
-		return serverReq.getRuntimeNameLabelText(serverReq.getConfig());
+		return serverReq.getRuntimeNameLabelText();
 	}
 
 	protected static String getConfiguredServerName() {
-		return serverReq.getServerNameLabelText(serverReq.getConfig());
+		return serverReq.getServerNameLabelText();
 	}
 
 	protected static String getConfiguredServerType() {
@@ -151,12 +140,6 @@ public class WSTestBase {
 
 	protected String getWsName() {
 		return null;
-	}
-
-	protected void assertWebServiceTesterIsActive() {
-		assertTrue("Web Service Tester view should be active", 
-				new DefaultCTabItem(new WorkbenchShell(),
-						new WithTextMatcher(IDELabel.View.WEB_SERVICE_TESTER)).isEnabled());
 	}
 
 	protected static void importWSTestProject(String projectName) {

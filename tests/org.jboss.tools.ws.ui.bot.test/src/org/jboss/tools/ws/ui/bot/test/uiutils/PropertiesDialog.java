@@ -3,10 +3,10 @@ package org.jboss.tools.ws.ui.bot.test.uiutils;
 import static org.junit.Assert.assertThat;
 
 import org.hamcrest.core.Is;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -53,14 +53,14 @@ public class PropertiesDialog {
 	public void finish() {
 		new DefaultShell(IDELabel.Shell.PROPERTIES_FOR + " " + projectName);
 		new PushButton(IDELabel.Button.OK).click();
-		new WaitWhile(new ShellWithTextIsAvailable(IDELabel.Shell.PROPERTIES_FOR + " " + projectName), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(IDELabel.Shell.PROPERTIES_FOR + " " + projectName), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning());
 	}
 	
 	public void finish(TimePeriod timeout) {
         new DefaultShell(IDELabel.Shell.PROPERTIES_FOR + " " + projectName);
 		new PushButton(IDELabel.Button.OK).click();
-		new WaitWhile(new ShellWithTextIsAvailable(IDELabel.Shell.PROPERTIES_FOR + " " + projectName), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(IDELabel.Shell.PROPERTIES_FOR + " " + projectName), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), timeout);
 	}
 }

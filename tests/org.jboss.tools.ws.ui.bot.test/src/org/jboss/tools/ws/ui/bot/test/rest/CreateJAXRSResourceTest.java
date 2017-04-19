@@ -11,8 +11,8 @@ import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNot;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -95,7 +95,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 
 		/* JAX-RS Resource was created */
 		assertTrue("JAX-RS Application was not created", new ProjectExplorer().getProject(getWsProjectName())
-				.containsItem("Java Resources", "src", PACKAGE_NAME, FILE_NAME + ".java") == true);
+				.containsResource("Java Resources", "src", PACKAGE_NAME, FILE_NAME + ".java"));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(getWsProjectName());
@@ -106,7 +106,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 
 		/* JAX-RS Application class was also created*/
 		assertTrue("JAX-RS Application was not created", new ProjectExplorer().getProject(getWsProjectName())
-				.containsItem("Java Resources", "src", PACKAGE_NAME, APPLICATION_FILE_NAME + ".java"));
+				.containsResource("Java Resources", "src", PACKAGE_NAME, APPLICATION_FILE_NAME + ".java"));
 	}
 
 	/**
@@ -184,7 +184,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 
 		/* JAX-RS Resource was created */
 		assertTrue("JAX-RS Application was not created", new ProjectExplorer().getProject(getWsProjectName())
-				.containsItem("Java Resources", "src", PACKAGE_NAME, FILE_NAME + ".java") == true);
+				.containsResource("Java Resources", "src", PACKAGE_NAME, FILE_NAME + ".java"));
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(getWsProjectName());
@@ -194,7 +194,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 
 		/* JAX-RS Application class was also created*/
 		assertTrue("JAX-RS Application was not created", new ProjectExplorer().getProject(getWsProjectName())
-				.containsItem("Java Resources", "src", PACKAGE_NAME, APPLICATION_FILE_NAME + ".java") == true);
+				.containsResource("Java Resources", "src", PACKAGE_NAME, APPLICATION_FILE_NAME + ".java"));
 	}
 
 	private void assertThatAllRestServicesArePresent(List<RESTfulWebService> restServices) {

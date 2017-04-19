@@ -12,9 +12,9 @@ package org.jboss.tools.ws.ui.bot.test.websocket;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.SWT;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
-import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
+import org.jboss.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.views.contentoutline.ContentOutline;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -96,7 +96,7 @@ class WebSocketHelper {
 	private static void assertOutlineViewContainsNewMethod(TextEditor editor, String proposal) {
 		String newMethodName = proposal.split("[(]")[0];
 
-		for (TreeItem outlineItem : new OutlineView().outlineElements()) {
+		for (TreeItem outlineItem : new ContentOutline().outlineElements()) {
 			if (SERVER_CLASS_NAME.equals(outlineItem.getText()) || CLIENT_CLASS_NAME.equals(outlineItem.getText())) {
 				for(TreeItem classItem : outlineItem.getItems()){
 					if (classItem.getText().startsWith(newMethodName)) {
@@ -220,7 +220,7 @@ class WebSocketHelper {
 
 	static void enableJAXRSSupport(String projectName) {
 		ProjectExplorer pe = new ProjectExplorer();
-		ExplorerItemPropertyDialog dialog = new ExplorerItemPropertyDialog(pe.getProject(projectName));
+		PropertyDialog dialog = new PropertyDialog(projectName);
 		dialog.open();
 		dialog.select("JAX-RS");
 		new CheckBox().toggle(true);

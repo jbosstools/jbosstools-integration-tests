@@ -72,7 +72,6 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 
 		/* run on server - web service tester should be shown */
 		runRestServiceOnServer("GET");
-		assertWebServiceTesterIsActive();
 		wsTesterView.open();
 
 		/* test generated url and response after invoking */
@@ -90,7 +89,6 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 	
 		/* run on server - web service tester should be shown */
 		runRestServiceOnServer("POST");
-		assertWebServiceTesterIsActive();
 		wsTesterView.open();//workaround for RedDeer that won't allow to close view until it the open() method was called
 
 		/* test generated url and response after invoking */
@@ -108,7 +106,6 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 
 		/* run on server - web service tester should be shown */
 		runRestServiceOnServer("PUT");
-		assertWebServiceTesterIsActive();
 		wsTesterView.open();
 
 		/* test generated url and response after invoking */
@@ -126,7 +123,6 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 
 		/* run on server - web service tester should be shown */
 		runRestServiceOnServer("DELETE");
-		assertWebServiceTesterIsActive();
 		wsTesterView.open();
 
 		/* test generated url and response after invoking */
@@ -144,7 +140,6 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 
 		/* run on server - web service tester should be shown */
 		runRestServiceOnServer(restWebServicesNode.getWebServiceByMethod("GET").get(0));
-		assertWebServiceTesterIsActive();
 		wsTesterView.open();
 
 		/* test generated url and response after invoking */
