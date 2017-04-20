@@ -3,11 +3,11 @@ package org.jboss.tools.cdi.reddeer.common.model.ui.editor;
 import java.util.List;
 
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -193,7 +193,7 @@ public class EditorPartWrapper extends AbstractEditor{
 	
 	private void removeIncludeExcludeWithHandler() {
 		new PushButton("Remove...").click();
-		new WaitUntil(new ShellWithTextIsAvailable("Confirmation"));
+		new WaitUntil(new ShellIsAvailable("Confirmation"));
 		new DefaultShell("Confirmation");
 		new PushButton("OK").click();
 	}
@@ -228,7 +228,7 @@ public class EditorPartWrapper extends AbstractEditor{
 	
 	private AddIfSystemPropertyDialog invokeDefaultAddIfSystemPropertyDialog(String property){
 		new ContextMenu("Add System Property").select();
-		new WaitUntil(new ShellWithTextIsAvailable("Add If System Property"));
+		new WaitUntil(new ShellIsAvailable("Add If System Property"));
 		new DefaultShell("Add If System Property");
 		return new AddIfSystemPropertyDialog();
 	}
@@ -245,7 +245,7 @@ public class EditorPartWrapper extends AbstractEditor{
 	
 	private AddIncludeExcludeDialog invokeDefaultAddIncludeExcludeDialog(){
 		new ContextMenu("Add Include/Exclude").select();
-		new WaitUntil(new ShellWithTextIsAvailable("Add Include/Exclude"));
+		new WaitUntil(new ShellIsAvailable("Add Include/Exclude"));
 		new DefaultShell("Add Include/Exclude");
 		return new AddIncludeExcludeDialog();
 	}
@@ -263,7 +263,7 @@ public class EditorPartWrapper extends AbstractEditor{
 	
 	private AddIfClassAvailableDialog invokeDefaultWeldAddClassAvailableDialog(String property){
 		new ContextMenu("Add Class Available").select();
-		new WaitUntil(new ShellWithTextIsAvailable("Add If Class Available"));
+		new WaitUntil(new ShellIsAvailable("Add If Class Available"));
 		new DefaultShell("Add If Class Available");
 		return new AddIfClassAvailableDialog();
 	}

@@ -104,7 +104,7 @@ public class CDIValidatorTemplate extends CDITestBase {
 		DefaultShell shell = new DefaultShell("Validator Settings Changed");
 		String shellText = shell.getText();
 		new PushButton("Yes").click();
-		new WaitWhile(new ShellWithTextIsActive(shellText), TimePeriod.LONG);
+		new WaitWhile(new ShellIsActive(shellText), TimePeriod.LONG);
 	}
 
 }

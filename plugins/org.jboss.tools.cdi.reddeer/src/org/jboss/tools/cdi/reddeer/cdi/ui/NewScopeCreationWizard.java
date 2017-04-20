@@ -1,16 +1,17 @@
 package org.jboss.tools.cdi.reddeer.cdi.ui;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.eclipse.topmenu.NewMenuWizard;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
 
-public class NewScopeCreationWizard extends NewWizardDialog{
+public class NewScopeCreationWizard extends NewMenuWizard{
 	
 	public static final String NAME="Scope Annotation";
+	public static final String SHELL_TEXT = "New Scope";
 	
 	public NewScopeCreationWizard(){
-		super(CDIConstants.CDI_GROUP,NAME);
+		super(SHELL_TEXT, CDIConstants.CDI_GROUP,NAME);
 	}
 	
 	public void setPackage(String packageName){

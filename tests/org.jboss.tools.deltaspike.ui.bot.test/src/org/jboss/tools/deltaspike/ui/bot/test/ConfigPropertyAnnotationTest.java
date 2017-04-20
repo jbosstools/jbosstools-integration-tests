@@ -78,7 +78,7 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 		insertIntoFile(projectName, "test", "Test.java", 2, 0,
 				"import org.apache.deltaspike.core.api.config.ConfigProperty; \n");
 		try {
-			new WaitWhile(new SpecificProblemExists(validationProblemRegexMatcher), TimePeriod.NORMAL);
+			new WaitWhile(new SpecificProblemExists(validationProblemRegexMatcher), TimePeriod.DEFAULT);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("this is known issue JBIDE-13554");
 		}

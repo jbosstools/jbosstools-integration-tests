@@ -9,24 +9,24 @@ import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.handler.WidgetHandler;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.markers.matcher.MarkerDescriptionMatcher;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.cdi.reddeer.cdi.ui.CDIValidatorPreferencePage;
-import org.jboss.tools.deltaspike.ui.bot.test.condition.SpecificProblemExists;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Test;
 
 /**
- * Tests if there are all deltaspike validation messages under CDI Validator and
+ * Tests if there are all Deltaspike validation messages under CDI Validator and
  * whether their severity can be changed.
  * 
  * @author jjankovi
@@ -43,14 +43,15 @@ public class ValidationsInPreferenceTest extends DeltaspikeTestBase {
 	public void closeAllEditors() {
 		deleteAllProjects();
 	}
-	
+
 	@AfterClass
 	public static void setDefaultProblemSeverity() {
 		setSeverityToDefault();
 	}
 
 	/**
-	 * Tests if there are all deltaspike validation messages under CDI Validator.
+	 * Tests if there are all deltaspike validation messages under CDI
+	 * Validator.
 	 */
 	@Test
 	public void testAllValidationsPresence() {
@@ -78,7 +79,7 @@ public class ValidationsInPreferenceTest extends DeltaspikeTestBase {
 
 		// Check there is no problems
 		try {
-			new WaitWhile(new ProblemExists(ProblemType.ANY), TimePeriod.LONG);
+			new WaitWhile(new ProblemExists(ProblemType.ALL), TimePeriod.LONG);
 		} catch (WaitTimeoutExpiredException e) {
 			fail(e.getMessage());
 		}
@@ -89,8 +90,8 @@ public class ValidationsInPreferenceTest extends DeltaspikeTestBase {
 		preferenceDialog.open();
 		preferenceDialog.select(new CDIValidatorPreferencePage());
 
-		WidgetHandler.getInstance().notify(SWT.MouseUp, new DefaultLabel("Extensions").getSWTWidget());
-		WidgetHandler.getInstance().notify(SWT.MouseUp, new DefaultLabel("Deltaspike").getSWTWidget());
+		WidgetHandler.getInstance().notifyWidget(SWT.MouseUp, new DefaultLabel("Extensions").getSWTWidget());
+		WidgetHandler.getInstance().notifyWidget(SWT.MouseUp, new DefaultLabel("Deltaspike").getSWTWidget());
 	}
 
 	private void checkDeltaspikeValidationPresense() {
@@ -108,7 +109,7 @@ public class ValidationsInPreferenceTest extends DeltaspikeTestBase {
 
 		applyChanges();
 	}
-	
+
 	private static void setSeverityToDefault() {
 		openValidationsInPreferenceDialog();
 
@@ -122,9 +123,10 @@ public class ValidationsInPreferenceTest extends DeltaspikeTestBase {
 	private void checkAllProblemsDetected(ProblemType problemType) {
 		for (DeltaspikeValidations validation : DeltaspikeValidations.values()) {
 			try {
-				new WaitUntil(
-						new SpecificProblemExists(new RegexMatcher(validation.getValidationMessage()), problemType),
-						TimePeriod.LONG);
+				RegexMatcher regExpMatcher = new RegexMatcher(validation.getValidationMessage());
+				MarkerDescriptionMatcher markerDescMatcher = new MarkerDescriptionMatcher(regExpMatcher);
+
+				new WaitUntil(new ProblemExists(problemType, markerDescMatcher), TimePeriod.LONG);
 			} catch (WaitTimeoutExpiredException e) {
 				fail(e.getMessage());
 			}
@@ -133,12 +135,12 @@ public class ValidationsInPreferenceTest extends DeltaspikeTestBase {
 
 	private static void applyChanges() {
 		String confirmChangesShell = "Validator Settings Changed";
-		
+
 		new PushButton("Apply").click();
-		new WaitUntil(new ShellWithTextIsAvailable(confirmChangesShell));
+		new WaitUntil(new ShellIsAvailable(confirmChangesShell));
 		new DefaultShell(confirmChangesShell);
 		new PushButton("Yes").click();
-		new WaitWhile(new ShellWithTextIsAvailable(confirmChangesShell));
+		new WaitWhile(new ShellIsAvailable(confirmChangesShell));
 		preferenceDialog.ok();
 	}
 }
@@ -195,7 +197,7 @@ enum DeltaspikeValidations {
 	public String getValidationMessage() {
 		return message;
 	}
-	
+
 	/**
 	 * Returns default problem severity as string.
 	 * 

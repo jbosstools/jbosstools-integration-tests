@@ -20,7 +20,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.tools.deltaspike.ui.bot.test.condition.SpecificProblemExists;
 import org.junit.After;
@@ -115,7 +115,7 @@ public class ExceptionHandlerMethodsTest extends DeltaspikeTestBase {
 		insertIntoFile(projectName, "test", "StringProducer.java", 17, 0, "@Produces");
 
 		try {
-			new WaitWhile(new ProblemExists(ProblemType.ANY), TimePeriod.LONG);
+			new WaitWhile(new ProblemExists(ProblemType.ALL), TimePeriod.LONG);
 		} catch (WaitTimeoutExpiredException e) {
 			fail(e.getMessage());
 		}

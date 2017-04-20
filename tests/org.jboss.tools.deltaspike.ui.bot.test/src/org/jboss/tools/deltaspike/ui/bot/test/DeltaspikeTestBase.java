@@ -30,23 +30,22 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
+import org.jboss.reddeer.eclipse.m2e.core.ui.wizard.MavenImportWizard;
 import org.jboss.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.jboss.reddeer.eclipse.wst.common.project.facet.ui.RuntimesPropertyPage;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
+import org.jboss.reddeer.swt.condition.ShellIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
@@ -54,8 +53,6 @@ import org.jboss.tools.cdi.reddeer.cdi.ui.preferences.CDISettingsPreferencePage;
 import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage;
 import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage.SourceAttachmentEnum;
 import org.jboss.tools.deltaspike.ui.bot.test.condition.SpecificProblemExists;
-import org.jboss.tools.maven.reddeer.wizards.MavenImportWizard;
-import org.jboss.tools.maven.reddeer.wizards.MavenImportWizardFirstPage;
 import org.junit.BeforeClass;
 
 @CleanWorkspace
@@ -74,7 +71,7 @@ public class DeltaspikeTestBase {
 		preferenceDialog.open();
 		SourceLookupPreferencePage sp = new SourceLookupPreferencePage();
 		preferenceDialog.select(sp);
-		sp.setSourceAttachment(SourceAttachmentEnum.NEVER);
+		sp.setSourceAttachment(SourceAttachmentEnum.NEVER);;
 		preferenceDialog.ok();
 	}
 
@@ -99,12 +96,12 @@ public class DeltaspikeTestBase {
 
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		Project explorerItem = pe.getProject(projectName);
+		Project project = pe.getProject(projectName);
 
-		PropertyDialog dialog = new ExplorerItemPropertyDialog(explorerItem);
+		PropertyDialog dialog = project.openProperties();
 		RuntimesPropertyPage runtimePage = new RuntimesPropertyPage();
 		CDISettingsPreferencePage cdiPage = new CDISettingsPreferencePage();
-		String targetRuntime = sr.getRuntimeNameLabelText(sr.getConfig());
+		String targetRuntime = sr.getRuntimeNameLabelText();
 
 		dialog.open();
 		dialog.select(runtimePage);
@@ -154,9 +151,7 @@ public class DeltaspikeTestBase {
 		}
 
 		String pomPath = "target/copies/" + projectName;
-		MavenImportWizard importWizard = new MavenImportWizard();
-		importWizard.open();
-		new MavenImportWizardFirstPage().importProject((new File(pomPath)).getCanonicalPath(), false);
+		MavenImportWizard.importProject((new File(pomPath)).getCanonicalPath());
 	}
 
 	private static boolean deleteDir(File dir) {
@@ -202,7 +197,7 @@ public class DeltaspikeTestBase {
 			String annotation) {
 
 		insertIntoFile(projectName, packageName, bean, line, column, annotation);
-		new WaitUntil(new SpecificProblemExists(new RegexMatcher(".*cannot be resolved.*")), TimePeriod.NORMAL);
+		new WaitUntil(new SpecificProblemExists(new RegexMatcher(".*cannot be resolved.*")), TimePeriod.DEFAULT);
 
 		TextEditor e = new TextEditor();
 		new ShellMenu(new WithTextMatcher("Source"), new RegexMatcher("Organize Imports.*")).select();
@@ -218,9 +213,9 @@ public class DeltaspikeTestBase {
 
 	protected static void cleanProjects() {
 		new ShellMenu(new WithTextMatcher("Project"), new RegexMatcher("Clean.*")).select();
-		new WaitUntil(new ShellWithTextIsActive("Clean"));
+		new WaitUntil(new ShellIsActive("Clean"));
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive("Clean"));
+		new WaitWhile(new ShellIsActive("Clean"));
 		new WaitWhile(new JobIsRunning());
 	}
 
@@ -232,7 +227,7 @@ public class DeltaspikeTestBase {
 			try {
 				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
 			} catch (Exception ex) {
-				AbstractWait.sleep(TimePeriod.NORMAL);
+				AbstractWait.sleep(TimePeriod.DEFAULT);
 				if (!p.getTreeItem().isDisposed()) {
 					org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
 				}

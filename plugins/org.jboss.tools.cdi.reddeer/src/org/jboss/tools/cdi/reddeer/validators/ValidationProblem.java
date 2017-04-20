@@ -14,7 +14,7 @@ package org.jboss.tools.cdi.reddeer.validators;
 import java.util.List;
 
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 public class ValidationProblem {
 	

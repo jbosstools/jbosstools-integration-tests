@@ -13,7 +13,7 @@ package org.jboss.tools.cdi.reddeer.validators;
 
 import java.util.Arrays;
 
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 
 
@@ -29,7 +29,7 @@ public class BeansXmlValidationProviderCDI10 extends AbstractValidationProvider 
 	void init() {
 		
 		problems.add(new ValidationProblem(ProblemType.ERROR, ValidationType.NO_CLASS, 
-				"There is no class", jsr, Arrays.asList("Create CDI Bean")));
+				"There is no class", jsr, Arrays.asList("Create CDI Be<<<<<<<<<<an")));
 		
 		problems.add(new ValidationProblem(ProblemType.ERROR, ValidationType.NO_ANNOTATION,
 				"There is no annotation",jsr, Arrays.asList("Create CDI")));

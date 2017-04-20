@@ -34,8 +34,13 @@ public class ClassHasErrorMarker implements WaitCondition{
 	}
 
 	@Override
-	public String errorMessage() {
+	public String errorMessageWhile() {
 		return "class "+className+" has errors"; 
+	}
+
+	@Override
+	public String errorMessageUntil() {
+		return "class "+className+" has no errors"; 
 	}
 
 }
