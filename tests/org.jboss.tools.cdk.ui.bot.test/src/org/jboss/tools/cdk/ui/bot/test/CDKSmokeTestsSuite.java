@@ -16,7 +16,8 @@ import org.junit.runners.Suite;
 
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
-	CDKDevstudioBaseTest.class
+	CDKDevstudioIntegrationTest.class,
+	CDK3DevstudioIntegrationTest.class
 })
 /**
  * @author ondrej dockal
