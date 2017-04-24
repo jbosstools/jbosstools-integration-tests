@@ -32,21 +32,20 @@ import org.jboss.reddeer.common.platform.RunningPlatform;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.freemarker.ui.bot.test.Activator;
@@ -337,7 +336,8 @@ public abstract class AbstractFreemarkerTest {
 
 		runJavaFile(runFile);
 		
-		new WaitUntil(new ConsoleHasText(outputExpected), TimePeriod.NORMAL, false);
+		new ConsoleView().open();
+		new WaitUntil(new ConsoleHasText(outputExpected), TimePeriod.DEFAULT, false);
 		ConsoleView cv = new ConsoleView();
 		cv.open();
 		String consoleText = cv.getConsoleText();
@@ -416,16 +416,16 @@ public abstract class AbstractFreemarkerTest {
 	 */
 	@SuppressWarnings("unchecked")
 	private void runJavaFile(String... javaFilePath) {
-		PackageExplorer explorer = new PackageExplorer();
+		ProjectExplorer explorer = new ProjectExplorer();
 		Project project = explorer.getProject(projectName);
 		ProjectItem item = project.getProjectItem(javaFilePath);
 		item.select();
 		WithTextMatcher regex = new WithTextMatcher(new RegexMatcher(".*Java Application.*"));
 		new ContextMenu(new WithTextMatcher("Run As"), regex).select();
 
-		new WaitUntil(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.NORMAL, false);
-		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"));
-		new WaitWhile(new JobIsRunning());		
+		new WaitUntil(new ShellIsAvailable("Progress Information"), TimePeriod.DEFAULT, false);
+		new WaitWhile(new ShellIsAvailable("Progress Information"));
+		new WaitWhile(new JobIsRunning());
 	}
 
 

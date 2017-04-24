@@ -7,13 +7,13 @@ import java.util.Collection;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
+import org.jboss.reddeer.eclipse.ui.views.contentoutline.ContentOutline;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.Text;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -63,8 +63,8 @@ public class RenameTest extends AbstractFeatureBaseTest {
 
 		String newId = RENAMED_PREFIX + BATCHLET_PROPERTY_ID;
 		String newFileName = RENAMED_PREFIX + BATCHLET_PROPERTY_JAVA_CLASS;
-		String[] pathToClass = new String[] { JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS };
-		String[] pathToClassRenamed = new String[] { JAVA_FOLDER, getPackage(), newFileName };
+		String[] pathToClass = new String[] { JAVA_RESOURCES_FOLDER, JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS };
+		String[] pathToClassRenamed = new String[] { JAVA_RESOURCES_FOLDER, JAVA_FOLDER, getPackage(), newFileName };
 
 		// Rename to "Renamed..." and search for reference
 		assertTrue("Can't rename class " + BATCHLET_PROPERTY_JAVA_CLASS, renameClass(newId, pathToClass));
@@ -76,7 +76,7 @@ public class RenameTest extends AbstractFeatureBaseTest {
 	public void renameProperty() {
 		this.createBatchletWithProperty();
 
-		String[] pathToClass = new String[] { JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS };
+		String[] pathToClass = new String[] { JAVA_RESOURCES_FOLDER, JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS };
 
 		// Rename property in bachlet class.
 		renamePropertyInFile(PROPERTY_NAME, RENAMED_PROPERTY_NAME, pathToClass);
@@ -84,7 +84,7 @@ public class RenameTest extends AbstractFeatureBaseTest {
 		// Search for renamed property
 		assertTrue("Property with name " + RENAMED_PROPERTY_NAME + " was not found in search results.",
 				searchForPropertyInFile(JOB_XML_FILE, RENAMED_PROPERTY_NAME,
-						new String[] { JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS }));
+						new String[] { JAVA_RESOURCES_FOLDER, JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS }));
 	}
 
 	@Test
@@ -93,8 +93,8 @@ public class RenameTest extends AbstractFeatureBaseTest {
 
 		String newId = RENAMED_PREFIX + EXCEPTION_ID;
 		String newFileName = RENAMED_PREFIX + EXCEPTION_JAVA_CLASS;
-		String[] pathToClass = new String[] { JAVA_FOLDER, getPackage(), EXCEPTION_JAVA_CLASS };
-		String[] pathToClassRenamed = new String[] { JAVA_FOLDER, getPackage(), newFileName };
+		String[] pathToClass = new String[] { JAVA_RESOURCES_FOLDER, JAVA_FOLDER, getPackage(), EXCEPTION_JAVA_CLASS };
+		String[] pathToClassRenamed = new String[] { JAVA_RESOURCES_FOLDER, JAVA_FOLDER, getPackage(), newFileName };
 
 		// Rename to "Renamed..." and search for reference
 		assertTrue("Can't rename class " + EXCEPTION_JAVA_CLASS, renameClass(newId, pathToClass));
@@ -107,11 +107,11 @@ public class RenameTest extends AbstractFeatureBaseTest {
 		if (projectItem != null) {
 			projectItem.select();
 			new ContextMenu("Refactor", "Rename...").select();
-			new WaitUntil(new ShellWithTextIsAvailable("Rename Compilation Unit"), TimePeriod.NORMAL);
+			new WaitUntil(new ShellIsAvailable("Rename Compilation Unit"), TimePeriod.DEFAULT);
 			Text name = new DefaultText(0);
 			name.setText(newName);
 			new FinishButton().click();
-			new WaitWhile(new ShellWithTextIsAvailable("Rename Compilation Unit"), TimePeriod.NORMAL);
+			new WaitWhile(new ShellIsAvailable("Rename Compilation Unit"), TimePeriod.DEFAULT);
 			editor.save();
 			return true;
 		}
@@ -122,7 +122,7 @@ public class RenameTest extends AbstractFeatureBaseTest {
 		ProjectItem projectItem = getProject().getProjectItem(path);
 		projectItem.open();
 
-		OutlineView outlineView = new OutlineView();
+		ContentOutline outlineView = new ContentOutline();
 		outlineView.open();
 
 		DefaultTree tree = new DefaultTree();
@@ -136,11 +136,11 @@ public class RenameTest extends AbstractFeatureBaseTest {
 		}
 
 		new ContextMenu("Refactor", "Rename...").select();
-		new WaitUntil(new ShellWithTextIsAvailable("Rename Field"), TimePeriod.NORMAL);
+		new WaitUntil(new ShellIsAvailable("Rename Field"), TimePeriod.DEFAULT);
 		Text name = new DefaultText(0);
 		name.setText(newPropertyName);
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable("Rename Field"), TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsAvailable("Rename Field"), TimePeriod.DEFAULT);
 
 		editor.save();
 	}

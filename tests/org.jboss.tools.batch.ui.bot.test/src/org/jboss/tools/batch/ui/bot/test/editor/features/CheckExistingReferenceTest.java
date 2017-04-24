@@ -13,7 +13,7 @@ package org.jboss.tools.batch.ui.bot.test.editor.features;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.batch.reddeer.wizard.BatchArtifacts;
 import org.junit.Test;
 
@@ -53,7 +53,7 @@ public class CheckExistingReferenceTest extends AbstractFeatureBaseTest {
 		assertNoProblems();
 		
 		assertTrue(searchForClassReference(JOB_XML_FILE, 
-				new String[]{JAVA_FOLDER, getPackage(), BATCHLET_JAVA_CLASS}));
+				new String[]{ JAVA_RESOURCES_FOLDER, JAVA_FOLDER, getPackage(), BATCHLET_JAVA_CLASS}));
 	}
 	
 	@Test
@@ -72,7 +72,7 @@ public class CheckExistingReferenceTest extends AbstractFeatureBaseTest {
 		
 		assertTrue("Property with name " + PROPERTY_NAME + " was not found in search results.", 
 				searchForPropertyInFile(JOB_XML_FILE, PROPERTY_NAME, 
-						new String[]{JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS}));
+						new String[]{JAVA_RESOURCES_FOLDER, JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS}));
 	}
 	
 	@Test
@@ -106,6 +106,6 @@ public class CheckExistingReferenceTest extends AbstractFeatureBaseTest {
 		assertNoProblems();
 		
 		assertTrue(searchForClassReference(JOB_XML_FILE, 
-				new String[]{JAVA_FOLDER, getPackage(), EXCEPTION_JAVA_CLASS}));
+				new String[]{JAVA_RESOURCES_FOLDER, JAVA_FOLDER, getPackage(), EXCEPTION_JAVA_CLASS}));
 	}
 }
