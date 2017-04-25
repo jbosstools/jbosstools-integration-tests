@@ -31,8 +31,6 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<testSuite>org.jboss.tools.forge.ui.bot.test</testSuite>
-					<testClass>org.jboss.tools.forge2.ui.bot.test.suite.Forge2AllTest</testClass>
 					<dependencies combine.children="append">
 						<dependency>
 							<type>p2-installable-unit</type>
@@ -104,28 +102,26 @@
 	</build>
 	<profiles>
 		<profile>
-			<id>database</id>
-			<activation>
-				<property>
-					<name>test.database</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>tycho-surefire-plugin</artifactId>
-					</plugin>
-				</plugins>
-			</build>
-			<properties>
-				<test.database>${test.database}</test.database>
-			</properties>
+		<id>all</id>
+		<activation>
+			<activeByDefault>true</activeByDefault>
+		</activation>
+		<build>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-surefire-plugin</artifactId>
+				</plugin>
+			</plugins>
+		</build>
+		<properties>
+			<testClass>org.jboss.tools.forge2.ui.bot.test.suite.Forge2AllTest</testClass>
+		</properties>
 		</profile>
 		<profile>
 			<id>check-pr</id>
 			<properties>
-				<suiteClass>org.jboss.tools.forge2.ui.bot.test.suite.SmokeSuite</suiteClass>
+				<testClass>org.jboss.tools.forge2.ui.bot.test.suite.SmokeSuite</testClass>
 			</properties>
 			<build>
 				<plugins>
@@ -139,7 +135,7 @@
 		<profile>
 			<id>smoke</id>
 			<properties>
-				<suiteClass>org.jboss.tools.forge2.ui.bot.test.suite.SmokeSuite</suiteClass>
+				<testClass>org.jboss.tools.forge2.ui.bot.test.suite.SmokeSuite</testClass>
 			</properties>
 			<build>
 				<plugins>
