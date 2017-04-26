@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
-import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectWizard;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;

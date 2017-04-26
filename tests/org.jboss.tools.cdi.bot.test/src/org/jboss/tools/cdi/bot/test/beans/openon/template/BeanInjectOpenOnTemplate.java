@@ -9,16 +9,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.handler.TableHandler;
+import org.jboss.reddeer.core.handler.TableItemHandler;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.cdi.text.ext.hyperlink.AssignableBeansDialog;
-import org.jboss.tools.cdi.reddeer.cdi.text.ext.hyperlink.xpl.HierarchyInformationControl;
 import org.junit.Test;
 
 public class BeanInjectOpenOnTemplate extends CDITestBase{
@@ -128,9 +127,8 @@ public class BeanInjectOpenOnTemplate extends CDITestBase{
 				ad = new AssignableBeansDialog();
 				Table observerTable = new DefaultTable();
 				//observerTable.getItem(proposal).select();
-			
-				TableHandler.getInstance().setDefaultSelection(observerTable.getItem(proposal).getSWTWidget());
-			
+				TableItemHandler.getInstance().setDefaultSelection(observerTable.getItem(proposal).getSWTWidget());
+				
 				if(proposal.contains("@")){
 					String[] splitted = proposal.split(" ");
 					String[] splitted1 = splitted[1].split("\\.");

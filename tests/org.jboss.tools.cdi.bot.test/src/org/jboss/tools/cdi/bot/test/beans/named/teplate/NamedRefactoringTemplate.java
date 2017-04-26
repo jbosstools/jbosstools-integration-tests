@@ -18,9 +18,9 @@ import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.CDIRefactorWizard;
 import org.jboss.tools.cdi.reddeer.uiutils.CollectionsUtil;
+import org.jboss.tools.cdi.reddeer.xhtml.NewXHTMLFileWizardPage;
+import org.jboss.tools.cdi.reddeer.xhtml.NewXHTMLWizard;
 import org.jboss.tools.common.reddeer.label.IDELabel;
-import org.jboss.tools.jst.reddeer.web.ui.NewXHTMLFileWizardPage;
-import org.jboss.tools.jst.reddeer.web.ui.NewXHTMLWizard;
 import org.junit.After;
 import org.junit.Test;
 
@@ -136,10 +136,10 @@ public abstract class NamedRefactoringTemplate extends CDITestBase {//extends JS
 		NewXHTMLWizard xhtmlWizard = new NewXHTMLWizard();
 		xhtmlWizard.open();
 		NewXHTMLFileWizardPage page = new NewXHTMLFileWizardPage();
-		page.setParentFolder(getProjectName() + "/" 
+		page.setDestination(getProjectName() + "/" 
 				+ IDELabel.WebProjectsTree.WEB_CONTENT 
 				+ "/pages");
-		page.setFileName(pageName);
+		page.setName(pageName);
 		xhtmlWizard.finish();
 		editResourceUtil.replaceClassContentByResource(pageName,
 				readFile("resources/jsf/"+pageName+".cdi"), false);

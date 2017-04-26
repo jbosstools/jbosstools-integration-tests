@@ -7,9 +7,7 @@ Bundle-Activator: org.jboss.tools.cdi.bot.test.PluginActivator
 Require-Bundle: org.jboss.reddeer.go;bundle-version="[2.0.0,2.1.0)",
  org.jboss.tools.cdi.reddeer;bundle-version="[4.4.4,4.5.0)",
  org.jboss.tools.common.reddeer;bundle-version="[3.8.4,3.9.0)",
- org.jboss.ide.eclipse.as.reddeer;bundle-version="[3.2.4,3.3.0)",
- org.jboss.tools.jst.reddeer;bundle-version="[4.4.3,4.5.0)",
- org.jboss.tools.jsf.reddeer;bundle-version="[3.8.3,3.9.0)"
+ org.jboss.ide.eclipse.as.reddeer;bundle-version="[3.2.4,3.3.0)"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Eclipse-BundleShape: jar

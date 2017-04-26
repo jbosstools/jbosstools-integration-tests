@@ -11,13 +11,15 @@
 
 package org.jboss.tools.cdi.bot.test.beans.dialog.template;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.cdi.text.ext.hyperlink.AssignableBeansDialog;
 import org.junit.After;
 import org.junit.Before;

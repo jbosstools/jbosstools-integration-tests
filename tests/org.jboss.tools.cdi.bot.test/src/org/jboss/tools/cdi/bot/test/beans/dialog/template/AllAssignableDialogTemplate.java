@@ -11,13 +11,14 @@
 
 package org.jboss.tools.cdi.bot.test.beans.dialog.template;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.cdi.text.ext.hyperlink.AssignableBeansDialog;
 import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
 import org.junit.Before;
@@ -31,7 +32,7 @@ public class AllAssignableDialogTemplate extends CDITestBase {
 	public void prepareClasses(){
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		if(!pe.getProject(PROJECT_NAME).containsItem("Java Resources","src",getPackageName())){
+		if(!pe.getProject(PROJECT_NAME).containsResource("Java Resources","src",getPackageName())){
 			createWithContent("AbstractManager");
 			createWithContent("App");
 			createWithContent("Basic");

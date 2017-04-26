@@ -12,7 +12,9 @@
 package org.jboss.tools.cdi.bot.test.beansxml.validation.template;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -20,14 +22,14 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.views.markers.QuickFixPage;
 import org.jboss.reddeer.eclipse.ui.views.markers.QuickFixWizard;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.beansxml.template.BeansXMLValidationTemplate;
@@ -73,7 +75,7 @@ public class BeansXMLValidationQuickFixTemplate extends CDITestBase {
 		assertEquals(getPackageName(),bw.getPackage());
 		assertTrue(bw.isAlternative());
 		bw.finish();
-		new WaitWhile(new ProblemExists(ProblemType.ANY));
+		new WaitWhile(new ProblemExists(ProblemType.ALL));
 	}
 	
 	
@@ -92,7 +94,7 @@ public class BeansXMLValidationQuickFixTemplate extends CDITestBase {
 		assertEquals(getPackageName(),sw.getPackage());
 		assertTrue(sw.isAlternative());
 		sw.finish();
-		new WaitWhile(new ProblemExists(ProblemType.ANY));	
+		new WaitWhile(new ProblemExists(ProblemType.ALL));	
 	}
 	
 	@Test
@@ -109,7 +111,7 @@ public class BeansXMLValidationQuickFixTemplate extends CDITestBase {
 		new WaitWhile(new BeanXMLValidationProblemIsEmpty(getProjectName()));
 		openQuickfix(ValidationType.ISNT_ALTERNATIVE);
 		new TextEditor("S1.java").getText().contains("@Alternative");
-		new WaitWhile(new ProblemExists(ProblemType.ANY));
+		new WaitWhile(new ProblemExists(ProblemType.ALL));
 	}
 	
 	
@@ -131,7 +133,7 @@ public class BeansXMLValidationQuickFixTemplate extends CDITestBase {
 		openQuickfix(ValidationType.ISNT_ALTERNATIVE_STEREOTYPE);
 		
 		new TextEditor("S2.java").getText().contains("@Alternative");
-		new WaitWhile(new ProblemExists(ProblemType.ANY));
+		new WaitWhile(new ProblemExists(ProblemType.ALL));
 		
 	}
 	
@@ -198,13 +200,13 @@ public class BeansXMLValidationQuickFixTemplate extends CDITestBase {
 			EditorPartWrapper bEditor = new EditorPartWrapper();
 			bEditor.activateTreePage();
 			//TODO check version
-			new WaitWhile(new ProblemExists(ProblemType.ANY));
+			new WaitWhile(new ProblemExists(ProblemType.ALL));
 		} else {
-			new WaitUntil(new ProblemExists(ProblemType.WARNING),TimePeriod.NORMAL,false);
+			new WaitUntil(new ProblemExists(ProblemType.WARNING),TimePeriod.DEFAULT,false);
 			pe.getProject(PROJECT_NAME).select();
 			new ContextMenu("Validate").select();
 			new WaitWhile(new JobIsRunning());
-			new WaitUntil(new ProblemExists(ProblemType.WARNING),TimePeriod.NORMAL,false);
+			new WaitUntil(new ProblemExists(ProblemType.WARNING),TimePeriod.DEFAULT,false);
 		}
 		
 	}

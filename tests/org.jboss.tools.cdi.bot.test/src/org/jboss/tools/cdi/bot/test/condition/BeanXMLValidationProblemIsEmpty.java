@@ -5,8 +5,8 @@ import java.util.List;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 
 public class BeanXMLValidationProblemIsEmpty extends AbstractWaitCondition{
 	
@@ -18,8 +18,7 @@ public class BeanXMLValidationProblemIsEmpty extends AbstractWaitCondition{
 
 	public boolean test() {
 		ProblemsView pv = new ProblemsView();
-		pv.open();
-		List<Problem> problems = pv.getProblems(ProblemType.ANY);
+		List<Problem> problems = pv.getProblems(ProblemType.ALL);
 		boolean toReturn = true;
 		for(Problem problem: problems){
 			try{
@@ -38,7 +37,7 @@ public class BeanXMLValidationProblemIsEmpty extends AbstractWaitCondition{
 	public String description() {
 		ProblemsView pv = new ProblemsView();
 		pv.open();
-		List<Problem> problems = pv.getProblems(ProblemType.ANY);
+		List<Problem> problems = pv.getProblems(ProblemType.ALL);
 		StringBuilder b = new StringBuilder();
 		for(Problem p: problems){
 			try{

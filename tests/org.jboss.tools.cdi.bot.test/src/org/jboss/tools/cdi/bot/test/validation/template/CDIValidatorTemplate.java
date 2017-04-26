@@ -1,22 +1,22 @@
 package org.jboss.tools.cdi.bot.test.validation.template;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ProgressInformationShellIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.jboss.reddeer.swt.condition.ShellIsActive;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.cdi.ui.CDIValidatorPreferencePage;
 import org.junit.AfterClass;
@@ -43,7 +43,7 @@ public class CDIValidatorTemplate extends CDITestBase {
 	public void createBean(){
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		if(!pe.getProject(PROJECT_NAME).containsItem("Java Resources","src","test","TestClass.java")){
+		if(!pe.getProject(PROJECT_NAME).containsResource("Java Resources","src","test","TestClass.java")){
 			beansHelper.createClass("TestClass", "test");
 			new TextEditor("TestClass.java");
 			editResourceUtil.replaceInEditor("}", "@Inject String s; }");
@@ -64,7 +64,7 @@ public class CDIValidatorTemplate extends CDITestBase {
 		modifyCDIValidatorState(true);
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
-		new WaitUntil(new ProblemExists(ProblemType.ANY), TimePeriod.NORMAL);
+		new WaitUntil(new ProblemExists(ProblemType.ALL), TimePeriod.DEFAULT);
 		assertEquals("Warnings node should contain one warning", 
 				problemsView.getProblems(ProblemType.WARNING).size(), 1);
 		//TODO use validatorHelper
@@ -75,7 +75,7 @@ public class CDIValidatorTemplate extends CDITestBase {
 	@Test
 	public void testDisabledValidator() {
 		modifyCDIValidatorState(false);
-		new WaitWhile(new ProblemExists(ProblemType.ANY), TimePeriod.NORMAL);
+		new WaitWhile(new ProblemExists(ProblemType.ALL), TimePeriod.DEFAULT);
 		modifyCDIValidatorState(true);
 	}
 	
@@ -94,13 +94,13 @@ public class CDIValidatorTemplate extends CDITestBase {
 		if (stateChanged) {
 			closeSettingsChangedShell();
 		}
-		new WaitWhile(new ProgressInformationShellIsActive());
-		new WaitWhile(new ShellWithTextIsAvailable(shellText));
+		new WaitWhile(new ShellIsActive("Progress Information"));
+		new WaitWhile(new ShellIsAvailable(shellText));
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
 	private static void closeSettingsChangedShell() {
-		new WaitUntil(new ShellWithTextIsAvailable("Validator Settings Changed"), TimePeriod.LONG);
+		new WaitUntil(new ShellIsAvailable("Validator Settings Changed"), TimePeriod.LONG);
 		DefaultShell shell = new DefaultShell("Validator Settings Changed");
 		String shellText = shell.getText();
 		new PushButton("Yes").click();

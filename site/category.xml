@@ -1,104 +1,259 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-	<description>JBoss Tools 4.3 - Tests</description>
-
-	<!-- PLEASE NOTE!
-		When updating this file, please be sure that it parses as valid XML before committing it.
-		To test, just run `mvn clean install` in this folder. 
-		To regenerate the list of included test plugins, do this:
-		
-		$ cd jbosstools-integration-tests; echo ""; find plugins/ tests/ -maxdepth 1 -mindepth 1 -type d | sort | \
-      sed "s#\(plugins/\|tests/\|features\)\(.\+\)#<bundle id=\"\2\"><category name=\"JBoss Tools Core - Integration Tests\"/></bundle>#g"
-	-->
-
-  <category-def name="JBoss Tools Core - Integration Tests" label="JBoss Tools Core - Integration Tests"><description>JBoss Tools Core - Integration Tests</description></category-def>
-  <category-def name="JBoss Tools Core - Integration Test Sources" label="JBoss Tools Core - Integration Test Sources"><description>JBoss Tools Core - Integration Test Sources</description></category-def>
-
-<!-- As of 2013-11-18, there are 29 plugins -->
-<bundle id="org.jboss.tools.aerogear.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.arquillian.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.arquillian.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.batch.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.batch.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.browsersim.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.browsersim.rmi"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.cordovasim.rmi"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.cdi.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.easymport.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.easymport.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.forge.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.hibernate.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.jst.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.jst.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.perf.test.core"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.seam.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.aerogear.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.cdi.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.cdi.seam3.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.cdk.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.central.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.deltaspike.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.dummy.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.forge.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.freemarker.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.hibernate.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.jsf.ui.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.maven.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.mylyn.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.openshift.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.portlet.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.vpe.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.ws.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.perf.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.mylyn.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.vpe.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.docker.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.docker.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.livereload.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.browsersim.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-
-<!-- sources -->
-
-<bundle id="org.jboss.tools.aerogear.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.arquillian.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.arquillian.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.batch.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.batch.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.browsersim.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.browsersim.rmi.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.cordovasim.rmi.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.cdi.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.easymport.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.easymport.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.forge.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.hibernate.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.jst.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.jst.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.perf.test.core.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.seam.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.aerogear.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.cdi.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.cdi.seam3.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.cdk.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.central.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.deltaspike.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.dummy.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.forge.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.freemarker.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.hibernate.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.jsf.ui.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.maven.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.mylyn.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.openshift.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.portlet.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.vpe.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.ws.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.perf.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.mylyn.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.vpe.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.docker.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.docker.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.livereload.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.livereload.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.browsersim.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
+   <description>
+      JBoss Tools 4.3 - Tests
+   </description>
+   <bundle id="org.jboss.tools.aerogear.reddeer">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.arquillian.reddeer">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.arquillian.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.batch.reddeer">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.batch.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.browsersim.reddeer">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.browsersim.rmi">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.cordovasim.rmi">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.cdi.reddeer">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.easymport.reddeer">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.easymport.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.forge.reddeer">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.hibernate.reddeer">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.jst.reddeer">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.jst.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.perf.test.core">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.seam.reddeer">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.aerogear.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.cdi.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.cdk.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.central.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.deltaspike.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.dummy.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.forge.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.freemarker.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.hibernate.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.jsf.ui.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.maven.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.mylyn.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.openshift.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.portlet.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.vpe.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.ws.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.perf.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.mylyn.reddeer">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.vpe.reddeer">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.docker.reddeer">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.docker.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.livereload.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.browsersim.ui.bot.test">
+      <category name="JBoss Tools Core - Integration Tests"/>
+   </bundle>
+   <bundle id="org.jboss.tools.aerogear.reddeer.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.arquillian.reddeer.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.arquillian.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.batch.reddeer.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.batch.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.browsersim.reddeer.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.browsersim.rmi.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.cordovasim.rmi.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.cdi.reddeer.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.easymport.reddeer.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.easymport.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.forge.reddeer.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.hibernate.reddeer.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.jst.reddeer.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.jst.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.perf.test.core.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.seam.reddeer.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.aerogear.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.cdi.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.cdk.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.central.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.deltaspike.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.dummy.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.forge.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.freemarker.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.hibernate.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.jsf.ui.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.maven.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.mylyn.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.openshift.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.portlet.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.vpe.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.ws.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.perf.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.mylyn.reddeer.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.vpe.reddeer.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.docker.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.docker.reddeer.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.livereload.reddeer.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.livereload.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <bundle id="org.jboss.tools.browsersim.ui.bot.test.source">
+      <category name="JBoss Tools Core - Integration Test Sources"/>
+   </bundle>
+   <category-def name="JBoss Tools Core - Integration Tests" label="JBoss Tools Core - Integration Tests">
+      <description>
+         JBoss Tools Core - Integration Tests
+      </description>
+   </category-def>
+   <category-def name="JBoss Tools Core - Integration Test Sources" label="JBoss Tools Core - Integration Test Sources">
+      <description>
+         JBoss Tools Core - Integration Test Sources
+      </description>
+   </category-def>
 </site>

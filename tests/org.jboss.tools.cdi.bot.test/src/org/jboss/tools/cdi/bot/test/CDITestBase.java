@@ -23,17 +23,17 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.lookup.ShellLookup;
 import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.swt.condition.ShellIsActive;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.cdi.reddeer.cdi.ui.CDIProjectWizard;
 import org.jboss.tools.cdi.reddeer.uiutils.BeansHelper;
 import org.jboss.tools.cdi.reddeer.uiutils.BeansXMLHelper;
@@ -75,9 +75,9 @@ public class CDITestBase{
 			cw.open();
 			WebProjectFirstPage fp  = new WebProjectFirstPage();
 			fp.setProjectName(PROJECT_NAME);
-			fp.setTargetRuntime(sr.getRuntimeNameLabelText(sr.getConfig()));
+			fp.setTargetRuntime(sr.getRuntimeNameLabelText());
 			cw.finish();
-			new WaitUntil(new JobIsRunning(),TimePeriod.NORMAL, false);
+			new WaitUntil(new JobIsRunning(),TimePeriod.DEFAULT, false);
 			new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 		}
 	}
@@ -97,7 +97,7 @@ public class CDITestBase{
 			try{
 				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
 			} catch (RuntimeException ex) {
-				AbstractWait.sleep(TimePeriod.NORMAL);
+				AbstractWait.sleep(TimePeriod.DEFAULT);
 				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
 			}
 		}
@@ -112,7 +112,7 @@ public class CDITestBase{
 			try{
 				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
 			} catch (Exception ex) {
-				AbstractWait.sleep(TimePeriod.NORMAL);
+				AbstractWait.sleep(TimePeriod.DEFAULT);
 				if(!p.getTreeItem().isDisposed()){
 					org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
 				}

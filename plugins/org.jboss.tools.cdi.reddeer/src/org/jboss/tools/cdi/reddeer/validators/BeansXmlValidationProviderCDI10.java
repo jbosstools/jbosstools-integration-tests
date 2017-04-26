@@ -29,7 +29,7 @@ public class BeansXmlValidationProviderCDI10 extends AbstractValidationProvider 
 	void init() {
 		
 		problems.add(new ValidationProblem(ProblemType.ERROR, ValidationType.NO_CLASS, 
-				"There is no class", jsr, Arrays.asList("Create CDI Be<<<<<<<<<<an")));
+				"There is no class", jsr, Arrays.asList("Create CDI Bean")));
 		
 		problems.add(new ValidationProblem(ProblemType.ERROR, ValidationType.NO_ANNOTATION,
 				"There is no annotation",jsr, Arrays.asList("Create CDI")));

@@ -15,11 +15,11 @@ package org.jboss.tools.cdi.bot.test.beans.stereotype.template;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
+
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.junit.execution.annotation.RunIf;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
@@ -100,7 +100,7 @@ public class StereotypeValidationQuickFixTemplate extends CDITestBase {
 		problems= validationHelper.findProblems(problem);
 		assertEquals(1,problems.size());
 		validationHelper.openQuickfix(problem);
-		new WaitWhile(new ProblemExists(ProblemType.ANY));
+		new WaitWhile(new ProblemExists(ProblemType.ALL));
 		
 	}
 	
@@ -121,7 +121,7 @@ public class StereotypeValidationQuickFixTemplate extends CDITestBase {
 		List<Problem> problems= validationHelper.findProblems(problem);
 		assertEquals(1,problems.size());
 		validationHelper.openQuickfix(problem);
-		new WaitWhile(new ProblemExists(ProblemType.ANY));
+		new WaitWhile(new ProblemExists(ProblemType.ALL));
 		
 	}
 	
@@ -142,7 +142,7 @@ public class StereotypeValidationQuickFixTemplate extends CDITestBase {
 		List<Problem> problems= validationHelper.findProblems(problem);
 		assertEquals(1,problems.size());
 		validationHelper.openQuickfix(problem);
-		new WaitWhile(new ProblemExists(ProblemType.ANY));
+		new WaitWhile(new ProblemExists(ProblemType.ALL));
 		
 	}	
 

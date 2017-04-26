@@ -22,8 +22,8 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
+import org.jboss.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.jboss.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
@@ -44,13 +44,13 @@ public abstract class BeansXMLBeansEditorTemplate extends CDITestBase {
 			
 	@Test
 	public void testClasses() {		
-		NewJavaClassWizardDialog jd = new NewJavaClassWizardDialog();
+		NewClassCreationWizard jd = new NewClassCreationWizard();
 		jd.open();
-		new NewJavaClassWizardPage().setName("Foo");
+		new NewClassWizardPage().setName("Foo");
 		jd.finish();
 		
 		jd.open();
-		new NewJavaClassWizardPage().setName("Bar");
+		new NewClassWizardPage().setName("Bar");
 		jd.finish();
 		
 		addClassItem(getPackageName() + ".Foo");
