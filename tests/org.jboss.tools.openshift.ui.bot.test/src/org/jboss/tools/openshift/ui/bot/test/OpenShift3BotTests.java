@@ -14,6 +14,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.openshift.reddeer.utils.CleanUpOS3;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.CreateServerAdapterTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.PublishChangesTest;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.ServerAdapterFromResourceTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.ServerAdapterWizardHandlingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.CreateResourcesTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.DeleteResourceTest;
@@ -25,6 +26,7 @@ import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.LogsTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.PortForwardingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.ScalingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.TriggerBuildTest;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.OSExplorerResourceTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.BuilderImageApplicationWizardHandlingTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.LabelsTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.basic.NewApplicationWizardHandlingTest;
@@ -92,6 +94,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	
 	// Application handling
 	DeleteResourceTest.class,
+	OSExplorerResourceTest.class,
 	TriggerBuildTest.class,
 	ImportApplicationTest.class,
 	PortForwardingTest.class,
@@ -108,6 +111,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	// Server adapter
 	ServerAdapterWizardHandlingTest.class,
 	CreateServerAdapterTest.class,
+	ServerAdapterFromResourceTest.class,
  	PublishChangesTest.class,
 
 	// Clean up
