@@ -17,8 +17,9 @@ import java.util.Collection;
 
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
+import org.jboss.reddeer.eclipse.core.resources.Resource;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.views.contentoutline.ContentOutline;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.forge.ui.bot.test.util.ScaffoldType;
 import org.junit.Before;
@@ -72,7 +73,7 @@ public class ScaffoldWizardTest extends WizardTestBase {
 		ProjectItem model = project.getProjectItem("Java Resources", "src/main/java", GROUPID + ".model");
 
 		for (String name : ENTITY_NAMES) {
-			assertTrue("No class for entity " + name, model.containsItem(name + ".java"));
+			assertTrue("No class for entity " + name, model.containsResource(name + ".java"));
 			checkWebResources(name, type);
 
 			if (type == ScaffoldType.FACES) {
@@ -84,45 +85,43 @@ public class ScaffoldWizardTest extends WizardTestBase {
 	private void checkWebResources(String entityName, ScaffoldType type) {
 		ProjectItem webapp = project.getProjectItem("src", "main", "webapp");
 		if (type == ScaffoldType.FACES) {
-			ProjectItem entityFolder = webapp
-					.getChild(Character.toLowerCase(entityName.charAt(0)) + entityName.substring(1));
+			ProjectItem entityFolder = webapp.getProjectItem(Character.toLowerCase(entityName.charAt(0)) + entityName.substring(1));
 
 			String[] fileNames = { "create.xhtml", "search.xhtml", "view.xhtml" };
 			assertNotNull(entityFolder);
 
 			for (String fileName : fileNames) {
 				assertTrue("File " + fileName + " missing for entity " + entityName,
-						entityFolder.containsItem(fileName));
+						entityFolder.containsResource(fileName));
 			}
 
 		} else if (type == ScaffoldType.ANGULARJS) {
-			ProjectItem scriptsFolder = webapp.getChild("scripts");
+			ProjectItem scriptsFolder = webapp.getProjectItem("scripts");
 			assertNotNull("Missing webapp/scripts folder", scriptsFolder);
 
-			ProjectItem controllers = scriptsFolder.getChild("controllers");
+			ProjectItem controllers = scriptsFolder.getProjectItem("controllers");
 			assertNotNull("Missing webapp/scripts/controllers folder", controllers);
 
-			ProjectItem services = scriptsFolder.getChild("services");
+			ProjectItem services = scriptsFolder.getProjectItem("services");
 			assertNotNull("Missing webapp/scripts/services folder", services);
 
 			String cont = "Controller.js";
 			assertTrue("Missing edit controller for entity " + entityName,
-					controllers.containsItem("edit" + entityName + cont));
+					controllers.containsResource("edit" + entityName + cont));
 			assertTrue("Missing new controller for entity " + entityName,
-					controllers.containsItem("new" + entityName + cont));
+					controllers.containsResource("new" + entityName + cont));
 			assertTrue("Missing search controller for entity " + entityName,
-					controllers.containsItem("search" + entityName + cont));
+					controllers.containsResource("search" + entityName + cont));
 
 			assertTrue("Missing factory service for entuty " + entityName,
-					services.containsItem(entityName + "Factory.js"));
+					services.containsResource(entityName + "Factory.js"));
 		}
 	}
 
 	private void checkViewClass(String entityName) {
-		ProjectItem javaResources = project.getProjectItem("Java Resources", "src/main/java");
-		ProjectItem view = null;
+		Resource view = null;
 
-		for (ProjectItem item : javaResources.getChildren()) {
+		for (Resource item : project.getProjectItem("Java Resources", "src/main/java").getChildren()) {
 			if (item.getName().endsWith(".view")) {
 				view = item;
 				break;
@@ -130,10 +129,10 @@ public class ScaffoldWizardTest extends WizardTestBase {
 		}
 		assertNotNull("Missing view package", view);
 
-		assertTrue("No bean for entity" + entityName, view.containsItem(entityName + "Bean.java"));
+		assertTrue("No bean for entity" + entityName, view.containsResource(entityName + "Bean.java"));
 
-		view.getChild(entityName + "Bean.java").open();
-		OutlineView outline = new OutlineView();
+		view.getResource(entityName + "Bean.java").open();
+		ContentOutline outline = new ContentOutline();
 		outline.open();
 
 		TreeItem beanItem = null;

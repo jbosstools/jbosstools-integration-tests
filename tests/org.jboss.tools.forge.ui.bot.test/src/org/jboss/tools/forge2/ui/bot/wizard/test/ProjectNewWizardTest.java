@@ -13,8 +13,10 @@ package org.jboss.tools.forge2.ui.bot.wizard.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
 import java.io.IOException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
@@ -32,8 +34,8 @@ public class ProjectNewWizardTest extends WizardTestBase {
 	 
 	@Test
 	public void testIsFocusedOnStartup(){
-		WizardDialog wd = getWizardDialog("project-new", "(Project: New).*");
-		assertTrue("'Project: New' wizard is not focused on startup", new DefaultShell().isFocused());
+		WizardDialog wd = getWizardDialog("project-new");
+		assertTrue("'Project: New' wizard is not focused on startup", new DefaultShell().isFocusControl());
 		wd.cancel();
 	}
 	
@@ -45,7 +47,7 @@ public class ProjectNewWizardTest extends WizardTestBase {
 	
 	@Test
 	public void testFinishBtnDisabled(){
-		WizardDialog wd = getWizardDialog("project-new", "(Project: New).*");
+		WizardDialog wd = getWizardDialog("project-new");
 		assertTrue(new LabeledText("Project name:").getText().isEmpty());
 		assertFalse(new PushButton("Finish").isEnabled());
 		new LabeledText("Project name:").setText(PROJECT_NAME);
@@ -55,7 +57,7 @@ public class ProjectNewWizardTest extends WizardTestBase {
 	
 	@Test
 	public void testNewMavenResourcesProject(){
-		WizardDialog wd = getWizardDialog("project-new", "(Project: New).*");
+		WizardDialog wd = getWizardDialog("project-new");
 		new LabeledText("Project name:").setText(PROJECT_NAME);
 		new LabeledText("Project location:").setText(WORKSPACE);
 		new LabeledText("Top level package:").setText(GROUPID);
@@ -76,7 +78,7 @@ public class ProjectNewWizardTest extends WizardTestBase {
 	
 	@Test
 	public void testNewWarProject(){
-		WizardDialog wd = getWizardDialog("project-new", "(Project: New).*");
+		WizardDialog wd = getWizardDialog("project-new");
 		new LabeledText("Project name:").setText(PROJECT_NAME);
 		new LabeledText("Project location:").setText(WORKSPACE);
 		new LabeledText("Top level package:").setText(GROUPID);

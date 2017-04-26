@@ -12,10 +12,10 @@ package org.jboss.tools.forge2.ui.bot.wizard.test;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.workbench.condition.EditorWithTitleIsActive;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.junit.Before;
@@ -35,8 +35,7 @@ public class CDISetupWizardTest extends WizardTestBase {
 	@Test
 	public void testBeansXmlCreated(){
 		ProjectExplorer pe = new ProjectExplorer();
-		assertTrue("beans.xml has not been created!", pe.getProject(PROJECT_NAME)
-				.containsItem("src", "main", "webapp", "WEB-INF", "beans.xml"));
+		assertTrue("beans.xml has not been created!", pe.getProject(PROJECT_NAME).containsResource("src", "main", "webapp", "WEB-INF", "beans.xml"));
 	}
 	
 	@Test

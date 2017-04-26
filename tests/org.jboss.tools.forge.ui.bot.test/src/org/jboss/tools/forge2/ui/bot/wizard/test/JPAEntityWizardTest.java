@@ -13,7 +13,7 @@ package org.jboss.tools.forge2.ui.bot.wizard.test;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.junit.Before;
 import org.junit.Test;

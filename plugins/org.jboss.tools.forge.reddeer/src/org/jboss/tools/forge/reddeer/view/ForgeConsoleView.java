@@ -1,18 +1,18 @@
 package org.jboss.tools.forge.reddeer.view;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ToolItemMenu;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.impl.toolbar.ViewToolBar;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
+import org.jboss.reddeer.workbench.impl.toolbar.ViewToolBar;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 /**
  * Forge Console view RedDeer implementation
@@ -98,7 +98,7 @@ public class ForgeConsoleView extends WorkbenchView{
 	 */
 	public String getConsoleText() {
 		activate();
-		new WaitUntil(new ConsoleHasTextWidget());
+		new WaitWhile(new ConsoleHasTextWidget(), TimePeriod.DEFAULT, false);
 		return new DefaultStyledText().getText();
 	}
 	

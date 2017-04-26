@@ -16,8 +16,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.views.contentoutline.ContentOutline;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -65,7 +65,7 @@ public class JPAFieldWizardTest extends WizardTestBase {
 	private void newField(String entityName, String name, Class<?> type) {
 		new ProjectExplorer().getProject(PROJECT_NAME)
 			.getProjectItem("Java Resources", "src/main/java", PACKAGE_NAME, entityName  + ".java").select();
-		WizardDialog dialog = getWizardDialog("JPA: New Field", "(JPA: New Field).*");
+		WizardDialog dialog = getWizardDialog("JPA: New Field");
 		assertTrue(new DefaultCombo().getSelection().equals(PACKAGE_NAME + "." + entityName));
 		
 		new LabeledText("Field Name:").setText(name);
@@ -73,7 +73,7 @@ public class JPAFieldWizardTest extends WizardTestBase {
 		new CheckBox("Not Nullable").toggle(true);
 		new CheckBox("Not Updatable").toggle(true);
 		new CheckBox("Not Insertable").toggle(true);
-		dialog.finish(TimePeriod.NORMAL);
+		dialog.finish(TimePeriod.DEFAULT);
 	}
 	
 	private void checkNewField(String entityName, String fieldName, Class<?> fieldType) {
@@ -94,7 +94,7 @@ public class JPAFieldWizardTest extends WizardTestBase {
 			}
 		}
 		
-		OutlineView oView = new OutlineView();
+		ContentOutline oView = new ContentOutline();
 		oView.open();
 		Collection<TreeItem> items = oView.outlineElements();
 		

@@ -11,7 +11,8 @@
 package org.jboss.tools.forge.reddeer.condition;
 
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+
 
 /**
  * Returns true if a project is selected in Project Explorer.

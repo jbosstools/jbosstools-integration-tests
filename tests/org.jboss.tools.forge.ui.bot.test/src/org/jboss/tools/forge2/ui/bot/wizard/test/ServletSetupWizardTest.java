@@ -11,18 +11,18 @@
 package org.jboss.tools.forge2.ui.bot.wizard.test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.eclipse.wst.common.project.facet.ui.FacetsPropertyPage;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.workbench.condition.EditorWithTitleIsActive;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.junit.Before;
@@ -47,8 +47,7 @@ public class ServletSetupWizardTest extends WizardTestBase {
 	
 	@Test
 	public void testFacetEnabled(){	
-		ExplorerItemPropertyDialog projectPropertiesDialog = 
-				new ExplorerItemPropertyDialog(new ProjectExplorer().getProject(PROJECT_NAME));
+		PropertyDialog projectPropertiesDialog = new ProjectExplorer().getProject(PROJECT_NAME).openProperties();
 		projectPropertiesDialog.open();
 		FacetsPropertyPage facetsPage = new FacetsPropertyPage();
 		projectPropertiesDialog.select(facetsPage);
