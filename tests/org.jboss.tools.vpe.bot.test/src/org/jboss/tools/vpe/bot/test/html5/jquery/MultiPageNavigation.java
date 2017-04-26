@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat, Inc.
+ * Copyright (c) 2016-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -56,7 +56,7 @@ public class MultiPageNavigation extends VPETestBase{
 		new WaitUntil(new SiteHasTitle(vpvEditor, page0, page1), TimePeriod.LONG);
 		new WaitUntil(new ElementIsFound(vpvEditor, "pageButton"));
 		//we still have to wait because Windows browser sucks
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		AbstractWait.sleep(TimePeriod.DEFAULT);
 		boolean executed = vpvEditor.executeScript("$(\"#pageButton\").click()");
 		assertTrue(executed);
 		new WaitUntil(new JQueryIsReady(vpvEditor));

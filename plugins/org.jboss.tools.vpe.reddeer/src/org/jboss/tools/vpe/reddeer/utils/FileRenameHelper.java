@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007-2016 Red Hat, Inc.
+ * Copyright (c) 2007-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -14,17 +14,17 @@ import static org.junit.Assert.assertNotNull;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.handler.TreeItemHandler;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.jst.reddeer.web.ui.navigator.WebProjectsNavigator;
 
@@ -71,8 +71,8 @@ public class FileRenameHelper {
 		new DefaultShell("Rename Resource");
 		new LabeledText("New name:").setText(newFileName);
 		new OkButton().click();
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
-		new WaitWhile(new ShellWithTextIsAvailable("Rename Resource"));
+		new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT);
+		new WaitWhile(new ShellIsAvailable("Rename Resource"));
 		// Check Results
 		// File with Old Name doesn't exists within WebProjects View
 		try {
@@ -120,7 +120,7 @@ public class FileRenameHelper {
 	public static String checkProjectRenamingWithinPackageExplorer(String oldProjectName,
 			String newProjectName, String renameShellTitle) {
 
-		PackageExplorer packageExplorer = new PackageExplorer();
+		PackageExplorerPart packageExplorer = new PackageExplorerPart();
 		packageExplorer.open();
 		packageExplorer.getProject(oldProjectName).select();
 		// Rename project

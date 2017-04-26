@@ -18,16 +18,16 @@ import org.jboss.reddeer.common.platform.RunningPlatform;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
-import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectWizard;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.reddeer.eclipse.wst.html.ui.wizard.NewHTMLFileWizardPage;
 import org.jboss.reddeer.eclipse.wst.html.ui.wizard.NewHTMLTemplatesWizardPage;
 import org.jboss.reddeer.eclipse.wst.html.ui.wizard.NewHTMLWizard;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.junit.BeforeClass;
@@ -52,7 +52,7 @@ public class VPETestBase {
 		WebProjectFirstPage fp  = new WebProjectFirstPage();
 		fp.setProjectName(PROJECT_NAME);
 		ww.finish();
-		new WaitUntil(new JobIsRunning(),TimePeriod.NORMAL, false);
+		new WaitUntil(new JobIsRunning(),TimePeriod.DEFAULT, false);
 		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 	}
 	
