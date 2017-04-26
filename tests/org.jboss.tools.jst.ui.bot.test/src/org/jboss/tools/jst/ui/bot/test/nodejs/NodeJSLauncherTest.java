@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2016 Red Hat, Inc.
+ * Copyright (c) 2016-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,29 +10,27 @@
  ******************************************************************************/
 package org.jboss.tools.jst.ui.bot.test.nodejs;
 
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.eclipse.core.resources.ExplorerItem;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.ui.perspectives.DebugPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import org.junit.Assert;
-
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchManager;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
+import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.perspectives.DebugPerspective;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.jboss.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.jboss.tools.jst.ui.bot.test.JSTTestBase;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * Tests for NodeJS Launchers
@@ -62,13 +60,13 @@ public class NodeJSLauncherTest extends JSTTestBase {
     
     @AfterClass
     public static void cleanup() {
-        ShellHandler.getInstance().closeAllNonWorbenchShells();
+        WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
         new ProjectExplorer().deleteAllProjects();
     }
     
     @Test
     public void testNodeJSRunAsLauncherAvailable() {
-        ExplorerItem indexJS = new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("index.js");
+        ProjectItem indexJS = new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("index.js");
         indexJS.select();
         assertTrue("'Run As -> Node.js Application' not available!", runAsNodeJSAppMenu().isEnabled());
     }
@@ -81,7 +79,7 @@ public class NodeJSLauncherTest extends JSTTestBase {
         ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
         manager.addLaunchListener(launchListener);
         
-        ExplorerItem indexJS = new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("index.js");
+        ProjectItem indexJS = new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("index.js");
         indexJS.select();
         runAsNodeJSAppMenu().select();
         

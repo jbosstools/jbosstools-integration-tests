@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2015 Red Hat, Inc.
+ * Copyright (c) 2015-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -19,14 +19,14 @@ import java.io.IOException;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.jst.reddeer.bower.ui.BowerInitDialog;
 import org.jboss.tools.jst.ui.bot.test.JSTTestBase;
 import org.jboss.reddeer.core.util.FileUtil;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +49,7 @@ public class BowerInitTest extends JSTTestBase {
 
 	@After
 	public void cleanup() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ProjectExplorer().deleteAllProjects();
 	}
 

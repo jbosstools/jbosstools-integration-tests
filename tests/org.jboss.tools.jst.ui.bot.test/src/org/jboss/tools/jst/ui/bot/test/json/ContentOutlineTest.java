@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2016 Red Hat, Inc.
+ * Copyright (c) 2016-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -13,11 +13,12 @@ package org.jboss.tools.jst.ui.bot.test.json;
 
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.views.contentoutline.ContentOutline;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.condition.TreeItemHasMinChildren;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.jst.ui.bot.test.JSTTestBase;
 import org.junit.After;
@@ -50,7 +51,7 @@ public class ContentOutlineTest extends JSTTestBase {
 
 	@After
 	public void cleanup() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ProjectExplorer().deleteAllProjects();
 	}
 
@@ -70,7 +71,7 @@ public class ContentOutlineTest extends JSTTestBase {
 		TextEditor editor = new TextEditor("package.json");
 		editor.activate();
 		
-		OutlineView view = new OutlineView();
+		ContentOutline view = new ContentOutline();
 		view.activate();
 		DefaultTree t = new DefaultTree();
 

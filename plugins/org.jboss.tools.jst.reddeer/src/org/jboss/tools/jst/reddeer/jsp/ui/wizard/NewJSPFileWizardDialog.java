@@ -1,17 +1,17 @@
 package org.jboss.tools.jst.reddeer.jsp.ui.wizard;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.eclipse.topmenu.NewMenuWizard;
 
 /**
  * Wizard dialog for creating a JSP File.
  * @author vpakan
  */
-public class NewJSPFileWizardDialog extends NewWizardDialog {
+public class NewJSPFileWizardDialog extends NewMenuWizard {
 	/**
 	 * Constructs the wizard with Web > JSP File.
 	 */
 	public NewJSPFileWizardDialog() {
-		super("Web", "JSP File");
+		super("New JSP File", "Web", "JSP File");
 	}
 	
 }
