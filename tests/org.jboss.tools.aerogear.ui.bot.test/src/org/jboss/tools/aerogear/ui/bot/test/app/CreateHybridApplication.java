@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2013 Red Hat, Inc.
+ * Copyright (c) 2013-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -23,12 +23,12 @@ import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.util.FileUtil;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.eclipse.ui.markers.matcher.MarkerPathMatcher;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsPathMatcher;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.ThymPlatform;
@@ -97,8 +97,8 @@ public class CreateHybridApplication extends AerogearBotTest {
 		ProblemsView pview = new ProblemsView();
 		pview.open();
 
-		List<Problem> errors = pview.getProblems(ProblemType.ERROR, new ProblemsPathMatcher(new CordovaPathMatcher()));
-		List<Problem> warnings = pview.getProblems(ProblemType.WARNING, new ProblemsPathMatcher(new CordovaPathMatcher()));
+		List<Problem> errors = pview.getProblems(ProblemType.ERROR, new MarkerPathMatcher(new CordovaPathMatcher()));
+		List<Problem> warnings = pview.getProblems(ProblemType.WARNING, new MarkerPathMatcher(new CordovaPathMatcher()));
 		//errors in log
 		assertTrue(
 				"There were these errors for " + CORDOVA_PROJECT_NAME + " project " + Arrays.toString(errors.toArray()),

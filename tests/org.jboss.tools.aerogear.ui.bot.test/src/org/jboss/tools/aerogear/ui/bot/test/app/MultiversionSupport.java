@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2014 Red Hat, Inc.
+ * Copyright (c) 2014-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -21,9 +21,9 @@ import org.jboss.tools.aerogear.reddeer.thym.ui.config.ConfigEditor;
 import org.jboss.tools.aerogear.reddeer.thym.ui.properties.EnginePropertyPage;
 import org.jboss.tools.aerogear.reddeer.thym.ui.properties.EnginePropertyPage.Platform;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
+import org.jboss.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
@@ -78,8 +78,7 @@ public class MultiversionSupport extends AerogearBotTest {
 		String consoleEngineVersion = parseConsoleTextForVersion(console.getConsoleText());
 		assertNotNull("Cordova Engine version was not displayed in console", consoleEngineVersion);
 		// change mobile engine version for project
-		ExplorerItemPropertyDialog projectPropertiesDialog = new ExplorerItemPropertyDialog(
-				 getProjectExplorer().getProject(CORDOVA_PROJECT_NAME));
+		PropertyDialog projectPropertiesDialog = getProjectExplorer().getProject(CORDOVA_PROJECT_NAME).openProperties();
 		projectPropertiesDialog.open();
 		EnginePropertyPage enginePropertyPage = new EnginePropertyPage();
 		projectPropertiesDialog.select(enginePropertyPage);

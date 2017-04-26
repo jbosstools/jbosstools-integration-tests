@@ -15,13 +15,13 @@ import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.topmenu.NewMenuWizard;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.menu.ToolItemMenu;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 
 
 /**
@@ -29,20 +29,20 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
  * @author Pavol Srna
  *
  */
-public class NewHybridProjectWizard extends NewWizardDialog {
+public class NewHybridProjectWizard extends NewMenuWizard {
 
 	/**
 	 * Constructs the wizard with Mobile > Hybrid Mobile (Cordova) Application Project
 	 */
 	public NewHybridProjectWizard() {
-		super("Mobile", "Hybrid Mobile (Cordova) Application Project");
+		super("Hybrid Mobile (Cordova) Application Project", "Mobile", "Hybrid Mobile (Cordova) Application Project");
 	}
 	
 	public void open(){
 		super.open();
-		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
+		new WaitUntil(new JobIsRunning(), TimePeriod.DEFAULT, false);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitUntil(new WidgetIsEnabled(new CancelButton()), TimePeriod.LONG);
+		new WaitUntil(new ControlIsEnabled(new CancelButton()), TimePeriod.LONG);
 	}
 	
 	public void finish(){

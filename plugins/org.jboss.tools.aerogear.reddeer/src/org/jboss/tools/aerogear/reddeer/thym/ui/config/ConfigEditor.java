@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2014 Red Hat, Inc.
+ * Copyright (c) 2014-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -16,14 +16,8 @@ import java.util.Arrays;
 
 import org.eclipse.swt.SWT;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.WidgetIsFound;
-import org.jboss.reddeer.core.lookup.EditorPartLookup;
-import org.jboss.reddeer.core.matcher.AndMatcher;
 import org.jboss.reddeer.core.matcher.ClassMatcher;
-import org.jboss.reddeer.core.matcher.EditorPartClassMatcher;
-import org.jboss.reddeer.core.matcher.EditorPartTitleMatcher;
-import org.jboss.reddeer.core.matcher.MatcherBuilder;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.swt.api.Shell;
@@ -43,8 +37,12 @@ import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
+import org.jboss.reddeer.workbench.core.lookup.EditorPartLookup;
 import org.jboss.reddeer.workbench.exception.WorkbenchLayerException;
 import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
+import org.jboss.reddeer.workbench.matcher.EditorPartClassMatcher;
+import org.jboss.reddeer.workbench.matcher.EditorPartTitleMatcher;
 
 /**
  * RedDeer implementation of Hybrid Mobile Config Editor
@@ -119,8 +117,7 @@ public class ConfigEditor extends AbstractEditor{
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		// Wait until some plugin is displayed within dialog
-		ClassMatcher cm = new ClassMatcher(org.eclipse.swt.widgets.Label.class);;
-		WidgetIsFound found = new WidgetIsFound(pluginsShell.getControl(), 10, cm);
+		WidgetIsFound found = new WidgetIsFound(org.eclipse.swt.widgets.Label.class, pluginsShell.getControl(), 10);
 		new WaitUntil(found,TimePeriod.LONG);
 		return pluginsShell;
 	}
