@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2014 Red Hat, Inc.
+ * Copyright (c) 2014-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -12,7 +12,7 @@ package org.jboss.tools.aerogear.ui.bot.test.export;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.export.NativeBinaryDestinationPage;
 import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.export.NativeBinaryExportWizard;
 import org.junit.Test;

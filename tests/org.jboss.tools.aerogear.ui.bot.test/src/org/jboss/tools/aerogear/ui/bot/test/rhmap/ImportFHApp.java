@@ -1,13 +1,23 @@
+/******************************************************************************* 
+ * Copyright (c) 2014-2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.aerogear.ui.bot.test.rhmap;
 
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.aerogear.ui.bot.test.FeedHenryBotTest;
 import org.jboss.reddeer.core.util.FileUtil;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

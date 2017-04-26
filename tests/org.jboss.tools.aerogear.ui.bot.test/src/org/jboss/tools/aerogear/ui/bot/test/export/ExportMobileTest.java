@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2014 Red Hat, Inc.
+ * Copyright (c) 2014-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.aerogear.reddeer.thym.android.ui.preferences.AndroidPreferencesPage;
 import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.ThymPlatform;
