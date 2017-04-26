@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2015 Red Hat, Inc.
+ * Copyright (c) 2015-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -18,12 +18,12 @@ import java.io.IOException;
 
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.jboss.tools.jst.ui.bot.test.JSTTestBase;
 import org.junit.After;
 import org.junit.Before;
@@ -43,7 +43,7 @@ public class BowerUpdateTest extends JSTTestBase {
 
 	@After
 	public void cleanup() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ProjectExplorer().deleteAllProjects();
 	}
 
@@ -51,7 +51,7 @@ public class BowerUpdateTest extends JSTTestBase {
 	@SuppressWarnings("unchecked")
 	public void testBowerUpdateShortcutAvailability() {
 		bowerInit(PROJECT_NAME);
-		PackageExplorer pe = new PackageExplorer();
+		PackageExplorerPart pe = new PackageExplorerPart();
 		pe.open();
 		pe.getProject(PROJECT_NAME).select();
 		assertTrue("Bower Update is not available", //$NON-NLS-1$
@@ -72,7 +72,7 @@ public class BowerUpdateTest extends JSTTestBase {
 		bowerUpdate(PROJECT_NAME);
 		new WaitUntil(new ConsoleHasText("angularjs#1.4.4 bower_components/angularjs"));
 		assertTrue("BowerUpdate failed, dependencies not found in tree", new ProjectExplorer().getProject(PROJECT_NAME)
-				.containsItem("bower_components", "angularjs", "angular.js"));
+				.containsResource("bower_components", "angularjs", "angular.js"));
 	}
 
 }

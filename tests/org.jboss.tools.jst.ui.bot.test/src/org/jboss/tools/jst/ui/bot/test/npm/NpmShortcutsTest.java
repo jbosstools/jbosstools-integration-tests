@@ -13,11 +13,11 @@ package org.jboss.tools.jst.ui.bot.test.npm;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.jboss.tools.jst.ui.bot.test.JSTTestBase;
 import org.junit.After;
 import org.junit.Before;
@@ -37,7 +37,7 @@ public class NpmShortcutsTest extends JSTTestBase {
 
 	@After
 	public void cleanup() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ProjectExplorer().deleteAllProjects();
 	}
 
@@ -45,7 +45,7 @@ public class NpmShortcutsTest extends JSTTestBase {
 	@SuppressWarnings("unchecked")
 	public void testNpmUpdateShortcutAvailability() {
 		npmInit(PROJECT_NAME);
-		PackageExplorer pe = new PackageExplorer();
+		PackageExplorerPart pe = new PackageExplorerPart();
 		pe.open();
 		pe.getProject(PROJECT_NAME).select();
 		assertTrue("npm Update is not available", //$NON-NLS-1$
@@ -56,7 +56,7 @@ public class NpmShortcutsTest extends JSTTestBase {
 	@SuppressWarnings("unchecked")
 	public void testNpmInstallShortcutAvailability() {
 		npmInit(PROJECT_NAME);
-		PackageExplorer pe = new PackageExplorer();
+		PackageExplorerPart pe = new PackageExplorerPart();
 		pe.open();
 		pe.getProject(PROJECT_NAME).select();
 		assertTrue("npm Install is not available", //$NON-NLS-1$

@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2015 Red Hat, Inc.
+ * Copyright (c) 2015-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,7 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.jst.reddeer.bower.ui;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.eclipse.topmenu.NewMenuWizard;
+
 
 /**
  * Represents the wizard for creating bower.json file
@@ -18,9 +19,9 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
  * @author Pavol Srna
  *
  */
-public class BowerInitDialog extends NewWizardDialog {
+public class BowerInitDialog extends NewMenuWizard {
 
 	public BowerInitDialog() {
-		super("JavaScript", "Bower Init");
+		super("Bower Initialization Wizard","JavaScript", "Bower Init");
 	}
 }

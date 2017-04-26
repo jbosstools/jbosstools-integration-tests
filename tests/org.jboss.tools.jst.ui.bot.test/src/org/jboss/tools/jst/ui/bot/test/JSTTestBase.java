@@ -11,8 +11,6 @@
 
 package org.jboss.tools.jst.ui.bot.test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -25,6 +23,10 @@ import java.util.List;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchesListener;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.wst.jsdt.debug.core.model.JavaScriptDebugModel;
 import org.hamcrest.Matcher;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
@@ -32,26 +34,23 @@ import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.core.resources.ExplorerItem;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
+import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
+import org.jboss.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.eclipse.wst.jsdt.ui.wizards.JavaProjectWizardDialog;
+import org.jboss.reddeer.eclipse.wst.jsdt.ui.wizards.JavaProjectWizard;
 import org.jboss.reddeer.eclipse.wst.jsdt.ui.wizards.JavaProjectWizardFirstPage;
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
@@ -62,10 +61,6 @@ import org.jboss.tools.jst.reddeer.tern.ui.TernModulesPropertyPage;
 import org.jboss.tools.jst.reddeer.wst.jsdt.ui.wizard.NewJSFileWizardDialog;
 import org.jboss.tools.jst.reddeer.wst.jsdt.ui.wizard.NewJSFileWizardPage;
 import org.junit.runner.RunWith;
-import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchesListener;
-import org.eclipse.debug.core.model.IProcess;
 
 /**
  * TestBase Class for JST tests
@@ -85,7 +80,7 @@ public class JSTTestBase {
 	}
 
 	protected void createJSProject(String name) {
-		JavaProjectWizardDialog jsDialog = new JavaProjectWizardDialog();
+		JavaProjectWizard jsDialog = new JavaProjectWizard();
 		jsDialog.open();
 		JavaProjectWizardFirstPage jsPage = new JavaProjectWizardFirstPage();
 		jsPage.setName(name);
@@ -120,13 +115,13 @@ public class JSTTestBase {
 	}
 
 	protected void createJSFile(String filename) {
-		NewWizardDialog d = new NewJSFileWizardDialog();
+		NewJSFileWizardDialog d = new NewJSFileWizardDialog();
 		d.open();
 		NewJSFileWizardPage p = new NewJSFileWizardPage();
 		new LabeledText("Enter or select the parent folder:").setText(PROJECT_NAME);
 		p.setFileName(filename);
 		d.finish();
-		assertTrue(filename + " not found!", new ProjectExplorer().getProject(PROJECT_NAME).containsItem(filename));
+		assertTrue(filename + " not found!", new ProjectExplorer().getProject(PROJECT_NAME).containsResource(filename));
 	}
 
 	protected void setTernModule(String module) {
@@ -135,24 +130,19 @@ public class JSTTestBase {
 
 	protected void setTernModule(String module, String project) {
 		TernModulesPropertyPage propPage = new TernModulesPropertyPage();
-		ExplorerItemPropertyDialog dialog = openProjectProperties(project);
+		PropertyDialog dialog = openProjectProperties(project);
 		dialog.select(propPage);
 		new DefaultTable().getItem(module).setChecked(true);
 		dialog.ok();
 	}
 
-	protected ExplorerItemPropertyDialog openProjectProperties() {
+	protected PropertyDialog openProjectProperties() {
 		return openProjectProperties(PROJECT_NAME);
 	}
 
-	protected ExplorerItemPropertyDialog openProjectProperties(String projectName) {
+	protected PropertyDialog openProjectProperties(String projectName) {
 		ProjectExplorer pe = new ProjectExplorer();
-		ExplorerItemPropertyDialog dialog = new ExplorerItemPropertyDialog(pe.getProject(projectName));
-		dialog.open();
-		Shell shell = new DefaultShell();
-		assertThat(shell.getText(), is(dialog.getTitle()));
-
-		return dialog;
+		return pe.getProject(projectName).openProperties();
 	}
 
 	protected static String getMisingString(List<String> current, List<String> expected) {
@@ -209,7 +199,7 @@ public class JSTTestBase {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected ContextMenu debugAsNodeJSAppMenu(ExplorerItem item) {
+	protected ContextMenu debugAsNodeJSAppMenu(ProjectItem item) {
 		item.select();
 		ContextMenu menu = new ContextMenu(new WithTextMatcher("Debug As"),
 				new RegexMatcher("(\\d+)( Node.js Application)"));
