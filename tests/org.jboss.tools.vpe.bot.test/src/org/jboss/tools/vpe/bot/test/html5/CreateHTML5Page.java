@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat, Inc.
+ * Copyright (c) 2016-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -14,15 +14,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.core.condition.JobIsRunning;
 
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.eclipse.wst.html.ui.wizard.NewHTMLFileWizardPage;
 import org.jboss.reddeer.eclipse.wst.html.ui.wizard.NewHTMLTemplatesWizardPage;
 import org.jboss.reddeer.eclipse.wst.html.ui.wizard.NewHTMLWizard;
 import org.jboss.reddeer.gef.view.PaletteView;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.vpe.bot.test.VPETestBase;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat, Inc.
+ * Copyright (c) 2016-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -15,14 +15,17 @@ import org.eclipse.gef.ui.views.palette.PalettePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Event;
+import org.jboss.reddeer.common.util.Display;
+import org.jboss.reddeer.common.util.ResultRunnable;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.handler.BrowserHandler;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.core.util.ResultRunnable;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.workbench.ui.dialogs.FilteredPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.tools.common.model.ui.views.palette.IPaletteAdapter;
+import org.jboss.tools.jst.reddeer.palette.JQueryMobilePalette;
+import org.jboss.tools.jst.web.ui.internal.editor.jspeditor.PalettePageImpl;
+import org.jboss.tools.jst.web.ui.palette.PaletteAdapter;
 import org.jboss.tools.vpe.preview.editor.VpvEditorPart;
 import org.jboss.tools.vpe.reddeer.VisualEditor;
 import org.jboss.tools.vpe.reddeer.condition.VPVBackIsEnabled;
@@ -30,11 +33,6 @@ import org.jboss.tools.vpe.reddeer.condition.VPVForwardIsEnabled;
 import org.jboss.tools.vpe.reddeer.resref.core.VpvResourcesDialog;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
-import org.jboss.tools.common.model.ui.views.palette.IPaletteAdapter;
-import org.jboss.tools.jst.reddeer.palette.JQueryMobilePalette;
-import org.jboss.tools.jst.reddeer.web.ui.editor.jspeditor.JSPMultiPageEditor;
-import org.jboss.tools.jst.web.ui.internal.editor.jspeditor.PalettePageImpl;
-import org.jboss.tools.jst.web.ui.palette.PaletteAdapter;
 
 public class VPVEditor extends VisualEditor{
 	
@@ -165,10 +163,9 @@ public class VPVEditor extends VisualEditor{
 		new DefaultToolItem("Forward").click();
 	}
 	
-	public FilteredPreferenceDialog openPreferences(){
+	public WorkbenchPreferenceDialog openPreferences(){
 		new DefaultToolItem("Preferences").click();
-		new DefaultShell(FilteredPreferenceDialog.DIALOG_TITLE);
-		return new FilteredPreferenceDialog();
+		return new WorkbenchPreferenceDialog();
 	}
 	
 	public VpvResourcesDialog openPageDesignOptions(){

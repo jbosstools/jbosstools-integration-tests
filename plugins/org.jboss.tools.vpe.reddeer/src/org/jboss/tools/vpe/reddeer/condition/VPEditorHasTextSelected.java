@@ -1,5 +1,5 @@
 /******************************************************************************* 
- * Copyright (c) 2016 Red Hat, Inc.
+ * Copyright (c) 2016-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -43,13 +43,18 @@ public class VPEditorHasTextSelected implements WaitCondition{
 		}
 		return "VPE editor has text selected";
 	}
-
+	
 	@Override
-	public String errorMessage() {
+	public String errorMessageUntil() {
 		if(text != null){
 			return "'"+editor.getSelectedTextInBrowser()+"' was selected but '"+text+"' was expected";
 		}
 		return "No text was selected in VPE editor";
+	}
+	
+	@Override
+	public String errorMessageWhile() {
+		return "The text:" + editor.getSelectedTextInBrowser() + " is still selected";
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat, Inc.
+ * Copyright (c) 2016-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -12,7 +12,7 @@ package org.jboss.tools.vpe.bot.test.editor;
 
 import static org.junit.Assert.*;
 
-import org.jboss.reddeer.workbench.ui.dialogs.FilteredPreferenceDialog;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.vpe.bot.test.VPETestBase;
 import org.jboss.tools.vpe.reddeer.preview.editor.VPVEditor;
 import org.jboss.tools.vpe.reddeer.resref.core.VpvResourcesDialog;
@@ -32,7 +32,7 @@ public class VPVEditorToolbar extends VPETestBase{
 	
 	@Test
 	public void openPreferences(){
-		FilteredPreferenceDialog fd = new VPVEditor().openPreferences();
+		WorkbenchPreferenceDialog fd = new VPVEditor().openPreferences();
 		assertTrue(fd.isOpen());
 		assertEquals("Visual Page Editor", fd.getPageName());
 		fd.ok();
