@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat, Inc.
+ * Copyright (c) 2016-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -17,7 +17,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
+import org.jboss.reddeer.eclipse.ui.browser.WebBrowserView;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
@@ -45,10 +45,10 @@ public class LivereloadTest extends LivereloadBaseTest{
 		te.insertText(8, 0, browserText);
 		te.save();
 		
-		deployProjectToServer(sr.getServerNameLabelText(sr.getConfig()), PROJECT_NAME);
-		injectLivereload(sr.getServerNameLabelText(sr.getConfig()), PROJECT_NAME);
+		deployProjectToServer(sr.getServerNameLabelText(), PROJECT_NAME);
+		injectLivereload(sr.getServerNameLabelText(), PROJECT_NAME);
 
-		BrowserView bw = new BrowserView();
+		WebBrowserView bw = new WebBrowserView();
 		bw.open();
 		bw.openPageURL(Livereload.getLivereloadURL(PROJECT_NAME, pageName));
 		InternalBrowser ib = new InternalBrowser();

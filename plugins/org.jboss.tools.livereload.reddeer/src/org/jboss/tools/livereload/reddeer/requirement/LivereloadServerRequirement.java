@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat, Inc.
+ * Copyright (c) 2016-2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -17,10 +17,11 @@ import java.lang.annotation.Target;
 
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerWizardPageWithErrorCheck;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizard;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.requirements.server.ConfiguredServerInfo;
+import org.jboss.reddeer.requirements.server.IServerReqConfig;
 import org.jboss.reddeer.requirements.server.ServerReqBase;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.livereload.reddeer.requirement.LivereloadServerRequirement.LivereloadServer;
@@ -48,21 +49,21 @@ public class LivereloadServerRequirement extends ServerReqBase implements Requir
 
 	@Override
 	public void fulfill() {
-		ServersView sw = new ServersView();
+		ServersView2 sw = new ServersView2();
 		sw.open();
 		try{
 			sw.getServer(server.name());
 			//already exists, do nothing
 		} catch (EclipseLayerException e) {
 			lastServerConfiguration = new ConfiguredServerInfo(server.name(), null);
-			NewServerWizardDialog serverW = new NewServerWizardDialog();
+			NewServerWizard serverW = new NewServerWizard();
 			serverW.open();
 			NewServerWizardPageWithErrorCheck sp = new NewServerWizardPageWithErrorCheck();
 				
 			sp.selectType("Basic","LiveReload Server");
 			sp.setName(server.name());
 			serverW.finish();
-			setupServerState(server.state(), lastServerConfiguration);
+			setupServerState(server.state());
 		}
 		
 		
@@ -80,11 +81,23 @@ public class LivereloadServerRequirement extends ServerReqBase implements Requir
 	@Override
 	public void cleanUp() {
 		if(server.cleanup()){
-			ServersView sw = new ServersView();
+			ServersView2 sw = new ServersView2();
 			sw.open();
 			sw.getServer(lastServerConfiguration.getServerName()).delete(true);
 		}
 		
+	}
+
+
+	@Override
+	public IServerReqConfig getConfig() {
+		return null;
+	}
+
+
+	@Override
+	public ConfiguredServerInfo getConfiguredConfig() {
+		return lastServerConfiguration;
 	}
 	
 }

@@ -30,19 +30,18 @@ import org.jboss.reddeer.common.platform.RunningPlatform;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.eclipse.rse.ui.dialogs.SystemPasswordPromptDialog;
 import org.jboss.reddeer.eclipse.rse.ui.view.System;
-import org.jboss.reddeer.eclipse.rse.ui.view.SystemView;
-import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardDialog;
-import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardMainPage;
-import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardSelectionPage;
-import org.jboss.reddeer.eclipse.rse.ui.wizard.SystemPasswordPromptDialog;
-import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardSelectionPage.SystemType;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
+import org.jboss.reddeer.eclipse.rse.ui.view.SystemViewPart;
+import org.jboss.reddeer.eclipse.rse.ui.wizards.newconnection.RSEDefaultNewConnectionWizardMainPage;
+import org.jboss.reddeer.eclipse.rse.ui.wizards.newconnection.RSEMainNewConnectionWizard;
+import org.jboss.reddeer.eclipse.rse.ui.wizards.newconnection.RSENewConnectionWizardSelectionPage;
+import org.jboss.reddeer.eclipse.rse.ui.wizards.newconnection.RSENewConnectionWizardSelectionPage.SystemType;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizard;
 import org.jboss.reddeer.junit.requirement.Requirement;
 import org.jboss.reddeer.requirements.server.ConfiguredServerInfo;
+import org.jboss.reddeer.requirements.server.IServerReqConfig;
 import org.jboss.reddeer.requirements.server.ServerReqBase;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -57,6 +56,7 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.api.Editor;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.livereload.reddeer.requirement.DockerWildflyRequirement.DockerWildfly;
 
@@ -147,7 +147,7 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 		try{
 			setupRemoteAdapter();
 			setupPortOffset();
-			ServersView sw = new ServersView();
+			ServersView2 sw = new ServersView2();
 			sw.open();
 			sw.getServer(config.name()).start();
 		} catch (Exception e) {
@@ -161,7 +161,7 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 	}
 
 	private void setupPortOffset() {
-		ServersView sw = new ServersView();
+		ServersView2 sw = new ServersView2();
 		sw.open();
 		for (TreeItem i : new DefaultTree().getItems()) {
 			if (i.getText().startsWith(config.name())) {
@@ -177,7 +177,7 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 	}
 
 	private void setupRemoteAdapter() {
-		NewServerWizardDialog serverW = new NewServerWizardDialog();
+		NewServerWizard serverW = new NewServerWizard();
 		// setup remote system first
 		setupRemoteSystem();
 
@@ -212,13 +212,13 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 	}
 
 	protected void setupRemoteSystem() {
-		SystemView sview = new SystemView();
+		SystemViewPart sview = new SystemViewPart();
 		sview.open();
-		NewConnectionWizardDialog connW = sview.newConnection();
-		NewConnectionWizardSelectionPage sp = new NewConnectionWizardSelectionPage();
+		RSEMainNewConnectionWizard connW = sview.newConnection();
+		RSENewConnectionWizardSelectionPage sp = new RSENewConnectionWizardSelectionPage();
 		sp.selectSystemType(SystemType.SSH_ONLY);
 		connW.next();
-		NewConnectionWizardMainPage mp = new NewConnectionWizardMainPage();
+		RSEDefaultNewConnectionWizardMainPage mp = new RSEDefaultNewConnectionWizardMainPage();
 		mp.setHostName(ipAddress);
 		connW.finish();
 
@@ -246,7 +246,7 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 		new LabeledText("Password (optional):").setText(config.pass());
 		new PushButton("OK").click();
 		
-		new WaitUntil(new ShellWithTextIsAvailable("Warning"), TimePeriod.LONG, false);
+		new WaitUntil(new ShellIsAvailable("Warning"), TimePeriod.LONG, false);
 
 		try {
 			Shell shell = new DefaultShell("Warning");
@@ -280,11 +280,11 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 		if (config.cleanup()) {
 			try{
 				if (lastServerConfiguration != null) {
-					ServersView sw = new ServersView();
+					ServersView2 sw = new ServersView2();
 					sw.open();
 					sw.getServer(config.name()).delete();
 					lastServerConfiguration = null;
-					SystemView sview = new SystemView();
+					SystemViewPart sview = new SystemViewPart();
 					sview.open();
 					sview.getSystem(ipAddress).delete();
 				}
@@ -333,6 +333,16 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 			return ip;
 		}
 
+	}
+
+	@Override
+	public IServerReqConfig getConfig() {
+		return null;
+	}
+
+	@Override
+	public ConfiguredServerInfo getConfiguredConfig() {
+		return lastServerConfiguration;
 	}
 
 }
