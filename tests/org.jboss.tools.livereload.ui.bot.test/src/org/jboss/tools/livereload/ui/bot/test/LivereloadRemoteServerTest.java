@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
+import org.jboss.reddeer.eclipse.ui.browser.WebBrowserView;
 import org.jboss.reddeer.junit.execution.annotation.RunIf;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
@@ -44,7 +44,7 @@ public class LivereloadRemoteServerTest extends LivereloadBaseTest {
 		deployProjectToRemoteServer("wf", PROJECT_NAME);
 		injectLivereload("wf", PROJECT_NAME);
 
-		BrowserView bw = new BrowserView();
+		WebBrowserView bw = new WebBrowserView();
 		bw.open();
 		bw.openPageURL(Livereload.getLivereloadURL(PROJECT_NAME, pageName));
 		InternalBrowser ib = new InternalBrowser();
