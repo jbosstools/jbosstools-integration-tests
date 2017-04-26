@@ -98,13 +98,17 @@ public class BrowserSimLauncher extends SimLauncher{
 		}
 
 		@Override
-		public String errorMessage() {
+		public String errorMessageUntil() {
 			ConsoleView cw = new ConsoleView();
 			cw.open();
 			String text = cw.getConsoleText();
 			return "Error in console: " + text;
 		}
-
+		
+		@Override
+		public String errorMessageWhile() {
+			return "BrowserSim is still running";
+		}	
 	}
 
 }
