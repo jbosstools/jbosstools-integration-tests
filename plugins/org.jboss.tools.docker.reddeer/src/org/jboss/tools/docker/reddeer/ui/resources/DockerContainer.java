@@ -13,12 +13,12 @@ package org.jboss.tools.docker.reddeer.ui.resources;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.api.Menu;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.docker.reddeer.ui.AbstractDockerExplorerItem;
 
 /**
@@ -43,7 +43,7 @@ public class DockerContainer extends AbstractDockerExplorerItem {
 			contextMenu = new ContextMenu("Remove");
 		}
 		contextMenu.select();
-		new WaitUntil(new ShellWithTextIsAvailable("Confirm Remove Container"), TimePeriod.NORMAL);
+		new WaitUntil(new ShellIsAvailable("Confirm Remove Container"));
 		new PushButton("OK").click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}

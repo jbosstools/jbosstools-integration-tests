@@ -18,8 +18,8 @@ import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.handler.WidgetHandler;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -170,7 +170,7 @@ public class ConnectionWizardHandlingTest {
 		try {
 			new DefaultShell("Problem Occurred");
 			new OkButton().click();
-			new WaitWhile(new ShellWithTextIsAvailable("Problem Occurred"));
+			new WaitWhile(new ShellIsAvailable("Problem Occurred"));
 			new DefaultShell("");
 			//pass
 		} catch (RedDeerException ex) {
@@ -208,6 +208,6 @@ public class ConnectionWizardHandlingTest {
 	public void closeNewConnectionShell() {
 		new CancelButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(""));
+		new WaitWhile(new ShellIsAvailable(""));
 	}
 }

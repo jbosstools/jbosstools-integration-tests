@@ -19,21 +19,21 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.WidgetIsFound;
-import org.jboss.reddeer.core.matcher.ClassMatcher;
 import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewException;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.DefaultServer;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.Server;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerState;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersViewException;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
-import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
+import org.jboss.reddeer.jface.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.clabel.DefaultCLabel;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.cdk.reddeer.preferences.OpenShift3SSLCertificatePreferencePage;
 import org.jboss.tools.cdk.reddeer.ui.CDEServersView;
@@ -43,7 +43,7 @@ import org.junit.BeforeClass;
 
 public abstract class CDKDevstudioAbstractTest {
 
-	protected ServersView serversView;
+	protected ServersView2 serversView;
 	
 	protected Server server;
 	
@@ -70,9 +70,9 @@ public abstract class CDKDevstudioAbstractTest {
 	
 	protected abstract Server getCDEServer();
 	
-	protected abstract ServersView getServersView();
+	protected abstract ServersView2 getServersView();
 	
-	protected abstract void setServersView(ServersView view);
+	protected abstract void setServersView(ServersView2 view);
 	
 	protected abstract void setCDEServer(Server server);
 	
@@ -99,7 +99,7 @@ public abstract class CDKDevstudioAbstractTest {
 		getServersView().open();
 		log.info("Getting server object from Servers View with name: " + getServerAdapter()); //$NON-NLS-1$
 		setCDEServer(getServersView().getServer(getServerAdapter()));
-		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
+		new WaitUntil(new JobIsRunning(), TimePeriod.DEFAULT, false);
 	}
 	
 	@After
@@ -162,15 +162,14 @@ public abstract class CDKDevstudioAbstractTest {
 		
 		dialog.select("JBoss Tools", "Credentials"); //$NON-NLS-1$ //$NON-NLS-2$
         try {
-	        new WaitUntil(new WidgetIsFound<org.eclipse.swt.custom.CLabel>(
-	        		new ClassMatcher(org.eclipse.swt.custom.CLabel.class), 
-	        		new WithMnemonicTextMatcher("Credentials")), TimePeriod.NORMAL); //$NON-NLS-1$
+	        new WaitUntil(new WidgetIsFound(org.eclipse.swt.custom.CLabel.class, 
+	        		new WithMnemonicTextMatcher("Credentials"))); //$NON-NLS-1$
 	        new DefaultCLabel("Credentials"); //$NON-NLS-1$
 	        DefaultTree tree = new DefaultTree(1);
 	        TreeItem item = TreeViewerHandler.getInstance().getTreeItem(tree, new String[]{CREDENTIALS_DOMAIN, USERNAME});
 	        item.select();
 	        new PushButton(new WithTextMatcher("Remove User")).click(); //$NON-NLS-1$
-	        new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
+	        new WaitUntil(new JobIsRunning(), TimePeriod.DEFAULT, false);
         } catch (WaitTimeoutExpiredException exc) {
         	log.error("JBoss Tools - Credentials preferences page has timed out"); //$NON-NLS-1$
         	exc.printStackTrace();

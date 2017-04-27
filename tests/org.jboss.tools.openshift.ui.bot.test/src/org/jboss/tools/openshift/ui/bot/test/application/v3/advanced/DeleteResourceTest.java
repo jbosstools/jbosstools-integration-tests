@@ -33,10 +33,9 @@ public class DeleteResourceTest extends AbstractCreateApplicationTest {
 	@BeforeClass
 	public static void waitForApplication() {
 		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE), 
-				TimePeriod.getCustom(600), true, TimePeriod.getCustom(8));
+				TimePeriod.getCustom(600), true, 8000);
 		
-		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.VERY_LONG, true,
-				TimePeriod.getCustom(5));
+		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.VERY_LONG, true, 5000);
 	}
 	
 	@Test

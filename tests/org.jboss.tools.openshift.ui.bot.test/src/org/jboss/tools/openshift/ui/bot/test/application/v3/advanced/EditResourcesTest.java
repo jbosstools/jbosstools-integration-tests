@@ -17,11 +17,11 @@ import org.hamcrest.core.StringContains;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
@@ -88,7 +88,7 @@ public class EditResourcesTest extends AbstractCreateApplicationTest {
 			// ok
 		}
 		
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL, false);
+		new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT, false);
 		assertTrue("Editor should be dirty, it should not be able to save incorrect content", editor.isDirty());
 		try {
 			new DefaultShell("Problem Occurred");

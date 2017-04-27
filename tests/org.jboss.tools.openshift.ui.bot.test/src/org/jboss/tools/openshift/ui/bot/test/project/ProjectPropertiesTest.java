@@ -12,7 +12,7 @@ package org.jboss.tools.openshift.ui.bot.test.project;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertySheet;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement.RequiredProject;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
@@ -36,7 +36,7 @@ public class ProjectPropertiesTest {
 		project.openProperties();
 		project.selectTabbedProperty("Details");
 		
-		PropertiesView propertiesView = new PropertiesView();
+		PropertySheet propertiesView = new PropertySheet();
 		String displayedName = propertiesView.getProperty("Annotations", "openshift.io/display-name").getPropertyValue();
 		String name = propertiesView.getProperty("Basic", "Name").getPropertyValue();
 		String namespace = propertiesView.getProperty("Basic", "Namespace").getPropertyValue();

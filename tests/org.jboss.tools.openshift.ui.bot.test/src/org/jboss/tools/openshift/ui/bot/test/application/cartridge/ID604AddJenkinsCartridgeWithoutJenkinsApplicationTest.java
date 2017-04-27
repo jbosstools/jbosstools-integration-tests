@@ -16,11 +16,10 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
-import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.jface.handler.TreeViewerHandler;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -28,6 +27,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.openshift.reddeer.condition.v2.OpenShiftApplicationExists;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
@@ -66,11 +66,11 @@ public class ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest extends IDXXX
 		new DefaultShell("New Jenkins application");
 		new DefaultText().setText(jenkinsApplication);
 		
-		new WaitUntil(new WidgetIsEnabled(new OkButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ControlIsEnabled(new OkButton()));
 		
 		new OkButton().click();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EMBEDDED_CARTRIDGE), TimePeriod.VERY_LONG);
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.EMBEDDED_CARTRIDGE), TimePeriod.VERY_LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.EMBEDDED_CARTRIDGE);
 		new OkButton().click();
@@ -78,12 +78,12 @@ public class ID604AddJenkinsCartridgeWithoutJenkinsApplicationTest extends IDXXX
 		new DefaultShell(OpenShiftLabel.Shell.EDIT_CARTRIDGES);
 		new FinishButton().click();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EMBEDDED_CARTRIDGE), TimePeriod.VERY_LONG);
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.EMBEDDED_CARTRIDGE), TimePeriod.VERY_LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.EMBEDDED_CARTRIDGE).setFocus();
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_CARTRIDGES), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.EDIT_CARTRIDGES), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	
 		new WaitUntil(new OpenShiftApplicationExists(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN, 

@@ -16,13 +16,13 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSuccessfully;
 import org.jboss.tools.openshift.reddeer.condition.v2.OpenShiftApplicationExists;
 import org.jboss.tools.openshift.reddeer.exception.OpenShiftToolsException;
@@ -79,20 +79,20 @@ public class ID803ServerAdapterHandlingTest {
 	
 	@Test
 	public void testServerAdapterTailingFiles() {
-		ID705TailFilesTest.tailFilesTest(new ServersView(), new ServerAdapter(Version.OPENSHIFT2, 
+		ID705TailFilesTest.tailFilesTest(new ServersView2(), new ServerAdapter(Version.OPENSHIFT2, 
 				applicationName).getTreeItem(), false, "OpenShift", OpenShiftLabel.ContextMenu.TAIL_FILES);
 	}
 	
 	@Ignore // failing due to JBIDE-18147
 	@Test
 	public void testServerAdapterPortForwarding() {
-		ID706PortForwardingTest.portForwardingTest(new ServersView(), new ServerAdapter(Version.OPENSHIFT2, 
+		ID706PortForwardingTest.portForwardingTest(new ServersView2(), new ServerAdapter(Version.OPENSHIFT2, 
 				applicationName).getTreeItem(), "OpenShift", OpenShiftLabel.ContextMenu.PORT_FORWARD);
 	}
 	
 	@Test
 	public void testServerAdapterEnvironmentVariablesManaging() {
-		ID707HandleEnvironmentVariablesTest.environmentVariablesHandling(new ServersView(), 
+		ID707HandleEnvironmentVariablesTest.environmentVariablesHandling(new ServersView2(), 
 				new ServerAdapter(Version.OPENSHIFT2, applicationName).getTreeItem(), 
 				OpenShiftLabel.Shell.MANAGE_ENV_VARS + applicationName,
 				new String[] {"OpenShift", OpenShiftLabel.ContextMenu.EDIT_ENV_VARS},
@@ -105,13 +105,13 @@ public class ID803ServerAdapterHandlingTest {
 		
 		new ContextMenu("OpenShift", OpenShiftLabel.ContextMenu.RESTART_APPLICATION).select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.RESTART_APPLICATION),
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.RESTART_APPLICATION),
 				TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.RESTART_APPLICATION);
 		new YesButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.RESTART_APPLICATION),
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.RESTART_APPLICATION),
 				TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		
@@ -125,14 +125,14 @@ public class ID803ServerAdapterHandlingTest {
 	
 	@Test
 	public void testServerAdapterEmbedCartridge() {
-		ID601EmbedCartridgeTest.embedCartridge(new ServersView(), new ServerAdapter(Version.OPENSHIFT2, 
+		ID601EmbedCartridgeTest.embedCartridge(new ServersView2(), new ServerAdapter(Version.OPENSHIFT2, 
 				applicationName).getTreeItem(), applicationName, "OpenShift",
 				OpenShiftLabel.ContextMenu.EMBED_CARTRIDGE);
 	}
 	
 	@Test
 	public void testApplicationDetails() {
-		ID408ApplicationPropertiesTest.applicationDetails(new ServersView(), new ServerAdapter(Version.OPENSHIFT2, 
+		ID408ApplicationPropertiesTest.applicationDetails(new ServersView2(), new ServerAdapter(Version.OPENSHIFT2, 
 				applicationName).getTreeItem(), applicationName, 
 				"JBoss Enterprise Application Platform 6 (jbosseap-6)", "OpenShift", 
 				OpenShiftLabel.ContextMenu.APPLICATION_DETAILS);
@@ -140,7 +140,7 @@ public class ID803ServerAdapterHandlingTest {
 	
 	@Test
 	public void testApplicationMarkers() {
-		ID903ApplicationMarkersTest.markersTest(new ServersView(), new ServerAdapter(Version.OPENSHIFT2, 
+		ID903ApplicationMarkersTest.markersTest(new ServersView2(), new ServerAdapter(Version.OPENSHIFT2, 
 				applicationName).getTreeItem(), applicationName, 
 				OpenShiftLabel.ContextMenu.CONFIGURE_MARKERS);
 	}
@@ -149,7 +149,7 @@ public class ID803ServerAdapterHandlingTest {
 	public void testManageSnapshots() {
 		String[] contextMenuPath = new String[] {"OpenShift", OpenShiftLabel.ContextMenu.SAVE_SNAPSHOT[0],
 				OpenShiftLabel.ContextMenu.SAVE_SNAPSHOT[1]};
-		ID905ManageSnapshotsTest.manageSnapshotsTest(new ServersView(), new ServerAdapter(Version.OPENSHIFT2, 
+		ID905ManageSnapshotsTest.manageSnapshotsTest(new ServersView2(), new ServerAdapter(Version.OPENSHIFT2, 
 				applicationName).getTreeItem(), applicationName, contextMenuPath);
 	}
 	
@@ -164,19 +164,19 @@ public class ID803ServerAdapterHandlingTest {
 		new ServerAdapter(Version.OPENSHIFT2, applicationName).select();
 		new ContextMenu("OpenShift", OpenShiftLabel.ContextMenu.DELETE_APPLICATION_VIA_ADAPTER).select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.APPLICATION_SERVER_REMOVE),
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.APPLICATION_SERVER_REMOVE),
 				TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.APPLICATION_SERVER_REMOVE);
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.APPLICATION_SERVER_REMOVE),
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.APPLICATION_SERVER_REMOVE),
 				TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		try {
 			new WaitWhile(new OpenShiftApplicationExists(DatastoreOS2.USERNAME, DatastoreOS2.SERVER, DatastoreOS2.DOMAIN,
-				applicationName), TimePeriod.NORMAL);
+				applicationName));
 			fail("Application should be removed and no longer visible in OpenShift explorer.");
 		} catch (WaitTimeoutExpiredException ex) {
 			// PASS

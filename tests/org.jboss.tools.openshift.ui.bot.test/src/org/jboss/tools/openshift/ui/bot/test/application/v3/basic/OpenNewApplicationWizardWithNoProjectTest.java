@@ -20,11 +20,10 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
 import org.jboss.reddeer.eclipse.ui.views.log.LogView;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
@@ -38,6 +37,7 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.openshift.reddeer.requirement.CleanOpenShiftConnectionRequirement.CleanConnection;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
@@ -86,15 +86,15 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 		new NextButton().click();
 		TestUtils.acceptSSLCertificate();		
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
 
 		new DefaultShell(OpenShiftLabel.Shell.CREATE_OS_PROJECT);
 		new LabeledText(OpenShiftLabel.TextLabels.PROJECT_NAME).setText(projectName);
 		new FinishButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new ControlIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		assertTrue("Created project was not preselected for a new OpenShift application",
@@ -109,7 +109,7 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 		
 		new InternalBrowser().execute(OpenShiftLabel.Others.OPENSHIFT_CENTRAL_SCRIPT);
 	
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
 				TimePeriod.LONG);
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		
@@ -122,15 +122,15 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 		
 		new NextButton().click();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.CREATE_OS_PROJECT);
 		new LabeledText(OpenShiftLabel.TextLabels.PROJECT_NAME).setText(projectName);
 		new FinishButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new ControlIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD); 
 		assertTrue("Created project was not preselected for a new OpenShift application",
@@ -150,7 +150,7 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_OS3_APPLICATION).select();
 		
 		try {
-			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
+			new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Shell to create a new OpenShift application was supposed to be opened. But it's not.");
 		}
@@ -159,7 +159,7 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 		new LabeledText(OpenShiftLabel.TextLabels.PROJECT_NAME).setText(projectName);
 		new FinishButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning());
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
@@ -183,7 +183,7 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_OS3_APPLICATION).select();;
 		
 		try {
-			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
+			new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Shell to create a new OpenShift application was supposed to be opened. But it's not.");
 		}
@@ -192,10 +192,10 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 		new LabeledText(OpenShiftLabel.TextLabels.PROJECT_NAME).setText(projectName);
 		new CancelButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
 		
 		//do not click! New App wizard should close on canceling New Project wizard. 
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
 		checkErrorLog();
@@ -206,7 +206,7 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 	private void closeWizard() {
 		new CancelButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	

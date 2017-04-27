@@ -96,7 +96,7 @@ public class LogsTest {
 		pod.select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.POD_LOG).select();
 
-		new WaitUntil(new ConsoleHasSomeText(), TimePeriod.NORMAL);
+		new WaitUntil(new ConsoleHasSomeText());
 		new WaitUntil(new ConsoleHasNoChange(TimePeriod.getCustom(WAIT_CONSOLE_NO_CHANGE)), TimePeriod.VERY_LONG);
 
 		assertTrue("Console label is incorrect, it should contains project name and pod name.\n" + "but label is: " + consoleView.getConsoleLabel(),
@@ -112,7 +112,7 @@ public class LogsTest {
 		pod.select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.BUILD_LOG).select();
 
-		new WaitUntil(new ConsoleHasSomeText(), TimePeriod.NORMAL);
+		new WaitUntil(new ConsoleHasSomeText());
 		new WaitUntil(new ConsoleHasNoChange(TimePeriod.getCustom(WAIT_CONSOLE_NO_CHANGE)), TimePeriod.VERY_LONG);
 
 		assertTrue("Console label is incorrect, it should contain project name and name of build pod.\n"

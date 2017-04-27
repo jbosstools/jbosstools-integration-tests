@@ -20,19 +20,19 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.Server;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerState;
+import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizard;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
-import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
+import org.jboss.reddeer.jface.handler.TreeViewerHandler;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.cdk.reddeer.requirements.DisableSecureStorageRequirement.DisableSecureStorage;
 import org.jboss.tools.cdk.reddeer.ui.CDEServer;
 import org.jboss.tools.cdk.reddeer.ui.wizard.NewCDKServerContainerWizardPage;
@@ -93,12 +93,12 @@ public class CDKDevstudioIntegrationTest extends CDKDevstudioAbstractTest {
 	}
 
 	@Override
-	protected ServersView getServersView() {
+	protected ServersView2 getServersView() {
 		return this.serversView;
 	}
 
 	@Override
-	protected void setServersView(ServersView view) {
+	protected void setServersView(ServersView2 view) {
 		this.serversView = view;
 	}
 
@@ -115,18 +115,31 @@ public class CDKDevstudioIntegrationTest extends CDKDevstudioAbstractTest {
 	@BeforeClass
 	public static void setup() {
 		checkVagrantfilePath();
+		deleteCDEServer();
 		log.info("Adding new Container Development Environment server adapter"); //$NON-NLS-1$
 		addNewCDEServer();
 	}
 	
+	private static void deleteCDEServer() {
+		log.info("Deleting Container Development Environment server adapter"); //$NON-NLS-1$
+		ServersView2 servers = new ServersView2();
+		servers.open();
+		try {
+			servers.getServer(SERVER_ADAPTER).delete(true);
+		} catch (EclipseLayerException exc) {
+			log.error(exc.getMessage());
+			exc.printStackTrace();
+		}		
+	}
+	
 	private static void addNewCDEServer() {
 		// call new server dialog from servers view
-		ServersView view = new ServersView();
+		ServersView2 view = new ServersView2();
 		view.open();
-		NewServerWizardDialog dialog = view.newServer();
+		NewServerWizard dialog = view.newServer();
 		NewServerWizardPage page = new NewServerWizardPage();
 		
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL, false);
+		new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT, false);
 		// set first dialog page
 		page.selectType(SERVER_TYPE, SERVER_NAME);
 		page.setHostName(SERVER_HOST);
@@ -139,7 +152,7 @@ public class CDKDevstudioIntegrationTest extends CDKDevstudioAbstractTest {
 		// set cdk 2.x fields
 		log.info("Setting vagrant file folder"); //$NON-NLS-1$
 		containerPage.setFolder(VAGRANTFILE_PATH);
-		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ControlIsEnabled(new FinishButton()));
 		log.info("Finishing Add new server dialog"); //$NON-NLS-1$
 		if (!(new FinishButton().isEnabled())) {
 			log.error("Finish button was not enabled"); //$NON-NLS-1$
@@ -149,15 +162,7 @@ public class CDKDevstudioIntegrationTest extends CDKDevstudioAbstractTest {
 	
 	@AfterClass
 	public static void tearDownEnvironment() {
-		log.info("Deleting Container Development Environment server adapter"); //$NON-NLS-1$
-		ServersView servers = new ServersView();
-		servers.open();
-		try {
-			servers.getServer(SERVER_ADAPTER).delete(true);
-		} catch (EclipseLayerException exc) {
-			log.error(exc.getMessage());
-			exc.printStackTrace();
-		}
+		deleteCDEServer();
 		removeAccessRedHatCredentials();
 	}
 	
@@ -186,7 +191,7 @@ public class CDKDevstudioIntegrationTest extends CDKDevstudioAbstractTest {
 			// problem occurs dialog
 			connection.refresh();
 			try {
-				new WaitUntil(new ShellWithTextIsAvailable("Problem occurred"), TimePeriod.getCustom(30)); //$NON-NLS-1$
+				new WaitUntil(new ShellIsAvailable("Problem occurred"), TimePeriod.getCustom(30)); //$NON-NLS-1$
 				fail("Problem dialog occured when refreshing OpenShift connection"); //$NON-NLS-1$
 			} catch (WaitTimeoutExpiredException ex) {
 				// no dialog appeared, which is ok

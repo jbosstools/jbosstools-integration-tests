@@ -15,20 +15,18 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.swt.widgets.Shell;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.util.Display;
+import org.jboss.reddeer.common.util.ResultRunnable;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsKilled;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.lookup.ShellLookup;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.core.util.ResultRunnable;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizard;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
 import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsActive;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -39,6 +37,8 @@ import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.core.condition.JobIsKilled;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
@@ -168,7 +168,7 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 
 	private boolean buttonIsEnabled(Button button) {
 		try {
-			new WaitUntil(new WidgetIsEnabled(button), TimePeriod.getCustom(5));
+			new WaitUntil(new ControlIsEnabled(button), TimePeriod.getCustom(5));
 			return true;
 		} catch (WaitTimeoutExpiredException ex) {
 			return false;
@@ -180,11 +180,11 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 		TestUtils.acceptSSLCertificate();
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitUntil(new WidgetIsEnabled(new BackButton()));
+		new WaitUntil(new ControlIsEnabled(new BackButton()));
 	}
 
 	private void openNewServerAdapterWizard() {
-		NewServerWizardDialog dialog = new NewServerWizardDialog();
+		NewServerWizard dialog = new NewServerWizard();
 		NewServerWizardPage page = new NewServerWizardPage();
 
 		dialog.open();
@@ -199,7 +199,7 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 		if (shell != null) {
 			new DefaultShell(OpenShiftLabel.Shell.ADAPTER);
 			new CancelButton().click();
-			new WaitWhile(new ShellWithTextIsActive(OpenShiftLabel.Shell.ADAPTER));
+			new WaitWhile(new ShellIsActive(OpenShiftLabel.Shell.ADAPTER));
 		}
 
 		new WaitWhile(new JobIsRunning());

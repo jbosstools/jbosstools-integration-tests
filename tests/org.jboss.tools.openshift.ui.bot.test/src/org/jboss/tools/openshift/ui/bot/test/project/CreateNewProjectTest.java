@@ -17,8 +17,8 @@ import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -52,11 +52,11 @@ public class CreateNewProjectTest {
 		new LabeledText(OpenShiftLabel.TextLabels.PROJECT_NAME).setText(DatastoreOS3.PROJECT1);
 		new LabeledText(OpenShiftLabel.TextLabels.PROJECT_DISPLAYED_NAME).setText(DatastoreOS3.PROJECT1_DISPLAYED_NAME);
 
-		new WaitUntil(new WidgetIsEnabled(new FinishButton()));
+		new WaitUntil(new ControlIsEnabled(new FinishButton()));
 		
 		new FinishButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
 	
 		new DefaultShell(OpenShiftLabel.Shell.MANAGE_OS_PROJECTS);
 		try {
@@ -68,7 +68,7 @@ public class CreateNewProjectTest {
 				new DefaultTable().getItem(DatastoreOS3.PROJECT1).getText(1).equals(DatastoreOS3.PROJECT1_DISPLAYED_NAME));
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.MANAGE_OS_PROJECTS), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.MANAGE_OS_PROJECTS), TimePeriod.LONG);
 
 		try {
 			connection.getProject();

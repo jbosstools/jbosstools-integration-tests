@@ -14,7 +14,7 @@ import static org.junit.Assert.assertFalse;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
@@ -67,11 +67,11 @@ public class ID104InvalidCredentialsValidationTest {
 	}
 	
 	private void assertInvalidCredentialsDisableFinishButton(String credential) {
-		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ControlIsEnabled(new FinishButton()));
 		
 		new FinishButton().click();
 		
-		new WaitUntil(new WidgetIsEnabled(new CancelButton()), TimePeriod.LONG);
+		new WaitUntil(new ControlIsEnabled(new CancelButton()), TimePeriod.LONG);
 
 		assertFalse("Finish button should not be enabled after validation incorrect "
 				+ credential + ".", new FinishButton().isEnabled());

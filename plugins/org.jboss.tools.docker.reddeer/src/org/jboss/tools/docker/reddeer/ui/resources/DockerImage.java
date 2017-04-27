@@ -12,7 +12,6 @@ package org.jboss.tools.docker.reddeer.ui.resources;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TreeItem;
@@ -24,6 +23,7 @@ import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.docker.reddeer.ui.AbstractDockerExplorerItem;
 
 /**

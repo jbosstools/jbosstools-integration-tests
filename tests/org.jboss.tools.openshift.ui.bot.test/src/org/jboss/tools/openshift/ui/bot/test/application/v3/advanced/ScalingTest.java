@@ -17,11 +17,11 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -159,11 +159,11 @@ public class ScalingTest {
 
 	private void scaleTo(int amountOfPods) {
 		new ContextMenu(OpenShiftLabel.ContextMenu.SCALE_TO).select();
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.SCALE_DEPLOYMENTS));
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.SCALE_DEPLOYMENTS));
 		new DefaultShell(OpenShiftLabel.Shell.SCALE_DEPLOYMENTS).setFocus();
-		new WaitWhile(new WidgetIsEnabled(new OkButton()));
+		new WaitWhile(new ControlIsEnabled(new OkButton()));
 		new DefaultSpinner().setValue(amountOfPods);
-		new WaitUntil(new WidgetIsEnabled(new OkButton()));
+		new WaitUntil(new ControlIsEnabled(new OkButton()));
 		new OkButton().click();
 	}
 

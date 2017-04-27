@@ -15,10 +15,9 @@ import static org.junit.Assert.assertTrue;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -28,11 +27,12 @@ import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.workbench.api.View;
-import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift2Application;
+import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
 import org.junit.Test;
 
 /**
@@ -61,7 +61,7 @@ public class ID905ManageSnapshotsTest extends IDXXXCreateTestingApplication {
 		
 		new ContextMenu(contextMenuPath).select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.SAVE_SNAPSHOT),
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.SAVE_SNAPSHOT),
 				TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.SAVE_SNAPSHOT);
@@ -71,8 +71,7 @@ public class ID905ManageSnapshotsTest extends IDXXXCreateTestingApplication {
 		new DefaultTable().getItem(applicationName).select();
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.SELECT_EXISTING_PROJECT),
-				TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.SELECT_EXISTING_PROJECT));
 		
 		RadioButton fullButton = new RadioButton("Full");
 		RadioButton deploymentButton = new RadioButton("Deployment");
@@ -99,19 +98,19 @@ public class ID905ManageSnapshotsTest extends IDXXXCreateTestingApplication {
 		
 		new FinishButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.SAVE_SNAPSHOT),
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.SAVE_SNAPSHOT),
 				TimePeriod.VERY_LONG);
 		
 		refreshProject(applicationName);
 		assertTrue("There is no full snapshot stored in project folder.",
-				new ProjectExplorer().getProject(applicationName).containsItem(fullFile));
+				new ProjectExplorer().getProject(applicationName).containsResource(fullFile));
 		
 		viewOfItem.open();
 		itemToHandle.select();
 		
 		new ContextMenu(contextMenuPath).select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.SAVE_SNAPSHOT),
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.SAVE_SNAPSHOT),
 				TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.SAVE_SNAPSHOT);
@@ -135,19 +134,19 @@ public class ID905ManageSnapshotsTest extends IDXXXCreateTestingApplication {
 		deploymentButton.click();
 		new FinishButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.SAVE_SNAPSHOT),
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.SAVE_SNAPSHOT),
 				TimePeriod.VERY_LONG);
 		
 		refreshProject(applicationName);
 		assertTrue("There is no full snapshot with altered name stored in project folder.",
-				new ProjectExplorer().getProject(applicationName).containsItem(deploymentFile));
+				new ProjectExplorer().getProject(applicationName).containsResource(deploymentFile));
 		
 		viewOfItem.open();
 		itemToHandle.select();
 		
 		new ContextMenu(contextMenuPath).select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.SAVE_SNAPSHOT),
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.SAVE_SNAPSHOT),
 				TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.SAVE_SNAPSHOT);
@@ -170,12 +169,12 @@ public class ID905ManageSnapshotsTest extends IDXXXCreateTestingApplication {
 		
 		new FinishButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.SAVE_SNAPSHOT),
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.SAVE_SNAPSHOT),
 				TimePeriod.VERY_LONG);
 		
 		refreshProject(applicationName);
 		assertTrue("There is no full snapshot with altered name stored in project folder.",
-				new ProjectExplorer().getProject(applicationName).containsItem(full2File));
+				new ProjectExplorer().getProject(applicationName).containsResource(full2File));
 	}	
 	
 	private static void refreshProject(String projectName) {

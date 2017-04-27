@@ -16,7 +16,7 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.openshift.reddeer.preference.page.OpenShift3PreferencePage;
@@ -47,7 +47,7 @@ public class OCBinaryLocationTest {
 		page.setOCLocation(OpenShiftCommandLineToolsRequirement.getOCLocation());
 		
 		try {
-			new WaitUntil(new WidgetIsEnabled(new PushButton(OpenShiftLabel.Button.APPLY)), 
+			new WaitUntil(new ControlIsEnabled(new PushButton(OpenShiftLabel.Button.APPLY)), 
 					TimePeriod.getCustom(5));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Button Apply should be enabled for valid OC binary location");
@@ -59,7 +59,7 @@ public class OCBinaryLocationTest {
 		page.setOCLocation("invalidPath");
 		
 		try {
-			new WaitWhile(new WidgetIsEnabled(new PushButton(OpenShiftLabel.Button.APPLY)), 
+			new WaitWhile(new ControlIsEnabled(new PushButton(OpenShiftLabel.Button.APPLY)), 
 					TimePeriod.getCustom(5));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Button Apply should be disabled for invalid OC binary location. Fails due to JBIDE-20685");

@@ -22,19 +22,19 @@ import java.util.List;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 
 public class ImageTagSelectionPage extends WizardPage{
 
 	public ImageTagSelectionPage()  {
 		super();
-		new WaitUntil(new ShellWithTextIsAvailable("Search and pull a Docker image"), TimePeriod.NORMAL);
+		new WaitUntil(new ShellIsAvailable("Search and pull a Docker image"));
 	}
 
 	public void finish() {

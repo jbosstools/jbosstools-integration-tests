@@ -20,18 +20,16 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.condition.ProjectExists;
 import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.api.Browser;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
 import org.jboss.reddeer.swt.condition.PageIsLoaded;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.condition.TableContainsItem;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
@@ -47,7 +45,9 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
+import org.jboss.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
 import org.jboss.tools.openshift.reddeer.condition.BrowserContainsText;
@@ -116,7 +116,7 @@ public class DeployEclipseProjectTest {
 		nextWizardPage();
 		nextWizardPage();
 		
-		new WaitUntil(new WidgetIsEnabled(new FinishButton()));
+		new WaitUntil(new ControlIsEnabled(new FinishButton()));
 		
 		new FinishButton().click();
 	
@@ -125,11 +125,11 @@ public class DeployEclipseProjectTest {
 	}
 	
 	private static void nextWizardPage() {
-		new WaitUntil(new WidgetIsEnabled(new NextButton()));
+		new WaitUntil(new ControlIsEnabled(new NextButton()));
 		
 		new NextButton().click();
 		
-		new WaitUntil(new WidgetIsEnabled(new BackButton()));
+		new WaitUntil(new ControlIsEnabled(new BackButton()));
 	}
 	
 	private static void commitChanges() {
@@ -177,13 +177,13 @@ public class DeployEclipseProjectTest {
 		new DefaultTable().select(PROJECT_NAME);
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable("Select Existing Project"));
+		new WaitWhile(new ShellIsAvailable("Select Existing Project"));
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		new DefaultTreeItem(OpenShiftLabel.Others.EAP_TEMPLATE).select();
 		
 		try {
-			new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.getCustom(5));
+			new WaitUntil(new ControlIsEnabled(new NextButton()), TimePeriod.getCustom(5));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Next button should be enabled if git based project and template are selected");
 		}
@@ -199,7 +199,7 @@ public class DeployEclipseProjectTest {
 		new DefaultText().setText(PROJECT_NAME);
 		
 		try {
-			new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.getCustom(5));
+			new WaitUntil(new ControlIsEnabled(new NextButton()), TimePeriod.getCustom(5));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Next button should be enabled if git based project and template are selected");
 		}
@@ -257,18 +257,17 @@ public class DeployEclipseProjectTest {
 		wizard.next();
 		wizard.finish();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.APPLICATION_SUMMARY), TimePeriod.LONG);
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.APPLICATION_SUMMARY), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.APPLICATION_SUMMARY);
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
 		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE), 
-				TimePeriod.getCustom(1000), true, TimePeriod.getCustom(8));
-		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.VERY_LONG, true,
-				TimePeriod.getCustom(5));
+				TimePeriod.getCustom(1000), true, 8000);
+		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.VERY_LONG, true, 5000);
 		
 		OpenShiftResource route = new OpenShiftExplorerView().getOpenShift3Connection().
 				getProject().getOpenShiftResources(Resource.ROUTE).get(0);
@@ -289,7 +288,7 @@ public class DeployEclipseProjectTest {
 
 	@After
 	public void closeAllShells() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
 	
 	@AfterClass
