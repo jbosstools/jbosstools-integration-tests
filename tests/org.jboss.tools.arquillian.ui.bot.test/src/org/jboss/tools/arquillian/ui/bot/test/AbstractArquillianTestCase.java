@@ -21,16 +21,16 @@ import org.eclipse.swt.SWT;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
 import org.jboss.reddeer.eclipse.m2e.core.ui.wizard.MavenProjectWizardPage;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.arquillian.ui.bot.reddeer.junit.ArquillianJUnitTestCaseWizard;
 import org.jboss.tools.arquillian.ui.bot.reddeer.junit.JUnitTestCaseWizardPage;
@@ -63,7 +63,7 @@ public abstract class AbstractArquillianTestCase {
 	private static final Logger log = Logger.getLogger(AbstractArquillianTestCase.class);
 	
 	protected Project getProject() {
-		PackageExplorer explorer = new PackageExplorer();
+		PackageExplorerPart explorer = new PackageExplorerPart();
 		explorer.open();
 		Project project = explorer.getProject(PROJECT_NAME);
 		return project;
@@ -85,7 +85,7 @@ public abstract class AbstractArquillianTestCase {
 	}
 	
 	private void deleteProject() {
-		PackageExplorer explorer = new PackageExplorer();
+		PackageExplorerPart explorer = new PackageExplorerPart();
 		explorer.open();
 		Project project = explorer.getProject(PROJECT_NAME);
 		project.delete(true);
@@ -137,7 +137,7 @@ public abstract class AbstractArquillianTestCase {
 	
 	protected void addArquillianProfile(){
 		log.step("Add Arquillian profile");
-		PackageExplorer explorer = new PackageExplorer();
+		PackageExplorerPart explorer = new PackageExplorerPart();
 		explorer.open();
 		Project project = explorer.getProject(PROJECT_NAME);
 		
@@ -180,7 +180,7 @@ public abstract class AbstractArquillianTestCase {
 	}
 	
 	protected void refreshProject (){
-		PackageExplorer explorer = new PackageExplorer();
+		PackageExplorerPart explorer = new PackageExplorerPart();
 		explorer.open();
 		Project project = explorer.getProject(PROJECT_NAME);
 		project.refresh();
