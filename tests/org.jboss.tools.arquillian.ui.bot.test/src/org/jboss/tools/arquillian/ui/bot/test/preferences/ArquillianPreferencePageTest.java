@@ -13,8 +13,8 @@ package org.jboss.tools.arquillian.ui.bot.test.preferences;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.arquillian.ui.bot.reddeer.preferences.ArquillianPreferencePage;
 import org.junit.After;
@@ -87,7 +87,7 @@ public class ArquillianPreferencePageTest {
 		// try to close preference dialog in case it stayed open
 		try{
 			preferencesDialog.cancel();
-		} catch (SWTLayerException swtle){
+		} catch (RedDeerException swtle){
 			// do nothing
 		}
 	}

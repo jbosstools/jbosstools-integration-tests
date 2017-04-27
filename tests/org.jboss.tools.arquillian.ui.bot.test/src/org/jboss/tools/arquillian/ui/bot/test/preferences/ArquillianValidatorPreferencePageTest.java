@@ -13,8 +13,8 @@ package org.jboss.tools.arquillian.ui.bot.test.preferences;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.arquillian.ui.bot.reddeer.preferences.ArquillianValidatorPreferencePage;
 import org.junit.After;
@@ -33,8 +33,6 @@ public class ArquillianValidatorPreferencePageTest {
 	private WorkbenchPreferenceDialog preferencesDialog = new WorkbenchPreferenceDialog();
 	private ArquillianValidatorPreferencePage arquillianValidatorPreferencePage = new ArquillianValidatorPreferencePage();
 	private final String ERROR = "Error";
-	private final String WARNING = "Warning";
-	private final String IGNORE = "Ignore";
 	private final String SEVERITY_FILTER_STRING = "test filter string";
 
 	@Test
@@ -92,7 +90,7 @@ public class ArquillianValidatorPreferencePageTest {
 		// try to close preference dialog in case it stayed open
 		try{
 			preferencesDialog.cancel();
-		} catch (SWTLayerException swtle){
+		} catch (RedDeerException swtle){
 			// do nothing
 		}
 	}
