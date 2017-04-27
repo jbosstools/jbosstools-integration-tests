@@ -105,7 +105,7 @@ public class BuilderImageApplicationWizardHandlingTest {
 		nextToBuildConfigurationWizardPage();
 		
 		LabeledText resourceName = new LabeledText(OpenShiftLabel.TextLabels.BUILDER_RESOURCE_NAME);
-		String defaultName = "jboss-eap64-openshift";
+		String defaultName = "jboss-eap70-openshift";
 		
 		assertTrue("Resource name has not been inferred correctly.", 
 				resourceName.getText().equals(defaultName));
