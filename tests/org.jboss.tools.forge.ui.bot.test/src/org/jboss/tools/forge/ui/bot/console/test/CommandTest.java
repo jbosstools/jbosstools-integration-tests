@@ -20,6 +20,7 @@ import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
 import org.junit.Test;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
@@ -56,7 +57,8 @@ public class CommandTest extends ForgeConsoleTestBase {
 		new WaitUntil(new ForgeConsoleHasText(ASSERT_TEXT), TimePeriod.VERY_LONG);
 		assertTrue(fView.getConsoleText().contains(ASSERT_TEXT));
 		
-		Project project = pExplorer.getProject(PROJECT_NAME);
+		ProjectExplorer pe = new ProjectExplorer();
+		Project project = pe.getProject(PROJECT_NAME);
 		ProjectItem item = project.getProjectItem("src", "main");
 		assertTrue(item.isSelected());
 	}
@@ -85,7 +87,8 @@ public class CommandTest extends ForgeConsoleTestBase {
 		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.CTRL, SWT.SHIFT, 'C');
 		new WaitUntil(new ForgeConsoleHasText(ASSERT_TEXT), TimePeriod.VERY_LONG);
 		assertTrue(fView.getConsoleText().contains(ASSERT_TEXT));
-		assertFalse(pExplorer.containsProject(PROJECT_NAME));
+		ProjectExplorer pe = new ProjectExplorer();
+		assertFalse(pe.containsProject(PROJECT_NAME));
 	}
 	
 	

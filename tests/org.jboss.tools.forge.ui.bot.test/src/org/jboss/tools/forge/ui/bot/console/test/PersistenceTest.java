@@ -18,6 +18,7 @@ import java.io.IOException;
 
 import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
 import org.jboss.tools.forge.ui.bot.test.util.ResourceUtils;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.junit.Test;
@@ -42,8 +43,9 @@ public class PersistenceTest extends ForgeConsoleTestBase {
 		
 		File persistence = new File(WORKSPACE + "/" + PROJECT_NAME + "/src/main/resources/META-INF/persistence.xml");
 		assertTrue("persistence.xml file does not exist", persistence.exists());
+		
 		assertTrue("persistence.xml not found in project explorer", 
-					pExplorer.getProject(PROJECT_NAME).containsItem("src", "main", "resources", "META-INF", "persistence.xml"));
+					pExplorer.getProject(PROJECT_NAME).containsResource("src", "main", "resources", "META-INF", "persistence.xml"));
 			
 		try {
 			String pContent = ResourceUtils.readFile(WORKSPACE + "/" + PROJECT_NAME + "/src/main/resources/META-INF/persistence.xml");
@@ -74,7 +76,7 @@ public class PersistenceTest extends ForgeConsoleTestBase {
 		File persistence = new File(WORKSPACE + "/" + PROJECT_NAME + "/src/main/resources/META-INF/persistence.xml");
 		assertTrue("persistence.xml file does not exist", persistence.exists());
 		assertTrue("persistence.xml not found in project explorer", 
-					pExplorer.getProject(PROJECT_NAME).containsItem("src", "main", "resources", "META-INF", "persistence.xml"));
+					pExplorer.getProject(PROJECT_NAME).containsResource("src", "main", "resources", "META-INF", "persistence.xml") );
 			
 		try {
 			String pContent = ResourceUtils.readFile(WORKSPACE + "/" + PROJECT_NAME + "/src/main/resources/META-INF/persistence.xml");
@@ -101,7 +103,7 @@ public class PersistenceTest extends ForgeConsoleTestBase {
 		File persistence = new File(WORKSPACE + "/" + PROJECT_NAME + "/src/main/resources/META-INF/persistence.xml");
 		assertTrue("persistence.xml file does not exist", persistence.exists());
 		assertTrue("persistence.xml not found in project explorer", 
-					pExplorer.getProject(PROJECT_NAME).containsItem("src", "main", "resources", "META-INF", "persistence.xml"));
+					pExplorer.getProject(PROJECT_NAME).containsResource("src", "main", "resources", "META-INF", "persistence.xml"));
 		
 		try {
 			String pContent = ResourceUtils.readFile(WORKSPACE + "/" + PROJECT_NAME + "/src/main/resources/META-INF/persistence.xml");
@@ -127,8 +129,8 @@ public class PersistenceTest extends ForgeConsoleTestBase {
 		
 		File persistence = new File(WORKSPACE + "/" + PROJECT_NAME + "/src/main/resources/META-INF/persistence.xml");
 		assertTrue("persistence.xml file does not exist", persistence.exists());
-		assertTrue("persistence.xml not found in project explorer", 
-					pExplorer.getProject(PROJECT_NAME).containsItem("src", "main", "resources", "META-INF", "persistence.xml"));
+		assertTrue("persistence.xml not found in project explorer",
+					pExplorer.getProject(PROJECT_NAME).containsResource("src", "main", "resources", "META-INF", "persistence.xml"));
 		
 		try {
 			String pContent = ResourceUtils.readFile(WORKSPACE + "/" + PROJECT_NAME + "/src/main/resources/META-INF/persistence.xml");

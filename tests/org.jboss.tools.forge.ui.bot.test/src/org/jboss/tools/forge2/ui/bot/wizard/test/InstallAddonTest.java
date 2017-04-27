@@ -16,13 +16,13 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.table.AbstractTableItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,11 +41,11 @@ public class InstallAddonTest extends WizardTestBase {
 
 	@Test
 	public void testAddonInstall() {
-		WizardDialog dialog = getWizardDialog(INSTALL_ADDON_DIALOG_NAME, "(" + INSTALL_ADDON_DIALOG_NAME + ").*");
+		WizardDialog dialog = getWizardDialog(INSTALL_ADDON_DIALOG_NAME);
 		new DefaultCombo().setSelection(ADDON_NAME);
 		new WaitWhile(new JobIsRunning());
 		dialog.finish(TimePeriod.getCustom(1000)); //could take a very long time
-		WizardDialog dialogRemove = getWizardDialog(REMOVE_ADDON_DIALOG_NAME, "(" + REMOVE_ADDON_DIALOG_NAME + ").*");
+		WizardDialog dialogRemove = getWizardDialog(REMOVE_ADDON_DIALOG_NAME);
 		Table table = new DefaultTable();
 		String addonFullName = "";
 		for (TableItem item : table.getItems()) {
@@ -59,7 +59,7 @@ public class InstallAddonTest extends WizardTestBase {
 		table.getItem(addonFullName).setChecked(true);
 		dialogRemove.finish();
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(600));
-		dialogRemove = getWizardDialog(REMOVE_ADDON_DIALOG_NAME, "(" + REMOVE_ADDON_DIALOG_NAME + ").*");
+		dialogRemove = getWizardDialog(REMOVE_ADDON_DIALOG_NAME);
 		table = new DefaultTable();
 		assertTrue("Addon has not been removed!", !table.containsItem(addonFullName));
 		dialogRemove.cancel();

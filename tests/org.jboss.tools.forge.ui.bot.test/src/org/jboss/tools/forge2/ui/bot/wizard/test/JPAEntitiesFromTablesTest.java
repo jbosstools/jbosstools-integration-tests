@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.tools.forge.reddeer.ui.wizard.EntitiesFromTablesWizardFirstPage;
@@ -49,8 +49,7 @@ public class JPAEntitiesFromTablesTest extends WizardTestBase {
 	@Test
 	public void testGenerateEntities() {
 		new ProjectExplorer().selectProjects(PROJECT_NAME);
-		WizardDialog dialog = getWizardDialog("JPA: Generate Entities From Tables",
-				"(JPA: Generate Entities From Tables).*");
+		WizardDialog dialog = getWizardDialog("JPA: Generate Entities From Tables");
 		EntitiesFromTablesWizardFirstPage firstPage = new EntitiesFromTablesWizardFirstPage();
 		firstPage.setPackage(PACKAGE);
 		assertTrue("Missing connection profile selection", firstPage.getAllProfiles().contains(PROFILE_NAME));
@@ -78,7 +77,7 @@ public class JPAEntitiesFromTablesTest extends WizardTestBase {
 	private void checkEntityClasses() {
 		Project project = new ProjectExplorer().getProject(PROJECT_NAME);
 		project.refresh();
-		boolean hasResources = project.containsItem("Java Resources", "src/main/java", PACKAGE);
+		boolean hasResources = project.containsResource("Java Resources", "src/main/java", PACKAGE);
 		if(!hasResources)
 			fail("No resources have been generated!");
 		ProjectItem model = project.getProjectItem("Java Resources", "src/main/java", PACKAGE);
@@ -91,7 +90,7 @@ public class JPAEntitiesFromTablesTest extends WizardTestBase {
 				entityName += nameParts[i].charAt(0) + nameParts[i].substring(1).toLowerCase();
 			}
 
-			assertTrue("Class for entity " + entityName + " is missing", model.containsItem(entityName + ".java"));
+			assertTrue("Class for entity " + entityName + " is missing", model.containsResource(entityName + ".java"));
 		}
 	}
 }

@@ -19,7 +19,7 @@ import java.util.Collection;
 
 import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
 import org.jboss.tools.forge.ui.bot.test.util.ResourceUtils;
-import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
+import org.jboss.reddeer.eclipse.ui.views.contentoutline.ContentOutline;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
@@ -66,7 +66,7 @@ public class EntityTest extends ForgeConsoleTestBase {
 			fail("Attempt to read the '" + entityFilePath + "' failed!");
 		}		
 		
-		OutlineView oView = new OutlineView();
+		ContentOutline oView = new ContentOutline();
 		oView.open();
 		Collection<TreeItem> items = oView.outlineElements();
 		

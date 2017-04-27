@@ -36,7 +36,7 @@ public class ProjectTest extends ForgeConsoleTestBase {
 		assertTrue(text.contains("***SUCCESS*** Created project [" + PROJECT_NAME + "]"));
 		assertTrue(pExplorer.containsProject(PROJECT_NAME));
 		Project project = pExplorer.getProject(PROJECT_NAME);
-		assertTrue(project.containsItem("pom.xml"));
+		assertTrue(project.containsResource("pom.xml"));
 		
 		try {
 			String pomContent = ResourceUtils.readFile(WORKSPACE + "/" + PROJECT_NAME + "/pom.xml");
@@ -55,7 +55,7 @@ public class ProjectTest extends ForgeConsoleTestBase {
 		assertTrue(text.contains("***SUCCESS*** Created project [" + PROJECT_NAME + "]"));
 		assertTrue(pExplorer.containsProject(PROJECT_NAME));
 		Project project = pExplorer.getProject(PROJECT_NAME);
-		assertTrue(project.containsItem("pom.xml"));
+		assertTrue(project.containsResource("pom.xml"));
 		
 		try {
 			String pomContent = ResourceUtils.readFile(WORKSPACE + "/" + PROJECT_NAME + "/pom.xml");

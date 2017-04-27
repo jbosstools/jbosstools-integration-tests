@@ -17,7 +17,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.eclipse.datatools.ui.view.DataSourceExplorer;
+import org.jboss.reddeer.eclipse.datatools.connectivity.ui.dse.views.DataSourceExplorerView;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
@@ -56,7 +56,7 @@ public class ConnectionProfileWizardTest extends WizardTestBase {
 		}
 		assertNotNull("Database path is null", path);
 
-		WizardDialog dialog = getWizardDialog("Connection: Create Profile", "(Connection: Create Profile).*");
+		WizardDialog dialog = getWizardDialog("Connection: Create Profile");
 		ConnectionProfileWizardPage page = new ConnectionProfileWizardPage();
 		page.setConnectionName(CONNECTION_NAME);
 		page.setJdbcUrl(SAKILA_URL);
@@ -66,7 +66,7 @@ public class ConnectionProfileWizardTest extends WizardTestBase {
 		page.toggleVerifyConnection(true);
 		dialog.finish(TimePeriod.LONG);
 
-		DataSourceExplorer dsExplorer = new DataSourceExplorer();
+		DataSourceExplorerView dsExplorer = new DataSourceExplorerView();
 		dsExplorer.open();
 		assertTrue("Missing database connection for " + CONNECTION_NAME,
 				dsExplorer.getDatabaseConnections().contains(CONNECTION_NAME));

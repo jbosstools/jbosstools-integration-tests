@@ -17,7 +17,8 @@ import java.util.List;
 
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.core.resources.Resource;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.tools.forge.ui.bot.test.util.ScaffoldType;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,40 +65,40 @@ public class ScaffoldSetupWizardTest extends WizardTestBase {
 
 	private void checkResources(ScaffoldType type) {
 		ProjectItem webapp = project.getProjectItem("src", "main", "webapp");
-		ProjectItem webInf = webapp.getChild("WEB-INF");
+		ProjectItem webInf = webapp.getProjectItem("WEB-INF");
 		assertNotNull("Missing WEB-INF folder", webInf);
-		assertTrue("Missing beans.xml file", webInf.containsItem("beans.xml"));
+		assertTrue("Missing beans.xml file", webInf.containsResource("beans.xml"));
 
 		if (type == ScaffoldType.FACES) {
-			assertTrue("Missing webapp/resources folder", webapp.containsItem("resources"));
+			assertTrue("Missing webapp/resources folder", webapp.containsResource("resources"));
 			assertTrue("Missing webapp/resources/scaffold folder",
-					webapp.containsItem("resources", "scaffold"));
+					webapp.containsResource("resources", "scaffold"));
 
-			assertTrue("Missing faces config file", webInf.containsItem("faces-config.xml"));
-			assertTrue("Missing web.xml file", webInf.containsItem("web.xml"));
+			assertTrue("Missing faces config file", webInf.containsResource("faces-config.xml"));
+			assertTrue("Missing web.xml file", webInf.containsResource("web.xml"));
 
-			assertTrue("Missing index.xhtml file", webapp.containsItem("index.xhtml"));
+			assertTrue("Missing index.xhtml file", webapp.containsResource("index.xhtml"));
 
 		} else if (type == ScaffoldType.ANGULARJS) {
-			assertTrue("Missing webapp/scripts folder", webapp.containsItem("scripts"));
-			assertTrue("Missing webapp/views folder", webapp.containsItem("views"));
-			assertTrue("Missing webapp/styles folder", webapp.containsItem("styles"));
+			assertTrue("Missing webapp/scripts folder", webapp.containsResource("scripts"));
+			assertTrue("Missing webapp/views folder", webapp.containsResource("views"));
+			assertTrue("Missing webapp/styles folder", webapp.containsResource("styles"));
 			ProjectItem javaResources = project.getProjectItem("Java Resources", "src/main/java");
-			ProjectItem rest = null;
+			Resource rest = null;
 
-			for (ProjectItem item : javaResources.getChildren()) {
+			for (Resource item : javaResources.getChildren()) {
 				if (item.getName().endsWith(".rest")) {
 					rest = item;
 					break;
 				}
 			}
 			assertNotNull("Missing rest package", rest);
-			assertTrue("Missing RestApplication class", rest.containsItem("RestApplication.java"));
+			assertTrue("Missing RestApplication class", rest.containsResource("RestApplication.java") );
 		}
 	}
 
 	private void checkDependencies(ScaffoldType type) {
-		List<ProjectItem> dependencies = project.getProjectItem("Java Resources", "Libraries", "Maven Dependencies")
+		List<Resource> dependencies = project.getProjectItem("Java Resources", "Libraries", "Maven Dependencies")
 				.getChildren();
 		assertTrue("Missing CDI dependency", containsItemWithText(dependencies, "cdi-api"));
 		assertTrue("Missing EJB dependency", containsItemWithText(dependencies, "ejb-api"));
@@ -110,8 +111,8 @@ public class ScaffoldSetupWizardTest extends WizardTestBase {
 		}
 	}
 
-	private boolean containsItemWithText(List<ProjectItem> items, String text) {
-		for (ProjectItem item : items) {
+	private boolean containsItemWithText(List<Resource> items, String text) {
+		for (Resource item : items) {
 			if (item.getText().contains(text)) {
 				return true;
 			}

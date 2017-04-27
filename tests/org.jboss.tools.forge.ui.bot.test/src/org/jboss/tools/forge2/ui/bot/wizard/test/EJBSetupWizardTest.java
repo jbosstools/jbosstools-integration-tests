@@ -12,13 +12,13 @@ package org.jboss.tools.forge2.ui.bot.wizard.test;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.workbench.condition.EditorWithTitleIsActive;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.junit.Before;
@@ -35,7 +35,7 @@ public class EJBSetupWizardTest extends WizardTestBase {
 		
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.selectProjects(PROJECT_NAME); //this will set context for forge
-		WizardDialog wd = getWizardDialog("ejb-setup", "(EJB: Setup).*");
+		WizardDialog wd = getWizardDialog("ejb-setup");
 		new LabeledCombo("EJB Version:").setSelection(EJB_VERSION);
 		wd.finish(TimePeriod.getCustom(600));
 	}

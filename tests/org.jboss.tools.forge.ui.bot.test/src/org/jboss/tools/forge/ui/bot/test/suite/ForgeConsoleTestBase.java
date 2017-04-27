@@ -14,12 +14,12 @@ package org.jboss.tools.forge.ui.bot.test.suite;
 import java.io.File;
 
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.forge.reddeer.condition.ForgeConsoleHasText;
 import org.jboss.tools.forge.reddeer.view.ForgeConsoleView;
 import org.junit.After;

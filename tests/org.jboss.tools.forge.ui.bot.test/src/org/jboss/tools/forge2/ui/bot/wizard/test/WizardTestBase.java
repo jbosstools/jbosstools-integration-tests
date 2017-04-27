@@ -28,22 +28,19 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.services.IServiceLocator;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.util.Display;
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.closeeditors.CloseAllEditorsRequirement.CloseAllEditors;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.jboss.tools.forge.reddeer.condition.ProjectIsSelected;
 import org.jboss.tools.forge.reddeer.ui.wizard.ConnectionProfileWizardPage;
 import org.jboss.tools.forge.reddeer.view.ForgeConsoleView;
@@ -84,13 +81,13 @@ public abstract class WizardTestBase {
 	@After
 	public void cleanup() {
 		handleCleanup();
-		assertTrue("Some of the resources have not been deleted!", new ProjectExplorer().getExplorerItems().isEmpty());
+		assertTrue("Some of the resources have not been deleted!", new ProjectExplorer().getProjects().isEmpty());
 	}
 
 	public void handleCleanup() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ProjectExplorer().deleteAllProjects();
-		if (!new ProjectExplorer().getExplorerItems().isEmpty()) {
+		if (!new ProjectExplorer().getProjects().isEmpty()) {
 			// workaround for windows issue - JDK_8029516
 			new ForgeConsoleView().stop();
 			System.gc();
@@ -160,14 +157,10 @@ public abstract class WizardTestBase {
 	 * 
 	 * @param command
 	 *            - forge command name to be executed
-	 * @param title_regex
-	 *            - regex to wait for correct wizard shell
 	 * @return WizardDialog
 	 */
-	public WizardDialog getWizardDialog(String command, String title_regex) {
+	public WizardDialog getWizardDialog(String command) {
 		runForgeCommand(command);
-		RegexMatcher rm = new RegexMatcher(title_regex);
-		new WaitUntil(new ShellWithTextIsActive(rm));
 		return new WizardDialog();
 	}
 
@@ -181,7 +174,7 @@ public abstract class WizardTestBase {
 	 * @param path
 	 */
 	public void newProject(String name, String path) {
-		WizardDialog wd = getWizardDialog("project-new", "(Project: New).*");
+		WizardDialog wd = getWizardDialog("project-new");
 		new LabeledText("Project name:").setText(name);
 		new LabeledText("Project location:").setText(path);
 		wd.finish(TimePeriod.getCustom(600));
@@ -207,7 +200,7 @@ public abstract class WizardTestBase {
 	public void persistenceSetup(String projectName) {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.selectProjects(projectName); // this will set context for forge
-		WizardDialog wd = getWizardDialog("jpa-setup", "(JPA: Setup).*");
+		WizardDialog wd = getWizardDialog("jpa-setup");
 		wd.finish();
 		File persistence = new File(WORKSPACE + "/" + projectName + "/src/main/resources/META-INF/persistence.xml");
 		assertTrue("persistence.xml file does not exist", persistence.exists());
@@ -223,7 +216,7 @@ public abstract class WizardTestBase {
 	public void servletSetup(String projectName, String webFacetVersion) {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.selectProjects(projectName); // this will set context for forge
-		WizardDialog wd = getWizardDialog("servlet-setup", "(Servlet: Setup).*");
+		WizardDialog wd = getWizardDialog("servlet-setup");
 		new LabeledCombo("Servlet Version:").setSelection(webFacetVersion);
 		wd.finish(TimePeriod.getCustom(600));
 	}
@@ -238,7 +231,7 @@ public abstract class WizardTestBase {
 	public void cdiSetup(String projectName, String cdiVersion) {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.selectProjects(projectName); // this will set context for forge
-		WizardDialog wd = getWizardDialog("cdi-setup", "(CDI: Setup).*");
+		WizardDialog wd = getWizardDialog("cdi-setup");
 		new LabeledCombo("CDI Version:").setSelection(cdiVersion);
 		wd.finish(TimePeriod.getCustom(600));
 	}
@@ -253,7 +246,7 @@ public abstract class WizardTestBase {
 	public void facesSetup(String projectName, String jsfVersion) {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.selectProjects(projectName); // this will set context for forge
-		WizardDialog wd = getWizardDialog("faces-setup", "(Faces: Setup).*");
+		WizardDialog wd = getWizardDialog("faces-setup");
 		new LabeledCombo("JavaServer Faces Version:").setSelection(jsfVersion);
 		wd.finish(TimePeriod.getCustom(600));
 	}
@@ -270,7 +263,7 @@ public abstract class WizardTestBase {
 	 */
 	public void newJPAEntity(String projectName, String entityName, String tableName, String pkg) {
 		new ProjectExplorer().selectProjects(projectName);
-		WizardDialog dialog = getWizardDialog("JPA: New Entity", "(JPA: New Entity).*");
+		WizardDialog dialog = getWizardDialog("JPA: New Entity");
 		new LabeledText("Package Name:").setText(pkg);
 		new LabeledText("Type Name:").setText(entityName);
 		new LabeledText("Table Name:").setText(tableName);
@@ -286,9 +279,8 @@ public abstract class WizardTestBase {
 	 */
 	public void scaffoldSetup(String projectName, ScaffoldType type) {
 		new ProjectExplorer().selectProjects(projectName);
-		WizardDialog dialog = getWizardDialog("Scaffold: Setup", "(Scaffold: Setup).*");
+		WizardDialog dialog = getWizardDialog("Scaffold: Setup");
 		new DefaultCombo().setSelection(type.getName());
-		new WaitUntil(new WidgetIsEnabled(new PushButton("Next >")));
 		dialog.next();
 		dialog.finish(TimePeriod.LONG);
 	}
@@ -303,11 +295,10 @@ public abstract class WizardTestBase {
 
 	public void createScaffold(String projectName, ScaffoldType type) {
 		new ProjectExplorer().selectProjects(projectName);
-		WizardDialog dialog = getWizardDialog("Scaffold: Generate", "(Scaffold: Generate).*");
+		WizardDialog dialog = getWizardDialog("Scaffold: Generate");
 		new DefaultCombo().setSelection(type.getName());
 		dialog.next();
 		new PushButton("Select All").click();
-		new WaitUntil(new WidgetIsEnabled(new PushButton("Finish")));
 		dialog.finish(TimePeriod.LONG);
 	}
 
@@ -321,7 +312,7 @@ public abstract class WizardTestBase {
 		newProject(PROJECT_NAME);
 		persistenceSetup(PROJECT_NAME);
 
-		WizardDialog dialog = getWizardDialog("Connection: Create Profile", "(Connection: Create Profile).*");
+		WizardDialog dialog = getWizardDialog("Connection: Create Profile");
 		ConnectionProfileWizardPage page = new ConnectionProfileWizardPage();
 		page.setConnectionName(PROFILE_NAME);
 		page.setJdbcUrl(SAKILA_URL);
@@ -337,7 +328,7 @@ public abstract class WizardTestBase {
 		if (pe.containsProject(PROJECT_NAME)){
 			pe.getProject(PROJECT_NAME).select();
 			try {
-				new WaitWhile(new ProjectIsSelected(PROJECT_NAME),TimePeriod.NORMAL, false, TimePeriod.getCustom(5));//Selecting project is not always immediately, when Forge is running
+				new WaitWhile(new ProjectIsSelected(PROJECT_NAME),TimePeriod.DEFAULT, false);//Selecting project is not always immediately, when Forge is running
 			} catch (CoreLayerException ex){
 				//swallowing - project has been deleted
 			}
