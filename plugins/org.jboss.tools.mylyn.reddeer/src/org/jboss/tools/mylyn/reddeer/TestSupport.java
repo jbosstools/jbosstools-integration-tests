@@ -6,11 +6,11 @@ import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.equinox.security.ui.StoragePreferencePage;
+import org.jboss.reddeer.eclipse.equinox.security.ui.storage.StoragePreferencePage;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -73,10 +73,10 @@ public class TestSupport {
 			new DefaultShell(new WithTextMatcher(new RegexMatcher("Secure Storage.*"))).close();
 			log.debug("Closed the Secure Storage Dialog");
 		} 
-		catch (SWTLayerException swtle){
+		catch (CoreLayerException swtle){
 			log.error("Unable to close the Secure Storage Dialog - " + swtle.getMessage());
 			swtle.printStackTrace();
-		}	
+		}
 	}
 	
 

@@ -5,31 +5,22 @@ package org.jboss.tools.mylyn.ui.bot.test;
  * 
  * 
  */
-
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ActiveShellExists;
-import org.jboss.reddeer.eclipse.equinox.security.ui.StoragePreferencePage;
-import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.*;
-import org.jboss.reddeer.eclipse.ui.ide.RepoConnectionDialog;
-import org.jboss.reddeer.swt.condition.ShellIsActive;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.reddeer.eclipse.mylyn.tasks.ui.views.TaskRepositoriesView;
+import org.jboss.reddeer.eclipse.mylyn.tasks.ui.wizards.TaskRepositoryWizardDialog;
+import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.mylyn.reddeer.TestSupport;
+import org.junit.Test;
 
 public class MylynTestValidate {
 
@@ -80,8 +71,8 @@ public class MylynTestValidate {
 			log.info ("Problem with 'Refreshing repository configuration' shell not seen");
 		}		
 			
-		RepoConnectionDialog theRepoDialog = new RepoConnectionDialog();
-		log.info(theRepoDialog.getText());
+		TaskRepositoryWizardDialog theRepoDialog = new TaskRepositoryWizardDialog();
+		log.info(theRepoDialog.getTitle());
 
 		theRepoDialog.validateSettings();
 
