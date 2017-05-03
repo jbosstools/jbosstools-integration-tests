@@ -21,9 +21,9 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.Server;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -79,9 +79,9 @@ public class ExportImportWARTest {
 	}
 
 	private static void removeModulesFromServer() {
-		ServersView serversView = new ServersView();
+		ServersView2 serversView = new ServersView2();
 		serversView.open();
-		Server server = serversView.getServer(serverReq.getServerNameLabelText(serverReq.getConfig()));
+		Server server = serversView.getServer(serverReq.getServerNameLabelText());
 		server.getModules().forEach(serverModule -> serverModule.remove());
 	}
 
