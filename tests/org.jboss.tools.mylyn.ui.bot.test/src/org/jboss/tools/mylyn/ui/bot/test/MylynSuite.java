@@ -1,10 +1,8 @@
 package org.jboss.tools.mylyn.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * Mylyn Test Suite
@@ -13,8 +11,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 
 @RunWith(RedDeerSuite.class)
-
-@SuiteClasses({
+@Suite.SuiteClasses({
 	MylynTestJenkins.class,
 	MylynTestValidate.class,
 	MylynTestLocalRepo.class,
