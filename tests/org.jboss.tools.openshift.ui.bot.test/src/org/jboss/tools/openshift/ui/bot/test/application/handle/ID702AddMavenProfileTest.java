@@ -15,15 +15,15 @@ import static org.junit.Assert.assertTrue;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
@@ -57,20 +57,20 @@ public class ID702AddMavenProfileTest {
 				OpenShiftLabel.Cartridge.JBOSS_EAP, applicationName, false, true, false, false, null,
 				null, true,	projectName, null, null, (String[]) null);
 
-		new WaitUntil(new ShellWithTextIsAvailable(
+		new WaitUntil(new ShellIsAvailable(
 				OpenShiftLabel.Shell.IMPORT_APPLICATION_WIZARD),
 				TimePeriod.VERY_LONG);
 
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION_WIZARD);
 		new OkButton().click();
 
-		new WaitUntil(new ShellWithTextIsAvailable(
+		new WaitUntil(new ShellIsAvailable(
 				OpenShiftLabel.Shell.ACCEPT_HOST_KEY), TimePeriod.VERY_LONG);
 
 		new DefaultShell(OpenShiftLabel.Shell.ACCEPT_HOST_KEY);
 		new YesButton().click();
 
-		new WaitWhile(new ShellWithTextIsAvailable(
+		new WaitWhile(new ShellIsAvailable(
 				OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.VERY_LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 

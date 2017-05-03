@@ -20,11 +20,10 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
@@ -35,8 +34,9 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.openshift.reddeer.requirement.CleanOpenShiftConnectionRequirement.CleanConnection;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
@@ -63,15 +63,15 @@ public class LabelsTest {
 		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
 		new DefaultTree().selectItems(new DefaultTreeItem(OpenShiftLabel.Others.EAP_TEMPLATE));
 		
-		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ControlIsEnabled(new NextButton()));
 		
 		new NextButton().click();
 		
-		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new ControlIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		new NextButton().click();
 		
-		new WaitWhile(new WidgetIsEnabled(new NextButton()), TimePeriod.LONG);
+		new WaitWhile(new ControlIsEnabled(new NextButton()), TimePeriod.LONG);
 	}
 	
 	@Test
@@ -245,7 +245,7 @@ public class LabelsTest {
 	
 	private boolean buttonIsEnabled(Button button) {
 		try {
-			new WaitUntil(new WidgetIsEnabled(button), TimePeriod.getCustom(2));
+			new WaitUntil(new ControlIsEnabled(button), TimePeriod.getCustom(2));
 			return true;
 		} catch (WaitTimeoutExpiredException ex) {
 			return false;
@@ -258,7 +258,7 @@ public class LabelsTest {
 	}
 	
 	private void closeResourceLabelShell() {
-		if (new ShellWithTextIsAvailable(OpenShiftLabel.Shell.RESOURCE_LABEL).test()) {
+		if (new ShellIsAvailable(OpenShiftLabel.Shell.RESOURCE_LABEL).test()) {
 			new CancelButton().click();
 			new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		}
@@ -268,7 +268,7 @@ public class LabelsTest {
 	public void closeNewApplicationWizard() {
 		new CancelButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning());
 	}
 }

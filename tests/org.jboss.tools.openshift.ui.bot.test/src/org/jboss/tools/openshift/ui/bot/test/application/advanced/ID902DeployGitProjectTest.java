@@ -14,11 +14,10 @@ import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ProjectExists;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
@@ -29,6 +28,7 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
@@ -65,19 +65,19 @@ public class ID902DeployGitProjectTest {
 		wizard.createNewApplicationOnBasicCartridge(OpenShiftLabel.Cartridge.JBOSS_EAP, applicationName, 
 				false, true, false, false, null, null, true, projectName, null, "openshift22", (String[]) null);
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION_WIZARD),
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION_WIZARD),
 				TimePeriod.VERY_LONG);
 
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION_WIZARD);
 		new OkButton().click();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.ACCEPT_HOST_KEY), TimePeriod.VERY_LONG);
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.ACCEPT_HOST_KEY), TimePeriod.VERY_LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.ACCEPT_HOST_KEY);
 		
 		new YesButton().click();
 
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
 				TimePeriod.VERY_LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		
@@ -88,17 +88,17 @@ public class ID902DeployGitProjectTest {
 	private void importGitProject() {
 		new ShellMenu("File", "Import...").select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable("Import"), TimePeriod.LONG);
+		new WaitUntil(new ShellIsAvailable("Import"), TimePeriod.LONG);
 		
 		new DefaultShell("Import").setFocus();
 		new DefaultTreeItem("Git", "Projects from Git (with smart import)").select();
 		
-		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ControlIsEnabled(new NextButton()));
 		new NextButton().click();
 		
 		new DefaultTree().selectItems(new DefaultTreeItem("Clone URI")); 
 		
-		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ControlIsEnabled(new NextButton()));
 		new NextButton().click();
 		
 		new LabeledText("URI:").setText(gitProjectURI);
@@ -107,31 +107,31 @@ public class ID902DeployGitProjectTest {
 			new DefaultShell(OpenShiftLabel.Shell.SECURE_STORAGE_PASSWORD);
 			new DefaultText(0).setText(SystemProperties.SECURE_STORAGE_PASSWORD);
 			
-			new WaitUntil(new WidgetIsEnabled(new OkButton()));
+			new WaitUntil(new ControlIsEnabled(new OkButton()));
 			
 			new OkButton().click();
 			
-			new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.SECURE_STORAGE_PASSWORD));
+			new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.SECURE_STORAGE_PASSWORD));
 		} catch (RedDeerException ex) {
 			// do nothing, if failed, there was no secure storage shell opened
 		}
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ControlIsEnabled(new NextButton()));
 		new NextButton().click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
-		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ControlIsEnabled(new NextButton()));
 		new NextButton().click();
 		
-		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ControlIsEnabled(new NextButton()));
 		new NextButton().click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
-		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.LONG);
+		new WaitUntil(new ControlIsEnabled(new FinishButton()), TimePeriod.LONG);
 		new FinishButton().click();
 		
 		new WaitUntil(new ProjectExists(projectName), TimePeriod.VERY_LONG);

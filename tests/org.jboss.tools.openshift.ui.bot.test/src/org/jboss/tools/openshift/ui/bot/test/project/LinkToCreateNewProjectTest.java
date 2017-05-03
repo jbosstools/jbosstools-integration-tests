@@ -17,10 +17,10 @@ import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.handler.TreeItemHandler;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -62,12 +62,12 @@ public class LinkToCreateNewProjectTest {
 		new LabeledText(OpenShiftLabel.TextLabels.PROJECT_NAME).setText(
 				projectName);
 
-		new WaitUntil(new WidgetIsEnabled(new FinishButton()));
+		new WaitUntil(new ControlIsEnabled(new FinishButton()));
 		
 		new FinishButton().click();
 		projectCreated = true;
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
 		
 		assertTrue("OpenShift project is not visible in OpenShift Explorer under the connection"
 				+ " although it should have been created successfully and visible.",

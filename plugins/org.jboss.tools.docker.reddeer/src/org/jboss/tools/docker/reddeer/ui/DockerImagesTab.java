@@ -14,10 +14,10 @@ package org.jboss.tools.docker.reddeer.ui;
 import java.util.List;
 
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.swt.api.Combo;
 import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
@@ -66,7 +66,7 @@ public class DockerImagesTab extends WorkbenchView {
 	public void buildImage(String name, String directory) {
 		activate();
 		new DefaultToolItem("Build Image").click();
-		new WaitUntil(new ShellWithTextIsAvailable(""));
+		new WaitUntil(new ShellIsAvailable(""));
 		new LabeledText("Image Name:").setText(name);
 		new LabeledText("Directory:").setText(directory);
 		new FinishButton().click();

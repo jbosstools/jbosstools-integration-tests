@@ -22,15 +22,14 @@ import org.hamcrest.core.StringStartsWith;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.condition.ProjectExists;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -47,6 +46,7 @@ import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
@@ -102,7 +102,7 @@ public class CreateApplicationFromTemplateTest {
 		new DefaultCombo().setText(TESTS_PROJECT_LOCATION);
 		new PushButton("Refresh").click();
 
-		new WaitUntil(new WidgetIsEnabled(new FinishButton()));
+		new WaitUntil(new ControlIsEnabled(new FinishButton()));
 
 		new FinishButton().click();
 
@@ -147,7 +147,7 @@ public class CreateApplicationFromTemplateTest {
 				new LabeledText(OpenShiftLabel.TextLabels.SELECT_LOCAL_TEMPLATE).getText().equals("${workspace_loc:"
 						+ File.separator + TESTS_PROJECT + File.separator + "eap64-basic-s2i.json}"));
 
-		new WaitUntil(new WidgetIsEnabled(new CancelButton()));
+		new WaitUntil(new ControlIsEnabled(new CancelButton()));
 
 		assertTrue("Defined resource button should be enabled",
 				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
@@ -195,11 +195,11 @@ public class CreateApplicationFromTemplateTest {
 	}
 
 	private void completeWizardAndVerify() {
-		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ControlIsEnabled(new NextButton()));
 
 		new NextButton().click();
 
-		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new ControlIsEnabled(new BackButton()), TimePeriod.LONG);
 
 		String srcRepoRef = new DefaultTable().getItem(TemplateParametersTest.SOURCE_REPOSITORY_REF).getText(1);
 		srcRepoURI = new DefaultTable().getItem(TemplateParametersTest.SOURCE_REPOSITORY_URL).getText(1);
@@ -207,11 +207,11 @@ public class CreateApplicationFromTemplateTest {
 		applicationName = new DefaultTable().getItem(TemplateParametersTest.APPLICATION_NAME).getText(1);
 		new NextButton().click();
 
-		new WaitWhile(new WidgetIsEnabled(new NextButton()), TimePeriod.LONG);
+		new WaitWhile(new ControlIsEnabled(new NextButton()), TimePeriod.LONG);
 
 		new FinishButton().click();
 
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.APPLICATION_SUMMARY), TimePeriod.LONG);
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.APPLICATION_SUMMARY), TimePeriod.LONG);
 
 		new DefaultShell(OpenShiftLabel.Shell.APPLICATION_SUMMARY);
 
@@ -249,14 +249,14 @@ public class CreateApplicationFromTemplateTest {
 
 		new OkButton().click();
 
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.WEBHOOK_TRIGGERS));
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.WEBHOOK_TRIGGERS));
 
 		new DefaultShell(OpenShiftLabel.Shell.APPLICATION_SUMMARY);
 		new OkButton().click();
 	}
 
 	public static void importApplicationAndVerify(String projectName) {
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION));
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION));
 
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
 		try {

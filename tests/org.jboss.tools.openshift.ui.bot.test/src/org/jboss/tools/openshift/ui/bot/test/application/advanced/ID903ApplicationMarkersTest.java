@@ -19,17 +19,17 @@ import java.util.List;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellIsActive;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.workbench.api.View;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
@@ -70,7 +70,7 @@ public class ID903ApplicationMarkersTest {
 		
 		new ContextMenu(contextMenuPath).select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.MARKERS + applicationName),
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.MARKERS + applicationName),
 				TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.MARKERS + applicationName);
@@ -82,7 +82,7 @@ public class ID903ApplicationMarkersTest {
 		
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.MARKERS + applicationName),
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.MARKERS + applicationName),
 				TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		
@@ -98,7 +98,7 @@ public class ID903ApplicationMarkersTest {
 		
 		new ContextMenu(contextMenuPath).select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.MARKERS + applicationName),
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.MARKERS + applicationName),
 				TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.MARKERS + applicationName);
@@ -110,7 +110,7 @@ public class ID903ApplicationMarkersTest {
 		
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.MARKERS + applicationName),
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.MARKERS + applicationName),
 				TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
@@ -120,7 +120,7 @@ public class ID903ApplicationMarkersTest {
 	    new ContextMenu("Delete").select();
 	    new DefaultShell("Delete Resources");
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsActive("Delete Resources"),TimePeriod.LONG);
+		new WaitWhile(new ShellIsActive("Delete Resources"),TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	

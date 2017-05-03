@@ -15,11 +15,10 @@ import static org.junit.Assert.assertTrue;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.condition.TreeHasChildren;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -27,6 +26,7 @@ import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.openshift.reddeer.condition.ButtonWithTextIsAvailable;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
@@ -62,13 +62,13 @@ public class ImportApplicationTest extends AbstractCreateApplicationTest {
 		explorer.getOpenShift3Connection().getProject().getOpenShiftResources(Resource.BUILD_CONFIG).get(0).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.IMPORT_APPLICATION).select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION), TimePeriod.LONG);
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
 		
 		new FinishButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION), TimePeriod.VERY_LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION), TimePeriod.VERY_LONG);
 		
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
@@ -82,7 +82,7 @@ public class ImportApplicationTest extends AbstractCreateApplicationTest {
 	public void testImportOpenShiftApplicationViaShellMenu() {
 		new ShellMenu("File", "Import...").select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT), TimePeriod.LONG);
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.IMPORT), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT);
 		new DefaultTreeItem("OpenShift", "Existing OpenShift Application").select();
@@ -96,18 +96,18 @@ public class ImportApplicationTest extends AbstractCreateApplicationTest {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 			
 		new WaitUntil(new ButtonWithTextIsAvailable("Refresh"), TimePeriod.LONG);
-		new WaitUntil(new TreeHasChildren(new DefaultTree()), TimePeriod.NORMAL);
+		new WaitUntil(new TreeHasChildren(new DefaultTree()));
 		
 		
 		new DefaultTreeItem(DatastoreOS3.PROJECT1_DISPLAYED_NAME + " " + DatastoreOS3.PROJECT1).getItems().
 			get(0).select();
 		
-		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ControlIsEnabled(new NextButton()));
 		
 		new NextButton().click();
 		new FinishButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION), TimePeriod.VERY_LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION), TimePeriod.VERY_LONG);
 		
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();

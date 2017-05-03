@@ -24,8 +24,6 @@ import org.jboss.reddeer.common.platform.RunningPlatform;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -33,8 +31,9 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.junit.screenshot.CaptureScreenshotException;
 import org.jboss.reddeer.junit.screenshot.ScreenshotCapturer;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.condition.TreeContainsItem;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -45,6 +44,7 @@ import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.reddeer.ui.resources.DockerConnection;
 import org.jboss.tools.openshift.reddeer.condition.BrowserContainsText;
@@ -254,14 +254,14 @@ public class DeployDockerImageTest {
 	 * connection, project and image name.
 	 */
 	private void proceedThroughDeployImageToOpenShiftWizard() {
-		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL, false);
+		new WaitUntil(new ControlIsEnabled(new NextButton()), TimePeriod.DEFAULT, false);
 		
 		assertTrue("Next button should be enabled if all details are set correctly",
 				new NextButton().isEnabled());
 		
 		new NextButton().click();
 		
-		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new ControlIsEnabled(new BackButton()), TimePeriod.LONG);
 		
 		new NextButton().click();
 		
@@ -274,7 +274,7 @@ public class DeployDockerImageTest {
 		new ShellWithButton("Deploy Image to OpenShift", "OK");
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable("Deploy Image to OpenShift"), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable("Deploy Image to OpenShift"), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	
@@ -346,7 +346,7 @@ public class DeployDockerImageTest {
 	private void closeWizard() {
 		new CancelButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.DEPLOY_IMAGE_TO_OPENSHIFT));
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.DEPLOY_IMAGE_TO_OPENSHIFT));
 	}
 	
 	/**

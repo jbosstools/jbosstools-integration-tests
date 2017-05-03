@@ -18,15 +18,15 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
 import org.jboss.tools.openshift.reddeer.condition.ApplicationPodIsRunning;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
@@ -54,10 +54,10 @@ public class PortForwardingTest extends AbstractCreateApplicationTest {
 		
 		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1",
 				ResourceState.COMPLETE), TimePeriod.getCustom(600),
-				true, TimePeriod.getCustom(7));
+				true, 7000);
 		
 		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.VERY_LONG,
-				true, TimePeriod.getCustom(7));
+				true, 7000);
 	}
 	
 	@Test
@@ -74,10 +74,10 @@ public class PortForwardingTest extends AbstractCreateApplicationTest {
 		startAllButton.click();
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		new WaitUntil(new WidgetIsEnabled(okButton));
+		new WaitUntil(new ControlIsEnabled(okButton));
 
 		try {
-			new WaitWhile(new WidgetIsEnabled(startAllButton), TimePeriod.getCustom(5));
+			new WaitWhile(new ControlIsEnabled(startAllButton), TimePeriod.getCustom(5));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Button Start All should be disabled at this point.");
 		}
@@ -88,10 +88,10 @@ public class PortForwardingTest extends AbstractCreateApplicationTest {
 		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new DefaultShell(OpenShiftLabel.Shell.APPLICATION_PORT_FORWARDING);
-		new WaitUntil(new WidgetIsEnabled(okButton));
+		new WaitUntil(new ControlIsEnabled(okButton));
 
 		try {
-			new WaitUntil(new WidgetIsEnabled(startAllButton), TimePeriod.getCustom(5));
+			new WaitUntil(new ControlIsEnabled(startAllButton), TimePeriod.getCustom(5));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Button Start All should be enabled at this point.");
 		}

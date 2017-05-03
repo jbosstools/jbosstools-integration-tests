@@ -32,18 +32,18 @@ public class DeploymentTest extends AbstractCreateApplicationTest {
 	public void testDeploymentOfApplicationCreatedFromTemplate() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		
-		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1"), TimePeriod.NORMAL, false);
+		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1"), TimePeriod.DEFAULT, false);
 		
 		try {
 			new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE), 
-					TimePeriod.getCustom(600), true, TimePeriod.getCustom(7));
+					TimePeriod.getCustom(600), true, 7000);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("There should be a successful build of an application, but there is not.");
 		}
 		
 		try {
 			new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.getCustom(60),
-					true, TimePeriod.getCustom(7));
+					true, 7000);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("There should be precisely 2 pods. One of the build and one of an running application.");
 		}		

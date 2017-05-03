@@ -19,11 +19,10 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.condition.TableContainsItem;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
@@ -35,6 +34,7 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
@@ -76,11 +76,11 @@ public class TemplateParametersTest {
 		new NewOpenShift3ApplicationWizard().openWizardFromExplorer();
 		new DefaultTree().selectItems(new DefaultTreeItem(OpenShiftLabel.Others.EAP_TEMPLATE));
 		
-		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ControlIsEnabled(new NextButton()));
 		
 		new NextButton().click();
 		
-		new WaitUntil(new WidgetIsEnabled(new BackButton()), TimePeriod.LONG);
+		new WaitUntil(new ControlIsEnabled(new BackButton()), TimePeriod.LONG);
 	}
 	
 	@Test
@@ -112,7 +112,7 @@ public class TemplateParametersTest {
 		new DefaultText().setText(PERSONAL_GIT_REPO_URI);
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.EDIT_TEMPLATE_PARAMETER));
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.EDIT_TEMPLATE_PARAMETER));
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 		assertTrue("New value of git repo URI has not been modified successfully.",
@@ -121,8 +121,7 @@ public class TemplateParametersTest {
 		new PushButton(OpenShiftLabel.Button.RESET).click();
 
 		try {
-			new WaitUntil(new TableContainsItem(new DefaultTable(), SOURCE_REPOSITORY_URL_VALUE, 1),
-					TimePeriod.NORMAL);
+			new WaitUntil(new TableContainsItem(new DefaultTable(), SOURCE_REPOSITORY_URL_VALUE, 1));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Value for git repo URI has not been reset.");
 		}
@@ -132,7 +131,7 @@ public class TemplateParametersTest {
 	public void closeNewApplicationWizard() {
 		new CancelButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning());
 	}
 	

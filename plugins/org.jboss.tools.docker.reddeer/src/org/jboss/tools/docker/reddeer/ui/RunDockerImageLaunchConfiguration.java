@@ -15,18 +15,16 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.swt.widgets.Control;
+import org.jboss.reddeer.common.util.Display;
+import org.jboss.reddeer.common.util.ResultRunnable;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ProgressInformationShellIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.reference.ReferencedComposite;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.eclipse.debug.ui.launchConfigurations.LaunchConfiguration;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.swt.api.Table;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -40,6 +38,7 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageSearchPage;
 import org.jboss.tools.docker.reddeer.core.ui.wizards.ImageTagSelectionPage;
 import org.jboss.tools.docker.reddeer.perspective.DockerPerspective;
@@ -72,7 +71,7 @@ public class RunDockerImageLaunchConfiguration extends LaunchConfiguration {
 		DockerPerspective p = new DockerPerspective();
 		p.open();
 		new ShellMenu("Run", "Run Configurations...").select();
-		new WaitUntil(new ShellWithTextIsAvailable("Run Configurations"));
+		new WaitUntil(new ShellIsAvailable("Run Configurations"));
 	}
 
 	/**
@@ -97,7 +96,7 @@ public class RunDockerImageLaunchConfiguration extends LaunchConfiguration {
 	private void addValueInTable(String tabName, String shellName, String newValueName, String newValue) {
 		selectTab(tabName);
 		new PushButton("Add...").click();
-		new WaitUntil(new ShellWithTextIsAvailable(shellName));
+		new WaitUntil(new ShellIsAvailable(shellName));
 		new LabeledText("Name:").setText(newValueName);
 		new LabeledText("Value:").setText(newValue);
 		new OkButton().click();
@@ -108,7 +107,7 @@ public class RunDockerImageLaunchConfiguration extends LaunchConfiguration {
 		selectTab(tabName);
 		if (selectItemInTable(oldValueName)) {
 			new PushButton("Edit...");
-			new WaitWhile(new ShellWithTextIsAvailable(shellName));
+			new WaitWhile(new ShellIsAvailable(shellName));
 			new LabeledText("Name:").setText(newValueName);
 			new LabeledText("Value:").setText(newValue);
 			new OkButton().click();
@@ -148,10 +147,10 @@ public class RunDockerImageLaunchConfiguration extends LaunchConfiguration {
 		ImageSearchPage pageOne = new ImageSearchPage();
 		pageOne.searchImage(imageName);
 		pageOne.next();
-		new WaitWhile(new ProgressInformationShellIsActive(), TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsAvailable("Progress Information"));
 		ImageTagSelectionPage pageTwo = new ImageTagSelectionPage();
 		assertFalse("Search tags are empty!", pageTwo.getTags().isEmpty());
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning());
 		assertTrue("Search results do not contains tag:" + tag + "!", pageTwo.tagsContains(tag));
 		pageTwo.selectTag(tag);
 		pageTwo.finish();
@@ -259,7 +258,7 @@ public class RunDockerImageLaunchConfiguration extends LaunchConfiguration {
 		selectTab(PORTS_TAB_LABEL);
 		setPublishAllExposedPortsToRandomPorts(false);
 		new PushButton("Add...").click();
-		new WaitUntil(new ShellWithTextIsAvailable("Exposing a Container Port"));
+		new WaitUntil(new ShellIsAvailable("Exposing a Container Port"));
 		new LabeledText("Container port:").setText(containerPort);
 		new LabeledText("Host address:").setText(hostAddress);
 		new LabeledText("Host port:").setText(hostPort);
@@ -271,7 +270,7 @@ public class RunDockerImageLaunchConfiguration extends LaunchConfiguration {
 		setPublishAllExposedPortsToRandomPorts(false);
 		if (selectItemInTable(oldContainerPort)) {
 			new PushButton("Edit...");
-			new WaitUntil(new ShellWithTextIsAvailable("Exposing a Container Port"));
+			new WaitUntil(new ShellIsAvailable("Exposing a Container Port"));
 			new LabeledText("Container port:").setText(newContainerPort);
 			new LabeledText("Host address:").setText(newHostAddress);
 			new LabeledText("Host port:").setText(newHostPort);
@@ -290,7 +289,7 @@ public class RunDockerImageLaunchConfiguration extends LaunchConfiguration {
 	public void addLink(String containerName, String alias) {
 		selectTab(LINKS_TAB_LABEL);
 		new PushButton("Add...").click();
-		new WaitWhile(new ShellWithTextIsAvailable("Container Linking"));
+		new WaitWhile(new ShellIsAvailable("Container Linking"));
 		new LabeledText("Container:").setText(containerName);
 		new LabeledText("Value:").setText(alias);
 		new OkButton().click();
@@ -300,7 +299,7 @@ public class RunDockerImageLaunchConfiguration extends LaunchConfiguration {
 		selectTab(LINKS_TAB_LABEL);
 		if (selectItemInTable(oldContainer)) {
 			new PushButton("Edit...").click();
-			new WaitWhile(new ShellWithTextIsAvailable("Container Linking"));
+			new WaitWhile(new ShellIsAvailable("Container Linking"));
 			new LabeledText("Container:").setText(newContainer);
 			new LabeledText("Value:").setText(newAlias);
 			new OkButton().click();
@@ -398,9 +397,9 @@ public class RunDockerImageLaunchConfiguration extends LaunchConfiguration {
 	public void deleteRunConfiguration(String configuratioName) {
 		selectConfiguration(configuratioName);
 		new DefaultToolItem(DELETE_LAUNCH_CONFIGURATION_LABEL).click();
-		new WaitUntil(new ShellWithTextIsAvailable("Confirm Launch Configuration Deletion"));
+		new WaitUntil(new ShellIsAvailable("Confirm Launch Configuration Deletion"));
 		new PushButton("Yes").click();
-		new WaitUntil(new ShellWithTextIsAvailable("Run Configurations"));
+		new WaitUntil(new ShellIsAvailable("Run Configurations"));
 	}
 
 	public void runConfiguration(String configurationName) {

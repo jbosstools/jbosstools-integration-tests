@@ -16,15 +16,15 @@ import java.util.List;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.wizard.WizardPage;
 import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 
 /**
  * 
@@ -36,7 +36,7 @@ public class ImageSearchPage extends WizardPage{
 
 	public ImageSearchPage() {
 		super();
-		new WaitUntil(new ShellWithTextIsAvailable("Search and pull a Docker image"), TimePeriod.NORMAL);
+		new WaitUntil(new ShellIsAvailable("Search and pull a Docker image"));
 	}
 
 	public void finish() {
@@ -47,12 +47,12 @@ public class ImageSearchPage extends WizardPage{
 	public void searchImage(String imageName){
 		new LabeledText("Image:").setText(imageName);
 		new PushButton("Search").click();
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning());
 	}
 	
 	public void searchImage(){
 		new PushButton("Search").click();
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning());
 	}
 	
 	public List<TableItem> getSearchResults() {
@@ -70,7 +70,7 @@ public class ImageSearchPage extends WizardPage{
 	
 	public void next(){
 		new NextButton().click();
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning());
 	}
 	
 	public void selectImage(String imageName){

@@ -31,22 +31,22 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.perspectives.DebugPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.Tree;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.workbench.condition.EditorWithTitleIsActive;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.openshift.reddeer.condition.ServerAdapterExists;
@@ -119,7 +119,7 @@ public class NodeJSAppDebugTest {
 		new ContextMenu(OpenShiftLabel.ContextMenu.IMPORT_APPLICATION).select();
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
 		new FinishButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION));
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION));
 
 		// setup server adapter
 		explorer.activate();
@@ -128,7 +128,7 @@ public class NodeJSAppDebugTest {
 		new DefaultShell(OpenShiftLabel.Shell.SERVER_ADAPTER_SETTINGS);
 		new FinishButton().click();
 
-		new WaitWhile(new ShellWithTextIsAvailable(""), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(""), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 
 		assertTrue("OpenShift 3 server adapter was not created.",
@@ -292,7 +292,7 @@ public class NodeJSAppDebugTest {
 	public class TreeContainsItem extends AbstractWaitCondition {
 
 		private Tree tree;
-		private Matcher matcher;
+		private Matcher<?> matcher;
 		private boolean recursive = true;
 
 		/**
@@ -304,12 +304,12 @@ public class NodeJSAppDebugTest {
 		 * @param matcher
 		 *            to match the text of the item
 		 */
-		public TreeContainsItem(Tree tree, Matcher matcher) {
+		public TreeContainsItem(Tree tree, Matcher<?> matcher) {
 			this.tree = tree;
 			this.matcher = matcher;
 		}
 
-		public TreeContainsItem(Tree tree, Matcher matcher, boolean recursive) {
+		public TreeContainsItem(Tree tree, Matcher<?> matcher, boolean recursive) {
 			this.tree = tree;
 			this.matcher = matcher;
 			this.recursive = recursive;

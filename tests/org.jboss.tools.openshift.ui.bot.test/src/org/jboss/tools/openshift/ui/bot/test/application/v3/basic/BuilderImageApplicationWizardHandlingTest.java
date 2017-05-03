@@ -16,15 +16,14 @@ import static org.junit.Assert.assertTrue;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.condition.WidgetIsFound;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.BackButton;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
@@ -37,6 +36,7 @@ import org.jboss.reddeer.swt.impl.spinner.DefaultSpinner;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.common.reddeer.perspectives.JBossPerspective;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement;
@@ -309,10 +309,10 @@ public class BuilderImageApplicationWizardHandlingTest {
 		new DefaultSpinner(OpenShiftLabel.TextLabels.SERVICE_PORT).setValue(Integer.valueOf(newServicePort));
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.SERVICE_PORTS));
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.SERVICE_PORTS));
 		
 		assertTrue("There should port mapping with name " + newName + ", but there is not.",
-				new WidgetIsFound<org.eclipse.swt.widgets.TableItem>(
+				new WidgetIsFound(org.eclipse.swt.widgets.TableItem.class,
 						new WithTextMatcher(newName)).test());
 		
 		TableItem portMapping = new DefaultTable().getItem(newName);
@@ -325,11 +325,11 @@ public class BuilderImageApplicationWizardHandlingTest {
 		new DefaultShell(OpenShiftLabel.Shell.RESET_PORTS);
 		new YesButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.RESET_PORTS));
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.RESET_PORTS));
 		new WaitWhile(new JobIsRunning());
 		
 		assertTrue("There should port mapping with name " + defaultName + ", but there is not.",
-				new WidgetIsFound<org.eclipse.swt.widgets.TableItem>(
+				new WidgetIsFound(org.eclipse.swt.widgets.TableItem.class,
 						new WithTextMatcher(defaultName)).test());
 		
 		portMapping = new DefaultTable().getItem(defaultName);
@@ -346,7 +346,7 @@ public class BuilderImageApplicationWizardHandlingTest {
 	public void closeNewApplicationWizard() {
 		new CancelButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning());
 	}
 	
@@ -356,11 +356,11 @@ public class BuilderImageApplicationWizardHandlingTest {
 	public static void nextToBuildConfigurationWizardPage() {
 		new DefaultTreeItem(BUILDER_IMAGE).select();
 		
-		new WaitUntil(new WidgetIsEnabled(new NextButton()));
+		new WaitUntil(new ControlIsEnabled(new NextButton()));
 		
 		new NextButton().click();
 		
-		new WaitUntil(new WidgetIsEnabled(new BackButton()));
+		new WaitUntil(new ControlIsEnabled(new BackButton()));
 	}
 	
 	public static void nextToResourceLabelWizardPage() {
@@ -373,7 +373,7 @@ public class BuilderImageApplicationWizardHandlingTest {
 	private static void next() {		
 		new NextButton().click();
 		
-		new WaitUntil(new WidgetIsEnabled(new BackButton()));
+		new WaitUntil(new ControlIsEnabled(new BackButton()));
 	}
 	
 }

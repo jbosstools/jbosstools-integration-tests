@@ -19,14 +19,13 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -37,6 +36,7 @@ import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSuccessfully;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
@@ -94,18 +94,18 @@ public class ID904DeployApplicationWARArchiveTest {
 				applicationName, false, true, false, false, null, null, true, applicationName, 
 				null, "openshift2", (String[]) null);
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION_WIZARD),
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION_WIZARD),
 				TimePeriod.VERY_LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION_WIZARD);
 		new OkButton().click();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.ACCEPT_HOST_KEY), TimePeriod.VERY_LONG);
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.ACCEPT_HOST_KEY), TimePeriod.VERY_LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.ACCEPT_HOST_KEY);
 		new YesButton().click();
 
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
 				TimePeriod.VERY_LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
@@ -117,7 +117,7 @@ public class ID904DeployApplicationWARArchiveTest {
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.CONFIGURE_MARKERS).select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable("Configure OpenShift Markers for project " + applicationName),
+		new WaitUntil(new ShellIsAvailable("Configure OpenShift Markers for project " + applicationName),
 				TimePeriod.LONG);
 		
 		new DefaultShell("Configure OpenShift Markers for project " + applicationName);
@@ -127,26 +127,26 @@ public class ID904DeployApplicationWARArchiveTest {
 		new DefaultTable().getItem("Hot Deploy").setChecked(true);
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable("Configure OpenShift Markers for project " + applicationName),
+		new WaitWhile(new ShellIsAvailable("Configure OpenShift Markers for project " + applicationName),
 				TimePeriod.LONG);
 		
 		// Publish
 		new ServerAdapter(Version.OPENSHIFT2, applicationName).select();
 		new ContextMenu("Publish").select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.PUBLISH_CHANGES), 
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.PUBLISH_CHANGES), 
 				TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.PUBLISH_CHANGES);
 		
 		assertTrue("If there is no commit message, button should be Push Only without "
 				+ "pushing uncommited changes.",
-				new WidgetIsEnabled(new PushButton("Publish Only")).test());
+				new ControlIsEnabled(new PushButton("Publish Only")).test());
 		
 		new DefaultStyledText(0).setText("Commit message");
 		
 		try {
-			new WaitUntil(new WidgetIsEnabled(new PushButton(
+			new WaitUntil(new ControlIsEnabled(new PushButton(
 					OpenShiftLabel.Button.COMMIT_PUBLISH)), TimePeriod.LONG);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Button to push commited changes has not been enabled.");
@@ -190,7 +190,7 @@ public class ID904DeployApplicationWARArchiveTest {
 			number++;
 		}
 		
-		new WaitUntil(new ShellWithTextIsAvailable("Edit Configuration"), TimePeriod.LONG);
+		new WaitUntil(new ShellIsAvailable("Edit Configuration"), TimePeriod.LONG);
 		
 		new DefaultShell("Edit Configuration");
 		
@@ -201,7 +201,7 @@ public class ID904DeployApplicationWARArchiveTest {
 		new PushButton("Apply").click();
 		new PushButton("Run").click();	
 		
-		new WaitWhile(new ShellWithTextIsAvailable("Edit Configuration"), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable("Edit Configuration"), TimePeriod.LONG);
 		
 		ConsoleView console = new ConsoleView();
 		console.open();
@@ -219,7 +219,7 @@ public class ID904DeployApplicationWARArchiveTest {
 		new ServerAdapter(Version.OPENSHIFT2, applicationName).select();
 		new ContextMenu("Publish").select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.PUBLISH_CHANGES), 
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.PUBLISH_CHANGES), 
 				TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.PUBLISH_CHANGES);

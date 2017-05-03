@@ -18,9 +18,9 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -69,7 +69,7 @@ public class ID705TailFilesTest extends IDXXXCreateTestingApplication {
 		
 		new ContextMenu(contextMenuPath).select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.TAIL_FILES), TimePeriod.LONG);
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.TAIL_FILES), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.TAIL_FILES);
 		
@@ -120,7 +120,7 @@ public class ID705TailFilesTest extends IDXXXCreateTestingApplication {
 		
 		new ContextMenu(contextMenuPath).select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.TAIL_FILES), TimePeriod.LONG);
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.TAIL_FILES), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.TAIL_FILES);
 		
@@ -129,7 +129,7 @@ public class ID705TailFilesTest extends IDXXXCreateTestingApplication {
 		
 		new CancelButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.TAIL_FILES), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.TAIL_FILES), TimePeriod.LONG);
 	}
 	
 	private static void verifyTailing(View viewOfItem, TreeItem itemToHandle) {

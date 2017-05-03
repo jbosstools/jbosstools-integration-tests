@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test.application.v3.basic;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -20,27 +21,29 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.util.Display;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.swt.api.TabItem;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.tab.DefaultTabFolder;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.openshift.reddeer.requirement.CleanOpenShiftConnectionRequirement.CleanConnection;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
@@ -75,8 +78,10 @@ public class NewApplicationWizardHandlingTest {
 	
 	@Test
 	public void testTemplatesRelatedWidgetAccess() {
-		assertTrue("Server template selection should be chosen by default.",
-				new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).isEnabled());
+		
+		List<TabItem> selectedItems = new DefaultTabFolder().getSelection();
+		assertTrue(selectedItems.size() == 1);
+		assertEquals(OpenShiftLabel.TextLabels.SERVER_TEMPLATE, selectedItems.get(0).getText());
 		
 		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
 		
@@ -214,8 +219,7 @@ public class NewApplicationWizardHandlingTest {
 	
 	private void verifyDefinedResourcesForTemplate() {
 		try {
-			new WaitUntil(new WidgetIsEnabled(new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES)),
-					TimePeriod.NORMAL);
+			new WaitUntil(new ControlIsEnabled(new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES)));
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Defined Resources button is not enabled");
 		}
@@ -237,14 +241,14 @@ public class NewApplicationWizardHandlingTest {
 		
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.TEMPLATE_DETAILS), TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.TEMPLATE_DETAILS));
 	}
 	
 	@After
 	public void closeNewApplicationWizard() {
 		new CancelButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning());
 	}
 }

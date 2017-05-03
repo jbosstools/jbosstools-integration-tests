@@ -18,8 +18,8 @@ import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
@@ -52,7 +52,7 @@ public class ID150CreateNewSSHKeyTest {
 
 		try {
 			new DefaultShell(OpenShiftLabel.Shell.LOADING_CONNECTION_DETAILS);
-			new WaitWhile(new ShellWithTextIsAvailable(
+			new WaitWhile(new ShellIsAvailable(
 					OpenShiftLabel.Shell.LOADING_CONNECTION_DETAILS), TimePeriod.LONG);
 		} catch (RedDeerException ex) {
 		}
@@ -77,11 +77,11 @@ public class ID150CreateNewSSHKeyTest {
 				new LabeledText(OpenShiftLabel.TextLabels.PUBLIC_NAME).getText().equals(
 						DatastoreOS2.SSH_KEY_FILENAME + ".pub"));
 		
-		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ControlIsEnabled(new FinishButton()));
 		
 		new FinishButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_SSH_KEY), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.NEW_SSH_KEY), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.MANAGE_SSH_KEYS);
 		
@@ -106,7 +106,7 @@ public class ID150CreateNewSSHKeyTest {
 		
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.MANAGE_SSH_KEYS));
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.MANAGE_SSH_KEYS));
 	}
 	
 }

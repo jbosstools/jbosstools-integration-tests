@@ -14,11 +14,11 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter;
 import org.jboss.tools.openshift.ui.bot.test.application.create.IDXXXCreateTestingApplication;
@@ -34,7 +34,7 @@ public class ID802ServerAdapterOverviewTest extends IDXXXCreateTestingApplicatio
 
 	@Test
 	public void testServerAdapterOverview() {
-		ServersView servers = new ServersView();
+		ServersView2 servers = new ServersView2();
 		servers.open();
 		
 		ServerAdapter serverAdapter = new ServerAdapter(ServerAdapter.Version.OPENSHIFT2, applicationName);

@@ -15,12 +15,11 @@ import static org.junit.Assert.assertTrue;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -28,6 +27,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.reddeer.workbench.api.View;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.openshift.reddeer.condition.v2.ApplicationIsDeployedSuccessfully;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
@@ -74,7 +74,7 @@ public class ID706PortForwardingTest {
 		
 		new ContextMenu(contextMenuPath).select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.PORTS_FORWARDING), TimePeriod.LONG);
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.PORTS_FORWARDING), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.PORTS_FORWARDING);
 		
@@ -97,11 +97,11 @@ public class ID706PortForwardingTest {
 		new PushButton(OpenShiftLabel.Button.START_ALL).click();
 		
 		new DefaultShell(OpenShiftLabel.Shell.PORTS_FORWARDING);
-		new WaitUntil(new WidgetIsEnabled(new OkButton()), TimePeriod.LONG);
+		new WaitUntil(new ControlIsEnabled(new OkButton()), TimePeriod.LONG);
 		
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.PORTS_FORWARDING), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.PORTS_FORWARDING), TimePeriod.LONG);
 		
 		ConsoleView console = new ConsoleView();
 		console.open();
@@ -115,17 +115,17 @@ public class ID706PortForwardingTest {
 		
 		new ContextMenu(contextMenuPath).select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.PORTS_FORWARDING), TimePeriod.LONG);
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.PORTS_FORWARDING), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.PORTS_FORWARDING);
 		new PushButton(OpenShiftLabel.Button.STOP_ALL).click();
 		
 		new DefaultShell(OpenShiftLabel.Shell.PORTS_FORWARDING);
-		new WaitUntil(new WidgetIsEnabled(new OkButton()), TimePeriod.LONG);
+		new WaitUntil(new ControlIsEnabled(new OkButton()), TimePeriod.LONG);
 		
 		new OkButton().click();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.PORTS_FORWARDING), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.PORTS_FORWARDING), TimePeriod.LONG);
 		
 		console.open();
 		assertTrue("Console does not contain information about started port forwarding. "

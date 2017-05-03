@@ -24,10 +24,11 @@ import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.jboss.reddeer.common.util.Display;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.condition.ShellIsActive;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.openshift.internal.common.ui.wizard.AbstractOpenShiftWizardPage;
@@ -52,7 +53,7 @@ public class AbstractOpenShiftWizardPageTest {
 	public void setUp() {
 		this.wizard = new OpenShiftEventTestWizard();
 		Shell shell = new WorkbenchShell().getSWTWidget();
-		org.jboss.reddeer.core.util.Display.asyncExec(new Runnable() {
+		Display.asyncExec(new Runnable() {
 
 			@Override
 			public void run() {
@@ -62,7 +63,7 @@ public class AbstractOpenShiftWizardPageTest {
 				dialog.open();
 			}
 		});
-		new WaitUntil(new ShellWithTextIsActive(OpenShiftEventTestWizard.TITLE));
+		new WaitUntil(new ShellIsActive(OpenShiftEventTestWizard.TITLE));
 		wizardBot = new WizardDialog();
 	}
 

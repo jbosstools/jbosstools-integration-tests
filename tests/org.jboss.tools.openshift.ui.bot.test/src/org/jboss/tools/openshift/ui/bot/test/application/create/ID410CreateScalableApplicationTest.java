@@ -15,19 +15,19 @@ import static org.junit.Assert.assertTrue;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertySheet;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.tools.openshift.reddeer.wizard.v2.ApplicationCreator;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.wizard.v2.ApplicationCreator;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,7 +57,7 @@ public class ID410CreateScalableApplicationTest {
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.APPLICATION_PROPERTIES).select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.APPLICATION_DETAILS),
+		new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.APPLICATION_DETAILS),
 				TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.APPLICATION_DETAILS);
@@ -70,12 +70,12 @@ public class ID410CreateScalableApplicationTest {
 		}
 		
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.APPLICATION_DETAILS),
+		new WaitWhile(new ShellIsAvailable(OpenShiftLabel.Shell.APPLICATION_DETAILS),
 				TimePeriod.LONG);
 		
 		explorer.getOpenShift2Connection(DatastoreOS2.USERNAME, DatastoreOS2.SERVER).getDomain(DatastoreOS2.DOMAIN).
 			getApplication(applicationName).select();
-		PropertiesView propertiesView = new PropertiesView();
+		PropertySheet propertiesView = new PropertySheet();
 		propertiesView.open();
 		assertTrue("Application is not scalable, at least it is not shown in properties"
 				+ " view.", propertiesView.getProperty("Scalable").getPropertyValue().equals("true"));

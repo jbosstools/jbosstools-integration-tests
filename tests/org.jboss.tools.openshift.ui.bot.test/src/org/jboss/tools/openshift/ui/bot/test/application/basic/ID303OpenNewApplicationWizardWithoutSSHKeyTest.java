@@ -15,7 +15,7 @@ import static org.junit.Assert.fail;
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
@@ -55,7 +55,7 @@ public class ID303OpenNewApplicationWizardWithoutSSHKeyTest {
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_OS2_APPLICATION).select();
 		
 		try {
-			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NO_SSH_KEY),
+			new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.NO_SSH_KEY),
 					TimePeriod.LONG);
 			new DefaultShell(OpenShiftLabel.Shell.NO_SSH_KEY);
 			new CancelButton().click();
@@ -69,13 +69,13 @@ public class ID303OpenNewApplicationWizardWithoutSSHKeyTest {
 		new ShellMenu(OpenShiftLabel.Others.NEW_APP_MENU).select();
 		
 		try {
-			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
+			new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
 					TimePeriod.LONG);
 			new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 			
 			new NextButton().click();
 			
-			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NO_SSH_KEY),
+			new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.NO_SSH_KEY),
 					TimePeriod.LONG);
 			new DefaultShell(OpenShiftLabel.Shell.NO_SSH_KEY);
 			new CancelButton().click();
@@ -91,13 +91,13 @@ public class ID303OpenNewApplicationWizardWithoutSSHKeyTest {
 		new InternalBrowser().execute(OpenShiftLabel.Others.OPENSHIFT_CENTRAL_SCRIPT);
 
 		try {
-			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
+			new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
 					TimePeriod.LONG);
 			new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
 			
 			new NextButton().click();
 			
-			new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NO_SSH_KEY),
+			new WaitUntil(new ShellIsAvailable(OpenShiftLabel.Shell.NO_SSH_KEY),
 					TimePeriod.LONG);
 			new DefaultShell(OpenShiftLabel.Shell.NO_SSH_KEY);
 			new CancelButton().click();

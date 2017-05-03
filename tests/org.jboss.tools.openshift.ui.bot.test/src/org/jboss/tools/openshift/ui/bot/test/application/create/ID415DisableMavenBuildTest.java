@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.core.resources.ExplorerItem;
+import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.ui.views.navigator.ResourceNavigator;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.tools.openshift.reddeer.exception.OpenShiftToolsException;
@@ -51,7 +51,7 @@ public class ID415DisableMavenBuildTest {
 	}
 	
 	public static TreeItem getOpenShiftMarker(String projectName, String marker) {
-		ExplorerItem project = getEAPProjectInNavigator(projectName);
+		ProjectItem project = getEAPProjectInNavigator(projectName);
 		if (project == null) {
 			throw new OpenShiftToolsException("There is no project with name " + projectName);
 		}
@@ -71,11 +71,11 @@ public class ID415DisableMavenBuildTest {
 		return null;
 	}
 	
-	private static ExplorerItem getEAPProjectInNavigator(String name) {
+	private static ProjectItem getEAPProjectInNavigator(String name) {
 		ResourceNavigator navigator = new ResourceNavigator();
 		navigator.open();
-		List<ExplorerItem> navigatorProjects = navigator.getExplorerItems();
-		for (ExplorerItem explorerItem: navigatorProjects) {
+		List<ProjectItem> navigatorProjects = navigator.getProjectItems();
+		for (ProjectItem explorerItem: navigatorProjects) {
 			if (explorerItem.getText().contains(name)) {
 				return explorerItem;
 			}

@@ -10,13 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test.application.create;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
-import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
+import org.jboss.reddeer.jface.handler.TreeViewerHandler;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
@@ -34,7 +35,7 @@ public class ID402DeleteOpenShiftApplicationTest {
 	@Test
 	public void testDeleteOpenShiftApplication() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		ServersView serversView = new ServersView();
+		ServersView2 serversView = new ServersView2();
 		TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 		String applicationName = ID401CreateNewApplicationViaExplorerTest.applicationName;
 		DeleteUtils deleteApplication =  new DeleteUtils(DatastoreOS2.USERNAME, DatastoreOS2.SERVER,

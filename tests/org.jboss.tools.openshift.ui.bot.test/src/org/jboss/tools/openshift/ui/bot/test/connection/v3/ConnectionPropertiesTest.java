@@ -12,7 +12,7 @@ package org.jboss.tools.openshift.ui.bot.test.connection.v3;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertySheet;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -43,7 +43,7 @@ public class ConnectionPropertiesTest {
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.PROPERTIES).select();
 		
-		PropertiesView propertiesView = new PropertiesView();
+		PropertySheet propertiesView = new PropertySheet();
 		propertiesView.activate();
 		
 		assertEquals("Property host is not valid. Was '" + propertiesView.getProperty(PROPERTY_HOST).getPropertyValue() 

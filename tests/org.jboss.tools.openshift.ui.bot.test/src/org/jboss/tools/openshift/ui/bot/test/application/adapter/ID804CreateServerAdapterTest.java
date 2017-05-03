@@ -17,18 +17,18 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsKilled;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizard;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.workbench.core.condition.JobIsKilled;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v2.DeleteUtils;
@@ -59,10 +59,10 @@ public class ID804CreateServerAdapterTest {
 	
 	@Test
 	public void createAdapterViaServersView() {
-		ServersView servers = new ServersView();
+		ServersView2 servers = new ServersView2();
 		servers.open();
 		
-		NewServerWizardDialog dialog = new NewServerWizardDialog();
+		NewServerWizard dialog = new NewServerWizard();
 		NewServerWizardPage page = new NewServerWizardPage();
 		
 		dialog.open();
@@ -88,7 +88,7 @@ public class ID804CreateServerAdapterTest {
 		// Kill refreshing server adapter list job
 		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
 				
-		new WaitWhile(new ShellWithTextIsAvailable("New Server"), TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsAvailable("New Server"));
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	
 		try {
@@ -107,22 +107,22 @@ public class ID804CreateServerAdapterTest {
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_SERVER_ADAPTER).select();
 		
-		new WaitUntil(new ShellWithTextIsAvailable("New Server"), TimePeriod.LONG);
+		new WaitUntil(new ShellIsAvailable("New Server"), TimePeriod.LONG);
 
 		new DefaultShell("New Server");
 		
 		new NextButton().click();
 		
-		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.LONG);
+		new WaitUntil(new ControlIsEnabled(new FinishButton()), TimePeriod.LONG);
 		
 		new FinishButton().click();
 		
 		// Kill refreshing server adapter list job
 		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
 		
-		new WaitWhile(new ShellWithTextIsAvailable("New Server"), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable("New Server"), TimePeriod.LONG);
 		
-		ServersView servers = new ServersView();
+		ServersView2 servers = new ServersView2();
 		servers.open();
 		
 		try {

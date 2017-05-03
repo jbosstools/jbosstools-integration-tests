@@ -10,9 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.ui.views.properties.PropertiesView;
+import org.jboss.reddeer.eclipse.ui.views.properties.PropertySheet;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS2;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
@@ -34,7 +34,7 @@ public class ID207DomainPropertiesTest {
 		
 		new ContextMenu(OpenShiftLabel.ContextMenu.PROPERTIES).select();
 		
-		PropertiesView properties = new PropertiesView();
+		PropertySheet properties = new PropertySheet();
 		String suffix = properties.getProperty("Suffix").getPropertyValue();
 		String id = properties.getProperty("Id").getPropertyValue();
 		String fullName = properties.getProperty("Full Name").getPropertyValue();
