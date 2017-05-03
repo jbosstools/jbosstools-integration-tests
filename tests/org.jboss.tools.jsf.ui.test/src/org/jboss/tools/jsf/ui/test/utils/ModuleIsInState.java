@@ -11,10 +11,10 @@
 package org.jboss.tools.jsf.ui.test.utils;
 
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ModuleLabel;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPublishState;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ModuleLabel;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServerModule;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerPublishState;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerState;
 
 public class ModuleIsInState extends AbstractWaitCondition {
 

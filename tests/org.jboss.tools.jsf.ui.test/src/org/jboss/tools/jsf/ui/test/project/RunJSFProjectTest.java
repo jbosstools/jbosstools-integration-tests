@@ -22,12 +22,12 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPublishState;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.Server;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServerModule;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerPublishState;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
 import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
@@ -99,7 +99,7 @@ public class RunJSFProjectTest {
 		ModuleIsInState moduleIsInStateCondition = new ModuleIsInState(ServerState.STARTED,
 				ServerPublishState.SYNCHRONIZED, module);
 		try {
-			new WaitUntil(moduleIsInStateCondition, TimePeriod.NORMAL);
+			new WaitUntil(moduleIsInStateCondition, TimePeriod.DEFAULT);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Module is not in state STARTED, SYNCHRONIZED");
 		}
@@ -114,7 +114,7 @@ public class RunJSFProjectTest {
 	}
 
 	private Server getServer() {
-		ServersView serversView = new ServersView();
-		return serversView.getServer(serverReq.getServerNameLabelText(serverReq.getConfig()));
+		ServersView2 serversView = new ServersView2();
+		return serversView.getServer(serverReq.getServerNameLabelText());
 	}
 }

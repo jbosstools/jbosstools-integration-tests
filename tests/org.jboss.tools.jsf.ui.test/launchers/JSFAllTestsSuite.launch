@@ -40,7 +40,7 @@
 <stringAttribute key="rd.launch.property.rd.captureScreenshot" value="true"/>
 <stringAttribute key="rd.launch.property.rd.closeShells" value="true"/>
 <stringAttribute key="rd.launch.property.rd.closeWelcomeScreen" value="true"/>
-<stringAttribute key="rd.launch.property.rd.config" value="resources/"/>
+<stringAttribute key="rd.launch.property.rd.config" value="resources/EAP70.xml"/>
 <stringAttribute key="rd.launch.property.rd.disableMavenIndex" value="true"/>
 <stringAttribute key="rd.launch.property.rd.logCollectorEnabled" value="true"/>
 <stringAttribute key="rd.launch.property.rd.logLevel" value="ALL"/>
