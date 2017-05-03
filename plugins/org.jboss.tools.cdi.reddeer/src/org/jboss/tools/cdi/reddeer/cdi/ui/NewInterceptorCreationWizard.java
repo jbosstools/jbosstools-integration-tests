@@ -1,7 +1,7 @@
 package org.jboss.tools.cdi.reddeer.cdi.ui;
 
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.eclipse.topmenu.NewMenuWizard;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -13,12 +13,13 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.condition.TableItemIsFound;
 
-public class NewInterceptorCreationWizard extends NewWizardDialog{
+public class NewInterceptorCreationWizard extends NewMenuWizard{
 	
 	public static final String NAME="Interceptor";
+	public static final String SHELL_TEXT = "New Interceptor";
 	
 	public NewInterceptorCreationWizard(){
-		super(CDIConstants.CDI_GROUP,NAME);
+		super(SHELL_TEXT, CDIConstants.CDI_GROUP,NAME);
 	}
 	
 	public void setPackage(String packageName){

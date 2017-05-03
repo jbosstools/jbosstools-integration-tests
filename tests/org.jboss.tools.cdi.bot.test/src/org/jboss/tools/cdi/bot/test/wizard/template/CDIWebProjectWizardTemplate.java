@@ -11,20 +11,22 @@
 
 package org.jboss.tools.cdi.bot.test.wizard.template;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -57,7 +59,7 @@ public class CDIWebProjectWizardTemplate{
 			try{
 				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
 			} catch (Exception ex) {
-				AbstractWait.sleep(TimePeriod.NORMAL);
+				AbstractWait.sleep(TimePeriod.DEFAULT);
 				if(!p.getTreeItem().isDisposed()){
 					org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
 				}
@@ -71,7 +73,7 @@ public class CDIWebProjectWizardTemplate{
 		cw.open();
 		WebProjectFirstPage fp = new WebProjectFirstPage();
 		fp.setProjectName(PROJECT_NAME);
-		assertEquals(sr.getRuntimeNameLabelText(sr.getConfig()),fp.getTargetRuntime());
+		assertEquals(sr.getRuntimeNameLabelText(),fp.getTargetRuntime());
 		assertEquals("Dynamic Web Project with CDI "+CDIVersion+" (Contexts and Dependency Injection)",fp.getConfiguration());
 		cw.finish();
 		isCDISupportEnabled(PROJECT_NAME);
@@ -79,13 +81,13 @@ public class CDIWebProjectWizardTemplate{
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		assertTrue(pe.containsProject(PROJECT_NAME));
-		assertTrue(pe.getProject(PROJECT_NAME).containsItem("WebContent","WEB-INF","beans.xml"));
+		assertTrue(pe.getProject(PROJECT_NAME).containsResource("WebContent","WEB-INF","beans.xml"));
 		pe.getProject(PROJECT_NAME).getProjectItem("WebContent","WEB-INF","beans.xml").open();
 		EditorPartWrapper beans = new EditorPartWrapper();
 		beans.activateSourcePage();
 		assertEquals(0,beans.getMarkers().size());
-		new WaitUntil(new ProblemExists(ProblemType.ANY), TimePeriod.LONG, false);
-		new WaitWhile(new ProblemExists(ProblemType.ANY));
+		new WaitUntil(new ProblemExists(ProblemType.ALL), TimePeriod.LONG, false);
+		new WaitWhile(new ProblemExists(ProblemType.ALL));
 	}
 	
 	//cdi1.1+
@@ -96,7 +98,7 @@ public class CDIWebProjectWizardTemplate{
 		cw.open();
 		WebProjectFirstPage fp = new WebProjectFirstPage();
 		fp.setProjectName(PROJECT_NAME);
-		assertEquals(sr.getRuntimeNameLabelText(sr.getConfig()),fp.getTargetRuntime());
+		assertEquals(sr.getRuntimeNameLabelText(),fp.getTargetRuntime());
 		assertEquals("Dynamic Web Project with CDI "+CDIVersion+" (Contexts and Dependency Injection)",fp.getConfiguration());
 		cw.next();
 		cw.next();
@@ -109,12 +111,12 @@ public class CDIWebProjectWizardTemplate{
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		assertTrue(pe.containsProject(PROJECT_NAME));
-		assertFalse(pe.getProject(PROJECT_NAME).containsItem("WebContent","WEB-INF","beans.xml"));
-		new WaitUntil(new ProblemExists(ProblemType.ANY), TimePeriod.LONG, false);
+		assertFalse(pe.getProject(PROJECT_NAME).containsResource("WebContent","WEB-INF","beans.xml"));
+		new WaitUntil(new ProblemExists(ProblemType.ALL), TimePeriod.LONG, false);
 		if(CDIVersion.equals("1.0")){
-			assertTrue(new ProblemExists(ProblemType.ANY).test());
+			assertTrue(new ProblemExists(ProblemType.ALL).test());
 		} else {
-			new WaitWhile(new ProblemExists(ProblemType.ANY));
+			new WaitWhile(new ProblemExists(ProblemType.ALL));
 		}
 	}
 	
@@ -125,7 +127,7 @@ public class CDIWebProjectWizardTemplate{
 		new DefaultTreeItem("CDI (Contexts and Dependency Injection) Settings").select();
 		boolean toReturn = new LabeledCheckBox("CDI support:").isChecked();
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+projectName));
+		new WaitWhile(new ShellIsAvailable("Properties for "+projectName));
 		return toReturn;
 	}
 	
@@ -135,7 +137,7 @@ public class CDIWebProjectWizardTemplate{
 		boolean result = new DefaultTreeItem(new DefaultTree(1),"CDI (Contexts and Dependency Injection)").isChecked();
 		result = result && new DefaultTreeItem(new DefaultTree(1),"CDI (Contexts and Dependency Injection)").getCell(1).equals(cdiVersion);
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+projectName), TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsAvailable("Properties for "+projectName), TimePeriod.DEFAULT);
 		return result;
 	}
 	

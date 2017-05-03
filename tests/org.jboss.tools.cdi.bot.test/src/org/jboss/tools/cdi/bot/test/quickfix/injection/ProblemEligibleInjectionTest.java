@@ -178,7 +178,7 @@ public class ProblemEligibleInjectionTest extends CDITestBase {
 	
 		SpecifyBeanWizard spBeanDialogWizard = new SpecifyBeanWizard();
 		if (operation == QualifierOperation.ADD) {
-			new WaitUntil(new SpecifyBeanWizardHasQualifier(spBeanDialogWizard, qualifier + " - " + getPackageName()),TimePeriod.getCustom(TimePeriod.NORMAL.getSeconds()*2),false);
+			new WaitUntil(new SpecifyBeanWizardHasQualifier(spBeanDialogWizard, qualifier + " - " + getPackageName()),TimePeriod.getCustom(TimePeriod.DEFAULT.getSeconds()*2),false);
 			boolean qualifFound = false;
 			for (String availQualifer : spBeanDialogWizard.getAvailableQualifiers()) {
 				if (availQualifer.equals(qualifier + " - " + getPackageName())) {
@@ -193,7 +193,7 @@ public class ProblemEligibleInjectionTest extends CDITestBase {
 				qw.setName(qualifier);
 				qw.finish();
 				new DefaultShell("Specify CDI Bean for the Injection Point");
-				new WaitUntil(new SpecifyBeanWizardHasQualifier(spBeanDialogWizard, qualifier + " - " + getPackageName()),TimePeriod.getCustom(TimePeriod.NORMAL.getSeconds()*2),false);
+				new WaitUntil(new SpecifyBeanWizardHasQualifier(spBeanDialogWizard, qualifier + " - " + getPackageName()),TimePeriod.getCustom(TimePeriod.DEFAULT.getSeconds()*2),false);
 				for (String availQualifer : spBeanDialogWizard.getAvailableQualifiers()) {
 					if (availQualifer.equals(qualifier + " - " + getPackageName())) {						
 						spBeanDialogWizard.addQualifier(availQualifer);

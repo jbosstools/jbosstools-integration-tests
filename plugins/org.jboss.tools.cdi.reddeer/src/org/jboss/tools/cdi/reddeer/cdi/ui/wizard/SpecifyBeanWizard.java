@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.condition.ShellIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
@@ -109,7 +109,7 @@ public class SpecifyBeanWizard {
 	public void finish(){
 		String textShell = new DefaultShell().getText();
 		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsActive(textShell));
+		new WaitWhile(new ShellIsActive(textShell));
 	}
 
 }

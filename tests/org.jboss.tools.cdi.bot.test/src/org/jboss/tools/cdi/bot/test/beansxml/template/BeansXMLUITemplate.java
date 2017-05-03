@@ -97,7 +97,7 @@ public class BeansXMLUITemplate extends CDITestBase{
 		ds.setText(s);
 		Editor e = new DefaultEditor();
 		e.save();
-		new WaitUntil(new EditorHasValidationMarkers(e),TimePeriod.NORMAL,false);
+		new WaitUntil(new EditorHasValidationMarkers(e),TimePeriod.DEFAULT,false);
 		List<Marker> markers = e.getMarkers();
 		assertEquals(expectedNumberOfErrors,markers.size());
 		for(Marker m: markers){

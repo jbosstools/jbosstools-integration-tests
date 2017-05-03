@@ -26,13 +26,11 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
 import org.jboss.reddeer.swt.api.StyledText;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -42,6 +40,8 @@ import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.api.Editor;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
+import org.jboss.reddeer.workbench.core.exception.WorkbenchCoreLayerException;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
@@ -140,7 +140,7 @@ public class EditorResourceHelper {
 								.getProperty("line.separator") : ""),
 				replacement));
 			if (save) editor.save();
-		} catch (CoreLayerException ex){
+		} catch (WorkbenchCoreLayerException ex){
 			Editor textEditor = new DefaultEditor(editorName);
 			DefaultStyledText dt = new DefaultStyledText();
 			String text = dt.getText();
@@ -252,7 +252,7 @@ public class EditorResourceHelper {
 		new LabeledText("New name:").setText(newFileName);	
 		
 		new PushButton(IDELabel.Button.OK).click();		
-		new WaitWhile(new ShellWithTextIsAvailable(IDELabel.Shell.RENAME_RESOURCE));
+		new WaitWhile(new ShellIsAvailable(IDELabel.Shell.RENAME_RESOURCE));
 		new WaitWhile(new JobIsRunning());
 	}
 	
@@ -265,7 +265,7 @@ public class EditorResourceHelper {
 		new DefaultShell(IDELabel.Shell.MOVE_RESOURCES);
 		new DefaultTreeItem(destFolder).select();
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable(IDELabel.Shell.MOVE_RESOURCES));
+		new WaitWhile(new ShellIsAvailable(IDELabel.Shell.MOVE_RESOURCES));
 		new WaitWhile(new JobIsRunning());
 	}
 

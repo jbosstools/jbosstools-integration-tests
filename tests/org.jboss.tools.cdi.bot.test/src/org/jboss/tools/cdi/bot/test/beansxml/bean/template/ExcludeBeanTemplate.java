@@ -1,15 +1,16 @@
 package org.jboss.tools.cdi.bot.test.beansxml.bean.template;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
+import org.jboss.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.jboss.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.reddeer.workbench.condition.EditorHasValidationMarkers;
 import org.jboss.reddeer.workbench.impl.editor.Marker;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
@@ -58,9 +59,9 @@ public class ExcludeBeanTemplate extends CDITestBase{
 	
 	@Test
 	public void testExcludedBeans(){
-		NewJavaClassWizardDialog jd = new NewJavaClassWizardDialog();
+		NewClassCreationWizard jd = new NewClassCreationWizard();
 		jd.open();
-		NewJavaClassWizardPage jp = new NewJavaClassWizardPage();
+		NewClassWizardPage jp = new NewClassWizardPage();
 		jp.setName("TestExcluded");
 		jp.setPackage("test");
 		jd.finish();
@@ -90,7 +91,7 @@ public class ExcludeBeanTemplate extends CDITestBase{
 		
 		ProblemsView pw = new ProblemsView();
 		pw.open();
-		assertEquals(3,pw.getProblems(ProblemType.ANY).size());
+		assertEquals(3,pw.getProblems(ProblemType.ALL).size());
 		
 		List<Problem> foundProblems = validationHelper.findProblems(expected);
 		assertEquals(3,foundProblems.size());

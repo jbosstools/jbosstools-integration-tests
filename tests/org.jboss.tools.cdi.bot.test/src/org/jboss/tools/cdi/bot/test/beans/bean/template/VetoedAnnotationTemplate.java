@@ -5,12 +5,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
 import java.util.List;
+
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.eclipse.ui.ide.NewFileCreationWizardDialog;
-import org.jboss.reddeer.eclipse.ui.ide.NewFileCreationWizardPage;
+import org.jboss.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.jboss.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.jboss.reddeer.eclipse.ui.dialogs.WizardNewFileCreationPage;
+import org.jboss.reddeer.eclipse.ui.wizards.newresource.BasicNewFileResourceWizard;
 import org.jboss.reddeer.workbench.impl.editor.Marker;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
@@ -27,16 +28,16 @@ public class VetoedAnnotationTemplate extends CDITestBase{
 	public void testVetoedAnnotation() throws FileNotFoundException{
 		createBeans();
 		
-		NewJavaClassWizardDialog jd = new NewJavaClassWizardDialog();
+		NewClassCreationWizard jd = new NewClassCreationWizard();
 		jd.open();
-		NewJavaClassWizardPage jp = new NewJavaClassWizardPage();
+		NewClassWizardPage jp = new NewClassWizardPage();
 		jp.setName("Injector");
 		jp.setPackage("test");
 		jd.finish();
 		EditorResourceHelper rhelper = new EditorResourceHelper();
 		rhelper.replaceClassContentByResource("Injector.java",readFile("resources/cdi11/Injector.jav_"), false);
 		TextEditor te = new TextEditor("Injector.java");
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		AbstractWait.sleep(TimePeriod.DEFAULT);
 		String warning = "org.eclipse.ui.workbench.texteditor.warning";
 		String noInjection = "No bean is eligible for injection to the injection point [JSR-346 §5.2.2]";
 		List<Marker> markers = te.getMarkers();
@@ -80,9 +81,9 @@ public class VetoedAnnotationTemplate extends CDITestBase{
 	}
 	
 	private void createVetoedPackage(){
-		NewFileCreationWizardDialog fd = new NewFileCreationWizardDialog();
+		BasicNewFileResourceWizard fd = new BasicNewFileResourceWizard();
 		fd.open();
-		NewFileCreationWizardPage fp = new NewFileCreationWizardPage();
+		WizardNewFileCreationPage fp = new WizardNewFileCreationPage();
 		fp.setFileName("package-info.java");
 		fp.setFolderPath(PROJECT_NAME+"/src/vetoedpackage");
 		fd.finish();

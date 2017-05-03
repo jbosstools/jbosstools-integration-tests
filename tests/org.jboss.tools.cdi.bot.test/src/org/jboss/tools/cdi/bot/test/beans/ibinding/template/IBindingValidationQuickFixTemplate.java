@@ -16,8 +16,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jdt.ui.NewAnnotationCreationWizard;
-import org.jboss.reddeer.eclipse.jdt.ui.NewAnnotationWizardPage;
+import org.jboss.reddeer.eclipse.jdt.ui.wizards.NewAnnotationCreationWizard;
+import org.jboss.reddeer.eclipse.jdt.ui.wizards.NewAnnotationWizardPage;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;

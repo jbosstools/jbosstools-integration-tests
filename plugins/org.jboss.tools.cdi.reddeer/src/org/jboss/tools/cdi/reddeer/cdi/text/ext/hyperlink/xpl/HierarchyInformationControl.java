@@ -10,7 +10,7 @@ import org.hamcrest.Matcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.handler.TableHandler;
+import org.jboss.reddeer.core.handler.TableItemHandler;
 import org.jboss.reddeer.core.lookup.ShellLookup;
 import org.jboss.reddeer.core.lookup.WidgetLookup;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
@@ -33,7 +33,7 @@ public class HierarchyInformationControl extends AbstractShell{
 	
 	public void selectProposal(String proposal){
 		Table observerTable = new DefaultTable();		
-		TableHandler.getInstance().setDefaultSelection(observerTable.getItem(proposal).getSWTWidget());
+		TableItemHandler.getInstance().setDefaultSelection(observerTable.getItem(proposal).getSWTWidget());
 		new WaitWhile(new ShellIsAvailable(this));
 	}
 	

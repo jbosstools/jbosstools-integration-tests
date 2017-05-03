@@ -5,32 +5,23 @@ import static org.junit.Assert.fail;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.Scanner;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.jboss.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.workbench.condition.EditorHasValidationMarkers;
 import org.jboss.reddeer.workbench.impl.editor.Marker;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.reddeer.uiutils.EditorResourceHelper;
 import org.jboss.tools.deltaspike.ui.bot.test.condition.ClassHasErrorMarker;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -124,9 +115,9 @@ public class PartialBeanTest extends DeltaspikeTestBase{
 	}
 	
 	private void createClassWithContent(String className, String contentPath){
-		NewJavaClassWizardDialog jd = new NewJavaClassWizardDialog();
+		NewClassCreationWizard jd = new NewClassCreationWizard();
 		jd.open();
-		NewJavaClassWizardPage jp = new NewJavaClassWizardPage();
+		NewClassWizardPage jp = new NewClassWizardPage();
 		jp.setName(className);
 		jp.setPackage("test");
 		jd.finish();
