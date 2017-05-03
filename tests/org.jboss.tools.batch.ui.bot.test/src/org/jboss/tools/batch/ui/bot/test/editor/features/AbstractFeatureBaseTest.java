@@ -11,12 +11,12 @@
 package org.jboss.tools.batch.ui.bot.test.editor.features;
 
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.ui.search.SearchResult;
-import org.jboss.reddeer.eclipse.ui.search.SearchView;
+import org.jboss.reddeer.eclipse.search2.ui.SearchResult;
+import org.jboss.reddeer.eclipse.search2.ui.SearchView;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignFlowElementsTestTemplate;
 import org.junit.After;

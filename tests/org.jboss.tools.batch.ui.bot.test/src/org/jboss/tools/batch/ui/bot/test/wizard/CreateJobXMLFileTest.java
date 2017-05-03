@@ -38,7 +38,7 @@ public class CreateJobXMLFileTest extends AbstractBatchTest {
 	}
 	
 	private void assertFileExists() {
-		assertTrue(getProject().containsItem(JOB_XML_FILE_FULL_PATH));
+		assertTrue(getProject().containsResource(JOB_XML_FILE_FULL_PATH));
 	}
 
 	private void assertJobID() {

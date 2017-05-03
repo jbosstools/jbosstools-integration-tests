@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.jface.wizard.WizardPage;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.button.RadioButton;
@@ -81,11 +81,11 @@ public class NewBatchArtifactWizardPage extends WizardPage {
 	
 	public void addProperty(String name){
 		new PushButton("Add").click();
-		new WaitUntil(new ShellWithTextIsAvailable("Add Property"));
+		new WaitUntil(new ShellIsAvailable("Add Property"));
 		new DefaultShell("Add Property").setFocus();
 		new LabeledText("Field name:").setText(name);
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable("Add Property"));
+		new WaitWhile(new ShellIsAvailable("Add Property"));
 	}
 	
 	public void removeProperty(String name){

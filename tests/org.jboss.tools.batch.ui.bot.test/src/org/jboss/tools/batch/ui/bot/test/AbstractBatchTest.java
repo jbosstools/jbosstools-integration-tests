@@ -28,14 +28,14 @@ import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardDialog;
 import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardPage;
 
@@ -45,13 +45,15 @@ public abstract class AbstractBatchTest {
 
 	protected static final String JAVA_FOLDER = "src/main/java";
 	
+	protected static final String JAVA_RESOURCES_FOLDER = "Java Resources";
+	
 	protected static final String RESOURCES_FOLDER = "src/main/resources";
 
 	protected static final String META_INF_FOLDER = "META-INF";
 
 	protected static final String BATCH_XML_FILE = "batch.xml";
 
-	protected static final String[] BATCH_XML_FILE_FULL_PATH = new String[]{RESOURCES_FOLDER, META_INF_FOLDER, BATCH_XML_FILE};
+	protected static final String[] BATCH_XML_FILE_FULL_PATH = new String[]{JAVA_RESOURCES_FOLDER, RESOURCES_FOLDER, META_INF_FOLDER, BATCH_XML_FILE};
 
 	protected static final String JOB_FILES_FOLDER = "batch-jobs";
 	
@@ -59,7 +61,7 @@ public abstract class AbstractBatchTest {
 	
 	protected static final String JOB_ID = "batch-test";
 
-	protected static final String[] JOB_XML_FILE_FULL_PATH = new String[]{RESOURCES_FOLDER, META_INF_FOLDER, JOB_FILES_FOLDER, JOB_XML_FILE};
+	protected static final String[] JOB_XML_FILE_FULL_PATH = new String[]{JAVA_RESOURCES_FOLDER, RESOURCES_FOLDER, META_INF_FOLDER, JOB_FILES_FOLDER, JOB_XML_FILE};
 
 	private static final Logger log = Logger.getLogger(AbstractBatchTest.class);
 	
@@ -74,7 +76,7 @@ public abstract class AbstractBatchTest {
 	 * @return Project object of actual project
 	 */
 	protected static Project getProject(){
-		PackageExplorer explorer = new PackageExplorer();
+		ProjectExplorer explorer = new ProjectExplorer();
 		explorer.open();
 		return explorer.getProject(getProjectName());
 	}
@@ -131,14 +133,14 @@ public abstract class AbstractBatchTest {
 	}
 	
 	protected void setupJobXML() {
-		if (!getProject().containsItem(JOB_XML_FILE_FULL_PATH)) {
+		if (!getProject().containsResource(JOB_XML_FILE_FULL_PATH)) {
 			getProject().select();
 			createJobXMLFile(JOB_ID);
 		}		
 	}
 	
 	protected void removeJobXML() {
-		if (getProject().containsItem(JOB_XML_FILE_FULL_PATH)) {
+		if (getProject().containsResource(JOB_XML_FILE_FULL_PATH)) {
 			getProject().getProjectItem(JOB_XML_FILE_FULL_PATH).delete();
 		}		
 	}
@@ -232,7 +234,7 @@ public abstract class AbstractBatchTest {
 		
 		List<Problem> problems = null;
 		try {
-			problems = problemsView.getProblems(ProblemType.ANY);
+			problems = problemsView.getProblems(ProblemType.ALL);
 			assertThat(problems.size(), is(0));
 		} catch (AssertionError e){
 			String message = "Found unexpected problems\n";

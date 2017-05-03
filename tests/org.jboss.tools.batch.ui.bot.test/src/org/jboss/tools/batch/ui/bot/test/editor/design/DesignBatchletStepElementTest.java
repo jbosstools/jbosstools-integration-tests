@@ -18,7 +18,7 @@ public class DesignBatchletStepElementTest extends DesignFlowElementsTestTemplat
 	}
 
 	@Test
-	public void createStep(){
+	public void createStep() {
 		addStep(STEP_ID);
 		addBatchlet(STEP_ID, BATCHLET_ID);
 	}

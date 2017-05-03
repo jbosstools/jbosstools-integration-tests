@@ -63,11 +63,10 @@ public class JobXMLEditorSourcePage extends XMLSourcePage {
 		return this.evaluateXPath(xPathExpression);
 	}
 
-	@Override
 	public String evaluateXPath(String xPathExpression) {
 		// TODO Fix the hard-coded wait
 		AbstractWait.sleep(TimePeriod.SHORT);
-		return super.evaluateXPath(xPathExpression);
+		return super.getAssociatedFile().xpath(xPathExpression);
 	}
 	
 	private String createExpression(String[] xPathElements) {

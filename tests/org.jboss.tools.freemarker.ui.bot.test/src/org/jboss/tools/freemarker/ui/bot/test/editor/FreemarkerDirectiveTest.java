@@ -18,13 +18,13 @@ import java.util.List;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.views.contentoutline.ContentOutline;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.TreeItem;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -196,7 +196,7 @@ public class FreemarkerDirectiveTest extends AbstractFreemarkerTest {
 
 	private void openFTLFileInEditor(String file, String... outline) {
 		
-		PackageExplorer explorer = new PackageExplorer();
+		ProjectExplorer explorer = new ProjectExplorer();
 		Project project = explorer.getProject(projectName);
 		project.expand();
 		project.refresh();
@@ -206,7 +206,7 @@ public class FreemarkerDirectiveTest extends AbstractFreemarkerTest {
 		new TextEditor(file);
 		
 		log.step("Open outline view and check freemarker elements there");
-		OutlineView ov = new OutlineView();
+		ContentOutline ov = new ContentOutline();
 		ov.open();
 		
 		Collection<TreeItem> outlineElements = ov.outlineElements();

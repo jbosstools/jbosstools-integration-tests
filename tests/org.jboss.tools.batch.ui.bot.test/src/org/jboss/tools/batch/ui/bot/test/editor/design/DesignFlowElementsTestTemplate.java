@@ -29,10 +29,12 @@ import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage
 
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.jboss.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
@@ -127,10 +129,10 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	}
 	
 	protected boolean createExceptionClass(String exceptionID) {
-		NewJavaClassWizardDialog dialog = new NewJavaClassWizardDialog();
+		NewClassCreationWizard dialog = new NewClassCreationWizard();
 		dialog.open();
 
-		NewJavaClassWizardPage page = new NewJavaClassWizardPage();
+		NewClassWizardPage page = new NewClassWizardPage();
 		page.setSourceFolder(getProjectName() + "/" + JAVA_FOLDER);
 		page.setPackage(getPackage());
 		page.setName(exceptionID);
@@ -151,7 +153,7 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 		return dialogFinished(dialog);
 	}
 
-	private boolean dialogFinished(NewWizardDialog dialog) {
+	private boolean dialogFinished(WizardDialog dialog) {
 		if (dialog.isFinishEnabled()) {
 			dialog.finish();
 			return true;
@@ -182,7 +184,7 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	}
 	
 	protected static void deleteItemIfExists(String... path) {
-		if (getProject().containsItem(path)) {
+		if (getProject().containsResource(path)) {
 			ProjectItem item = getProject().getProjectItem(path);
 			item.delete();
 		}
@@ -198,11 +200,13 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void addStep(String stepID) {
 		getDesignPage().addStep(stepID);
-		
-		String step = getSourcePage().evaluateXPath(JOB, appendIDSelector(STEP, stepID), ID);
-		assertThat(step, is(stepID));
-		
+		getSourcePage().activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
+
+		String step = getSourcePage().evaluateXPath(JOB, appendIDSelector(STEP, stepID), ID);
+		
+		assertThat(step, is(stepID));
 		assertNoProblems();
 	}
 
@@ -214,11 +218,12 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void addBatchlet(String stepID, String batchletID) {
 		getDesignPage().addBatchlet(stepID, batchletID);
+		getSourcePage().activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		editor.save();
 
 		String batchlet = getSourcePage().evaluateXPath(JOB, appendIDSelector(STEP, stepID), BATCHLET, REF);
 		assertThat(batchlet, is(batchletID));
-
-		editor.save();
 		assertNoProblems();
 	}
 	
@@ -228,7 +233,8 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void addChunk(String stepID) {
 		getDesignPage().addChunk(stepID);
-		
+		getSourcePage().activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
 		editor.save();
 		assertNumberOfProblems(1, 0);
 	}
@@ -241,11 +247,13 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void setReaderRef(String stepID, String readerID) {
 		getDesignPage().setReaderRef(stepID, readerID);
+		getSourcePage().activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		editor.save();
 		
 		String readerRef = getSourcePage().evaluateXPath(JOB, appendIDSelector(STEP, stepID), CHUNK, READER, REF);
-		assertThat(readerRef, is(readerID));
 		
-		editor.save();
+		assertThat(readerRef, is(readerID));
 		assertNumberOfProblems(1, 0);
 	}
 
@@ -257,11 +265,13 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void setWriterRef(String stepID, String writerID) {
 		getDesignPage().setWriterRef(stepID, writerID);
+		getSourcePage().activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		editor.save();
 		
 		String writerRef = getSourcePage().evaluateXPath(JOB, appendIDSelector(STEP, stepID), CHUNK, WRITER, REF);
-		assertThat(writerRef, is(writerID));
 		
-		editor.save();
+		assertThat(writerRef, is(writerID));
 		assertNoProblems();
 	}
 	
@@ -273,11 +283,13 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void setProcessor(String stepID, String processorID) {
 		getDesignPage().addProcessor(stepID, processorID);
+		getSourcePage().activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		editor.save();
 		
 		String processorRef = getSourcePage().evaluateXPath(JOB, appendIDSelector(STEP, stepID), CHUNK, PROCESSOR, REF);
-		assertThat(processorRef, is(processorID));
 		
-		editor.save();
+		assertThat(processorRef, is(processorID));
 		assertNoProblems();
 	}
 
@@ -289,11 +301,13 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void setCheckpoint(String stepID, String checkpointID) {
 		getDesignPage().addCheckpointAlgorithm(stepID, checkpointID);
+		getSourcePage().activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		editor.save();
 		
 		String checkpointRef = getSourcePage().evaluateXPath(JOB, appendIDSelector(STEP, stepID), CHUNK, CHECKPOINT, REF);
-		assertThat(checkpointRef, is(checkpointID));
 		
-		editor.save();
+		assertThat(checkpointRef, is(checkpointID));
 		assertNoProblems();
 	}
 	
@@ -303,11 +317,13 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void addDecision(String decisionID) {
 		getDesignPage().addDecision(decisionID);
+		getSourcePage().activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		editor.save();
 		
 		String decision = getSourcePage().evaluateXPath(JOB, appendIDSelector(DECISION, decisionID), ID);
 		assertThat(decision, is(decisionID));
 		
-		editor.save();
 		assertNumberOfProblems(1, 0);
 	}
 
@@ -318,11 +334,12 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void setDeciderRef(String decisionID, String deciderID) {
 		getDesignPage().setDecisionRef(decisionID, deciderID);
+		getSourcePage().activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		editor.save();
 		
 		String decisionRef = getSourcePage().evaluateXPath(JOB, appendIDSelector(DECISION, decisionID), REF);
 		assertThat(decisionRef, is(deciderID));
-		
-		editor.save();
 		assertNoProblems();
 	}
 	
@@ -332,11 +349,12 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void addSplit(String splitID) {
 		getDesignPage().addSplit(splitID);
+		getSourcePage().activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		editor.save();
 		
 		String split = getSourcePage().evaluateXPath(JOB, appendIDSelector(SPLIT, splitID), ID);
 		assertThat(split, is(splitID));
-		
-		editor.save();
 		assertNoProblems();
 	}
 
@@ -347,11 +365,13 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void addFlowIntoSplit(String splitID, String flowID) {
 		getDesignPage().addSplitFlow(splitID, flowID);
+		getSourcePage().activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		editor.save();		
 		
 		String splitFlow = getSourcePage().evaluateXPath(JOB, appendIDSelector(SPLIT, splitID), FLOW, ID);
 		assertThat(splitFlow, is(flowID));
 		
-		editor.save();
 		assertNoProblems();
 	}
 	
@@ -361,11 +381,12 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void addFlow(String flowID){
 		getDesignPage().addFlow(flowID);
+		getSourcePage().activate();
+		AbstractWait.sleep(TimePeriod.SHORT);
+		editor.save();		
 		
 		String flow = getSourcePage().evaluateXPath(JOB, appendIDSelector(FLOW, flowID), ID);
 		assertThat(flow, is(flowID));
-		
-		editor.save();
 		assertNoProblems();
 	}
 }

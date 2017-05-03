@@ -6,8 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.wst.xml.ui.tabletree.XMLMultiPageEditor;
-import org.jboss.reddeer.eclipse.wst.xml.ui.tabletree.XMLSourcePage;
+import org.jboss.reddeer.eclipse.wst.xml.ui.tabletree.XMLMultiPageEditorPart;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.batch.reddeer.editor.JavaClassEditor;
 import org.jboss.tools.batch.reddeer.wizard.BatchArtifacts;
@@ -79,30 +78,28 @@ public abstract class AbstractCreateArtifactTest extends AbstractBatchTest {
 	}
 	
 	protected String getClassByID(String id) {
-		if (!getProject().containsItem(BATCH_XML_FILE_FULL_PATH)){
+		if (!getProject().containsResource(BATCH_XML_FILE_FULL_PATH)){
 			// the batch.xml file has not been created yet and the <ref value has not been inserted -> this is OK
 			return "";
 		}
 		getProject().getProjectItem(BATCH_XML_FILE_FULL_PATH).open();
 		
-		XMLMultiPageEditor editor = new XMLMultiPageEditor(BATCH_XML_FILE);
+		XMLMultiPageEditorPart editor = new XMLMultiPageEditorPart(BATCH_XML_FILE);
 		editor.activate();
 		
-		XMLSourcePage sourceTab = editor.getSourcePage();
-		
 		String xPath = "/:batch-artifacts/:ref[@id=\"" + id + "\"]/@class";
-		return sourceTab.evaluateXPath(xPath);
+		return editor.getSourcePage().getAssociatedFile().xpath(xPath);
 	}
 	
 	protected String getClass(String clazz) {
-		if (!getProject().containsItem(BATCH_XML_FILE_FULL_PATH)){
+		if (!getProject().containsResource(BATCH_XML_FILE_FULL_PATH)){
 			// the batch.xml file has not been created yet and the <ref value has not been inserted -> this is OK
 			return "";
 		}
 		getProject().getProjectItem(BATCH_XML_FILE_FULL_PATH).open();
 		
-		XMLMultiPageEditor editor = new XMLMultiPageEditor(BATCH_XML_FILE);
+		XMLMultiPageEditorPart editor = new XMLMultiPageEditorPart(BATCH_XML_FILE);
 		String xPath = "/:batch-artifacts/:ref[@class=\"" + clazz + "\"]";
-		return editor.getSourcePage().evaluateXPath(xPath);
+		return editor.getSourcePage().getAssociatedFile().xpath(xPath);
 	}
 }

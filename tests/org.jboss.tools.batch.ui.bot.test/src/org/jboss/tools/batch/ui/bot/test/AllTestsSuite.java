@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.batch.ui.bot.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignBatchletStepElementTest;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignChunkStepElementTest;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignDecisionElementTest;
@@ -34,6 +33,7 @@ import org.jboss.tools.batch.ui.bot.test.wizard.CreateJobXMLFileTest;
 import org.jboss.tools.batch.ui.bot.test.wizard.CreateNamedArtifactTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
