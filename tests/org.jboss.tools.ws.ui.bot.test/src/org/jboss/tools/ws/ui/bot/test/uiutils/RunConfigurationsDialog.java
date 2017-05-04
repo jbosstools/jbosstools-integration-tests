@@ -2,7 +2,7 @@ package org.jboss.tools.ws.ui.bot.test.uiutils;
 
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.jboss.reddeer.swt.impl.group.DefaultGroup;
@@ -25,7 +25,7 @@ public class RunConfigurationsDialog {
 
 	public void run() {
 		new PushButton(IDELabel.Button.RUN).click();
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT);
 	}
 
 	public void createNewConfiguration(String typeText) {

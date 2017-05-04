@@ -12,8 +12,8 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.reddeer.eclipse.condition.ExactNumberOfProblemsExists;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -85,8 +85,8 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 	private void providerValidationWarning(String projectName, String className) {
 		ProjectHelper.cleanAllProjects();
 		/* wait for JAX-RS validator */
-		new WaitUntil(new ProblemExists(ProblemType.ANY),
-				TimePeriod.NORMAL, false);
+		new WaitUntil(new ProblemExists(ProblemType.ALL),
+				TimePeriod.DEFAULT, false);
 
 		// there should be "No JAX-RS Activator is defined for the project." warning
 		List<Problem> warningsBefore = new ProblemsView().getProblems(ProblemType.WARNING);
@@ -106,7 +106,7 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 
 		/* wait for JAX-RS validator */
 		new WaitUntil(new ExactNumberOfProblemsExists(ProblemType.WARNING,
-				warningsBefore.size()+1), TimePeriod.NORMAL, false);
+				warningsBefore.size()+1), TimePeriod.DEFAULT, false);
 
 		//one more warning Description "The @Provider annotation is missing on this java type."
 		List<Problem> warningsAfter = new ProblemsView().getProblems(ProblemType.WARNING);

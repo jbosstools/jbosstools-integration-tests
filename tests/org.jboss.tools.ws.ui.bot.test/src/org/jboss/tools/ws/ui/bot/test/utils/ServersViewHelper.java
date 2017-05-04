@@ -8,18 +8,18 @@ import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
 import org.jboss.reddeer.eclipse.condition.ServerExists;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPublishState;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.Server;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServerModule;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerPublishState;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
 import org.jboss.reddeer.swt.impl.button.PushButton;
@@ -45,9 +45,9 @@ public class ServersViewHelper {
 	 * @param project project to be removed from the server
 	 */
 	public static void removeProjectFromServer(String project, String serverName) {
-		ServersView serversView = new ServersView();
-		serversView.activate();
-		Server server = serversView.getServer(serverName);
+		ServersView2 ServersView2 = new ServersView2();
+		ServersView2.activate();
+		Server server = ServersView2.getServer(serverName);
 
 		ServerModule serverModule = null;
 		try {
@@ -72,7 +72,7 @@ public class ServersViewHelper {
 	 * Removes all projects from the specified server.
 	 */
 	public static void removeAllProjectsFromServer(String serverName) {
-		ServersView serversView = new ServersView();
+		ServersView2 serversView = new ServersView2();
 		if(!serversView.isOpened())
 			serversView.open();
 		
@@ -95,7 +95,7 @@ public class ServersViewHelper {
 				ServerState moduleState = module.getLabel().getState();
 				clearServerConsole(serverName);
 				
-				new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL, false);
+				new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT, false);
 				serversView.activate();
 				module.remove();
 
@@ -121,7 +121,7 @@ public class ServersViewHelper {
 	 * Adds the specified project to the specified server
 	 */
 	public static void addProjectToServer(String projectName, String serverName) {
-		ServersView serversView = new ServersView();
+		ServersView2 serversView = new ServersView2();
 		serversView.open();
 		Server server = serversView.getServer(serverName);
 		ModifyModulesDialog dialog = server.addAndRemoveModules();
@@ -131,7 +131,7 @@ public class ServersViewHelper {
 	}
 
 	public static void serverClean(String serverName) {
-		ServersView serversView = new ServersView();
+		ServersView2 serversView = new ServersView2();
 		serversView.open();
 		Server server = null;
 		try {
@@ -162,7 +162,7 @@ public class ServersViewHelper {
 	private static class ProjectIsDeployed extends AbstractWaitCondition {
 
 		private ServerModule module;
-		private ServersView view = new ServersView();
+		private ServersView2 view = new ServersView2();
 		
 		public ProjectIsDeployed(String projectName, String serverName) {
 			view.activate();

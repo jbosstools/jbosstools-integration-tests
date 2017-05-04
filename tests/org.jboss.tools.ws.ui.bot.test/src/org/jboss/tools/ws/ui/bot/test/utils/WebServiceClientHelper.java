@@ -7,12 +7,12 @@ import org.jboss.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
+import org.jboss.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.swt.api.Label;
 import org.jboss.reddeer.swt.api.Shell;
@@ -45,7 +45,7 @@ public class WebServiceClientHelper {
 		wizard.open();
 
 		WebServiceClientWizardPage page = new WebServiceClientWizardPage();
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL, false);
+		new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT, false);
 		
 		page.setSource(wsdl);
 		new WaitUntil(new WebServiceClientPageIsValidated(), TimePeriod.getCustom(2), true);
@@ -61,7 +61,7 @@ public class WebServiceClientHelper {
 
 		if (pkg != null && pkg.trim().length()>0) {
 			wizard.next();
-			new WaitWhile(new ShellWithTextIsAvailable("Progress Information"));
+			new WaitWhile(new ShellIsAvailable("Progress Information"));
 			new DefaultShell("Web Service Client");
 			page.setPackageName(pkg);
 		}
@@ -148,7 +148,7 @@ public class WebServiceClientHelper {
 	 */
 	public static boolean projectIsDeployed(String serverName, String projectName) {
 		try {
-			ServersView sw = new ServersView();
+			ServersView2 sw = new ServersView2();
 			sw.getServer(serverName).getModule(projectName);
 			return true;
 		} catch(EclipseLayerException e) {

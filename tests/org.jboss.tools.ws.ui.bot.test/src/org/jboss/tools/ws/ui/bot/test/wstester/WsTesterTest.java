@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -224,7 +224,7 @@ public class WsTesterTest {
 			selectWSDLDialog.selectPort("BibleWebserviceSoap12");
 			selectWSDLDialog.ok();
 		} finally {
-			if (new ShellWithTextIsAvailable(selectWSDLDialog.TITLE).test()) {
+			if (new ShellIsAvailable(selectWSDLDialog.TITLE).test()) {
 				selectWSDLDialog.close();
 			}
 		}
@@ -301,7 +301,7 @@ public class WsTesterTest {
 		wstv.setServiceURL("https://watchful.li/api/v1/sites");
 		wstv.invoke();
 
-		new WaitUntil(new ShellWithTextIsAvailable(""));
+		new WaitUntil(new ShellIsAvailable(""));
 		new OkButton().click();
 		new WaitUntil(new WsTesterNotEmptyResponseText(), TimePeriod.getCustom(5), false);
 		Assert.assertEquals(0, wstv.getParameterRequestArgs().size());
@@ -427,7 +427,7 @@ public class WsTesterTest {
 			dlg.ok();
 			Assert.assertEquals("http://www.webservicex.net/BibleWebservice.asmx?WSDL", wstv.getServiceURL());
 		} finally {
-			if (new ShellWithTextIsAvailable(dlg.TITLE).test()) {
+			if (new ShellIsAvailable(dlg.TITLE).test()) {
 				dlg.close();
 			}
 		}

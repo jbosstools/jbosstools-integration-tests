@@ -24,11 +24,16 @@ import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
+import org.jboss.reddeer.eclipse.core.resources.DefaultProject;
 import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.jboss.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.jboss.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectWizard;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectThirdPage;
+import org.jboss.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectWizard;
+import org.jboss.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.jboss.reddeer.eclipse.utils.DeleteUtils;
@@ -46,8 +51,6 @@ import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.jboss.tools.ws.reddeer.ui.wizards.CreateNewFileWizardPage;
-import org.jboss.tools.ws.reddeer.ui.wizards.jst.j2ee.EARProjectWizard;
-import org.jboss.tools.ws.reddeer.ui.wizards.jst.servlet.DynamicWebProjectWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.NewWsdlFileWizard;
 import org.jboss.tools.ws.ui.bot.test.uiutils.JavaBuildPathPropertiesPage;
 import org.jboss.tools.ws.ui.bot.test.uiutils.PropertiesDialog;
@@ -74,10 +77,10 @@ public class ProjectHelper {
 	 * @return
 	 */
 	public static TextEditor createClass(String projectName, String pkg, String className) {
-		NewJavaClassWizardDialog wizard = new NewJavaClassWizardDialog();
+		NewClassCreationWizard wizard = new NewClassCreationWizard();
 		wizard.open();
 
-		NewJavaClassWizardPage page = new NewJavaClassWizardPage();
+		NewClassWizardPage page = new NewClassWizardPage();
 		page.setPackage(pkg);
 		page.setName(className);
 		page.setSourceFolder(projectName + "/src");
@@ -116,13 +119,16 @@ public class ProjectHelper {
 	 * @param name
 	 */
 	public static void createProject(String name) {
-		DynamicWebProjectWizard wizard = new DynamicWebProjectWizard();
+		
+		WebProjectWizard wizard = new WebProjectWizard();
 		wizard.open();
-
-		wizard.setProjectName(name);
+		
+		WebProjectFirstPage page = new WebProjectFirstPage();
+		page.setProjectName(name);
+		
 		wizard.next();
 		wizard.next();
-		wizard.setGenerateDeploymentDescriptor(true);
+		new WebProjectThirdPage().setGenerateWebXmlDeploymentDescriptor(true);
 		wizard.finish();
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
@@ -137,11 +143,12 @@ public class ProjectHelper {
 	 * @param name
 	 */
 	public static void createProjectForEAR(String name, String earProject) {
-		DynamicWebProjectWizard wizard = new DynamicWebProjectWizard();
+		WebProjectWizard wizard = new WebProjectWizard();
 		wizard.open();
 
-		wizard.setProjectName(name);
-		wizard.addProjectToEar(earProject);
+		WebProjectFirstPage page = new WebProjectFirstPage();
+		page.setProjectName(name);
+		page.setEARProjectName(earProject);
 		wizard.finish();
 
 		new WaitWhile(new JobIsRunning());
@@ -156,7 +163,7 @@ public class ProjectHelper {
 	 * @param name
 	 */
 	public static void createEARProject(String name) {
-		EARProjectWizard wizard = new EARProjectWizard();
+		EarProjectWizard wizard = new EarProjectWizard();
 		wizard.open();
 
 		new LabeledText("Project name:").setText(name);
@@ -198,7 +205,7 @@ public class ProjectHelper {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
 		
-		List<Project> projects = projectExplorer.getProjects();
+		List<DefaultProject> projects = projectExplorer.getProjects();
 		try {
 			for (Project project: projects) {
 				project.delete(true);
@@ -207,7 +214,7 @@ public class ProjectHelper {
 			projectExplorer.close();
 			projectExplorer.open();
 			projects = projectExplorer.getProjects();
-			for (Project project: projects) {
+			for (DefaultProject project: projects) {
 				try {
 					LOGGER.info("Forcing removal of " + project);
 					DeleteUtils.forceProjectDeletion(project, true);

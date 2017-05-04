@@ -22,7 +22,7 @@ import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.server.IServerFamily;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.condition.ShellIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -100,7 +100,7 @@ public class JBossWSPreferencesTest {
 		jbossWsRuntimeDialog.setName(runtimeEditedName);
 		jbossWsRuntimeDialog.finish();
 
-		new WaitWhile(new ShellWithTextIsActive(EDIT_JBOSS_WS_RUNTIME_DIALOG_TITLE));
+		new WaitWhile(new ShellIsActive(EDIT_JBOSS_WS_RUNTIME_DIALOG_TITLE));
 
 		assertRuntimeName(runtimeEditedName);
 	}
@@ -109,9 +109,9 @@ public class JBossWSPreferencesTest {
 		jbossWSRuntimePreferencePage.select(0);
 		jbossWSRuntimePreferencePage.remove();
 
-		new WaitUntil(new ShellWithTextIsActive("Confirm Runtime Delete"));
+		new WaitUntil(new ShellIsActive("Confirm Runtime Delete"));
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive("Confirm Runtime Delete"));
+		new WaitWhile(new ShellIsActive("Confirm Runtime Delete"));
 
 		assertThat(jbossWSRuntimePreferencePage.getAllJBossWSRuntimes().size(),
 				Is.is(0));
@@ -162,7 +162,7 @@ public class JBossWSPreferencesTest {
 	private void assertRuntimeConfiguredAccordingToRuntime() {
 		jbossWsRuntimeDialog.finish();
 
-		new WaitWhile(new ShellWithTextIsActive(
+		new WaitWhile(new ShellIsActive(
 				NEW_JBOSS_WS_RUNTIME_DIALOG_TITLE));
 
 		assertThat(jbossWSRuntimePreferencePage.

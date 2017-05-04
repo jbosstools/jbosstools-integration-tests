@@ -1,6 +1,6 @@
 package org.jboss.tools.ws.ui.bot.test.rest.validation;
 
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;

@@ -4,7 +4,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
@@ -76,7 +76,7 @@ public class HTTPMethodAnnotationQuickFixTest extends RESTfulTestBase {
 		TextEditor editor = setCursorPositionToLineInTextEditor("MyAnnot");
 
 		/* check that there are quick fixes for both required annotations */
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		AbstractWait.sleep(TimePeriod.DEFAULT);
 		editor.openQuickFixContentAssistant().chooseProposal(
 				"Add @Target annotation on type 'MyAnnot'");
 		AbstractWait.sleep(TimePeriod.getCustom(1));//makes a delay between applying quickfixes

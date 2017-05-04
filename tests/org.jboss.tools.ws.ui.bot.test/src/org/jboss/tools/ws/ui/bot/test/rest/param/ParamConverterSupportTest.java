@@ -4,9 +4,9 @@ import javax.ws.rs.PathParam;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.jboss.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.jboss.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.jboss.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.requirements.server.ServerReqState;
@@ -63,9 +63,9 @@ public class ParamConverterSupportTest extends RESTfulTestBase {
 	}
 	
 	private void createParamConverter() {
-		NewJavaClassWizardDialog newJavaClassDialog = new NewJavaClassWizardDialog();
+		NewClassCreationWizard newJavaClassDialog = new NewClassCreationWizard();
 		newJavaClassDialog.open();
-		NewJavaClassWizardPage newJavaClassPage = new NewJavaClassWizardPage();
+		NewClassWizardPage newJavaClassPage = new NewClassWizardPage();
 		newJavaClassPage.setPackage("org.rest.test");
 		newJavaClassPage.setName("Converter");
 		newJavaClassDialog.finish();

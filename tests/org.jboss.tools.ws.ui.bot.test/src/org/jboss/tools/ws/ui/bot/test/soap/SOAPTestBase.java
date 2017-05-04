@@ -5,12 +5,12 @@ import java.util.logging.Logger;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.core.handler.ShellHandler;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.jboss.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.jboss.tools.common.reddeer.requirements.JavaFoldingRequirement.JavaFolding;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
@@ -81,16 +81,16 @@ public abstract class SOAPTestBase {
 	@AfterClass
 	public static void deleteAll() {
 		ServersViewHelper.removeAllProjectsFromServer(getConfiguredServerName());
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		ProjectHelper.deleteAllProjects();
 	}
 
 	protected static String getConfiguredRuntimeName() {
-		return serverReq.getRuntimeNameLabelText(serverReq.getConfig());
+		return serverReq.getRuntimeNameLabelText();
 	}
 
 	protected static String getConfiguredServerName() {
-		return serverReq.getServerNameLabelText(serverReq.getConfig());
+		return serverReq.getServerNameLabelText();
 	}
 
 	protected static String getConfiguredServerType() {

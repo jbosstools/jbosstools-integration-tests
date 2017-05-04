@@ -20,13 +20,13 @@ import java.util.logging.Level;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.workbench.core.condition.JobIsRunning;
+import org.jboss.reddeer.swt.condition.ShellIsAvailable;
 import org.jboss.reddeer.jface.wizard.WizardDialog;
 import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.StyledText;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.condition.ControlIsEnabled;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
@@ -133,7 +133,7 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 		if (page.isClientEnabled()) {
 			page.setClientSlider(SliderLevel.NO_CLIENT);
 		}
-		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.getCustom(5), false);
+		new WaitUntil(new ControlIsEnabled(new NextButton()), TimePeriod.getCustom(5), false);
 		wizard.next();
 
 		checkErrorDialog(wizard);
@@ -148,7 +148,7 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 			new FinishButton().click();
 			confirmWebServiceNameOverwrite();
 			
-			new WaitWhile(new ShellWithTextIsAvailable("Web Service"));
+			new WaitWhile(new ShellIsAvailable("Web Service"));
 			new WaitWhile(new JobIsRunning());
 		} else {
 			new DefaultShell("Web Service");

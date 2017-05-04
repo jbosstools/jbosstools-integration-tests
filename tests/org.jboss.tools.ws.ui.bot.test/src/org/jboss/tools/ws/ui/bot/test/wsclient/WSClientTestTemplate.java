@@ -13,12 +13,11 @@ package org.jboss.tools.ws.ui.bot.test.wsclient;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.List;
-
 import org.jboss.reddeer.common.exception.RedDeerException;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.core.resources.Resource;
+import org.jboss.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
 import org.jboss.reddeer.eclipse.ui.views.navigator.ResourceNavigator;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.soap.SOAPTestBase;
@@ -150,7 +149,7 @@ public class WSClientTestTemplate extends SOAPTestBase {
 				src + "SubtractResponse.java",
 				src + getSampleClientFileName()};
 		for(String file : expectedFiles) {
-			assertTrue("File " + file + " was not created", project.containsItem(file.split("/")));
+			assertTrue("File " + file + " was not created", project.containsResource(file.split("/")));
 		}
 	}
 	
@@ -175,20 +174,19 @@ public class WSClientTestTemplate extends SOAPTestBase {
 	}
 
 	private void deleteAllPackages() {
-		PackageExplorer pe = new PackageExplorer();
+		PackageExplorerPart pe = new PackageExplorerPart();
 		pe.open();
 		Project p = pe.getProject(getWsProjectName());
 		ProjectItem src = p.getProjectItem("src");
 		try {
-			for(ProjectItem pkg: src.getChildren()) {
+			for(Resource pkg: src.getChildren()) {
 				pkg.select();
 				pkg.delete();
 			}
 		} catch(RedDeerException e) {
 			pe.open();
 			src = p.getProjectItem("src");
-			List<ProjectItem> pkgs = src.getChildren();
-			for(ProjectItem pkg: pkgs) {
+			for(Resource pkg: src.getChildren()) {
 				pkg.select();
 				pkg.delete();
 			}
