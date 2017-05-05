@@ -17,9 +17,8 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftProjectExists;
-import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement.OCBinary;
-import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
@@ -30,9 +29,9 @@ import org.jboss.tools.openshift.reddeer.wizard.v3.TemplatesCreator;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.advanced.CreateResourcesTest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 
-@OCBinary
-@RequiredBasicConnection
+@RunWith(RedDeerSuite.class)
 public class AbstractCreateApplicationTest {
 
 	public static String GIT_FOLDER = "jboss-eap-quickstarts";
@@ -116,6 +115,7 @@ public class AbstractCreateApplicationTest {
 		connection.createNewProject();
 		
 		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
 		if (projectExplorer.containsProject(PROJECT_NAME)) {
 			projectExplorer.getProject(PROJECT_NAME).delete(true);
 		}
