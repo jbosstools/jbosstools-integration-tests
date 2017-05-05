@@ -135,7 +135,7 @@ public class NodeJSAppDebugTest {
 				new ServerAdapterExists(Version.OPENSHIFT3, OpenShiftResources.NODEJS_SERVICE, "Service").test());
 
 		// restart in debug
-		this.adapter = new ServerAdapter(Version.OPENSHIFT3, OpenShiftResources.NODEJS_SERVICE);
+		this.adapter = new ServerAdapter(Version.OPENSHIFT3, OpenShiftResources.NODEJS_SERVICE, "Service");
 		this.adapter.select();
 		new ContextMenu("Restart in Debug").select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);

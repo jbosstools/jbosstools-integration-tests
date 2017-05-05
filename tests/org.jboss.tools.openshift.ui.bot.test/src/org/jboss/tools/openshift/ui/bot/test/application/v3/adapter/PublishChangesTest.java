@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2007-2017 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v 1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributor:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test.application.v3.adapter;
 
 import static org.junit.Assert.assertTrue;
@@ -7,23 +17,23 @@ import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsKilled;
 import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.tools.common.reddeer.perspectives.JBossPerspective;
 import org.jboss.tools.openshift.reddeer.condition.ApplicationPodIsRunning;
 import org.jboss.tools.openshift.reddeer.condition.BrowserContainsText;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.exception.OpenShiftToolsException;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement.OCBinary;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter;
@@ -33,6 +43,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+@OCBinary
+@OpenPerspective(value=JBossPerspective.class)
+@RequiredBasicConnection
 public class PublishChangesTest extends AbstractCreateApplicationTest {
 
 	public static String PUBLISHED_CODE = "package org.jboss.as.quickstarts.helloworld;\n"
@@ -59,15 +72,7 @@ public class PublishChangesTest extends AbstractCreateApplicationTest {
 	
 	private void createServerAdapter() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getOpenShift3Connection().getProject().getService("eap-app").select();
-		new ContextMenu(OpenShiftLabel.ContextMenu.NEW_ADAPTER_FROM_EXPLORER).select();
-		
-		new DefaultShell(OpenShiftLabel.Shell.SERVER_ADAPTER_SETTINGS);
-		new FinishButton().click();
-		
-		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.SERVER_ADAPTER_SETTINGS));
-		new WaitUntil(new JobIsKilled("Refreshing server adapter list"), TimePeriod.LONG, false);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		explorer.getOpenShift3Connection().getProject().getService("eap-app").createServerAdapter();
 	}
 	
 	private void changeProjectAndVerifyAutoPublish() {
@@ -107,7 +112,7 @@ public class PublishChangesTest extends AbstractCreateApplicationTest {
 	public static void removeAdapterAndApplication() {
 		try {
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-			new ServerAdapter(Version.OPENSHIFT3, BUILD_CONFIG).delete();
+			new ServerAdapter(Version.OPENSHIFT3, BUILD_CONFIG, "Service").delete();
 		} catch (OpenShiftToolsException ex) {
 			// do nothing, adapter does not exists
 		}

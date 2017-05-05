@@ -43,6 +43,8 @@ import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
 import org.jboss.tools.openshift.reddeer.enums.ResourceState;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement.OCBinary;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
@@ -51,6 +53,8 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+@OCBinary
+@RequiredBasicConnection
 public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTest {
 
 	@BeforeClass
