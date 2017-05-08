@@ -58,6 +58,7 @@
 			<properties>
 				<!-- Skip publishing to Nexus, since we don't use it and it takes a lot of time -->
 				<maven.deploy.skip>true</maven.deploy.skip>
+				<skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
 				<snapshotLocation>integration-tests</snapshotLocation>
 			</properties>
 			<build>
