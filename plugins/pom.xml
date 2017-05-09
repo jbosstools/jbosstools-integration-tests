@@ -23,7 +23,7 @@
 		<module>org.jboss.tools.hibernate.reddeer</module>
 		<module>org.jboss.tools.jst.reddeer</module>
 		<module>org.jboss.tools.seam.reddeer</module>
-		<module>org.jboss.tools.perf.test.core</module>
+		<module>org.jboss.tools.perf</module>
 		<module>org.jboss.tools.mylyn.reddeer</module>
 		<module>org.jboss.tools.vpe.reddeer</module>
 		<module>org.jboss.tools.docker.reddeer</module>

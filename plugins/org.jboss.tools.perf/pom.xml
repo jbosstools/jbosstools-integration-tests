@@ -8,7 +8,7 @@
 		<version>4.4.100-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.tests.plugins</groupId>
-	<artifactId>org.jboss.tools.perf.test.core</artifactId>
+	<artifactId>org.jboss.tools.perf</artifactId>
 	<packaging>eclipse-plugin</packaging>
 	<dependencies>
 		<dependency>
