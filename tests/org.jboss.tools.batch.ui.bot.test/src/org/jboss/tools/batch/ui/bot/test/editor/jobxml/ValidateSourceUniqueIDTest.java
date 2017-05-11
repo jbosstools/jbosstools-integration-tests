@@ -20,7 +20,7 @@ import org.junit.Test;
  * @author odockal
  *
  */
-public class ValidateSourceUniqueIDTest extends AbstractJobXMLSourceTest {
+public class ValidateSourceUniqueIDTest extends AbstractJobXMLTest {
 	
 	private final String STEP_ID = "myStep";
 	
