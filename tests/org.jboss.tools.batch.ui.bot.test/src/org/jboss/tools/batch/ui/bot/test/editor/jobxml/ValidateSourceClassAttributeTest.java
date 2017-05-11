@@ -19,7 +19,7 @@ import org.junit.Test;
  * @author odockal
  *
  */
-public class ValidateSourceClassAttributeTest extends AbstractJobXMLSourceTest {
+public class ValidateSourceClassAttributeTest extends AbstractJobXMLTest {
 
 	private final String INCLUDE_EXCEPTION = getFullyQualifiedClassName("IncludeException");
 	
@@ -57,6 +57,18 @@ public class ValidateSourceClassAttributeTest extends AbstractJobXMLSourceTest {
 		emptyClassCheck(INCLUDE_EXCEPTION, 1);
 		classCheck(EXCLUDE_EXCEPTION, 1);
 		emptyClassCheck(EXCLUDE_EXCEPTION, 1);		
+	}
+	
+	private void classCheck(String referenceID, int index) {
+		referenceCheck(referenceID, index, "class=\"");
+	}	
+	
+	protected void emptyReferenceCheck(String referenceID, int index) {
+		emptyReferenceCheck(referenceID, index, "ref=\"");
+	}	
+	
+	protected void emptyClassCheck(String referenceID, int index) {
+		emptyReferenceCheck(referenceID, index, "class=\"");
 	}
 	
 }

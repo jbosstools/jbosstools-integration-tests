@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.batch.ui.bot.test.editor.jobxml;
 
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -19,44 +18,7 @@ import org.junit.Test;
  * @author odockal
  *
  */
-public class ValidateSourceRefAttributeTest extends AbstractJobXMLSourceTest {
-	
-	private final String BATCHLET_REF = "batchlet";
-	
-	private final String STEP_LISTENER_REF = "stepListener";
-	
-	private final String READER_REF = "reader";
-	
-	private final String WRITER_REF = "writer";
-	
-	private final String JOB_LISTENER_REF = "jobListener";
-	
-	private final String CUSTOM_LISTENER_REF = "customClassListener";
-	
-	private final String CUSTOM_QUALIFIED_LISTENER_REF = "customListener";
-	
-	private final String PROCESSOR_REF = "processor";
-	
-	private final String CHECK_REF = "checkpointAlgorithm";
-	
-	private final String DECIDER_REF = "decider";
-	
-	private final String MAPPER_REF = "mapper";
-	
-	private final String REDUCER_REF = "reducer";
-	
-	private final String ANALYZER_REF = "analyzer";
-	
-	private final String COLLECTOR_REF = "collector";	
-	
-	private final String BATCH_FILE = "job-ref.xml";
-	
-	@Override
-	@Before
-	public void setUp() {
-		super.setUp();
-		setJobXMLContentFromFile(BATCH_FILE);
-	}
+public class ValidateSourceRefAttributeTest extends AbstractJobXMLReferenceTest {
 	
 	@Test 
 	public void testDecisionReference() {
@@ -65,7 +27,7 @@ public class ValidateSourceRefAttributeTest extends AbstractJobXMLSourceTest {
 	}
 	
 	@Test
-	public void testBatchletReferences() {
+	public void testBatchletReference() {
 		referenceCheck(BATCHLET_REF);
 		emptyReferenceCheck(BATCHLET_REF);
 	}
@@ -108,5 +70,9 @@ public class ValidateSourceRefAttributeTest extends AbstractJobXMLSourceTest {
 	public void testStepListener() {
 		referenceCheck(STEP_LISTENER_REF);
 		emptyReferenceCheck(STEP_LISTENER_REF);
+	}
+	
+	private void referenceCheck(String referenceID) {
+		referenceCheck(referenceID, 0, "ref=\"");
 	}
 }
