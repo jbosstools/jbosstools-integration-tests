@@ -8,7 +8,7 @@
  * Contributors: 
  * Red Hat, Inc. - initial API and implementation 
  ******************************************************************************/
-package org.jboss.tools.cdk.ui.bot.test;
+package org.jboss.tools.cdk.ui.bot.test.server.adapter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -22,19 +22,12 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
 import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
+import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.cdk.reddeer.requirements.DisableSecureStorageRequirement.DisableSecureStorage;
-import org.jboss.tools.cdk.reddeer.ui.CDEServer;
-import org.jboss.tools.cdk.reddeer.ui.wizard.NewCDKServerContainerWizardPage;
+import org.jboss.tools.cdk.ui.bot.test.utils.CDKTestUtils;
 import org.jboss.tools.docker.reddeer.ui.DockerExplorerView;
 import org.jboss.tools.docker.reddeer.ui.resources.DockerConnection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
@@ -42,120 +35,49 @@ import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
+import org.junit.runner.RunWith;
 
 /**
- * Basic Devstudio and CDK integration test
- * Requires Secure Storage disabled
+ * Testing CDK3 server adapter with minishift using vm driver passed via system property
  * @author odockal
  *
  */
+@RunWith(RedDeerSuite.class)
 @DisableSecureStorage
-public class CDKDevstudioIntegrationTest extends CDKDevstudioAbstractTest {
+public class CDK3IntegrationTest extends CDKServerAdapterAbstractTest {
 	
-	private static final String VAGRANTFILE_PATH;
+	private static final String OPENSHIFT_USER_NAME = "developer"; //$NON-NLS-1$
 	
-	private static final String SERVER_NAME = "Red Hat Container Development Kit"; //$NON-NLS-1$
-	
-	private static final String SERVER_ADAPTER = "Container Development Environment"; //$NON-NLS-1$
-	
-	private static final String SERVER_TYPE = "Red Hat JBoss Middleware"; //$NON-NLS-1$
-	
-	private static final String SERVER_HOST = "localhost"; //$NON-NLS-1$
-	
-	private static final String OPENSHIFT_USER_NAME = "openshift-dev"; //$NON-NLS-1$
-	
-	private static final String OPENSHIFT_PROJECT_NAME = "OpenShift sample project"; //$NON-NLS-1$
+	private static final String OPENSHIFT_PROJECT_NAME = "My Project"; //$NON-NLS-1$
 	
 	private static final String DOCKER_DAEMON_CONNECTION = SERVER_ADAPTER;
-	
-	private static Logger log = Logger.getLogger(CDK3DevstudioIntegrationTest.class);
+
+	private static Logger log = Logger.getLogger(CDK3IntegrationTest.class);
 	
 	private TreeViewerHandler treeViewerHandler = TreeViewerHandler.getInstance();
 
-	static {
-		VAGRANTFILE_PATH = getSystemProperty("vagrantfile.path"); //$NON-NLS-1$
-	}
-	
-	private static void checkVagrantfilePath() {
-		if (VAGRANTFILE_PATH == null) {
-			throw new RedDeerException("Path Vagrantfile path was not specified"); //$NON-NLS-1$
-		}
-		log.info("Vagrantfile path is set to " + VAGRANTFILE_PATH); //$NON-NLS-1$
-	}
-	
-	@Override
-	protected Server getCDEServer() {
-		return this.server;
-	}
-
-	@Override
-	protected ServersView getServersView() {
-		return this.serversView;
-	}
-
-	@Override
-	protected void setServersView(ServersView view) {
-		this.serversView = view;
-	}
-
-	@Override
-	protected void setCDEServer(Server server) {
-		this.server = (CDEServer)server;
-	}
-	
 	@Override
 	protected String getServerAdapter() {
 		return SERVER_ADAPTER;
 	}
 	
-	@BeforeClass
-	public static void setup() {
-		checkVagrantfilePath();
-		log.info("Adding new Container Development Environment server adapter"); //$NON-NLS-1$
-		addNewCDEServer();
+	@Override
+	protected boolean isCDK3() {
+		return true;
 	}
 	
-	private static void addNewCDEServer() {
-		// call new server dialog from servers view
-		ServersView view = new ServersView();
-		view.open();
-		NewServerWizardDialog dialog = view.newServer();
-		NewServerWizardPage page = new NewServerWizardPage();
-		
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL, false);
-		// set first dialog page
-		page.selectType(SERVER_TYPE, SERVER_NAME);
-		page.setHostName(SERVER_HOST);
-		dialog.next();
-		
-		// set second new server dialog page
-		NewCDKServerContainerWizardPage containerPage = new NewCDKServerContainerWizardPage();
-		log.info("Setting credentials"); //$NON-NLS-1$
-		containerPage.setCredentials(CDKDevstudioAbstractTest.USERNAME, PASSWORD);
-		// set cdk 2.x fields
-		log.info("Setting vagrant file folder"); //$NON-NLS-1$
-		containerPage.setFolder(VAGRANTFILE_PATH);
-		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.NORMAL);
-		log.info("Finishing Add new server dialog"); //$NON-NLS-1$
-		if (!(new FinishButton().isEnabled())) {
-			log.error("Finish button was not enabled"); //$NON-NLS-1$
-		}
-		dialog.finish();
+	@BeforeClass
+	public static void setup() {
+		checkMinishiftParameters();
+		CDKTestUtils.deleteCDEServer(SERVER_ADAPTER);
+		addNewCDK3Server(CDK3_SERVER_NAME, SERVER_ADAPTER, MINISHIFT_HYPERVISOR, MINISHIFT_PATH);
 	}
+	
 	
 	@AfterClass
 	public static void tearDownEnvironment() {
-		log.info("Deleting Container Development Environment server adapter"); //$NON-NLS-1$
-		ServersView servers = new ServersView();
-		servers.open();
-		try {
-			servers.getServer(SERVER_ADAPTER).delete(true);
-		} catch (EclipseLayerException exc) {
-			log.error(exc.getMessage());
-			exc.printStackTrace();
-		}
-		removeAccessRedHatCredentials();
+		CDKTestUtils.deleteCDEServer(SERVER_ADAPTER);
+		CDKTestUtils.removeAccessRedHatCredentials(CREDENTIALS_DOMAIN, USERNAME);
 	}
 	
 	@Test
@@ -227,5 +149,5 @@ public class CDKDevstudioIntegrationTest extends CDKDevstudioAbstractTest {
 			fail(jFaceExc.getMessage());
 		}
 	}
-
+	
 }
