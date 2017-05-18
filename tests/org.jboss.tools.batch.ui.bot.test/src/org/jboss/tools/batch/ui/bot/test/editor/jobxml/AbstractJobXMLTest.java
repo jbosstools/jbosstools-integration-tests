@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat, Inc.
+ * Copyright (c) 2017 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -29,9 +29,9 @@ import org.junit.BeforeClass;
  * @author odockal
  *
  */
-public abstract class AbstractJobXMLSourceTest extends DesignFlowElementsTestTemplate {
+public abstract class AbstractJobXMLTest extends DesignFlowElementsTestTemplate {
 	
-	private static final Logger log = Logger.getLogger(AbstractJobXMLSourceTest.class);
+	private static final Logger log = Logger.getLogger(AbstractJobXMLTest.class);
 	
 	@BeforeClass
 	public static void setUpBeforeClass() {
@@ -58,18 +58,6 @@ public abstract class AbstractJobXMLSourceTest extends DesignFlowElementsTestTem
 	@Override
 	protected String getPackage() {
 		return "batch.test.editor.source";
-	}
-	
-	protected void referenceCheck(String referenceID) {
-		referenceCheck(referenceID, 0, "ref=\"");
-	}
-	
-	protected void referenceCheck(String referenceID, int index) {
-		referenceCheck(referenceID, index, "ref=\"");
-	}
-	
-	protected void classCheck(String referenceID, int index) {
-		referenceCheck(referenceID, index, "class=\"");
 	}
 	
 	/**
@@ -99,14 +87,6 @@ public abstract class AbstractJobXMLSourceTest extends DesignFlowElementsTestTem
 	
 	protected void emptyReferenceCheck(String referenceID) {
 		emptyReferenceCheck(referenceID, 0, "ref=\"");
-	}	
-	
-	protected void emptyReferenceCheck(String referenceID, int index) {
-		emptyReferenceCheck(referenceID, index, "ref=\"");
-	}	
-	
-	protected void emptyClassCheck(String referenceID, int index) {
-		emptyReferenceCheck(referenceID, index, "class=\"");
 	}
 	
 	/**

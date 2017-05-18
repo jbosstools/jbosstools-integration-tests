@@ -20,7 +20,7 @@ import org.junit.Test;
  * @author odockal
  *
  */
-public class ValidateSourceElementLoopingTest extends AbstractJobXMLSourceTest {
+public class ValidateSourceElementLoopingTest extends AbstractJobXMLTest {
 
 	@Override
 	@Before

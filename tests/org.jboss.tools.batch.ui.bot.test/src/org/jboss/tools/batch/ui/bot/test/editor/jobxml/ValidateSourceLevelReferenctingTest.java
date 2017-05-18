@@ -19,7 +19,7 @@ import org.junit.Test;
  * @author odockal
  *
  */
-public class ValidateSourceLevelReferenctingTest extends AbstractJobXMLSourceTest {
+public class ValidateSourceLevelReferenctingTest extends AbstractJobXMLTest {
 
 	private final String BATCH_FILE = "/resources/job-level.xml";
 	
