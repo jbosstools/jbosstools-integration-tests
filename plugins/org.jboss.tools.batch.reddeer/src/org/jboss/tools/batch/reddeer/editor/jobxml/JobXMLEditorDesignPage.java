@@ -147,7 +147,7 @@ public class JobXMLEditorDesignPage {
 		new DefaultText(new DefaultSection(name), 0).setText(id);
 	}
 
-	private void selectNode(String... path) {
+	public void selectNode(String... path) {
 		new DefaultTreeItem(path).select();
 	}
 }

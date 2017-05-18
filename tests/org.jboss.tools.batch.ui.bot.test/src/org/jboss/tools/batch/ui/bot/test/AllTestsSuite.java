@@ -18,6 +18,7 @@ import org.jboss.tools.batch.ui.bot.test.editor.design.DesignFlowElementTest;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignSplitElementTest;
 import org.jboss.tools.batch.ui.bot.test.editor.features.CheckExistingReferenceTest;
 import org.jboss.tools.batch.ui.bot.test.editor.features.RenameTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateDesignRefAttributeTest;
 import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceBatchPropertyTest;
 import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceClassAttributeTest;
 import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceElementLoopingTest;
@@ -57,7 +58,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ValidateSourceClassAttributeTest.class,
 	ValidateSourceElementLoopingTest.class,
 	ValidateSourceLevelReferenctingTest.class,
-	ValidateSourceRestartAttributeTest.class
+	ValidateSourceRestartAttributeTest.class,
+	ValidateDesignRefAttributeTest.class
 	})
 public class AllTestsSuite {
 
