@@ -25,6 +25,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
@@ -46,6 +47,7 @@ import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.v3.OpenShift3NativeProjectUtils;
 import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
+import org.jboss.tools.openshift.ui.bot.test.common.OpenshiftTestInFailureException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -78,7 +80,7 @@ public class NewApplicationWizardHandlingTest {
 		assertTrue("Server template selection should be chosen by default.",
 				new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).isEnabled());
 		
-		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.CUSTOM_TEMPLATE).activate();
 		
 		try {
 			new DefaultTree();
@@ -123,13 +125,13 @@ public class NewApplicationWizardHandlingTest {
 		projectCombo.setSelection(project2Text);
 	}
 	
-	@Test
+	@Test(expected = OpenshiftTestInFailureException.class)
 	public void testAccessibilityOfDefinedResourcesButton() {
 		new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).activate();
 		
 		assertDefinedResourcesButtonIsNotPresent();
 		
-		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.CUSTOM_TEMPLATE).activate();
 		
 		assertDefinedResourcesButtonIsNotPresent();
 		
@@ -139,22 +141,26 @@ public class NewApplicationWizardHandlingTest {
 		assertTrue("Defines Resources button should be enabled if a server template is selected.", 
 				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
 		
-		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.CUSTOM_TEMPLATE).activate();
 		
 		assertDefinedResourcesButtonIsNotPresent();
 		
 		new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).activate();
 		new DefaultTree().unselectAllItems();
-		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.CUSTOM_TEMPLATE).activate();
 		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
 				new DefaultText(1).getSWTWidget().setText(DatastoreOS3.TEMPLATE_PATH);
 			}
 		});
-		
-		assertTrue("Defines Resources button should be enabled if a local template is selected.", 
-				new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
+		try {
+			assertTrue("Defines Resources button should be enabled if a local template is selected.",
+					new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).isEnabled());
+		} catch (CoreLayerException ex) {
+			throw new OpenshiftTestInFailureException(
+					"Defined resources button was not found. Probable cause: JBIDE-24492", ex);
+		}
 		
 		new DefaultTabItem(OpenShiftLabel.TextLabels.SERVER_TEMPLATE).activate();
 		
@@ -174,7 +180,7 @@ public class NewApplicationWizardHandlingTest {
 	public void testFilteringServerTemplates() {
 		DefaultText searchBar = new DefaultText(1);
 		
-		searchBar.setText("eap64-basic-s2i");
+		searchBar.setText("eap70-basic-s2i");
 		assertTrue("There should be precisely one tree item in a tree.",
 				new DefaultTree().getItems().size() == 1);
 		assertTrue("There should be item representing basic EAP template in a tree but it is not there.",
@@ -191,9 +197,9 @@ public class NewApplicationWizardHandlingTest {
 				new DefaultTree().getItems().size() > 2);
 	}
 	
-	@Test
+	@Test(expected = OpenshiftTestInFailureException.class)
 	public void testShowDefinedResourcesForLocalTemplate() {
-		new DefaultTabItem(OpenShiftLabel.TextLabels.LOCAL_TEMPLATE).activate();
+		new DefaultTabItem(OpenShiftLabel.TextLabels.CUSTOM_TEMPLATE).activate();
 		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -218,6 +224,10 @@ public class NewApplicationWizardHandlingTest {
 					TimePeriod.NORMAL);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("Defined Resources button is not enabled");
+		} catch (CoreLayerException ex) {
+			// Defined resources button was not found
+			throw new OpenshiftTestInFailureException(
+					"Defined resources button was not found. Probable cause: JBIDE-24492", ex);
 		}
 		new PushButton(OpenShiftLabel.Button.DEFINED_RESOURCES).click();
 		

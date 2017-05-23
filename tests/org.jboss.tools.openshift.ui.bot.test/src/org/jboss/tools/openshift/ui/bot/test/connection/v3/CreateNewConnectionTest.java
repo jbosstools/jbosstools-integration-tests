@@ -33,6 +33,7 @@ import org.jboss.tools.openshift.reddeer.utils.EmulatedLinkStyledText;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.AuthenticationMethod;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.ServerType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -73,7 +74,7 @@ public class CreateNewConnectionTest {
 		
 		explorer.openConnectionShell();
 		try {
-			explorer.connectToOpenShift3OAuth(DatastoreOS3.SERVER, DatastoreOS3.TOKEN, false, false);
+			explorer.connectToOpenShift(DatastoreOS3.SERVER, null, DatastoreOS3.TOKEN, false, false, ServerType.OPENSHIFT_3, OpenShiftExplorerView.AuthenticationMethod.OAUTH, false);
 		} catch (RedDeerException ex) {
 			fail("Creating an OpenShift v3 basic connection failed." + ex.getCause());
 		}

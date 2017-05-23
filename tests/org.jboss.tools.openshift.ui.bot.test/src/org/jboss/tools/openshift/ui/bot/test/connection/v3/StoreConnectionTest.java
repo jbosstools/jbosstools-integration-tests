@@ -10,14 +10,37 @@
  ******************************************************************************/
 package org.jboss.tools.openshift.ui.bot.test.connection.v3;
 
+import java.util.List;
+
+import org.jboss.reddeer.eclipse.equinox.security.ui.StoragePreferencePage;
+import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.SecureStorage;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.ServerType;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 @RequiredBasicConnection()
 public class StoreConnectionTest {
+	
+	@BeforeClass
+	public static void setupClass(){
+		StoragePreferencePage storagePreferencePage = new StoragePreferencePage();
+		WorkbenchPreferenceDialog preferences = new WorkbenchPreferenceDialog();
+		preferences.open();
+		preferences.select(storagePreferencePage);
+		List<TableItem> masterPasswordProviders = storagePreferencePage.getMasterPasswordProviders();
+		for (TableItem tableItem : masterPasswordProviders) {
+			if (tableItem.getText().contains("UI Prompt")){
+				tableItem.setChecked(true);
+			}else{
+				tableItem.setChecked(false);
+			}
+		}
+		preferences.ok();
+	}
 
 	@Test
 	public void shouldStoreAndRemovePassword() {

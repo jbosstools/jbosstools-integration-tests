@@ -157,12 +157,15 @@ public class OpenNewApplicationWizardWithNoProjectTest {
 		
 		new DefaultShell(OpenShiftLabel.Shell.CREATE_OS_PROJECT);
 		new LabeledText(OpenShiftLabel.TextLabels.PROJECT_NAME).setText(projectName);
+
 		new FinishButton().click();
 		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning());
 		
 		new DefaultShell(OpenShiftLabel.Shell.NEW_APP_WIZARD);
+		
+		boolean equals = new LabeledCombo(OpenShiftLabel.TextLabels.PROJECT).getSelection().equals(projectName);
 		assertTrue("Created project was not preselected for a new OpenShift application. Could be failing because "
 				+ "of https://issues.jboss.org/browse/JBIDE-21593.",
 				new LabeledCombo(OpenShiftLabel.TextLabels.PROJECT).getSelection().equals(projectName));
