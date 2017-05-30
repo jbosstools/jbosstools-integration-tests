@@ -19,6 +19,7 @@ import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftProject;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.CreateServerAdapterTest;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.ImportApplicationWizardTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.PublishChangesTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.ServerAdapterFromResourceTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.ServerAdapterWizardHandlingTest;
@@ -103,6 +104,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	PortForwardingTest.class,
 	LogsTest.class,
 	EditResourcesTest.class,
+	ImportApplicationWizardTest.class,
 
 	// Advanced application testing
  	DeployEclipseProjectTest.class,	

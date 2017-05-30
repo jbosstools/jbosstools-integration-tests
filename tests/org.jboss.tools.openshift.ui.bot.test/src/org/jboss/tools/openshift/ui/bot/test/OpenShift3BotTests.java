@@ -14,6 +14,7 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.openshift.reddeer.utils.CleanUpOS3;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.CreateServerAdapterTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.DebuggingEAPAppTest;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.ImportApplicationWizardTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.PublishChangesTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.ServerAdapterFromResourceTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.ServerAdapterWizardHandlingTest;
@@ -102,6 +103,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	LogsTest.class,
 	EditResourcesTest.class,
 	HandleCustomTemplateTest.class,
+	ImportApplicationWizardTest.class,
 
 	// Advanced application testing
  	DeployEclipseProjectTest.class,	
