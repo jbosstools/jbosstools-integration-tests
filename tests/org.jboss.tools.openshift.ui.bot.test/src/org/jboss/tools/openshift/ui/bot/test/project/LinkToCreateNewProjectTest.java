@@ -14,6 +14,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.common.exception.RedDeerException;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -35,7 +36,7 @@ import org.junit.Test;
 @CleanConnection
 public class LinkToCreateNewProjectTest {
 	
-	private String projectName = "testproject";
+	private String projectName = "os3-integration-test";
 	private boolean projectCreated = false;
 	
 	@Test
@@ -66,7 +67,6 @@ public class LinkToCreateNewProjectTest {
 		
 		new FinishButton().click();
 		projectCreated = true;
-		
 		new WaitWhile(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.CREATE_OS_PROJECT), TimePeriod.LONG);
 		
 		assertTrue("OpenShift project is not visible in OpenShift Explorer under the connection"
