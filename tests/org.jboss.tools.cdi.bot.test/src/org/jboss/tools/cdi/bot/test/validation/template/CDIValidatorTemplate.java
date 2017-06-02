@@ -90,7 +90,7 @@ public class CDIValidatorTemplate extends CDITestBase {
 			cdiValidatorPage.disableValidation();
 		}
 		String shellText = new DefaultShell().getText();
-		new PushButton("OK").click();
+		new PushButton("Apply and Close").click();
 		if (stateChanged) {
 			closeSettingsChangedShell();
 		}

@@ -11,7 +11,9 @@
 
 package org.jboss.tools.cdi.bot.test.wizard.template;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.reddeer.common.wait.AbstractWait;
@@ -26,7 +28,6 @@ import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
-import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -124,7 +125,7 @@ public class CDIWebProjectWizardTemplate{
 		openProjectProperties(projectName);
 		new DefaultTreeItem("CDI (Contexts and Dependency Injection) Settings").select();
 		boolean toReturn = new LabeledCheckBox("CDI support:").isChecked();
-		new OkButton().click();
+		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+projectName));
 		return toReturn;
 	}
@@ -134,7 +135,7 @@ public class CDIWebProjectWizardTemplate{
 		new DefaultTreeItem("Project Facets").select();
 		boolean result = new DefaultTreeItem(new DefaultTree(1),"CDI (Contexts and Dependency Injection)").isChecked();
 		result = result && new DefaultTreeItem(new DefaultTree(1),"CDI (Contexts and Dependency Injection)").getCell(1).equals(cdiVersion);
-		new PushButton("OK").click();
+		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+projectName), TimePeriod.NORMAL);
 		return result;
 	}
