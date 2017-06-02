@@ -11,7 +11,10 @@
 
 package org.jboss.tools.cdi.bot.test.wizard.template;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -23,17 +26,17 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.problems.Problem;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
+import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
-import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.junit.After;
 import org.junit.Test;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 
 public class ProjectWithCDITemplate{
 	
@@ -69,7 +72,7 @@ public class ProjectWithCDITemplate{
 		} else {
 			assertFalse(new LabeledCheckBox("CDI support:").isChecked());
 		}
-		new OkButton().click();
+		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+PROJECT_NAME));
 		new WaitUntil(new ProblemExists(ProblemType.ANY), TimePeriod.LONG, false);
 		if(expectedProblem != null){
@@ -89,13 +92,13 @@ public class ProjectWithCDITemplate{
 		if(cdiSupport.isChecked()){
 			cdiSupport.toggle(false);
 		}
-		new OkButton().click();
+		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+PROJECT_NAME));
 		openCDIPage();
 		cdiSupport = new LabeledCheckBox("CDI support:");
 		assertFalse(cdiSupport.isChecked());
 		cdiSupport.toggle(true);
-		new OkButton().click();
+		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+PROJECT_NAME));
 		new WaitUntil(new ProblemExists(ProblemType.ANY), TimePeriod.LONG, false);
 		if(expectedProblemAdded != null){
@@ -120,7 +123,7 @@ public class ProjectWithCDITemplate{
 		openCDIPage();
 		cdiSupport = new LabeledCheckBox("CDI support:");
 		assertTrue(cdiSupport.isChecked());
-		new OkButton().click();
+		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+PROJECT_NAME));
 	}
 	
@@ -131,13 +134,13 @@ public class ProjectWithCDITemplate{
 		if(!cdiSupport.isChecked()){
 			cdiSupport.toggle(true);
 		}
-		new OkButton().click();
+		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+PROJECT_NAME));
 		openCDIPage();
 		cdiSupport = new LabeledCheckBox("CDI support:");
 		assertTrue(cdiSupport.isChecked());
 		cdiSupport.toggle(false);
-		new OkButton().click();
+		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+PROJECT_NAME));
 		new WaitUntil(new ProblemExists(ProblemType.ANY), TimePeriod.LONG, false);
 		if(expectedProblemRemoved != null){
@@ -151,7 +154,7 @@ public class ProjectWithCDITemplate{
 		openCDIPage();
 		cdiSupport = new LabeledCheckBox("CDI support:");
 		assertFalse(cdiSupport.isChecked());
-		new OkButton().click();
+		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+PROJECT_NAME));
 	}
 	

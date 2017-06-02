@@ -50,7 +50,7 @@ public class ProjectHelper {
 			new PushButton("OK").click();
 			new WaitWhile(new ShellWithTextIsAvailable("JAR Selection"));
 		}
-		new PushButton("OK").click();
+		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+projectName));
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
