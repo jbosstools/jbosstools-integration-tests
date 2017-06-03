@@ -21,7 +21,6 @@ import org.jboss.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectInstallPage
 import org.jboss.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectWizard;
 import org.jboss.reddeer.eclipse.jst.j2ee.wizard.NewJ2EEComponentSelectionPage;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
@@ -33,7 +32,7 @@ import org.junit.Test;
  * 
  */
 @OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
 public class EARProjectTest extends AbstractMavenSWTBotTest{
 	
 	public static final String WAR_PROJECT_NAME="earWeb";

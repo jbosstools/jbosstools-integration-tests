@@ -3,7 +3,6 @@ package org.jboss.tools.maven.ui.bot.test.apt;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -14,6 +13,7 @@ import java.util.Scanner;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.platform.RunningPlatform;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
@@ -21,10 +21,9 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
 import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.dialogs.PropertyDialog;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.StyledText;
@@ -33,9 +32,7 @@ import org.jboss.reddeer.swt.api.TableItem;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.YesButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
@@ -54,7 +51,7 @@ import org.junit.After;
 import org.junit.Test;
 
 @OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
 public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 	
 	@InjectRequirement
@@ -216,14 +213,19 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 		AnnotationProcessingSettingsPage ap = new AnnotationProcessingSettingsPage();
 		pd.select(ap);
 		ap.setAnnotationProcessingMode(mode);
-		new OkButton().click();
 		boolean runUpdate = false;
-		try{
-			new DefaultShell("Maven Annotation Processing Settings");
-			new YesButton().click();
-		} catch (SWTLayerException ex){
-			runUpdate = true;
+		try {
+			pd.ok();
+		} catch (WaitTimeoutExpiredException ex) {
+			try{
+				new DefaultShell("Maven Annotation Processing Settings");
+				new YesButton().click();	
+			} catch (SWTLayerException e){
+				runUpdate = true;
+			}
 		}
+
+		
 		new WaitWhile(new ShellWithTextIsAvailable("Preferences"));
 		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 		if(runUpdate){
@@ -320,7 +322,7 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 	
 	
 	private void checkBuildPath(String project, List<String> paths, String additionalPath){
-		openProperties(project);
+		PropertyDialog pd = openPropertiesProject(project);
 		new DefaultTreeItem("Java Build Path").select();
 		new DefaultTabItem("Source").activate();
 		List<TreeItem> items = new DefaultTree(1).getItems();
@@ -337,12 +339,12 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 		if(additionalPath != null){
 			assertTrue("Build path items "+itemsPaths+" expected "+additionalPath,itemsPaths.contains(additionalPath));
 		}
-		new OkButton().click();
+		pd.ok();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+PROJECT_NAME));
 	}
 	
 	private void checkAnnotationProcessingSettings(String project, boolean enabled, String sourceDir, List<String>args){
-		openProperties(project);
+		PropertyDialog pd = openPropertiesProject(project);
 		new DefaultTreeItem("Java Compiler","Annotation Processing").select();
 		CheckBox c = new CheckBox("Enable annotation processing");
 		if(!enabled){
@@ -364,17 +366,17 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 			}
 			assertTrue(args.containsAll(compilerArgs));
 		}
-		new OkButton().click();
+		pd.ok();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+PROJECT_NAME));
 		
 	}
 	
 	private void prepareProject(){
 		createBasicMavenProject(PROJECT_NAME, PROJECT_NAME, "war","1.7");
-		openProperties(PROJECT_NAME);
+		PropertyDialog pd = openPropertiesProject(PROJECT_NAME);
 		new DefaultTreeItem("Targeted Runtimes").select();
 		new DefaultTableItem(sr.getRuntimeNameLabelText(sr.getConfig())).setChecked(true);
-		new OkButton().click();
+		pd.ok();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+PROJECT_NAME));
 		new WaitWhile(new JobIsRunning());
 		NewJavaClassWizardDialog jd = new NewJavaClassWizardDialog();
@@ -393,14 +395,6 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 		ed.save();
 		addDependency(PROJECT_NAME, "org.hibernate.javax.persistence", "hibernate-jpa-2.0-api", "1.0.1.Final");
 		addDependency(PROJECT_NAME, "org.hibernate", "hibernate-validator", "5.1.3.Final");
-	}
-	
-	private void openProperties(String project){
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.getProject(project).select();
-		new ContextMenu("Properties").select();
-		new DefaultShell("Properties for "+project);
 	}
 
 }

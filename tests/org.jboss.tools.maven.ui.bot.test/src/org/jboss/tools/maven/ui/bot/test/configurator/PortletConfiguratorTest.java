@@ -2,19 +2,17 @@ package org.jboss.tools.maven.ui.bot.test.configurator;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.DefineMavenRepository;
-import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.MavenRepository;
 import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.PredefinedMavenRepository;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasNature;
 import org.junit.Test;
 
 @OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
 @DefineMavenRepository(predefinedRepositories = { @PredefinedMavenRepository(ID="jboss-public-repository",snapshots=true) })
 public class PortletConfiguratorTest extends AbstractConfiguratorsTest{
 	

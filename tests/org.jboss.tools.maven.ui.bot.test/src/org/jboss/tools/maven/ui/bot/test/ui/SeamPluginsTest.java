@@ -6,12 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.swt.api.Shell;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.condition.ShellIsActive;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -25,8 +22,9 @@ public class SeamPluginsTest extends AbstractMavenSWTBotTest{
 	
 	@Test
 	public void testSeamIsNotPresent(){
-		new ShellMenu("Help","Installation Details").select();
-		Shell installationDetails = new DefaultShell(new WithTextMatcher(new RegexMatcher(".*Installation Details")));
+		new ShellMenu("Help","About Red Hat JBoss Developer Studio").select();
+		new PushButton("Installation Details").click();
+		new DefaultShell(new WithTextMatcher(new RegexMatcher(".*Installation Details")));
 		new DefaultTabItem("Plug-ins").activate();
 		new DefaultText().setText("seam");
 		Table pluginsTable = new DefaultTable();
@@ -45,7 +43,7 @@ public class SeamPluginsTest extends AbstractMavenSWTBotTest{
 			}
 		}
 		new PushButton("Close").click();
-		new WaitWhile(new ShellIsActive(installationDetails));
+		new PushButton("Close").click();
 		if(!foundSeamPlugins.isEmpty()){
 			fail("seam plugins " + foundSeamPlugins+ " is/are present but all seam2 plugins should be removed");
 		}

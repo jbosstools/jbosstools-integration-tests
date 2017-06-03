@@ -15,7 +15,7 @@ import static org.junit.Assert.fail;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.tools.central.reddeer.perspective.JBossPerspective;
+import org.jboss.tools.common.reddeer.perspectives.JBossPerspective;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Test;
 

@@ -1,6 +1,8 @@
 package org.jboss.tools.maven.ui.bot.test.sourcelookup;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,21 +12,19 @@ import java.io.IOException;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.eclipse.core.resources.Project;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.reddeer.maven.sourcelookup.ui.preferences.SourceLookupPreferencePage;
 import org.jboss.tools.maven.reddeer.maven.sourcelookup.ui.preferences.SourceLookupPreferencePage.SourceAttachment;
 import org.jboss.tools.maven.reddeer.preferences.MavenUserPreferencePage;
@@ -33,7 +33,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
 public class SourceLookupTest extends AbstractMavenSWTBotTest{
 	
 	private String nonMavenProjectName = "test13848";
