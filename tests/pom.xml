@@ -23,7 +23,6 @@
 		<integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots -Dusage_reporting_enabled=false -Dcom.atlassian.connector.eclipse.monitor.usage.first.time=false -Dcom.atlassian.connector.eclipse.monitor.usage.enabled=false ${junitExtensionsProperties}</integrationTestsSystemProperties>
 		<skipTests>true</skipTests>
 		<test.installPath.OSX></test.installPath.OSX>
-		<devstudio.repository>https://devstudio.redhat.com/10.0/snapshots/updates/</devstudio.repository>
 		<testProduct>com.jboss.devstudio.core.product</testProduct>
 	</properties>
 
@@ -176,7 +175,7 @@
 					<id>devstudio-repo</id>
 					<name>devstudio-repo</name>
 					<layout>p2</layout>
-					<url>${devstudio.repository}</url>
+					<url>${devstudioRepository}</url>
 				</repository>
 			</repositories>
 		</profile>
