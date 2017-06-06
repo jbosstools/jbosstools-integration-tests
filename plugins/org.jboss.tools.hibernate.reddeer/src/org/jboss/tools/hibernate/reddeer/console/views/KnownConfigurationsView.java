@@ -29,6 +29,7 @@ import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.jboss.tools.hibernate.reddeer.condition.ConfigrationsAreLoaded;
 import org.jboss.tools.hibernate.reddeer.console.EditConfigurationShell;
 
 /** 
@@ -104,12 +105,14 @@ public class KnownConfigurationsView extends WorkbenchView
 	}
 	
 	public List<TreeItem> getConsoleConfigurations(){
-		try{
-			Tree tree = new DefaultTree();
-			return tree.getItems();
+		Tree tree = null;
+		try {
+			tree = new DefaultTree();
 		} catch (RedDeerException e) {
 			return null;
 		}
+		new WaitUntil(new ConfigrationsAreLoaded(tree));
+		return tree.getItems();
 	}
 	
 	private class DatabaseTreeItemIsFound extends AbstractWaitCondition {
