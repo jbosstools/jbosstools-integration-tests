@@ -8,7 +8,6 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-
 package org.jboss.tools.jsf.ui.test.project;
 
 import static org.junit.Assert.assertTrue;
@@ -40,7 +39,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @DoNotUseVPE
-@JBossServer(type = ServerReqType.EAP7x, state = ServerReqState.RUNNING)
+@JBossServer(type = ServerReqType.EAP7_0, state = ServerReqState.RUNNING)
 public class ExportImportWARTest {
 
 	private static final String PROJECT_NAME = "JSFProject";

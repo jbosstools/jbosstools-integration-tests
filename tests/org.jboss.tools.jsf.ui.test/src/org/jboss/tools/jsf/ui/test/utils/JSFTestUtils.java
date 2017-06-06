@@ -51,11 +51,18 @@ public class JSFTestUtils {
 		}
 		assertEquals("Error log contains errors: \n" + errorsToString(logView.getErrorMessages()), 0,
 				errorMessages.size());
-		logView.deleteLog();
 	}
 
 	public static void createJSFProject(String projectName, String jsfEnvironment, String template) {
 		createJSFProject(projectName, jsfEnvironment, template, false);
+	}
+	
+	public static void deleteErrorLog() {
+		LogView errorLog = new LogView();
+		errorLog.open();
+		if(!errorLog.getErrorMessages().isEmpty() || !errorLog.getWarningMessages().isEmpty()) {
+			errorLog.deleteLog();
+		}
 	}
 
 	public static void createJSFProject(String projectName, String jsfEnvironment, String template,

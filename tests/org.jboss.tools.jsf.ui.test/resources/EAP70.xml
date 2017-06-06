@@ -3,12 +3,15 @@
 	xmlns="http://www.jboss.org/NS/Req" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:server="http://www.jboss.org/NS/ServerReq"
-	xsi:schemaLocation="http://www.jboss.org/NS/Req http://www.jboss.org/schema/reddeer/v1/RedDeerSchema.xsd http://www.jboss.org/NS/ServerReq http://www.jboss.org/schema/reddeer/v1/JBossServerRequirements.xsd">
+	xsi:schemaLocation="http://www.jboss.org/NS/Req 
+						http://www.jboss.org/schema/reddeer/v1/RedDeerSchema.xsd 
+						http://www.jboss.org/NS/ServerReq 
+						file:///home/odockal/JBossServerRequirements.xsd">
 
 	<requirements>
-		<server:jboss-server-requirement name="EAP-7.x">
+		<server:jboss-server-requirement name="EAP-7.0">
 			<server:type>
-				<server:familyEAP version="7.x"></server:familyEAP>
+				<server:familyEAP version="7.0"></server:familyEAP>
 			</server:type>
 			<server:runtime>${jbosstools.test.jboss-eap-7.0.home}</server:runtime>
 		</server:jboss-server-requirement>
