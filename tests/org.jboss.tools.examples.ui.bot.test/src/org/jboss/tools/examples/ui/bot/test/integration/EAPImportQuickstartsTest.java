@@ -36,7 +36,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 @RunWith(RedDeerSuite.class)
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
 @DefineMavenRepository(propDefMavenRepo = @PropertyDefinedMavenRepository(ID = "test", snapshots = true) )
-@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.EAP7x)
+@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.EAP7_0)
 public class EAPImportQuickstartsTest extends AbstractImportQuickstartsTest {
 	public static final String SERVER_NAME ="Enterprise Application Platform";
 	public static final String BLACKLIST_FILE = "resources/servers/eap-blacklist";

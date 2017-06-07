@@ -171,13 +171,13 @@
 								</configuration>
 							</execution>
 							<execution>
-								<id>install-eap-7.x</id>
+								<id>install-eap-7.0</id>
 								<phase>pre-integration-test</phase>
 								<goals>
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>${jbosstools.test.jboss-eap-7.x.url}</url>
+									<url>${jbosstools.test.jboss-eap-7.0.url}</url>
 									<unpack>true</unpack>
 								</configuration>
 							</execution>
