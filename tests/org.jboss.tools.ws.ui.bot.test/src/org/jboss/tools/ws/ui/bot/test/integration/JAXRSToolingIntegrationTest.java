@@ -55,7 +55,7 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 	
 	@Override
 	public void cleanup() {
-		/* minimize web service tester */
+		/* close web service tester */
 		wsTesterView.close();
 		ServersViewHelper.removeAllProjectsFromServer(getConfiguredServerName());
 	}
@@ -67,79 +67,26 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 
 	@Test
 	public void testGetMethod() {
-		/* get JAX-RS REST Web Services */
-		restWebServicesNode = new RESTfulWebServicesNode(projectName);
-
-		/* run on server - web service tester should be shown */
-		runRestServiceOnServer("GET");
-		assertWebServiceTesterIsActive();
-		wsTesterView.open();
-
-		/* test generated url and response after invoking */
-		assertEquals(serviceUrl + "get", wsTesterView.getServiceURL());
-
-		invokeMethodInWSTester(wsTesterView, RequestType.GET);
-		assertEquals("GET method", wsTesterView.getResponseBody());
-		assertEquals("[HTTP/1.1 200 OK]", wsTesterView.getResponseHeaders()[0]);
+		testRequestType(RequestType.GET);
 	}
 
 	@Test
 	public void testPostMethod() {
-		/* get JAX-RS REST Web Services */
-		restWebServicesNode = new RESTfulWebServicesNode(projectName);
-	
-		/* run on server - web service tester should be shown */
-		runRestServiceOnServer("POST");
-		assertWebServiceTesterIsActive();
-		wsTesterView.open();//workaround for RedDeer that won't allow to close view until it the open() method was called
-
-		/* test generated url and response after invoking */
-		assertEquals(serviceUrl + "post", wsTesterView.getServiceURL());
-
-		invokeMethodInWSTester(wsTesterView, RequestType.POST);
-		assertEquals("POST method", wsTesterView.getResponseBody());
-		assertEquals("[HTTP/1.1 200 OK]", wsTesterView.getResponseHeaders()[0]);
+		testRequestType(RequestType.POST);
 	}
 
 	@Test
 	public void testPutMethod() {
-		/* get JAX-RS REST Web Services */
-		restWebServicesNode = new RESTfulWebServicesNode(projectName);
-
-		/* run on server - web service tester should be shown */
-		runRestServiceOnServer("PUT");
-		assertWebServiceTesterIsActive();
-		wsTesterView.open();
-
-		/* test generated url and response after invoking */
-		assertEquals(serviceUrl + "put", wsTesterView.getServiceURL());
-
-		invokeMethodInWSTester(wsTesterView, RequestType.PUT);
-		assertEquals("PUT method", wsTesterView.getResponseBody());
-		assertEquals("[HTTP/1.1 200 OK]", wsTesterView.getResponseHeaders()[0]);
+		testRequestType(RequestType.PUT);
 	}
 
 	@Test
 	public void testDeleteMethod() {
-		/* get JAX-RS REST Web Services */
-		restWebServicesNode = new RESTfulWebServicesNode(projectName);
-
-		/* run on server - web service tester should be shown */
-		runRestServiceOnServer("DELETE");
-		assertWebServiceTesterIsActive();
-		wsTesterView.open();
-
-		/* test generated url and response after invoking */
-		assertEquals(serviceUrl + "delete", wsTesterView.getServiceURL());
-
-		invokeMethodInWSTester(wsTesterView, RequestType.DELETE);
-		assertEquals("DELETE method", wsTesterView.getResponseBody());
-		assertEquals("[HTTP/1.1 200 OK]", wsTesterView.getResponseHeaders()[0]);
+		testRequestType(RequestType.DELETE);
 	}
 
 	@Test
 	public void testUnavailableServiceMethod() {
-		/* get JAX-RS REST Web Services */
 		restWebServicesNode = new RESTfulWebServicesNode(projectName);
 
 		/* run on server - web service tester should be shown */
@@ -157,4 +104,23 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 		assertTrue("There is no header", wsTesterView.getResponseHeaders().length > 0);
 		assertEquals("[HTTP/1.1 405 Method Not Allowed]", wsTesterView.getResponseHeaders()[0]);
 	}
+	
+	private void testRequestType(RequestType type) {
+		restWebServicesNode = new RESTfulWebServicesNode(projectName);
+
+		/* run on server - web service tester should be shown */
+		runRestServiceOnServer(type.name());
+		assertWebServiceTesterIsActive();
+		
+		//workaround for RedDeer that won't allow to close view until it the open() method was called
+		wsTesterView.open();
+
+		/* test generated url and response after invoking */
+		assertEquals(serviceUrl + type.name().toLowerCase(), wsTesterView.getServiceURL());
+		
+		invokeMethodInWSTester(wsTesterView, type);
+		assertEquals(type.name() + " method", wsTesterView.getResponseBody());
+		assertEquals("[HTTP/1.1 200 OK]", wsTesterView.getResponseHeaders()[0]);
+	}
+
 }

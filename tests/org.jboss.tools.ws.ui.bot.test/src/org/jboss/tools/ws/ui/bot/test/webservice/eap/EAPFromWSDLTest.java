@@ -110,7 +110,7 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 	}
 
 	private void testService() {
-		topDownWS(TopDownWSTest.class.getResourceAsStream("/resources/jbossws/AreaService.wsdl"),
+		createTopDownWS(TopDownWSTest.class.getResourceAsStream("/resources/jbossws/AreaService.wsdl"),
 				WebServiceRuntime.JBOSS_WS, getWsPackage(), false);
 
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(getWsProjectName());

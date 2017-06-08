@@ -155,7 +155,7 @@ public class TopDownWSTest extends WebServiceTestBase {
 	}
 	
 	protected void topDownWS(String pkg) {
-		topDownWS(
+		createTopDownWS(
 				TopDownWSTest.class.getResourceAsStream("/resources/jbossws/ClassB.wsdl"),
 				WebServiceRuntime.JBOSS_WS, pkg, true);
 		

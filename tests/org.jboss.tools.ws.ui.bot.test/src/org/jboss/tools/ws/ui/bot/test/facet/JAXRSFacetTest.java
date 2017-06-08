@@ -19,16 +19,17 @@ import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.uiforms.impl.hyperlink.DefaultHyperlink;
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
@@ -91,7 +92,7 @@ public class JAXRSFacetTest extends RESTfulTestBase {
 		new DefaultTreeItem("Project Facets").select();
 		
 		new DefaultTreeItem(new DefaultTree(1), "JAX-RS (REST Web Services)").setChecked(true);
-		assertTrue("OK Button should be enabled.", getOkButton().isEnabled());
+		assertTrue("Apply and Close Button should be enabled.", getApplyAndCloseButton().isEnabled());
 		
 		handleAdditionalConfiguration();
 	}
@@ -99,9 +100,9 @@ public class JAXRSFacetTest extends RESTfulTestBase {
 	private void confirmProjectProperties() {
 		new DefaultShell(PROJECT_PROPERTIES);
 		
-		Button okButton = getOkButton();
-		assertTrue("OK Button should be enabled.", okButton.isEnabled());
-		okButton.click();
+		Button applyAndCloseButton = getApplyAndCloseButton();
+		assertTrue("Apply and Close Button should be enabled.", applyAndCloseButton.isEnabled());
+		applyAndCloseButton.click();
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(20), false);
 		
@@ -114,7 +115,7 @@ public class JAXRSFacetTest extends RESTfulTestBase {
 		new DefaultShell("Modify Faceted Project");
 		new LabeledCombo("Type:").setSelection("Pure JEE6 Implementation");
 		
-		Button okButton = getOkButton();
+		Button okButton = new OkButton();
 		assertTrue("OK Button should be enabled.", okButton.isEnabled());
 		okButton.click();
 		
@@ -123,13 +124,13 @@ public class JAXRSFacetTest extends RESTfulTestBase {
 		/** workaround **/
 		new DefaultHyperlink().activate();
 		new DefaultShell("Modify Faceted Project");
-		getOkButton().click();
+		new OkButton().click();
 		
 		new WaitWhile(new ShellWithTextIsActive("Modify Faceted Project"));
 		/** end of workaround **/
 	}
 	
-	private Button getOkButton() {
-		return new PushButton("OK");
+	private Button getApplyAndCloseButton() {
+		return new PushButton("Apply and Close");
 	}
 }
