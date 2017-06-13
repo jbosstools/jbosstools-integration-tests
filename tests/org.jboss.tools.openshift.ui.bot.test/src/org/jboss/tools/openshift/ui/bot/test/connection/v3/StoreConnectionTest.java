@@ -33,7 +33,8 @@ public class StoreConnectionTest {
 		preferences.select(storagePreferencePage);
 		List<TableItem> masterPasswordProviders = storagePreferencePage.getMasterPasswordProviders();
 		for (TableItem tableItem : masterPasswordProviders) {
-			if (tableItem.getText().contains("UI Prompt")){
+			// The second part of this if is because https://issues.jboss.org/browse/JBIDE-24567
+			if (tableItem.getText().contains("UI Prompt") ||tableItem.getText().contains("secureStorageProvider.name")){
 				tableItem.setChecked(true);
 			}else{
 				tableItem.setChecked(false);
