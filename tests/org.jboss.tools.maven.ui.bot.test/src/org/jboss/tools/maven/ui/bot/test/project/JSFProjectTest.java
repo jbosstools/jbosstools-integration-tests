@@ -16,7 +16,6 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectFirstPage;
@@ -26,7 +25,7 @@ import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Test;
 
 @OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
 public class JSFProjectTest extends AbstractMavenSWTBotTest{
 	public static final String POM_FILE = "pom.xml";
 	public static final String PROJECT_NAME7="JSFProject7";
@@ -41,17 +40,6 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
     @InjectRequirement
     private ServerRequirement sr;
     
-    /*
-    @BeforeClass
-    public static void openPerspective(){
-        new ShellMenu("Window","Open Perspective","Other...").select();
-        new DefaultShell("Open Perspective");
-        new DefaultTableItem("Web Development").select();
-        new OkButton().click();
-        new WaitWhile(new ShellWithTextIsAvailable("Open Perspective"));
-    }
-
-	*/
 	@Test
 	public void createJSFProjectTest_AS7_JSFv2(){
 		createJSFProject(PROJECT_NAME7, "JSF 2.0", "JSFKickStartWithoutLibs", sr.getRuntimeNameLabelText(sr.getConfig()));

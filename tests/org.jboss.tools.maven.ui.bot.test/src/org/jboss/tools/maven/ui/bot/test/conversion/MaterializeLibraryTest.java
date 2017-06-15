@@ -14,14 +14,17 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
+import org.jboss.reddeer.eclipse.ui.dialogs.PropertyDialog;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
@@ -32,9 +35,6 @@ import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +43,7 @@ import org.junit.Test;
  * 
  */
 @OpenPerspective(JavaPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
 public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 	
 	private String projectName = "example";
@@ -86,10 +86,7 @@ public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 	}
 	
 	private void testExcludedResources(String project) throws Exception{
-		PackageExplorer pexplorer = new PackageExplorer();
-		pexplorer.open();
-		pexplorer.getProject(project).select();
-		new ContextMenu("Properties").select();
+		PropertyDialog pd = openPropertiesPackage(project);
 		new WaitUntil(new ShellWithTextIsActive("Properties for "+project),TimePeriod.NORMAL);
 		new DefaultTreeItem("Java Build Path").select();
 		new DefaultTabItem("Source").activate();
@@ -100,7 +97,7 @@ public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 				assertTrue("(None) expected in Excluded patterns",item.getText().endsWith("(None)"));
 			}
 		}
-		new PushButton("OK").click();
+		pd.ok();
 		new WaitWhile(new ShellWithTextIsActive("Properties for "+project),TimePeriod.NORMAL);
 		deleteProjects(true);
 	}

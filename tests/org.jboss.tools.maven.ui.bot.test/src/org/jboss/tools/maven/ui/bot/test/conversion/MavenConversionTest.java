@@ -20,6 +20,7 @@ import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.eclipse.condition.ProblemExists;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.eclipse.ui.dialogs.PropertyDialog;
 import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
 import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
@@ -52,7 +53,7 @@ import org.junit.After;
 import org.junit.Test;
 
 @OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
 @DefineMavenRepository(
 		predefinedRepositories = { 
 				@PredefinedMavenRepository(ID="jboss-public-repository",snapshots=true) },
@@ -82,11 +83,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new CheckBox("Delete original references from project").toggle(true);
 		finishConversionDialog();
 		checkProblemsAndResolve();
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.getProject(WEB_PROJECT_NAME).select();
-		new ContextMenu("Properties").select();
-		new DefaultShell("Properties for "+WEB_PROJECT_NAME);
+		PropertyDialog pd = openPropertiesProject(WEB_PROJECT_NAME);
 		new DefaultTreeItem("Java Build Path").select();
 		new DefaultTabItem("Libraries").activate();
 		List<TreeItem> it = new DefaultTree(1).getItems();
@@ -100,7 +97,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
                 fail("Some dependencies are missing after conversion");
             }
         }
-		new PushButton("OK").click();
+		pd.ok();
 		new WaitWhile(new ShellWithTextIsActive("Properties for "+WEB_PROJECT_NAME),TimePeriod.NORMAL);
 	}
 	
@@ -110,11 +107,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new CheckBox("Delete original references from project").toggle(false);
 		finishConversionDialog();
 		checkProblemsAndResolve();
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.getProject(WEB_PROJECT_NAME).select();
-		new ContextMenu("Properties").select();
-		new DefaultShell("Properties for "+WEB_PROJECT_NAME);
+		PropertyDialog pd = openPropertiesProject(WEB_PROJECT_NAME);
 		new DefaultTreeItem("Java Build Path").select();
 		new DefaultTabItem("Libraries").activate();
 		List<TreeItem> it = new DefaultTree(1).getItems();
@@ -137,7 +130,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 						libs.get(i).contains(sr.getRuntimeNameLabelText(sr.getConfig())));
 			}
 		}
-		new PushButton("OK").click();
+		pd.ok();
 		new WaitWhile(new ShellWithTextIsActive("Properties for "+WEB_PROJECT_NAME),TimePeriod.NORMAL);
 	}
 	

@@ -19,9 +19,20 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.Scanner;
 
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.jboss.reddeer.common.logging.Logger;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
+import org.jboss.reddeer.common.wait.AbstractWait;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.core.matcher.WithTextMatchers;
 import org.jboss.reddeer.eclipse.condition.ProjectExists;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -33,15 +44,12 @@ import org.jboss.reddeer.eclipse.m2e.core.ui.wizard.MavenProjectWizard;
 import org.jboss.reddeer.eclipse.m2e.core.ui.wizard.MavenProjectWizardArtifactPage;
 import org.jboss.reddeer.eclipse.m2e.core.ui.wizard.MavenProjectWizardPage;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.exception.CoreLayerException;
+import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
+import org.jboss.reddeer.eclipse.ui.dialogs.PropertyDialog;
 import org.jboss.reddeer.swt.api.StyledText;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.exception.SWTLayerException;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
@@ -58,18 +66,10 @@ import org.jboss.reddeer.workbench.handler.EditorHandler;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.core.matcher.WithTextMatchers;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.tools.maven.reddeer.preferences.MavenPreferencePage;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsBuilt;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.jboss.tools.maven.reddeer.preferences.MavenPreferencePage;
 
 public abstract class AbstractMavenSWTBotTest{
 	
@@ -106,17 +106,14 @@ public abstract class AbstractMavenSWTBotTest{
 	}
 	
 	public boolean hasNature(String projectName, String version, String... natureID){
-		PackageExplorer pexplorer = new PackageExplorer();
-		pexplorer.open();
-		pexplorer.getProject(projectName).select();
-		new ContextMenu("Properties").select();
+		PropertyDialog pd = openPropertiesProject(projectName);
 		new WaitUntil(new ShellWithTextIsActive("Properties for "+projectName), TimePeriod.NORMAL);
 		new DefaultTreeItem("Project Facets").select();
 		boolean result = new DefaultTreeItem(new DefaultTree(1),natureID).isChecked();
 		if(version!=null){
 			result = result && new DefaultTreeItem(new DefaultTree(1),natureID).getCell(1).equals(version);
 		}
-		new PushButton("OK").click();
+		pd.ok();
 		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+projectName), TimePeriod.NORMAL);
 		return result;
 	}
@@ -332,6 +329,24 @@ public abstract class AbstractMavenSWTBotTest{
 			}
 			new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 		}
+	}
+	
+	public PropertyDialog openPropertiesProject(String project){
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		Project explorerProject = pe.getProject(project);
+		PropertyDialog pd = new ExplorerItemPropertyDialog(explorerProject);
+		pd.open();
+		return pd;
+	}
+	
+	public PropertyDialog openPropertiesPackage(String project){
+		PackageExplorer pe = new PackageExplorer();
+		pe.open();
+		Project explorerProject = pe.getProject(project);
+		PropertyDialog pd = new ExplorerItemPropertyDialog(explorerProject);
+		pd.open();
+		return pd;
 	}
 	
 }

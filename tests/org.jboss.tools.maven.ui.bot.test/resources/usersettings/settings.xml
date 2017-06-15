@@ -10,6 +10,6 @@
 		</profile>
   </profiles>
 	<activeProfiles>
-		<activeProfile>auto.activated.settings</activeProfile>
+		<activeProfile>auto.activated.settings</activeProfile>  
   </activeProfiles>
 </settings>

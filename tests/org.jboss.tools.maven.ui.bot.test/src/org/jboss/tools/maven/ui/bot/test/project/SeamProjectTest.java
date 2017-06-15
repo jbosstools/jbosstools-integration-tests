@@ -14,35 +14,34 @@ package org.jboss.tools.maven.ui.bot.test.project;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.eclipse.datatools.ui.DriverDefinition;
 import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
 import org.jboss.reddeer.eclipse.datatools.ui.preference.DriverDefinitionPreferencePage;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
 import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionWizard;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasErrors;
+import org.jboss.tools.seam.reddeer.perspective.SeamPerspective;
 import org.jboss.tools.seam.reddeer.preferences.SeamPreferencePage;
 import org.jboss.tools.seam.reddeer.wizards.SeamProjectDialog;
 import org.jboss.tools.seam.reddeer.wizards.SeamProjectFifthPage;
 import org.jboss.tools.seam.reddeer.wizards.SeamProjectFirstPage;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.jboss.tools.seam.reddeer.perspective.SeamPerspective;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 /**
  * @author Rastislav Wagner
  * 
  */
 @OpenPerspective(SeamPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY8x)
+@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
 public class SeamProjectTest extends AbstractMavenSWTBotTest {
     
     @InjectRequirement
