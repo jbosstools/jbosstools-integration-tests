@@ -8,7 +8,6 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-
 package org.jboss.tools.jsf.ui.test.project;
 
 import static org.junit.Assert.assertTrue;
@@ -19,6 +18,9 @@ import java.io.File;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitWhile;
+import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
@@ -40,7 +42,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @DoNotUseVPE
-@JBossServer(type = ServerReqType.EAP7x, state = ServerReqState.RUNNING)
+@JBossServer(type = ServerReqType.EAP7_0, state = ServerReqState.RUNNING)
 public class ExportImportWARTest {
 
 	private static final String PROJECT_NAME = "JSFProject";
@@ -100,6 +102,7 @@ public class ExportImportWARTest {
 		ImportWebWarWizardPage importPage = new ImportWebWarWizardPage();
 		importPage.setWarLocation(new File(WAR_FILE_LOCATION).getAbsolutePath());
 		importPage.setName(NEW_PROJECT_NAME);
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG, false);
 		importDialog.finish();
 	}
 

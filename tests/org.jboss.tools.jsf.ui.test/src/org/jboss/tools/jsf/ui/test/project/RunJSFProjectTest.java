@@ -47,7 +47,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 @RunWith(RedDeerSuite.class)
 @DoNotUseVPE
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
-@JBossServer(type = ServerReqType.EAP7x, state = ServerReqState.RUNNING)
+@JBossServer(type = ServerReqType.EAP7_0, state = ServerReqState.RUNNING)
 public class RunJSFProjectTest {
 
 	protected static final String PROJECT_NAME_BASE = "JSFTestProject";
@@ -75,6 +75,7 @@ public class RunJSFProjectTest {
 	@Before
 	public void setup() {
 		JSFTestUtils.createJSFProject(projectName, jsfEnvironment, template, false);
+		JSFTestUtils.deleteErrorLog();
 	}
 
 	@After

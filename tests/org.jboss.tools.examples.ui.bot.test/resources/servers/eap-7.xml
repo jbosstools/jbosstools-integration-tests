@@ -7,9 +7,9 @@
 						http://www.jboss.org/NS/ServerReq http://www.jboss.org/schema/reddeer/JBossServerRequirements.xsd">
 
 	<requirements>
-		<server:jboss-server-requirement name="EAP-7.x">
+		<server:jboss-server-requirement name="EAP-7.0">
 			<server:type>
-				<server:familyEAP version="7.x"></server:familyEAP>
+				<server:familyEAP version="7.0"></server:familyEAP>
 			</server:type>
 			<server:runtime>${jbosstools.test.eap7.home}</server:runtime>
 		</server:jboss-server-requirement>
