@@ -12,11 +12,25 @@ package org.jboss.tools.openshift.ui.bot.test.application.v3.adapter;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Scanner;
 import java.util.function.Predicate;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.ui.internal.wizards.datatransfer.SmartImportJob;
 import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -31,7 +45,6 @@ import org.jboss.reddeer.eclipse.debug.core.BreakpointsView;
 import org.jboss.reddeer.eclipse.debug.core.DebugView;
 import org.jboss.reddeer.eclipse.debug.core.VariablesView;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.perspectives.DebugPerspective;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
@@ -43,6 +56,7 @@ import org.jboss.reddeer.junit.screenshot.CaptureScreenshotException;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.api.TreeItem;
 import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
@@ -50,7 +64,6 @@ import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.exception.WorkbenchLayerException;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
@@ -58,12 +71,14 @@ import org.jboss.tools.openshift.reddeer.preference.page.JavaDebugPreferencePage
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement.OCBinary;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement.RequiredProject;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftServiceRequirement.RequiredService;
+import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter;
 import org.jboss.tools.openshift.reddeer.view.resources.ServerAdapter.Version;
-import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.condition.BrowserIsReadyElseReloadCondition;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.condition.SuspendedTreeItemIsReady;
-import org.jboss.tools.openshift.ui.bot.test.application.v3.create.AbstractCreateApplicationTest;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -75,9 +90,24 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @OCBinary
 @RequiredBasicConnection
-public class DebuggingEAPAppTest extends AbstractCreateApplicationTest {
+@RequiredProject
+@RequiredService(service = "eap-app", template = "resources/eap70-basic-s2i-helloworld.json")
+public class DebuggingEAPAppTest {
 
 	private static Logger LOGGER = new Logger(DebuggingEAPAppTest.class);
+
+	private static final String GIT_REPO_URL = "https://github.com/jboss-developer/jboss-eap-quickstarts";
+
+	private static final String GIT_REPO_DIRECTORY = "target/git_repo";
+
+	private static final String PROJECT_NAME = "helloworld";
+
+	private static String requestResponse = null;
+
+	private static int tempCount = 0;
+
+	@InjectRequirement
+	private static OpenShiftProjectRequirement projectReq;
 
 	@InjectRequirement
 	private OpenShiftConnectionRequirement requiredConnection;
@@ -85,6 +115,8 @@ public class DebuggingEAPAppTest extends AbstractCreateApplicationTest {
 
 	@BeforeClass
 	public static void setupClass() {
+		cloneGitRepoAndImportProject();
+
 		doNotSuspendOnUncaughtExceptions();
 
 		toggleAutoBuild(false);
@@ -103,9 +135,50 @@ public class DebuggingEAPAppTest extends AbstractCreateApplicationTest {
 		cleanAndBuildWorkspace();
 	}
 
+	private static void cloneGitRepoAndImportProject() {
+		cloneGitRepository();
+		importProjectUsingSmartImport();
+	}
+
+	private static void cloneGitRepository() {
+		try {
+			Git.cloneRepository().setURI(GIT_REPO_URL).setDirectory(new File(GIT_REPO_DIRECTORY)).call();
+		} catch (GitAPIException e) {
+			throw new RuntimeException("Unable to clone git repository from " + GIT_REPO_URL);
+		}
+	}
+
+	@SuppressWarnings("restriction")
+	private static void importProjectUsingSmartImport() {
+		SmartImportJob job = new SmartImportJob(new File(GIT_REPO_DIRECTORY + File.separator + PROJECT_NAME),
+				Collections.emptySet(), true, true);
+		HashSet<File> directory = new HashSet<File>();
+		directory.add(new File(GIT_REPO_DIRECTORY + File.separator + PROJECT_NAME));
+		job.setDirectoriesToImport(directory);
+		job.run(new NullProgressMonitor());
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+	}
+
 	@AfterClass
 	public static void tearDownClass() {
 		toggleAutoBuild(true);
+		cleanProjectsAndGitRepo();
+	}
+
+	private static void cleanProjectsAndGitRepo() {
+		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+		for (IProject iProject : projects) {
+			try {
+				iProject.delete(false, new NullProgressMonitor());
+			} catch (CoreException e) {
+				throw new RuntimeException("Unable to delete project " + iProject.getName(), e);
+			}
+		}
+		try {
+			TestUtils.delete(new File(GIT_REPO_DIRECTORY));
+		} catch (IOException e) {
+			throw new RuntimeException("Deletion of git repo was unsuccessfull.", e);
+		}
 	}
 
 	@Before
@@ -179,7 +252,7 @@ public class DebuggingEAPAppTest extends AbstractCreateApplicationTest {
 	private static void cleanAndBuildWorkspace() {
 		new ShellMenu("Project", "Clean...").select();
 		new DefaultShell("Clean");
-		new OkButton().click();
+		new PushButton("Clean").click();
 		new WaitWhile(new JobIsRunning());
 	}
 
@@ -198,11 +271,13 @@ public class DebuggingEAPAppTest extends AbstractCreateApplicationTest {
 	private void checkNewVariableValueIsPropagatedToBrowser() {
 
 		clickResume();
+		new WaitUntil(new AbstractWaitCondition() {
 
-		BrowserEditor browserEditor = new BrowserEditor("helloworld");
-		browserEditor.activate();
-		String text = browserEditor.getText();
-		assertTrue(text.contains("NewWorld"));
+			@Override
+			public boolean test() {
+				return ((requestResponse != null) && requestResponse.contains("NewWorld"));
+			}
+		});
 
 	}
 
@@ -254,19 +329,13 @@ public class DebuggingEAPAppTest extends AbstractCreateApplicationTest {
 
 			@Override
 			public boolean test() {
-				return tIList.stream()
-						.peek(ti -> LOGGER.debug(ti.getText()))
-						.filter(ti -> ti.getText().contains("createHelloMessage"))
-						.findFirst()
-						.isPresent();
+				return tIList.stream().peek(ti -> LOGGER.debug(ti.getText()))
+						.filter(ti -> ti.getText().contains("createHelloMessage")).findFirst().isPresent();
 			}
 		});
 
-		createHelloMessageDebugItem = tIList.stream()
-				.peek(ti -> LOGGER.debug(ti.getText()))
-				.filter(ti -> ti.getText().contains("createHelloMessage"))
-				.findFirst()
-				.get();
+		createHelloMessageDebugItem = tIList.stream().peek(ti -> LOGGER.debug(ti.getText()))
+				.filter(ti -> ti.getText().contains("createHelloMessage")).findFirst().get();
 		// select the item and return it
 		createHelloMessageDebugItem.select();
 		return createHelloMessageDebugItem;
@@ -318,34 +387,34 @@ public class DebuggingEAPAppTest extends AbstractCreateApplicationTest {
 	}
 
 	private void triggerDebugSession() {
-		serverAdapter.select();
-		new ContextMenu("Show In", "Web Browser").select();
-		try {
-			new WaitUntil(new BrowserIsReadyElseReloadCondition(serverAdapter));
-		} catch (WaitTimeoutExpiredException e) {
-			throw e;
-		}
-		new WaitUntil(new AbstractWaitCondition() {
-
-			@Override
-			public boolean test() {
-				TextEditor currentEditor = null;
+		Thread thread = new Thread(new Runnable() {
+			public void run() {
 				try {
-					currentEditor = new TextEditor();
-				} catch (WorkbenchLayerException ex) {
-					// current editor is not TextEditor
-					return false;
+					requestResponse = null;
+					URL url = new URL(String.format("http://eap-app-%s.%s.nip.io/HelloWorld",
+							projectReq.getProjectName(), getIpFromHostURL(requiredConnection.getHost())));
+					HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+					connection.connect();
+					while (connection.getResponseCode() == 404 || connection.getResponseCode() == 503
+							|| connection.getResponseCode() == 500) {
+						connection.disconnect();
+						connection = (HttpURLConnection) url.openConnection();
+						connection.connect();
+					}
+					InputStream inputStream = connection.getInputStream();
+					Scanner scanner = new Scanner(inputStream).useDelimiter("\\A");
+					requestResponse = scanner.next();
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				if (currentEditor.getTitle().contains("HelloService.java")) {
-					// textEditor is active.
-					return true;
-				}
-				// try to reload again
-				serverAdapter.select();
-				new ContextMenu("Show In", "Web Browser").select();
-				return false;
 			}
-		}, TimePeriod.NORMAL, false);
+		});
+		thread.start();
+	}
+
+	private String getIpFromHostURL(String host) {
+		String[] split = host.split(":");
+		return split[1].substring(2);
 	}
 
 	private ProjectItem getHelloServiceFile() {
@@ -367,7 +436,8 @@ public class DebuggingEAPAppTest extends AbstractCreateApplicationTest {
 
 	private static void createServerAdapter() {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
-		explorer.getOpenShift3Connection().getProject().getService("eap-app").createServerAdapter();
+		explorer.getOpenShift3Connection().getProject(projectReq.getProjectName()).getService("eap-app")
+				.createServerAdapter();
 	}
 
 	private static void disableShowConsoleWhenOutputChanges() {
