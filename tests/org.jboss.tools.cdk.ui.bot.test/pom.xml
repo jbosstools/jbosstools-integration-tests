@@ -34,6 +34,12 @@
 				<suiteClass>org.jboss.tools.cdk.ui.bot.test.CDKSmokeTestsSuite</suiteClass>
 			</properties>
 		</profile>
+		<profile>
+			<id>cdk3-all-tests</id>
+			<properties>
+				<suiteClass>org.jboss.tools.cdk.ui.bot.test.CDK3AllTestsSuite</suiteClass>
+			</properties>
+		</profile>
 	</profiles>
 
 	<build>
