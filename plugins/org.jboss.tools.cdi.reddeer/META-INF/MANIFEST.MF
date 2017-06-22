@@ -21,7 +21,7 @@ Export-Package: org.jboss.tools.cdi.reddeer,
  org.jboss.tools.cdi.reddeer.xhtml
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
+ org.jboss.reddeer.go;bundle-version="[1.2.2,2.0.0)",
  org.jboss.tools.common.reddeer;bundle-version="[3.9.0,3.10.0)",
  org.junit,
  org.eclipse.text,
