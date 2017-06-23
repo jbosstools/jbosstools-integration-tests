@@ -16,6 +16,7 @@
 		<systemProperties>
 			${integrationTestsSystemProperties} -Dtest.configurations.dir=${configurations.dir} -Dopenshift.server=${openshift.server} -Dopenshift.xserver=${openshift.xserver} -Dopenshift.username=${openshift.username} -Dopenshift.password=${openshift.password} -Dopenshift.token=${openshift.token} -Dgithub.username=${github.username} -Dgithub.password=${github.password} -Dopenshift.authmethod=${openshift.authmethod} -Dsecurestorage.password=${securestorage.password} -Dopenshift.nexus.mirror=${openshift.nexus.mirror}
 		</systemProperties>
+		<test.class>org.jboss.tools.openshift.ui.bot.test.OpenShift3SmokeBotTests</test.class>
 		<surefire.timeout>10800</surefire.timeout>
 		<openshift.server></openshift.server>
 		<openshift.xserver></openshift.xserver>
@@ -37,7 +38,7 @@
 				<configuration>
 					<appArgLine>-pluginCustomization ${basedir}/pluginCustomization.ini</appArgLine>
 					<testSuite>org.jboss.tools.openshift.ui.bot.test</testSuite>
-					<testClass>org.jboss.tools.openshift.ui.bot.test.OpenShift${scope}BotTests</testClass>
+					<testClass>${test.class}</testClass>
 					<systemProperties>
 						<org.osgi.framework.bundle.parent>ext</org.osgi.framework.bundle.parent>
 					</systemProperties>
@@ -66,6 +67,10 @@
 	<profiles>
 		<profile>
 			<id>check-pr</id>
+			<properties>
+				<test.class>org.jboss.tools.openshift.ui.bot.test.OpenShift3PRCheckTests</test.class>
+			</properties>
+			
 			<build>
 				<plugins>
 					<plugin>
