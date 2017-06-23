@@ -39,7 +39,7 @@ public class TestSupport {
 		 * https://issues.jboss.org/browse/JBDS-2441
 		 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=385272
 		 */
-		new PushButton(new WithTextMatcher(new RegexMatcher("OK|ok"))).click();
+		new PushButton(new WithTextMatcher(new RegexMatcher("&Open"))).click();
 		
 		DefaultTree RepoTree = new DefaultTree();
 		List<TreeItem> repoItems = RepoTree.getAllItems();
