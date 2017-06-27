@@ -13,7 +13,7 @@
 	<properties>
 		<suiteClass>org.jboss.tools.perf.test.PerfAllBotTests</suiteClass>
 		<surefire.timeout>21600</surefire.timeout>
-		<systemProperties>-DPerfMonitor.repURL=http://localhost:8180/PerfServer/rest/rep -DPerfMonitor.project=JBDS -DPerfMonitor.build=420Beta2 -DPerfMonitor.testsuite=ValidationPerfTest -DPerfMonitor.platform=Lin_8x2.8Ghz_6GB -Djava.library.path=${basedir}/../../plugins/org.jboss.tools.perf.test.core/hyperic-sigar-1.6.5/sigar-bin/lib</systemProperties>
+		<systemProperties>-DPerfMonitor.repURL=http://localhost:8180/PerfServer/rest/rep -DPerfMonitor.project=JBDS -DPerfMonitor.build=420Beta2 -DPerfMonitor.testsuite=ValidationPerfTest -DPerfMonitor.platform=Lin_8x2.8Ghz_6GB -Djava.library.path=${basedir}/../../plugins/org.jboss.tools.perf/hyperic-sigar-1.6.5/sigar-bin/lib</systemProperties>
 	</properties>
 	<build>
 		<plugins>
