@@ -1,8 +1,8 @@
 package org.jboss.tools.ws.ui.bot.test.uiutils;
 
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import org.hamcrest.core.Is;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.core.resources.Project;
 import org.jboss.reddeer.core.condition.JobIsRunning;
@@ -10,6 +10,7 @@ import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.common.wait.AbstractWait;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.common.reddeer.label.IDELabel;
@@ -33,11 +34,12 @@ public class PropertiesDialog {
 		projectExplorer.open();
 		Project project = projectExplorer.getProject(projectName);
 		project.select();
-	
+		AbstractWait.sleep(TimePeriod.SHORT);
+		
 		// Open Project Properties
-		assertThat("Project name", project.getName(), Is.is(projectName));
-		assertThat("Project with name '" + projectName + "' is selected",
-				project.isSelected(), Is.is(true));
+		assertEquals("Project name", projectName, project.getName());
+		assertTrue("Project with name '" + projectName + "' is selected",
+				project.isSelected());
 	
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new ShellMenu(IDELabel.Menu.PROJECT, IDELabel.Menu.PROPERTIES).select();
@@ -51,15 +53,12 @@ public class PropertiesDialog {
 	 * Confirms and closes the dialog.
 	 */
 	public void finish() {
-		new DefaultShell(IDELabel.Shell.PROPERTIES_FOR + " " + projectName);
-		new PushButton(IDELabel.Button.OK).click();
-		new WaitWhile(new ShellWithTextIsAvailable(IDELabel.Shell.PROPERTIES_FOR + " " + projectName), TimePeriod.LONG);
-		new WaitWhile(new JobIsRunning());
+		finish(TimePeriod.NORMAL);
 	}
 	
 	public void finish(TimePeriod timeout) {
         new DefaultShell(IDELabel.Shell.PROPERTIES_FOR + " " + projectName);
-		new PushButton(IDELabel.Button.OK).click();
+		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellWithTextIsAvailable(IDELabel.Shell.PROPERTIES_FOR + " " + projectName), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), timeout);
 	}

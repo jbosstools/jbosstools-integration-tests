@@ -225,8 +225,8 @@ public class ProjectHelper {
 		new WaitWhile(new JobIsRunning());
 		new ShellMenu(IDELabel.Menu.PROJECT, "Clean...").select();
 		new DefaultShell("Clean");
-		new RadioButton("Clean all projects").click();
-		new PushButton(IDELabel.Button.OK).click();
+		new CheckBox("Clean all projects").toggle(true);
+		new PushButton("Clean").click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG, false);
 	}
 

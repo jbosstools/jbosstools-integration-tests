@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jst.ws.jaxws.ui,
  org.eclipse.jst.ws.cxf.ui;bundle-version="1.0.200",
  org.hamcrest.core;bundle-version="1.3.0",
- org.jboss.tools.common.reddeer;bundle-version="[3.9.0,3.10.0)"
+ org.jboss.tools.common.reddeer;bundle-version="[3.9.0,3.10.0)",
+ org.jboss.reddeer.workbench
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Eclipse-RegisterBuddy: org.apache.log4j

@@ -110,7 +110,7 @@ public class EAPFromJavaTest extends WebServiceTestBase {
 		} catch (CoreException e) {
 			LOGGER.log(Level.WARNING, e.getMessage(), e);
 		}
-		bottomUpWS(EAPFromJavaTest.class.getResourceAsStream("/resources/jbossws/Echo.java.ws"),
+		createBottomUpWS(EAPFromJavaTest.class.getResourceAsStream("/resources/jbossws/Echo.java.ws"),
 				WebServiceRuntime.JBOSS_WS, false);
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(getWsProjectName());
 		IFile f = project.getFile("WebContent/WEB-INF/web.xml");

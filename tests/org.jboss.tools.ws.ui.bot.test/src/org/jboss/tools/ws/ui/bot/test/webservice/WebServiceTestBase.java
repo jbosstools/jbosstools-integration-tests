@@ -67,72 +67,26 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 		ServersViewHelper.removeAllProjectsFromServer(getConfiguredServerName());
 	}
 	
-	protected void bottomUpWS(InputStream input, WebServiceRuntime serviceRuntime, boolean useDefaultProjects) {
-		String source = ResourceHelper.readStream(input);
-		String src = MessageFormat.format(source, getWsPackage(), getWsName());
+	protected void createBottomUpWS(InputStream input, WebServiceRuntime serviceRuntime, boolean useDefaultProjects) {
 		createService(ServiceType.BOTTOM_UP, getWsPackage() + "."
-				+ getWsName(), getLevel(), null, src, serviceRuntime, useDefaultProjects);
+				+ getWsName(), getLevel(), null, input, serviceRuntime, useDefaultProjects);
 	}
 
-	protected void topDownWS(InputStream input, WebServiceRuntime serviceRuntime, String pkg, boolean useDefaultProjects) {
-		String s = ResourceHelper.readStream(input);
-		String[] tns = getWsPackage().split("\\.");
-		StringBuilder sb = new StringBuilder();
-		for (int i = tns.length - 1; i > 0; i--) {
-			sb.append(tns[i]);
-			sb.append(".");
-		}
-		sb.append(tns[0]);
-		String src = MessageFormat.format(s, sb.toString(), getWsName());
+	protected void createTopDownWS(InputStream input, WebServiceRuntime serviceRuntime, String pkg, boolean useDefaultProjects) {
 		createService(ServiceType.TOP_DOWN, "/" + getWsProjectName() + "/src/"
-				+ getWsName() + ".wsdl", getLevel(), pkg, src, serviceRuntime, useDefaultProjects);
-	}
+				+ getWsName() + ".wsdl", getLevel(), pkg, input, serviceRuntime, useDefaultProjects);
+	}	
 
 	private void createService(ServiceType type, String source,
-			SliderLevel level, String pkg, String code, WebServiceRuntime serviceRuntime, boolean useDefaultProjects) {
-		// create ws source - java class or wsdl
-		switch (type) {
-			case BOTTOM_UP:
-				TextEditor editor = ProjectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());
-				assertNotNull(editor);
-
-				// replace default content of java class w/ code
-				editor.setText(code);
-				editor.save();
-				editor.close();
-				break;
-			case TOP_DOWN:
-				DefaultEditor ed = ProjectHelper.createWsdl(getWsProjectName(),getWsName());
-				assertNotNull(ed);
-				StyledText text = new DefaultStyledText();
-				assertNotNull(text);
-			
-				text.setText(code);
-				ed.save();
-				ed.close();
-				break;
-		}
+			SliderLevel level, String pkg, InputStream input, WebServiceRuntime serviceRuntime, boolean useDefaultProjects) {
 		
+		createSource(type, input);
 		ProjectHelper.cleanAllProjects();
 
-		// create a web service
 		WebServiceWizard wizard = new WebServiceWizard();
 		wizard.open();
-
-		WebServiceFirstWizardPage page = new WebServiceFirstWizardPage();
-		page.setServiceType(type);
-		page.setSource(source);
-		page.setServerRuntime(getConfiguredServerName());
-		page.setWebServiceRuntime(serviceRuntime.getName());
-		if (!useDefaultProjects) {
-			page.setServiceProject(getWsProjectName());
-			page.setServiceEARProject(getEarProjectName());
-		}
-		new DefaultShell("Web Service");
-		page.setServiceSlider(level);
-		if (page.isClientEnabled()) {
-			page.setClientSlider(SliderLevel.NO_CLIENT);
-		}
+		fillFirstWizardPage(type, source, level, serviceRuntime, useDefaultProjects);
+		
 		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.getCustom(5), false);
 		wizard.next();
 
@@ -155,17 +109,91 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 			wizard.finish();
 		}
 
-		// let's fail if there's some error in the wizard,
-		// and close error dialog and the wizard so other tests
-		// can continue
-		if (new DefaultShell() != null) {
-			if (new DefaultShell().getText().contains("Error")) {
-				String msg = new DefaultText().getText();
+		checkWizardErrors(wizard);
+	}
+
+	/**
+	 * Let's fail if there's some error in the wizard,
+	 * and close error dialog and the wizard so other tests can continue
+	 * @param wizard
+	 */
+	private void checkWizardErrors(WebServiceWizard wizard) {		
+		DefaultShell activeShell = new DefaultShell();
+		if (activeShell != null) {
+			String shellText = activeShell.getText();
+			if (shellText.contains("Error")) {
 				new PushButton(0).click();
 				wizard.cancel();
-				Assert.fail(msg);	
+				Assert.fail(shellText);	
 			}
 		}
+	}
+
+	private void fillFirstWizardPage(ServiceType type, String source, SliderLevel level,
+			WebServiceRuntime serviceRuntime, boolean useDefaultProjects) {
+		
+		WebServiceFirstWizardPage page = new WebServiceFirstWizardPage();
+		page.setServiceType(type);
+		page.setSource(source);
+		page.setServerRuntime(getConfiguredServerName());
+		page.setWebServiceRuntime(serviceRuntime.getName());
+		if (!useDefaultProjects) {
+			page.setServiceProject(getWsProjectName());
+			page.setServiceEARProject(getEarProjectName());
+		}
+		new DefaultShell("Web Service");
+		page.setServiceSlider(level);
+		if (page.isClientEnabled()) {
+			page.setClientSlider(SliderLevel.NO_CLIENT);
+		}
+	}
+
+	private void createSource(ServiceType type, InputStream input) {
+		String source = getServiceSource(type, input);
+		switch (type) {
+			case BOTTOM_UP:
+				TextEditor editor = ProjectHelper.createClass(getWsProjectName(), getWsPackage(), getWsName());
+				assertNotNull(editor);
+
+				// replace default content of java class w/ code
+				editor.setText(source);
+				editor.save();
+				editor.close();
+				break;
+			case TOP_DOWN:
+				DefaultEditor ed = ProjectHelper.createWsdl(getWsProjectName(),getWsName());
+				assertNotNull(ed);
+				StyledText text = new DefaultStyledText();
+				assertNotNull(text);
+			
+				text.setText(source);
+				ed.save();
+				ed.close();
+				break;
+		}
+	}
+	
+	private String getServiceSource(ServiceType type, InputStream input) {
+		String source = ResourceHelper.readStream(input);
+		switch (type) {
+			case BOTTOM_UP:
+				return MessageFormat.format(source, getWsPackage(), getWsName());		
+			case TOP_DOWN:
+				return MessageFormat.format(source, getTopDownReplacement(), getWsName());				
+			default:
+				throw new IllegalArgumentException("Unknown service type.");
+		}
+	}
+	
+	private String getTopDownReplacement() {
+		String[] tns = getWsPackage().split("\\.");
+		StringBuilder sb = new StringBuilder();
+		for (int i = tns.length - 1; i > 0; i--) {
+			sb.append(tns[i]);
+			sb.append(".");
+		}
+		sb.append(tns[0]);
+		return sb.toString();
 	}
 
 	private void checkErrorDialog(WizardDialog openedWizard) {

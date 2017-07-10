@@ -92,7 +92,7 @@ public class BottomUpWSTest extends WebServiceTestBase {
 	}
 
 	protected void bottomUpJbossWebService() {
-		bottomUpWS(BottomUpWSTest.class.getResourceAsStream("/resources/jbossws/ClassA.java.ws"),
+		createBottomUpWS(BottomUpWSTest.class.getResourceAsStream("/resources/jbossws/ClassA.java.ws"),
 				WebServiceRuntime.JBOSS_WS, true);
 		switch (getLevel()) {
 			case DEVELOP:

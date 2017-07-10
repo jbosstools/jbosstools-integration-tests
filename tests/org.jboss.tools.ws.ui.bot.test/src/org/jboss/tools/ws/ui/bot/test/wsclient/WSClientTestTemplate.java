@@ -46,6 +46,13 @@ public class WSClientTestTemplate extends SOAPTestBase {
 	public void undeploy() {
 		ServersViewHelper.removeAllProjectsFromServer(getConfiguredServerName());
 	}
+	
+	@After
+	@Override
+	public void cleanup() {
+		super.cleanup();
+		deleteAllPackages();
+	}
 
 	@Override
 	protected String getWsProjectName() {
@@ -105,13 +112,6 @@ public class WSClientTestTemplate extends SOAPTestBase {
 	public void testDefaultPkg() {
 		setLevel(SliderLevel.ASSEMBLE);
 		clientTest(null);
-	}
-
-	@After
-	@Override
-	public void cleanup() {
-		super.cleanup();
-		deleteAllPackages();
 	}
 
 	protected void clientTest(String targetPkg) {
