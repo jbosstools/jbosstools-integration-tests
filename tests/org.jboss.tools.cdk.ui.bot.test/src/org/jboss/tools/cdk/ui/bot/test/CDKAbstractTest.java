@@ -23,7 +23,7 @@ public abstract class CDKAbstractTest {
 	
 	public static final String CREDENTIALS_DOMAIN = "access.redhat.com"; //$NON-NLS-1$
 	
-	public static final String CDK_SERVER_NAME = "Red Hat Container Development Kit"; //$NON-NLS-1$
+	public static final String CDK_SERVER_NAME = "Red Hat Container Development Kit 2.x"; //$NON-NLS-1$
 
 	public static final String CDK3_SERVER_NAME = "Red Hat Container Development Kit 3"; //$NON-NLS-1$
 	
