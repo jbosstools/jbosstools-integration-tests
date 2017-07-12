@@ -252,8 +252,36 @@
 							<testClass>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</testClass>
 						</configuration>
 					</plugin>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>target-platform-configuration</artifactId>
+						<configuration>
+							<dependency-resolution>
+								<extraRequirements>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>com.ianbrandt.tools.m2e.mdp.feature.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+									<requirement>
+										<type>p2-installable-unit</type>
+										<id>com.coderplus.m2e.jaxws.feature.group</id>
+										<versionRange>0.0.0</versionRange>
+									</requirement>
+								</extraRequirements>
+							</dependency-resolution>
+						</configuration>
+					</plugin>
 				</plugins>
 			</build>
+			<repositories>
+				<repository>
+					<id>jaxws-repo</id>
+					<name>jaxws-repo</name>
+					<layout>p2</layout>
+					<url>http://coderplus.com/m2e-update-sites/jaxws-maven-plugin/</url>
+				</repository>
+			</repositories>
 		</profile>
 		<profile>
 			<id>SmokeTestsWildFly10</id>
