@@ -12,17 +12,38 @@ package org.jboss.tools.openshift.ui.bot.test.connection.v3;
 
 import java.util.List;
 
+import org.eclipse.equinox.internal.security.storage.friends.InternalExchangeUtils;
+import org.eclipse.equinox.security.storage.ISecurePreferences;
+import org.eclipse.equinox.security.storage.SecurePreferencesFactory;
+import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.jboss.reddeer.common.wait.TimePeriod;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
 import org.jboss.reddeer.eclipse.equinox.security.ui.StoragePreferencePage;
 import org.jboss.reddeer.swt.api.TableItem;
+import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
+import org.jboss.reddeer.swt.impl.button.BackButton;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
+import org.jboss.reddeer.swt.impl.button.NextButton;
+import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.tools.openshift.reddeer.condition.CentralIsLoaded;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement.RequiredProject;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
+import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.SecureStorage;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.ServerType;
+import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 @RequiredBasicConnection()
+@RequiredProject
 public class StoreConnectionTest {
 	
 	@BeforeClass
@@ -41,6 +62,59 @@ public class StoreConnectionTest {
 			}
 		}
 		preferences.ok();
+	}
+	
+	@Test
+	public void secureStorageDisabledJBIDE19604Test() {
+		deleteSecureStorage();
+		
+		invokeNewAppWizardFromCentral();
+		
+		new CheckBox(OpenShiftLabel.TextLabels.STORE_PASSWORD).toggle(true);
+		new NextButton().click();
+		
+		//Cancel secure storage shell
+		new DefaultShell("Secure Storage Password");
+		new CancelButton().click();
+		
+		//Cancel warning shell
+		new DefaultShell("Warning");
+		new OkButton().click();
+		new CheckBox(OpenShiftLabel.TextLabels.STORE_PASSWORD).toggle(false);
+		
+		//Next button should work
+		new NextButton().click();
+		AbstractWaitCondition backButtonIsEnabled = new AbstractWaitCondition() {
+			
+			@Override
+			public boolean test() {
+				return new BackButton().isEnabled();
+			}
+		};
+		new WaitUntil(backButtonIsEnabled);
+		
+		new CancelButton().click();
+	}
+
+	private void invokeNewAppWizardFromCentral() {
+		new DefaultToolItem(new WorkbenchShell(), OpenShiftLabel.Others.RED_HAT_CENTRAL).click();
+		
+		new WaitUntil(new CentralIsLoaded());
+		
+		new InternalBrowser().execute(OpenShiftLabel.Others.OPENSHIFT_CENTRAL_SCRIPT);
+	
+		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.NEW_APP_WIZARD),
+				TimePeriod.LONG);
+		new DefaultShell("New OpenShift Application");
+	}
+	
+	private void deleteSecureStorage() {
+		ISecurePreferences defaultStorage = SecurePreferencesFactory.getDefault();
+		defaultStorage.clear();
+		defaultStorage.removeNode();
+
+		// clear it from the list of open storages, delete the file 
+		InternalExchangeUtils.defaultStorageDelete();
 	}
 
 	@Test
