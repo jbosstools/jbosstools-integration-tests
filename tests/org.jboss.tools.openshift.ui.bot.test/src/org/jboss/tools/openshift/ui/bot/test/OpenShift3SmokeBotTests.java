@@ -20,6 +20,7 @@ import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShiftProject;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.CreateServerAdapterTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.ImportApplicationWizardTest;
+import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.DebuggingEAPAppTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.PublishChangesTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.ServerAdapterFromResourceTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.ServerAdapterWizardHandlingTest;
@@ -114,6 +115,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	// Server adapter
 	ServerAdapterWizardHandlingTest.class,
 	CreateServerAdapterTest.class,
+	DebuggingEAPAppTest.class,
 	ServerAdapterFromResourceTest.class,
 	PublishChangesTest.class
 })

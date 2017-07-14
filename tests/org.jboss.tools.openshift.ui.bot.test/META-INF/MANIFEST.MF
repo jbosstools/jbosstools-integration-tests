@@ -24,7 +24,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jdt.debug;bundle-version="3.10.0",
  org.eclipse.wst.jsdt.debug.core;bundle-version="3.1.300",
  org.eclipse.debug.core;bundle-version="3.10.100",
- org.eclipse.jface
+ org.eclipse.jface,
+ org.eclipse.jgit;bundle-version="4.8.0",
+ org.eclipse.ui.ide;bundle-version="3.13.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Eclipse-BundleShape: jar
