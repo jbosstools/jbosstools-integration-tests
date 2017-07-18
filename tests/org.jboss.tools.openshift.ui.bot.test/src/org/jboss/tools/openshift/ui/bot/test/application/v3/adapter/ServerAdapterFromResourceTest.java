@@ -138,7 +138,7 @@ public class ServerAdapterFromResourceTest {
 		assertAdapterWorks();
 	}
 	
-	@Test(expected = OpenshiftTestInFailureException.class)
+	@Test
 	public void testAdapterFromCReplicationController() {
 		project.getOpenShiftResource(Resource.DEPLOYMENT_CONFIG, serviceReq.getService().getName()).delete();
 		
