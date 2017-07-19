@@ -24,6 +24,7 @@ import org.jboss.reddeer.swt.impl.group.DefaultGroup;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftResources;
 import org.jboss.tools.openshift.reddeer.wizard.importapp.GitCloningWizardPage;
 import org.jboss.tools.openshift.reddeer.wizard.importapp.ImportApplicationWizard;
+import org.jboss.tools.openshift.ui.bot.test.common.OpenshiftTestInFailureException;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -84,8 +85,7 @@ public class ImportApplicationWizardGitTest extends ImportApplicationBase{
 		importWizard.cancel();	
 	}	
 	
-	@Test
-	@Ignore
+	@Test(expected=OpenshiftTestInFailureException.class)
 	public void testNotExistingBranch() {
 		Git repo = createRepo();
 		setRemote(repo, getOriginURL());
@@ -98,7 +98,12 @@ public class ImportApplicationWizardGitTest extends ImportApplicationBase{
 		
 		GitCloningWizardPage gitCloningWizardPage = new GitCloningWizardPage();
 		gitCloningWizardPage.useExistingRepository(true);
-		assertGitRemoteErrorInWizzard(importWizard);
+		try {
+			assertGitRemoteErrorInWizzard(importWizard);
+		}catch(AssertionError err){
+			importWizard.cancel();
+			throw new OpenshiftTestInFailureException("https://issues.jboss.org/browse/JBIDE-24646", err);
+		}
 		
 		importWizard.cancel();
 	}	

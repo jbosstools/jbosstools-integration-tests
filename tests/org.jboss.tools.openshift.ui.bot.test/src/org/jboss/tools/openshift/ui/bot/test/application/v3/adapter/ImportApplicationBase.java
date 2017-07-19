@@ -40,8 +40,7 @@ import org.junit.runner.RunWith;
 @OCBinary
 @RequiredBasicConnection
 @RequiredProject(
-		name = DatastoreOS3.TEST_PROJECT, 
-		cleanup = true)
+		name = DatastoreOS3.TEST_PROJECT)
 @RequiredService(
 		project = DatastoreOS3.TEST_PROJECT, 
 		service = OpenShiftResources.NODEJS_SERVICE, 
