@@ -25,6 +25,7 @@ import org.jboss.reddeer.swt.api.Browser;
 import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
 import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
@@ -89,7 +90,10 @@ public class CreateNewConnectionTest {
 
 		EmulatedLinkStyledText linkText = new EmulatedLinkStyledText(OpenShiftLabel.TextLabels.RETRIEVE_TOKEN);
 		linkText.click(linkText.getPositionOfText(OpenShiftLabel.TextLabels.LINK_RETRIEVE) + 3);
-
+		
+		new DefaultShell("Untrusted SSL Certificate");
+		new YesButton().click();
+		
 		new WaitUntil(new ShellWithTextIsActive(""));
 		final InternalBrowser internalBrowser = new InternalBrowser();
 

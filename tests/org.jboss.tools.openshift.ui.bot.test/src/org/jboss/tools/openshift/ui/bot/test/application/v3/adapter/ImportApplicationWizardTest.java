@@ -21,6 +21,7 @@ import org.jboss.reddeer.core.util.Display;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.reddeer.swt.impl.button.CancelButton;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement.OCBinary;
@@ -155,6 +156,7 @@ public class ImportApplicationWizardTest {
 	private void assertProjectNameFilled() {
 		String inputProjectName = new LabeledText("Eclipse Project: ").getText();
 		if(!OpenShiftResources.NODEJS_GIT_NAME.equals(inputProjectName)) {
+			new CancelButton().click();
 			throw new OpenshiftTestInFailureException("https://issues.jboss.org/browse/JBDS-4446");
 		}
 	}
