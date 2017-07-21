@@ -57,6 +57,7 @@ import org.jboss.reddeer.swt.impl.button.OkButton;
 import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.workbench.exception.WorkbenchLayerException;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.central.reddeer.api.ExamplesOperator;
@@ -232,7 +233,11 @@ public abstract class AbstractImportQuickstartsTest {
 		cleanupShells();
 		deleteAllProjects();
 		closeBrowser();
-		new ConsoleView().clearConsole();
+		try {
+			new ConsoleView().clearConsole();
+		} catch (WorkbenchLayerException ex) {
+			//Swallowing exception - ConsoleView is not opened
+		}
 	}
 
 	protected void runQuickstarts(Quickstart qstart, String serverName, String blacklistFile) {
@@ -364,37 +369,57 @@ public abstract class AbstractImportQuickstartsTest {
 	}
 
 	protected void importQuickstart(Quickstart quickstart) throws NoProjectException {
-		ExtendedMavenImportWizard mavenImportWizard = new ExtendedMavenImportWizard();
-		mavenImportWizard.open();
-		MavenImportWizardFirstPage wizPage = new MavenImportWizardFirstPage();
-		try {
-			wizPage.setRootDirectory(quickstart.getPath().getAbsolutePath());
-		} catch (WaitTimeoutExpiredException e) {
-			cleanupShells();
-			throw new NoProjectException();
-		}
-		try {
-			mavenImportWizard.finish();
-		} catch (MavenImportWizardException e) {
-			for (String error : e.getErrors()) {
-				reporter.addError(quickstart, error);
+		if (!quickstartImported(quickstart)) {
+			ExtendedMavenImportWizard mavenImportWizard = new ExtendedMavenImportWizard();
+			mavenImportWizard.open();
+			MavenImportWizardFirstPage wizPage = new MavenImportWizardFirstPage();
+			try {
+				wizPage.setRootDirectory(quickstart.getPath().getAbsolutePath());
+			} catch (WaitTimeoutExpiredException e) {
+				cleanupShells();
+				throw new NoProjectException();
+			}
+			try {
+				mavenImportWizard.finish();
+			} catch (MavenImportWizardException e) {
+				for (String error : e.getErrors()) {
+					reporter.addError(quickstart, error);
+				}
 			}
 		}
+	}
+	
+	private boolean quickstartImported(Quickstart qstart) {
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
+		List<Project> projects = projectExplorer.getProjects();
+		for (Project p : projects) {
+			if (p.getName().equals(qstart.getName())){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void importTestUtilsIfNeeded(Quickstart qstart) {
 		for (String error : ExamplesOperator.getInstance().getAllErrors()) {
 			if (error.contains("Missing artifact org.javaee7:test-utils")) {
 				Quickstart testUtils = new Quickstart("test-utils",
-						qstart.getPath().getAbsolutePath().replace(qstart.getName(), "test-utils"));
+						qstart.getPath().getAbsolutePath().replaceAll(qstart.getName()+"$", "test-utils"));
 				importQuickstart(testUtils);
-				break;
+				continue;
 			}
 			if (error.contains("Missing artifact org.javaee7:util")) {
-				Quickstart testUtils = new Quickstart("util",
-						qstart.getPath().getAbsolutePath().replace(qstart.getName(), "test-utils"));
-				importQuickstart(testUtils);
-				break;
+				Quickstart util = new Quickstart("util",
+						qstart.getPath().getAbsolutePath().replaceAll(qstart.getName()+"$", "util"));
+				importQuickstart(util);
+				continue;
+			}
+			if (error.contains("Missing artifact org.javaee7:jaspic-common")) {
+				Quickstart jaspicCommon = new Quickstart("jaspic-common",
+						qstart.getPath().getAbsolutePath().replaceAll(qstart.getName()+"$", "jaspic" + File.separator + "common"));
+				importQuickstart(jaspicCommon);
+				continue;
 			}
 		}
 	}
