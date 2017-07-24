@@ -37,8 +37,6 @@ import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.SecureStorage;
-import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.ServerType;
-import org.jboss.tools.openshift.reddeer.wizard.v3.NewOpenShift3ApplicationWizard;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -119,12 +117,12 @@ public class StoreConnectionTest {
 
 	@Test
 	public void shouldStoreAndRemovePassword() {
-		SecureStorage.storeOpenShiftPassword(DatastoreOS3.USERNAME, DatastoreOS3.SERVER, ServerType.OPENSHIFT_3);
+		SecureStorage.storeOpenShiftPassword(DatastoreOS3.USERNAME, DatastoreOS3.SERVER);
 		SecureStorage.verifySecureStorageOfPassword(
-				DatastoreOS3.USERNAME, DatastoreOS3.SERVER.substring(8), true, ServerType.OPENSHIFT_3);
+				DatastoreOS3.USERNAME, DatastoreOS3.SERVER.substring(8), true);
 
-		SecureStorage.removeOpenShiftPassword(DatastoreOS3.USERNAME, DatastoreOS3.SERVER, ServerType.OPENSHIFT_3);
+		SecureStorage.removeOpenShiftPassword(DatastoreOS3.USERNAME, DatastoreOS3.SERVER);
 		SecureStorage.verifySecureStorageOfPassword(
-				DatastoreOS3.USERNAME, DatastoreOS3.SERVER.substring(8), false, ServerType.OPENSHIFT_3);
+				DatastoreOS3.USERNAME, DatastoreOS3.SERVER.substring(8), false);
 	}	
 }

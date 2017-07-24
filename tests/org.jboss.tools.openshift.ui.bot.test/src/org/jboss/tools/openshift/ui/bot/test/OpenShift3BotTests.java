@@ -11,7 +11,6 @@
 package org.jboss.tools.openshift.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.openshift.reddeer.utils.CleanUpOS3;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.CreateServerAdapterTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.DebuggingEAPAppTest;
 import org.jboss.tools.openshift.ui.bot.test.application.v3.adapter.ImportApplicationWizardTest;
@@ -117,9 +116,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	ServerAdapterFromResourceTest.class,
  	PublishChangesTest.class,
  	DebuggingEAPAppTest.class,
-
-	// Clean up
-	CleanUpOS3.class 
 })
 public class OpenShift3BotTests {
 	
