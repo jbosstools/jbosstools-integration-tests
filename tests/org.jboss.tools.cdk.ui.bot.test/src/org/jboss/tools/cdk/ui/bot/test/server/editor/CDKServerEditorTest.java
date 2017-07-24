@@ -52,7 +52,7 @@ public class CDKServerEditorTest extends CDKServerWizardAbstractTest {
 	}
 	
 	@Test
-	public void testCDK3ServerEditor() {
+	public void testCDKServerEditor() {
 		addCDKServer(VAGRANTFILE_PATH);
 		setServerEditor();
 		assertTrue(editor.getUsernameLabel().getText().equalsIgnoreCase("sub_username"));
