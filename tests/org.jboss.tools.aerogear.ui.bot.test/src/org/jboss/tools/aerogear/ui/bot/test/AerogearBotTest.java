@@ -26,9 +26,11 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.exception.CoreLayerException;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
@@ -91,7 +93,7 @@ public class AerogearBotTest {
 	 */
 	public static void createHTMLHybridMobileApplication(String projectName, String appName, String appId, ThymPlatform engine, 
 			String engineVersion) {
-
+		
 		NewHybridProjectWizard w = new NewHybridProjectWizard();
 		w.open();
 		
@@ -115,6 +117,10 @@ public class AerogearBotTest {
 		w.finish();
 		//check if config editor was opened & close
 		new ConfigEditor(appName).close();
+		
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		assertTrue(pe.getProject(projectName).containsItem("platforms",engine.getText().toLowerCase()));
 	}
 
 	public void runTreeItemInAndroidEmulator(String projectName) {

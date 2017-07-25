@@ -10,26 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.jboss.reddeer.jface.wizard.WizardDialog;
+import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 
-
-/**
- * Reddeer implementation for Hybrid Mobile (Cordova) Application Project wizard.
- * @author Pavol Srna
- *
- */
-public class NewHybridProjectWizard extends NewWizardDialog {
-
-	/**
-	 * Constructs the wizard with Mobile > Hybrid Mobile (Cordova) Application Project
-	 */
-	public NewHybridProjectWizard() {
-		super("Mobile", "Hybrid Mobile (Cordova) Application Project");
-	}
+public class CordovaPluginWizard extends WizardDialog{
 	
-	public void finish(){
-		this.finish(TimePeriod.LONG);
+	public CordovaPluginWizard() {
+		new DefaultShell("Cordova Plug-in Discovery");
 	}
 
 }

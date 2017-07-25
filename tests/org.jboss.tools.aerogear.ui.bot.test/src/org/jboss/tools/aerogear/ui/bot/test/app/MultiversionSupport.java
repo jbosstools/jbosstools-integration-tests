@@ -20,11 +20,20 @@ import org.jboss.tools.aerogear.reddeer.cordovasim.CordovaSimLauncher;
 import org.jboss.tools.aerogear.reddeer.thym.ui.config.ConfigEditor;
 import org.jboss.tools.aerogear.reddeer.thym.ui.properties.EnginePropertyPage;
 import org.jboss.tools.aerogear.reddeer.thym.ui.properties.EnginePropertyPage.Platform;
+import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.CordovaPluginSelectionPage;
+import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.CordovaPluginWizard;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
+import org.eclipse.swt.widgets.Label;
+import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.core.condition.WidgetIsFound;
+import org.jboss.reddeer.core.matcher.ClassMatcher;
+import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
+import org.jboss.reddeer.swt.impl.label.DefaultLabel;
 import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.junit.Before;
@@ -70,7 +79,17 @@ public class MultiversionSupport extends AerogearBotTest {
 		getProjectExplorer().getProject(CORDOVA_PROJECT_NAME).getProjectItem("config.xml").open();
 		// Add device plugin to project
 		ConfigEditor configEditor = new ConfigEditor(CORDOVA_APP_NAME);
-		configEditor.addPlugin("cordova-plugin-device");
+		CordovaPluginWizard pluginWizard = configEditor.getPlatformPropertiesPage().addPlugin();
+		CordovaPluginSelectionPage pluginPage = new CordovaPluginSelectionPage();
+		pluginPage.selectPlugin("cordova-plugin-device");
+		
+		pluginWizard.next();
+		new WaitUntil(new WidgetIsFound<>(new ClassMatcher(Label.class), new WithTextMatcher("cordova-plugin-device")));
+		new DefaultLabel("cordova-plugin-device");
+		assertTrue("There is no version available for plugin " + "cordova-plugin-device",
+			new DefaultCombo().getItems().size() > 0);
+		pluginWizard.finish();
+		
 		runCordovaSim(CORDOVA_PROJECT_NAME);
 		CordovaSimLauncher.stopCordovasim();
 		ConsoleView console = new ConsoleView();

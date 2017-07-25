@@ -31,6 +31,8 @@ import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
 import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsPathMatcher;
 import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.jboss.reddeer.swt.impl.menu.ToolItemMenu;
+import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.ThymPlatform;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
 import org.junit.Before;
@@ -91,7 +93,6 @@ public class CreateHybridApplication extends AerogearBotTest {
 		pe.selectProjects(CORDOVA_PROJECT_NAME);
 		
 		checkErrorsDuringPrepare();
-		checkErrorsDuringPlatformAdd();
 		
 		
 		ProblemsView pview = new ProblemsView();
@@ -119,13 +120,6 @@ public class CreateHybridApplication extends AerogearBotTest {
 		}
 		String consoleText = cw.getConsoleText();
 		assertFalse("ConsoleView has error: "+consoleText,consoleText.toLowerCase().contains("error"));
-	}
-	
-	private void checkErrorsDuringPlatformAdd(){
-		ConsoleView cw = new ConsoleView();
-		cw.switchConsole(new RegexMatcher(".*cordova platform add"));
-		//https://github.com/eclipse/thym/pull/73
-		new WaitUntil(new ConsoleHasText("Error: Platform android already added"));
 	}
 	
 	private class CordovaPathMatcher extends TypeSafeMatcher<String> {
