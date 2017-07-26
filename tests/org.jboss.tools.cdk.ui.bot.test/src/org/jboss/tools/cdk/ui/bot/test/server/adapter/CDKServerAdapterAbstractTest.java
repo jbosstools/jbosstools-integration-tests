@@ -12,29 +12,44 @@ package org.jboss.tools.cdk.ui.bot.test.server.adapter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import org.jboss.reddeer.common.exception.RedDeerException;
+import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
+import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
+import org.jboss.reddeer.jface.exception.JFaceLayerException;
+import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewException;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.cdk.reddeer.preferences.OpenShift3SSLCertificatePreferencePage;
+import org.jboss.tools.cdk.reddeer.requirements.DisableSecureStorageRequirement.DisableSecureStorage;
+import org.jboss.tools.cdk.reddeer.server.exception.CDKServerException;
 import org.jboss.tools.cdk.reddeer.server.ui.CDEServer;
 import org.jboss.tools.cdk.reddeer.server.ui.CDEServersView;
 import org.jboss.tools.cdk.reddeer.server.ui.wizard.NewCDK3ServerContainerWizardPage;
 import org.jboss.tools.cdk.reddeer.server.ui.wizard.NewCDKServerContainerWizardPage;
 import org.jboss.tools.cdk.ui.bot.test.CDKAbstractTest;
 import org.jboss.tools.cdk.ui.bot.test.utils.CDKTestUtils;
+import org.eclipse.linuxtools.docker.reddeer.ui.DockerExplorerView;
+import org.eclipse.linuxtools.docker.reddeer.ui.resources.DockerConnection;
+import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
+import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
@@ -43,6 +58,7 @@ import org.junit.BeforeClass;
  * @author odockal
  *
  */
+@DisableSecureStorage
 public abstract class CDKServerAdapterAbstractTest extends CDKAbstractTest {
 
 	protected ServersView serversView;
@@ -76,6 +92,12 @@ public abstract class CDKServerAdapterAbstractTest extends CDKAbstractTest {
 		log.info("Checking given program arguments"); //$NON-NLS-1$
 		checkDevelopersParameters();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG, false);
+		CDKTestUtils.deleteAllCDEServers(SERVER_ADAPTER);
+	}
+	
+	@AfterClass
+	public static void tearDownEnvironment() {
+		CDKTestUtils.removeAccessRedHatCredentials(CREDENTIALS_DOMAIN, USERNAME);
 	}
 	
 	@Before
@@ -103,10 +125,13 @@ public abstract class CDKServerAdapterAbstractTest extends CDKAbstractTest {
 		log.info("Starting server adapter"); //$NON-NLS-1$
 		try {
 			getCDEServer().start();
-		} catch (ServersViewException e) {
-			log.error(e.getMessage());
-			e.printStackTrace();
-		} 
+		} catch (ServersViewException serversExc) {
+			log.error(serversExc.getMessage());
+			serversExc.printStackTrace();
+		} catch (CDKServerException exc) {
+			String console = collectConsoleOutput(log, true);
+			fail(exc.getMessage() + "\r\n" + console);
+		}
 		printCertificates();
 		checkAvailableServers();
 		assertEquals(ServerState.STARTED, getCDEServer().getLabel().getState());
@@ -164,7 +189,7 @@ public abstract class CDKServerAdapterAbstractTest extends CDKAbstractTest {
 		if (!(new FinishButton().isEnabled())) {
 			log.error("Finish button was not enabled"); //$NON-NLS-1$
 		}
-		dialog.finish();
+		dialog.finish(TimePeriod.NORMAL);
 	}
 	
 	public static void addNewCDKServer(String serverName, String serverAdapter, String path) {
@@ -187,7 +212,76 @@ public abstract class CDKServerAdapterAbstractTest extends CDKAbstractTest {
 		if (!(new FinishButton().isEnabled())) {
 			log.error("Finish button was not enabled"); //$NON-NLS-1$
 		}
-		dialog.finish();
+		dialog.finish(TimePeriod.NORMAL);
+	}
+	
+	public static void testOpenshiftConncetion(String projectName, String userName) {
+		OpenShiftExplorerView osExplorer = new OpenShiftExplorerView();
+		osExplorer.open();
+		try {
+			OpenShift3Connection connection = osExplorer.getOpenShift3Connection(null, userName);
+			// usually, when server adapter is not started, openshift connection after refresh should cause 
+			// problem occurs dialog
+			connection.refresh();
+			try {
+				new WaitUntil(new ShellWithTextIsAvailable("Problem occurred"), TimePeriod.getCustom(30)); //$NON-NLS-1$
+				fail("Problem dialog occured when refreshing OpenShift connection"); //$NON-NLS-1$
+			} catch (WaitTimeoutExpiredException ex) {
+				// no dialog appeared, which is ok
+				log.debug("Expected WaitTimeoutExpiredException occured"); //$NON-NLS-1$
+				ex.printStackTrace();
+			}
+			try {
+				TreeViewerHandler.getInstance().getTreeItem(connection.getTreeItem(), projectName);
+			} catch (JFaceLayerException ex) {
+				ex.printStackTrace();
+				fail("Could not find deployed sample OpenShift project"); //$NON-NLS-1$
+			}
+		} catch (RedDeerException ex) {
+			ex.printStackTrace();
+			fail("Could not open OpenShift connection for " + userName + //$NON-NLS-1$
+					" ended with exception: " + ex.getMessage()); //$NON-NLS-1$
+		}
+		osExplorer.close();
+		
+	}
+	
+	public static void testDockerConnection(String dockerDaemon) {
+		DockerExplorerView dockerExplorer = new DockerExplorerView();
+		dockerExplorer.open();
+		DockerConnection connection =  dockerExplorer.getDockerConnectionByName(dockerDaemon);
+		if (connection == null) {
+			fail("Could not find Docker connection " + dockerDaemon); //$NON-NLS-1$
+		}
+		connection.select();
+		connection.enableConnection();
+		connection.refresh();
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(30));
+		try {
+			assertTrue("Docker connection does not contain any images", connection.getImagesNames().size() > 0); //$NON-NLS-1$
+		} catch (WaitTimeoutExpiredException ex) {
+			ex.printStackTrace();
+			fail("WaitTimeoutExpiredException occurs when expanding" //$NON-NLS-1$
+					+ " Docker connection " + dockerDaemon); //$NON-NLS-1$
+		} catch (JFaceLayerException jFaceExc) {
+			jFaceExc.printStackTrace();
+			fail(jFaceExc.getMessage());
+		}
+		dockerExplorer.close();
+	}
+	
+	public String collectConsoleOutput(Logger log, boolean onFail) {
+		ConsoleView view = new ConsoleView();
+		view.open();
+		
+		new WaitWhile(new ConsoleHasNoChange(), TimePeriod.NORMAL, false);
+		String consoleOutput = view.getConsoleLabel() + "\n\r" + view.getConsoleText();
+		if (onFail) {
+			log.error(consoleOutput);
+		} else {
+			log.debug(consoleOutput);
+		}
+		return consoleOutput;
 	}
 	
 }

@@ -12,7 +12,6 @@ package org.jboss.tools.cdk.ui.bot.test.server.wizard;
 
 import static org.junit.Assert.*;
 
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
@@ -31,11 +30,14 @@ import org.junit.Test;
  */
 public class CDK3ServerWizardTest extends CDKServerWizardAbstractTest {
 
-	private static Logger log = Logger.getLogger(CDK3ServerWizardTest.class);
-
 	// page description messages
 	
 	private static final String CHECK_MINISHIFT_VERSION = "Unknown error while checking minishift version";
+	
+	@Override
+	protected String getServerAdapter() {
+		return SERVER_ADAPTER_3;
+	}
 	
 	@BeforeClass
 	public static void setup() {
@@ -53,6 +55,7 @@ public class CDK3ServerWizardTest extends CDKServerWizardAbstractTest {
 		NewServerWizardPage page = new NewServerWizardPage();
 		
 		page.selectType(SERVER_TYPE_GROUP, CDK3_SERVER_NAME);
+		page.setName(getServerAdapter());
 		dialog.next();
 		NewCDK3ServerContainerWizardPage containerPage = new NewCDK3ServerContainerWizardPage();
 		
@@ -78,8 +81,7 @@ public class CDK3ServerWizardTest extends CDKServerWizardAbstractTest {
 		assertDiffMessage(dialog, CHECK_MINISHIFT_VERSION);
 		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.NORMAL, false);
 		assertTrue("Expected Finish button is not enabled", dialog.isFinishEnabled());
-		dialog.finish();
+		dialog.finish(TimePeriod.NORMAL);
 	}
-
 
 }

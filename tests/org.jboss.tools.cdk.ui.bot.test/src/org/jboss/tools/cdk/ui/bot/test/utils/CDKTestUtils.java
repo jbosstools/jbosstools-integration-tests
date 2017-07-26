@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.cdk.ui.bot.test.utils;
 
+import java.util.List;
 import java.util.Map;
 
 import org.jboss.reddeer.common.exception.RedDeerException;
@@ -24,6 +25,7 @@ import org.jboss.reddeer.core.matcher.ClassMatcher;
 import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.jboss.reddeer.core.matcher.WithTextMatcher;
 import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
 import org.jboss.reddeer.jface.exception.JFaceLayerException;
@@ -70,6 +72,24 @@ public class CDKTestUtils {
 		} catch (EclipseLayerException exc) {
 			log.error(exc.getMessage());
 			exc.printStackTrace();
+		}
+	}
+	
+	public static List<Server> getAllServers() {
+		log.info("Collecting all server adapters");
+		ServersView view = new ServersView();
+		view.open();
+		return view.getServers();
+	}
+	
+	public static void deleteAllCDEServers(String name) {
+		log.info("Deleting all server containing '" + name + "' string");
+		for (Server server : getAllServers()) {
+			String label = server.getLabel().getName();
+			log.info("Working with " + label);
+			if (label.contains(name)) {
+				deleteCDEServer(label);
+			}
 		}
 	}
 	
