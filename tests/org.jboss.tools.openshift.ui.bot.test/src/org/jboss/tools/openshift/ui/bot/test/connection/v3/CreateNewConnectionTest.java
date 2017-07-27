@@ -16,6 +16,7 @@ import static org.junit.Assert.fail;
 
 import org.jboss.reddeer.common.condition.WaitCondition;
 import org.jboss.reddeer.common.exception.RedDeerException;
+import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
 import org.jboss.reddeer.core.exception.CoreLayerException;
@@ -29,12 +30,13 @@ import org.jboss.reddeer.swt.impl.button.YesButton;
 import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.jboss.tools.common.reddeer.label.IDELabel.ServerType;
+import org.jboss.tools.common.reddeer.utils.StackTraceUtils;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.EmulatedLinkStyledText;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.AuthenticationMethod;
-import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView.ServerType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -45,6 +47,7 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class CreateNewConnectionTest {
 
+	private static Logger LOG = new Logger(CreateNewConnectionTest.class);
 	private static final String PAGETITLE_API_TOKEN = "Your API token is";
 
 	@Test
@@ -59,6 +62,7 @@ public class CreateNewConnectionTest {
 			explorer.connectToOpenShift3Basic(DatastoreOS3.SERVER, DatastoreOS3.USERNAME, 
 					DatastoreOS3.PASSWORD, false, false);
 		} catch (RedDeerException ex) {
+			LOG.error(StackTraceUtils.stackTraceToString(ex));
 			fail("Creating an OpenShift v3 basic connection failed.");
 		}
 		
@@ -75,7 +79,7 @@ public class CreateNewConnectionTest {
 		
 		explorer.openConnectionShell();
 		try {
-			explorer.connectToOpenShift(DatastoreOS3.SERVER, null, DatastoreOS3.TOKEN, false, false, ServerType.OPENSHIFT_3, OpenShiftExplorerView.AuthenticationMethod.OAUTH, false);
+			explorer.connectToOpenShift(DatastoreOS3.SERVER, null, DatastoreOS3.TOKEN, false, false, OpenShiftExplorerView.AuthenticationMethod.OAUTH, false);
 		} catch (RedDeerException ex) {
 			fail("Creating an OpenShift v3 basic connection failed." + ex.getCause());
 		}
@@ -118,7 +122,7 @@ public class CreateNewConnectionTest {
 		openShiftExplorerView.openConnectionShell();
 		new DefaultShell(OpenShiftLabel.Shell.NEW_CONNECTION);
 		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER_TYPE)
-				.setSelection(OpenShiftExplorerView.ServerType.OPENSHIFT_3.toString());
+				.setSelection(OpenShiftLabel.Others.OPENSHIFT3);
 		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER).setText(DatastoreOS3.SERVER);
 		new LabeledCombo(OpenShiftLabel.TextLabels.PROTOCOL).setSelection(AuthenticationMethod.OAUTH.toString());
 	}

@@ -49,32 +49,9 @@ public class ConnectionWizardHandlingTest {
 	}
 	
 	@Test
-	public void testSwitchServerTypes() {
-		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER_TYPE).setSelection(
-				OpenShiftExplorerView.ServerType.OPENSHIFT_3.toString());
-		
-		try {
-			new LabeledCombo(OpenShiftLabel.TextLabels.PROTOCOL);
-			// pass
-		} catch (RedDeerException ex) {
-			fail("There is no combo for selection authentication protocol for OpenShift v3 server type.");
-		}
-		
-		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER_TYPE).setSelection(
-				OpenShiftExplorerView.ServerType.OPENSHIFT_2.toString());
-		
-		try {
-			new LabeledCombo(OpenShiftLabel.TextLabels.PROTOCOL);
-			fail("There should not be combo for selection authentication protocol for OpenShift v2 server type.");
-		} catch (RedDeerException ex) {
-			// pass
-		}
-	}
-	
-	@Test
 	public void testSwitchingBasicAndOAuthProtocol() {
 		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER_TYPE).setSelection(
-				OpenShiftExplorerView.ServerType.OPENSHIFT_3.toString());
+				OpenShiftLabel.Others.OPENSHIFT3);
 		
 		// Verify that required fields are present after switching protocol type
 		switchToOAuth();
@@ -86,7 +63,7 @@ public class ConnectionWizardHandlingTest {
 	@Test
 	public void testTokenCachingAfterSwitchingAuthProtocol() {
 		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER_TYPE).setSelection(
-				OpenShiftExplorerView.ServerType.OPENSHIFT_3.toString());
+				OpenShiftLabel.Others.OPENSHIFT3);
 		
 		String token = "r4nd0mT0k3n";
 		
@@ -103,7 +80,7 @@ public class ConnectionWizardHandlingTest {
 	@Test
 	public void testUserAndPassCachingAfterSwitchingAuthProtocol() {
 		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER_TYPE).setSelection(
-				OpenShiftExplorerView.ServerType.OPENSHIFT_3.toString());
+				OpenShiftLabel.Others.OPENSHIFT3);
 		
 		String username = "randomuser";
 		
@@ -149,7 +126,7 @@ public class ConnectionWizardHandlingTest {
 	@Ignore("Link has been changed to Styled text. Test need to be corrected")
 	public void testLinkToRetrieveToken() {
 		new LabeledCombo(OpenShiftLabel.TextLabels.SERVER_TYPE).setSelection(
-				OpenShiftExplorerView.ServerType.OPENSHIFT_3.toString());
+				OpenShiftLabel.Others.OPENSHIFT3);
 
 		new LabeledCombo(OpenShiftLabel.TextLabels.PROTOCOL).setSelection(
 				AuthenticationMethod.OAUTH.toString());
