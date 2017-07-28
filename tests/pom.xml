@@ -51,7 +51,6 @@
 				<module>org.jboss.tools.examples.ui.bot.test</module>
 				<module>org.jboss.tools.forge.ui.bot.test</module>
 				<module>org.jboss.tools.freemarker.ui.bot.test</module>
-				<module>org.jboss.tools.hibernate.ui.bot.test</module>
 				<module>org.jboss.tools.jsf.ui.test</module>
 				<module>org.jboss.tools.jst.ui.bot.test</module>
 				<module>org.jboss.tools.maven.ui.bot.test</module>
