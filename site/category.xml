@@ -27,7 +27,6 @@
 <bundle id="org.jboss.tools.easymport.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.easymport.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.forge.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.hibernate.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.jst.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.jst.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.perf"><category name="JBoss Tools Core - Integration Tests"/></bundle>
@@ -41,7 +40,6 @@
 <bundle id="org.jboss.tools.dummy.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.forge.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.freemarker.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.hibernate.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.jsf.ui.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.maven.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.mylyn.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
@@ -71,7 +69,6 @@
 <bundle id="org.jboss.tools.easymport.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.easymport.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.forge.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.hibernate.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.jst.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.jst.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.perf.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
@@ -85,7 +82,6 @@
 <bundle id="org.jboss.tools.dummy.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.forge.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.freemarker.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.hibernate.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.jsf.ui.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.maven.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.mylyn.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
