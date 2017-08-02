@@ -10,14 +10,13 @@
 	<groupId>org.jboss.tools.integration-tests</groupId>
 	<artifactId>integration-tests.site</artifactId>
 	<packaging>eclipse-repository</packaging>
-	<repositories>
-	</repositories>
 
 	<properties>
 		<update.site.name>JBoss Tools 4.4 - Integration Tests</update.site.name>
 		<update.site.description>Nightly Build</update.site.description>
 		<target.eclipse.version>4.6 (Neon)</target.eclipse.version>
 		<siteTemplateFolder>siteTemplateFolder</siteTemplateFolder>
+		<skipDeployToJBossOrg>false</skipDeployToJBossOrg>
 	</properties>
 
 	<build>
