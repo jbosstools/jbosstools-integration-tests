@@ -16,6 +16,7 @@
 		<update.site.description>Nightly Build</update.site.description>
 		<target.eclipse.version>4.6 (Neon)</target.eclipse.version>
 		<siteTemplateFolder>siteTemplateFolder</siteTemplateFolder>
+		<skipDeployToJBossOrg>false</skipDeployToJBossOrg>
 	</properties>
 
 	<build>
