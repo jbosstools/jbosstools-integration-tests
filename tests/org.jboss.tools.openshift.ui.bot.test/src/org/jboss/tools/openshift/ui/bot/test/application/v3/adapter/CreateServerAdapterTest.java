@@ -44,6 +44,7 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.jboss.tools.common.reddeer.utils.FileUtils;
 import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.condition.ServerAdapterExists;
@@ -99,9 +100,10 @@ public class CreateServerAdapterTest {
 	
 	private static void cloneGitRepository() {
 		try {
+			FileUtils.deleteDirectory(new File(GIT_REPO_DIRECTORY));
 			Git.cloneRepository().setURI(GIT_REPO_URL).setDirectory(new File(GIT_REPO_DIRECTORY)).call();
-		} catch (GitAPIException e) {
-			throw new RuntimeException("Unable to clone git repository from " + GIT_REPO_URL);
+		} catch (GitAPIException|IOException e) {
+			throw new RuntimeException("Unable to clone git repository from " + GIT_REPO_URL, e);
 		}
 	}
 

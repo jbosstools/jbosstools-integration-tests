@@ -19,6 +19,7 @@ import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.api.Table;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.CheckBox;
@@ -27,18 +28,18 @@ import org.jboss.reddeer.swt.impl.button.PushButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
 import org.jboss.tools.openshift.reddeer.condition.ApplicationPodIsRunning;
-import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
-import org.jboss.tools.openshift.reddeer.enums.ResourceState;
 import org.jboss.tools.openshift.reddeer.requirement.CleanOpenShiftConnectionRequirement.CleanConnection;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement.OCBinary;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement.RequiredProject;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftServiceRequirement.RequiredService;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
-import org.jboss.tools.openshift.ui.bot.test.application.v3.create.AbstractCreateApplicationTest;
+import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,18 +47,16 @@ import org.junit.Test;
 @OCBinary
 @RequiredBasicConnection
 @CleanConnection
-public class PortForwardingTest extends AbstractCreateApplicationTest {
+@RequiredProject
+@RequiredService(service = "eap-app", template = "resources/eap70-basic-s2i-helloworld.json")
+public class PortForwardingTest {
 
+	@InjectRequirement
+	private static OpenShiftProjectRequirement projectReq;
+	
 	@BeforeClass
 	public static void setUpOCBinaryAndWaitForApplication() {
 		TestUtils.setUpOcBinary();
-		
-		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1",
-				ResourceState.COMPLETE), TimePeriod.getCustom(600),
-				true, TimePeriod.getCustom(7));
-		
-		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.VERY_LONG,
-				true, TimePeriod.getCustom(7));
 	}
 	
 	@Test
@@ -138,10 +137,11 @@ public class PortForwardingTest extends AbstractCreateApplicationTest {
 	}
 	
 	private void openPortForwardingDialog() {
-		ApplicationPodIsRunning applicationPodIsRunning = new ApplicationPodIsRunning();
+		OpenShift3Connection openShift3Connection = new OpenShiftExplorerView().getOpenShift3Connection();
+		ApplicationPodIsRunning applicationPodIsRunning = new ApplicationPodIsRunning(openShift3Connection.getProject(projectReq.getProjectName()));
 		new WaitUntil(applicationPodIsRunning, TimePeriod.LONG);
 		
-		new OpenShiftExplorerView().getOpenShift3Connection().getProject().
+		openShift3Connection.getProject(projectReq.getProjectName()).
 			getOpenShiftResource(Resource.POD, 
 					applicationPodIsRunning.getApplicationPodName()).select();
 			

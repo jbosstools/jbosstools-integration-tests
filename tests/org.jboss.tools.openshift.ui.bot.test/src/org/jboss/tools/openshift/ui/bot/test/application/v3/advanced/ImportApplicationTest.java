@@ -12,27 +12,41 @@ package org.jboss.tools.openshift.ui.bot.test.application.v3.advanced;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.hamcrest.Matcher;
+import org.jboss.reddeer.common.matcher.RegexMatcher;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
+import org.jboss.reddeer.core.matcher.WithLabelMatcher;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.reddeer.swt.condition.TreeHasChildren;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
+import org.jboss.reddeer.swt.impl.button.CheckBox;
 import org.jboss.reddeer.swt.impl.button.FinishButton;
 import org.jboss.reddeer.swt.impl.button.NextButton;
 import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.menu.ShellMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTree;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.common.reddeer.perspectives.JBossPerspective;
 import org.jboss.tools.openshift.reddeer.condition.ButtonWithTextIsAvailable;
 import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
+import org.jboss.tools.openshift.reddeer.enums.ResourceState;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement.RequiredProject;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftServiceRequirement.RequiredService;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
@@ -43,7 +57,16 @@ import org.junit.Test;
 
 @OpenPerspective(value=JBossPerspective.class)
 @RequiredBasicConnection
-public class ImportApplicationTest extends AbstractCreateApplicationTest {
+@RequiredProject
+@RequiredService(service = "eap-app", template = "resources/eap70-basic-s2i-helloworld.json")
+public class ImportApplicationTest {
+	
+	public static String PROJECT_NAME = "jboss-helloworld";
+	
+	private static final String GIT_REPO_DIRECTORY = "target/git_repo";
+	
+	@InjectRequirement
+	private static OpenShiftProjectRequirement projectReq;
 	
 	@Before
 	public void cleanGitFolder() {
@@ -54,7 +77,11 @@ public class ImportApplicationTest extends AbstractCreateApplicationTest {
 			projectExplorer.getProject(PROJECT_NAME).delete(true);
 		}
 		
-		TestUtils.cleanupGitFolder(GIT_FOLDER);
+		try {
+			TestUtils.delete(new File(GIT_REPO_DIRECTORY));
+		} catch (IOException e) {
+			throw new RuntimeException("Deletion of git repo was unsuccessfull.", e);
+		}
 	}
 	
 	@Test
@@ -62,14 +89,18 @@ public class ImportApplicationTest extends AbstractCreateApplicationTest {
 		OpenShiftExplorerView explorer = new OpenShiftExplorerView();
 		explorer.open();
 		
-		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD_CONFIG), TimePeriod.LONG);
+		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD_CONFIG,(Matcher<String>) null, ResourceState.UNSPECIFIED,
+				projectReq.getProjectName()), TimePeriod.LONG);
 		
-		explorer.getOpenShift3Connection().getProject().getOpenShiftResources(Resource.BUILD_CONFIG).get(0).select();
+		explorer.getOpenShift3Connection().getProject(projectReq.getProjectName()).getOpenShiftResources(Resource.BUILD_CONFIG).get(0).select();
 		new ContextMenu(OpenShiftLabel.ContextMenu.IMPORT_APPLICATION).select();
 		
 		new WaitUntil(new ShellWithTextIsAvailable(OpenShiftLabel.Shell.IMPORT_APPLICATION), TimePeriod.LONG);
 		
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
+		new CheckBox("Use default clone destination").toggle(false);
+		File gitRepo = new File(GIT_REPO_DIRECTORY);
+		new LabeledText("Git Clone Location:").setText(gitRepo.getAbsolutePath());
 		
 		new FinishButton().click();
 		
@@ -95,17 +126,18 @@ public class ImportApplicationTest extends AbstractCreateApplicationTest {
 		new NextButton().click();
 		
 		new DefaultShell(OpenShiftLabel.Shell.IMPORT_APPLICATION);
+		TestUtils.acceptSSLCertificate();
 		
 		new NextButton().click();
 		TestUtils.acceptSSLCertificate();
-
+		
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 			
 		new WaitUntil(new ButtonWithTextIsAvailable("Refresh"), TimePeriod.LONG);
 		new WaitUntil(new TreeHasChildren(new DefaultTree()), TimePeriod.NORMAL);
 		
 		
-		new DefaultTreeItem(DatastoreOS3.PROJECT1_DISPLAYED_NAME + " " + DatastoreOS3.PROJECT1).getItems().
+		new DefaultTreeItem(projectReq.getProjectName() + " " + projectReq.getProjectName()).getItems().
 			get(0).select();
 		
 		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.NORMAL);
