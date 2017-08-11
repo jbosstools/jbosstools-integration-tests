@@ -53,44 +53,7 @@ import org.junit.runner.RunWith;
 /**
  * @author jnovak@redhat.com
  */
-@OCBinary
-@RequiredBasicConnection
-@RequiredProject(
-		name = DatastoreOS3.TEST_PROJECT, 
-		cleanup = true)
-@RequiredService(
-		project = DatastoreOS3.TEST_PROJECT, 
-		service = OpenShiftResources.NODEJS_SERVICE, 
-		template = OpenShiftResources.NODEJS_TEMPLATE)
-@RunWith(RedDeerSuite.class)
-public class ImportApplicationWizardTest {	
-	
-	@InjectRequirement
-	private static OpenShiftProjectRequirement requiredProject;
-	@InjectRequirement
-	private static OpenShiftConnectionRequirement requiredConnection;
-	@InjectRequirement
-	private static OpenShiftServiceRequirement requiredService;
-	private static Service service;
-	
-	@BeforeClass
-	public static void init(){
-		OpenShiftExplorerView openshiftExplorer = new OpenShiftExplorerView();
-		openshiftExplorer.open();
-		
-		OpenShift3Connection connection = openshiftExplorer.getOpenShift3Connection(requiredConnection.getConnection());
-		OpenShiftProject project = connection.getProject(requiredProject.getProjectName());
-		project.expand();
-		service = project.getService(requiredService.getService().getName());
-		
-		assertNotNull("OpenShift service '" + OpenShiftResources.NODEJS_SERVICE 
-					+ "' was not found!", service);
-	}
-	
-	@Before
-	public void cleanUp(){
-		cleanClonnedProjects();
-	}
+public class ImportApplicationWizardTest extends ImportApplicationBase {	
 	
 	@Test
 	public void testImportOpenShift3AppViaOpenshiftView() {
@@ -144,13 +107,6 @@ public class ImportApplicationWizardTest {
 		importWizard.finishAndOverrideExisting();
 		
 		assertProjectExistsInProjectView(OpenShiftResources.NODEJS_GIT_NAME);
-	}
-	
-	@AfterClass
-	public static void cleanClonnedProjects() {
-		ProjectExplorer projectExplorer = new ProjectExplorer();
-		projectExplorer.deleteAllProjects();
-		TestUtils.cleanupGitFolder(OpenShiftResources.NODEJS_GIT_NAME);
 	}
 
 	private void assertProjectNameFilled() {
