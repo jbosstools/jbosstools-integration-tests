@@ -102,7 +102,7 @@ public class LogsTest {
 		assertTrue("Console label is incorrect, it should contains project name and pod name.\n" + "but label is: " + consoleView.getConsoleLabel(),
 				consoleView.getConsoleLabel().contains(requiredProject.getProjectName() + "\\" + podName));
 		assertTrue("Console text should contain output from EAP runtime",
-				consoleView.getConsoleText().contains("Admin console listening on"));
+				consoleView.getConsoleText().contains("Admin console is not enabled"));
 	}
 
 	@Test

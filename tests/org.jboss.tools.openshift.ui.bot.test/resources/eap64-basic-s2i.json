@@ -30,13 +30,13 @@
         {
             "description": "Git source URI for application",
             "name": "SOURCE_REPOSITORY_URL",
-            "value": "https://github.com/mlabuda/jboss-eap-quickstarts",
+            "value": "https://github.com/rhopp/jboss-eap-quickstarts",
             "required": true
         },
         {
             "description": "Git branch/tag reference",
             "name": "SOURCE_REPOSITORY_REF",
-            "value": "6.4.x",
+            "value": "7.0.x",
             "required": false
         },
         {
@@ -183,7 +183,7 @@
                         "from": {
                             "kind": "ImageStreamTag",
                             "namespace": "${IMAGE_STREAM_NAMESPACE}",
-                            "name": "jboss-eap64-openshift:1.4"
+                            "name": "jboss-eap64-openshift:1.5"
                         },
                 		"env" : [{
                     		"name" : "MAVEN_MIRROR_URL",

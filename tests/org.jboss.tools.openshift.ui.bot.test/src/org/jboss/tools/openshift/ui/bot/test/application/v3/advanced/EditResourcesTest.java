@@ -24,6 +24,8 @@ import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.openshift.reddeer.enums.Resource;
+import org.jboss.tools.openshift.reddeer.requirement.CleanOpenShiftConnectionRequirement.CleanConnection;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
@@ -33,9 +35,11 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Test;
 
+@RequiredBasicConnection
+@CleanConnection
 public class EditResourcesTest extends AbstractCreateApplicationTest {
 
-	private String customRepo = "https://github.com/mlabuda/jboss-eap-quickstarts";
+	private String customRepo = "https://github.com/rhopp/jboss-eap-quickstarts";
 	private String originalRepo = "https://github.com/jboss-developer/jboss-eap-quickstarts";
 	
 	private String buildConfig;

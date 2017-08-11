@@ -13,7 +13,16 @@ package org.jboss.tools.openshift.ui.bot.test.application.v3.adapter;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashSet;
+
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.internal.wizards.datatransfer.SmartImportJob;
 import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
@@ -27,6 +36,7 @@ import org.jboss.reddeer.core.util.ResultRunnable;
 import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
+import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.reddeer.swt.api.Button;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.BackButton;
@@ -39,29 +49,61 @@ import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
 import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.tools.openshift.reddeer.condition.AmountOfResourcesExists;
-import org.jboss.tools.openshift.reddeer.condition.OpenShiftResourceExists;
-import org.jboss.tools.openshift.reddeer.enums.Resource;
-import org.jboss.tools.openshift.reddeer.enums.ResourceState;
+import org.jboss.tools.common.reddeer.utils.FileUtils;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftCommandLineToolsRequirement.OCBinary;
 import org.jboss.tools.openshift.reddeer.requirement.OpenShiftConnectionRequirement.RequiredBasicConnection;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftProjectRequirement.RequiredProject;
+import org.jboss.tools.openshift.reddeer.requirement.OpenShiftServiceRequirement.RequiredService;
 import org.jboss.tools.openshift.reddeer.utils.DatastoreOS3;
 import org.jboss.tools.openshift.reddeer.utils.OpenShiftLabel;
 import org.jboss.tools.openshift.reddeer.utils.TestUtils;
-import org.jboss.tools.openshift.ui.bot.test.application.v3.create.AbstractCreateApplicationTest;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 @OCBinary
 @RequiredBasicConnection
-public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTest {
+@RequiredProject
+@RequiredService(service = "eap-app", template = "resources/eap64-basic-s2i.json")
+public class ServerAdapterWizardHandlingTest {
+	
+	private static final String PROJECT_NAME = "kitchensink";
 
+	private static final String GIT_REPO_URL = "https://github.com/jboss-developer/jboss-eap-quickstarts";
+	
+	private static final String GIT_REPO_DIRECTORY = "target/git_repo";
+	
+	@InjectRequirement
+	private static OpenShiftProjectRequirement projectReq;
+	
 	@BeforeClass
 	public static void waitTillApplicationIsRunning() {
-		new WaitUntil(new OpenShiftResourceExists(Resource.BUILD, "eap-app-1", ResourceState.COMPLETE),
-				TimePeriod.getCustom(600));
-		new WaitUntil(new AmountOfResourcesExists(Resource.POD, 2), TimePeriod.VERY_LONG);
+		cloneGitRepoAndImportProject();
+	}
+	
+	private static void cloneGitRepoAndImportProject() {
+		cloneGitRepository();
+		importProjectUsingSmartImport();
+	}
+	
+	private static void cloneGitRepository() {
+		try {
+			FileUtils.deleteDirectory(new File(GIT_REPO_DIRECTORY));
+			Git.cloneRepository().setURI(GIT_REPO_URL).setDirectory(new File(GIT_REPO_DIRECTORY)).call();
+		} catch (GitAPIException|IOException e) {
+			throw new RuntimeException("Unable to clone git repository from " + GIT_REPO_URL, e);
+		}
+	}
+	
+	@SuppressWarnings("restriction")
+	private static void importProjectUsingSmartImport() {
+		SmartImportJob job = new SmartImportJob(new File(GIT_REPO_DIRECTORY + File.separator + PROJECT_NAME),
+				Collections.emptySet(), true, true);
+		HashSet<File> directory = new HashSet<File>();
+		directory.add(new File(GIT_REPO_DIRECTORY + File.separator + PROJECT_NAME));
+		job.setDirectoriesToImport(directory);
+		job.run(new NullProgressMonitor());
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
@@ -117,11 +159,11 @@ public class ServerAdapterWizardHandlingTest extends AbstractCreateApplicationTe
 		openNewServerAdapterWizard();
 		next();
 
-		new DefaultTreeItem(DatastoreOS3.PROJECT1).select();
+		new DefaultTreeItem(projectReq.getProjectName()).select();
 
 		assertFalse("Next button should be disable if no application is selected.", nextButtonIsEnabled());
 
-		new DefaultTreeItem(DatastoreOS3.PROJECT1).getItems().get(0).select();
+		new DefaultTreeItem(projectReq.getProjectName()).getItems().get(0).select();
 
 		assertTrue("Next button should be enabled if application for a new server adapter is created.",
 				nextButtonIsEnabled());
