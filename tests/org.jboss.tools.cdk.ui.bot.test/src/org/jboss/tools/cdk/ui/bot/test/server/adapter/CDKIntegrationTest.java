@@ -11,7 +11,8 @@
 package org.jboss.tools.cdk.ui.bot.test.server.adapter;
 
 import static org.junit.Assert.assertEquals;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
+
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerState;
 import org.jboss.tools.cdk.ui.bot.test.utils.CDKTestUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

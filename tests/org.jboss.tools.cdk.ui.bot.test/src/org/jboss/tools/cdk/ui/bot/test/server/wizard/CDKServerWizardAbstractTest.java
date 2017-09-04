@@ -18,23 +18,23 @@ import static org.junit.Assert.fail;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.NewServerWizard;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
+import org.eclipse.reddeer.swt.impl.button.NextButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
-import org.jboss.reddeer.swt.impl.button.CancelButton;
-import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.cdk.reddeer.core.condition.SystemJobIsRunning;
 import org.jboss.tools.cdk.reddeer.core.matcher.JobMatcher;
 import org.jboss.tools.cdk.reddeer.requirements.DisableSecureStorageRequirement.DisableSecureStorage;
@@ -101,22 +101,22 @@ public abstract class CDKServerWizardAbstractTest extends CDKAbstractTest {
 	}
 	
 	protected void assertServerType(final String serverType) {
-		NewServerWizardDialog dialog = CDKTestUtils.openNewServerWizardDialog();
+		NewServerWizard wizard = CDKTestUtils.openNewServerWizardDialog();
 		try {
 			TreeItem item = new DefaultTreeItem(new String[] {SERVER_TYPE_GROUP}).getItem(serverType);
 			item.select();
 			assertTrue(item.getText().equalsIgnoreCase(serverType));
-			new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL, false);
+			new WaitWhile(new JobIsRunning(), TimePeriod.MEDIUM, false);
 		} catch (CoreLayerException coreExp) {
 			log.error(coreExp.getMessage());
 			fail("Server type " + serverType + " was not found in New Server Wizard");
 		}
 		assertEquals(new LabeledText("Server's host name:").getText(), "localhost");
 		assertEquals(new LabeledText("Server name:").getText(), getServerAdapter());
-		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.SHORT, false);
-		assertTrue("Dialog button Next is not enabled!", dialog.isNextEnabled());
+		new WaitUntil(new ControlIsEnabled(new NextButton()), TimePeriod.SHORT, false);
+		assertTrue("Dialog button Next is not enabled!", wizard.isNextEnabled());
 		try {
-			new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL, false);
+			new WaitWhile(new JobIsRunning(), TimePeriod.MEDIUM, false);
 			new CancelButton().click();
 		} catch (WaitTimeoutExpiredException exc) {
 			exc.printStackTrace();
@@ -136,24 +136,24 @@ public abstract class CDKServerWizardAbstractTest extends CDKAbstractTest {
 		}
 	}
 	
-	protected void assertSameMessage(final NewServerWizardDialog dialog, final String message) {
-		new WaitWhile(new SystemJobIsRunning(getJobMatcher(MINISHIFT_VALIDATION_JOB)), TimePeriod.NORMAL, false);
-		String description = dialog.getPageDescription();
+	protected void assertSameMessage(final NewServerWizard dialog, final String message) {
+		new WaitWhile(new SystemJobIsRunning(getJobMatcher(MINISHIFT_VALIDATION_JOB)), TimePeriod.MEDIUM, false);
+		String description = dialog.getMessage();
 		assertTrue("Expected page description should contain text: " + message +
 				" but has: " + description,
 				description.contains(message));		
 	}
 	
-	protected void assertDiffMessage(final NewServerWizardDialog dialog, final String message) {
-		new WaitWhile(new SystemJobIsRunning(getJobMatcher(MINISHIFT_VALIDATION_JOB)), TimePeriod.NORMAL, false);
-		String description = dialog.getPageDescription();
+	protected void assertDiffMessage(final NewServerWizard dialog, final String message) {
+		new WaitWhile(new SystemJobIsRunning(getJobMatcher(MINISHIFT_VALIDATION_JOB)), TimePeriod.MEDIUM, false);
+		String description = dialog.getMessage();
 		assertFalse("Page descrition should not contain: " + message,
 				description.contains(message));
 	}
 	
 	private void closeOpenShells() {
 		try {
-			new WaitWhile(new ShellWithTextIsAvailable("New Server"), TimePeriod.getCustom(3));
+			new WaitWhile(new ShellIsAvailable("New Server"), TimePeriod.MEDIUM);
 		} catch (WaitTimeoutExpiredException exc) {
 			new DefaultShell("New Server").close();
 		}
