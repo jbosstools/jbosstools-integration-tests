@@ -11,7 +11,9 @@
 package org.jboss.tools.cdk.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.cdk.ui.bot.test.server.adapter.CDK3IntegrationTest;
+import org.jboss.tools.cdk.ui.bot.test.server.adapter.CDK3ServerAdapterConnectionTest;
+import org.jboss.tools.cdk.ui.bot.test.server.adapter.CDK3ServerAdapterRestartTest;
+import org.jboss.tools.cdk.ui.bot.test.server.adapter.CDK3ServerAdapterStartTest;
 import org.jboss.tools.cdk.ui.bot.test.server.editor.CDK3ServerEditorTest;
 import org.jboss.tools.cdk.ui.bot.test.server.wizard.CDK3ServerWizardTest;
 import org.junit.runner.RunWith;
@@ -20,8 +22,10 @@ import org.junit.runners.Suite;
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
 	CDK3ServerWizardTest.class,
-	CDK3IntegrationTest.class,
-	CDK3ServerEditorTest.class
+	CDK3ServerEditorTest.class,
+	CDK3ServerAdapterStartTest.class,
+	CDK3ServerAdapterRestartTest.class,
+	CDK3ServerAdapterConnectionTest.class
 })
 /**
  * @author ondrej dockal

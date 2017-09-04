@@ -14,10 +14,12 @@ import static org.junit.Assert.assertTrue;
 
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
+import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.reddeer.core.condition.JobIsRunning;
 import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
+import org.jboss.tools.cdk.reddeer.core.condition.SystemJobIsRunning;
 import org.jboss.tools.cdk.reddeer.server.ui.CDEServersView;
 import org.jboss.tools.cdk.reddeer.server.ui.editor.CDEServerEditor;
 import org.jboss.tools.cdk.reddeer.server.ui.editor.CDKServerEditor;
@@ -41,9 +43,14 @@ public class CDKServerEditorTest extends CDKServerWizardAbstractTest {
 	private void setServerEditor() {
 		serversView = new CDEServersView(true);
 		serversView.open();
-		serversView.getServer(SERVER_ADAPTER).open();
-		editor = new CDKServerEditor(SERVER_ADAPTER);
+		serversView.getServer(getServerAdapter()).open();
+		editor = new CDKServerEditor(getServerAdapter());
 		editor.activate();
+	}
+
+	@Override
+	protected String getServerAdapter() {
+		return SERVER_ADAPTER;
 	}
 	
 	@After
@@ -60,7 +67,7 @@ public class CDKServerEditorTest extends CDKServerWizardAbstractTest {
 		assertTrue(editor.getDomainCombo().getSelection().equalsIgnoreCase(CREDENTIALS_DOMAIN));
 		assertTrue(editor.getHostnameLabel().getText().equalsIgnoreCase(SERVER_HOST));
 		assertTrue(((CDKServerEditor)editor).getVagrantfileLocation().getText().equals(VAGRANTFILE_PATH));
-		assertTrue(editor.getServernameLabel().getText().equals(SERVER_ADAPTER));
+		assertTrue(editor.getServernameLabel().getText().equals(getServerAdapter()));
 	}
 	
 	private void cleanUp() {
@@ -83,13 +90,15 @@ public class CDKServerEditorTest extends CDKServerWizardAbstractTest {
 		NewServerWizardPage page = new NewServerWizardPage();
 		
 		page.selectType(SERVER_TYPE_GROUP, CDK_SERVER_NAME);
+		page.setName(SERVER_ADAPTER);
 		dialog.next();
 		NewCDKServerContainerWizardPage containerPage = new NewCDKServerContainerWizardPage();
 		containerPage.setCredentials(USERNAME, PASSWORD);
 		containerPage.setFolder(vagrantfile);
+		new WaitWhile(new SystemJobIsRunning(getJobMatcher(MINISHIFT_VALIDATION_JOB)), TimePeriod.NORMAL, false);
 		if (!dialog.isFinishEnabled()) {
-			new WaitUntil(new JobIsRunning(), TimePeriod.SHORT, false);			
+			new WaitUntil(new JobIsRunning(), TimePeriod.SHORT, false);	
 		}
-		dialog.finish();
+		dialog.finish(TimePeriod.NORMAL);
 	}
 }

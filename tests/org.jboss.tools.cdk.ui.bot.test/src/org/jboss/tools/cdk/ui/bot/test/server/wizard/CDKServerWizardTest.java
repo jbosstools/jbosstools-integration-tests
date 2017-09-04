@@ -10,14 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.cdk.ui.bot.test.server.wizard;
 
-import org.jboss.reddeer.common.logging.Logger;
 import org.jboss.reddeer.common.wait.TimePeriod;
 import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
 import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
 import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
 import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.tools.cdk.reddeer.requirements.DisableSecureStorageRequirement.DisableSecureStorage;
 import org.jboss.tools.cdk.reddeer.server.ui.wizard.NewCDKServerContainerWizardPage;
 import org.jboss.tools.cdk.ui.bot.test.utils.CDKTestUtils;
 import org.junit.BeforeClass;
@@ -30,17 +28,19 @@ import static org.junit.Assert.*;
  * @author odockal
  *
  */
-@DisableSecureStorage
 public class CDKServerWizardTest extends CDKServerWizardAbstractTest {
-	
-	private static Logger log = Logger.getLogger(CDKServerWizardTest.class);
 
 	// page description messages
 	
 	private static final String NO_VAGRANTFILE = "does not have a Vagrantfile";
 	
+	@Override
+	protected String getServerAdapter() {
+		return SERVER_ADAPTER;
+	}
+	
 	@BeforeClass
-	public static void setup() {
+	public static void setUp() {
 		checkVagrantfileParameters();
 	}
 	
@@ -55,6 +55,7 @@ public class CDKServerWizardTest extends CDKServerWizardAbstractTest {
 		NewServerWizardPage page = new NewServerWizardPage();
 		
 		page.selectType(SERVER_TYPE_GROUP, CDK_SERVER_NAME);
+		page.setName(getServerAdapter());
 		dialog.next();
 		NewCDKServerContainerWizardPage containerPage = new NewCDKServerContainerWizardPage();
 		
@@ -78,6 +79,6 @@ public class CDKServerWizardTest extends CDKServerWizardAbstractTest {
 		assertDiffMessage(dialog, DOES_NOT_EXIST);
 		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.SHORT, false);
 		assertTrue("Expected Finish button is not enabled", dialog.isFinishEnabled());
-		dialog.finish();
+		dialog.finish(TimePeriod.NORMAL);
 	}
 }

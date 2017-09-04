@@ -12,18 +12,23 @@ package org.jboss.tools.cdk.ui.bot.test;
 
 import org.jboss.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.cdk.ui.bot.test.server.adapter.CDK3IntegrationTest;
-import org.jboss.tools.cdk.ui.bot.test.server.adapter.CDKIntegrationTest;
+import org.jboss.tools.cdk.ui.bot.test.server.editor.CDK3ServerEditorTest;
+import org.jboss.tools.cdk.ui.bot.test.server.editor.CDKServerEditorTest;
+import org.jboss.tools.cdk.ui.bot.test.server.wizard.CDK3ServerWizardTest;
+import org.jboss.tools.cdk.ui.bot.test.server.wizard.CDKServerWizardTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(RedDeerSuite.class)
 @Suite.SuiteClasses({
-	CDKIntegrationTest.class,
+	CDK3ServerWizardTest.class,
+	CDKServerWizardTest.class,
+	CDK3ServerEditorTest.class,
+	CDKServerEditorTest.class,
 	CDK3IntegrationTest.class
 })
 /**
  * @author ondrej dockal
  */
 public class CDKSmokeTestsSuite {
-
 }

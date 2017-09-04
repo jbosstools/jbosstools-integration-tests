@@ -29,6 +29,8 @@ public abstract class CDKAbstractTest {
 	
 	public static final String SERVER_ADAPTER = "Container Development Environment"; //$NON-NLS-1$
 	
+	public static final String SERVER_ADAPTER_3 = "Container Development Environment 3"; //$NON-NLS-1$
+	
 	public static final String USERNAME;
 	
 	public static final String PASSWORD;
