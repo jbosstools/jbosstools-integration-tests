@@ -12,30 +12,37 @@ package org.jboss.tools.batch.ui.bot.test.editor.design;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.ID;
-import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.JOB;
-import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.PROCESSOR;
-import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.READER;
-import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.STEP;
-import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.WRITER;
-
 import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.BATCHLET;
 import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.CHECKPOINT;
 import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.CHUNK;
 import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.DECISION;
 import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.FLOW;
+import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.ID;
+import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.JOB;
+import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.PROCESSOR;
+import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.READER;
 import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.REF;
 import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.SPLIT;
+import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.STEP;
+import static org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage.WRITER;
 
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.reddeer.common.condition.WaitCondition;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.handler.EditorHandler;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.ui.IEditorPart;
 import org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditor;
 import org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorDesignPage;
 import org.jboss.tools.batch.reddeer.editor.jobxml.JobXMLEditorSourcePage;
@@ -55,6 +62,46 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	protected JobXMLEditor editor;
 	
 	private static Logger log = Logger.getLogger(DesignFlowElementsTestTemplate.class);
+	
+	protected void performSave(final IEditorPart editor) {
+			EditorHandler.getInstance().activate(editor);
+			AbstractWait.sleep(TimePeriod.getCustom(1));
+			Display.asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+					editor.doSave(new NullProgressMonitor());
+
+				}
+			});
+			new WaitUntil(new WaitCondition() {
+
+				@Override
+				public boolean test() {
+					return !editor.isDirty();
+				}
+
+				@Override
+				public String description() {
+					return " editor is not dirty...";
+				}
+
+				@Override
+				public <T> T getResult() {
+					return null;
+				}
+
+				@Override
+				public String errorMessageWhile() {
+					return null;
+				}
+
+				@Override
+				public String errorMessageUntil() {
+					return "Editor was still dirty";
+				}
+			}, TimePeriod.SHORT);
+	}
 	
 	@Override
 	protected String getPackage(){
@@ -118,7 +165,7 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 		NewBatchArtifactWizardDialog dialog = new NewBatchArtifactWizardDialog();
 		dialog.open();
 
-		NewBatchArtifactWizardPage page = new NewBatchArtifactWizardPage();
+		NewBatchArtifactWizardPage page = new NewBatchArtifactWizardPage(dialog);
 		page.setSourceFolder(getProjectName() + "/" + JAVA_FOLDER);
 		page.setPackage(getPackage());
 		page.setName(name);
@@ -127,10 +174,10 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	}
 	
 	protected boolean createExceptionClass(String exceptionID) {
-		NewJavaClassWizardDialog dialog = new NewJavaClassWizardDialog();
+		NewClassCreationWizard dialog = new NewClassCreationWizard();
 		dialog.open();
 
-		NewJavaClassWizardPage page = new NewJavaClassWizardPage();
+		NewClassWizardPage page = new NewClassWizardPage(dialog);
 		page.setSourceFolder(getProjectName() + "/" + JAVA_FOLDER);
 		page.setPackage(getPackage());
 		page.setName(exceptionID);
@@ -142,7 +189,7 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 		NewBatchArtifactWizardDialog dialog = new NewBatchArtifactWizardDialog();
 		dialog.open();
 
-		NewBatchArtifactWizardPage page = new NewBatchArtifactWizardPage();
+		NewBatchArtifactWizardPage page = new NewBatchArtifactWizardPage(dialog);
 		page.setSourceFolder(getProjectName() + "/" + JAVA_FOLDER);
 		page.setPackage(getPackage());
 		page.setName(name);
@@ -151,7 +198,7 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 		return dialogFinished(dialog);
 	}
 
-	private boolean dialogFinished(NewWizardDialog dialog) {
+	private boolean dialogFinished(WizardDialog dialog) {
 		if (dialog.isFinishEnabled()) {
 			dialog.finish();
 			return true;
@@ -182,7 +229,7 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	}
 	
 	protected static void deleteItemIfExists(String... path) {
-		if (getProject().containsItem(path)) {
+		if (getProject().containsResource(path)) {
 			ProjectItem item = getProject().getProjectItem(path);
 			item.delete();
 		}
@@ -198,11 +245,11 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void addStep(String stepID) {
 		getDesignPage().addStep(stepID);
+		performSave(editor.getEditorPart());
 		
 		String step = getSourcePage().evaluateXPath(JOB, appendIDSelector(STEP, stepID), ID);
-		assertThat(step, is(stepID));
 		
-		editor.save();
+		assertThat(step, is(stepID));
 		assertNoProblems();
 	}
 
@@ -214,11 +261,11 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void addBatchlet(String stepID, String batchletID) {
 		getDesignPage().addBatchlet(stepID, batchletID);
-
+		performSave(editor.getEditorPart());
+		
 		String batchlet = getSourcePage().evaluateXPath(JOB, appendIDSelector(STEP, stepID), BATCHLET, REF);
+		
 		assertThat(batchlet, is(batchletID));
-
-		editor.save();
 		assertNoProblems();
 	}
 	
@@ -228,8 +275,8 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void addChunk(String stepID) {
 		getDesignPage().addChunk(stepID);
+		performSave(editor.getEditorPart());
 		
-		editor.save();
 		assertNumberOfProblems(1, 0);
 	}
 	
@@ -241,11 +288,11 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void setReaderRef(String stepID, String readerID) {
 		getDesignPage().setReaderRef(stepID, readerID);
+		performSave(editor.getEditorPart());
 		
 		String readerRef = getSourcePage().evaluateXPath(JOB, appendIDSelector(STEP, stepID), CHUNK, READER, REF);
-		assertThat(readerRef, is(readerID));
 		
-		editor.save();
+		assertThat(readerRef, is(readerID));
 		assertNumberOfProblems(1, 0);
 	}
 
@@ -257,11 +304,11 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void setWriterRef(String stepID, String writerID) {
 		getDesignPage().setWriterRef(stepID, writerID);
+		performSave(editor.getEditorPart());
 		
 		String writerRef = getSourcePage().evaluateXPath(JOB, appendIDSelector(STEP, stepID), CHUNK, WRITER, REF);
-		assertThat(writerRef, is(writerID));
 		
-		editor.save();
+		assertThat(writerRef, is(writerID));
 		assertNoProblems();
 	}
 	
@@ -273,11 +320,11 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void setProcessor(String stepID, String processorID) {
 		getDesignPage().addProcessor(stepID, processorID);
+		performSave(editor.getEditorPart());
 		
 		String processorRef = getSourcePage().evaluateXPath(JOB, appendIDSelector(STEP, stepID), CHUNK, PROCESSOR, REF);
-		assertThat(processorRef, is(processorID));
 		
-		editor.save();
+		assertThat(processorRef, is(processorID));
 		assertNoProblems();
 	}
 
@@ -289,11 +336,11 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void setCheckpoint(String stepID, String checkpointID) {
 		getDesignPage().addCheckpointAlgorithm(stepID, checkpointID);
+		performSave(editor.getEditorPart());
 		
 		String checkpointRef = getSourcePage().evaluateXPath(JOB, appendIDSelector(STEP, stepID), CHUNK, CHECKPOINT, REF);
-		assertThat(checkpointRef, is(checkpointID));
 		
-		editor.save();
+		assertThat(checkpointRef, is(checkpointID));
 		assertNoProblems();
 	}
 	
@@ -303,11 +350,11 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void addDecision(String decisionID) {
 		getDesignPage().addDecision(decisionID);
+		performSave(editor.getEditorPart());
 		
 		String decision = getSourcePage().evaluateXPath(JOB, appendIDSelector(DECISION, decisionID), ID);
-		assertThat(decision, is(decisionID));
 		
-		editor.save();
+		assertThat(decision, is(decisionID));
 		assertNumberOfProblems(1, 0);
 	}
 
@@ -318,11 +365,11 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void setDeciderRef(String decisionID, String deciderID) {
 		getDesignPage().setDecisionRef(decisionID, deciderID);
+		performSave(editor.getEditorPart());
 		
 		String decisionRef = getSourcePage().evaluateXPath(JOB, appendIDSelector(DECISION, decisionID), REF);
-		assertThat(decisionRef, is(deciderID));
 		
-		editor.save();
+		assertThat(decisionRef, is(deciderID));
 		assertNoProblems();
 	}
 	
@@ -332,11 +379,11 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void addSplit(String splitID) {
 		getDesignPage().addSplit(splitID);
+		performSave(editor.getEditorPart());
 		
 		String split = getSourcePage().evaluateXPath(JOB, appendIDSelector(SPLIT, splitID), ID);
-		assertThat(split, is(splitID));
 		
-		editor.save();
+		assertThat(split, is(splitID));
 		assertNoProblems();
 	}
 
@@ -347,11 +394,11 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void addFlowIntoSplit(String splitID, String flowID) {
 		getDesignPage().addSplitFlow(splitID, flowID);
+		performSave(editor.getEditorPart());
 		
 		String splitFlow = getSourcePage().evaluateXPath(JOB, appendIDSelector(SPLIT, splitID), FLOW, ID);
-		assertThat(splitFlow, is(flowID));
 		
-		editor.save();
+		assertThat(splitFlow, is(flowID));
 		assertNoProblems();
 	}
 	
@@ -361,11 +408,11 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	 */
 	protected void addFlow(String flowID){
 		getDesignPage().addFlow(flowID);
+		performSave(editor.getEditorPart());
 		
 		String flow = getSourcePage().evaluateXPath(JOB, appendIDSelector(FLOW, flowID), ID);
-		assertThat(flow, is(flowID));
 		
-		editor.save();
+		assertThat(flow, is(flowID));
 		assertNoProblems();
 	}
 }

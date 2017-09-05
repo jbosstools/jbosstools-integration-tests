@@ -3,17 +3,18 @@ package org.jboss.tools.batch.reddeer.wizard;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.list.DefaultList;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.list.DefaultList;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * Wizard page for creating batch artifacts
@@ -22,6 +23,10 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  *
  */
 public class NewBatchArtifactWizardPage extends WizardPage {
+
+	public NewBatchArtifactWizardPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
 
 	public String getSourceFolder(){
 		return new LabeledText("Source folder:").getText();
@@ -81,11 +86,11 @@ public class NewBatchArtifactWizardPage extends WizardPage {
 	
 	public void addProperty(String name){
 		new PushButton("Add").click();
-		new WaitUntil(new ShellWithTextIsAvailable("Add Property"));
+		new WaitUntil(new ShellIsAvailable("Add Property"));
 		new DefaultShell("Add Property").setFocus();
 		new LabeledText("Field name:").setText(name);
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable("Add Property"));
+		new WaitWhile(new ShellIsAvailable("Add Property"));
 	}
 	
 	public void removeProperty(String name){

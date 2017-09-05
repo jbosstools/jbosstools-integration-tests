@@ -10,12 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.batch.reddeer.editor.jobxml;
 
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.LabeledCheckBox;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.uiforms.impl.section.DefaultSection;
 import org.jboss.tools.batch.reddeer.editor.BatchExceptionType;
 import org.jboss.tools.batch.reddeer.editor.design.BatchEditorTable;
 
@@ -63,25 +63,25 @@ public class JobXMLEditorDesignPage {
 	
 	public void addJobListener(String ref) {
 		selectNode(JOB, "Listeners");
-		new ContextMenu("Add Job Listener").select();
+		new ContextMenuItem("Add Job Listener").select();
 		new DefaultText(new DefaultSection("<Listener>"), 0).setText(ref);
 	}
 	
 	public void addFlowElementListener(String [] path, String ref) {
 		selectNode(path);
-		new ContextMenu("Add Step Listener").select();
+		new ContextMenuItem("Add Step Listener").select();
 		new DefaultText(new DefaultSection("<Listener>"), 0).setText(ref);
 	}
 
 	public void addBatchlet(String stepID, String ref) {
 		selectNode(JOB, "Flow Elements", stepID);
-		new ContextMenu("Add", "Batchlet").select();
+		new ContextMenuItem("Add", "Batchlet").select();
 		new DefaultText(new DefaultSection("Batchlet"), 0).setText(ref);
 	}
 
 	public void addChunk(String stepID) {
 		selectNode(JOB, "Flow Elements", stepID);
-		new ContextMenu("Add", "Chunk").select();
+		new ContextMenuItem("Add", "Chunk").select();
 	}
 
 	public void setReaderRef(String stepID, String ref) {
@@ -96,19 +96,19 @@ public class JobXMLEditorDesignPage {
 
 	public void addCheckpointAlgorithm(String stepID, String ref) {
 		selectNode(JOB, "Flow Elements", stepID, "Chunk");
-		new ContextMenu("Add", "Checkpoint Algorithm").select();
+		new ContextMenuItem("Add", "Checkpoint Algorithm").select();
 		new DefaultText(new DefaultSection("Checkpoint Algorithm"), 0).setText(ref);
 	}
 
 	public void addProcessor(String stepID, String ref) {
 		selectNode(JOB, "Flow Elements", stepID, "Chunk");
-		new ContextMenu("Add", "Processor").select();
+		new ContextMenuItem("Add", "Processor").select();
 		new DefaultText(new DefaultSection("Processor"), 0).setText(ref);
 	}
 
 	public void addSplitFlow(String splitID, String id) {
 		selectNode(JOB, "Flow Elements", splitID);
-		new ContextMenu("Add Flow").select();
+		new ContextMenuItem("Add Flow").select();
 		new DefaultText(new DefaultSection(FLOW), 0).setText(id);
 	}
 
@@ -143,7 +143,7 @@ public class JobXMLEditorDesignPage {
 
 	private void addFlowElement(String name, String id) {
 		selectNode(JOB, "Flow Elements");
-		new ContextMenu("Add", name).select();
+		new ContextMenuItem("Add", name).select();
 		new DefaultText(new DefaultSection(name), 0).setText(id);
 	}
 

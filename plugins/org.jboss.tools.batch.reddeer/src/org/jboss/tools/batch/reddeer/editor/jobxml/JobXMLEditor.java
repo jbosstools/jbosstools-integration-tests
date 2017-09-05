@@ -10,12 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.batch.reddeer.editor.jobxml;
 
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.util.ResultRunnable;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.eclipse.ui.part.MultiPageEditorPart;
 import org.eclipse.wst.sse.ui.StructuredTextEditor;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.core.util.ResultRunnable;
-import org.jboss.reddeer.eclipse.ui.part.MultiPageEditor;
 
 /**
  * Represents the whole JobXMLEditor (all three tabs)
@@ -23,7 +23,7 @@ import org.jboss.reddeer.eclipse.ui.part.MultiPageEditor;
  * @author Lucia Jelinkova
  *
  */
-public class JobXMLEditor extends MultiPageEditor {
+public class JobXMLEditor extends MultiPageEditorPart {
 
 	public JobXMLEditor(String title) {
 		this(new WithTextMatcher(title));
@@ -88,4 +88,5 @@ public class JobXMLEditor extends MultiPageEditor {
 		});
 		return new JobXMLEditorSourcePage(textEditor);
 	}
+
 }

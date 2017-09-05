@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.batch.ui.bot.test.editor.jobxml;
 
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.junit.Before;
 import org.junit.Test;
 

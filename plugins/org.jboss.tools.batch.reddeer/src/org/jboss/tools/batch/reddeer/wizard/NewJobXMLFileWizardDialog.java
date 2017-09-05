@@ -1,6 +1,6 @@
 package org.jboss.tools.batch.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 
 /**
  * Wizard dialog for creating of job.xml files
@@ -8,9 +8,9 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
  * @author Lucia Jelinkova
  *
  */
-public class NewJobXMLFileWizardDialog extends NewWizardDialog {
+public class NewJobXMLFileWizardDialog extends NewMenuWizard {
 
 	public NewJobXMLFileWizardDialog() {
-		super("Batch", "Batch Job XML File");
+		super("New Batch Job XML", "Batch", "Batch Job XML File");
 	}
 }

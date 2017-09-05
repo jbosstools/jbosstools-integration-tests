@@ -12,10 +12,10 @@ package org.jboss.tools.batch.ui.bot.test.editor.jobxml;
 
 import java.io.IOException;
 
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.eclipse.wst.xml.ui.tabletree.XMLSourcePage;
+import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
 import org.eclipse.swt.SWT;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.wst.xml.ui.tabletree.XMLSourcePage;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
 import org.jboss.tools.batch.ui.bot.test.Activator;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignFlowElementsTestTemplate;
 import org.junit.After;
