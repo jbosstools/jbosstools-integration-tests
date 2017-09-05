@@ -12,7 +12,7 @@ package org.jboss.tools.aerogear.ui.bot.test.export;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.export.NativeBinaryDestinationPage;
 import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.export.NativeBinaryExportWizard;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class ExportMobileApplication extends ExportMobileTest {
 	  new ProjectExplorer().selectProjects(CORDOVA_PROJECT_NAME);
 	  NativeBinaryExportWizard exportMobileApplicationWizard = new NativeBinaryExportWizard();
 	  exportMobileApplicationWizard.open();
-	  NativeBinaryDestinationPage exportMobileApplicationPage = new NativeBinaryDestinationPage();
+	  NativeBinaryDestinationPage exportMobileApplicationPage = new NativeBinaryDestinationPage(exportMobileApplicationWizard);
 	  assertTrue("Project " + CORDOVA_PROJECT_NAME + " has to be selected",
 	    exportMobileApplicationPage.isProject(CORDOVA_PROJECT_NAME));
 	  exportMobileApplicationPage.setPlatform("Android",true);

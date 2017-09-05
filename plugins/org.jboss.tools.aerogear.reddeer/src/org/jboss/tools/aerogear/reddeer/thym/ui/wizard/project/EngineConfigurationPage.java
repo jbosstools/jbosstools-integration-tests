@@ -13,15 +13,20 @@ package org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.aerogear.reddeer.thym.ui.engine.EngineDownloadDialog;
 
 public class EngineConfigurationPage extends WizardPage{
 	
+	public EngineConfigurationPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	public void selectEngine(ThymPlatform engine, String version){
 		new DefaultTreeItem(engine.getText(), version).setChecked(true);
 	}

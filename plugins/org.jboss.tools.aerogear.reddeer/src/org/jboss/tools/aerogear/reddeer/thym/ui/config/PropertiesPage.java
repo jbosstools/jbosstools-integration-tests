@@ -10,10 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.reddeer.thym.ui.config;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.CordovaPluginWizard;
 
 public class PropertiesPage {

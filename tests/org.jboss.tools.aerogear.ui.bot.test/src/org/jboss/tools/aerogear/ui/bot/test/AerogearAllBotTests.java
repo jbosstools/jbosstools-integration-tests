@@ -18,7 +18,7 @@ import org.jboss.tools.aerogear.ui.bot.test.app.RunWithCordovaSim;
 import org.jboss.tools.aerogear.ui.bot.test.cordovasim.CordovaSimTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 
 @SuiteClasses({ 
 	CreateHybridApplication.class, 

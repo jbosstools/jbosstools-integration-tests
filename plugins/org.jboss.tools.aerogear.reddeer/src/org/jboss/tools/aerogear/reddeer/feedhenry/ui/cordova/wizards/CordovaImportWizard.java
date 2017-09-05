@@ -10,19 +10,19 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.reddeer.feedhenry.ui.cordova.wizards;
 
-import org.jboss.reddeer.jface.wizard.ImportWizardDialog;
+import org.eclipse.reddeer.eclipse.selectionwizard.ImportMenuWizard;
 
 /**
  * Reddeer implementation for Import Cordova Application wizard.
  * @author Pavol Srna
  *
  */
-public class CordovaImportWizard extends ImportWizardDialog {
+public class CordovaImportWizard extends ImportMenuWizard {
 
 	/**
 	 * Constructs the wizard with FeedHenry > Import Cordova Application
 	 */
 	public CordovaImportWizard() {
-		super("FeedHenry", "Import Cordova Application");
+		super("Import", "FeedHenry", "Import Cordova Application");
 	}
 }

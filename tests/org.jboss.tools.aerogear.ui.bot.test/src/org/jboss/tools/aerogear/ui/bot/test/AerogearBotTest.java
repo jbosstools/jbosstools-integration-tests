@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.ui.bot.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -17,30 +19,27 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.condition.ShellIsAvailable;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.aerogear.reddeer.cordovasim.CordovaSimLauncher;
 import org.jboss.tools.aerogear.reddeer.thym.ui.config.ConfigEditor;
 import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.EngineConfigurationPage;
@@ -103,7 +102,7 @@ public class AerogearBotTest {
 		hpFirstPage.setAppID(appId);
 		w.next();
 		
-		EngineConfigurationPage confPage = new EngineConfigurationPage();
+		EngineConfigurationPage confPage = new EngineConfigurationPage(w);
 		List<ThymPlatform> availableEngines = confPage.getAvailableEngines();
 		assertTrue("Engine '"+engine.getText()+"' is not available",availableEngines.contains(engine));
 		List<String> availableVersions = confPage.getAvailableVersions(engine);
@@ -120,7 +119,7 @@ public class AerogearBotTest {
 		
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		assertTrue(pe.getProject(projectName).containsItem("platforms",engine.getText().toLowerCase()));
+		assertTrue(pe.getProject(projectName).containsResource("platforms",engine.getText().toLowerCase()));
 	}
 
 	public void runTreeItemInAndroidEmulator(String projectName) {
@@ -128,7 +127,7 @@ public class AerogearBotTest {
 		// TODO: Order/content of context many may change
 		// TODO: Need to check presence of Android SDK installation
 		getProjectExplorer().selectProjects(projectName);
-		new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run on Android Emulator)")).select();
+		new ContextMenuItem(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run on Android Emulator)")).select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
@@ -137,7 +136,7 @@ public class AerogearBotTest {
 		// TODO: Order/content of context many may change
 		// TODO: Need to check presence of Android SDK installation
 		getProjectExplorer().selectProjects(projectName);
-		new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run on Android Device)")).select();
+		new ContextMenuItem(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run on Android Device)")).select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
@@ -145,7 +144,7 @@ public class AerogearBotTest {
 		getProjectExplorer().selectProjects(projectName);
 		CordovaSimLauncher csLauncher = new CordovaSimLauncher();
 		return csLauncher.launchCordovaSim(
-				new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run w/CordovaSim)")));
+				new ContextMenuItem(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Run w/CordovaSim)")));
 	}
 
 	/**
@@ -169,7 +168,7 @@ public class AerogearBotTest {
 	 * @param projectName
 	 */
 	public void setLogCatFilterPropsAndRun(String projectName) {
-		new ShellMenu("Run", "run Configurations...").select();
+		new ShellMenuItem("Run", "run Configurations...").select();
 		new DefaultShell("Run Configurations");
 
 		DefaultTreeItem tiAndroidEmulator = new DefaultTreeItem("Android Emulator");
