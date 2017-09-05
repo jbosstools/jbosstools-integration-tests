@@ -12,19 +12,19 @@
 package org.jboss.tools.jst.reddeer.wst.jsdt.ui.wizard;
 
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 
 /**
  * Wizard dialog for creating a JavaScript Source File.
  * @author Pavol Srna
  *
  */
-public class NewJSFileWizardDialog extends NewWizardDialog{
+public class NewJSFileWizardDialog extends NewMenuWizard{
 
 	/**
 	 * Constructs the wizard with JavaScript > JavaScript Source File.
 	 */
 	public NewJSFileWizardDialog() {
-		super("JavaScript", "JavaScript Source File");
+		super("New JavaScript file", "JavaScript", "JavaScript Source File");
 	}
 }

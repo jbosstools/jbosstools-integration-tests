@@ -1,12 +1,17 @@
 package org.jboss.tools.jst.reddeer.web.ui;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 public class NewXHTMLFileWizardPage extends WizardPage{
 	
+	public NewXHTMLFileWizardPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	public void setFileName(String fileName){
 		new LabeledText("File name:").setText(fileName);
 	}

@@ -10,11 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.jst.reddeer.ui.preferences;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.api.Button;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.preference.PreferencePage;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.api.Text;
+import org.eclipse.reddeer.swt.api.Button;
 
 /**
  * RedDeer implementation of JBoss Tools > Bower Preferences page 
@@ -25,8 +26,8 @@ public class BowerPreferencesPage extends PreferencePage {
 	
 	public static final String PAGE_NAME = "Bower";
 	
-	public BowerPreferencesPage(){
-		super("JBoss Tools", PAGE_NAME);
+	public BowerPreferencesPage(ReferencedComposite referencedComposite){
+		super(referencedComposite ,"JBoss Tools", PAGE_NAME);
 	}
 
 	public Text getNodeLocation(){

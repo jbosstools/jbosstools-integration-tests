@@ -14,7 +14,7 @@
  */
 package org.jboss.tools.jst.reddeer.web.ui.wizards.project;
 
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
 
 public class ImportWebProjectWizardPage {
 	public void setWebXmlLocation(String location){

@@ -12,12 +12,13 @@ package org.jboss.tools.jst.ui.bot.test.npm;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.core.handler.ShellHandler;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.jboss.tools.jst.ui.bot.test.JSTTestBase;
 import org.junit.After;
 import org.junit.Before;
@@ -37,7 +38,7 @@ public class NpmShortcutsTest extends JSTTestBase {
 
 	@After
 	public void cleanup() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ProjectExplorer().deleteAllProjects();
 	}
 
@@ -45,22 +46,22 @@ public class NpmShortcutsTest extends JSTTestBase {
 	@SuppressWarnings("unchecked")
 	public void testNpmUpdateShortcutAvailability() {
 		npmInit(PROJECT_NAME);
-		PackageExplorer pe = new PackageExplorer();
+		PackageExplorerPart pe = new PackageExplorerPart();
 		pe.open();
 		pe.getProject(PROJECT_NAME).select();
 		assertTrue("npm Update is not available", //$NON-NLS-1$
-				new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( npm Update)")).isEnabled()); //$NON-NLS-1$ //$NON-NLS-2$
+				new ContextMenuItem(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( npm Update)")).isEnabled()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testNpmInstallShortcutAvailability() {
 		npmInit(PROJECT_NAME);
-		PackageExplorer pe = new PackageExplorer();
+		PackageExplorerPart pe = new PackageExplorerPart();
 		pe.open();
 		pe.getProject(PROJECT_NAME).select();
 		assertTrue("npm Install is not available", //$NON-NLS-1$
-				new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( npm Install)")).isEnabled()); //$NON-NLS-1$ //$NON-NLS-2$
+				new ContextMenuItem(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( npm Install)")).isEnabled()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

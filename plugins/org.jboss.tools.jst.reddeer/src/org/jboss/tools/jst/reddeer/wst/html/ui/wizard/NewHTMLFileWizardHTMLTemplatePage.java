@@ -1,14 +1,19 @@
 package org.jboss.tools.jst.reddeer.wst.html.ui.wizard;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 
 /**
  * Wizard page for selecting template for new HTML File.
  * @author vpakan
  */
 public class NewHTMLFileWizardHTMLTemplatePage extends WizardPage {
+	
+	public NewHTMLFileWizardHTMLTemplatePage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
 	/**
 	 * Sets a given template.
 	 * 

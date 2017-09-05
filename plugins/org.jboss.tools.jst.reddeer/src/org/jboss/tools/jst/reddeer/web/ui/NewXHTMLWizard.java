@@ -1,15 +1,16 @@
 package org.jboss.tools.jst.reddeer.web.ui;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+
 /**
  * New XHTML page wizard
  * @author vpakan
  *
  */
-public class NewXHTMLWizard extends NewWizardDialog{
+public class NewXHTMLWizard extends NewMenuWizard{
 	
 	public NewXHTMLWizard(){
-		super("JBoss Tools Web","XHTML Page");
+		super("New XHTML Page", "JBoss Tools Web","XHTML Page");
 	}
 
 }

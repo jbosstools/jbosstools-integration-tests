@@ -11,11 +11,13 @@
 
 package org.jboss.tools.jst.ui.bot.test.tern;
 
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
+
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.jboss.tools.jst.reddeer.tern.ui.TernModulesPropertyPage;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.jboss.tools.jst.ui.bot.test.JSTTestBase;
 import org.junit.After;
 import org.junit.Before;
@@ -41,14 +43,15 @@ public class TernModulesTest extends JSTTestBase {
 
 	@After
 	public void cleanup() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ProjectExplorer().deleteAllProjects();
 	}
 
 	@Test
 	public void testDefaultTernModulesEnabled() {
-		TernModulesPropertyPage propPage = new TernModulesPropertyPage();
-		openProjectProperties().select(propPage);
+		PropertyDialog d = openProjectProperties();
+		TernModulesPropertyPage propPage = new TernModulesPropertyPage(d);
+		d.select(propPage);
 		assertTrue("Browser module not found!", new DefaultTable().containsItem("Browser"));
 		assertTrue("Browser module is not enabled!", new DefaultTable().getItem("Browser").isChecked());
 		assertTrue("Outline module not found!", new DefaultTable().containsItem("Outline"));
@@ -60,8 +63,9 @@ public class TernModulesTest extends JSTTestBase {
 
 	@Test
 	public void testTernModulesAvailable() {
-		TernModulesPropertyPage propPage = new TernModulesPropertyPage();
-		openProjectProperties().select(propPage);
+		PropertyDialog d = openProjectProperties();
+		TernModulesPropertyPage propPage = new TernModulesPropertyPage(d);
+		d.select(propPage);
 		List<TableItem> items = new DefaultTable().getItems();
 		List<String> currentModules = new LinkedList<String>();
 		for (TableItem i : items) {

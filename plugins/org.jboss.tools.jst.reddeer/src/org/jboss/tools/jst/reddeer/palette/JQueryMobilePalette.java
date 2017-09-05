@@ -11,7 +11,7 @@
 package org.jboss.tools.jst.reddeer.palette;
 
 import org.eclipse.gef.ui.palette.PaletteViewer;
-import org.jboss.reddeer.gef.impl.palette.AbstractPalette;
+import org.eclipse.reddeer.gef.impl.palette.AbstractPalette;
 
 public class JQueryMobilePalette extends AbstractPalette{
 

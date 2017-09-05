@@ -11,14 +11,15 @@
 
 package org.jboss.tools.jst.ui.bot.test.json;
 
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.TreeItemHasMinChildren;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.core.handler.ShellHandler;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.views.contentoutline.ContentOutline;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.TreeItemHasMinChildren;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.jst.ui.bot.test.JSTTestBase;
 import org.junit.After;
 import org.junit.Before;
@@ -50,7 +51,7 @@ public class ContentOutlineTest extends JSTTestBase {
 
 	@After
 	public void cleanup() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ProjectExplorer().deleteAllProjects();
 	}
 
@@ -70,7 +71,7 @@ public class ContentOutlineTest extends JSTTestBase {
 		TextEditor editor = new TextEditor("package.json");
 		editor.activate();
 		
-		OutlineView view = new OutlineView();
+		ContentOutline view = new ContentOutline();
 		view.activate();
 		DefaultTree t = new DefaultTree();
 
