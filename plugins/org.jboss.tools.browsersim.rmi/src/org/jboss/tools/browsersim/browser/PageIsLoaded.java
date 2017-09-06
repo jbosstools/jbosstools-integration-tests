@@ -8,9 +8,9 @@
  * Contributors:
  * Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.browsersim.wait;
+package org.jboss.tools.browsersim.browser;
 
-import org.jboss.tools.browsersim.widgets.Browser;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 
 /**
  * Condition is met when page is fully loaded in a {@link Browser}.

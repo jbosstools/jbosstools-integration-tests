@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.vpe.reddeer.preview.editor.VPVEditor;
 
 public class VPVForwardIsEnabled extends AbstractWaitCondition{

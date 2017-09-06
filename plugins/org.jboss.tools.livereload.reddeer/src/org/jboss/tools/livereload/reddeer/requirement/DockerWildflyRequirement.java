@@ -21,43 +21,43 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.NewServerWizard;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
+import org.eclipse.reddeer.junit.requirement.configuration.RequirementConfiguration;
+import org.eclipse.reddeer.requirements.server.AbstractServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerAdapterPage;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerRSIWizardPage;
-import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerWizardPageWithErrorCheck;
 import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerAdapterPage.Profile;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.platform.RunningPlatform;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.rse.ui.view.System;
-import org.jboss.reddeer.eclipse.rse.ui.view.SystemView;
-import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardDialog;
-import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardMainPage;
-import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardSelectionPage;
-import org.jboss.reddeer.eclipse.rse.ui.wizard.SystemPasswordPromptDialog;
-import org.jboss.reddeer.eclipse.rse.ui.wizard.NewConnectionWizardSelectionPage.SystemType;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
-import org.jboss.reddeer.junit.requirement.Requirement;
-import org.jboss.reddeer.requirements.server.ConfiguredServerInfo;
-import org.jboss.reddeer.requirements.server.ServerReqBase;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.ShellIsAvailable;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.YesButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.api.Editor;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.platform.RunningPlatform;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.eclipse.rse.ui.dialogs.SystemPasswordPromptDialog;
+import org.eclipse.reddeer.eclipse.rse.ui.view.System;
+import org.eclipse.reddeer.eclipse.rse.ui.view.SystemViewPart;
+import org.eclipse.reddeer.eclipse.rse.ui.wizards.newconnection.RSEDefaultNewConnectionWizardMainPage;
+import org.eclipse.reddeer.eclipse.rse.ui.wizards.newconnection.RSEMainNewConnectionWizard;
+import org.eclipse.reddeer.eclipse.rse.ui.wizards.newconnection.RSENewConnectionWizardSelectionPage;
+import org.eclipse.reddeer.eclipse.rse.ui.wizards.newconnection.RSENewConnectionWizardSelectionPage.SystemType;
+import org.eclipse.reddeer.junit.requirement.Requirement;
+import org.eclipse.reddeer.requirements.server.ConfiguredServerInfo;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.YesButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.api.Editor;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.livereload.reddeer.requirement.DockerWildflyRequirement.DockerWildfly;
 
 import com.spotify.docker.client.DefaultDockerClient;
@@ -68,7 +68,7 @@ import com.spotify.docker.client.messages.HostConfig;
 import com.spotify.docker.client.messages.PortBinding;
 import com.spotify.docker.client.messages.ContainerConfig.Builder;
 
-public class DockerWildflyRequirement extends ServerReqBase implements Requirement<DockerWildfly> {
+public class DockerWildflyRequirement extends AbstractServerRequirement implements Requirement<DockerWildfly> {
 
 	private String ipAddress;
 	private DockerClient docker;
@@ -95,14 +95,9 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 	}
 
 	@Override
-	public boolean canFulfill() {
-		return true;
-	}
-
-	@Override
 	public void fulfill() {
 		try {
-			lastServerConfiguration = new ConfiguredServerInfo(config.name(), null);
+			lastServerConfiguration = new ConfiguredServerInfo(config.name(), config.name(),null);
 			docker = DefaultDockerClient.fromEnv().build();
 			docker.pull(config.imageName());
 			Builder builder = ContainerConfig.builder();
@@ -147,7 +142,7 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 		try{
 			setupRemoteAdapter();
 			setupPortOffset();
-			ServersView sw = new ServersView();
+			ServersView2 sw = new ServersView2();
 			sw.open();
 			sw.getServer(config.name()).start();
 		} catch (Exception e) {
@@ -161,7 +156,7 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 	}
 
 	private void setupPortOffset() {
-		ServersView sw = new ServersView();
+		ServersView2 sw = new ServersView2();
 		sw.open();
 		for (TreeItem i : new DefaultTree().getItems()) {
 			if (i.getText().startsWith(config.name())) {
@@ -177,7 +172,7 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 	}
 
 	private void setupRemoteAdapter() {
-		NewServerWizardDialog serverW = new NewServerWizardDialog();
+		NewServerWizard serverW = new NewServerWizard();
 		// setup remote system first
 		setupRemoteSystem();
 
@@ -185,14 +180,13 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 		serverW.open();
 		// -- Select the server type and fill in server name, then continue
 		// on next page
-		NewServerWizardPageWithErrorCheck sp = new NewServerWizardPageWithErrorCheck();
+		NewServerWizardPage sp = new NewServerWizardPage(serverW);
 		sp.selectType("JBoss Community", "WildFly 10.x");
 		sp.setName(config.name());
-		sp.checkErrors();
 		serverW.next();
 
 		// -- Select server profile (Remote)
-		NewServerAdapterPage ap = new NewServerAdapterPage();
+		NewServerAdapterPage ap = new NewServerAdapterPage(serverW);
 		ap.setProfile(Profile.REMOTE);
 
 		// TODO Fix this in NewServerAdapterPage
@@ -204,7 +198,7 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 		check.toggle(false);
 		serverW.next();
 
-		NewServerRSIWizardPage rsp = new NewServerRSIWizardPage();
+		NewServerRSIWizardPage rsp = new NewServerRSIWizardPage(serverW);
 		rsp.setRemoteServerHome(config.homeFolder());
 		rsp.selectHost(ipAddress); // host was configured in
 									// setupRemoteSystem
@@ -212,13 +206,13 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 	}
 
 	protected void setupRemoteSystem() {
-		SystemView sview = new SystemView();
+		SystemViewPart sview = new SystemViewPart();
 		sview.open();
-		NewConnectionWizardDialog connW = sview.newConnection();
-		NewConnectionWizardSelectionPage sp = new NewConnectionWizardSelectionPage();
+		RSEMainNewConnectionWizard connW = sview.newConnection();
+		RSENewConnectionWizardSelectionPage sp = new RSENewConnectionWizardSelectionPage(connW);
 		sp.selectSystemType(SystemType.SSH_ONLY);
 		connW.next();
-		NewConnectionWizardMainPage mp = new NewConnectionWizardMainPage();
+		RSEDefaultNewConnectionWizardMainPage mp = new RSEDefaultNewConnectionWizardMainPage(connW);
 		mp.setHostName(ipAddress);
 		connW.finish();
 
@@ -229,7 +223,7 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 
 		if (RunningPlatform.isOSX()) {
 			new DefaultTreeItem(ipAddress, "Ssh Shells").select();
-			new ContextMenu("Properties").select();
+			new ContextMenuItem("Properties").select();
 			Shell propShell = new DefaultShell("Properties for Ssh Shells");
 			new DefaultTreeItem("Subsystem").select();
 			new LabeledText("Port (1-65535):").setText(macSSHPort);
@@ -240,13 +234,13 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 		sview.open();
 		new DefaultTreeItem(ipAddress).select();
 
-		new ContextMenu("Connect").select();
+		new ContextMenuItem("Connect").select();
 		new SystemPasswordPromptDialog();
 		new LabeledText("User ID:").setText(config.userName());
 		new LabeledText("Password (optional):").setText(config.pass());
 		new PushButton("OK").click();
 		
-		new WaitUntil(new ShellWithTextIsAvailable("Warning"), TimePeriod.LONG, false);
+		new WaitUntil(new ShellIsAvailable("Warning"), TimePeriod.LONG, false);
 
 		try {
 			Shell shell = new DefaultShell("Warning");
@@ -280,11 +274,11 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 		if (config.cleanup()) {
 			try{
 				if (lastServerConfiguration != null) {
-					ServersView sw = new ServersView();
+					ServersView2 sw = new ServersView2();
 					sw.open();
 					sw.getServer(config.name()).delete();
 					lastServerConfiguration = null;
-					SystemView sview = new SystemView();
+					SystemViewPart sview = new SystemViewPart();
 					sview.open();
 					sview.getSystem(ipAddress).delete();
 				}
@@ -333,6 +327,32 @@ public class DockerWildflyRequirement extends ServerReqBase implements Requireme
 			return ip;
 		}
 
+	}
+
+	@Override
+	public String getServerNameLabelText() {
+		return config.name();
+	}
+
+	@Override
+	public String getRuntimeNameLabelText() {
+		return config.name();
+	}
+
+	@Override
+	public RequirementConfiguration getConfiguration() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public org.eclipse.reddeer.requirements.server.ConfiguredServerInfo getConfiguredConfig() {
+		return lastServerConfiguration;
+	}
+
+	@Override
+	public DockerWildfly getDeclaration() {
+		return config;
 	}
 
 }

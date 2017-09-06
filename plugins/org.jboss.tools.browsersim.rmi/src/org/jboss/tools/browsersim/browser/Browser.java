@@ -1,21 +1,13 @@
-/*******************************************************************************
- * Copyright (c) 2016 Red Hat, Inc.
- * Distributed under license by Red Hat, Inc. All rights reserved.
- * This program is made available under the terms of the
- * Eclipse Public License v1.0 which accompanies this distribution,
- * and is available at http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- * Red Hat, Inc. - initial API and implementation
- ******************************************************************************/
-package org.jboss.tools.browsersim.widgets;
+package org.jboss.tools.browsersim.browser;
 
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.util.ResultRunnable;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.swt.browser.ProgressListener;
 import org.jboss.tools.browsersim.browser.IBrowser;
-import org.jboss.tools.browsersim.wait.AbstractWait;
-import org.jboss.tools.browsersim.wait.PageIsLoaded;
-import org.jboss.tools.browsersim.wait.TimePeriod;
-import org.jboss.tools.browsersim.wait.WaitUntil;
+import org.jboss.tools.browsersim.rmi.BrowsersimWidgetLookup;
 
 public class Browser {
 	
@@ -23,7 +15,7 @@ public class Browser {
 	BrowserProgressListener browserProgressListener;
 	
 	public Browser() {
-		this.browser = WidgetLookup.getBrowsersimBrowser();
+		this.browser = BrowsersimWidgetLookup.getBrowsersimBrowser();
 		this.browserProgressListener = new BrowserProgressListener(this);
 	}
 	
@@ -36,7 +28,7 @@ public class Browser {
 	 */
 	public boolean setURL(final String url) {
 		setUpProgressListener();
-		boolean result = RDDisplay.syncExec(new ResultRunnable<Boolean>() {
+		boolean result = Display.syncExec(new ResultRunnable<Boolean>() {
 			@Override
 			public Boolean run() {
 				return browser.setUrl(url);
@@ -45,13 +37,13 @@ public class Browser {
 		
 		new WaitUntil(new PageIsLoaded(this), TimePeriod.LONG);
 		// Unfortunately Browser needs some time to get ready even when page is fully loaded
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		AbstractWait.sleep(TimePeriod.MEDIUM);
 		resetProgressListener();
 		return result;
 	}
 	
 	public String getURL() {
-		return RDDisplay.syncExec(new ResultRunnable<String>() {
+		return Display.syncExec(new ResultRunnable<String>() {
 			@Override
 			public String run() {
 				return browser.getUrl();
@@ -60,7 +52,7 @@ public class Browser {
 	}
 	
 	public String getText(){
-		return RDDisplay.syncExec(new ResultRunnable<String>() {
+		return Display.syncExec(new ResultRunnable<String>() {
 
 			@Override
 			public String run() {
@@ -78,7 +70,7 @@ public class Browser {
 	}
 	
 	public Object evaluate(final String script) {
-		return RDDisplay.syncExec(new ResultRunnable<Object>() {
+		return Display.syncExec(new ResultRunnable<Object>() {
 
 			@Override
 			public Object run() {
@@ -89,7 +81,7 @@ public class Browser {
 	}
 	
 	public boolean execute(final String script) {
-		return RDDisplay.syncExec(new ResultRunnable<Boolean>() {
+		return Display.syncExec(new ResultRunnable<Boolean>() {
 
 			@Override
 			public Boolean run() {
@@ -101,7 +93,7 @@ public class Browser {
 	
 	public void forward() {
 		setUpProgressListener();
-		RDDisplay.syncExec(new ResultRunnable<Boolean>() {
+		Display.syncExec(new ResultRunnable<Boolean>() {
 			@Override
 			public Boolean run() {
 				return browser.forward();
@@ -115,7 +107,7 @@ public class Browser {
 	
 	public void back() {
 		setUpProgressListener();
-		RDDisplay.syncExec(new ResultRunnable<Boolean>() {
+		Display.syncExec(new ResultRunnable<Boolean>() {
 			@Override
 			public Boolean run() {
 				return browser.back();
@@ -138,7 +130,7 @@ public class Browser {
 	}
 	
 	public void addProgressListener(final ProgressListener progressListener) {
-		RDDisplay.syncExec(new Runnable() {
+		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
 				browser.addProgressListener(progressListener);
@@ -147,7 +139,7 @@ public class Browser {
 	}
 	
 	public void removeProgressListener(final ProgressListener progressListener) {
-		RDDisplay.syncExec(new Runnable() {
+		Display.syncExec(new Runnable() {
 			@Override
 			public void run() {
 				browser.removeProgressListener(progressListener);

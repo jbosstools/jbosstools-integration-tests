@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.reddeer.resref.core;
 
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 
 public class VpvResourcesDialog extends DefaultShell{
 	

@@ -15,9 +15,9 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
-import org.jboss.reddeer.eclipse.ui.views.log.LogView;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.views.log.LogMessage;
+import org.eclipse.reddeer.eclipse.ui.views.log.LogView;
 import org.jboss.tools.jst.reddeer.web.ui.NewXHTMLFileWizardPage;
 import org.jboss.tools.jst.reddeer.web.ui.NewXHTMLWizard;
 import org.jboss.tools.jst.reddeer.web.ui.editor.jspeditor.JSPMultiPageEditor;
@@ -87,7 +87,7 @@ public class JSFEngineTest extends VPETestBase {
 	public void openXHTMLPageTest() {
 		NewXHTMLWizard xw = new NewXHTMLWizard();
 		xw.open();
-		NewXHTMLFileWizardPage xp = new NewXHTMLFileWizardPage();
+		NewXHTMLFileWizardPage xp = new NewXHTMLFileWizardPage(xw);
 		xp.setFileName(testPageName);
 		xp.selectParentFolder(PROJECT_NAME);
 		xw.finish();

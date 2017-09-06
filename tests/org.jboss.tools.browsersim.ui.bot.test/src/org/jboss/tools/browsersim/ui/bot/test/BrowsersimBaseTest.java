@@ -14,17 +14,17 @@ import java.rmi.RemoteException;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.core.util.ResultRunnable;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
-import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.util.ResultRunnable;
+import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
+import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectWizard;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.wst.html.ui.wizard.NewHTMLFileWizardPage;
+import org.eclipse.reddeer.eclipse.wst.html.ui.wizard.NewHTMLWizard;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.browsersim.reddeer.BrowserSimLauncher;
 import org.jboss.tools.browsersim.rmi.IBrowsersimHandler;
-import org.jboss.tools.jst.reddeer.wst.html.ui.wizard.NewHTMLFileWizardDialog;
-import org.jboss.tools.jst.reddeer.wst.html.ui.wizard.NewHTMLFileWizardHTMLPage;
 import org.junit.AfterClass;
 
 public class BrowsersimBaseTest {
@@ -38,7 +38,7 @@ public class BrowsersimBaseTest {
 		bsController.stopBrowsersim();
 	}
 	
-	public static void launchBrowsersim(ContextMenu menu) throws RemoteException{
+	public static void launchBrowsersim(ContextMenuItem menu) throws RemoteException{
 		BrowserSimLauncher bsController = new BrowserSimLauncher();
 		bsHandler = bsController.launchBrowserSim(menu);
 		
@@ -64,16 +64,16 @@ public class BrowsersimBaseTest {
 	public String createProjectWithPage(){
 		WebProjectWizard ww = new WebProjectWizard();
 		ww.open();
-		new WebProjectFirstPage().setProjectName(PROJECT_NAME);
+		new WebProjectFirstPage(ww).setProjectName(PROJECT_NAME);
 		ww.finish();
 		
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.selectProjects(PROJECT_NAME);
 		
-		NewHTMLFileWizardDialog nh = new NewHTMLFileWizardDialog();
+		NewHTMLWizard nh = new NewHTMLWizard();
 		nh.open();
-		NewHTMLFileWizardHTMLPage np = new NewHTMLFileWizardHTMLPage();
+		NewHTMLFileWizardPage np = new NewHTMLFileWizardPage(nh);
 		String pageName = np.getFileName();
 		nh.finish();
 		return pageName;

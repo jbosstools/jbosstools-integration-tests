@@ -14,17 +14,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.wst.html.ui.wizard.NewHTMLFileWizardPage;
-import org.jboss.reddeer.eclipse.wst.html.ui.wizard.NewHTMLTemplatesWizardPage;
-import org.jboss.reddeer.eclipse.wst.html.ui.wizard.NewHTMLWizard;
-import org.jboss.reddeer.gef.view.PaletteView;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.wst.html.ui.wizard.NewHTMLFileWizardPage;
+import org.eclipse.reddeer.eclipse.wst.html.ui.wizard.NewHTMLTemplatesWizardPage;
+import org.eclipse.reddeer.eclipse.wst.html.ui.wizard.NewHTMLWizard;
+import org.eclipse.reddeer.gef.view.PaletteView;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.vpe.bot.test.VPETestBase;
 import org.jboss.tools.vpe.reddeer.preview.editor.VPVEditor;
 import org.junit.BeforeClass;
@@ -44,12 +44,12 @@ public class CreateHTML5Page extends VPETestBase{
 		pe.selectProjects(PROJECT_NAME);
 		NewHTMLWizard nw = new NewHTMLWizard();
 		nw.open();
-		NewHTMLFileWizardPage fp = new NewHTMLFileWizardPage();
+		NewHTMLFileWizardPage fp = new NewHTMLFileWizardPage(nw);
 		assertEquals(PROJECT_NAME+"/WebContent",fp.getParentFolder());
 		assertEquals("NewFile.html",fp.getFileName());
 		assertTrue(nw.isFinishEnabled());
 		nw.next();
-		NewHTMLTemplatesWizardPage tp = new NewHTMLTemplatesWizardPage();
+		NewHTMLTemplatesWizardPage tp = new NewHTMLTemplatesWizardPage(nw);
 		assertEquals("New HTML File (5)",tp.getHTMLTemplate());
 		assertFalse(nw.isNextEnabled());
 		nw.finish();
@@ -57,10 +57,10 @@ public class CreateHTML5Page extends VPETestBase{
 		assertTrue(htmlEditor.getBrowserURL() != null);
 		assertTrue(htmlEditor.getMarkers().isEmpty());
 		new TextEditor().setCursorPosition(1, 1);
-		new ContextMenu("Validate").select();
+		new ContextMenuItem("Validate").select();
 		new WaitWhile(new JobIsRunning());
 		assertTrue(htmlEditor.getMarkers().isEmpty());
-		assertTrue(new PaletteView().isOpened());
+		assertTrue(new PaletteView().isOpen());
 	}
 	
 	@Test

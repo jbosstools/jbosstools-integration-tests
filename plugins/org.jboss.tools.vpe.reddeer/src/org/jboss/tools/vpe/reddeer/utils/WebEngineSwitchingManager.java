@@ -11,10 +11,10 @@
 package org.jboss.tools.vpe.reddeer.utils;
 
 import org.eclipse.core.runtime.Platform;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.platform.OS;
-import org.jboss.reddeer.common.platform.RunningPlatform;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.platform.OS;
+import org.eclipse.reddeer.common.platform.RunningPlatform;
 import org.jboss.tools.vpe.editor.util.VpePlatformUtil;
 import org.jboss.tools.vpe.reddeer.preferences.VisualPageEditorPreferencePage;
 /**
@@ -37,7 +37,7 @@ public class WebEngineSwitchingManager {
 						.getBoolean("org.jboss.tools.jst.web.ui", "Remember visual editor engine", false, null)){
 					WorkbenchPreferenceDialog preferencesDialog = new WorkbenchPreferenceDialog();
 					preferencesDialog.open();
-					VisualPageEditorPreferencePage visualPageEditorPreferencePage = new VisualPageEditorPreferencePage();
+					VisualPageEditorPreferencePage visualPageEditorPreferencePage = new VisualPageEditorPreferencePage(preferencesDialog);
 					preferencesDialog.select(visualPageEditorPreferencePage);
 					visualPageEditorPreferencePage.setDoNotShowBrowserEngineDialog(true);
 					preferencesDialog.ok();
