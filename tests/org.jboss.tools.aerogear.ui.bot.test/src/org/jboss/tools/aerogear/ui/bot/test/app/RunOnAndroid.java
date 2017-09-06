@@ -12,14 +12,14 @@ package org.jboss.tools.aerogear.ui.bot.test.app;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.aerogear.reddeer.thym.android.ui.preferences.AndroidPreferencesPage;
 import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.ThymPlatform;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
@@ -36,7 +36,7 @@ public class RunOnAndroid extends AerogearBotTest {
 
 		WorkbenchPreferenceDialog preferencesDialog = new WorkbenchPreferenceDialog();
 		preferencesDialog.open();
-		AndroidPreferencesPage androidPreferences = new AndroidPreferencesPage();
+		AndroidPreferencesPage androidPreferences = new AndroidPreferencesPage(preferencesDialog);
 		preferencesDialog.select(androidPreferences);
 		androidPreferences.setAndroidSDKLocation(AndroidDevelopmentTools.getAndoridSDKLocation());
 		preferencesDialog.ok();

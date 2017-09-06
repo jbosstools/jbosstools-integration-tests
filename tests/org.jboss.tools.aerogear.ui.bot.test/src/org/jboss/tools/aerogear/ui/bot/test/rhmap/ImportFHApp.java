@@ -3,11 +3,11 @@ package org.jboss.tools.aerogear.ui.bot.test.rhmap;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.aerogear.ui.bot.test.FeedHenryBotTest;
-import org.jboss.reddeer.core.util.FileUtil;
+import org.eclipse.reddeer.core.util.FileUtil;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

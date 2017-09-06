@@ -10,9 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.reddeer.feedhenry.ui.cordova.preferences;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
-import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.preference.PreferencePage;
+import org.eclipse.reddeer.swt.api.Text;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * RedDeer implementation of FeedHenry Preferences page 
@@ -21,8 +22,8 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  */
 public class FeedHenryPreferencesPage extends PreferencePage {
 
-	public FeedHenryPreferencesPage() {
-		super("FeedHenry");
+	public FeedHenryPreferencesPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite, "FeedHenry");
 	}
 
 	/**

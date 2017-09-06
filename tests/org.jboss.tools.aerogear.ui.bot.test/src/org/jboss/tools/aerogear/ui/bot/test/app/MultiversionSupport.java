@@ -24,18 +24,18 @@ import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.CordovaPluginSele
 import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.CordovaPluginWizard;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
 import org.eclipse.swt.widgets.Label;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.condition.WidgetIsFound;
-import org.jboss.reddeer.core.matcher.ClassMatcher;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.label.DefaultLabel;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.core.condition.WidgetIsFound;
+import org.eclipse.reddeer.core.matcher.ClassMatcher;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.label.DefaultLabel;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -80,11 +80,11 @@ public class MultiversionSupport extends AerogearBotTest {
 		// Add device plugin to project
 		ConfigEditor configEditor = new ConfigEditor(CORDOVA_APP_NAME);
 		CordovaPluginWizard pluginWizard = configEditor.getPlatformPropertiesPage().addPlugin();
-		CordovaPluginSelectionPage pluginPage = new CordovaPluginSelectionPage();
+		CordovaPluginSelectionPage pluginPage = new CordovaPluginSelectionPage(pluginWizard);
 		pluginPage.selectPlugin("cordova-plugin-device");
 		
 		pluginWizard.next();
-		new WaitUntil(new WidgetIsFound<>(new ClassMatcher(Label.class), new WithTextMatcher("cordova-plugin-device")));
+		new WaitUntil(new WidgetIsFound(Label.class, new WithTextMatcher("cordova-plugin-device")));
 		new DefaultLabel("cordova-plugin-device");
 		assertTrue("There is no version available for plugin " + "cordova-plugin-device",
 			new DefaultCombo().getItems().size() > 0);
@@ -97,10 +97,9 @@ public class MultiversionSupport extends AerogearBotTest {
 		String consoleEngineVersion = parseConsoleTextForVersion(console.getConsoleText());
 		assertNotNull("Cordova Engine version was not displayed in console", consoleEngineVersion);
 		// change mobile engine version for project
-		ExplorerItemPropertyDialog projectPropertiesDialog = new ExplorerItemPropertyDialog(
-				 getProjectExplorer().getProject(CORDOVA_PROJECT_NAME));
+		PropertyDialog projectPropertiesDialog = new PropertyDialog(CORDOVA_PROJECT_NAME);
 		projectPropertiesDialog.open();
-		EnginePropertyPage enginePropertyPage = new EnginePropertyPage();
+		EnginePropertyPage enginePropertyPage = new EnginePropertyPage(projectPropertiesDialog);
 		projectPropertiesDialog.select(enginePropertyPage);
 		String propEngineVersion = enginePropertyPage.getVersion(Platform.android);
 		assertEquals("Version displayed to console is not equal to version in project properties "

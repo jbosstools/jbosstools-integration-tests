@@ -10,8 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 
 
 /**
@@ -19,13 +19,13 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
  * @author Pavol Srna
  *
  */
-public class NewHybridProjectWizard extends NewWizardDialog {
+public class NewHybridProjectWizard extends NewMenuWizard {
 
 	/**
 	 * Constructs the wizard with Mobile > Hybrid Mobile (Cordova) Application Project
 	 */
 	public NewHybridProjectWizard() {
-		super("Mobile", "Hybrid Mobile (Cordova) Application Project");
+		super("Hybrid Mobile (Cordova) Application Project", "Mobile", "Hybrid Mobile (Cordova) Application Project");
 	}
 	
 	public void finish(){

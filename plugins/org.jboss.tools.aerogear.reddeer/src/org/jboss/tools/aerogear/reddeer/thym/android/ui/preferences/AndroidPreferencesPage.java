@@ -10,11 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.reddeer.thym.android.ui.preferences;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.swt.api.Text;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
+import org.eclipse.reddeer.jface.preference.PreferencePage;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.swt.api.Text;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
 
 /**
  * RedDeer implementation of Hybrid Mobile > Android Preferences page 
@@ -27,8 +28,8 @@ public class AndroidPreferencesPage extends PreferencePage{
 
   private static final Logger log = Logger.getLogger(AndroidPreferencesPage.class);
 
-  public AndroidPreferencesPage() {
-    super("Hybrid Mobile", PAGE_NAME);
+  public AndroidPreferencesPage(ReferencedComposite referencedComposite) {
+    super(referencedComposite, "Hybrid Mobile", PAGE_NAME);
   }
   /**
    * Sets Android SDK Location to androidSDKLocation

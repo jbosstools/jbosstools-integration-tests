@@ -14,10 +14,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.ui.dialogs.PropertyPage;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyPage;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 
 /**
  * Represents hybrid mobile project property page
@@ -26,8 +27,8 @@ import org.jboss.reddeer.swt.impl.tree.DefaultTree;
  *
  */
 public class EnginePropertyPage extends PropertyPage{
-	public EnginePropertyPage() {
-		super("Hybrid Mobile Engine");
+	public EnginePropertyPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite, "Hybrid Mobile Engine");
 	}
 	/**
 	 * Returns current checked version on platform defined via parameter

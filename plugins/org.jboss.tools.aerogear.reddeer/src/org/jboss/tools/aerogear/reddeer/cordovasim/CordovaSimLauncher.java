@@ -19,11 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.Platform;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.jboss.tools.browsersim.reddeer.BrowserSimLauncher;
 import org.jboss.tools.browsersim.reddeer.BrowserSimException;
 import org.jboss.tools.browsersim.reddeer.SimLauncher;
@@ -36,8 +36,8 @@ public class CordovaSimLauncher extends SimLauncher{
 	public static final String CORDOVASIM_API_BUNDLE = "org.jboss.tools.cordovasim.rmi";
 	private static final String CORDOVASIM_MAIN_CLASS="org.jboss.tools.cordovasim.rmi.CordovasimUtil";
 
-	public ICordovasimHandler launchCordovaSim(ContextMenu menu) {
-		launchSimWithRMI(getBundles(), CORDOVASIM_MAIN_CLASS, menu, null);
+	public ICordovasimHandler launchCordovaSim(ContextMenuItem menuItem) {
+		launchSimWithRMI(getBundles(), CORDOVASIM_MAIN_CLASS, menuItem, null);
 		CordovaSimIsRunning isRunning = new CordovaSimIsRunning(CordovasimUtil.CS_HANDLER);
 		new WaitUntil(isRunning, TimePeriod.LONG);
 		return isRunning.getHandler();
@@ -95,11 +95,16 @@ public class CordovaSimLauncher extends SimLauncher{
 		}
 
 		@Override
-		public String errorMessage() {
+		public String errorMessageUntil() {
 			ConsoleView cw = new ConsoleView();
 			cw.open();
 			String text = cw.getConsoleText();
 			return "Error in console: " + text;
+		}
+		
+		@Override
+		public String errorMessageWhile() {
+			return "CordovaSim is still running";
 		}
 
 	}
