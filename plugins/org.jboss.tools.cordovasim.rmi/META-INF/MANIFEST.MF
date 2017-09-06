@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.swt,
  org.hamcrest.core,
  org.jboss.tools.browsersim.browser,
  org.jboss.tools.browsersim.rmi
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.cordovasim.rmi
 

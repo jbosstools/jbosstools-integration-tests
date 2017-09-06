@@ -14,11 +14,11 @@ import static org.junit.Assert.*;
 
 import java.rmi.RemoteException;
 
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.browsersim.reddeer.condition.BrowserSimBrowserHasText;
 import org.jboss.tools.livereload.reddeer.requirement.LivereloadServerRequirement.LivereloadServer;
 import org.jboss.tools.vpe.reddeer.preview.editor.VPVEditor;
@@ -37,7 +37,7 @@ public class LivereloadTest extends BrowsersimBaseTest{
 		te.save();
 		new DefaultStyledText();
 	
-		launchBrowsersim(new ContextMenu("Open With","BrowserSim"));
+		launchBrowsersim(new ContextMenuItem("Open With","BrowserSim"));
 		bsHandler.enableLivereload();
 		new WaitUntil(new BrowserSimBrowserHasText(bsHandler, "browsersim-livereload test"));
 		

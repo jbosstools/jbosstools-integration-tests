@@ -15,14 +15,13 @@ import org.eclipse.gef.ui.views.palette.PalettePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Event;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.handler.BrowserHandler;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.core.util.ResultRunnable;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.workbench.ui.dialogs.FilteredPreferenceDialog;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.core.handler.BrowserHandler;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.util.ResultRunnable;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.vpe.preview.editor.VpvEditorPart;
 import org.jboss.tools.vpe.reddeer.VisualEditor;
 import org.jboss.tools.vpe.reddeer.condition.VPVBackIsEnabled;
@@ -165,10 +164,9 @@ public class VPVEditor extends VisualEditor{
 		new DefaultToolItem("Forward").click();
 	}
 	
-	public FilteredPreferenceDialog openPreferences(){
+	public WorkbenchPreferenceDialog openPreferences(){
 		new DefaultToolItem("Preferences").click();
-		new DefaultShell(FilteredPreferenceDialog.DIALOG_TITLE);
-		return new FilteredPreferenceDialog();
+		return new WorkbenchPreferenceDialog();
 	}
 	
 	public VpvResourcesDialog openPageDesignOptions(){

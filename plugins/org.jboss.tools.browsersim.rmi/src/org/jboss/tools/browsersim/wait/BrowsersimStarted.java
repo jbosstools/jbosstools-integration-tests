@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.browsersim.wait;
 
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.browsersim.rmi.IBrowsersimHandler;
 
 public class BrowsersimStarted extends AbstractWaitCondition{

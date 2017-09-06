@@ -13,7 +13,7 @@ package org.jboss.tools.browsersim.reddeer.condition;
 import org.eclipse.debug.core.IStreamListener;
 import org.eclipse.debug.core.model.IStreamMonitor;
 import org.eclipse.debug.core.model.IStreamsProxy;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 
 public class BrowserSimOperationFinished extends AbstractWaitCondition{
 	

@@ -15,17 +15,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jboss.ide.eclipse.as.reddeer.server.wizard.page.NewServerWizardPageWithErrorCheck;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
-import org.jboss.reddeer.junit.requirement.Requirement;
-import org.jboss.reddeer.requirements.server.ConfiguredServerInfo;
-import org.jboss.reddeer.requirements.server.ServerReqBase;
-import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.NewServerWizard;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
+import org.eclipse.reddeer.junit.requirement.Requirement;
+import org.eclipse.reddeer.junit.requirement.configuration.RequirementConfiguration;
+import org.eclipse.reddeer.requirements.server.AbstractServerRequirement;
+import org.eclipse.reddeer.requirements.server.ConfiguredServerInfo;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.tools.livereload.reddeer.requirement.LivereloadServerRequirement.LivereloadServer;
 
-public class LivereloadServerRequirement extends ServerReqBase implements Requirement<LivereloadServer>{
+public class LivereloadServerRequirement extends AbstractServerRequirement implements Requirement<LivereloadServer>{
 	
 	private LivereloadServer server;
 	
@@ -34,35 +35,29 @@ public class LivereloadServerRequirement extends ServerReqBase implements Requir
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
 	public @interface LivereloadServer {
-		ServerReqState state() default ServerReqState.RUNNING;
+		ServerRequirementState state() default ServerRequirementState.RUNNING;
 		String name();
 		boolean cleanup() default true;
 	}
 
 
 	@Override
-	public boolean canFulfill() {
-		return true;
-	}
-
-
-	@Override
 	public void fulfill() {
-		ServersView sw = new ServersView();
+		ServersView2 sw = new ServersView2();
 		sw.open();
 		try{
 			sw.getServer(server.name());
 			//already exists, do nothing
 		} catch (EclipseLayerException e) {
-			lastServerConfiguration = new ConfiguredServerInfo(server.name(), null);
-			NewServerWizardDialog serverW = new NewServerWizardDialog();
+			lastServerConfiguration = new ConfiguredServerInfo(server.name(), server.name(), null);
+			NewServerWizard serverW = new NewServerWizard();
 			serverW.open();
-			NewServerWizardPageWithErrorCheck sp = new NewServerWizardPageWithErrorCheck();
+			NewServerWizardPage sp = new NewServerWizardPage(serverW);
 				
 			sp.selectType("Basic","LiveReload Server");
 			sp.setName(server.name());
 			serverW.finish();
-			setupServerState(server.state(), lastServerConfiguration);
+			setupServerState(server.state());
 		}
 		
 		
@@ -80,11 +75,41 @@ public class LivereloadServerRequirement extends ServerReqBase implements Requir
 	@Override
 	public void cleanUp() {
 		if(server.cleanup()){
-			ServersView sw = new ServersView();
+			ServersView2 sw = new ServersView2();
 			sw.open();
 			sw.getServer(lastServerConfiguration.getServerName()).delete(true);
 		}
 		
+	}
+
+
+	@Override
+	public LivereloadServer getDeclaration() {
+		return server;
+	}
+
+
+	@Override
+	public String getServerNameLabelText() {
+		return server.name();
+	}
+
+
+	@Override
+	public String getRuntimeNameLabelText() {
+		return server.name();
+	}
+
+
+	@Override
+	public RequirementConfiguration getConfiguration() {
+		return null;
+	}
+
+
+	@Override
+	public ConfiguredServerInfo getConfiguredConfig() {
+		return lastServerConfiguration;
 	}
 	
 }

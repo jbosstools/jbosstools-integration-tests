@@ -15,9 +15,9 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.browsersim.wait.BrowsersimStarted;
-import org.jboss.tools.browsersim.wait.TimePeriod;
-import org.jboss.tools.browsersim.wait.WaitUntil;
 
 public class SimUtil {
 

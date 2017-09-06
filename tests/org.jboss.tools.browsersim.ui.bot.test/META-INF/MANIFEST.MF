@@ -4,7 +4,7 @@ Bundle-Name: Browsersim UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.browsersim.ui.bot.test
 Bundle-Version: 4.4.100.qualifier
 Bundle-Activator: org.jboss.tools.browsersim.ui.bot.test.Activator
-Require-Bundle: org.jboss.reddeer.go;bundle-version="[1.2.0,2.0.0)",
+Require-Bundle: org.eclipse.reddeer.go;bundle-version="[2.0.0,2.1.0)",
  org.jboss.tools.browsersim.rmi,
  org.jboss.tools.browsersim.reddeer,
  org.eclipse.ui,

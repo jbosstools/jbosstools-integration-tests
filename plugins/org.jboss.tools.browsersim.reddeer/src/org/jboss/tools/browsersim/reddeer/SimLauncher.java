@@ -18,7 +18,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
@@ -35,11 +34,11 @@ import org.eclipse.pde.internal.core.exports.PluginExportOperation;
 import org.eclipse.pde.core.plugin.IPluginModelBase;
 import org.eclipse.pde.core.plugin.PluginRegistry;
 import org.eclipse.pde.internal.core.exports.FeatureExportInfo;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.swt.api.ToolItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.swt.api.ToolItem;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.jboss.tools.browsersim.eclipse.launcher.BrowserSimLauncher;
 import org.jboss.tools.browsersim.eclipse.launcher.ExternalProcessLauncher;
 import org.jboss.tools.browsersim.reddeer.condition.LaunchExists;
@@ -83,7 +82,7 @@ public class SimLauncher {
 		}
 	}
 	
-	protected ILaunchConfigurationWorkingCopy getSimLaunchConfig(ContextMenu menu, ToolItem item) {
+	protected ILaunchConfigurationWorkingCopy getSimLaunchConfig(ContextMenuItem menu, ToolItem item) {
 		BrowserSimLaunchListener launchListener = new BrowserSimLaunchListener();
 		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 		manager.addLaunchListener(launchListener);
@@ -109,7 +108,7 @@ public class SimLauncher {
 	}
 	
 	protected void launchSimWithRMI(List<Bundle> additionalBundles, String mainClass,
-			ContextMenu menu, ToolItem item) {
+			ContextMenuItem menu, ToolItem item) {
 		ILaunchConfigurationWorkingCopy wc = getSimLaunchConfig(menu, item);
 		try {
 			List<String> classPath = wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, new ArrayList<String>());

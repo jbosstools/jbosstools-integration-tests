@@ -13,20 +13,16 @@ package org.jboss.tools.browsersim.rmi;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.eclipse.swt.SWT;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.util.ResultRunnable;
+import org.eclipse.reddeer.swt.api.MenuItem;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Shell;
-import org.jboss.tools.browsersim.wait.ShellWithTextIsAvailable;
-import org.jboss.tools.browsersim.wait.WaitUntil;
-import org.jboss.tools.browsersim.widgets.Browser;
-import org.jboss.tools.browsersim.widgets.RDDisplay;
-import org.jboss.tools.browsersim.widgets.ResultRunnable;
-import org.jboss.tools.browsersim.widgets.WidgetHandler;
-import org.jboss.tools.browsersim.widgets.WidgetLookup;
+import org.jboss.tools.browsersim.browser.Browser;
 
 public class BrowsersimHandler extends UnicastRemoteObject implements IBrowsersimHandler{
 
@@ -37,11 +33,9 @@ public class BrowsersimHandler extends UnicastRemoteObject implements IBrowsersi
 	}
 
 	public void openPreferences() throws RemoteException{
-		Menu menu = getBrowsersimMenu();
-		MenuItem[] items = WidgetHandler.getMenuItems(menu);
-		
-		WidgetHandler.menuItemClick(items, "Preferences");
-		new WaitUntil(new ShellWithTextIsAvailable("Preferences"));
+		Shell s= BrowsersimWidgetLookup.getBrowsersimShell();
+		new ContextMenuItem(s, "Preferences");
+		new DefaultShell("Preferences");
 	}
 
 	@Override
@@ -99,56 +93,42 @@ public class BrowsersimHandler extends UnicastRemoteObject implements IBrowsersi
 
 	@Override
 	public List<String> getSkinsMenuItems() throws RemoteException {
-		Menu menu = getBrowsersimMenu();
-		
-		MenuItem[] items = WidgetHandler.getMenuItems(menu);
-		MenuItem[] skinItems = WidgetHandler.getMenuItemsFromMenuItem("Skin", items);
-		return WidgetHandler.getMenuItemsText(skinItems);
-	}
-	
-	private Menu getBrowsersimMenu(){
-		Control bsControl = WidgetLookup.getBrowsersimControl(WidgetLookup.getBrowsersimShell());
-		
-		WidgetHandler.notify(SWT.MenuDetect,bsControl);
-		
-		
-		return WidgetHandler.getMenu(bsControl);
+		Shell s= BrowsersimWidgetLookup.getBrowsersimShell();
+		List<MenuItem> skins = new ContextMenuItem(s, "Skin").getChildItems();
+		return skins.stream().map(t -> t.getText()).collect(Collectors.toList());
 	}
 
 	@Override
 	public void enableLivereload() throws RemoteException {
-		Menu menu = getBrowsersimMenu();
-		MenuItem[] items = WidgetHandler.getMenuItems(menu);
-		
-		WidgetHandler.menuItemClick(items, "Enable LiveReload");
+		Shell s= BrowsersimWidgetLookup.getBrowsersimShell();
+		new ContextMenuItem(s, "Enable LiveReload");
 		
 	}
 
 	@Override
 	public boolean isLivereloadEnabled() throws RemoteException {
-		Menu menu = getBrowsersimMenu();
-		MenuItem[] items = WidgetHandler.getMenuItems(menu);
-		return WidgetHandler.isMenuSelected(items, "Enable LiveReload");
+		Shell s= BrowsersimWidgetLookup.getBrowsersimShell();
+		return new ContextMenuItem(s, "Enable LiveReload").isSelected();
 	}
 	
 	public void setBrowsersimLocation(final int x, final int y){
-		RDDisplay.syncExec(new Runnable() {
+		final Shell s= BrowsersimWidgetLookup.getBrowsersimShell();
+		Display.syncExec(new Runnable() {
 			
 			@Override
 			public void run() {
-				Shell browsersimShell = WidgetLookup.getBrowsersimShell();
-				browsersimShell.setLocation(x, y);
+				s.getSWTWidget().setLocation(x,y);
 			}
 		});
 	}
 	
 	public Point getBrowsersimSize(){
-		return RDDisplay.syncExec(new ResultRunnable<Point>() {
+		final Shell s= BrowsersimWidgetLookup.getBrowsersimShell();
+		return Display.syncExec(new ResultRunnable<Point>() {
 			
 			@Override
 			public Point run() {
-				Shell browsersimShell = WidgetLookup.getBrowsersimShell();
-				return browsersimShell.getSize();
+				return s.getSWTWidget().getSize();
 			}
 		});
 	}

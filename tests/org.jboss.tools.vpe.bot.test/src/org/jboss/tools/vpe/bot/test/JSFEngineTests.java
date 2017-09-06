@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.bot.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.vpe.bot.test.jsf.JSFEngineTest;
 import org.jboss.tools.vpe.bot.test.preferences.BrowserEnginePreferencesTest;
 import org.junit.runner.RunWith;

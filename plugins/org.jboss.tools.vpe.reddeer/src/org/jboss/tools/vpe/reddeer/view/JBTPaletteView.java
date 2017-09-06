@@ -10,8 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.reddeer.view;
 
-import org.jboss.reddeer.gef.view.PaletteView;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.gef.view.PaletteView;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 
 public class JBTPaletteView extends PaletteView {
 	

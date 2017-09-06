@@ -10,12 +10,13 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.reddeer.preferences;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.jface.preference.PreferencePage;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.preference.PreferencePage;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
 /**
  * RedDeer model of JBoss Tools > Web > Editors > Visual Page Editor preference page
  * 
@@ -25,8 +26,8 @@ public class VisualPageEditorPreferencePage extends PreferencePage  {
 	
 	protected final static Logger log = Logger.getLogger(VisualPageEditorPreferencePage.class);
 	
-	public VisualPageEditorPreferencePage() {
-		super("JBoss Tools", "Web" , "Editors" , "Visual Page Editor");
+	public VisualPageEditorPreferencePage(ReferencedComposite composite) {
+		super(composite, "JBoss Tools", "Web" , "Editors" , "Visual Page Editor");
 	}
 	/**
 	 * Sets Do Not Show Browser Engine Dialog
