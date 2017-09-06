@@ -27,34 +27,34 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.wst.jsdt.debug.core.model.JavaScriptDebugModel;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.core.resources.ExplorerItem;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.eclipse.wst.jsdt.ui.wizards.JavaProjectWizardDialog;
-import org.jboss.reddeer.eclipse.wst.jsdt.ui.wizards.JavaProjectWizardFirstPage;
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.api.Tree;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.eclipse.reddeer.eclipse.wst.jsdt.ui.wizards.JavaProjectWizard;
+import org.eclipse.reddeer.eclipse.wst.jsdt.ui.wizards.JavaProjectWizardFirstPage;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.api.Tree;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.jst.reddeer.bower.ui.BowerInitDialog;
 import org.jboss.tools.jst.reddeer.common.TreeContainsItem;
 import org.jboss.tools.jst.reddeer.npm.ui.NpmInitDialog;
@@ -85,9 +85,9 @@ public class JSTTestBase {
 	}
 
 	protected void createJSProject(String name) {
-		JavaProjectWizardDialog jsDialog = new JavaProjectWizardDialog();
+		JavaProjectWizard jsDialog = new JavaProjectWizard();
 		jsDialog.open();
-		JavaProjectWizardFirstPage jsPage = new JavaProjectWizardFirstPage();
+		JavaProjectWizardFirstPage jsPage = new JavaProjectWizardFirstPage(jsDialog);
 		jsPage.setName(name);
 		jsDialog.finish();
 		assertTrue("Project not found", new ProjectExplorer().containsProject(name));
@@ -101,7 +101,7 @@ public class JSTTestBase {
 
 		ExternalProjectImportWizardDialog importDialog = new ExternalProjectImportWizardDialog();
 		importDialog.open();
-		WizardProjectsImportPage importPage = new WizardProjectsImportPage();
+		WizardProjectsImportPage importPage = new WizardProjectsImportPage(importDialog);
 		try {
 			importPage.setRootDirectory((new File(path).getCanonicalPath()));
 		} catch (IOException e) {
@@ -120,13 +120,13 @@ public class JSTTestBase {
 	}
 
 	protected void createJSFile(String filename) {
-		NewWizardDialog d = new NewJSFileWizardDialog();
+		NewMenuWizard d = new NewJSFileWizardDialog();
 		d.open();
-		NewJSFileWizardPage p = new NewJSFileWizardPage();
+		NewJSFileWizardPage p = new NewJSFileWizardPage(d);
 		new LabeledText("Enter or select the parent folder:").setText(PROJECT_NAME);
 		p.setFileName(filename);
 		d.finish();
-		assertTrue(filename + " not found!", new ProjectExplorer().getProject(PROJECT_NAME).containsItem(filename));
+		assertTrue(filename + " not found!", new ProjectExplorer().getProject(PROJECT_NAME).containsResource(filename));
 	}
 
 	protected void setTernModule(String module) {
@@ -134,25 +134,20 @@ public class JSTTestBase {
 	}
 
 	protected void setTernModule(String module, String project) {
-		TernModulesPropertyPage propPage = new TernModulesPropertyPage();
-		ExplorerItemPropertyDialog dialog = openProjectProperties(project);
+		PropertyDialog dialog = openProjectProperties(project);
+		TernModulesPropertyPage propPage = new TernModulesPropertyPage(dialog);
 		dialog.select(propPage);
 		new DefaultTable().getItem(module).setChecked(true);
 		dialog.ok();
 	}
 
-	protected ExplorerItemPropertyDialog openProjectProperties() {
+	protected PropertyDialog openProjectProperties() {
 		return openProjectProperties(PROJECT_NAME);
 	}
 
-	protected ExplorerItemPropertyDialog openProjectProperties(String projectName) {
+	protected PropertyDialog openProjectProperties(String projectName) {
 		ProjectExplorer pe = new ProjectExplorer();
-		ExplorerItemPropertyDialog dialog = new ExplorerItemPropertyDialog(pe.getProject(projectName));
-		dialog.open();
-		Shell shell = new DefaultShell();
-		assertThat(shell.getText(), is(dialog.getTitle()));
-
-		return dialog;
+		return pe.getProject(projectName).openProperties();
 	}
 
 	protected static String getMisingString(List<String> current, List<String> expected) {
@@ -202,18 +197,18 @@ public class JSTTestBase {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected ContextMenu runAsNodeJSAppMenu() {
-		ContextMenu menu = new ContextMenu(new WithTextMatcher("Run As"),
+	protected ContextMenuItem runAsNodeJSAppMenu() {
+		ContextMenuItem menuItem = new ContextMenuItem(new WithTextMatcher("Run As"),
 				new RegexMatcher("(\\d+)( Node.js Application)"));
-		return menu;
+		return menuItem;
 	}
 
 	@SuppressWarnings("unchecked")
-	protected ContextMenu debugAsNodeJSAppMenu(ExplorerItem item) {
+	protected ContextMenuItem debugAsNodeJSAppMenu(ProjectItem item) {
 		item.select();
-		ContextMenu menu = new ContextMenu(new WithTextMatcher("Debug As"),
+		ContextMenuItem menuItem = new ContextMenuItem(new WithTextMatcher("Debug As"),
 				new RegexMatcher("(\\d+)( Node.js Application)"));
-		return menu;
+		return menuItem;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -222,7 +217,7 @@ public class JSTTestBase {
 		if (dir != null) {
 			new ProjectExplorer().getProject(projectName).getProjectItem(dir).select();
 		}
-		new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( npm Install)")).select();
+		new ContextMenuItem(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( npm Install)")).select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
@@ -234,7 +229,7 @@ public class JSTTestBase {
 	@SuppressWarnings("unchecked")
 	protected static void bowerUpdate(String projectName) {
 		new ProjectExplorer().getProject(projectName).select();
-		new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Bower Update)")).select();
+		new ContextMenuItem(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Bower Update)")).select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
@@ -248,7 +243,7 @@ public class JSTTestBase {
 		if (dir != null) {
 			new ProjectExplorer().getProject(projectName).getProjectItem(dir).select();
 		}
-		new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Bower Install)")).select();
+		new ContextMenuItem(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Bower Install)")).select();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
@@ -272,7 +267,7 @@ public class JSTTestBase {
 		for (TreeItem i : items) {
 			if (matcher.matches(i.getText())) {
 				i.select();
-				new ContextMenu("Resume").select();
+				new ContextMenuItem("Resume").select();
 			}
 		}
 	}

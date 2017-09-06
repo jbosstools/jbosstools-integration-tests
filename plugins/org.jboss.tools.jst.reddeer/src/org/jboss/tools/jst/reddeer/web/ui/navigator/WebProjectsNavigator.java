@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.jst.reddeer.web.ui.navigator;
 
-import org.jboss.reddeer.eclipse.jdt.ui.AbstractExplorer;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.AbstractExplorer;
 /**
  * Represents Web Projects view in Eclipse
  * 

@@ -1,14 +1,19 @@
 package org.jboss.tools.jst.reddeer.jsp.ui.wizard;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * Wizard page for creating a JSP File.
  * @author vpakan
  */
 public class NewJSPFileWizardJSPPage extends WizardPage {
+	
+	public NewJSPFileWizardJSPPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
 	/**
 	 * Sets a given file name.
 	 * 

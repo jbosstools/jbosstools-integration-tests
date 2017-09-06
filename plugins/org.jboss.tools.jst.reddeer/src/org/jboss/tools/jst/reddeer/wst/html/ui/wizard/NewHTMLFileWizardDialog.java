@@ -1,17 +1,17 @@
 package org.jboss.tools.jst.reddeer.wst.html.ui.wizard;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 
 /**
  * Wizard dialog for creating a HTML File.
  * @author vpakan
  */
-public class NewHTMLFileWizardDialog extends NewWizardDialog {
+public class NewHTMLFileWizardDialog extends NewMenuWizard {
 	/**
 	 * Constructs the wizard with Web > HTML File.
 	 */
 	public NewHTMLFileWizardDialog() {
-		super("Web", "HTML File");
+		super("New HTML File", "Web", "HTML File");
 	}
 	
 }

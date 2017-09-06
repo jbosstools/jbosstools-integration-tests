@@ -11,8 +11,8 @@
 package org.jboss.tools.jst.reddeer.common;
 
 import org.eclipse.swt.graphics.Point;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 
 /**
  * 

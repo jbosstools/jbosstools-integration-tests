@@ -11,7 +11,7 @@
 
 package org.jboss.tools.jst.ui.bot.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.jst.ui.bot.test.tern.TernCodeAssistTest;
 import org.jboss.tools.jst.ui.bot.test.tern.TernModulesTest;
 import org.junit.runner.RunWith;

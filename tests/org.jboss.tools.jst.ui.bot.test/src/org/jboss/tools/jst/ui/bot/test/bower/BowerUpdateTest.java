@@ -16,14 +16,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.core.handler.ShellHandler;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.jboss.tools.jst.ui.bot.test.JSTTestBase;
 import org.junit.After;
 import org.junit.Before;
@@ -43,7 +44,7 @@ public class BowerUpdateTest extends JSTTestBase {
 
 	@After
 	public void cleanup() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ProjectExplorer().deleteAllProjects();
 	}
 
@@ -51,11 +52,11 @@ public class BowerUpdateTest extends JSTTestBase {
 	@SuppressWarnings("unchecked")
 	public void testBowerUpdateShortcutAvailability() {
 		bowerInit(PROJECT_NAME);
-		PackageExplorer pe = new PackageExplorer();
+		PackageExplorerPart pe = new PackageExplorerPart();
 		pe.open();
 		pe.getProject(PROJECT_NAME).select();
 		assertTrue("Bower Update is not available", //$NON-NLS-1$
-				new ContextMenu(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Bower Update)")).isEnabled()); //$NON-NLS-1$ //$NON-NLS-2$
+				new ContextMenuItem(new WithTextMatcher("Run As"), new RegexMatcher("(\\d+)( Bower Update)")).isEnabled()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Test
@@ -72,7 +73,7 @@ public class BowerUpdateTest extends JSTTestBase {
 		bowerUpdate(PROJECT_NAME);
 		new WaitUntil(new ConsoleHasText("angularjs#1.4.4 bower_components/angularjs"));
 		assertTrue("BowerUpdate failed, dependencies not found in tree", new ProjectExplorer().getProject(PROJECT_NAME)
-				.containsItem("bower_components", "angularjs", "angular.js"));
+				.containsResource("bower_components", "angularjs", "angular.js"));
 	}
 
 }
