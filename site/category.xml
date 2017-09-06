@@ -50,8 +50,6 @@
 <bundle id="org.jboss.tools.perf.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.mylyn.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.vpe.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.docker.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.docker.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.livereload.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.browsersim.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 
@@ -92,8 +90,6 @@
 <bundle id="org.jboss.tools.perf.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.mylyn.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.vpe.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.docker.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.docker.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.livereload.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.livereload.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.browsersim.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
