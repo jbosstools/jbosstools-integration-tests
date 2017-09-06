@@ -25,7 +25,6 @@
 		<module>org.jboss.tools.perf</module>
 		<module>org.jboss.tools.mylyn.reddeer</module>
 		<module>org.jboss.tools.vpe.reddeer</module>
-		<module>org.jboss.tools.docker.reddeer</module>
 		<module>org.jboss.tools.livereload.reddeer</module>
 		<module>org.jboss.tools.browsersim.rmi</module>
 		<module>org.jboss.tools.cordovasim.rmi</module>
