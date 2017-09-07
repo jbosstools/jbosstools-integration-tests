@@ -1,6 +1,6 @@
 package org.jboss.tools.cdi.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.SpecifyBeanWizard;
 
 public class QualifierIsFound extends AbstractWaitCondition{

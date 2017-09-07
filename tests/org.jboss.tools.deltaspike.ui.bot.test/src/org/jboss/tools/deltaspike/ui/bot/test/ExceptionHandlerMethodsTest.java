@@ -13,15 +13,15 @@ package org.jboss.tools.deltaspike.ui.bot.test;
 
 import static org.junit.Assert.fail;
 
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.condition.ProblemExists;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.eclipse.condition.ProblemExists;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.tools.deltaspike.ui.bot.test.condition.SpecificProblemExists;
 import org.junit.After;
 import org.junit.Test;
@@ -115,7 +115,7 @@ public class ExceptionHandlerMethodsTest extends DeltaspikeTestBase {
 		insertIntoFile(projectName, "test", "StringProducer.java", 17, 0, "@Produces");
 
 		try {
-			new WaitWhile(new ProblemExists(ProblemType.ANY), TimePeriod.LONG);
+			new WaitWhile(new ProblemExists(ProblemType.ALL), TimePeriod.LONG);
 		} catch (WaitTimeoutExpiredException e) {
 			fail(e.getMessage());
 		}

@@ -11,12 +11,14 @@
 
 package org.jboss.tools.cdi.bot.test.beans.named.cdi10;
 
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.cdi.bot.test.beans.named.teplate.NamedRefactoringTemplate;
+import org.jboss.tools.cdi.reddeer.matcher.ServerMatcher;
 
 /**
  * Test operates on @Named refactoring  
@@ -24,9 +26,12 @@ import org.jboss.tools.cdi.bot.test.beans.named.teplate.NamedRefactoringTemplate
  * @author Jaroslav Jankovic
  * 
  */
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1, cleanup=false)
+@JBossServer(state=ServerRequirementState.PRESENT, cleanup=false)
 @OpenPerspective(JavaEEPerspective.class)
 public class NamedRefactoringTestCDI10 extends NamedRefactoringTemplate{
-	
 
+	@RequirementRestriction
+	public static RequirementMatcher getRestrictionMatcher() {
+	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.Eap());
+	}
 }

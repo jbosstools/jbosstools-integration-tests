@@ -13,14 +13,14 @@ package org.jboss.tools.cdi.bot.test.beansxml.completion.cdi11;
 
 import java.util.Arrays;
 
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.cdi.bot.test.beansxml.completion.template.BeansXMLCompletionTemplate;
-import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
-import org.jboss.tools.cdi.reddeer.uiutils.EditorResourceHelper;
+import org.jboss.tools.cdi.reddeer.matcher.ServerMatcher;
 import org.junit.Before;
 
 /**
@@ -29,20 +29,18 @@ import org.junit.Before;
  * @author Jaroslav Jankovic
  * 
  */
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x, cleanup=false)
+@JBossServer(state=ServerRequirementState.PRESENT, cleanup=false)
 @OpenPerspective(JavaEEPerspective.class)
 public class BeansXMLCompletionTestCDI11 extends BeansXMLCompletionTemplate {
+
+	@RequirementRestriction
+	public static RequirementMatcher getRestrictionMatcher() {
+	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly());
+	}
 	
 	@Before
 	public void changeDiscoveryMode(){
-		EditorPartWrapper beansEditor = beansXMLHelper.openBeansXml(PROJECT_NAME);
-		beansEditor.activateTreePage();
-		beansEditor.selectBeanDiscoveryMode("all");
-		beansEditor.save();
-		beansEditor.activateSourcePage();
-		new EditorResourceHelper().replaceInEditor("/>", "></beans>");
-		beansEditor.save();
-		beansEditor.close();
+		setBeanDiscoveryMode("all");
 		setBeansXmlTags(Arrays.asList("alternatives", "decorators", "interceptors","scan"));
 	}
 	

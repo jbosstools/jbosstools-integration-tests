@@ -11,30 +11,7 @@
 
 package org.jboss.tools.cdi.bot.test.quickfix.injection;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
-
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.views.markers.QuickFixWizard;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
-import org.jboss.tools.cdi.reddeer.cdi.ui.NewQualifierCreationWizard;
-import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.SpecifyBeanWizard;
-import org.jboss.tools.cdi.reddeer.condition.QualifierIsFound;
-import org.jboss.tools.cdi.reddeer.validators.IValidationProvider;
-import org.jboss.tools.cdi.reddeer.validators.ValidationProblem;
-import org.junit.After;
-import org.junit.Test;
 
 /**
  * Test checks if Quick Fix provides useful operations when 
@@ -178,7 +155,7 @@ public class ProblemEligibleInjectionTest extends CDITestBase {
 	
 		SpecifyBeanWizard spBeanDialogWizard = new SpecifyBeanWizard();
 		if (operation == QualifierOperation.ADD) {
-			new WaitUntil(new SpecifyBeanWizardHasQualifier(spBeanDialogWizard, qualifier + " - " + getPackageName()),TimePeriod.getCustom(TimePeriod.NORMAL.getSeconds()*2),false);
+			new WaitUntil(new SpecifyBeanWizardHasQualifier(spBeanDialogWizard, qualifier + " - " + getPackageName()),TimePeriod.getCustom(TimePeriod.DEFAULT.getSeconds()*2),false);
 			boolean qualifFound = false;
 			for (String availQualifer : spBeanDialogWizard.getAvailableQualifiers()) {
 				if (availQualifer.equals(qualifier + " - " + getPackageName())) {
@@ -193,7 +170,7 @@ public class ProblemEligibleInjectionTest extends CDITestBase {
 				qw.setName(qualifier);
 				qw.finish();
 				new DefaultShell("Specify CDI Bean for the Injection Point");
-				new WaitUntil(new SpecifyBeanWizardHasQualifier(spBeanDialogWizard, qualifier + " - " + getPackageName()),TimePeriod.getCustom(TimePeriod.NORMAL.getSeconds()*2),false);
+				new WaitUntil(new SpecifyBeanWizardHasQualifier(spBeanDialogWizard, qualifier + " - " + getPackageName()),TimePeriod.getCustom(TimePeriod.DEFAULT.getSeconds()*2),false);
 				for (String availQualifer : spBeanDialogWizard.getAvailableQualifiers()) {
 					if (availQualifer.equals(qualifier + " - " + getPackageName())) {						
 						spBeanDialogWizard.addQualifier(availQualifer);

@@ -10,29 +10,17 @@
  ******************************************************************************/
 package org.jboss.tools.easymport.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.workbenchmenu.WorkbenchMenuWizardDialog;
+
 /**
- * 
+ * Reprezents SmartImport Wizard (File -> Open Projects from File System...).
  * @author rhopp
  *
  */
 
-public class SmartImportWizard extends WizardDialog {
+public class SmartImportWizard extends WorkbenchMenuWizardDialog {
 
-	public void open() {
-		log.info("Opening wizard using top menu ");
-		new ShellMenu(getMenuPath()).select();
-		new DefaultShell(getDialogTitle());
+	public SmartImportWizard() {
+		super("Import Projects from File System or Archive", "File", "Open Projects from File System...");
 	}
-
-	protected String getDialogTitle() {
-		return "Import Projects from File System or Archive";
-	}
-	
-	protected String[] getMenuPath() {
-		return new String[]{"File", "Open Projects from File System..."};
-	}
-	
 }

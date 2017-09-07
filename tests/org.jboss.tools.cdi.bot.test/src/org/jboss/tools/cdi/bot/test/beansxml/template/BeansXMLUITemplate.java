@@ -1,17 +1,18 @@
 package org.jboss.tools.cdi.bot.test.beansxml.template;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.workbench.api.Editor;
-import org.jboss.reddeer.workbench.condition.EditorHasValidationMarkers;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.impl.editor.Marker;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.workbench.api.Editor;
+import org.eclipse.reddeer.workbench.condition.EditorHasValidationMarkers;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.editor.Marker;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
 import org.junit.After;
@@ -97,7 +98,7 @@ public class BeansXMLUITemplate extends CDITestBase{
 		ds.setText(s);
 		Editor e = new DefaultEditor();
 		e.save();
-		new WaitUntil(new EditorHasValidationMarkers(e),TimePeriod.NORMAL,false);
+		new WaitUntil(new EditorHasValidationMarkers(e),TimePeriod.DEFAULT,false);
 		List<Marker> markers = e.getMarkers();
 		assertEquals(expectedNumberOfErrors,markers.size());
 		for(Marker m: markers){

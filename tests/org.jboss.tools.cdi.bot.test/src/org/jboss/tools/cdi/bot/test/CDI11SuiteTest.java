@@ -1,6 +1,6 @@
 package org.jboss.tools.cdi.bot.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.cdi.bot.test.beans.bean.cdi11.AsYouTypeValidationTestCDI11;
 import org.jboss.tools.cdi.bot.test.beans.bean.cdi11.BeanValidationQuickFixTestCDI11;
 import org.jboss.tools.cdi.bot.test.beans.bean.cdi11.NullValuesInjectionTestCDI11;

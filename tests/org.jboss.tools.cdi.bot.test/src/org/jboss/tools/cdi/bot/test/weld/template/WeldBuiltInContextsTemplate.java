@@ -1,16 +1,18 @@
 package org.jboss.tools.cdi.bot.test.weld.template;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.workbench.condition.EditorHasValidationMarkers;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.impl.editor.Marker;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.workbench.condition.EditorHasValidationMarkers;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.editor.Marker;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,12 +28,12 @@ public class WeldBuiltInContextsTemplate extends CDITestBase{
 		disableSourceLookup();
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		if(pe.getProject(PROJECT_NAME).containsItem("Java Resources","src","test","BuiltInContexts.java")){
+		if(pe.getProject(PROJECT_NAME).containsResource("Java Resources","src","test","BuiltInContexts.java")){
 			return;
 		}
-		NewJavaClassWizardDialog jd = new NewJavaClassWizardDialog();
+		NewClassCreationWizard jd = new NewClassCreationWizard();
 		jd.open();
-		NewJavaClassWizardPage jp = new NewJavaClassWizardPage();
+		NewClassWizardPage jp = new NewClassWizardPage(jd);
 		jp.setPackage("test");
 		jp.setName("BuiltInContexts");
 		jd.finish();
