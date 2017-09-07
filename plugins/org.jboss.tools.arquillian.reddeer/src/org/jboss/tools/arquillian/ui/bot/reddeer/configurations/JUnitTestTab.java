@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.arquillian.ui.bot.reddeer.configurations;
 
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * Test tab in JUnit configuration

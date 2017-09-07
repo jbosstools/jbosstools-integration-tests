@@ -11,7 +11,7 @@
 
 package org.jboss.tools.arquillian.ui.bot.reddeer.configurations;
 
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 
 /**
  * Abstract tab in run configuration

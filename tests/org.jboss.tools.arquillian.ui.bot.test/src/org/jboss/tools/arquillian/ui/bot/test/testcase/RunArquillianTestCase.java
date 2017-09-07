@@ -15,20 +15,19 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.apache.log4j.Logger;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.eclipse.jdt.junit.ui.TestRunnerViewPart;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.jdt.ui.junit.JUnitView;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.arquillian.ui.bot.reddeer.configurations.JUnitConfigurationPage;
 import org.jboss.tools.arquillian.ui.bot.reddeer.configurations.JUnitTestTab;
 import org.jboss.tools.arquillian.ui.bot.reddeer.configurations.RunConfigurationsDialog;
@@ -48,7 +47,7 @@ import org.junit.Test;
  *
  */
 @OpenPerspective(JavaPerspective.class)
-@JBossServer(type = ServerReqType.WILDFLY8x, state = ServerReqState.RUNNING)
+@JBossServer(state = ServerRequirementState.RUNNING)
 public class RunArquillianTestCase extends AbstractArquillianTestCase {
 
 	private static final String LAUNCH_CONFIGURATION = "arq-test";
@@ -95,14 +94,14 @@ public class RunArquillianTestCase extends AbstractArquillianTestCase {
 		try {
 			new DefaultShell(new WithTextMatcher(new RegexMatcher(".*Run Configurations.*"))).close();
 			log.info("Closed the Run Configurations Dialog");
-		} catch (SWTLayerException swtle) {
+		} catch (CoreLayerException swtle) {
 			log.error("Unable to close the Run Configurations Dialog - " + swtle.getMessage());
 			log.error(swtle);
 		}
 	}
 
 	private void checkJUnitView() {
-		JUnitView view = new JUnitView();
+		TestRunnerViewPart view = new TestRunnerViewPart();
 		view.open();
 
 		new WaitWhile(new JUnitTestIsRunningCondition(), TimePeriod.LONG);

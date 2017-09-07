@@ -13,9 +13,9 @@ package org.jboss.tools.arquillian.ui.bot.test.preferences;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.arquillian.ui.bot.reddeer.preferences.ArquillianPreferencePage;
 import org.junit.After;
 import org.junit.Test;
@@ -31,7 +31,7 @@ import org.junit.runner.RunWith;
 public class ArquillianPreferencePageTest {
 
 	private WorkbenchPreferenceDialog preferencesDialog = new WorkbenchPreferenceDialog();
-	private ArquillianPreferencePage arquillianPreferencePage = new ArquillianPreferencePage();
+	private ArquillianPreferencePage arquillianPreferencePage = new ArquillianPreferencePage(preferencesDialog);
 	private final String VERSION_STRING = "1.1.10.Final";
 	private final String ARG_STRING = "TEST ARGS";
 
@@ -87,7 +87,7 @@ public class ArquillianPreferencePageTest {
 		// try to close preference dialog in case it stayed open
 		try{
 			preferencesDialog.cancel();
-		} catch (SWTLayerException swtle){
+		} catch (RedDeerException swtle){
 			// do nothing
 		}
 	}

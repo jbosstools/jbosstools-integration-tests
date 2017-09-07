@@ -11,16 +11,16 @@
 
 package org.jboss.tools.arquillian.ui.bot.reddeer.maven;
 
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.swt.api.Button;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 
 public class UpdateMavenProjectDialog {
 
@@ -28,7 +28,7 @@ private static final String NAME = "Update Maven Project";
 	
 	public void open(Project project){
 		project.select();
-		new ContextMenu("Maven","Update Project...").select();
+		new ContextMenuItem("Maven","Update Project...").select();
 	}
 
 	public void ok(){
@@ -37,7 +37,7 @@ private static final String NAME = "Update Maven Project";
 		Button button = new PushButton("OK");
 		button.click();
 
-		new WaitWhile(new ShellWithTextIsActive(shellText), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(shellText), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 	

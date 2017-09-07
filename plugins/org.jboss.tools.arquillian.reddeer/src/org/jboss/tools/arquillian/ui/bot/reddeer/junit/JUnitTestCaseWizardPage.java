@@ -10,8 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.arquillian.ui.bot.reddeer.junit;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * Page for JUnit test case definition
@@ -20,6 +21,10 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  *
  */
 public class JUnitTestCaseWizardPage extends WizardPage {
+
+	public JUnitTestCaseWizardPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
 
 	public void setSourceFolder(String text){
 		new LabeledText("Source folder:").setText(text);

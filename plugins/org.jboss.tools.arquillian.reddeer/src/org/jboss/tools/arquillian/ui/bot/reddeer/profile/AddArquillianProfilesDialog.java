@@ -10,17 +10,17 @@
  ******************************************************************************/
 package org.jboss.tools.arquillian.ui.bot.reddeer.profile;
 
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.swt.api.Button;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTableItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 
 /**
  * Dialog for adding Arquillian profiles.
@@ -34,7 +34,7 @@ public class AddArquillianProfilesDialog {
 	
 	public void open(Project project){
 		project.select();
-		new ContextMenu("Configure","Add Arquillian Profiles...").select();
+		new ContextMenuItem("Configure","Add Arquillian Profiles...").select();
 	}
 	
 	public void ok(){
@@ -43,7 +43,7 @@ public class AddArquillianProfilesDialog {
 		Button button = new PushButton("OK");
 		button.click();
 
-		new WaitWhile(new ShellWithTextIsActive(shellText), TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable(shellText), TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
 
