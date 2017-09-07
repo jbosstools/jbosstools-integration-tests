@@ -14,7 +14,7 @@
     <properties>
 	<jenkins.server>none</jenkins.server>
 	<jenkins.job>none</jenkins.job>
-        <systemProperties>${integrationTestsSystemProperties} -DjenkinsServer=${jenkins.server} -DjenkinsJob=${jenkins.job} -DauthJenkinsServer=${auth.jenkins.server} -DauthJenkinsJob=${auth.jenkins.job} -DauthUserName=${auth.username} -DauthPassWord=${auth.password}</systemProperties> 
+        <systemProperties>${integrationTestsSystemProperties} -DjenkinsServer=${jenkinsServer} -DjenkinsJob=${jenkinsJob} -DauthJenkinsServer=${authJenkinsServer} -DauthJenkinsJob=${authJenkinsJob} -DauthUsername=${authUsername} -DauthPassword=${authPassword}</systemProperties> 
     </properties>
     
     <build>

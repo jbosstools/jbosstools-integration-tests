@@ -5,37 +5,25 @@ package org.jboss.tools.mylyn.ui.bot.test;
  * 
  * 
  */
-
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.*;
-import org.jboss.tools.mylyn.reddeer.*;
-import org.jboss.tools.mylyn.reddeer.wizard.BuildServerDialog;
-import org.jboss.tools.mylyn.reddeer.view.MylynBuildView;
-import org.jboss.reddeer.swt.condition.ShellIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.eclipse.core.runtime.Platform.*;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.mylyn.reddeer.TestSupport;
+import org.jboss.tools.mylyn.reddeer.view.MylynBuildView;
+import org.jboss.tools.mylyn.reddeer.wizard.BuildServerDialog;
+import org.junit.Test;
 
 public class MylynTestJenkins {
 
@@ -59,8 +47,8 @@ public class MylynTestJenkins {
 	
 	protected String AUTHSERVERURL = System.getProperty("authJenkinsServer");
 	protected String AUTHJENKINSJOB = System.getProperty("authJenkinsJob");
-	protected String AUTHUSERNAME = System.getProperty("authUserName");
-	protected String AUTHPASSWORD = System.getProperty("authPassWord");
+	protected String AUTHUSERNAME = System.getProperty("authUsername");
+	protected String AUTHPASSWORD = System.getProperty("authPassword");
 	
 	@Test
 	public void testServer() {
@@ -77,7 +65,7 @@ public class MylynTestJenkins {
 		log.info(new DefaultTree().getItems().size() + " = Tree contents count");
 
 		new DefaultTreeItem (SERVERURL).select();
-		new ShellMenu("File", "Properties").select();
+		new ShellMenuItem("File", "Properties").select();
 		TestSupport.closeSecureStorageIfOpened();
 
 		buildServerDialog = new BuildServerDialog();
@@ -93,7 +81,7 @@ public class MylynTestJenkins {
 		new PushButton("Finish").click();
 		
 		try {
-			new WaitUntil(new ShellWithTextIsActive("Refreshing Builds (" + SERVERURL + ")" ), TimePeriod.LONG); 
+			new WaitUntil(new ShellIsAvailable("Refreshing Builds (" + SERVERURL + ")" ), TimePeriod.LONG); 
 		}
 		catch (Exception E) {
 			log.info ("Test blocking problem with 'Refreshing Builds (name)' shell not seen - test is able to run");
@@ -108,11 +96,11 @@ public class MylynTestJenkins {
          * See Red Deer issue: 
          * 
          */
-        if (new ShellWithTextIsAvailable("Refreshing Builds (" + SERVERURL + ")").test()) {
+        if (new ShellIsAvailable("Refreshing Builds (" + SERVERURL + ")").test()) {
             log.info("Closing shell: " + "Refreshing Builds (" + SERVERURL + ")");
             new DefaultShell("Refreshing Builds (" + SERVERURL + ")").close();
         }
-        if (new ShellWithTextIsAvailable("").test()) {
+        if (new ShellIsAvailable("").test()) {
             log.info("Closing shell - null title");
             new DefaultShell("").close();
         }
@@ -138,7 +126,7 @@ public class MylynTestJenkins {
 		log.info(new DefaultTree().getItems().size() + " = Tree contents count");
 
 		new DefaultTreeItem (AUTHSERVERURL).select();
-		new ShellMenu("File", "Properties").select();
+		new ShellMenuItem("File", "Properties").select();
 		TestSupport.closeSecureStorageIfOpened();
 		
 		buildServerDialog = new BuildServerDialog();
@@ -154,7 +142,7 @@ public class MylynTestJenkins {
 		new PushButton("Finish").click();
 		
 		try {
-			new WaitUntil(new ShellWithTextIsActive("Refreshing Builds (" + AUTHSERVERURL + ")" ), TimePeriod.LONG); 
+			new WaitUntil(new ShellIsAvailable("Refreshing Builds (" + AUTHSERVERURL + ")" ), TimePeriod.LONG); 
 					}
 		catch (Exception E) {
 			log.info ("Test blocking problem with 'Refreshing Builds (name)' shell not seen - test is able to run");
@@ -169,11 +157,11 @@ public class MylynTestJenkins {
          * See Red Deer issue: https://github.com/jboss-reddeer/reddeer/issues/1300
          * 
          */
-        if (new ShellWithTextIsAvailable("Refreshing Builds (" + AUTHSERVERURL + ")").test()) {
+        if (new ShellIsAvailable("Refreshing Builds (" + AUTHSERVERURL + ")").test()) {
             log.info("Closing shell: " + "Refreshing Builds (" + AUTHSERVERURL + ")");
             new DefaultShell("Refreshing Builds (" + AUTHSERVERURL + ")").close();
         }
-        if (new ShellWithTextIsAvailable("").test()) {
+        if (new ShellIsAvailable("").test()) {
             log.info("Closing shell - null title");
             new DefaultShell("").close();
         }
