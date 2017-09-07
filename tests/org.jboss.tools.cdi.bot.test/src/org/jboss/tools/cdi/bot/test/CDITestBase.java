@@ -18,23 +18,25 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.lookup.ShellLookup;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.condition.EditorIsDirty;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.handler.EditorHandler;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.lookup.ShellLookup;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.workbench.handler.EditorHandler;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.cdi.reddeer.cdi.ui.CDIProjectWizard;
+import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
 import org.jboss.tools.cdi.reddeer.uiutils.BeansHelper;
 import org.jboss.tools.cdi.reddeer.uiutils.BeansXMLHelper;
 import org.jboss.tools.cdi.reddeer.uiutils.EditorResourceHelper;
@@ -47,11 +49,11 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
-public class CDITestBase{
-	
+public class CDITestBase {
+
 	protected static String PROJECT_NAME = "CDIProject";
 	protected static final String PACKAGE_NAME = "cdi";
-	
+
 	protected static final Logger LOGGER = Logger.getLogger(CDITestBase.class.getName());
 	protected static final BeansXMLHelper beansXMLHelper = new BeansXMLHelper();
 	protected static final BeansHelper beansHelper = new BeansHelper();
@@ -59,12 +61,12 @@ public class CDITestBase{
 	protected static final ValidationHelper validationHelper = new ValidationHelper();
 	protected static final OpenOnHelper openOnHelper = new OpenOnHelper();
 	protected static final ProjectHelper projectHelper = new ProjectHelper();
-	
+
 	@InjectRequirement
-    private ServerRequirement sr;
-	
+	private ServerRequirement sr;
+
 	@BeforeClass
-	public static void maximizeWorkbench(){
+	public static void maximizeWorkbench() {
 		new WorkbenchShell().maximize();
 	}
 
@@ -73,93 +75,119 @@ public class CDITestBase{
 		if (!projectHelper.projectExists(PROJECT_NAME)) {
 			CDIProjectWizard cw = new CDIProjectWizard();
 			cw.open();
-			WebProjectFirstPage fp  = new WebProjectFirstPage();
+			WebProjectFirstPage fp = new WebProjectFirstPage(cw);
 			fp.setProjectName(PROJECT_NAME);
-			fp.setTargetRuntime(sr.getRuntimeNameLabelText(sr.getConfig()));
+			fp.setTargetRuntime(sr.getRuntimeNameLabelText());
 			cw.finish();
-			new WaitUntil(new JobIsRunning(),TimePeriod.NORMAL, false);
-			new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
+			new WaitUntil(new JobIsRunning(), TimePeriod.DEFAULT, false);
+			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		}
 	}
-	
+
 	@After
 	public void waitForJobs() {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 	}
-	
+
 	@AfterClass
-	public static void cleanUp(){
+	public static void cleanUp() {
 		new WaitWhile(new JobIsRunning());
 		EditorHandler.getInstance().closeAll(false);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		for(Project p: pe.getProjects()){
-			try{
-				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+		for (Project p : pe.getProjects()) {
+			try {
+				org.eclipse.reddeer.direct.project.Project.delete(p.getName(), true, true);
 			} catch (RuntimeException ex) {
-				AbstractWait.sleep(TimePeriod.NORMAL);
-				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+				AbstractWait.sleep(TimePeriod.DEFAULT);
+				org.eclipse.reddeer.direct.project.Project.delete(p.getName(), true, true);
 			}
 		}
 	}
-	
-	protected void deleteAllProjects(){
+
+	protected void deleteAllProjects() {
 		new WaitWhile(new JobIsRunning());
 		EditorHandler.getInstance().closeAll(false);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		for(Project p: pe.getProjects()){
-			try{
-				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+		for (Project p : pe.getProjects()) {
+			try {
+				org.eclipse.reddeer.direct.project.Project.delete(p.getName(), true, true);
 			} catch (Exception ex) {
-				AbstractWait.sleep(TimePeriod.NORMAL);
-				if(!p.getTreeItem().isDisposed()){
-					org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+				AbstractWait.sleep(TimePeriod.DEFAULT);
+				if (!p.getTreeItem().isDisposed()) {
+					org.eclipse.reddeer.direct.project.Project.delete(p.getName(), true, true);
 				}
 			}
 		}
 	}
-	
+
 	protected static String readFile(String path) {
 		Scanner s = null;
 		try {
 			s = new Scanner(new FileInputStream(path));
 		} catch (FileNotFoundException e) {
-			fail("unable to find file "+path);
+			fail("unable to find file " + path);
 		}
 		Scanner s1 = s.useDelimiter("\\A");
-		String file =  s.next();
+		String file = s.next();
 		s.close();
 		s1.close();
 		return file;
-		
+
 	}
-		
+
 	protected String getProjectName() {
 		return PROJECT_NAME;
 	}
-	
+
 	protected String getPackageName() {
 		return PACKAGE_NAME;
 	}
-	
+
 	protected static void disableSourceLookup() {
 		// wait for some shell to get activated
 		ShellLookup.getInstance().getActiveShell();
 		String originalShellText = new DefaultShell().getText();
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		SourceLookupPreferencePage sourceLookupPreferencePage = new SourceLookupPreferencePage();
+		SourceLookupPreferencePage sourceLookupPreferencePage = new SourceLookupPreferencePage(preferenceDialog);
 		preferenceDialog.select(sourceLookupPreferencePage);
-		sourceLookupPreferencePage.setSourceAttachment(
-				SourceLookupPreferencePage.SourceAttachmentEnum.NEVER);
+		sourceLookupPreferencePage.setSourceAttachment(SourceLookupPreferencePage.SourceAttachmentEnum.NEVER);
 		preferenceDialog.ok();
-		new WaitUntil(new ShellWithTextIsActive(originalShellText));
+		new WaitUntil(new ShellIsAvailable(originalShellText));
 	}
-	
-	public void refreshProject(){
+
+	public void refreshProject() {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(getProjectName()).refresh();
+	}
+	
+	/**
+	 * Set bean discovery mode. This feature is available since CDI 1.1.<br>
+	 * Bean discovery mode may be:<br>
+	 * <ul>
+	 * <li>none</li>
+	 * <li>annotated</li>
+	 * <li>all</li>
+	 * </ul>
+	 * 
+	 * @param beanDiscoveryMode
+	 *            bean discovery mode
+	 */
+	public void setBeanDiscoveryMode(String beanDiscoveryMode) {
+		EditorPartWrapper beansEditor = beansXMLHelper.openBeansXml(PROJECT_NAME);
+		beansEditor.activateTreePage();
+		if (!beansEditor.getBeanDiscoveryMode().equals(beanDiscoveryMode)) {
+			beansEditor.selectBeanDiscoveryMode(beanDiscoveryMode);
+			beansEditor.activateSourcePage();
+			new EditorResourceHelper().replaceInEditor("/>", "></beans>", false);
+			new WaitUntil(new EditorIsDirty(beansEditor), false);
+			beansEditor.save();
+			beansEditor.close();
+			new WaitUntil(new JobIsRunning(), false);
+			new WaitWhile(new JobIsRunning(), false);
+		}
 	}
 }

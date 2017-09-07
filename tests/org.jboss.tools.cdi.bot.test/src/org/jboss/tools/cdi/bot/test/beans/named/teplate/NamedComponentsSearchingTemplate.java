@@ -7,14 +7,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenu;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.OpenCDINamedBeanDialog;
@@ -41,7 +41,7 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 		pe.open();
 		pe.getProject(getProjectName()).refresh();
 		if(pe.getProject(getProjectName()).
-				containsItem(CDIConstants.JAVA_RESOURCES,CDIConstants.SRC,getPackageName())){
+				containsResource(CDIConstants.JAVA_RESOURCES,CDIConstants.SRC,getPackageName())){
 			new EditorResourceHelper().deletePackage(getProjectName(), getPackageName());
 		}
 	}
@@ -264,7 +264,7 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 	
 	private OpenCDINamedBeanDialog openSearchNamedDialog() {
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new ShellMenu(IDELabel.Menu.NAVIGATE, IDELabel.Menu.OPEN_CDI_NAMED_BEAN).select();
+		new ShellMenu().getItem(IDELabel.Menu.NAVIGATE, IDELabel.Menu.OPEN_CDI_NAMED_BEAN).select();
 		new DefaultShell("Open CDI Named Bean");
 		return new OpenCDINamedBeanDialog();
 	}

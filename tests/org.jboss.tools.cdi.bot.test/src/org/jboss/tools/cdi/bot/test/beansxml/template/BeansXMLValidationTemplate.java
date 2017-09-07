@@ -11,21 +11,22 @@
 
 package org.jboss.tools.cdi.bot.test.beansxml.template;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.jboss.tools.cdi.bot.test.CDITestBase;
+import org.jboss.tools.cdi.bot.test.condition.BeanXMLValidationProblemIsEmpty;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
 import org.jboss.tools.cdi.reddeer.validators.IValidationProvider;
 import org.jboss.tools.cdi.reddeer.validators.ValidationProblem;
-import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.condition.BeanXMLValidationProblemIsEmpty;
 import org.junit.After;
 import org.junit.Test;
 
@@ -77,7 +78,7 @@ public abstract class BeansXMLValidationTemplate extends CDITestBase {
 		pe.open();
 		Project p = pe.getProject(getProjectName());
 		p.refresh();
-		if (!p.containsItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, getPackageName(),
+		if (!p.containsResource(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, getPackageName(),
 				someBean + ".java")) {
 			beansHelper.createClass(someBean, getPackageName());
 		}
@@ -126,7 +127,7 @@ public abstract class BeansXMLValidationTemplate extends CDITestBase {
 		pe.open();
 		Project p = pe.getProject(getProjectName());
 		p.refresh();
-		if (!p.containsItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, getPackageName(),
+		if (!p.containsResource(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, getPackageName(),
 				someBean + ".java")) {
 			beansHelper.createClass(someBean, getPackageName());
 		}
@@ -175,7 +176,7 @@ public abstract class BeansXMLValidationTemplate extends CDITestBase {
 		pe.open();
 		Project p =pe.getProject(getProjectName());
 		p.refresh();
-		if (!p.containsItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, getPackageName(),
+		if (!p.containsResource(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, getPackageName(),
 				someBean + ".java")) {
 			beansHelper.createClass(someBean, getPackageName());
 		}

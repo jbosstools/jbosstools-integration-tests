@@ -14,7 +14,6 @@ package org.jboss.tools.cdi.reddeer.validators;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 
 public abstract class AbstractValidationProvider implements IValidationProvider {

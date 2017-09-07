@@ -11,8 +11,8 @@
 
 package org.jboss.tools.cdi.reddeer.uiutils;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
 
 /**

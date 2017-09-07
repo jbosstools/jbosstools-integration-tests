@@ -1,7 +1,7 @@
 package org.jboss.tools.cdi.bot.test.beansxml.validation.template;
 
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
 import org.jboss.tools.cdi.reddeer.condition.AsYouTypeMarkerExists;

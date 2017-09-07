@@ -1,19 +1,20 @@
 package org.jboss.tools.cdi.bot.test.beansxml.template;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.workbench.condition.EditorHasValidationMarkers;
-import org.jboss.reddeer.workbench.impl.editor.Marker;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.workbench.condition.EditorHasValidationMarkers;
+import org.eclipse.reddeer.workbench.impl.editor.Marker;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
@@ -75,7 +76,7 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 		
 		ed = new TextEditor("Bean1.java");
 		ed.save();
-		new WaitWhile(new EditorHasValidationMarkers(ed),TimePeriod.NORMAL, false);
+		new WaitWhile(new EditorHasValidationMarkers(ed),TimePeriod.DEFAULT, false);
 		markers = ed.getMarkers();
 		try{
 			assertEquals(0,markers.size());
@@ -88,7 +89,7 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 	public void testModeNone(){
 		setMode("none");
 		TextEditor ed = new TextEditor("Bean1.java");
-		new WaitWhile(new EditorHasValidationMarkers(ed),TimePeriod.NORMAL, false);
+		new WaitWhile(new EditorHasValidationMarkers(ed),TimePeriod.DEFAULT, false);
 		List<Marker> markers = ed.getMarkers();
 		assertEquals(0,markers.size());
 	}
@@ -99,7 +100,7 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 		pe.open();
 		pe.getProject(PROJECT_NAME).getProjectItem("WebContent","WEB-INF","beans.xml").delete();
 		TextEditor ed = new TextEditor("Bean1.java");
-		new WaitUntil(new EditorHasValidationMarkers(ed),TimePeriod.NORMAL, false);
+		new WaitUntil(new EditorHasValidationMarkers(ed),TimePeriod.DEFAULT, false);
 		List<Marker> markers = ed.getMarkers();
 		assertEquals(0,markers.size());
 		ed.insertLine(1, "import javax.enterprise.context.ApplicationScoped;");
@@ -117,7 +118,7 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 		
 		ed = new TextEditor("Bean1.java");
 		ed.save();
-		new WaitWhile(new EditorHasValidationMarkers(ed),TimePeriod.NORMAL, false);
+		new WaitWhile(new EditorHasValidationMarkers(ed),TimePeriod.DEFAULT, false);
 		markers = ed.getMarkers();
 		assertEquals(0,markers.size());
 		
@@ -135,9 +136,9 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.selectProjects(project);
-		NewJavaClassWizardDialog c = new NewJavaClassWizardDialog();
+		NewClassCreationWizard c = new NewClassCreationWizard();
 		c.open();
-		NewJavaClassWizardPage page = new NewJavaClassWizardPage();
+		NewClassWizardPage page = new NewClassWizardPage(c);
 		page.setPackage("test");
 		page.setName(className);
 		c.finish();

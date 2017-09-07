@@ -16,9 +16,9 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.jdt.ui.NewAnnotationCreationWizard;
-import org.jboss.reddeer.eclipse.jdt.ui.NewAnnotationWizardPage;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewAnnotationCreationWizard;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewAnnotationWizardPage;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 import org.jboss.tools.cdi.reddeer.validators.IValidationProvider;
@@ -101,7 +101,7 @@ public class QualifierValidationQuickFixTemplate extends CDITestBase {
 		
 		NewAnnotationCreationWizard aw = new NewAnnotationCreationWizard();
 		aw.open();
-		NewAnnotationWizardPage ap = new NewAnnotationWizardPage();
+		NewAnnotationWizardPage ap = new NewAnnotationWizardPage(aw);
 		ap.setPackage(getPackageName());
 		ap.setName("AAnnotation");
 		aw.finish();

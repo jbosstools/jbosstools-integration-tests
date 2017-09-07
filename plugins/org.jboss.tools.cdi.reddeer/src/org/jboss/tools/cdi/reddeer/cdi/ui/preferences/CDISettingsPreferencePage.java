@@ -10,9 +10,10 @@
  ******************************************************************************/ 
 package org.jboss.tools.cdi.reddeer.cdi.ui.preferences;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.ui.dialogs.PropertyPage;
-import org.jboss.reddeer.swt.impl.button.LabeledCheckBox;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyPage;
+import org.eclipse.reddeer.swt.impl.button.LabeledCheckBox;
 
 /**
  * "CDI (Contexts and Dependency Injection) Settings" property page. 
@@ -29,8 +30,8 @@ public class CDISettingsPreferencePage extends PropertyPage {
 	/**
 	 * Constructs a new CDI property page.
 	 */
-	public CDISettingsPreferencePage() {
-		super(NAME);
+	public CDISettingsPreferencePage(ReferencedComposite referencedComposite) {
+		super(referencedComposite, NAME);
 	}
 	
 	/**

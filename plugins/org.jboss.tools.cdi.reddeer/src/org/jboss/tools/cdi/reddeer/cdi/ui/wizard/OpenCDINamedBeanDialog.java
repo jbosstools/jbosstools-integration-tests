@@ -3,16 +3,16 @@ package org.jboss.tools.cdi.reddeer.cdi.ui.wizard;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.condition.TableHasRows;
-import org.jboss.reddeer.swt.impl.button.CancelButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.condition.TableHasRows;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.cdi.reddeer.condition.TableIsUpdating;
 
 public class OpenCDINamedBeanDialog{
@@ -23,7 +23,7 @@ public class OpenCDINamedBeanDialog{
 	
 	public List<String> matchingItems() {
 		Table itemsTable = new DefaultTable();
-		new WaitUntil(new TableHasRows(itemsTable), TimePeriod.NORMAL, false);
+		new WaitUntil(new TableHasRows(itemsTable), TimePeriod.DEFAULT, false);
 		new WaitWhile(new TableIsUpdating(itemsTable, TimePeriod.getCustom(2)));
 		List<String> matchingItems = new ArrayList<String>();
 		int tableItemsCount = itemsTable.rowCount();
@@ -41,12 +41,12 @@ public class OpenCDINamedBeanDialog{
 	
 	public void ok() {
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsActive("Open CDI Named Bean"));
+		new WaitWhile(new ShellIsAvailable("Open CDI Named Bean"));
 	}
 	
 	public void cancel() {
 		new CancelButton().click();
-		new WaitWhile(new ShellWithTextIsActive("Open CDI Named Bean"));
+		new WaitWhile(new ShellIsAvailable("Open CDI Named Bean"));
 	}
 
 }

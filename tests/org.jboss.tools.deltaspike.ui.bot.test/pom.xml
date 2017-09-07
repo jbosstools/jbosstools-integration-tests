@@ -12,7 +12,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 	
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Drd.config=target/classes/servers</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Drd.config=target/classes/servers/requirements.json</systemProperties>
 		<suiteClass>org.jboss.tools.deltaspike.ui.bot.test.DeltaspikeAllBotTests</suiteClass>
 		<jbosstools.test.wildfly.10x.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.wildfly.10x.home>
 		<deltaspike_lib_version>1.7.1</deltaspike_lib_version>

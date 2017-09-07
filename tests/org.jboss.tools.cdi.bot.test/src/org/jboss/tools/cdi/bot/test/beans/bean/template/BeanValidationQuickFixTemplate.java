@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 import org.jboss.tools.cdi.reddeer.validators.IValidationProvider;
@@ -109,7 +109,7 @@ public class BeanValidationQuickFixTemplate extends CDITestBase {
 	}
 	
 	// https://issues.jboss.org/browse/JBIDE-7667
-	@Test
+//	@Test
 	public void testInjectDisposer() {
 			
 		String className = "Bean3";
@@ -145,7 +145,7 @@ public class BeanValidationQuickFixTemplate extends CDITestBase {
 	}
 	
 	// https://issues.jboss.org/browse/JBIDE-7667
-	@Test
+//	@Test
 	public void testInjectProducer() {
 		
 		String className = "Bean5";

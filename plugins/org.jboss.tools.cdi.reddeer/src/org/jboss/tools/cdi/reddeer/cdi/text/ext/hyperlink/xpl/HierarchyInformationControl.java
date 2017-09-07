@@ -3,23 +3,23 @@ package org.jboss.tools.cdi.reddeer.cdi.text.ext.hyperlink.xpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.core.handler.TableItemHandler;
+import org.eclipse.reddeer.core.lookup.ShellLookup;
+import org.eclipse.reddeer.core.lookup.WidgetLookup;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.shell.AbstractShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.eclipse.swt.widgets.Control;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.handler.TableHandler;
-import org.jboss.reddeer.core.lookup.ShellLookup;
-import org.jboss.reddeer.core.lookup.WidgetLookup;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.core.reference.ReferencedComposite;
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.condition.ShellIsAvailable;
-import org.jboss.reddeer.swt.impl.shell.AbstractShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
 
 public class HierarchyInformationControl extends AbstractShell{
 	
@@ -33,7 +33,7 @@ public class HierarchyInformationControl extends AbstractShell{
 	
 	public void selectProposal(String proposal){
 		Table observerTable = new DefaultTable();		
-		TableHandler.getInstance().setDefaultSelection(observerTable.getItem(proposal).getSWTWidget());
+		TableItemHandler.getInstance().setDefaultSelection(observerTable.getItem(proposal).getSWTWidget());
 		new WaitWhile(new ShellIsAvailable(this));
 	}
 	

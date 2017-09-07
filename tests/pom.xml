@@ -41,7 +41,6 @@
 				<module>org.jboss.tools.arquillian.ui.bot.test</module>
 				<module>org.jboss.tools.batch.ui.bot.test</module>
 				<module>org.jboss.tools.cdi.bot.test</module>
-				<module>org.jboss.tools.cdi.seam3.bot.test</module>
 				<module>org.jboss.tools.central.ui.bot.test</module>
 				<module>org.jboss.tools.cdk.ui.bot.test</module>
 				<module>org.jboss.tools.deltaspike.ui.bot.test</module>

@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.bot.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.cdi.bot.test.beans.bean.cdi10.AsYouTypeValidationTestCDI10;
 import org.jboss.tools.cdi.bot.test.beans.bean.cdi10.BeanValidationQuickFixTestCDI10;
 import org.jboss.tools.cdi.bot.test.beans.bean.cdi10.NullValuesInjectionTestCDI10;
@@ -100,8 +100,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	DecoratorValidationQuickFixTestCDI11.class,
 	AllAssignableDialogTestCDI10.class,
 	AllAssignableDialogTestCDI11.class,
-	AssignableDialogFilterTestCDI10.class,
-	AssignableDialogFilterTestCDI11.class,
+	AssignableDialogFilterTestCDI10.class,		
+	AssignableDialogFilterTestCDI11.class,//failed
 	IBindingValidationQuickFixTestCDI10.class,
 	IBindingValidationQuickFixTestCDI11.class,
 	InterceptorValidationQuickFixTestCDI10.class,

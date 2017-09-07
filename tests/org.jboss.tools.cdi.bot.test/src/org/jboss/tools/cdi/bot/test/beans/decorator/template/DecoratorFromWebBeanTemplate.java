@@ -10,16 +10,16 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.bot.test.beans.decorator.template;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.cdi.reddeer.CDIConstants;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewDecoratorCreationWizard;
 import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
 import org.jboss.tools.cdi.reddeer.uiutils.EditorResourceHelper;
@@ -54,9 +54,9 @@ public abstract class DecoratorFromWebBeanTemplate extends CDITestBase {
 	}
 	
 	private void createPageWithContent(String name, String contentPath){
-		NewJavaClassWizardDialog cd = new NewJavaClassWizardDialog();
+		NewClassCreationWizard cd = new NewClassCreationWizard();
 		cd.open();
-		NewJavaClassWizardPage jp = new NewJavaClassWizardPage();
+		NewClassWizardPage jp = new NewClassWizardPage(cd);
 		jp.setName(name);
 		jp.setPackage("cdi");
 		cd.finish();

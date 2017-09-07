@@ -11,12 +11,12 @@
 
 package org.jboss.tools.deltaspike.ui.bot.test.condition;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 
 /**
  * Returns true, if specific problem exists in problems view
@@ -33,7 +33,7 @@ public class SpecificProblemExists extends AbstractWaitCondition {
 	private ProblemType problemType;
 		
 	public SpecificProblemExists(RegexMatcher regexMatcher) {
-		this(regexMatcher, ProblemType.ANY);
+		this(regexMatcher, ProblemType.ALL);
 	}
 	
 	public SpecificProblemExists(RegexMatcher regexMatcher, ProblemType problemType) {

@@ -2,7 +2,7 @@ package org.jboss.tools.cdi.reddeer.validators;
 
 import java.util.Arrays;
 
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 
 public class BeansXmlValidationProviderCDI11 extends AbstractValidationProvider {

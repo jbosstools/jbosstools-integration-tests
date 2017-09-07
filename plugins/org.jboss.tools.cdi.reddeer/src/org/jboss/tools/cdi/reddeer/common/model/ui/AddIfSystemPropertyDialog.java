@@ -1,10 +1,10 @@
 package org.jboss.tools.cdi.reddeer.common.model.ui;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
 /**
  * Represents dialog invoked when manipulating in JBT beans.xml editor
  * with include/exclude property
@@ -37,9 +37,8 @@ public class AddIfSystemPropertyDialog extends DefaultShell {
 	}
 	
 	public void finish() {
-		String shelltext = getText();
 		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsActive(shelltext));
+		new WaitWhile(new ShellIsAvailable(this));
 	}
 	
 }
