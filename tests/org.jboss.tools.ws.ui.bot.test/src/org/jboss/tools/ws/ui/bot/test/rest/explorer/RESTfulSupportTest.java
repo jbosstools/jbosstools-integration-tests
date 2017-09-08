@@ -2,8 +2,8 @@ package org.jboss.tools.ws.ui.bot.test.rest.explorer;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.jboss.reddeer.jface.exception.JFaceLayerException;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.jface.exception.JFaceLayerException;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;

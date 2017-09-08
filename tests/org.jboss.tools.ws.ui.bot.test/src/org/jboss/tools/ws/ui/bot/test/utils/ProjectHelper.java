@@ -20,30 +20,31 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.hamcrest.core.StringContains;
-import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.eclipse.utils.DeleteUtils;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.workbench.condition.EditorWithTitleIsActive;
-import org.jboss.reddeer.workbench.handler.EditorHandler;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.core.resources.DefaultProject;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.eclipse.reddeer.eclipse.utils.DeleteUtils;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.condition.EditorWithTitleIsActive;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.handler.EditorHandler;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.jboss.tools.ws.reddeer.ui.wizards.CreateNewFileWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.jst.j2ee.EARProjectWizard;
@@ -74,10 +75,10 @@ public class ProjectHelper {
 	 * @return
 	 */
 	public static TextEditor createClass(String projectName, String pkg, String className) {
-		NewJavaClassWizardDialog wizard = new NewJavaClassWizardDialog();
+		NewClassCreationWizard wizard = new NewClassCreationWizard();
 		wizard.open();
 
-		NewJavaClassWizardPage page = new NewJavaClassWizardPage();
+		NewClassWizardPage page = new NewClassWizardPage(wizard);
 		page.setPackage(pkg);
 		page.setName(className);
 		page.setSourceFolder(projectName + "/src");
@@ -97,7 +98,7 @@ public class ProjectHelper {
 		NewWsdlFileWizard wizard = new NewWsdlFileWizard();
 		wizard.open();
 
-		CreateNewFileWizardPage page = new CreateNewFileWizardPage();
+		CreateNewFileWizardPage page = new CreateNewFileWizardPage(wizard);
 		page.setFileName(wsdlFileName + ".wsdl");
 		page.setParentFolder(projectName + "/src");
 
@@ -198,7 +199,7 @@ public class ProjectHelper {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
 		
-		List<Project> projects = projectExplorer.getProjects();
+		List<DefaultProject> projects = projectExplorer.getProjects();
 		try {
 			for (Project project: projects) {
 				project.delete(true);
@@ -207,7 +208,7 @@ public class ProjectHelper {
 			projectExplorer.close();
 			projectExplorer.open();
 			projects = projectExplorer.getProjects();
-			for (Project project: projects) {
+			for (DefaultProject project: projects) {
 				try {
 					LOGGER.info("Forcing removal of " + project);
 					DeleteUtils.forceProjectDeletion(project, true);
@@ -223,7 +224,7 @@ public class ProjectHelper {
 	 */
 	public static void cleanAllProjects() {
 		new WaitWhile(new JobIsRunning());
-		new ShellMenu(IDELabel.Menu.PROJECT, "Clean...").select();
+		new ShellMenuItem(IDELabel.Menu.PROJECT, "Clean...").select();
 		new DefaultShell("Clean");
 		new CheckBox("Clean all projects").toggle(true);
 		new PushButton("Clean").click();
@@ -262,8 +263,8 @@ public class ProjectHelper {
 	private static void importProject(String projectLocation) {
 		ExternalProjectImportWizardDialog importDialog = new ExternalProjectImportWizardDialog();
 		importDialog.open();
-		WizardProjectsImportPage importPage = new WizardProjectsImportPage();
-		new WizardProjectsImportPage();
+		WizardProjectsImportPage importPage = new WizardProjectsImportPage(importDialog);
+		new WizardProjectsImportPage(importDialog);
 		importPage.setRootDirectory(projectLocation);
 		assertFalse("There is no project to import", importPage.getProjects().isEmpty());
 		importPage.selectAllProjects();

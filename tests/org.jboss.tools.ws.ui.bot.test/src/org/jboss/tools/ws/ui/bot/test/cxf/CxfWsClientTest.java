@@ -1,8 +1,8 @@
 package org.jboss.tools.ws.ui.bot.test.cxf;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.ws.reddeer.ui.preferences.WsCxf2xPreferencePage;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
 import org.jboss.tools.ws.ui.bot.test.wsclient.WSClientTestTemplate;
@@ -52,20 +52,22 @@ public class CxfWsClientTest extends WSClientTestTemplate {
 
 	@BeforeClass
 	public static void setupCxfRuntime() {
-		WsCxf2xPreferencePage cxfPreferencePage = new WsCxf2xPreferencePage();
-		new WorkbenchPreferenceDialog().open();
-		new WorkbenchPreferenceDialog().select(cxfPreferencePage);
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		dialog.open();
+		WsCxf2xPreferencePage cxfPreferencePage = new WsCxf2xPreferencePage(dialog);
+		dialog.select(cxfPreferencePage);
 		cxfPreferencePage.add(CXF_HOME_LOCATION);
 		new DefaultShell("Preferences");
 		cxfPreferencePage.select(CXF_HOME_LOCATION);
-		new WorkbenchPreferenceDialog().ok();
+		dialog.ok();
 	}
 
 	@AfterClass
 	public static void removeCxfRuntime() {
-		WsCxf2xPreferencePage cxfPreferencePage = new WsCxf2xPreferencePage();
-		new WorkbenchPreferenceDialog().open();
-		new WorkbenchPreferenceDialog().select(cxfPreferencePage);
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		dialog.open();
+		WsCxf2xPreferencePage cxfPreferencePage = new WsCxf2xPreferencePage(dialog);
+		dialog.select(cxfPreferencePage);
 		cxfPreferencePage.remove(CXF_HOME_LOCATION);
 	}
 

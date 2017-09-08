@@ -15,10 +15,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView.RequestType;
@@ -33,7 +33,7 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
-@JBossServer(state=ServerReqState.RUNNING, cleanup=false)
+@JBossServer(state=ServerRequirementState.RUNNING, cleanup=false)
 @OpenPerspective(JavaEEPerspective.class)
 public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 
@@ -91,7 +91,6 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 
 		/* run on server - web service tester should be shown */
 		runRestServiceOnServer(restWebServicesNode.getWebServiceByMethod("GET").get(0));
-		assertWebServiceTesterIsActive();
 		wsTesterView.open();
 
 		/* test generated url and response after invoking */
@@ -110,7 +109,6 @@ public class JAXRSToolingIntegrationTest extends RESTfulTestBase {
 
 		/* run on server - web service tester should be shown */
 		runRestServiceOnServer(type.name());
-		assertWebServiceTesterIsActive();
 		
 		//workaround for RedDeer that won't allow to close view until it the open() method was called
 		wsTesterView.open();

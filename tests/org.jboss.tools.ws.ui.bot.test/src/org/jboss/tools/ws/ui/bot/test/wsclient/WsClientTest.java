@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.wsclient;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.ws.ui.bot.test.webservice.WebServiceRuntime;
 import org.junit.runner.RunWith;
 

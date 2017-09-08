@@ -1,9 +1,9 @@
 package org.jboss.tools.ws.ui.bot.test.uiutils;
 
 import org.hamcrest.Matcher;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 
 /**
  * 

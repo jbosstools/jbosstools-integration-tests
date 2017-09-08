@@ -5,12 +5,12 @@ import java.util.logging.Logger;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.jboss.tools.common.reddeer.requirements.JavaFoldingRequirement.JavaFolding;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
@@ -27,7 +27,7 @@ import org.junit.Before;
  *
  */
 @OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state = ServerReqState.RUNNING, cleanup = false)
+@JBossServer(state = ServerRequirementState.RUNNING, cleanup = false)
 @JavaFolding(false)
 public abstract class SOAPTestBase {
 
@@ -72,7 +72,7 @@ public abstract class SOAPTestBase {
 	@After
 	public void cleanup() {		
 		ConsoleView console = new ConsoleView();
-		if (!console.isOpened()) {
+		if (!console.isOpen()) {
 			console.open();
 		}
 		console.clearConsole();
@@ -81,24 +81,24 @@ public abstract class SOAPTestBase {
 	@AfterClass
 	public static void deleteAll() {
 		ServersViewHelper.removeAllProjectsFromServer(getConfiguredServerName());
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		ProjectHelper.deleteAllProjects();
 	}
 
 	protected static String getConfiguredRuntimeName() {
-		return serverReq.getRuntimeNameLabelText(serverReq.getConfig());
+		return serverReq.getRuntimeNameLabelText();
 	}
 
 	protected static String getConfiguredServerName() {
-		return serverReq.getServerNameLabelText(serverReq.getConfig());
+		return serverReq.getServerNameLabelText();
 	}
 
 	protected static String getConfiguredServerType() {
-		return serverReq.getConfig().getServerFamily().getLabel();
+		return serverReq.getConfiguration().getFamily().getLabel();
 	}
 
 	protected static String getConfiguredServerVersion() {
-		return serverReq.getConfig().getServerFamily().getVersion();
+		return serverReq.getConfiguration().getVersion();
 	}
 
 	protected String getWsProjectName() {

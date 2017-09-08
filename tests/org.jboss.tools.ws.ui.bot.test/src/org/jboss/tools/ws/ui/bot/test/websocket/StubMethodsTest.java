@@ -11,9 +11,9 @@
 package org.jboss.tools.ws.ui.bot.test.websocket;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.junit.After;
 import org.junit.Before;
@@ -36,7 +36,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @see http://tools.jboss.org/documentation/whatsnew/jbosstools/4.3.0.Final.html#webservices
  */
-@JBossServer(state=ServerReqState.PRESENT)
+@JBossServer(state=ServerRequirementState.PRESENT)
 public class StubMethodsTest extends WSTestBase {
 
 	@Before

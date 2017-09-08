@@ -1,8 +1,8 @@
 package org.jboss.tools.ws.ui.bot.test.rest;
 
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;

@@ -1,11 +1,11 @@
 package org.jboss.tools.ws.ui.bot.test.uiutils;
 
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 
 /**
  * 

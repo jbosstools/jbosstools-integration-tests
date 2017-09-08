@@ -17,12 +17,12 @@ import java.util.List;
 
 import org.hamcrest.core.Is;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
 import org.jboss.tools.ws.reddeer.ui.dialogs.WSTesterParametersDialog;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
  * @author Radoslav Rabara
  */
 @RunWith(RedDeerSuite.class)
-@JBossServer(state=ServerReqState.RUNNING, cleanup=false)
+@JBossServer(state=ServerRequirementState.RUNNING, cleanup=false)
 public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 
 	private String wsProjectName = "wsPromptTestProject";
@@ -67,7 +67,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 		if (dialog != null && dialog.isOpened()) {
 			dialog.cancel();
 		}
-		if (testerView != null && testerView.isOpened()) {
+		if (testerView != null && testerView.isOpen()) {
 			testerView.close();
 		}
 		ServersViewHelper.removeAllProjectsFromServer(getConfiguredServerName());
@@ -127,7 +127,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 		testerView.open();
 		testerView.invoke();
 
-		new WaitUntil(new ShellWithTextIsAvailable(WSTesterParametersDialog.DIALOG_TITLE));
+		new WaitUntil(new ShellIsAvailable(WSTesterParametersDialog.DIALOG_TITLE));
 
 		dialog = new WSTesterParametersDialog();
 	}

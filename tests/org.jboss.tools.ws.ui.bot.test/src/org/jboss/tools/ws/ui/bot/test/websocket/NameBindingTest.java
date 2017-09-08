@@ -15,9 +15,9 @@ import static org.jboss.tools.ws.ui.bot.test.websocket.NameBindingTest.Constants
 import static org.jboss.tools.ws.ui.bot.test.websocket.WebSocketHelper.*;
 import static org.junit.Assert.*;
 
-import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
-import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
+import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.common.reddeer.requirements.JavaFoldingRequirement.JavaFolding;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
 import org.junit.After;

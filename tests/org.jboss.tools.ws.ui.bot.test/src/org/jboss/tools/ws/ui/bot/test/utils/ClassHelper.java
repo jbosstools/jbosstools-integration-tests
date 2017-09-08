@@ -10,8 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.utils;
 
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 
 /**
  * Created by Jan Novak
