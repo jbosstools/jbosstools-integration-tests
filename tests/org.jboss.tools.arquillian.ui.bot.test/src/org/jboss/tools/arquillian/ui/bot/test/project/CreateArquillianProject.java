@@ -11,8 +11,8 @@
 
 package org.jboss.tools.arquillian.ui.bot.test.project;
 
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.arquillian.ui.bot.test.AbstractArquillianTestCase;
 import org.junit.Test;
 

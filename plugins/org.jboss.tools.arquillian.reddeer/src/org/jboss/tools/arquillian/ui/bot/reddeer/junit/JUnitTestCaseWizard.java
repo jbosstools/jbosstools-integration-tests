@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.arquillian.ui.bot.reddeer.junit;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 
 /**
  * Wizard for creating JUnit test cases
@@ -18,7 +18,7 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
  * @author Lucia Jelinkova
  *
  */
-public class JUnitTestCaseWizard extends NewWizardDialog{
+public class JUnitTestCaseWizard extends NewMenuWizard{
 	
 	public JUnitTestCaseWizard() {
 		super("Java", "JUnit", "JUnit Test Case");

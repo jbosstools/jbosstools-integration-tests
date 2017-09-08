@@ -10,11 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.arquillian.ui.bot.reddeer.preferences;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.preference.PreferencePage;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
 
 /**
  * Class represents Arquillian preference page
@@ -34,8 +35,8 @@ public class ArquillianPreferencePage extends PreferencePage {
 	/**
 	 * Constructs the preference page with "Arquillian".
 	 */
-	public ArquillianPreferencePage() {
-		super(new String[] { "JBoss Tools", "Arquillian" });
+	public ArquillianPreferencePage(ReferencedComposite referencedComposite) {
+		super(referencedComposite, new String[] { "JBoss Tools", "Arquillian" });
 	}
 
 	/**

@@ -11,27 +11,26 @@
 
 package org.jboss.tools.arquillian.ui.bot.reddeer.configurations;
 
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.condition.WidgetIsFound;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.core.lookup.ShellLookup;
+import org.eclipse.reddeer.core.matcher.WithLabelMatcher;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.swt.api.Button;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.swt.widgets.Shell;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.WidgetIsFound;
-import org.jboss.reddeer.core.lookup.ShellLookup;
-import org.jboss.reddeer.core.matcher.ClassMatcher;
-import org.jboss.reddeer.core.matcher.WithLabelMatcher;
-import org.jboss.reddeer.swt.api.Button;
-import org.jboss.reddeer.swt.api.Menu;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.CLabelWithTextIsAvailable;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * Represents the Run Configurations dialog
@@ -57,7 +56,7 @@ public class RunConfigurationsDialog {
 		}
 		else{
 			log.debug("Run configurations dialog has not been opened yet. Opening via menu.");
-			Menu menu = new ShellMenu("Run", "Run Configurations...");
+			ShellMenuItem menu = new ShellMenuItem("Run", "Run Configurations...");
 			menu.select();
 		}
 		
@@ -76,7 +75,7 @@ public class RunConfigurationsDialog {
 		TreeItem t = new DefaultTreeItem(configuration.getCategory(), configuration.getName());
 		t.select();
 		
-		new WaitUntil(new CLabelWithTextIsAvailable(configuration.getName()), TimePeriod.NORMAL, false);
+		new WaitUntil(new WidgetIsFound(org.eclipse.swt.custom.CLabel.class,new WithTextMatcher(configuration.getName())),TimePeriod.DEFAULT, false);
 	}
 
 	/**
@@ -87,11 +86,11 @@ public class RunConfigurationsDialog {
 		TreeItem t = new DefaultTreeItem(configuration.getCategory());
 		t.select();
 				
-		new ContextMenu("New").select();
+		new ContextMenuItem("New").select();
 		
 		/* Added to make test more reliable - intermittent timing-related 
 		 * failures (https://issues.jboss.org/browse/JBIDE-22866) were being seen */
-		new WaitUntil(new WidgetIsFound<org.eclipse.swt.widgets.Text>(new ClassMatcher(org.eclipse.swt.widgets.Text.class), new WithLabelMatcher("Name:")),TimePeriod.VERY_LONG);
+		new WaitUntil(new WidgetIsFound(org.eclipse.swt.widgets.Text.class, new WithLabelMatcher("Name:")),TimePeriod.VERY_LONG);
 		
 		new LabeledText("Name:").setText(configuration.getName());
 	}
@@ -106,7 +105,7 @@ public class RunConfigurationsDialog {
 		Button button = new PushButton("Run");
 		button.click();
 
-		new WaitWhile(new ShellWithTextIsActive(shellText), TimePeriod.VERY_LONG);
+		new WaitWhile(new ShellIsAvailable(shellText), TimePeriod.VERY_LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);			
 	}
 
@@ -120,7 +119,7 @@ public class RunConfigurationsDialog {
 		Button button = new PushButton("Close");
 		button.click();
 
-		new WaitWhile(new ShellWithTextIsActive(shellText));
+		new WaitWhile(new ShellIsAvailable(shellText));
 		new WaitWhile(new JobIsRunning());
 	}
 
@@ -153,7 +152,11 @@ public class RunConfigurationsDialog {
 	 * @return true if the dialog is open, false otherwise
 	 */
 	public boolean isOpen() {
-		Shell shell = ShellLookup.getInstance().getShell(DIALOG_TITLE,TimePeriod.SHORT);
-		return (shell != null);		
+		try {
+			ShellLookup.getInstance().getShell(DIALOG_TITLE, TimePeriod.SHORT);
+		} catch (CoreLayerException ex) {
+			return false;
+		}
+		return true;
 	}
 }

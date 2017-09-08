@@ -13,9 +13,9 @@ package org.jboss.tools.arquillian.ui.bot.test.preferences;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.arquillian.ui.bot.reddeer.preferences.ArquillianValidatorPreferencePage;
 import org.junit.After;
 import org.junit.Test;
@@ -31,7 +31,7 @@ import org.junit.runner.RunWith;
 public class ArquillianValidatorPreferencePageTest {
 
 	private WorkbenchPreferenceDialog preferencesDialog = new WorkbenchPreferenceDialog();
-	private ArquillianValidatorPreferencePage arquillianValidatorPreferencePage = new ArquillianValidatorPreferencePage();
+	private ArquillianValidatorPreferencePage arquillianValidatorPreferencePage = new ArquillianValidatorPreferencePage(preferencesDialog);
 	private final String ERROR = "Error";
 	private final String WARNING = "Warning";
 	private final String IGNORE = "Ignore";
@@ -92,7 +92,7 @@ public class ArquillianValidatorPreferencePageTest {
 		// try to close preference dialog in case it stayed open
 		try{
 			preferencesDialog.cancel();
-		} catch (SWTLayerException swtle){
+		} catch (RedDeerException swtle){
 			// do nothing
 		}
 	}

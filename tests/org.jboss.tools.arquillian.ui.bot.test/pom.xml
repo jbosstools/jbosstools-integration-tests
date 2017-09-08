@@ -16,34 +16,13 @@
 		<skipTests>false</skipTests>
 		<usage_reporting_enabled>false</usage_reporting_enabled>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
-		
-		<download-properties-file>${project.basedir}/properties/projects-download.properties</download-properties-file>
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
 		<jbosstools.test.jboss-wildfly-8.home>${requirementsDirectory}/wildfly-8.2.0.Final</jbosstools.test.jboss-wildfly-8.home>
-		<systemProperties>${integrationTestsSystemProperties} ${runtimesProperties}</systemProperties>
-		<runtimesProperties>-Drd.config=${project.build.outputDirectory}/project/wildfly-8.xml -Djbosstools.test.jboss-wildfly-8.home=${jbosstools.test.jboss-wildfly-8.home}</runtimesProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${project.build.directory}/classes/wildfly.json</systemProperties>
 	</properties>
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>properties-maven-plugin</artifactId>
-				<version>1.0-alpha-2</version>
-				<executions>
-					<execution>
-						<phase>initialize</phase>
-						<goals>
-							<goal>read-project-properties</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<files>
-						<file>${download-properties-file}</file>
-					</files>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>com.googlecode.maven-download-plugin</groupId>
 				<artifactId>download-maven-plugin</artifactId>
@@ -55,7 +34,7 @@
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>${jbosstools.test.wildfly-8.url}</url>
+							<url>http://download.jboss.org/wildfly/8.2.0.Final/wildfly-8.2.0.Final.zip</url>
 							<unpack>true</unpack>
 						</configuration>
 					</execution>
@@ -82,13 +61,9 @@
 				</configuration>
 			</plugin>
 		</plugins>
-			<!-- Server Configuration files -->
-			<resources>
-				<resource>
-				<directory>resources/config_files_templates</directory>
-				<includes>
-					<include>project/*</include>
-				</includes>
+		<resources>
+			<resource>
+				<directory>resources</directory>
 				<filtering>true</filtering>
 			</resource>
 		</resources>
