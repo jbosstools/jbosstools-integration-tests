@@ -12,14 +12,14 @@ package org.jboss.tools.ws.ui.bot.test.integration;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.ws.reddeer.swt.condition.WsTesterNotEmptyResponseText;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView.RequestType;
@@ -80,7 +80,7 @@ public class SOAPWSToolingIntegrationTest extends SOAPTestBase {
 		Project project = projectExplorer.getProject(getWsProjectName());
 		project.refresh();
 		project.getProjectItem("wsdl", "HelloWorldService.wsdl").select();
-		new ContextMenu("Web Services", "Test in JBoss Web Service Tester").select();
+		new ContextMenuItem("Web Services", "Test in JBoss Web Service Tester").select();
 
 		WsTesterView tester = new WsTesterView();
 		tester.open();

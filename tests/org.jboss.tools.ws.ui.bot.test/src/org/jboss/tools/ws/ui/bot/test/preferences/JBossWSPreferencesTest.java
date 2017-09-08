@@ -15,17 +15,17 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.hamcrest.core.Is;
+import org.jboss.ide.eclipse.as.reddeer.server.family.JBossFamily;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.IServerFamily;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.ws.reddeer.ui.preferences.JBossWSRuntimeItem;
 import org.jboss.tools.ws.reddeer.ui.preferences.JBossWSRuntimeListFieldEditor;
 import org.jboss.tools.ws.reddeer.ui.preferences.JBossWSRuntimePreferencePage;
@@ -45,7 +45,7 @@ import org.junit.runner.RunWith;
  * @author Radoslav Rabara
  */
 @RunWith(RedDeerSuite.class)
-@JBossServer(state=ServerReqState.PRESENT)
+@JBossServer(state=ServerRequirementState.PRESENT)
 public class JBossWSPreferencesTest {
 
 	@InjectRequirement
@@ -65,8 +65,9 @@ public class JBossWSPreferencesTest {
 
 	@BeforeClass
 	public static void preparePrerequisites() {
-		jbossWSRuntimePreferencePage = new JBossWSRuntimePreferencePage();
-		new WorkbenchPreferenceDialog().open();
+		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
+		dialog.open();
+		jbossWSRuntimePreferencePage = new JBossWSRuntimePreferencePage(dialog);
 		new WorkbenchPreferenceDialog().select(jbossWSRuntimePreferencePage);
 	}
 
@@ -100,7 +101,7 @@ public class JBossWSPreferencesTest {
 		jbossWsRuntimeDialog.setName(runtimeEditedName);
 		jbossWsRuntimeDialog.finish();
 
-		new WaitWhile(new ShellWithTextIsActive(EDIT_JBOSS_WS_RUNTIME_DIALOG_TITLE));
+		new WaitWhile(new ShellIsAvailable(EDIT_JBOSS_WS_RUNTIME_DIALOG_TITLE));
 
 		assertRuntimeName(runtimeEditedName);
 	}
@@ -109,16 +110,16 @@ public class JBossWSPreferencesTest {
 		jbossWSRuntimePreferencePage.select(0);
 		jbossWSRuntimePreferencePage.remove();
 
-		new WaitUntil(new ShellWithTextIsActive("Confirm Runtime Delete"));
+		new DefaultShell("Confirm Runtime Delete");
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive("Confirm Runtime Delete"));
+		new WaitWhile(new ShellIsAvailable("Confirm Runtime Delete"));
 
 		assertThat(jbossWSRuntimePreferencePage.getAllJBossWSRuntimes().size(),
 				Is.is(0));
 	}
 
 	private void setRuntimeHomeFolderAccordingToRuntime() {
-		jbossWsRuntimeDialog.setHomeFolder(serverReq.getConfig().getRuntime());
+		jbossWsRuntimeDialog.setHomeFolder(serverReq.getConfiguration().getRuntime());
 
 		runtimeName = jbossWsRuntimeDialog.getName();
 		runtimeVersion = jbossWsRuntimeDialog.getVersion();
@@ -136,10 +137,10 @@ public class JBossWSPreferencesTest {
 		String runtimeVersion = jbossWsRuntimeDialog.getRuntimeVersion();
 
 		String expectedVersion;
-		IServerFamily serverFamily = serverReq.getConfig().getServerFamily();
+		JBossFamily serverFamily = serverReq.getConfiguration().getFamily();
 		switch(serverFamily.getLabel()) {
 		case "WildFly":
-			if ("10.x".equals(serverFamily.getVersion())) {
+			if ("10.x".equals(serverReq.getConfiguration().getVersion())) {
 				expectedVersion = "5.1.3.Final";
 			} else {
 				expectedVersion = "5.0.0.Final";
@@ -162,7 +163,7 @@ public class JBossWSPreferencesTest {
 	private void assertRuntimeConfiguredAccordingToRuntime() {
 		jbossWsRuntimeDialog.finish();
 
-		new WaitWhile(new ShellWithTextIsActive(
+		new WaitWhile(new ShellIsAvailable(
 				NEW_JBOSS_WS_RUNTIME_DIALOG_TITLE));
 
 		assertThat(jbossWSRuntimePreferencePage.

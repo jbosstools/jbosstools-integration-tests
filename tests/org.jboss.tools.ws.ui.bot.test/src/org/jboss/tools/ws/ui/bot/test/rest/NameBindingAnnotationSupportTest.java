@@ -1,13 +1,12 @@
 package org.jboss.tools.ws.ui.bot.test.rest;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.common.reddeer.requirements.JavaFoldingRequirement.JavaFolding;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
@@ -25,7 +24,7 @@ import org.junit.runner.RunWith;
  * @since JBT 4.2.0.Beta1
  */
 @RunWith(RedDeerSuite.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
+@JBossServer(state=ServerRequirementState.PRESENT)
 @AutoBuilding(value = false, cleanup = true)
 @JavaFolding(false)
 public class NameBindingAnnotationSupportTest extends RESTfulTestBase {

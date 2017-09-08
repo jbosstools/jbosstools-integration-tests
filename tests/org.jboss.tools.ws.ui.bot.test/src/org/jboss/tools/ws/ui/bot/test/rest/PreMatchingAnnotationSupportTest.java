@@ -1,11 +1,10 @@
 package org.jboss.tools.ws.ui.bot.test.rest;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
-import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +20,7 @@ import org.junit.runner.RunWith;
  * @since JBT 4.2.0.Beta1
  */
 @RunWith(RedDeerSuite.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
+@JBossServer(state=ServerRequirementState.PRESENT)
 @AutoBuilding(value = false, cleanup = true)
 public class PreMatchingAnnotationSupportTest extends RESTfulTestBase {
 	

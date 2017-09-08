@@ -17,26 +17,27 @@ import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.logging.Level;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.api.StyledText;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.api.StyledText;
+import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
+import org.eclipse.reddeer.swt.impl.button.NextButton;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceFirstWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceFirstWizardPage.ServiceType;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceSecondWizardPage;
@@ -85,15 +86,15 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 
 		WebServiceWizard wizard = new WebServiceWizard();
 		wizard.open();
-		fillFirstWizardPage(type, source, level, serviceRuntime, useDefaultProjects);
+		fillFirstWizardPage(wizard, type, source, level, serviceRuntime, useDefaultProjects);
 		
-		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.getCustom(5), false);
+		new WaitUntil(new ControlIsEnabled(new NextButton()), TimePeriod.getCustom(5), false);
 		wizard.next();
 
 		checkErrorDialog(wizard);
 
 		if (pkg != null && pkg.trim().length() > 0) {
-			WebServiceSecondWizardPage page2 = new WebServiceSecondWizardPage();
+			WebServiceSecondWizardPage page2 = new WebServiceSecondWizardPage(wizard);
 			page2.setPackageName(pkg);
 			wizard.next();
 		}
@@ -102,7 +103,7 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 			new FinishButton().click();
 			confirmWebServiceNameOverwrite();
 			
-			new WaitWhile(new ShellWithTextIsAvailable("Web Service"));
+			new WaitWhile(new ShellIsAvailable("Web Service"));
 			new WaitWhile(new JobIsRunning());
 		} else {
 			new DefaultShell("Web Service");
@@ -129,10 +130,10 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 		}
 	}
 
-	private void fillFirstWizardPage(ServiceType type, String source, SliderLevel level,
+	private void fillFirstWizardPage(ReferencedComposite referencedComposite, ServiceType type, String source, SliderLevel level,
 			WebServiceRuntime serviceRuntime, boolean useDefaultProjects) {
 		
-		WebServiceFirstWizardPage page = new WebServiceFirstWizardPage();
+		WebServiceFirstWizardPage page = new WebServiceFirstWizardPage(referencedComposite);
 		page.setServiceType(type);
 		page.setSource(source);
 		page.setServerRuntime(getConfiguredServerName());

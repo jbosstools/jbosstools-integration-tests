@@ -7,18 +7,17 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hamcrest.core.Is;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.eclipse.reddeer.eclipse.condition.ExactNumberOfProblemsExists;
+import org.eclipse.reddeer.eclipse.condition.ProblemExists;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.condition.ExactNumberOfProblemsExists;
-import org.jboss.reddeer.eclipse.condition.ProblemExists;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
@@ -35,7 +34,7 @@ import org.junit.runner.RunWith;
  * @since JBT 4.2.0.Beta1
  */
 @RunWith(RedDeerSuite.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
+@JBossServer(state=ServerRequirementState.PRESENT)
 @AutoBuilding(value = false, cleanup = true)
 public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 
@@ -85,8 +84,8 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 	private void providerValidationWarning(String projectName, String className) {
 		ProjectHelper.cleanAllProjects();
 		/* wait for JAX-RS validator */
-		new WaitUntil(new ProblemExists(ProblemType.ANY),
-				TimePeriod.NORMAL, false);
+		new WaitUntil(new ProblemExists(ProblemType.ALL),
+				TimePeriod.DEFAULT, false);
 
 		// there should be "No JAX-RS Activator is defined for the project." warning
 		List<Problem> warningsBefore = new ProblemsView().getProblems(ProblemType.WARNING);
@@ -106,7 +105,7 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 
 		/* wait for JAX-RS validator */
 		new WaitUntil(new ExactNumberOfProblemsExists(ProblemType.WARNING,
-				warningsBefore.size()+1), TimePeriod.NORMAL, false);
+				warningsBefore.size()+1), TimePeriod.DEFAULT, false);
 
 		//one more warning Description "The @Provider annotation is missing on this java type."
 		List<Problem> warningsAfter = new ProblemsView().getProblems(ProblemType.WARNING);

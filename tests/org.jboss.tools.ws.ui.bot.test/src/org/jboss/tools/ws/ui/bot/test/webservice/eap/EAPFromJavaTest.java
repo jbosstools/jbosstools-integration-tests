@@ -19,11 +19,11 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.ui.wizards.CreateNewFileWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.jst.jsp.NewJSPFileWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
@@ -159,7 +159,7 @@ public class EAPFromJavaTest extends WebServiceTestBase {
 		NewJSPFileWizard wizard = new NewJSPFileWizard();
 		wizard.open();
 
-		CreateNewFileWizardPage page = new CreateNewFileWizardPage();
+		CreateNewFileWizardPage page = new CreateNewFileWizardPage(wizard);
 		page.setFileName("index");
 		page.setParentFolder(getWsClientProjectName() + "/WebContent");
 

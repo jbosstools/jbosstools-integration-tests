@@ -10,14 +10,15 @@ import java.util.List;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNot;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.eclipse.core.resources.Resource;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSApplicationWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSApplicationWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSApplicationWizardPage.DeploymentDescriptorWizardPart;
@@ -34,11 +35,11 @@ import org.junit.runner.RunWith;
  * @author Radoslav Rabara
  */
 @RunWith(RedDeerSuite.class)
-@JBossServer(state=ServerReqState.PRESENT)
+@JBossServer(state=ServerRequirementState.PRESENT)
 public class CreateJAXRSApplicationTest extends WSTestBase {
 
 	protected final JAXRSApplicationWizard wizard = new JAXRSApplicationWizard();
-	protected final JAXRSApplicationWizardPage page = new JAXRSApplicationWizardPage();
+	protected final JAXRSApplicationWizardPage page = new JAXRSApplicationWizardPage(wizard);
 	
 	private final String[] webXmlPath = {"WebContent", "WEB-INF", "web.xml"};
 	
@@ -91,7 +92,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 		ProjectItem srcProjectItem = getProject().getProjectItem("Java Resources", "src");
 		
 		/* source folder contains the specified package */
-		List<ProjectItem> srcChildren = srcProjectItem.getChildren();
+		List<Resource> srcChildren = srcProjectItem.getChildren();
 		if(PACKAGE_NAME != null) {
 			assertContains(srcChildren, PACKAGE_NAME,
 						"Src folder doesn't contain package \"" + PACKAGE_NAME + "\" but it contains "
@@ -101,8 +102,8 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 					+ Arrays.toString(srcChildren.toArray()), srcChildren.size() == 1);
 		
 		/* package have to contain the specified class = activator */
-		ProjectItem pkgProjectItem = srcChildren.get(0);
-		List<ProjectItem> pkgChildren = pkgProjectItem.getChildren();
+		Resource pkgProjectItem = srcChildren.get(0);
+		List<Resource> pkgChildren = pkgProjectItem.getChildren();
 		assertContains(pkgChildren, FILE_NAME + ".java",
 					"Package doesn't contain file \"" + PACKAGE_NAME + ".java\" but it contains "
 					+ Arrays.toString(srcChildren.toArray()));
@@ -110,7 +111,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 					+ Arrays.toString(srcChildren.toArray()), pkgChildren.size() == 1);
 		
 		/* the class contains @ApplicationPath and that it extends Application */
-		ProjectItem sourceFile = pkgChildren.get(0);
+		Resource sourceFile = pkgChildren.get(0);
 		sourceFile.open();
 		TextEditor editor = new TextEditor();
 		String generatedText = editor.getText();
@@ -121,7 +122,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 		generatedText.contains("import javax.ws.rs.core.Application;");
 		
 		/* there is a web.xml*/
-		assertTrue("Project does not contains " + Arrays.toString(webXmlPath), getProject().containsItem(webXmlPath));
+		assertTrue("Project does not contains " + Arrays.toString(webXmlPath), getProject().containsResource(webXmlPath));
 	}
 	
 	@Test
@@ -142,7 +143,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 		wizard.finish();
 		
 		/* get generated class */
-		ProjectItem generatedClass = getProject().getProjectItem("Java Resources", "src")
+		Resource generatedClass = getProject().getProjectItem("Java Resources", "src")
 				.getChildren().get(0).getChildren().get(0);
 		
 		/* the class contains @ApplicationPath and that it extends Application */
@@ -249,8 +250,8 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 				Is.is(ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT));
 	}
 	
-	private void assertContains(List<ProjectItem> list, String name, String errorMessage) {
-		for(ProjectItem pi : list) {
+	private void assertContains(List<Resource> list, String name, String errorMessage) {
+		for(Resource pi : list) {
 			if(pi.getName().equals(name)) {
 				return;
 			}
@@ -286,11 +287,11 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 		
 		Project project = new ProjectExplorer().getProject(getWsProjectName());
 		assertTrue("web.xml was not generated.\n" + Arrays.toString(webXmlPath) + " is missing",
-				project.containsItem(webXmlPath));
+				project.containsResource(webXmlPath));
 		ProjectItem webXml = project.getProjectItem(webXmlPath);
 		
 		webXml.select();
-		new ContextMenu("Open With", "Text Editor").select();;
+		new ContextMenuItem("Open With", "Text Editor").select();;
 		
 		TextEditor editor = new TextEditor();
 		editor.activate();

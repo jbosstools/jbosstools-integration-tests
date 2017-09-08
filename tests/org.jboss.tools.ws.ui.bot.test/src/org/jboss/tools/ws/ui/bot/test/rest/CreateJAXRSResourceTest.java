@@ -10,12 +10,12 @@ import java.util.List;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNot;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSApplicationWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.jaxrs.JAXRSResourceCreateApplicationWizardPage;
@@ -32,7 +32,7 @@ import org.junit.runner.RunWith;
  * @author Radoslav Rabara
  */
 @RunWith(RedDeerSuite.class)
-@JBossServer(state=ServerReqState.PRESENT)
+@JBossServer(state=ServerRequirementState.PRESENT)
 public class CreateJAXRSResourceTest extends RESTfulTestBase {
 
 	private final String PACKAGE_NAME = "org.rest.test";
@@ -69,7 +69,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 	@Test
 	public void createResourceWithEntityAndMethodsAndCommentsTest() {
 		/* set wizard to create JAX-RS resource with entity and all methods */
-		JAXRSResourceCreateResourceWizardPage firstPage = new JAXRSResourceCreateResourceWizardPage();
+		JAXRSResourceCreateResourceWizardPage firstPage = new JAXRSResourceCreateResourceWizardPage(wizard);
 		firstPage.setPackage(PACKAGE_NAME);
 		firstPage.setTargetEntity(TARGET_ENTITY);
 		firstPage.setName(FILE_NAME);
@@ -83,7 +83,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 		wizard.next();
 
 		/* set wizard to create also JAX-RS Application */
-		JAXRSResourceCreateApplicationWizardPage secondPage = new JAXRSResourceCreateApplicationWizardPage();
+		JAXRSResourceCreateApplicationWizardPage secondPage = new JAXRSResourceCreateApplicationWizardPage(wizard);
 		JAXRSResourceCreateApplicationWizardPage.SubclassOfApplicationWizardPart wp = secondPage.useSubclassOfApplication();
 		wp.setPackage(PACKAGE_NAME);
 		wp.setName(APPLICATION_FILE_NAME);
@@ -95,7 +95,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 
 		/* JAX-RS Resource was created */
 		assertTrue("JAX-RS Application was not created", new ProjectExplorer().getProject(getWsProjectName())
-				.containsItem("Java Resources", "src", PACKAGE_NAME, FILE_NAME + ".java") == true);
+				.containsResource("Java Resources", "src", PACKAGE_NAME, FILE_NAME + ".java") == true);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(getWsProjectName());
@@ -106,7 +106,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 
 		/* JAX-RS Application class was also created*/
 		assertTrue("JAX-RS Application was not created", new ProjectExplorer().getProject(getWsProjectName())
-				.containsItem("Java Resources", "src", PACKAGE_NAME, APPLICATION_FILE_NAME + ".java"));
+				.containsResource("Java Resources", "src", PACKAGE_NAME, APPLICATION_FILE_NAME + ".java"));
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 	public void testSetTargetEntity() {
 		final String NON_EXISTING_TARGET_ENTITY = "NON_EXISTING_TARGET_ENTITY";
 		final String ERROR_TARGET_CLASS_NOT_EXISTS = " Target Class does not exist in project's classpath";
-		JAXRSResourceCreateResourceWizardPage firstPage = new JAXRSResourceCreateResourceWizardPage();
+		JAXRSResourceCreateResourceWizardPage firstPage = new JAXRSResourceCreateResourceWizardPage(wizard);
 
 		/* set name to dismiss "type name is empty" error */
 		firstPage.setName(FILE_NAME);
@@ -144,7 +144,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 	 */
 	@Test
 	public void testWithoutTargetEntityCantUseMethods() {
-		JAXRSResourceCreateResourceWizardPage firstPage = new JAXRSResourceCreateResourceWizardPage();
+		JAXRSResourceCreateResourceWizardPage firstPage = new JAXRSResourceCreateResourceWizardPage(wizard);
 
 		assertTrue("Dialog shouldn't allow to create methods when the target entity is not set",
 				!firstPage.areAvailableJAXRSResourceMethodEnabled());
@@ -165,14 +165,14 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 	@Test
 	public void createResourceWithoutTargetEntity() {
 		/* set wizard to create JAX-RS resource with entity and all methods */
-		JAXRSResourceCreateResourceWizardPage firstPage = new JAXRSResourceCreateResourceWizardPage();
+		JAXRSResourceCreateResourceWizardPage firstPage = new JAXRSResourceCreateResourceWizardPage(wizard);
 		firstPage.setPackage(PACKAGE_NAME);
 		firstPage.setName(FILE_NAME);
 		firstPage.setResourcePath(RESOURCE_PATH);
 		wizard.next();
 
 		/* set wizard to create also JAX-RS Application */
-		JAXRSResourceCreateApplicationWizardPage secondPage = new JAXRSResourceCreateApplicationWizardPage();
+		JAXRSResourceCreateApplicationWizardPage secondPage = new JAXRSResourceCreateApplicationWizardPage(wizard);
 		JAXRSApplicationWizardPage.SubclassOfApplicationWizardPart wp = secondPage.useSubclassOfApplication();
 		wp.setPackage(PACKAGE_NAME);
 		wp.setName(APPLICATION_FILE_NAME);
@@ -184,7 +184,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 
 		/* JAX-RS Resource was created */
 		assertTrue("JAX-RS Application was not created", new ProjectExplorer().getProject(getWsProjectName())
-				.containsItem("Java Resources", "src", PACKAGE_NAME, FILE_NAME + ".java") == true);
+				.containsResource("Java Resources", "src", PACKAGE_NAME, FILE_NAME + ".java") == true);
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(getWsProjectName());
@@ -194,7 +194,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 
 		/* JAX-RS Application class was also created*/
 		assertTrue("JAX-RS Application was not created", new ProjectExplorer().getProject(getWsProjectName())
-				.containsItem("Java Resources", "src", PACKAGE_NAME, APPLICATION_FILE_NAME + ".java") == true);
+				.containsResource("Java Resources", "src", PACKAGE_NAME, APPLICATION_FILE_NAME + ".java") == true);
 	}
 
 	private void assertThatAllRestServicesArePresent(List<RESTfulWebService> restServices) {

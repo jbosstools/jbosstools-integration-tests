@@ -26,31 +26,32 @@ import org.hamcrest.core.Is;
 import org.hamcrest.core.StringContains;
 import org.hamcrest.core.StringStartsWith;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.matcher.WithTextMatchers;
-import org.jboss.reddeer.eclipse.condition.ExactNumberOfProblemsExists;
-import org.jboss.reddeer.eclipse.condition.ProblemExists;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.eclipse.ui.problems.matcher.AbstractProblemMatcher;
-import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsDescriptionMatcher;
-import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsPathMatcher;
-import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsTypeMatcher;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.api.Menu;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.matcher.WithTextMatchers;
+import org.eclipse.reddeer.eclipse.ui.markers.matcher.AbstractMarkerMatcher;
+import org.eclipse.reddeer.eclipse.ui.markers.matcher.MarkerDescriptionMatcher;
+import org.eclipse.reddeer.eclipse.ui.markers.matcher.MarkerPathMatcher;
+import org.eclipse.reddeer.eclipse.ui.markers.matcher.MarkerTypeMatcher;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.condition.ExactNumberOfProblemsExists;
+import org.eclipse.reddeer.eclipse.condition.ProblemExists;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.swt.api.Menu;
+import org.eclipse.reddeer.swt.api.MenuItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
@@ -66,7 +67,7 @@ import org.junit.Assert;
  * @author jjankovi
  * 
  */
-@JBossServer(state=ServerReqState.STOPPED, cleanup=false)
+@JBossServer(state=ServerRequirementState.STOPPED, cleanup=false)
 @OpenPerspective(JavaEEPerspective.class)
 public class RESTfulTestBase extends WSTestBase {
 
@@ -109,24 +110,24 @@ public class RESTfulTestBase extends WSTestBase {
 		assertCountOfProblemsExists(ProblemType.ERROR, null, null, null, 0);
 	}
 	
-	private AbstractProblemMatcher[] getProblemMatchers(String description, String project, String type) {
-		List<AbstractProblemMatcher> matcherList = new ArrayList<AbstractProblemMatcher>();
+	private AbstractMarkerMatcher[] getProblemMatchers(String description, String project, String type) {
+		List<AbstractMarkerMatcher> matcherList = new ArrayList<AbstractMarkerMatcher>();
 		if (description != null) {
-			matcherList.add(new ProblemsDescriptionMatcher(StringContains.containsString(description)));
+			matcherList.add(new MarkerDescriptionMatcher(StringContains.containsString(description)));
 		}
 		if (project != null) {
-			matcherList. add(new ProblemsPathMatcher(StringStartsWith.startsWith("/" + project)));
+			matcherList. add(new MarkerPathMatcher(StringStartsWith.startsWith("/" + project)));
 		}	
 		if (type != null) {
-			matcherList.add(new ProblemsTypeMatcher(Is.is(type)));
+			matcherList.add(new MarkerTypeMatcher(Is.is(type)));
 		}
-		AbstractProblemMatcher[] matchers = new AbstractProblemMatcher[matcherList.size()];
+		AbstractMarkerMatcher[] matchers = new AbstractMarkerMatcher[matcherList.size()];
 		return matchers = matcherList.toArray(matchers);
 	}
 	
 	public void assertCountOfProblemsExists(ProblemType problemType, String projectName, 
 			String description, String type, int count) {
-		AbstractProblemMatcher[] matchers = getProblemMatchers(description, projectName, type);
+		AbstractMarkerMatcher[] matchers = getProblemMatchers(description, projectName, type);
 		try {
 			new WaitUntil(new ExactNumberOfProblemsExists(problemType, count, matchers));
 		} catch (WaitTimeoutExpiredException ex) {
@@ -140,9 +141,9 @@ public class RESTfulTestBase extends WSTestBase {
 	
 	public void assertCountOfValidationProblemsExists(ProblemType problemType, String projectName, 
 			String description, String type, int count) {
-		AbstractProblemMatcher[] matchers = getProblemMatchers(description, projectName, type);
+		AbstractMarkerMatcher[] matchers = getProblemMatchers(description, projectName, type);
 		
-		if(count == 0 && !new ProblemExists(ProblemType.ANY).test()) {//prevent from false positive result when we do not expect errors and there is no error
+		if(count == 0 && !new ProblemExists(ProblemType.ALL).test()) {//prevent from false positive result when we do not expect errors and there is no error
 			new WaitWhile(new ExactNumberOfProblemsExists(ProblemType.ERROR, count, matchers), 
 					WAIT_FOR_PROBLEMS_FALSE_POSItIVE_TIMEOUT, false);
 		} else {//prevent from false negative result
@@ -237,7 +238,7 @@ public class RESTfulTestBase extends WSTestBase {
 	protected void runRestServiceOnServer(RESTfulWebService restWebService, String serverName) {
 		restWebService.select();
 
-		Menu menu = new ContextMenu(
+		MenuItem menu = new ContextMenuItem(
 				new WithTextMatchers(new RegexMatcher(".*Run.*"),
 						new RegexMatcher(".*Run on Server.*")).getMatchers());
 		menu.select();
@@ -248,7 +249,7 @@ public class RESTfulTestBase extends WSTestBase {
 		dialog.selectServer(serverName);
 		dialog.finish();
 		
-		new WaitWhile(new ShellWithTextIsAvailable(dialogTitle), TimePeriod.getCustom(20));
+		new WaitWhile(new ShellIsAvailable(dialogTitle), TimePeriod.getCustom(20));
 		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(20));
 	}
 
@@ -297,7 +298,7 @@ public class RESTfulTestBase extends WSTestBase {
 	
 	protected void refreshRestServices(String projectName) {
 		Project project = new ProjectExplorer().getProject(projectName);
-		project.getChild("JAX-RS Web Services").refresh();
+		project.getResource("JAX-RS Web Services").refresh();
 	}
 	
 	protected class RestServicePathsHaveUpdated extends AbstractWaitCondition {

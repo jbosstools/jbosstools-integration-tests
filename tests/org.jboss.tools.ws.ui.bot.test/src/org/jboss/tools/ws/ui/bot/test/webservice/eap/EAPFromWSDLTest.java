@@ -21,15 +21,15 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.uiutils.RunConfigurationsDialog;
 import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
@@ -168,7 +168,7 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		runJavaApplication();
 
 		// wait until the client ends (prints the last line)
-		new WaitUntil(new ConsoleHasText("Call Over!"), TimePeriod.NORMAL);
+		new WaitUntil(new ConsoleHasText("Call Over!"), TimePeriod.DEFAULT);
 
 		ConsoleView cw = new ConsoleView();
 		String consoleOutput = cw.getConsoleText();
@@ -204,7 +204,7 @@ public class EAPFromWSDLTest extends WebServiceTestBase {
 		} catch (CoreException e) {
 			LOGGER.log(Level.WARNING, e.getMessage(), e);
 		}
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL);
+		new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT);
 	}
 
 	/**

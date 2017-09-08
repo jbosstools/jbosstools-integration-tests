@@ -18,29 +18,27 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
-
+import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.common.reddeer.label.IDELabel;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenu;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
 import org.junit.After;
@@ -87,7 +85,7 @@ public class WSTestBase {
 	@After
 	public void cleanup() {
 		ConsoleView consoleView = new ConsoleView();
-		if (consoleView.isOpened()) {
+		if (consoleView.isOpen()) {
 			consoleView.clearConsole();
 		}
 	}
@@ -99,19 +97,19 @@ public class WSTestBase {
 	}
 
 	protected static String getConfiguredRuntimeName() {
-		return serverReq.getRuntimeNameLabelText(serverReq.getConfig());
+		return serverReq.getRuntimeNameLabelText();
 	}
 
 	protected static String getConfiguredServerName() {
-		return serverReq.getServerNameLabelText(serverReq.getConfig());
+		return serverReq.getServerNameLabelText();
 	}
 
 	protected static String getConfiguredServerType() {
-		return serverReq.getConfig().getServerFamily().getLabel();
+		return serverReq.getConfiguration().getFamily().getLabel();
 	}
 
 	protected static String getConfiguredServerVersion() {
-		return serverReq.getConfig().getServerFamily().getVersion();
+		return serverReq.getConfiguration().getVersion();
 	}
 
 	protected boolean projectExists(String name) {
@@ -153,11 +151,11 @@ public class WSTestBase {
 		return null;
 	}
 
-	protected void assertWebServiceTesterIsActive() {
-		assertTrue("Web Service Tester view should be active", 
-				new DefaultCTabItem(new WorkbenchShell(),
-						new WithTextMatcher(IDELabel.View.WEB_SERVICE_TESTER)).isEnabled());
-	}
+//	protected void assertWebServiceTesterIsActive() {
+//		assertTrue("Web Service Tester view should be active", 
+//				new DefaultCTabItem(new WorkbenchShell(),
+//						new WithTextMatcher(IDELabel.View.WEB_SERVICE_TESTER)).isEnabled());
+//	}
 
 	protected static void importWSTestProject(String projectName) {
 		try {
@@ -175,7 +173,7 @@ public class WSTestBase {
 	private static void importProject(String projectLocation) {
 		ExternalProjectImportWizardDialog importDialog = new ExternalProjectImportWizardDialog();
 		importDialog.open();
-		WizardProjectsImportPage importPage = new WizardProjectsImportPage();
+		WizardProjectsImportPage importPage = new WizardProjectsImportPage(importDialog);
 		importPage.setRootDirectory(projectLocation);
 		assertFalse("There is no project to import", importPage.getProjects().isEmpty());
 		importPage.selectAllProjects();

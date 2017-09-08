@@ -15,8 +15,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.hamcrest.core.IsEqual;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
@@ -27,7 +27,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
-@JBossServer(state=ServerReqState.RUNNING, cleanup=false)
+@JBossServer(state=ServerRequirementState.RUNNING, cleanup=false)
 public class XmlJsonFormattingTest extends RESTfulTestBase {
 
 	private static String projectName = "usersRestManager";
@@ -64,7 +64,7 @@ public class XmlJsonFormattingTest extends RESTfulTestBase {
 
 	@Override
 	public void cleanup() {
-		if (wsTesterView.isOpened()) {
+		if (wsTesterView.isOpen()) {
 			wsTesterView.close();
 		}
 		ServersViewHelper.removeAllProjectsFromServer(getConfiguredServerName());
@@ -89,8 +89,6 @@ public class XmlJsonFormattingTest extends RESTfulTestBase {
 		restWebServicesNode = new RESTfulWebServicesNode(getWsProjectName());
 
 		runRestServiceOnServer(getProperRestService(restWebServicesNode, format));
-
-		assertWebServiceTesterIsActive();
 
 		invokeMethodInWSTester(wsTesterView, RequestType.GET);
 
