@@ -4,19 +4,19 @@ package org.jboss.tools.mylyn.reddeer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.equinox.security.ui.StoragePreferencePage;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.eclipse.equinox.security.ui.storage.PasswordProvider;
+import org.eclipse.reddeer.eclipse.equinox.security.ui.storage.StoragePreferencePage;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 
 public class TestSupport {
 	
@@ -26,7 +26,7 @@ public class TestSupport {
 	public static List<TreeItem> mylynTestSetup1 () {		
 		
 		log.debug("Open the Mylyn View");
-		new ShellMenu("Window", "Show View", "Other...").select();
+		new ShellMenuItem("Window", "Show View", "Other...").select();
 
 		/* Verify that the expected repos are defined */
 		log.debug("Verify that the Mylyn Features are Present");
@@ -73,7 +73,7 @@ public class TestSupport {
 			new DefaultShell(new WithTextMatcher(new RegexMatcher("Secure Storage.*"))).close();
 			log.debug("Closed the Secure Storage Dialog");
 		} 
-		catch (SWTLayerException swtle){
+		catch (CoreLayerException swtle){
 			log.error("Unable to close the Secure Storage Dialog - " + swtle.getMessage());
 			swtle.printStackTrace();
 		}	
@@ -85,12 +85,12 @@ public class TestSupport {
 		log.debug("Disabling the Secure Storage Dialog");
 
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
-		StoragePreferencePage storagePage = new StoragePreferencePage();
+		StoragePreferencePage storagePage = new StoragePreferencePage(preferenceDialog);
 		preferenceDialog.open();
 
 		preferenceDialog.select(storagePage);
-		for (TableItem item : storagePage.getMasterPasswordProviders()) {
-			item.setChecked(false);
+		for (PasswordProvider item : storagePage.getMasterPasswordProviders()) {
+			item.disable();
 		}
 
 		storagePage.apply();

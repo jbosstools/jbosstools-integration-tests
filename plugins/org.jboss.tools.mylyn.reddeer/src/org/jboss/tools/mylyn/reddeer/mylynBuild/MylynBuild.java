@@ -1,14 +1,15 @@
 package org.jboss.tools.mylyn.reddeer.mylynBuild;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.mylyn.tasks.ui.views.TaskListView;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 
 	/**
 	 * Represents a TaskList on {@link TaskListView}. 
@@ -35,7 +36,7 @@ import org.jboss.reddeer.common.wait.WaitWhile;
 		public void delete(boolean stopFirst) {
 			log.info("Deleting Build");
 			select();
-			new ContextMenu("Delete").select();	
+			new ContextMenuItem("Delete").select();	
 			new PushButton("OK").click();
 			new WaitUntil(new TreeItemIsDisposed(treeItem), TIMEOUT);
 			new WaitWhile(new JobIsRunning(), TIMEOUT);

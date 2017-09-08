@@ -3,25 +3,24 @@ package org.jboss.tools.mylyn.reddeer.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.swt.api.Tree;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
+import org.eclipse.reddeer.swt.api.Tree;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.mylyn.reddeer.TestSupport;
 import org.jboss.tools.mylyn.reddeer.mylynBuild.MylynBuild;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
 
 /**
  * Represents the Build List view - to support Mylyn automated tests. 
@@ -141,9 +140,9 @@ public class MylynBuildView extends WorkbenchView {
 	 * as validation can be slow 
 	 */
 	public void validateSettings() {
-		new WaitUntil(new WidgetIsEnabled(new PushButton("Validate")), TimePeriod.VERY_LONG);
+		new WaitUntil(new ControlIsEnabled(new PushButton("Validate")), TimePeriod.VERY_LONG);
 		new PushButton("Validate").click();
-		new WaitUntil(new WidgetIsEnabled(new PushButton("Validate")), TimePeriod.VERY_LONG);
+		new WaitUntil(new ControlIsEnabled(new PushButton("Validate")), TimePeriod.VERY_LONG);
 	}
 
 }
