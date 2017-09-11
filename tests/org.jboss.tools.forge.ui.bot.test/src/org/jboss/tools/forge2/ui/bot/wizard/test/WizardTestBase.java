@@ -24,26 +24,30 @@ import org.eclipse.core.commands.NotHandledException;
 import org.eclipse.core.commands.ParameterizedCommand;
 import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.jface.condition.WindowIsAvailable;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.closeeditors.CloseAllEditorsRequirement.CloseAllEditors;
+import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
+import org.eclipse.reddeer.swt.condition.ShellIsActive;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.services.IServiceLocator;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.closeeditors.CloseAllEditorsRequirement.CloseAllEditors;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.forge.reddeer.condition.ProjectIsSelected;
 import org.jboss.tools.forge.reddeer.ui.wizard.ConnectionProfileWizardPage;
 import org.jboss.tools.forge.reddeer.view.ForgeConsoleView;
@@ -84,13 +88,13 @@ public abstract class WizardTestBase {
 	@After
 	public void cleanup() {
 		handleCleanup();
-		assertTrue("Some of the resources have not been deleted!", new ProjectExplorer().getExplorerItems().isEmpty());
+		assertTrue("Some of the resources have not been deleted!", new ProjectExplorer().getProjectItems().isEmpty());
 	}
 
 	public void handleCleanup() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();;
 		new ProjectExplorer().deleteAllProjects();
-		if (!new ProjectExplorer().getExplorerItems().isEmpty()) {
+		if (!new ProjectExplorer().getProjectItems().isEmpty()) {
 			// workaround for windows issue - JDK_8029516
 			new ForgeConsoleView().stop();
 			System.gc();
@@ -167,8 +171,7 @@ public abstract class WizardTestBase {
 	public WizardDialog getWizardDialog(String command, String title_regex) {
 		runForgeCommand(command);
 		RegexMatcher rm = new RegexMatcher(title_regex);
-		new WaitUntil(new ShellWithTextIsActive(rm));
-		return new WizardDialog();
+		return new WizardDialog(new WithTextMatcher(rm));
 	}
 
 	/**
@@ -288,7 +291,7 @@ public abstract class WizardTestBase {
 		new ProjectExplorer().selectProjects(projectName);
 		WizardDialog dialog = getWizardDialog("Scaffold: Setup", "(Scaffold: Setup).*");
 		new DefaultCombo().setSelection(type.getName());
-		new WaitUntil(new WidgetIsEnabled(new PushButton("Next >")));
+		new WaitUntil(new ControlIsEnabled(new PushButton("Next >")));
 		dialog.next();
 		dialog.finish(TimePeriod.LONG);
 	}
@@ -307,7 +310,7 @@ public abstract class WizardTestBase {
 		new DefaultCombo().setSelection(type.getName());
 		dialog.next();
 		new PushButton("Select All").click();
-		new WaitUntil(new WidgetIsEnabled(new PushButton("Finish")));
+		new WaitUntil(new ControlIsEnabled(new PushButton("Finish")));
 		dialog.finish(TimePeriod.LONG);
 	}
 
@@ -322,7 +325,7 @@ public abstract class WizardTestBase {
 		persistenceSetup(PROJECT_NAME);
 
 		WizardDialog dialog = getWizardDialog("Connection: Create Profile", "(Connection: Create Profile).*");
-		ConnectionProfileWizardPage page = new ConnectionProfileWizardPage();
+		ConnectionProfileWizardPage page = new ConnectionProfileWizardPage(dialog);
 		page.setConnectionName(PROFILE_NAME);
 		page.setJdbcUrl(SAKILA_URL);
 		page.setUserName(SAKILA_USERNAME);
@@ -337,7 +340,7 @@ public abstract class WizardTestBase {
 		if (pe.containsProject(PROJECT_NAME)){
 			pe.getProject(PROJECT_NAME).select();
 			try {
-				new WaitWhile(new ProjectIsSelected(PROJECT_NAME),TimePeriod.NORMAL, false, TimePeriod.getCustom(5));//Selecting project is not always immediately, when Forge is running
+				new WaitWhile(new ProjectIsSelected(PROJECT_NAME),TimePeriod.DEFAULT, false);//Selecting project is not always immediately, when Forge is running
 			} catch (CoreLayerException ex){
 				//swallowing - project has been deleted
 			}

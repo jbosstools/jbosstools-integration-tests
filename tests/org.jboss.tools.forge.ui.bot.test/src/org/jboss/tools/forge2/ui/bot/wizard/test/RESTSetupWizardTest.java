@@ -16,16 +16,16 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.IOException;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.workbench.condition.EditorWithTitleIsActive;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.condition.EditorWithTitleIsActive;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.forge.ui.bot.test.util.ResourceUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,7 +68,7 @@ public class RESTSetupWizardTest extends WizardTestBase {
 		ProjectExplorer pe = new ProjectExplorer();
 		assertTrue(
 				CLASS_NAME + ".java has not been created!",
-				pe.getProject(PROJECT_NAME).containsItem("src", "main", "java",
+				pe.getProject(PROJECT_NAME).containsResource("src", "main", "java",
 						"org", "test", CLASS_NAME + ".java"));
 		File javaFile = new File(WORKSPACE + "/" + PROJECT_NAME
 				+ "/src/main/java/org/test/" + CLASS_NAME + ".java");

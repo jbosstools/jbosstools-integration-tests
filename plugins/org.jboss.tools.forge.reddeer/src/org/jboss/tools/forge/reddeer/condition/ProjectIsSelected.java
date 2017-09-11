@@ -10,8 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.forge.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 
 /**
  * Returns true if a project is selected in Project Explorer.
@@ -39,7 +39,7 @@ public class ProjectIsSelected extends AbstractWaitCondition {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.jboss.reddeer.common.condition.WaitCondition#test()
+	 * @see org.eclipse.reddeer.common.condition.WaitCondition#test()
 	 */
 	@Override
 	public boolean test() {
@@ -53,7 +53,7 @@ public class ProjectIsSelected extends AbstractWaitCondition {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.jboss.reddeer.common.condition.AbstractWaitCondition#description()
+	 * org.eclipse.reddeer.common.condition.AbstractWaitCondition#description()
 	 */
 	@Override
 	public String description() {

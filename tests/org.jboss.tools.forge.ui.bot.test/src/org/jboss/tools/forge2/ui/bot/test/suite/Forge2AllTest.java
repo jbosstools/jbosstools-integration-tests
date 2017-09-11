@@ -11,7 +11,7 @@
 package org.jboss.tools.forge2.ui.bot.test.suite;
 
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.forge2.ui.bot.wizard.test.CDISetupWizardTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.ConnectionProfileWizardTest;
 import org.jboss.tools.forge2.ui.bot.wizard.test.ConstraintSetupWizardTest;

@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.forge.ui.bot.test.suite;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.forge.ui.bot.console.test.CommandTest;
 import org.jboss.tools.forge.ui.bot.console.test.EntityTest;
 import org.jboss.tools.forge.ui.bot.console.test.InstallPluginTest;

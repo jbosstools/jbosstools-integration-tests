@@ -14,18 +14,18 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.jface.bindings.keys.ParseException;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.eclipse.swt.SWT;
 import org.jboss.tools.forge.reddeer.condition.ForgeConsoleHasText;
 import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
 import org.junit.Test;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.keyboard.KeyboardFactory;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 
 @CleanWorkspace
 public class CommandTest extends ForgeConsoleTestBase {
@@ -96,7 +96,7 @@ public class CommandTest extends ForgeConsoleTestBase {
 		cdWS();
 		Project project = pExplorer.getProject(PROJECT_NAME);
 		project.select();
-		new ContextMenu("Show In", "Forge Console").select();
+		new ContextMenuItem("Show In", "Forge Console").select();
 		new WaitUntil(new ForgeConsoleHasText(ASSERT_TEXT), TimePeriod.VERY_LONG);
 		assertTrue(fView.getConsoleText().contains(ASSERT_TEXT));
 	}

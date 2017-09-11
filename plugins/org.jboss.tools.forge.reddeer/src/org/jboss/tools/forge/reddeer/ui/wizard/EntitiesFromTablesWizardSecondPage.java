@@ -2,11 +2,12 @@ package org.jboss.tools.forge.reddeer.ui.wizard;
 
 import java.util.List;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 
 /**
  * Reddeer implementation of forge Entities from tables wizard second page
@@ -15,6 +16,10 @@ import org.jboss.reddeer.swt.impl.table.DefaultTable;
  */
 public class EntitiesFromTablesWizardSecondPage extends WizardPage {
 	
+	public EntitiesFromTablesWizardSecondPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	/**
 	 * Selects tables with given names
 	 * @param tableNames names of the tables to select 
