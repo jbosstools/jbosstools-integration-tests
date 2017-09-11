@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.batch.ui.bot.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignBatchletStepElementTest;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignChunkStepElementTest;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignDecisionElementTest;

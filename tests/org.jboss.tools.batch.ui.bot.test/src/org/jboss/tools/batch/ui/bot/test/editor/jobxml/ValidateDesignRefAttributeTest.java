@@ -10,12 +10,12 @@
  ******************************************************************************/
 package org.jboss.tools.batch.ui.bot.test.editor.jobxml;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.uiforms.impl.section.DefaultSection;
 import org.junit.Test;
 
 public class ValidateDesignRefAttributeTest extends AbstractJobXMLReferenceTest {
