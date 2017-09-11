@@ -12,12 +12,13 @@ package org.jboss.tools.forge2.ui.bot.wizard.test;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.jboss.tools.forge.reddeer.condition.ForgeConsoleHasNoChange;
 import org.jboss.tools.forge.reddeer.view.ForgeConsoleView;
 import org.junit.After;
@@ -58,10 +59,10 @@ public class LinkWorkspaceSelectionTest extends WizardTestBase {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.selectProjects(PROJECT_NAME); // this will set context for forge
 		pe.getProject(PROJECT_NAME).getProjectItem("pom.xml").select();
-		new ContextMenu("Show In", "Forge Console").select();
+		new ContextMenuItem("Show In", "Forge Console").select();
 		ForgeConsoleView forgeConsoleView = new ForgeConsoleView();
 		forgeConsoleView.open();
-		new WaitUntil(new ForgeConsoleHasNoChange());
+		new WaitWhile(new ForgeConsoleHasNoChange(),false);
 		String consoleText = forgeConsoleView.getConsoleText();
 		assertTrue(consoleText.endsWith("[pom.xml]$ "));
 		setFocusOnProject();

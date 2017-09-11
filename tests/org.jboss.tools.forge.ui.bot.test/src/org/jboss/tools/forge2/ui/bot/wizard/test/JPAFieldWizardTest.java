@@ -15,15 +15,15 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.views.contentoutline.ContentOutline;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -73,7 +73,7 @@ public class JPAFieldWizardTest extends WizardTestBase {
 		new CheckBox("Not Nullable").toggle(true);
 		new CheckBox("Not Updatable").toggle(true);
 		new CheckBox("Not Insertable").toggle(true);
-		dialog.finish(TimePeriod.NORMAL);
+		dialog.finish(TimePeriod.DEFAULT);
 	}
 	
 	private void checkNewField(String entityName, String fieldName, Class<?> fieldType) {
@@ -94,7 +94,7 @@ public class JPAFieldWizardTest extends WizardTestBase {
 			}
 		}
 		
-		OutlineView oView = new OutlineView();
+		ContentOutline oView = new ContentOutline();
 		oView.open();
 		Collection<TreeItem> items = oView.outlineElements();
 		

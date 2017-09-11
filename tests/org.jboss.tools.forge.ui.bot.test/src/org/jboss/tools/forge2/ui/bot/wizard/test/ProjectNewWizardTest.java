@@ -13,13 +13,15 @@ package org.jboss.tools.forge2.ui.bot.wizard.test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
 import java.io.IOException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.forge.ui.bot.test.util.ResourceUtils;
 import org.junit.Test;
 
@@ -33,7 +35,7 @@ public class ProjectNewWizardTest extends WizardTestBase {
 	@Test
 	public void testIsFocusedOnStartup(){
 		WizardDialog wd = getWizardDialog("project-new", "(Project: New).*");
-		assertTrue("'Project: New' wizard is not focused on startup", new DefaultShell().isFocused());
+		assertTrue("'Project: New' wizard is not focused on startup", new DefaultShell().isFocusControl());
 		wd.cancel();
 	}
 	
