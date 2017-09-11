@@ -10,39 +10,40 @@
  ******************************************************************************/
 package org.jboss.tools.cdk.ui.bot.test.server.editor;
 
-import org.jboss.reddeer.common.condition.WaitCondition;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
-import org.jboss.reddeer.swt.condition.ShellIsAvailable;
-import org.jboss.reddeer.swt.impl.button.CancelButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.workbench.handler.EditorHandler;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.reddeer.common.condition.WaitCondition;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.NewServerWizard;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.handler.EditorHandler;
+import org.eclipse.ui.IEditorPart;
+import org.jboss.tools.cdk.reddeer.core.condition.SystemJobIsRunning;
+import org.jboss.tools.cdk.reddeer.server.exception.CDKServerException;
 import org.jboss.tools.cdk.reddeer.server.ui.CDEServersView;
 import org.jboss.tools.cdk.reddeer.server.ui.editor.CDEServerEditor;
 import org.jboss.tools.cdk.reddeer.server.ui.editor.CDK3ServerEditor;
 import org.jboss.tools.cdk.reddeer.server.ui.wizard.NewCDK3ServerContainerWizardPage;
 import org.jboss.tools.cdk.ui.bot.test.server.wizard.CDKServerWizardAbstractTest;
-import org.jboss.tools.cdk.reddeer.core.condition.SystemJobIsRunning;
-import org.jboss.tools.cdk.reddeer.server.exception.CDKServerException;
 import org.jboss.tools.cdk.ui.bot.test.utils.CDKTestUtils;
 import org.junit.After;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.ui.IEditorPart;
 
 /**
  * Class tests CDK3 server editor page
@@ -52,7 +53,7 @@ import org.eclipse.ui.IEditorPart;
  */
 public class CDK3ServerEditorTest extends CDKServerWizardAbstractTest {
 
-	private ServersView serversView;
+	private ServersView2 serversView;
 
 	private CDEServerEditor editor;
 
@@ -124,7 +125,7 @@ public class CDK3ServerEditorTest extends CDKServerWizardAbstractTest {
 			editor.close();
 			editor = null;
 		}
-		if (serversView.isOpened()) {
+		if (serversView.isOpen()) {
 			serversView.close();
 			serversView = null;
 		}
@@ -168,13 +169,25 @@ public class CDK3ServerEditorTest extends CDKServerWizardAbstractTest {
 			}
 
 			@Override
-			public String errorMessage() {
-				return "Could not save the editor";
+			public String description() {
+				return " editor is not dirty...";
 			}
 
 			@Override
-			public String description() {
-				return " editor is not dirty...";
+			public <T> T getResult() {
+				return null;
+			}
+
+			@Override
+			public String errorMessageWhile() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public String errorMessageUntil() {
+				// TODO Auto-generated method stub
+				return null;
 			}
 		}, TimePeriod.SHORT);
 	}
@@ -215,8 +228,8 @@ public class CDK3ServerEditorTest extends CDKServerWizardAbstractTest {
 	}
 
 	private static void addCDK3Server(String hypervisor, String binary) {
-		NewServerWizardDialog dialog = CDKTestUtils.openNewServerWizardDialog();
-		NewServerWizardPage page = new NewServerWizardPage();
+		NewServerWizard dialog = CDKTestUtils.openNewServerWizardDialog();
+		NewServerWizardPage page = new NewServerWizardPage(dialog);
 		
 		try {
 			page.selectType(SERVER_TYPE_GROUP, CDK3_SERVER_NAME);
@@ -231,7 +244,7 @@ public class CDK3ServerEditorTest extends CDKServerWizardAbstractTest {
 			if (!dialog.isFinishEnabled()) {
 				new WaitUntil(new JobIsRunning(), TimePeriod.SHORT, false);
 			}
-			dialog.finish(TimePeriod.NORMAL);
+			dialog.finish(TimePeriod.MEDIUM);
 		} catch (CoreLayerException coreExc) {
 			new CancelButton().click();
 			throw new CDKServerException("Exception occured in CDK server wizard, wizard was canceled", coreExc);

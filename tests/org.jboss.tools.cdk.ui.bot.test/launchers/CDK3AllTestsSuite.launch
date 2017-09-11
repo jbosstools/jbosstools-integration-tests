@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<launchConfiguration type="org.jboss.reddeer.eclipse.ui.launcher.JunitLaunchConfig">
+<launchConfiguration type="org.eclipse.reddeer.eclipse.ui.launcher.JunitLaunchConfig">
 <booleanAttribute key="append.args" value="true"/>
 <booleanAttribute key="askclear" value="false"/>
 <booleanAttribute key="automaticAdd" value="true"/>
@@ -31,7 +31,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -pluginCustomization ${project_loc:org.jboss.tools.cdk.ui.bot.test}/../pluginCustomization.ini"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.jboss.tools.cdk.ui.bot.test"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dusage_reporting_enabled=false -Ddevelopers.username=${string_prompt:Username} -Ddevelopers.password=${string_prompt:Password} -Dvagrantfile.path=${string_prompt:&quot;Vagrantfile path&quot;} -Dminishift.path=${string_prompt:&quot;Minishift binary&quot;} -Dminishift.hypervisor=${string_prompt:Hypervisor}"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dusage_reporting_enabled=false -Ddevelopers.username=${string_prompt:Username} -Ddevelopers.password=${string_prompt:Password} -Dvagrantfile.path=${string_prompt:&amp;quot;Vagrantfile path&amp;quot;} -Dminishift.path=${string_prompt:&amp;quot;Minishift binary&amp;quot;} -Dminishift.hypervisor=${string_prompt:Hypervisor}"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="com.jboss.devstudio.core.product"/>
 <stringAttribute key="rd.launch.property.rd.captureScreenshot" value="true"/>
@@ -41,6 +41,7 @@
 <stringAttribute key="rd.launch.property.rd.logCollectorEnabled" value="true"/>
 <stringAttribute key="rd.launch.property.rd.logLevel" value="ALL"/>
 <stringAttribute key="rd.launch.property.rd.logMessageFilter" value="ALL"/>
+<stringAttribute key="rd.launch.property.rd.maximizeWorkbench" value="true"/>
 <stringAttribute key="rd.launch.property.rd.openAssociatedPerspective" value="never"/>
 <stringAttribute key="rd.launch.property.rd.pauseFailedTest" value="false"/>
 <stringAttribute key="rd.launch.property.rd.timePeriodFactor" value="1.0"/>

@@ -10,18 +10,18 @@
  ******************************************************************************/
 package org.jboss.tools.cdk.ui.bot.test.server.wizard;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
-import org.jboss.reddeer.swt.impl.button.NextButton;
+import static org.junit.Assert.*;
+
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.NewServerWizard;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
+import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
+import org.eclipse.reddeer.swt.impl.button.NextButton;
 import org.jboss.tools.cdk.reddeer.server.ui.wizard.NewCDKServerContainerWizardPage;
 import org.jboss.tools.cdk.ui.bot.test.utils.CDKTestUtils;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests of CDK 2.x Server Wizard
@@ -51,8 +51,8 @@ public class CDKServerWizardTest extends CDKServerWizardAbstractTest {
 	
 	@Test
 	public void testNewCDKServerWizard() {
-		NewServerWizardDialog dialog = CDKTestUtils.openNewServerWizardDialog();
-		NewServerWizardPage page = new NewServerWizardPage();
+		NewServerWizard dialog = CDKTestUtils.openNewServerWizardDialog();
+		NewServerWizardPage page = new NewServerWizardPage(dialog);
 		
 		page.selectType(SERVER_TYPE_GROUP, CDK_SERVER_NAME);
 		page.setName(getServerAdapter());
@@ -77,8 +77,8 @@ public class CDKServerWizardTest extends CDKServerWizardAbstractTest {
 		assertSameMessage(dialog, DOES_NOT_EXIST);
 		containerPage.setFolder(VAGRANTFILE_PATH);
 		assertDiffMessage(dialog, DOES_NOT_EXIST);
-		new WaitUntil(new WidgetIsEnabled(new NextButton()), TimePeriod.SHORT, false);
+		new WaitUntil(new ControlIsEnabled(new NextButton()), TimePeriod.SHORT, false);
 		assertTrue("Expected Finish button is not enabled", dialog.isFinishEnabled());
-		dialog.finish(TimePeriod.NORMAL);
+		dialog.finish();
 	}
 }

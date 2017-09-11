@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.cdk.ui.bot.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.cdk.ui.bot.test.server.adapter.CDK3ServerAdapterConnectionTest;
 import org.jboss.tools.cdk.ui.bot.test.server.adapter.CDK3ServerAdapterRestartTest;
 import org.jboss.tools.cdk.ui.bot.test.server.adapter.CDK3ServerAdapterStartTest;
