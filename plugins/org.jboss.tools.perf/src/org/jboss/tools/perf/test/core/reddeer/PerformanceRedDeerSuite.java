@@ -1,7 +1,7 @@
 package org.jboss.tools.perf.test.core.reddeer;
 
 import org.jboss.perf.test.client.listener.junit.PerfListener;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.junit.runners.model.RunnerBuilder;
 
 /**

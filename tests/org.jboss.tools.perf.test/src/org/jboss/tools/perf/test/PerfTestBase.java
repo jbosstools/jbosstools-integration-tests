@@ -2,23 +2,23 @@ package org.jboss.tools.perf.test;
 
 import java.io.File;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.maven.reddeer.preferences.MavenUserPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.MavenImportWizard;
 import org.jboss.tools.maven.reddeer.wizards.MavenImportWizardFirstPage;
@@ -46,7 +46,7 @@ public abstract class PerfTestBase {
     private static void setMavenSettings() {
     	WorkbenchPreferenceDialog wd = new WorkbenchPreferenceDialog();
     	wd.open();
-		MavenUserPreferencePage up = new MavenUserPreferencePage();
+		MavenUserPreferencePage up = new MavenUserPreferencePage(wd);
 		wd.select(up);
 		up.setUserSettings(new File(USER_SETTINGS).getAbsolutePath());
 		wd.ok();
@@ -54,29 +54,29 @@ public abstract class PerfTestBase {
 	}
 
 	public void prepareGit(boolean enable){
-    	 new ShellMenu("Window","Preferences").select();
+    	 new ShellMenuItem("Window","Preferences").select();
          new DefaultShell("Preferences");
          new DefaultTreeItem("Team","Git","Projects").select();
          new CheckBox(0).toggle(enable);
          new CheckBox(1).toggle(enable);
          new CheckBox(2).toggle(enable);
          new OkButton().click();
-         new WaitWhile(new ShellWithTextIsActive("Preferences"));
+         new WaitWhile(new ShellIsAvailable("Preferences"));
          new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
     }
     
     private static void mavenOffline(){
-    	new ShellMenu("Window","Preferences").select();
+    	new ShellMenuItem("Window","Preferences").select();
     	new DefaultShell("Preferences");
         new DefaultTreeItem("Maven").select();
         new CheckBox("Offline").toggle(true);
         new OkButton().click();
-        new WaitWhile(new ShellWithTextIsActive("Preferences"));
+        new WaitWhile(new ShellIsAvailable("Preferences"));
         new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
     }
     
     public void automaticBuild(boolean enable){
-    	ShellMenu m = new ShellMenu("Project","Build Automatically");
+    	ShellMenuItem m = new ShellMenuItem("Project","Build Automatically");
     	if(enable){
     		if(!m.isSelected()){
     			m.select();
@@ -91,11 +91,11 @@ public abstract class PerfTestBase {
     public void importProject(){
         ExternalProjectImportWizardDialog ew = new ExternalProjectImportWizardDialog();
         ew.open();
-        WizardProjectsImportPage ip = new WizardProjectsImportPage();
+        WizardProjectsImportPage ip = new WizardProjectsImportPage(ew);
         ip.setRootDirectory("/home/jbossqa/validation/jee/"+projectFolder);
         ip.copyProjectsIntoWorkspace(true);
         new CheckBox(new DefaultGroup("Options"),"Search for nested projects").toggle(true);
-        new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.LONG);
+        new WaitUntil(new ControlIsEnabled(new FinishButton()), TimePeriod.LONG);
         new FinishButton().click();
         new WaitUntil(new JobIsRunning(), TimePeriod.ETERNAL);
         new WaitWhile(new JobIsRunning(), TimePeriod.ETERNAL);
@@ -104,7 +104,7 @@ public abstract class PerfTestBase {
     public void importProjectWithMaven(){
     	MavenImportWizard mw = new MavenImportWizard();
     	mw.open();
-    	MavenImportWizardFirstPage mp = new MavenImportWizardFirstPage();
+    	MavenImportWizardFirstPage mp = new MavenImportWizardFirstPage(mw);
     	mp.setRootDirectory("/home/jbossqa/validation/maven/"+projectFolder);
     	new FinishButton().click();
         new WaitUntil(new JobIsRunning(), TimePeriod.ETERNAL);
