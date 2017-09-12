@@ -10,7 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.jst.reddeer.bower.ui;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+
 
 /**
  * Represents the wizard for creating bower.json file
@@ -18,9 +19,9 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
  * @author Pavol Srna
  *
  */
-public class BowerInitDialog extends NewWizardDialog {
+public class BowerInitDialog extends NewMenuWizard {
 
 	public BowerInitDialog() {
-		super("JavaScript", "Bower Init");
+		super("Bower Initialization Wizard", "JavaScript", "Bower Init");
 	}
 }

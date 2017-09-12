@@ -11,8 +11,6 @@
 
 package org.jboss.tools.cdi.reddeer.validators;
 
-import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
-
 public class BeanValidationProvider extends AbstractValidationProvider {
 
 	public BeanValidationProvider() {

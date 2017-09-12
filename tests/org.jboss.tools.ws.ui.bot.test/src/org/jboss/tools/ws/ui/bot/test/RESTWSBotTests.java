@@ -1,6 +1,6 @@
 package org.jboss.tools.ws.ui.bot.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.ws.ui.bot.test.annotation.AnnotationPropertiesTest;
 import org.jboss.tools.ws.ui.bot.test.annotation.HTTPMethodAnnotationQuickFixTest;
 import org.jboss.tools.ws.ui.bot.test.facet.JAXRSFacetTest;

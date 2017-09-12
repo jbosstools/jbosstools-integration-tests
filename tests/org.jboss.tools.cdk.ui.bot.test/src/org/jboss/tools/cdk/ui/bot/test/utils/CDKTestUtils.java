@@ -13,28 +13,27 @@ package org.jboss.tools.cdk.ui.bot.test.utils;
 import java.util.List;
 import java.util.Map;
 
-import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.WidgetIsFound;
-import org.jboss.reddeer.core.matcher.ClassMatcher;
-import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
-import org.jboss.reddeer.jface.exception.JFaceLayerException;
-import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.clabel.DefaultCLabel;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.condition.WidgetIsFound;
+import org.eclipse.reddeer.core.matcher.WithMnemonicTextMatcher;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.Server;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.NewServerWizard;
+import org.eclipse.reddeer.jface.exception.JFaceLayerException;
+import org.eclipse.reddeer.jface.handler.TreeViewerHandler;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.clabel.DefaultCLabel;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 
 /**
  * Utilities for CDK tests
@@ -65,7 +64,7 @@ public class CDKTestUtils {
 	
 	public static void deleteCDEServer(String adapter) {
 		log.info("Deleting Container Development Environment server adapter:" + adapter); //$NON-NLS-1$
-		ServersView servers = new ServersView();
+		ServersView2 servers = new ServersView2();
 		servers.open();
 		try {
 			servers.getServer(adapter).delete(true);
@@ -77,7 +76,7 @@ public class CDKTestUtils {
 	
 	public static List<Server> getAllServers() {
 		log.info("Collecting all server adapters");
-		ServersView view = new ServersView();
+		ServersView2 view = new ServersView2();
 		view.open();
 		return view.getServers();
 	}
@@ -93,13 +92,13 @@ public class CDKTestUtils {
 		}
 	}
 	
-	public static NewServerWizardDialog openNewServerWizardDialog() {
+	public static NewServerWizard openNewServerWizardDialog() {
 		log.info("Adding new Container Development Environment server adapter"); //$NON-NLS-1$
 		// call new server dialog from servers view
-		ServersView view = new ServersView();
+		ServersView2 view = new ServersView2();
 		view.open();
-		NewServerWizardDialog dialog = view.newServer();
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL, false);
+		NewServerWizard dialog = view.newServer();
+		new WaitWhile(new JobIsRunning(), TimePeriod.MEDIUM, false);
 		return dialog;
 	}
 	
@@ -110,15 +109,16 @@ public class CDKTestUtils {
 		
 		dialog.select("JBoss Tools", "Credentials"); //$NON-NLS-1$ //$NON-NLS-2$
         try {
-	        new WaitUntil(new WidgetIsFound<org.eclipse.swt.custom.CLabel>(
-	        		new ClassMatcher(org.eclipse.swt.custom.CLabel.class), 
-	        		new WithMnemonicTextMatcher("Credentials")), TimePeriod.NORMAL); //$NON-NLS-1$
+	        new WaitUntil(new WidgetIsFound(
+	        		org.eclipse.swt.custom.CLabel.class, 
+	        		new WithMnemonicTextMatcher("Credentials")),
+	        		TimePeriod.MEDIUM); //$NON-NLS-1$
 	        new DefaultCLabel("Credentials"); //$NON-NLS-1$
 	        DefaultTree tree = new DefaultTree(1);
 	        TreeItem item = TreeViewerHandler.getInstance().getTreeItem(tree, new String[]{domain, username});
 	        item.select();
 	        new PushButton(new WithTextMatcher("Remove User")).click(); //$NON-NLS-1$
-	        new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
+	        new WaitUntil(new JobIsRunning(), TimePeriod.MEDIUM, false);
         } catch (WaitTimeoutExpiredException exc) {
         	log.error("JBoss Tools - Credentials preferences page has timed out"); //$NON-NLS-1$
         	exc.printStackTrace();

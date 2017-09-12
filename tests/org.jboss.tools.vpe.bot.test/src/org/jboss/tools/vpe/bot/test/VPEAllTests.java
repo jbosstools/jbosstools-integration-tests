@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.bot.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.vpe.bot.test.html5.CreateHTML5Page;
 import org.jboss.tools.vpe.bot.test.html5.HTML5EditorHighlight;
 import org.jboss.tools.vpe.bot.test.html5.jquery.MultiPageNavigation;

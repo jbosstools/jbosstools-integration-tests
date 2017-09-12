@@ -12,13 +12,13 @@ package org.jboss.tools.forge.ui.bot.console.test;
 
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.forge.reddeer.condition.ForgeConsoleHasText;
 import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.junit.Test;
 /**
  * 

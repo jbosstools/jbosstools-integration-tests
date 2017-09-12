@@ -12,10 +12,10 @@ package org.jboss.tools.forge2.ui.bot.wizard.test;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,6 +34,6 @@ public class ConstraintSetupWizardTest extends WizardTestBase {
 		new LabeledCombo("Bean Validation provider:").setSelection("Generic Java EE");
 		wd.finish(TimePeriod.getCustom(600));
 		assertTrue("validation.xml has not been created!", pe.getProject(PROJECT_NAME)
-				.containsItem("src", "main", "resources", "META-INF", "validation.xml"));
+				.containsResource("src", "main", "resources", "META-INF", "validation.xml"));
 	}
 }

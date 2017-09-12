@@ -1,11 +1,11 @@
 package org.jboss.tools.mylyn.reddeer.wizard;
 
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 
 /**
  * Represents Build Server dialog
@@ -50,7 +50,7 @@ public class BuildServerDialog extends DefaultShell {
 	 */
 	public void cancel() {
 		new PushButton("Cancel").click();
-		new WaitWhile(new ShellWithTextIsActive(TITLE));
+		new WaitWhile(new ShellIsAvailable(TITLE));
 	}
 	
 	/**
@@ -58,7 +58,7 @@ public class BuildServerDialog extends DefaultShell {
 	 */
 	public void finish() {
 		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsActive(TITLE));
+		new WaitWhile(new ShellIsAvailable(TITLE));
 	}
 	
 	/**
@@ -68,7 +68,7 @@ public class BuildServerDialog extends DefaultShell {
 		PushButton validate = new PushButton("Validate");
 		validate.click();
 		while (!validate.isEnabled()) {
-			AbstractWait.sleep(TimePeriod.NORMAL);
+			AbstractWait.sleep(TimePeriod.DEFAULT);
 		}
 	}
 	

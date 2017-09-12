@@ -2,19 +2,26 @@ package org.jboss.tools.cdi.bot.test.wizard.cdi10;
 
 import java.util.Arrays;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
+import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectWizard;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
-import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.cdi.bot.test.wizard.template.ProjectWithCDITemplate;
+import org.jboss.tools.cdi.reddeer.matcher.ServerMatcher;
 import org.junit.Before;
 
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1, cleanup=false)
+@JBossServer(state=ServerRequirementState.PRESENT, cleanup=false)
 @OpenPerspective(JavaEEPerspective.class)
 public class DynamicWebProjectWithCDITestCDI10 extends ProjectWithCDITemplate{
+
+	@RequirementRestriction
+	public static RequirementMatcher getRestrictionMatcher() {
+	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.Eap());
+	}
 	
 	public DynamicWebProjectWithCDITestCDI10(){
 		enabledByDefault = false;
@@ -25,7 +32,7 @@ public class DynamicWebProjectWithCDITestCDI10 extends ProjectWithCDITemplate{
 	public void createWebProject(){
 		WebProjectWizard dw = new WebProjectWizard();
 		dw.open();
-		WebProjectFirstPage fp = new WebProjectFirstPage();
+		WebProjectFirstPage fp = new WebProjectFirstPage(dw);
 		fp.setProjectName(PROJECT_NAME);
 		dw.finish();
 	}

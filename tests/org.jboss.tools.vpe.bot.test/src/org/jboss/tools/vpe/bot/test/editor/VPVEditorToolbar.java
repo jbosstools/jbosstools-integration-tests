@@ -12,7 +12,7 @@ package org.jboss.tools.vpe.bot.test.editor;
 
 import static org.junit.Assert.*;
 
-import org.jboss.reddeer.workbench.ui.dialogs.FilteredPreferenceDialog;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.vpe.bot.test.VPETestBase;
 import org.jboss.tools.vpe.reddeer.preview.editor.VPVEditor;
 import org.jboss.tools.vpe.reddeer.resref.core.VpvResourcesDialog;
@@ -32,7 +32,7 @@ public class VPVEditorToolbar extends VPETestBase{
 	
 	@Test
 	public void openPreferences(){
-		FilteredPreferenceDialog fd = new VPVEditor().openPreferences();
+		WorkbenchPreferenceDialog fd = new VPVEditor().openPreferences();
 		assertTrue(fd.isOpen());
 		assertEquals("Visual Page Editor", fd.getPageName());
 		fd.ok();

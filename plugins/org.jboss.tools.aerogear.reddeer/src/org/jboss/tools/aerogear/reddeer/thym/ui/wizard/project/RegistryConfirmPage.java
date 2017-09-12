@@ -10,9 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
 
 public class RegistryConfirmPage extends WizardPage{
+
+	public RegistryConfirmPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
 	
 	//use RedDeer2 ScrolledComposite to get plugins in this page
 

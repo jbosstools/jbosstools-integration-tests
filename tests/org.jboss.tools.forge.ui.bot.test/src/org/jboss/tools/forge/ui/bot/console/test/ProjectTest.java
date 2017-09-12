@@ -17,8 +17,8 @@ import java.io.IOException;
 
 import org.jboss.tools.forge.ui.bot.test.suite.ForgeConsoleTestBase;
 import org.jboss.tools.forge.ui.bot.test.util.ResourceUtils;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.junit.Test;
 
 /**
@@ -36,7 +36,7 @@ public class ProjectTest extends ForgeConsoleTestBase {
 		assertTrue(text.contains("***SUCCESS*** Created project [" + PROJECT_NAME + "]"));
 		assertTrue(pExplorer.containsProject(PROJECT_NAME));
 		Project project = pExplorer.getProject(PROJECT_NAME);
-		assertTrue(project.containsItem("pom.xml"));
+		assertTrue(project.containsResource("pom.xml"));
 		
 		try {
 			String pomContent = ResourceUtils.readFile(WORKSPACE + "/" + PROJECT_NAME + "/pom.xml");
@@ -55,7 +55,7 @@ public class ProjectTest extends ForgeConsoleTestBase {
 		assertTrue(text.contains("***SUCCESS*** Created project [" + PROJECT_NAME + "]"));
 		assertTrue(pExplorer.containsProject(PROJECT_NAME));
 		Project project = pExplorer.getProject(PROJECT_NAME);
-		assertTrue(project.containsItem("pom.xml"));
+		assertTrue(project.containsResource("pom.xml"));
 		
 		try {
 			String pomContent = ResourceUtils.readFile(WORKSPACE + "/" + PROJECT_NAME + "/pom.xml");

@@ -14,7 +14,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsEqual;
-import org.jboss.reddeer.core.handler.TextHandler;
+import org.eclipse.reddeer.core.handler.TextHandler;
 import org.eclipse.swt.widgets.Text;
 
 public class TextTooltipMatcher extends TypeSafeMatcher<Text>{

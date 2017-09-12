@@ -12,10 +12,10 @@ package org.jboss.tools.vpe.bot.test.html5;
 
 import static org.junit.Assert.*;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.vpe.bot.test.VPETestBase;
 import org.jboss.tools.vpe.reddeer.condition.VPEditorHasTextSelected;
 import org.jboss.tools.vpe.reddeer.preview.editor.VPVEditor;

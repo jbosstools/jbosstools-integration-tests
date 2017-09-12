@@ -12,15 +12,16 @@
 package org.jboss.tools.cdi.bot.test.beans.decorator.template;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.eclipse.condition.ProblemExists;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.condition.ProblemExists;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 import org.jboss.tools.cdi.reddeer.validators.IValidationProvider;
@@ -87,7 +88,7 @@ public class DecoratorValidationQuickFixTemplate extends CDITestBase {
 		assertEquals(1,problems.size());
 		
 		validationHelper.openQuickfix(validationProvider.getValidationProblem(ValidationType.NAMED));
-		new WaitWhile(new ProblemExists(ProblemType.ANY));
+		new WaitWhile(new ProblemExists(ProblemType.ALL));
 		
 	}
 	
@@ -104,7 +105,7 @@ public class DecoratorValidationQuickFixTemplate extends CDITestBase {
 		assertEquals(1,problems.size());
 		
 		validationHelper.openQuickfix(validationProvider.getValidationProblem(ValidationType.PRODUCES));	
-		new WaitWhile(new ProblemExists(ProblemType.ANY));
+		new WaitWhile(new ProblemExists(ProblemType.ALL));
 	}
 	
 	// https://issues.jboss.org/browse/JBIDE-7684
@@ -120,7 +121,7 @@ public class DecoratorValidationQuickFixTemplate extends CDITestBase {
 		assertEquals(2,problems.size());
 		
 		validationHelper.openQuickfix(validationProvider.getValidationProblem(ValidationType.DISPOSES));
-		new WaitWhile(new ProblemExists(ProblemType.ANY));
+		new WaitWhile(new ProblemExists(ProblemType.ALL));
 	}
 	
 	// https://issues.jboss.org/browse/JBIDE-7685
@@ -140,7 +141,7 @@ public class DecoratorValidationQuickFixTemplate extends CDITestBase {
 		assertEquals(1,problems.size());
 		
 		validationHelper.openQuickfix(validationProvider.getValidationProblem(ValidationType.OBSERVES));
-		new WaitWhile(new ProblemExists(ProblemType.ANY));
+		new WaitWhile(new ProblemExists(ProblemType.ALL));
 	}
 	
 	// https://issues.jboss.org/browse/JBIDE-7686
@@ -156,7 +157,7 @@ public class DecoratorValidationQuickFixTemplate extends CDITestBase {
 		assertEquals(1,problems.size());
 		
 		validationHelper.openQuickfix(validationProvider.getValidationProblem(ValidationType.SPECIALIZES));
-		new WaitWhile(new ProblemExists(ProblemType.ANY));
+		new WaitWhile(new ProblemExists(ProblemType.ALL));
 	}
 	
 	private void createBean(String className, String resource){

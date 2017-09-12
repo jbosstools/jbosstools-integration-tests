@@ -10,8 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project;
 
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 public class WizardNewHybridProjectCreationPage {
 	

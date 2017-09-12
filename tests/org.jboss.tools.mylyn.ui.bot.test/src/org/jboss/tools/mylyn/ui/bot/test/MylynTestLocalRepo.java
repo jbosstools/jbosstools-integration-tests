@@ -14,14 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.TaskListView;
-import org.jboss.reddeer.eclipse.mylyn.tasks.ui.view.TaskRepositoriesView;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.eclipse.mylyn.tasks.ui.views.TaskListView;
+import org.eclipse.reddeer.eclipse.mylyn.tasks.ui.views.TaskRepositoriesView;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
 import org.jboss.tools.mylyn.reddeer.TestSupport;
 
 public class MylynTestLocalRepo {
@@ -73,7 +73,7 @@ public class MylynTestLocalRepo {
 		try {
 			listView.getTask("Uncategorized", TASKNAME);
 		}
-		catch (org.jboss.reddeer.swt.exception.SWTLayerException E) {
+		catch (org.eclipse.reddeer.swt.exception.SWTLayerException E) {
 			log.error("Newly created task not found - retrying");
 			listView.close();
 			listView.open();
@@ -132,7 +132,7 @@ public class MylynTestLocalRepo {
 		/* Verify that the task has been deleted by confirming that it cannot be found */ 
 		new DefaultTree();
 		try {
-			DefaultTreeItem theTask = new DefaultTreeItem ("Uncategorized", UPDATED_TASKNAME);
+			new DefaultTreeItem ("Uncategorized", UPDATED_TASKNAME);
 		}
 		catch (WaitTimeoutExpiredException E) {
 			log.info ("Expected Exception as deleted task cannot be found" + E.getMessage() + " correctly trapped");

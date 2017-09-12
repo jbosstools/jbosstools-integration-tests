@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.ws.ui.bot.test.websocket.ExampleProjectsDeployTest;
 import org.jboss.tools.ws.ui.bot.test.websocket.NameBindingTest;
 import org.jboss.tools.ws.ui.bot.test.websocket.StubMethodsTest;

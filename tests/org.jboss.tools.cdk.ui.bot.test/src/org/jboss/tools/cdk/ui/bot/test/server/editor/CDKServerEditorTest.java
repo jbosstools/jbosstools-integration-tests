@@ -12,13 +12,13 @@ package org.jboss.tools.cdk.ui.bot.test.server.editor;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.NewServerWizard;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.cdk.reddeer.core.condition.SystemJobIsRunning;
 import org.jboss.tools.cdk.reddeer.server.ui.CDEServersView;
 import org.jboss.tools.cdk.reddeer.server.ui.editor.CDEServerEditor;
@@ -36,7 +36,7 @@ import org.junit.Test;
  */
 public class CDKServerEditorTest extends CDKServerWizardAbstractTest {
 	
-	private ServersView serversView;
+	private ServersView2 serversView;
 	
 	private CDEServerEditor editor;
 	
@@ -79,15 +79,15 @@ public class CDKServerEditorTest extends CDKServerWizardAbstractTest {
 			editor.close();
 			editor = null;
 		}
-		if (serversView.isOpened() && serversView != null) {
+		if (serversView.isOpen() && serversView != null) {
 			serversView.close();
 			serversView = null;
 		}
 	}
 
 	private static void addCDKServer(String vagrantfile) {
-		NewServerWizardDialog dialog = CDKTestUtils.openNewServerWizardDialog();
-		NewServerWizardPage page = new NewServerWizardPage();
+		NewServerWizard dialog = CDKTestUtils.openNewServerWizardDialog();
+		NewServerWizardPage page = new NewServerWizardPage(dialog);
 		
 		page.selectType(SERVER_TYPE_GROUP, CDK_SERVER_NAME);
 		page.setName(SERVER_ADAPTER);
@@ -95,10 +95,10 @@ public class CDKServerEditorTest extends CDKServerWizardAbstractTest {
 		NewCDKServerContainerWizardPage containerPage = new NewCDKServerContainerWizardPage();
 		containerPage.setCredentials(USERNAME, PASSWORD);
 		containerPage.setFolder(vagrantfile);
-		new WaitWhile(new SystemJobIsRunning(getJobMatcher(MINISHIFT_VALIDATION_JOB)), TimePeriod.NORMAL, false);
+		new WaitWhile(new SystemJobIsRunning(getJobMatcher(MINISHIFT_VALIDATION_JOB)), TimePeriod.MEDIUM, false);
 		if (!dialog.isFinishEnabled()) {
-			new WaitUntil(new JobIsRunning(), TimePeriod.SHORT, false);	
+			new WaitUntil(new JobIsRunning(), TimePeriod.DEFAULT, false);	
 		}
-		dialog.finish(TimePeriod.NORMAL);
+		dialog.finish(TimePeriod.MEDIUM);
 	}
 }

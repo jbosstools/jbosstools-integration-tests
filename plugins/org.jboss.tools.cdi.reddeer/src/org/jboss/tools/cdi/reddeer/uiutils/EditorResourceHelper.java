@@ -23,27 +23,27 @@ import java.util.Scanner;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
-import org.jboss.reddeer.swt.api.StyledText;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.api.Editor;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
+import org.eclipse.reddeer.swt.api.StyledText;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenu;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.api.Editor;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.core.exception.WorkbenchCoreLayerException;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.common.reddeer.label.IDELabel;
 
@@ -140,7 +140,7 @@ public class EditorResourceHelper {
 								.getProperty("line.separator") : ""),
 				replacement));
 			if (save) editor.save();
-		} catch (CoreLayerException ex){
+		} catch (WorkbenchCoreLayerException ex){
 			Editor textEditor = new DefaultEditor(editorName);
 			DefaultStyledText dt = new DefaultStyledText();
 			String text = dt.getText();
@@ -226,7 +226,7 @@ public class EditorResourceHelper {
 		Project p = pe.getProject(projectName);
 		p.select();
 		//refresh project due to bug in eclipse - new packages are shown outside of src
-		new ContextMenu("Refresh").select();
+		new ContextMenu().getItem("Refresh").select();
 		p.getProjectItem(path).delete();
 	}
 
@@ -246,13 +246,13 @@ public class EditorResourceHelper {
 		pe.open();
 		pe.getProject(project).getProjectItem(oldFilePath).select();
 		
-		new ShellMenu(IDELabel.Menu.FILE, IDELabel.Menu.RENAME_WITH_DOTS).select();
+		new ShellMenu().getItem(IDELabel.Menu.FILE, IDELabel.Menu.RENAME_WITH_DOTS).select();
 		new DefaultShell(IDELabel.Shell.RENAME_RESOURCE);
 		
 		new LabeledText("New name:").setText(newFileName);	
 		
 		new PushButton(IDELabel.Button.OK).click();		
-		new WaitWhile(new ShellWithTextIsAvailable(IDELabel.Shell.RENAME_RESOURCE));
+		new WaitWhile(new ShellIsAvailable(IDELabel.Shell.RENAME_RESOURCE));
 		new WaitWhile(new JobIsRunning());
 	}
 	
@@ -261,11 +261,11 @@ public class EditorResourceHelper {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(projectName).getProjectItem(sourceFile).select();
-		new ShellMenu(IDELabel.Menu.FILE,IDELabel.Menu.MOVE).select();
+		new ShellMenu().getItem(IDELabel.Menu.FILE,IDELabel.Menu.MOVE).select();
 		new DefaultShell(IDELabel.Shell.MOVE_RESOURCES);
 		new DefaultTreeItem(destFolder).select();
 		new OkButton().click();
-		new WaitWhile(new ShellWithTextIsAvailable(IDELabel.Shell.MOVE_RESOURCES));
+		new WaitWhile(new ShellIsAvailable(IDELabel.Shell.MOVE_RESOURCES));
 		new WaitWhile(new JobIsRunning());
 	}
 

@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project;
 
-import org.jboss.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.api.TreeItem;
 
 public class CordovaPlugin {
 	

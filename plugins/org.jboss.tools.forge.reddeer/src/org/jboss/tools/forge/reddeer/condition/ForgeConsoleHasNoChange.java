@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.forge.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.forge.reddeer.view.ForgeConsoleView;
 
 /**
@@ -34,7 +34,7 @@ public class ForgeConsoleHasNoChange extends AbstractWaitCondition {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.jboss.reddeer.common.condition.WaitCondition#test()
+	 * @see org.eclipse.reddeer.common.condition.WaitCondition#test()
 	 */
 	@Override
 	public boolean test() {
@@ -51,7 +51,7 @@ public class ForgeConsoleHasNoChange extends AbstractWaitCondition {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.jboss.reddeer.common.condition.AbstractWaitCondition#description()
+	 * org.eclipse.reddeer.common.condition.AbstractWaitCondition#description()
 	 */
 	@Override
 	public String description() {

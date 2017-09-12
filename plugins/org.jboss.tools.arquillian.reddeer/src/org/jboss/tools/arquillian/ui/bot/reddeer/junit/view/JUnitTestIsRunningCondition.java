@@ -11,9 +11,9 @@
 
 package org.jboss.tools.arquillian.ui.bot.reddeer.junit.view;
 
-import org.jboss.reddeer.eclipse.jdt.ui.junit.JUnitView;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.eclipse.jdt.junit.ui.TestRunnerViewPart;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 
 /**
  * Checks if there is running test in JUnit view. 
@@ -23,10 +23,10 @@ import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
  */
 public class JUnitTestIsRunningCondition extends AbstractWaitCondition {
 
-	private JUnitView view;
+	private TestRunnerViewPart view;
 	
 	public JUnitTestIsRunningCondition() {
-		view = new JUnitView();
+		view = new TestRunnerViewPart();
 		view.open();
 	}
 	

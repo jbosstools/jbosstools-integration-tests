@@ -18,14 +18,14 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.core.runtime.Platform;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.swt.api.ToolItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.swt.api.ToolItem;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.browsersim.rmi.BrowsersimUtil;
 import org.jboss.tools.browsersim.rmi.IBrowsersimHandler;
 import org.osgi.framework.Bundle;
@@ -35,7 +35,7 @@ public class BrowserSimLauncher extends SimLauncher{
 	public static final String BROWSERSIM_API_BUNDLE = "org.jboss.tools.browsersim.rmi";
 	private static final String BROWSERSIM_MAIN_CLASS="org.jboss.tools.browsersim.rmi.BrowsersimUtil";
 
-	public IBrowsersimHandler launchBrowserSim(ContextMenu menu) {
+	public IBrowsersimHandler launchBrowserSim(ContextMenuItem menu) {
 		ToolItem item = null;
 		if(menu == null){
 			item = new DefaultToolItem(new WorkbenchShell(), "Run BrowserSim");
@@ -98,7 +98,15 @@ public class BrowserSimLauncher extends SimLauncher{
 		}
 
 		@Override
-		public String errorMessage() {
+		public String errorMessageWhile() {
+			ConsoleView cw = new ConsoleView();
+			cw.open();
+			String text = cw.getConsoleText();
+			return "Error in console: " + text;
+		}
+		
+		@Override
+		public String errorMessageUntil() {
 			ConsoleView cw = new ConsoleView();
 			cw.open();
 			String text = cw.getConsoleText();

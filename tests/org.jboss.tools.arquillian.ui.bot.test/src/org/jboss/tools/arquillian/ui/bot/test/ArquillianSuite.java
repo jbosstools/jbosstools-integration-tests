@@ -11,7 +11,7 @@
 
 package org.jboss.tools.arquillian.ui.bot.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.arquillian.ui.bot.test.cruiserView.BasicArquilliaCruiserTest;
 import org.jboss.tools.arquillian.ui.bot.test.preferences.ArquillianPreferencePageTest;
 import org.jboss.tools.arquillian.ui.bot.test.preferences.ArquillianValidatorPreferencePageTest;

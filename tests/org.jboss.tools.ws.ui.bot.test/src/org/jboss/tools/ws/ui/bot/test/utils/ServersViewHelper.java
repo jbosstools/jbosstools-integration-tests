@@ -3,28 +3,28 @@ package org.jboss.tools.ws.ui.bot.test.utils;
 import java.util.logging.Logger;
 
 import org.hamcrest.core.StringContains;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.matcher.WithMnemonicTextMatcher;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.eclipse.condition.ServerExists;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerPublishState;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.matcher.WithMnemonicTextMatcher;
+import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
+import org.eclipse.reddeer.eclipse.condition.ServerExists;
+import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.Server;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServerModule;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerPublishState;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerState;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.common.reddeer.label.IDELabel;
 
 /**
@@ -45,7 +45,7 @@ public class ServersViewHelper {
 	 * @param project project to be removed from the server
 	 */
 	public static void removeProjectFromServer(String project, String serverName) {
-		ServersView serversView = new ServersView();
+		ServersView2 serversView = new ServersView2();
 		serversView.activate();
 		Server server = serversView.getServer(serverName);
 
@@ -72,8 +72,8 @@ public class ServersViewHelper {
 	 * Removes all projects from the specified server.
 	 */
 	public static void removeAllProjectsFromServer(String serverName) {
-		ServersView serversView = new ServersView();
-		if(!serversView.isOpened())
+		ServersView2 serversView = new ServersView2();
+		if(!serversView.isOpen())
 			serversView.open();
 		
 		Server server = null;
@@ -95,7 +95,7 @@ public class ServersViewHelper {
 				ServerState moduleState = module.getLabel().getState();
 				clearServerConsole(serverName);
 				
-				new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL, false);
+				new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT, false);
 				serversView.activate();
 				module.remove();
 
@@ -111,7 +111,7 @@ public class ServersViewHelper {
 	 */
 	public static void runProjectOnServer(String projectName) {
 		new ProjectExplorer().getProject(projectName).select();
-		new ShellMenu(org.hamcrest.core.Is.is(IDELabel.Menu.RUN), org.hamcrest.core.Is.is(IDELabel.Menu.RUN_AS),
+		new ShellMenuItem(org.hamcrest.core.Is.is(IDELabel.Menu.RUN), org.hamcrest.core.Is.is(IDELabel.Menu.RUN_AS),
 				org.hamcrest.core.StringContains.containsString("Run on Server")).select();
 		new DefaultShell("Run On Server");
 		new PushButton(IDELabel.Button.FINISH).click();
@@ -121,17 +121,17 @@ public class ServersViewHelper {
 	 * Adds the specified project to the specified server
 	 */
 	public static void addProjectToServer(String projectName, String serverName) {
-		ServersView serversView = new ServersView();
+		ServersView2 serversView = new ServersView2();
 		serversView.open();
 		Server server = serversView.getServer(serverName);
 		ModifyModulesDialog dialog = server.addAndRemoveModules();
-		ModifyModulesPage page = new ModifyModulesPage();
+		ModifyModulesPage page = new ModifyModulesPage(dialog);
 		page.add(projectName);
 		dialog.finish();
 	}
 
 	public static void serverClean(String serverName) {
-		ServersView serversView = new ServersView();
+		ServersView2 serversView = new ServersView2();
 		serversView.open();
 		Server server = null;
 		try {
@@ -151,7 +151,7 @@ public class ServersViewHelper {
 	
 	private static void clearServerConsole(String serverName) {
 		ConsoleView consoleView = new ConsoleView();
-		if (!consoleView.isOpened()) {
+		if (!consoleView.isOpen()) {
 			consoleView.open();
 		}
 		consoleView.activate();
@@ -162,7 +162,7 @@ public class ServersViewHelper {
 	private static class ProjectIsDeployed extends AbstractWaitCondition {
 
 		private ServerModule module;
-		private ServersView view = new ServersView();
+		private ServersView2 view = new ServersView2();
 		
 		public ProjectIsDeployed(String projectName, String serverName) {
 			view.activate();

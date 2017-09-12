@@ -14,22 +14,22 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import org.jboss.reddeer.common.platform.RunningPlatform;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
-import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
-import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
-import org.jboss.reddeer.eclipse.ui.views.log.LogView;
-import org.jboss.reddeer.eclipse.wst.html.ui.wizard.NewHTMLFileWizardPage;
-import org.jboss.reddeer.eclipse.wst.html.ui.wizard.NewHTMLTemplatesWizardPage;
-import org.jboss.reddeer.eclipse.wst.html.ui.wizard.NewHTMLWizard;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.platform.RunningPlatform;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
+import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectWizard;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.views.log.LogMessage;
+import org.eclipse.reddeer.eclipse.ui.views.log.LogView;
+import org.eclipse.reddeer.eclipse.wst.html.ui.wizard.NewHTMLFileWizardPage;
+import org.eclipse.reddeer.eclipse.wst.html.ui.wizard.NewHTMLTemplatesWizardPage;
+import org.eclipse.reddeer.eclipse.wst.html.ui.wizard.NewHTMLWizard;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.junit.BeforeClass;
 
 @CleanWorkspace
@@ -49,10 +49,10 @@ public class VPETestBase {
 	public static void createWebProject() {
 		WebProjectWizard ww = new WebProjectWizard();
 		ww.open();
-		WebProjectFirstPage fp  = new WebProjectFirstPage();
+		WebProjectFirstPage fp  = new WebProjectFirstPage(ww);
 		fp.setProjectName(PROJECT_NAME);
 		ww.finish();
-		new WaitUntil(new JobIsRunning(),TimePeriod.NORMAL, false);
+		new WaitUntil(new JobIsRunning(),TimePeriod.DEFAULT, false);
 		new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
 	}
 	
@@ -79,11 +79,11 @@ public class VPETestBase {
 		pe.selectProjects(PROJECT_NAME);
 		NewHTMLWizard nw = new NewHTMLWizard();
 		nw.open();
-		NewHTMLFileWizardPage fp = new NewHTMLFileWizardPage();
+		NewHTMLFileWizardPage fp = new NewHTMLFileWizardPage(nw);
 		String pageName = fp.getFileName();
 		nw.next();
 		if(template != null){
-			NewHTMLTemplatesWizardPage tp = new NewHTMLTemplatesWizardPage();
+			NewHTMLTemplatesWizardPage tp = new NewHTMLTemplatesWizardPage(nw);
 			tp.setTemplate(template);
 		}
 		nw.finish();

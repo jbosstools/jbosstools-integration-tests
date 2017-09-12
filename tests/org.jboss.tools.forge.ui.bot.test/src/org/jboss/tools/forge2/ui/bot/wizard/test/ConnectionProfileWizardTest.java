@@ -16,12 +16,12 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.eclipse.datatools.ui.view.DataSourceExplorer;
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.eclipse.datatools.connectivity.ui.dse.views.DataSourceExplorerView;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.forge.reddeer.ui.wizard.ConnectionProfileWizardPage;
 import org.jboss.tools.forge.ui.bot.test.util.DatabaseUtils;
 import org.junit.Before;
@@ -57,7 +57,7 @@ public class ConnectionProfileWizardTest extends WizardTestBase {
 		assertNotNull("Database path is null", path);
 
 		WizardDialog dialog = getWizardDialog("Connection: Create Profile", "(Connection: Create Profile).*");
-		ConnectionProfileWizardPage page = new ConnectionProfileWizardPage();
+		ConnectionProfileWizardPage page = new ConnectionProfileWizardPage(dialog);
 		page.setConnectionName(CONNECTION_NAME);
 		page.setJdbcUrl(SAKILA_URL);
 		page.setUserName(SAKILA_USERNAME);
@@ -66,7 +66,7 @@ public class ConnectionProfileWizardTest extends WizardTestBase {
 		page.toggleVerifyConnection(true);
 		dialog.finish(TimePeriod.LONG);
 
-		DataSourceExplorer dsExplorer = new DataSourceExplorer();
+		DataSourceExplorerView  dsExplorer = new DataSourceExplorerView ();
 		dsExplorer.open();
 		assertTrue("Missing database connection for " + CONNECTION_NAME,
 				dsExplorer.getDatabaseConnections().contains(CONNECTION_NAME));

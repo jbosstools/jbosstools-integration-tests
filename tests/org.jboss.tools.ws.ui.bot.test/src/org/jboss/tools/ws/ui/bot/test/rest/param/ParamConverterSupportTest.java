@@ -2,15 +2,14 @@ package org.jboss.tools.ws.ui.bot.test.rest.param;
 
 import javax.ws.rs.PathParam;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
@@ -27,7 +26,7 @@ import org.junit.runner.RunWith;
  * @see https://issues.jboss.org/browse/JBIDE-16763
  */
 @RunWith(RedDeerSuite.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY)
+@JBossServer(state=ServerRequirementState.PRESENT)
 @AutoBuilding(value = false, cleanup = true)
 public class ParamConverterSupportTest extends RESTfulTestBase {
 	
@@ -63,10 +62,10 @@ public class ParamConverterSupportTest extends RESTfulTestBase {
 	}
 	
 	private void createParamConverter() {
-		NewJavaClassWizardDialog newJavaClassDialog = new NewJavaClassWizardDialog();
+		NewClassCreationWizard newJavaClassDialog = new NewClassCreationWizard();
 		newJavaClassDialog.open();
-		NewJavaClassWizardPage newJavaClassPage = new NewJavaClassWizardPage();
-		newJavaClassPage.setPackage("org.rest.test");
+		NewClassWizardPage newJavaClassPage = new NewClassWizardPage(newJavaClassDialog);
+		newJavaClassPage. setPackage("org.rest.test");
 		newJavaClassPage.setName("Converter");
 		newJavaClassDialog.finish();
 		

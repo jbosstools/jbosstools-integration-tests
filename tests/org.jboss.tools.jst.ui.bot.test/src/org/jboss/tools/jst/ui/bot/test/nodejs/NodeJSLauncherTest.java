@@ -10,16 +10,17 @@
  ******************************************************************************/
 package org.jboss.tools.jst.ui.bot.test.nodejs;
 
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.eclipse.core.resources.ExplorerItem;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.ui.perspectives.DebugPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.core.handler.ShellHandler;
+import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.perspectives.DebugPerspective;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -62,13 +63,13 @@ public class NodeJSLauncherTest extends JSTTestBase {
     
     @AfterClass
     public static void cleanup() {
-        ShellHandler.getInstance().closeAllNonWorbenchShells();
+    		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
         new ProjectExplorer().deleteAllProjects();
     }
     
     @Test
     public void testNodeJSRunAsLauncherAvailable() {
-        ExplorerItem indexJS = new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("index.js");
+        ProjectItem indexJS = new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("index.js");
         indexJS.select();
         assertTrue("'Run As -> Node.js Application' not available!", runAsNodeJSAppMenu().isEnabled());
     }
@@ -81,7 +82,7 @@ public class NodeJSLauncherTest extends JSTTestBase {
         ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
         manager.addLaunchListener(launchListener);
         
-        ExplorerItem indexJS = new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("index.js");
+        ProjectItem indexJS = new ProjectExplorer().getProject(TEST_APP_NAME).getProjectItem("index.js");
         indexJS.select();
         runAsNodeJSAppMenu().select();
         

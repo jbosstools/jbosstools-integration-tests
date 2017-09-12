@@ -1,8 +1,8 @@
 package org.jboss.tools.cdi.reddeer.uiutils;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 
 public class OpenOnHelper {
 	

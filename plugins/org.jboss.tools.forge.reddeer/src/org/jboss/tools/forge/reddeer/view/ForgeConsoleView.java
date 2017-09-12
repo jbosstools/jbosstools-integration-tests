@@ -1,19 +1,19 @@
 package org.jboss.tools.forge.reddeer.view;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.menu.ToolItemMenu;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.swt.impl.toolbar.ViewToolBar;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.core.matcher.WithTooltipTextMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.matcher.WithTooltipTextMatcher;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.menu.ToolItemMenu;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.toolbar.ViewToolBar;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 /**
  * Forge Console view RedDeer implementation
  * @author psrna
@@ -88,7 +88,7 @@ public class ForgeConsoleView extends WorkbenchView{
 		WithTooltipTextMatcher tm = new WithTooltipTextMatcher("Select Forge Runtime");
 		DefaultToolItem defaultToolItem = new DefaultToolItem(tb, 0, tm);	
 		
-		new ToolItemMenu(defaultToolItem, rm).select();
+		new ToolItemMenu(defaultToolItem).getItem(rm);
 	}
 	
 	/**

@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.browsersim.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.browsersim.reddeer.BrowserSimLaunchListener;
 
 public class LaunchExists extends AbstractWaitCondition{

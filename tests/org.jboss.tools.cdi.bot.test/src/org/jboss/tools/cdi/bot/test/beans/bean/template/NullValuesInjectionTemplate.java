@@ -1,15 +1,16 @@
 package org.jboss.tools.cdi.bot.test.beans.bean.template;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.jface.text.contentassist.ContentAssistant;
-import org.jboss.reddeer.workbench.condition.EditorHasValidationMarkers;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
+import org.eclipse.reddeer.workbench.condition.EditorHasValidationMarkers;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.junit.Test;
 
@@ -43,18 +44,18 @@ public class NullValuesInjectionTemplate extends CDITestBase{
 		te.insertLine(6, "@Inject @Qa boolean primitiveB;");
 		te.insertLine(7, "@Inject @Qa Boolean objectB;");
 		if(CDIVersion.equals("1.0")){
-			new WaitUntil(new EditorHasValidationMarkers(te),TimePeriod.NORMAL,false);
+			new WaitUntil(new EditorHasValidationMarkers(te),TimePeriod.DEFAULT,false);
 			assertTrue(new EditorHasValidationMarkers(te).test());
 			te.save();
 			new WaitWhile(new JobIsRunning());
-			new WaitUntil(new EditorHasValidationMarkers(te),TimePeriod.NORMAL,false);
+			new WaitUntil(new EditorHasValidationMarkers(te),TimePeriod.DEFAULT,false);
 			assertTrue(new EditorHasValidationMarkers(te).test());
 		} else {
-			new WaitUntil(new EditorHasValidationMarkers(te),TimePeriod.NORMAL,false);
+			new WaitUntil(new EditorHasValidationMarkers(te),TimePeriod.DEFAULT,false);
 			new WaitWhile(new EditorHasValidationMarkers(te));
 			te.save();
 			new WaitWhile(new JobIsRunning());
-			new WaitUntil(new EditorHasValidationMarkers(te),TimePeriod.NORMAL,false);
+			new WaitUntil(new EditorHasValidationMarkers(te),TimePeriod.DEFAULT,false);
 			new WaitWhile(new EditorHasValidationMarkers(te));
 			checkOpenOn("Bean2.java","primitiveB","Open @Inject Bean Bean1.getB()", "Bean1.java");
 			checkOpenOn("Bean2.java","objectB", "Open @Inject Bean Bean1.getB()", "Bean1.java");

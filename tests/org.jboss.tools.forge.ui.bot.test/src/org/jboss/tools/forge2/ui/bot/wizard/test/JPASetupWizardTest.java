@@ -15,8 +15,8 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.forge.ui.bot.test.util.ResourceUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +38,7 @@ public class JPASetupWizardTest extends WizardTestBase {
 	public void testPersistenceXmlCreated(){
 		ProjectExplorer pe = new ProjectExplorer();
 		assertTrue("persistence.xml not found in project explorer", 
-					pe.getProject(PROJECT_NAME).containsItem("src", "main", "resources", "META-INF", "persistence.xml"));
+					pe.getProject(PROJECT_NAME).containsResource("src", "main", "resources", "META-INF", "persistence.xml"));
 		
 	}
 	

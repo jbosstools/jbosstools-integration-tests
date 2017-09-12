@@ -1,6 +1,6 @@
 package org.jboss.tools.batch.reddeer.wizard;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 
 /**
  * Wizard dialog for creating batch artifacts
@@ -8,9 +8,9 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
  * @author Lucia Jelinkova
  *
  */
-public class NewBatchArtifactWizardDialog extends NewWizardDialog {
+public class NewBatchArtifactWizardDialog extends NewMenuWizard {
 
 	public NewBatchArtifactWizardDialog() {
-		super("Batch", "Batch Artifact");
+		super("New Batch Artifact", "Batch", "Batch Artifact");
 	}
 }

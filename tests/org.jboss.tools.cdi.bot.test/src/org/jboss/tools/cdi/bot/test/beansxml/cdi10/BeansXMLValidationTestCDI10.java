@@ -11,39 +11,45 @@
 
 package org.jboss.tools.cdi.bot.test.beansxml.cdi10;
 
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.workbench.condition.EditorIsDirty;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.cdi.bot.test.beansxml.template.BeansXMLValidationTemplate;
 import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
+import org.jboss.tools.cdi.reddeer.matcher.ServerMatcher;
 import org.jboss.tools.cdi.reddeer.uiutils.EditorResourceHelper;
 import org.jboss.tools.cdi.reddeer.validators.BeansXmlValidationProviderCDI10;
 import org.junit.Before;
 
 /**
- * Test operates on beans validation in beans.xml 
+ * Test operates on beans validation in beans.xml
  * 
  * @author Jaroslav Jankovic
  * 
  */
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1, cleanup=false)
+@JBossServer(state = ServerRequirementState.PRESENT, cleanup = false)
 @OpenPerspective(JavaEEPerspective.class)
 public class BeansXMLValidationTestCDI10 extends BeansXMLValidationTemplate {
-	
+
+	@RequirementRestriction
+	public static RequirementMatcher getRestrictionMatcher() {
+		return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.Eap());
+	}
+
 	@Before
-	public void changeBeansXml(){
+	public void changeBeansXml() {
 		validationProvider = new BeansXmlValidationProviderCDI10();
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		pe.getProject(PROJECT_NAME).getProjectItem("WebContent","WEB-INF","beans.xml").open();
-		EditorPartWrapper beansEditor = new EditorPartWrapper();
+
+		EditorPartWrapper beansEditor = beansXMLHelper.openBeansXml(PROJECT_NAME);
 		beansEditor.activateSourcePage();
-		new EditorResourceHelper().replaceInEditor("/>", "></beans>");
+		new EditorResourceHelper().replaceInEditor("/>", "></beans>", false);
+		new WaitUntil(new EditorIsDirty(beansEditor), false);
 		beansEditor.save();
 		beansEditor.close();
 	}
-	
 }

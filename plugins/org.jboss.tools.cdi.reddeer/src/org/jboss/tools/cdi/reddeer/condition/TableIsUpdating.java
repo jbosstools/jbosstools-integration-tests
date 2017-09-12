@@ -10,9 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.reddeer.condition;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.swt.api.Table;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.swt.api.Table;
 
 public class TableIsUpdating extends AbstractWaitCondition{
 	

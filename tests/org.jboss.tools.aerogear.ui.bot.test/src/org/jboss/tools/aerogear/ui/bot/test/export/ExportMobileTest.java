@@ -14,9 +14,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.aerogear.reddeer.thym.android.ui.preferences.AndroidPreferencesPage;
 import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.ThymPlatform;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
@@ -42,7 +42,7 @@ public class ExportMobileTest extends AerogearBotTest {
 			throw new RuntimeException("Android SDK Location is not set properly: " + androidSDKLocation);
 		} else {
 			WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
-			AndroidPreferencesPage androidPreferencesPage = new AndroidPreferencesPage();
+			AndroidPreferencesPage androidPreferencesPage = new AndroidPreferencesPage(preferenceDialog);
 			preferenceDialog.open();
 			preferenceDialog.select(androidPreferencesPage);
 			androidPreferencesPage.setAndroidSDKLocation(androidSDKLocation);

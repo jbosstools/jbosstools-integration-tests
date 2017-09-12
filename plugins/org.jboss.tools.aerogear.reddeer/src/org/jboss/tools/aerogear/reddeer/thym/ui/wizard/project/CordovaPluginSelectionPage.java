@@ -15,13 +15,18 @@ import static org.junit.Assert.fail;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.api.Tree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.api.Tree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 
 public class CordovaPluginSelectionPage extends WizardPage{
 	
 	
+	public CordovaPluginSelectionPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	public List<CordovaPlugin> getPlugins() {
 		return getPluginsTree().getItems().stream().map(CordovaPlugin::new).collect(Collectors.toList());
 	}

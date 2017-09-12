@@ -10,13 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.reddeer.thym.ui.wizard.export;
 
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.swt.api.Combo;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.swt.api.Combo;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.table.DefaultTableItem;
 import org.jboss.tools.aerogear.reddeer.thym.android.ui.preferences.AndroidPreferencesPage;
 
 /**
@@ -26,7 +27,10 @@ import org.jboss.tools.aerogear.reddeer.thym.android.ui.preferences.AndroidPrefe
  */
 public class NativeBinaryDestinationPage extends WizardPage{
   
-  private static final Logger log = Logger.getLogger(AndroidPreferencesPage.class);
+  public NativeBinaryDestinationPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+private static final Logger log = Logger.getLogger(AndroidPreferencesPage.class);
   /**
    * Checks/Unchecks platform with platformName
    * @param platformName

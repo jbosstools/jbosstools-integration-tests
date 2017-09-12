@@ -2,9 +2,10 @@ package org.jboss.tools.forge.reddeer.ui.wizard;
 
 import java.util.List;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 
 /**
  * Reddeer implementation of forge Entities from tables wizard first page
@@ -13,6 +14,10 @@ import org.jboss.reddeer.swt.impl.text.LabeledText;
  */
 public class EntitiesFromTablesWizardFirstPage extends WizardPage {
 	
+	public EntitiesFromTablesWizardFirstPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	/**
 	 * Fill in the Target package field with set value
 	 * @param pkg package name to be set

@@ -14,27 +14,29 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardDialog;
-import org.jboss.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
-import org.jboss.reddeer.jface.exception.JFaceLayerException;
-import org.jboss.reddeer.jface.viewer.handler.TreeViewerHandler;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewException;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.linuxtools.docker.reddeer.ui.DockerExplorerView;
+import org.eclipse.linuxtools.docker.reddeer.ui.resources.DockerConnection;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.condition.ConsoleHasNoChange;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.Server;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerState;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewException;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.NewServerWizard;
+import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
+import org.eclipse.reddeer.jface.exception.JFaceLayerException;
+import org.eclipse.reddeer.jface.handler.TreeViewerHandler;
+import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.cdk.reddeer.preferences.OpenShift3SSLCertificatePreferencePage;
 import org.jboss.tools.cdk.reddeer.requirements.DisableSecureStorageRequirement.DisableSecureStorage;
 import org.jboss.tools.cdk.reddeer.server.exception.CDKServerException;
@@ -44,8 +46,6 @@ import org.jboss.tools.cdk.reddeer.server.ui.wizard.NewCDK3ServerContainerWizard
 import org.jboss.tools.cdk.reddeer.server.ui.wizard.NewCDKServerContainerWizardPage;
 import org.jboss.tools.cdk.ui.bot.test.CDKAbstractTest;
 import org.jboss.tools.cdk.ui.bot.test.utils.CDKTestUtils;
-import org.eclipse.linuxtools.docker.reddeer.ui.DockerExplorerView;
-import org.eclipse.linuxtools.docker.reddeer.ui.resources.DockerConnection;
 import org.jboss.tools.openshift.reddeer.view.OpenShiftExplorerView;
 import org.jboss.tools.openshift.reddeer.view.resources.OpenShift3Connection;
 import org.junit.After;
@@ -61,7 +61,7 @@ import org.junit.BeforeClass;
 @DisableSecureStorage
 public abstract class CDKServerAdapterAbstractTest extends CDKAbstractTest {
 
-	protected ServersView serversView;
+	protected ServersView2 serversView;
 	
 	protected Server server;
 	
@@ -71,11 +71,11 @@ public abstract class CDKServerAdapterAbstractTest extends CDKAbstractTest {
 		return this.server;
 	}
 
-	protected ServersView getServersView() {
+	protected ServersView2 getServersView() {
 		return this.serversView;
 	}
 
-	protected void setServersView(ServersView view) {
+	protected void setServersView(ServersView2 view) {
 		this.serversView = view;
 	}
 
@@ -107,7 +107,7 @@ public abstract class CDKServerAdapterAbstractTest extends CDKAbstractTest {
 		getServersView().open();
 		log.info("Getting server object from Servers View with name: " + getServerAdapter()); //$NON-NLS-1$
 		setCDEServer(getServersView().getServer(getServerAdapter()));
-		new WaitUntil(new JobIsRunning(), TimePeriod.NORMAL, false);
+		new WaitUntil(new JobIsRunning(), TimePeriod.DEFAULT, false);
 	}
 	
 	@After
@@ -149,7 +149,7 @@ public abstract class CDKServerAdapterAbstractTest extends CDKAbstractTest {
 		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
 		dialog.open();
 		
-		OpenShift3SSLCertificatePreferencePage preferencePage = new OpenShift3SSLCertificatePreferencePage();
+		OpenShift3SSLCertificatePreferencePage preferencePage = new OpenShift3SSLCertificatePreferencePage(dialog);
 		dialog.select(preferencePage);
 		preferencePage.printCertificates();
         dialog.ok();
@@ -159,7 +159,7 @@ public abstract class CDKServerAdapterAbstractTest extends CDKAbstractTest {
 		WorkbenchPreferenceDialog dialog = new WorkbenchPreferenceDialog();
 		dialog.open();
 		
-		OpenShift3SSLCertificatePreferencePage preferencePage = new OpenShift3SSLCertificatePreferencePage();
+		OpenShift3SSLCertificatePreferencePage preferencePage = new OpenShift3SSLCertificatePreferencePage(dialog);
 		dialog.select(preferencePage);
 		preferencePage.deleteAll();
 		preferencePage.apply();
@@ -167,8 +167,8 @@ public abstract class CDKServerAdapterAbstractTest extends CDKAbstractTest {
 	}
 	
 	public static void addNewCDK3Server(String serverName, String serverAdapter, String hypervisor, String path) {
-		NewServerWizardDialog dialog = CDKTestUtils.openNewServerWizardDialog();
-		NewServerWizardPage page = new NewServerWizardPage();
+		NewServerWizard dialog = CDKTestUtils.openNewServerWizardDialog();
+		NewServerWizardPage page = new NewServerWizardPage(dialog);
 		// set first dialog page
 		page.selectType(SERVER_TYPE_GROUP, serverName);
 		page.setHostName(SERVER_HOST);
@@ -184,17 +184,17 @@ public abstract class CDKServerAdapterAbstractTest extends CDKAbstractTest {
 		}
 		log.info("Setting minishift binary file folder"); //$NON-NLS-1$
 		containerPage.setMinishiftBinary(path);
-		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ControlIsEnabled(new FinishButton()), TimePeriod.MEDIUM);
 		log.info("Finishing Add new server dialog"); //$NON-NLS-1$
 		if (!(new FinishButton().isEnabled())) {
 			log.error("Finish button was not enabled"); //$NON-NLS-1$
 		}
-		dialog.finish(TimePeriod.NORMAL);
+		dialog.finish(TimePeriod.MEDIUM);
 	}
 	
 	public static void addNewCDKServer(String serverName, String serverAdapter, String path) {
-		NewServerWizardDialog dialog = CDKTestUtils.openNewServerWizardDialog();
-		NewServerWizardPage page = new NewServerWizardPage();
+		NewServerWizard dialog = CDKTestUtils.openNewServerWizardDialog();
+		NewServerWizardPage page = new NewServerWizardPage(dialog);
 		// set first dialog page
 		page.selectType(SERVER_TYPE_GROUP, serverName);
 		page.setHostName(SERVER_HOST);
@@ -207,12 +207,12 @@ public abstract class CDKServerAdapterAbstractTest extends CDKAbstractTest {
 		// set cdk 2.x fields
 		log.info("Setting vagrant file folder"); //$NON-NLS-1$
 		containerPage.setFolder(path);
-		new WaitUntil(new WidgetIsEnabled(new FinishButton()), TimePeriod.NORMAL);
+		new WaitUntil(new ControlIsEnabled(new FinishButton()), TimePeriod.MEDIUM);
 		log.info("Finishing Add new server dialog"); //$NON-NLS-1$
 		if (!(new FinishButton().isEnabled())) {
 			log.error("Finish button was not enabled"); //$NON-NLS-1$
 		}
-		dialog.finish(TimePeriod.NORMAL);
+		dialog.finish(TimePeriod.MEDIUM);
 	}
 	
 	public static void testOpenshiftConncetion(String projectName, String userName) {
@@ -224,7 +224,7 @@ public abstract class CDKServerAdapterAbstractTest extends CDKAbstractTest {
 			// problem occurs dialog
 			connection.refresh();
 			try {
-				new WaitUntil(new ShellWithTextIsAvailable("Problem occurred"), TimePeriod.getCustom(30)); //$NON-NLS-1$
+				new WaitUntil(new ShellIsAvailable("Problem occurred"), TimePeriod.getCustom(30)); //$NON-NLS-1$
 				fail("Problem dialog occured when refreshing OpenShift connection"); //$NON-NLS-1$
 			} catch (WaitTimeoutExpiredException ex) {
 				// no dialog appeared, which is ok
@@ -274,7 +274,7 @@ public abstract class CDKServerAdapterAbstractTest extends CDKAbstractTest {
 		ConsoleView view = new ConsoleView();
 		view.open();
 		
-		new WaitWhile(new ConsoleHasNoChange(), TimePeriod.NORMAL, false);
+		new WaitWhile(new ConsoleHasNoChange(), TimePeriod.DEFAULT, false);
 		String consoleOutput = view.getConsoleLabel() + "\n\r" + view.getConsoleText();
 		if (onFail) {
 			log.error(consoleOutput);

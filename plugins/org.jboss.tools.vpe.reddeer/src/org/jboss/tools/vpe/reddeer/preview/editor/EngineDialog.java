@@ -10,10 +10,10 @@
  ******************************************************************************/
 package org.jboss.tools.vpe.reddeer.preview.editor;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.swt.condition.ShellIsAvailable;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 
 public class EngineDialog extends DefaultShell{
 	

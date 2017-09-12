@@ -2,26 +2,26 @@ package org.jboss.tools.cdi.reddeer.common.model.ui.editor;
 
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.uiforms.impl.section.DefaultSection;
-import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.table.DefaultTableItem;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.uiforms.impl.section.DefaultSection;
+import org.eclipse.reddeer.workbench.impl.editor.AbstractEditor;
 import org.jboss.tools.cdi.reddeer.common.model.ui.AddIfClassAvailableDialog;
 import org.jboss.tools.cdi.reddeer.common.model.ui.AddIfSystemPropertyDialog;
 import org.jboss.tools.cdi.reddeer.common.model.ui.AddIncludeExcludeDialog;
@@ -107,7 +107,7 @@ public class EditorPartWrapper extends AbstractEditor{
 	
 	public void newWeldScan() {
 		selectBeanXmlType("beans.xml");
-		new ContextMenu("New", "Weld", "Weld Scan...").select();
+		new ContextMenu().getItem("New", "Weld", "Weld Scan...").select();
 	}
 	
 	public Table getIncludeExcludeTable() {
@@ -193,7 +193,6 @@ public class EditorPartWrapper extends AbstractEditor{
 	
 	private void removeIncludeExcludeWithHandler() {
 		new PushButton("Remove...").click();
-		new WaitUntil(new ShellWithTextIsAvailable("Confirmation"));
 		new DefaultShell("Confirmation");
 		new PushButton("OK").click();
 	}
@@ -227,8 +226,7 @@ public class EditorPartWrapper extends AbstractEditor{
 	}
 	
 	private AddIfSystemPropertyDialog invokeDefaultAddIfSystemPropertyDialog(String property){
-		new ContextMenu("Add System Property").select();
-		new WaitUntil(new ShellWithTextIsAvailable("Add If System Property"));
+		new ContextMenu().getItem("Add System Property").select();
 		new DefaultShell("Add If System Property");
 		return new AddIfSystemPropertyDialog();
 	}
@@ -244,8 +242,8 @@ public class EditorPartWrapper extends AbstractEditor{
 	}
 	
 	private AddIncludeExcludeDialog invokeDefaultAddIncludeExcludeDialog(){
-		new ContextMenu("Add Include/Exclude").select();
-		new WaitUntil(new ShellWithTextIsAvailable("Add Include/Exclude"));
+		new ContextMenu().getItem("Add Include/Exclude").select();
+		new WaitUntil(new ShellIsAvailable("Add Include/Exclude"));
 		new DefaultShell("Add Include/Exclude");
 		return new AddIncludeExcludeDialog();
 	}
@@ -262,8 +260,8 @@ public class EditorPartWrapper extends AbstractEditor{
 	}
 	
 	private AddIfClassAvailableDialog invokeDefaultWeldAddClassAvailableDialog(String property){
-		new ContextMenu("Add Class Available").select();
-		new WaitUntil(new ShellWithTextIsAvailable("Add If Class Available"));
+		new ContextMenu().getItem("Add Class Available").select();
+		new WaitUntil(new ShellIsAvailable("Add If Class Available"));
 		new DefaultShell("Add If Class Available");
 		return new AddIfClassAvailableDialog();
 	}

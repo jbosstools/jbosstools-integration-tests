@@ -11,12 +11,16 @@
 package org.jboss.tools.deltaspike.ui.bot.test.condition;
 
 
-import org.jboss.reddeer.common.condition.WaitCondition;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import java.util.List;
+
+import org.eclipse.reddeer.common.condition.WaitCondition;
+import org.eclipse.reddeer.workbench.impl.editor.Marker;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 
 public class ClassHasErrorMarker implements WaitCondition{
 	
 	private String className;
+	private List<Marker> markers;
 	
 	public ClassHasErrorMarker(String className) {
 		this.className = className;
@@ -25,7 +29,12 @@ public class ClassHasErrorMarker implements WaitCondition{
 	@Override
 	public boolean test() {
 		TextEditor ed = new TextEditor(className+".java");
-		return ed.getMarkers().size() > 0;
+		
+		if (ed.getMarkers().size() > 0) {
+			markers = ed.getMarkers();
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -34,8 +43,18 @@ public class ClassHasErrorMarker implements WaitCondition{
 	}
 
 	@Override
-	public String errorMessage() {
+	public String errorMessageWhile() {
 		return "class "+className+" has errors"; 
+	}
+
+	@Override
+	public String errorMessageUntil() {
+		return "class "+className+" has no errors"; 
+	}
+
+	@Override
+	public List<Marker> getResult() {
+		return markers;
 	}
 
 }

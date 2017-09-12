@@ -12,18 +12,18 @@ package org.jboss.tools.ws.ui.bot.test.webservice;
 
 import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServerModule;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
@@ -140,7 +140,7 @@ public class TopDownWSTest extends WebServiceTestBase {
 
 		item.delete();
 
-		ShellWithTextIsAvailable condition = new ShellWithTextIsAvailable(new RegexMatcher("Delete"));
+		ShellIsAvailable condition = new ShellIsAvailable(new RegexMatcher("Delete"));
 		try {
 			new WaitUntil(condition);
 		} catch(WaitTimeoutExpiredException e) {
@@ -175,7 +175,7 @@ public class TopDownWSTest extends WebServiceTestBase {
 		case TEST:
 			ServerModule module = null;
 			try {
-				module = new ServersView().getServer(getConfiguredServerName()).getModule(getEarProjectName());
+				module = new ServersView2().getServer(getConfiguredServerName()).getModule(getEarProjectName());
 			} catch (EclipseLayerException ex) {
 				fail("The project was not deployed");
 			}

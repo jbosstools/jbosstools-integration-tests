@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.wst.server.core.IServer;
-import org.jboss.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.logging.Logger;
 import org.jboss.tools.livereload.core.internal.server.jetty.LiveReloadProxyServer;
 import org.jboss.tools.livereload.core.internal.server.wst.LiveReloadServerBehaviour;
 import org.jboss.tools.livereload.core.internal.service.EventFilter;

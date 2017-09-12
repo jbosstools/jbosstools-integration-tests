@@ -1,15 +1,15 @@
 package org.jboss.tools.batch.ui.bot.test.wizard;
 
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import java.util.List;
 
 import org.jboss.tools.batch.reddeer.wizard.BatchArtifacts;
 import org.jboss.tools.batch.reddeer.wizard.NewBatchArtifactWizardPage;
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CreateArtifactWithPropertiesTest extends AbstractCreateArtifactTest {
 

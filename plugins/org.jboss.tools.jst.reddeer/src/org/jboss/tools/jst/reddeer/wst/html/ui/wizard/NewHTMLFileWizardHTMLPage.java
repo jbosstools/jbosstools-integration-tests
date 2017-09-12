@@ -1,14 +1,20 @@
 package org.jboss.tools.jst.reddeer.wst.html.ui.wizard;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 /**
  * Wizard page for creating a HTML File.
  * @author vpakan
  */
 public class NewHTMLFileWizardHTMLPage extends WizardPage {
+	
+	public NewHTMLFileWizardHTMLPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	/**
 	 * Sets a given file name.
 	 * 

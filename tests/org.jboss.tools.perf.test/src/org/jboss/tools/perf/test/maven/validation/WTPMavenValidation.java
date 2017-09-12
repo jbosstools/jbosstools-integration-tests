@@ -1,6 +1,6 @@
 package org.jboss.tools.perf.test.maven.validation;
 
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.jboss.tools.perf.test.PerfTestMavenBase;
 import org.junit.Test;
 

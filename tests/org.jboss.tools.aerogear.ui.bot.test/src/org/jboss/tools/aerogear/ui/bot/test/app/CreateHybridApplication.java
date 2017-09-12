@@ -10,29 +10,28 @@
  ******************************************************************************/
 package org.jboss.tools.aerogear.ui.bot.test.app;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import java.util.List;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.core.util.FileUtil;
+import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.markers.matcher.MarkerPathMatcher;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.core.util.FileUtil;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsPathMatcher;
-import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.swt.impl.menu.ToolItemMenu;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.ThymPlatform;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
 import org.junit.Before;
@@ -98,8 +97,8 @@ public class CreateHybridApplication extends AerogearBotTest {
 		ProblemsView pview = new ProblemsView();
 		pview.open();
 
-		List<Problem> errors = pview.getProblems(ProblemType.ERROR, new ProblemsPathMatcher(new CordovaPathMatcher()));
-		List<Problem> warnings = pview.getProblems(ProblemType.WARNING, new ProblemsPathMatcher(new CordovaPathMatcher()));
+		List<Problem> errors = pview.getProblems(ProblemType.ERROR, new MarkerPathMatcher(new CordovaPathMatcher()));
+		List<Problem> warnings = pview.getProblems(ProblemType.WARNING, new MarkerPathMatcher(new CordovaPathMatcher()));
 		//errors in log
 		assertTrue(
 				"There were these errors for " + CORDOVA_PROJECT_NAME + " project " + Arrays.toString(errors.toArray()),

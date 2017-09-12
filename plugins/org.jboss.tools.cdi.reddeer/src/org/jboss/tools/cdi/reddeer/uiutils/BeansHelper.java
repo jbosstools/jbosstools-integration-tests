@@ -1,7 +1,7 @@
 package org.jboss.tools.cdi.reddeer.uiutils;
 
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewAnnotationLiteralCreationWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewBeanCreationWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewDecoratorCreationWizard;
@@ -14,9 +14,9 @@ import org.jboss.tools.cdi.reddeer.cdi.ui.NewStereotypeCreationWizard;
 public class BeansHelper {
 	
 	public void createClass(String name, String pckg){
-		NewJavaClassWizardDialog cd = new NewJavaClassWizardDialog();
+		NewClassCreationWizard cd = new NewClassCreationWizard();
 		cd.open();
-		NewJavaClassWizardPage cp = new NewJavaClassWizardPage();
+		NewClassWizardPage cp = new NewClassWizardPage(cd);
 		cp.setName(name);
 		cp.setPackage(pckg);
 		cd.finish();

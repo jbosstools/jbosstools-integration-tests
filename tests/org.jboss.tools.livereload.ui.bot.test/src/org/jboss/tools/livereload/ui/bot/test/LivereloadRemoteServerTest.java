@@ -12,12 +12,12 @@ package org.jboss.tools.livereload.ui.bot.test;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.eclipse.ui.browser.BrowserView;
-import org.jboss.reddeer.junit.execution.annotation.RunIf;
-import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.browser.WebBrowserView;
+import org.eclipse.reddeer.junit.execution.annotation.RunIf;
+import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.livereload.reddeer.Livereload;
 import org.jboss.tools.livereload.reddeer.condition.BrowserContainsText;
 import org.jboss.tools.livereload.reddeer.requirement.DockerWildflyRequirement.DockerWildfly;
@@ -44,7 +44,7 @@ public class LivereloadRemoteServerTest extends LivereloadBaseTest {
 		deployProjectToRemoteServer("wf", PROJECT_NAME);
 		injectLivereload("wf", PROJECT_NAME);
 
-		BrowserView bw = new BrowserView();
+		WebBrowserView bw = new WebBrowserView();
 		bw.open();
 		bw.openPageURL(Livereload.getLivereloadURL(PROJECT_NAME, pageName));
 		InternalBrowser ib = new InternalBrowser();

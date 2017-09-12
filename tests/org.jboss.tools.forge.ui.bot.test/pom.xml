@@ -12,7 +12,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<systemProperties>-Ddatabase.path=${test.database} -Djbosstools.test.wildfly10.home=${jbosstools.test.wildfly10.home} -Drd.config=${reddeer.config}</systemProperties>
-		<reddeer.config>${project.build.directory}/classes/servers/wildfly-10.xml</reddeer.config>
+		<reddeer.config>${project.build.directory}/classes/servers/wildfly-10.json</reddeer.config>
 		<jbosstools.test.wildfly10.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.wildfly10.home>
 		<test.database>${project.build.directory}/database/sakila-h2-master</test.database>
 	</properties>

@@ -3,23 +3,24 @@ package org.jboss.tools.ws.ui.bot.test.utils;
 import static org.junit.Assert.fail;
 
 import org.eclipse.swt.SWTException;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.api.Label;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.label.DefaultLabel;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.swt.api.Label;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.label.DefaultLabel;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceClientWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceClientWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
@@ -44,11 +45,11 @@ public class WebServiceClientHelper {
 		WebServiceClientWizard wizard = new WebServiceClientWizard();
 		wizard.open();
 
-		WebServiceClientWizardPage page = new WebServiceClientWizardPage();
-		new WaitWhile(new JobIsRunning(), TimePeriod.NORMAL, false);
+		WebServiceClientWizardPage page = new WebServiceClientWizardPage(wizard);
+		new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT, false);
 		
 		page.setSource(wsdl);
-		new WaitUntil(new WebServiceClientPageIsValidated(), TimePeriod.getCustom(2), true);
+		new WaitUntil(new WebServiceClientPageIsValidated(page), TimePeriod.getCustom(2), true);
 
 		page.setClientSlider(level);
 		page.setServerRuntime(serverName);
@@ -61,7 +62,7 @@ public class WebServiceClientHelper {
 
 		if (pkg != null && pkg.trim().length()>0) {
 			wizard.next();
-			new WaitWhile(new ShellWithTextIsAvailable("Progress Information"));
+			new WaitWhile(new ShellIsAvailable("Progress Information"));
 			new DefaultShell("Web Service Client");
 			page.setPackageName(pkg);
 		}
@@ -93,7 +94,7 @@ public class WebServiceClientHelper {
 
 	private static void checkErrorInConsoleOutput(String serverName, String projectName) {
 		ConsoleView consoleView = new ConsoleView();
-		if (!consoleView.isOpened()) {
+		if (!consoleView.isOpen()) {
 			consoleView.open();
 		}
 		selectServerConsole(serverName, consoleView);
@@ -148,7 +149,7 @@ public class WebServiceClientHelper {
 	 */
 	public static boolean projectIsDeployed(String serverName, String projectName) {
 		try {
-			ServersView sw = new ServersView();
+			ServersView2 sw = new ServersView2();
 			sw.getServer(serverName).getModule(projectName);
 			return true;
 		} catch(EclipseLayerException e) {
@@ -157,11 +158,14 @@ public class WebServiceClientHelper {
 	}
 
 	private static class WebServiceClientPageIsValidated extends AbstractWaitCondition {
-
-		private WebServiceClientWizardPage page = new WebServiceClientWizardPage();
-
+		
+		private WebServiceClientWizardPage page;
 		private static final String REQUIRED_TEXT = "Select a service definition and move the slider to set the level of client generation.";
 		private String infoText;
+		
+		public WebServiceClientPageIsValidated(WebServiceClientWizardPage page) {
+			this.page = page;
+		}
 		
 		@Override
 		public boolean test() {

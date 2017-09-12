@@ -1,5 +1,9 @@
 package org.jboss.tools.batch.ui.bot.test.wizard;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -10,11 +14,6 @@ import org.jboss.tools.batch.reddeer.wizard.BatchArtifacts;
 import org.jboss.tools.batch.reddeer.wizard.NewBatchArtifactWizardPage;
 import org.junit.Test;
 import org.xml.sax.SAXException;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import static org.junit.Assert.assertTrue;
 
 public class CreateBatchXMLArtifactTest extends AbstractCreateArtifactTest {
 
@@ -53,7 +52,7 @@ public class CreateBatchXMLArtifactTest extends AbstractCreateArtifactTest {
 	}
 	
 	private void assertBatchXMLFileExists() {
-		assertTrue(getProject().containsItem(new String[]{RESOURCES_FOLDER, META_INF_FOLDER, "batch.xml"}));
+		assertTrue(getProject().containsResource(new String[]{RESOURCES_FOLDER, META_INF_FOLDER, "batch.xml"}));
 	}
 	
 	private void assertBatchXMLFile() {

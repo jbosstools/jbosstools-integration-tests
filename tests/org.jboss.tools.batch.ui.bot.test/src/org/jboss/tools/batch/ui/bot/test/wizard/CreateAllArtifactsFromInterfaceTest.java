@@ -1,20 +1,19 @@
 package org.jboss.tools.batch.ui.bot.test.wizard;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertNull;
+
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.jboss.tools.batch.reddeer.wizard.BatchArtifacts;
 import org.jboss.tools.batch.reddeer.wizard.NewBatchArtifactWizardPage;
 import org.junit.Test;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.Parameterized.UseParametersRunnerFactory;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import static org.junit.Assert.assertNull;
 
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
 public class CreateAllArtifactsFromInterfaceTest extends AbstractCreateArtifactTest {

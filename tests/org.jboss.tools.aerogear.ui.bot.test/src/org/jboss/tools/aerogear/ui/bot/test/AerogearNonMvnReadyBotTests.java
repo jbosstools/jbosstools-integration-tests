@@ -14,7 +14,7 @@ import org.jboss.tools.aerogear.ui.bot.test.app.RunOnAndroid;
 import org.jboss.tools.aerogear.ui.bot.test.export.ExportMobileApplication;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 
 @SuiteClasses({ 
   ExportMobileApplication.class,

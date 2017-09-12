@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.jst.reddeer.npm.ui;
 
-import org.jboss.reddeer.jface.wizard.NewWizardDialog;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 
 /**
  * Represents the wizard for creating package.json file
@@ -18,9 +18,9 @@ import org.jboss.reddeer.jface.wizard.NewWizardDialog;
  * @author Pavol Srna
  *
  */
-public class NpmInitDialog extends NewWizardDialog {
+public class NpmInitDialog extends NewMenuWizard {
 
 	public NpmInitDialog() {
-		super("JavaScript", "npm Init");
+		super("npm Initialization Wizard", "JavaScript", "npm Init");
 	}
 }

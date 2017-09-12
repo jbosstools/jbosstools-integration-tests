@@ -10,11 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.batch.reddeer.editor.jobxml;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.eclipse.wst.xml.ui.tabletree.XMLSourcePage;
 import org.eclipse.ui.texteditor.ITextEditor;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.eclipse.wst.xml.ui.tabletree.XMLSourcePage;
 
 /**
  * Represents the source tab of job xml editor. 
@@ -63,11 +66,40 @@ public class JobXMLEditorSourcePage extends XMLSourcePage {
 		return this.evaluateXPath(xPathExpression);
 	}
 
-	@Override
 	public String evaluateXPath(String xPathExpression) {
-		// TODO Fix the hard-coded wait
-		AbstractWait.sleep(TimePeriod.SHORT);
-		return super.evaluateXPath(xPathExpression);
+		// TODO: Remove hard-coded wait
+		//AbstractWait.sleep(TimePeriod.getCustom(2));
+		return getAssociatedFile().xpath(xPathExpression);
+	}
+	
+	// convert InputStream to String
+	public static String getStringFromInputStream(InputStream is) {
+
+		BufferedReader br = null;
+		StringBuilder sb = new StringBuilder();
+
+		String line;
+		try {
+
+			br = new BufferedReader(new InputStreamReader(is));
+			while ((line = br.readLine()) != null) {
+				sb.append(line);
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return sb.toString();
+
 	}
 	
 	private String createExpression(String[] xPathElements) {

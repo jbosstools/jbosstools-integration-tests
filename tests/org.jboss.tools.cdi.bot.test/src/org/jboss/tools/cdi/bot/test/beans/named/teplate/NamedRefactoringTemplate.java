@@ -9,18 +9,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.CDIRefactorWizard;
 import org.jboss.tools.cdi.reddeer.uiutils.CollectionsUtil;
+import org.jboss.tools.cdi.reddeer.xhtml.NewXHTMLFileWizardPage;
+import org.jboss.tools.cdi.reddeer.xhtml.NewXHTMLWizard;
 import org.jboss.tools.common.reddeer.label.IDELabel;
-import org.jboss.tools.jst.reddeer.web.ui.NewXHTMLFileWizardPage;
-import org.jboss.tools.jst.reddeer.web.ui.NewXHTMLWizard;
 import org.junit.After;
 import org.junit.Test;
 
@@ -135,11 +135,11 @@ public abstract class NamedRefactoringTemplate extends CDITestBase {//extends JS
 	private void createXHTMLPage(String pageName) {
 		NewXHTMLWizard xhtmlWizard = new NewXHTMLWizard();
 		xhtmlWizard.open();
-		NewXHTMLFileWizardPage page = new NewXHTMLFileWizardPage();
-		page.setParentFolder(getProjectName() + "/" 
+		NewXHTMLFileWizardPage page = new NewXHTMLFileWizardPage(xhtmlWizard);
+		page.setDestination(getProjectName() + "/" 
 				+ IDELabel.WebProjectsTree.WEB_CONTENT 
 				+ "/pages");
-		page.setFileName(pageName);
+		page.setName(pageName);
 		xhtmlWizard.finish();
 		editResourceUtil.replaceClassContentByResource(pageName,
 				readFile("resources/jsf/"+pageName+".cdi"), false);
@@ -173,7 +173,7 @@ public abstract class NamedRefactoringTemplate extends CDITestBase {//extends JS
 		//TODO
 		new TextEditor(className + ".java").selectText(text);
 		AbstractWait.sleep(TimePeriod.SHORT);
-		new ContextMenu(IDELabel.Menu.CDI_REFACTOR,renameContextMenuText).select();
+		new ContextMenu().getItem(IDELabel.Menu.CDI_REFACTOR,renameContextMenuText).select();
 		new DefaultShell("Refactoring");	
 		
 		CDIRefactorWizard cdiRefactorWizard = new CDIRefactorWizard();

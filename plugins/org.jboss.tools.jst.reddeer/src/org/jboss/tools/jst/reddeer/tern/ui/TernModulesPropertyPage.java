@@ -11,7 +11,8 @@
 
 package org.jboss.tools.jst.reddeer.tern.ui;
 
-import org.jboss.reddeer.eclipse.ui.dialogs.PropertyPage;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyPage;
 
 /**
  * RedDeer implementation of Tern Modules Preferences page 
@@ -20,8 +21,8 @@ import org.jboss.reddeer.eclipse.ui.dialogs.PropertyPage;
  */
 public class TernModulesPropertyPage extends PropertyPage {
 	
-	public TernModulesPropertyPage() {
-		super("JavaScript", "Modules");
+	public TernModulesPropertyPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite ,"JavaScript", "Modules");
 	}
 
 }

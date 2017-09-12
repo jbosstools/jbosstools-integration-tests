@@ -12,18 +12,12 @@
 package org.jboss.tools.deltaspike.ui.bot.test;
 
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
 import org.jboss.tools.deltaspike.ui.bot.test.condition.SpecificProblemExists;
 import org.junit.After;
 import org.junit.Test;
@@ -32,7 +26,7 @@ import org.junit.Test;
  * Test @MessageBundle annotation, with following approach:
  * 
  * 1. try to inject interface directly (no bean eligible validation problem)
- * 2. annotate interface with MessageBundle annotation -> deltaspike will 
+ * 2. annotate interface with Mess	ageBundle annotation -> deltaspike will 
  * 	  automatically create producer for interface annotated with such an annotation
  *    -> no validation marker 
  * 

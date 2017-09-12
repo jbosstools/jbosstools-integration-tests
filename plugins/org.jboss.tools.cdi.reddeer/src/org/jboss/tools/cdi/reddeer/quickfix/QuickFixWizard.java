@@ -3,11 +3,11 @@ package org.jboss.tools.cdi.reddeer.quickfix;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 
 public class QuickFixWizard {
 	
@@ -65,7 +65,7 @@ public class QuickFixWizard {
 	public void finish(){
 		String shellTitle = new DefaultShell().getText();
 		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsActive(shellTitle));
+		new WaitWhile(new ShellIsAvailable(shellTitle));
 	}
 
 }

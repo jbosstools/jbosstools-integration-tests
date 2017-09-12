@@ -12,17 +12,17 @@ package org.jboss.tools.vpe.bot.test.html5.jquery;
 
 import static org.junit.Assert.*;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.condition.ShellIsAvailable;
-import org.jboss.reddeer.swt.impl.button.FinishButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.jboss.tools.jst.reddeer.palette.JQueryMobilePalette;
 import org.jboss.tools.vpe.bot.test.VPETestBase;
 import org.jboss.tools.vpe.reddeer.condition.VPVBackIsEnabled;
@@ -56,7 +56,7 @@ public class MultiPageNavigation extends VPETestBase{
 		new WaitUntil(new SiteHasTitle(vpvEditor, page0, page1), TimePeriod.LONG);
 		new WaitUntil(new ElementIsFound(vpvEditor, "pageButton"));
 		//we still have to wait because Windows browser sucks
-		AbstractWait.sleep(TimePeriod.NORMAL);
+		AbstractWait.sleep(TimePeriod.DEFAULT);
 		boolean executed = vpvEditor.executeScript("$(\"#pageButton\").click()");
 		assertTrue(executed);
 		new WaitUntil(new JQueryIsReady(vpvEditor));

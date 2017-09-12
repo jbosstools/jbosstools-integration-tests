@@ -2,15 +2,15 @@ package org.jboss.tools.jst.reddeer.web.ui.editor.jspeditor;
 
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
-import org.jboss.reddeer.core.handler.WidgetHandler;
-import org.jboss.reddeer.core.lookup.EditorPartLookup;
-import org.jboss.reddeer.core.util.Display;
-import org.jboss.reddeer.core.util.ResultRunnable;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabFolder;
-import org.jboss.reddeer.workbench.api.Editor;
-import org.jboss.reddeer.workbench.exception.WorkbenchLayerException;
-import org.jboss.reddeer.workbench.impl.editor.AbstractEditor;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.workbench.core.lookup.EditorPartLookup;
+import org.eclipse.reddeer.common.util.Display;
+import org.eclipse.reddeer.common.util.ResultRunnable;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabFolder;
+import org.eclipse.reddeer.workbench.api.Editor;
+import org.eclipse.reddeer.workbench.exception.WorkbenchLayerException;
+import org.eclipse.reddeer.workbench.impl.editor.AbstractEditor;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.core.handler.CTabItemHandler;
 
 /*******************************************************************************
  * Copyright (c) 2016 Red Hat, Inc. Distributed under license by Red Hat, Inc.
@@ -68,7 +68,7 @@ public class JSPMultiPageEditor extends AbstractEditor implements Editor {
 		org.eclipse.swt.custom.CTabItem[] tabItem = getTabItems(new DefaultCTabFolder().getSWTWidget());
 		String[] tabItemLabel = new String[tabItem.length];
 		for (int i = 0; i < tabItem.length; i++) {
-			tabItemLabel[i] = WidgetHandler.getInstance().getText(tabItem[i]);
+			tabItemLabel[i] = CTabItemHandler.getInstance().getText(tabItem[i]);
 		}
 		return tabItemLabel;
 	}

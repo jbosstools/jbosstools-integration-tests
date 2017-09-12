@@ -12,8 +12,8 @@ package org.jboss.tools.browsersim.reddeer.condition;
 
 import java.rmi.RemoteException;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
 import org.jboss.tools.browsersim.rmi.IBrowsersimHandler;
 
 public class BrowserSimBrowserHasText extends AbstractWaitCondition{

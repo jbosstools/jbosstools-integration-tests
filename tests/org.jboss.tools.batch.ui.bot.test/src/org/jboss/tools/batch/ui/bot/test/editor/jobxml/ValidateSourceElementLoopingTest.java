@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.batch.ui.bot.test.editor.jobxml;
 
-import org.jboss.reddeer.eclipse.wst.xml.ui.tabletree.XMLSourcePage;
+import org.eclipse.reddeer.eclipse.wst.xml.ui.tabletree.XMLSourcePage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

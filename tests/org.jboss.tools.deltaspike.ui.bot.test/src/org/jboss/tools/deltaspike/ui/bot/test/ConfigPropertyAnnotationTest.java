@@ -13,13 +13,13 @@ package org.jboss.tools.deltaspike.ui.bot.test;
 
 import static org.junit.Assert.fail;
 
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.tools.deltaspike.ui.bot.test.condition.SpecificProblemExists;
 import org.jboss.tools.deltaspike.ui.bot.test.exception.DeltaspikeTestInFailureException;
 import org.junit.After;
@@ -78,7 +78,7 @@ public class ConfigPropertyAnnotationTest extends DeltaspikeTestBase {
 		insertIntoFile(projectName, "test", "Test.java", 2, 0,
 				"import org.apache.deltaspike.core.api.config.ConfigProperty; \n");
 		try {
-			new WaitWhile(new SpecificProblemExists(validationProblemRegexMatcher), TimePeriod.NORMAL);
+			new WaitWhile(new SpecificProblemExists(validationProblemRegexMatcher), TimePeriod.DEFAULT);
 		} catch (WaitTimeoutExpiredException ex) {
 			fail("this is known issue JBIDE-13554");
 		}

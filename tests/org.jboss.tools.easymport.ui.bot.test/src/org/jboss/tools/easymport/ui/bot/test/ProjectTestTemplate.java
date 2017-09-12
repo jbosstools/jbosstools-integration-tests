@@ -14,16 +14,23 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
-import org.jboss.reddeer.eclipse.ui.views.log.LogView;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.eclipse.ui.views.log.LogMessage;
+import org.eclipse.reddeer.eclipse.ui.views.log.LogView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.jboss.tools.easymport.reddeer.wizard.ImportedProject;
 import org.jboss.tools.easymport.reddeer.wizard.ProjectProposal;
 import org.jboss.tools.easymport.reddeer.wizard.SmartImportRootWizardPage;
@@ -34,9 +41,11 @@ import org.junit.Test;
 
 public abstract class ProjectTestTemplate {
 
+	Set<String> ignoredErrors = new HashSet<>(Arrays.asList("Current Eclipse instance does not support software installation."));
+
 	@After
 	public void cleanup() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		for (Project p : new ProjectExplorer().getProjects()) {
 			p.delete(false);
 		}
@@ -46,9 +55,9 @@ public abstract class ProjectTestTemplate {
 		logView.open();
 		logView.deleteLog();
 	}
-	
+
 	@BeforeClass
-	public static void setupClass(){
+	public static void setupClass() {
 		LogView logView = new LogView();
 		logView.open();
 		logView.deleteLog();
@@ -58,13 +67,14 @@ public abstract class ProjectTestTemplate {
 	public void testImport() {
 		SmartImportWizard easymportWizard = new SmartImportWizard();
 		easymportWizard.open();
-		SmartImportRootWizardPage selectImportRootWizardPage = new SmartImportRootWizardPage();
+		SmartImportRootWizardPage selectImportRootWizardPage = new SmartImportRootWizardPage(easymportWizard);
 		String path = getProjectPath().getAbsolutePath();
 		selectImportRootWizardPage.selectDirectory(path);
 		selectImportRootWizardPage.setSearchForNestedProjects(true);
 		selectImportRootWizardPage.setDetectAndConfigureNatures(true);
-		
-		//check proposals
+		new WaitUntil(new ControlIsEnabled(new FinishButton()), TimePeriod.LONG);
+
+		// check proposals
 		List<ProjectProposal> allProjectProposals = selectImportRootWizardPage.getAllProjectProposals();
 		List<ProjectProposal> expectedProposals = getExpectedProposals();
 		assertEquals(expectedProposals.size(), allProjectProposals.size());
@@ -75,11 +85,11 @@ public abstract class ProjectTestTemplate {
 			}
 		}
 		easymportWizard.finish();
-		
-		//check imported project
+
+		// check imported project
 		checkErrorLog();
 		checkProblemsView();
-		
+
 		cehckImportedProject();
 	}
 
@@ -87,7 +97,22 @@ public abstract class ProjectTestTemplate {
 		LogView logView = new LogView();
 		logView.open();
 		List<LogMessage> errorMessages = logView.getErrorMessages();
-		assertEquals("There are errors in error log: "+errorMessages, 0, errorMessages.size());
+
+		if (errorMessages.size() == 1 && errorMessages.get(0).getMessage()
+				.contains("Current Eclipse instance does not support software installation.")) {
+			errorMessages.remove(0);
+		}
+		
+		int exceptedErrors = 0;
+		
+		// Increase exceptedErrors if log contains error which can be ignored.		
+		for (LogMessage logMessage : errorMessages) {
+		    if (ignoredErrors.contains(logMessage.getMessage())) {
+		    	exceptedErrors++;
+		    }
+		}
+
+		assertEquals("There are errors in error log: " + errorMessages, exceptedErrors, errorMessages.size());
 	}
 
 	private void checkProblemsView() {
@@ -103,8 +128,7 @@ public abstract class ProjectTestTemplate {
 	abstract List<ProjectProposal> getExpectedProposals();
 
 	abstract List<ImportedProject> getExpectedImportedProjects();
-	
-	
+
 	/**
 	 * Checks whether the project was imported correctly.
 	 * 

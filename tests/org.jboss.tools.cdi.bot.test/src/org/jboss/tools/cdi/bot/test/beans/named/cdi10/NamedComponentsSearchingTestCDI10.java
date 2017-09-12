@@ -11,12 +11,14 @@
 
 package org.jboss.tools.cdi.bot.test.beans.named.cdi10;
 
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.jboss.tools.cdi.bot.test.beans.named.teplate.NamedComponentsSearchingTemplate;
+import org.jboss.tools.cdi.reddeer.matcher.ServerMatcher;
 
 /**
  * Test operates on @Named searching  
@@ -24,8 +26,12 @@ import org.jboss.tools.cdi.bot.test.beans.named.teplate.NamedComponentsSearching
  * @author Jaroslav Jankovic, Rastislav Wagner
  * 
  */
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.AS7_1, cleanup=false)
+@JBossServer(state=ServerRequirementState.PRESENT, cleanup=false)
 @OpenPerspective(JavaEEPerspective.class)
 public class NamedComponentsSearchingTestCDI10 extends NamedComponentsSearchingTemplate {
 
+	@RequirementRestriction
+	public static RequirementMatcher getRestrictionMatcher() {
+	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.Eap());
+	}
 }

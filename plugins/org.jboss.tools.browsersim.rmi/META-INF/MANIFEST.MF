@@ -7,9 +7,11 @@ Bundle-Vendor: JBoss by Red Hat
 Require-Bundle: org.eclipse.swt,
  org.jboss.tools.browsersim.ui,
  org.hamcrest.core,
- org.jboss.tools.browsersim.browser
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+ org.jboss.tools.browsersim.browser,
+ org.eclipse.reddeer.common,
+ org.eclipse.reddeer.core,
+ org.eclipse.reddeer.swt
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.jboss.tools.browsersim.rmi,
- org.jboss.tools.browsersim.wait,
- org.jboss.tools.browsersim.widgets
+ org.jboss.tools.browsersim.wait

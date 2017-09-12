@@ -12,16 +12,16 @@ package org.jboss.tools.vpe.bot.test.preferences;
 
 import static org.junit.Assert.*;
 
-import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.junit.execution.annotation.RunIf;
-import org.jboss.reddeer.swt.api.Shell;
-import org.jboss.reddeer.swt.condition.ShellIsAvailable;
-import org.jboss.reddeer.swt.impl.button.CancelButton;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.label.DefaultLabel;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.junit.execution.annotation.RunIf;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.label.DefaultLabel;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.vpe.bot.test.JSFEngineShoudRun;
 import org.jboss.tools.vpe.bot.test.VPETestBase;
 import org.jboss.tools.vpe.reddeer.preferences.VisualPageEditorPreferencePage;
@@ -33,7 +33,7 @@ public class BrowserEnginePreferencesTest extends VPETestBase{
 	public void testDefaultBrowserEngine(){
 		WorkbenchPreferenceDialog wd = new WorkbenchPreferenceDialog();
 		wd.open();
-		VisualPageEditorPreferencePage vp = new VisualPageEditorPreferencePage();
+		VisualPageEditorPreferencePage vp = new VisualPageEditorPreferencePage(wd);
 		wd.select(vp);
 		if(isLinux()){
 			assertTrue(vp.isHTML5Engine());
@@ -54,7 +54,7 @@ public class BrowserEnginePreferencesTest extends VPETestBase{
 	public void testBrowserEngineRestartPreferences(){
 		WorkbenchPreferenceDialog wd = new WorkbenchPreferenceDialog();
 		wd.open();
-		VisualPageEditorPreferencePage vp = new VisualPageEditorPreferencePage();
+		VisualPageEditorPreferencePage vp = new VisualPageEditorPreferencePage(wd);
 		wd.select(vp);
 		if(isGTK2()){
 			testGTK2EnginePreferences(wd,vp);
