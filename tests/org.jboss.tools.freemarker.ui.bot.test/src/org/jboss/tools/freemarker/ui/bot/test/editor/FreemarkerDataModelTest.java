@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.freemarker.ui.bot.test.editor;
 
-import org.jboss.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.logging.Logger;
 import org.junit.Test;
 
 
