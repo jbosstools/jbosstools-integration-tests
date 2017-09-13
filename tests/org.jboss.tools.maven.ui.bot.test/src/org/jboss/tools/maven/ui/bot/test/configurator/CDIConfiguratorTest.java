@@ -10,14 +10,13 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test.configurator;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasNature;
 import org.junit.Test;
 /**
@@ -25,7 +24,7 @@ import org.junit.Test;
  * 
  */
 @OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
+@JBossServer(state=ServerRequirementState.PRESENT)
 public class CDIConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	public static final String CDI_API_VERSION1_1="1.1";
@@ -76,14 +75,14 @@ public class CDIConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@Test
 	public void testCDIConfigurator() {
-		createWebProject(PROJECT_NAME_CDI, sr.getRuntimeNameLabelText(sr.getConfig()),false);
+		createWebProject(PROJECT_NAME_CDI, sr.getRuntimeNameLabelText(),false);
 		convertToMavenProject(PROJECT_NAME_CDI, "war", true);
 		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI, CDI_FACET, "1.2"));
 	}
 	
 	@Test
 	public void testCDIConfiguratorEjb() {
-		createEJBProject(PROJECT_NAME_CDI_EJB, sr.getRuntimeNameLabelText(sr.getConfig()));
+		createEJBProject(PROJECT_NAME_CDI_EJB, sr.getRuntimeNameLabelText());
 		convertToMavenProject(PROJECT_NAME_CDI_EJB, "ejb", true);
 		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI_EJB, CDI_FACET, "1.2"));
 	}

@@ -10,11 +10,10 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test.project;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.DefineMavenRepository;
 import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.PredefinedMavenRepository;
 import org.jboss.tools.maven.reddeer.wizards.MavenProjectWizard;
@@ -27,7 +26,7 @@ import org.junit.Test;
  * 
  */
 @OpenPerspective(JavaPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
+@JBossServer(state=ServerRequirementState.RUNNING)
 @DefineMavenRepository(predefinedRepositories = { @PredefinedMavenRepository(ID="jboss-public-repository",snapshots=true) })
 public class ArchetypesTest extends AbstractMavenSWTBotTest{
 	
@@ -44,10 +43,10 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 		MavenProjectWizard md = new MavenProjectWizard();
 		md.open();
 		md.next();
-		MavenProjectWizardSecondPage fp = new MavenProjectWizardSecondPage();
+		MavenProjectWizardSecondPage fp = new MavenProjectWizardSecondPage(md);
 		fp.selectArchetype(catalog, type);
 		md.next();
-		MavenProjectWizardThirdPage tp = new MavenProjectWizardThirdPage();
+		MavenProjectWizardThirdPage tp = new MavenProjectWizardThirdPage(md);
 		tp.setGAV(name, name, null);
 		md.finish();
 	}

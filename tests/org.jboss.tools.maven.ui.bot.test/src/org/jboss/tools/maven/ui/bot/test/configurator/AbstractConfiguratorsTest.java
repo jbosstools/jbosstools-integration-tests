@@ -16,20 +16,20 @@ import static org.junit.Assert.assertTrue;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jst.ejb.ui.EjbProjectFirstPage;
-import org.jboss.reddeer.eclipse.jst.ejb.ui.EjbProjectWizard;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.jst.ejb.ui.project.facet.EjbProjectFirstPage;
+import org.eclipse.reddeer.eclipse.jst.ejb.ui.project.facet.EjbProjectWizard;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.jboss.tools.maven.ui.bot.test.utils.EditorResourceHelper;
 import org.junit.After;
@@ -68,14 +68,14 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(projectName).select();
-		new ContextMenu("New","Other...").select();
-		new WaitUntil(new ShellWithTextIsActive("New"),TimePeriod.NORMAL);
+		new ContextMenuItem("New","Other...").select();
+		new WaitUntil(new ShellIsAvailable("New"),TimePeriod.DEFAULT);
 		new DefaultTreeItem("XML","XML File").select();
 		new PushButton("Next >").click();
 		new LabeledText("Enter or select the parent folder:").setText(projectName+"/src/META-INF");
 		new LabeledText("File name:").setText("persistence.xml");
 		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsActive("New XML File"),TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsAvailable("New XML File"),TimePeriod.DEFAULT);
 		
 		new DefaultEditor("persistence.xml");
 		new DefaultCTabItem("Source").activate();
@@ -99,7 +99,7 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 	public void createEJBProject(String name, String runtime) {
 	    EjbProjectWizard ejb = new EjbProjectWizard();
 		ejb.open();
-		EjbProjectFirstPage efp = new EjbProjectFirstPage();
+		EjbProjectFirstPage efp = new EjbProjectFirstPage(ejb);
 		efp.setProjectName(name);
 		if(runtime == null){
 			efp.setTargetRuntime("<None>");
@@ -113,7 +113,7 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(projectName).select();
-		new ContextMenu("New","Other...").select();
+		new ContextMenuItem("New","Other...").select();
 		new DefaultTreeItem("JBoss Tools Web","JSF","Faces Config").select();
 		new PushButton("Next >").click();
 		new PushButton("Browse...").click();

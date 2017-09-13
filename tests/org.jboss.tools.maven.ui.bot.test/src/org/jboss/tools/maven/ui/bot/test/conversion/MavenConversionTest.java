@@ -8,43 +8,42 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.condition.ProblemExists;
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.link.AnchorLink;
+import org.eclipse.reddeer.swt.impl.link.DefaultLink;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.eclipse.condition.ProblemExists;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.dialogs.PropertyDialog;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.link.AnchorLink;
-import org.jboss.reddeer.swt.impl.link.DefaultLink;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.DefineMavenRepository;
 import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.MavenRepository;
 import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.PredefinedMavenRepository;
@@ -53,7 +52,7 @@ import org.junit.After;
 import org.junit.Test;
 
 @OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
+@JBossServer(state=ServerRequirementState.PRESENT)
 @DefineMavenRepository(
 		predefinedRepositories = { 
 				@PredefinedMavenRepository(ID="jboss-public-repository",snapshots=true) },
@@ -98,7 +97,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
             }
         }
 		pd.ok();
-		new WaitWhile(new ShellWithTextIsActive("Properties for "+WEB_PROJECT_NAME),TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsAvailable("Properties for "+WEB_PROJECT_NAME),TimePeriod.DEFAULT);
 	}
 	
 	@Test
@@ -127,11 +126,11 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 					libs.get(i).contains(expectedLibsKeep.get(i)));
 			if(libs.get(i).contains("Runtime")){
 				assertTrue("Wrong runtime added after conversion",
-						libs.get(i).contains(sr.getRuntimeNameLabelText(sr.getConfig())));
+						libs.get(i).contains(sr.getRuntimeNameLabelText()));
 			}
 		}
 		pd.ok();
-		new WaitWhile(new ShellWithTextIsActive("Properties for "+WEB_PROJECT_NAME),TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsAvailable("Properties for "+WEB_PROJECT_NAME),TimePeriod.DEFAULT);
 	}
 	
 	@Test
@@ -217,14 +216,14 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	private void createWithRuntime(){
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		createWebProject(WEB_PROJECT_NAME, sr.getRuntimeNameLabelText(sr.getConfig()), false);
+		createWebProject(WEB_PROJECT_NAME, sr.getRuntimeNameLabelText(), false);
 		pe.open();
 		pe.getProject(WEB_PROJECT_NAME).select();
-		new ContextMenu("Configure","Convert to Maven Project").select();
+		new ContextMenuItem("Configure","Convert to Maven Project").select();
 		new DefaultShell("Create new POM");
 		new PushButton("Finish").click();
 		new DefaultShell("Convert to Maven Dependencies");
-		new WaitUntil(new WidgetIsEnabled(new PushButton("Finish")), TimePeriod.LONG);
+		new WaitUntil(new ControlIsEnabled(new PushButton("Finish")), TimePeriod.LONG);
 	}
 		
 	
@@ -241,7 +240,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	}
 	
 	private void checkProblemsAndResolve(){
-		new WaitUntil(new ProblemExists(ProblemType.ERROR),TimePeriod.NORMAL,false);
+		new WaitUntil(new ProblemExists(ProblemType.ERROR),TimePeriod.DEFAULT,false);
 		ProblemsView pw = new ProblemsView();
 		pw.open();
 		if(pw.getProblems(ProblemType.ERROR).size() > 0){
@@ -256,7 +255,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	}
 	
 	private void finishConversionDialog(){
-		new WaitUntil(new WidgetIsEnabled(new PushButton("Finish")));
+		new WaitUntil(new ControlIsEnabled(new PushButton("Finish")));
 		new PushButton("Finish").click();
 		int i =1;
 		while(i>0){

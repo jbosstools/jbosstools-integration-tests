@@ -4,21 +4,21 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.m2e.core.ui.wizard.MavenCheckoutWizard;
-import org.jboss.reddeer.eclipse.m2e.scm.wizard.MavenCheckoutLocationPage;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.swt.api.Tree;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.eclipse.m2e.scm.wizards.MavenCheckoutWizard;
+import org.eclipse.reddeer.eclipse.m2e.scm.wizards.MavenCheckoutLocationPage;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.swt.api.Tree;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class SCMCheckoutProject extends AbstractMavenSWTBotTest {
 	public void checkoutAllProjectsFromSCM() {
 		MavenCheckoutWizard mc = new MavenCheckoutWizard();
 		mc.open();
-		MavenCheckoutLocationPage ml = new MavenCheckoutLocationPage();
+		MavenCheckoutLocationPage ml = new MavenCheckoutLocationPage(mc);
 		assertEquals(1, ml.getAvailableSCMTypes().size());
 		ml.setSCMURL("https://github.com/rawagner/eclipse_tutorial");
 		assertTrue(ml.isCheckoutAllProjects());
@@ -57,7 +57,7 @@ public class SCMCheckoutProject extends AbstractMavenSWTBotTest {
 	public void checkoutProjectFromSCM() {
 		MavenCheckoutWizard mc = new MavenCheckoutWizard();
 		mc.open();
-		MavenCheckoutLocationPage ml = new MavenCheckoutLocationPage();
+		MavenCheckoutLocationPage ml = new MavenCheckoutLocationPage(mc);
 		assertEquals(1, ml.getAvailableSCMTypes().size());
 		ml.setSCMURL("https://github.com/rawagner/eclipse_tutorial");
 		assertTrue(ml.isCheckoutAllProjects());
@@ -75,7 +75,7 @@ public class SCMCheckoutProject extends AbstractMavenSWTBotTest {
 			}
 		}
 		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsAvailable("Import Maven Projects"),TimePeriod.LONG);
+		new WaitWhile(new ShellIsAvailable("Import Maven Projects"),TimePeriod.LONG);
 		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 		ignoreM2eConnectors();
 		ProjectExplorer pe = new ProjectExplorer();
@@ -86,7 +86,7 @@ public class SCMCheckoutProject extends AbstractMavenSWTBotTest {
 	
 	private void ignoreM2eConnectors(){
 		try{
-			new ShellWithTextIsAvailable("Discover m2e connectors");
+			new ShellIsAvailable("Discover m2e connectors");
 			new PushButton("Cancel").click();
 		}catch(CoreLayerException ex){
 			//The shell "Discover m2e connectors" is shown only if these connectors are not installed.

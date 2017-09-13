@@ -12,29 +12,28 @@ package org.jboss.tools.maven.ui.bot.test.conversion;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.ui.dialogs.PropertyDialog;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +42,7 @@ import org.junit.Test;
  * 
  */
 @OpenPerspective(JavaPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
+@JBossServer(state=ServerRequirementState.PRESENT)
 public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 	
 	private String projectName = "example";
@@ -61,7 +60,7 @@ public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 	
 	@Test
 	public void testMaterializeLibrary() throws Exception{
-		new ShellMenu("File","New","Example...").select();
+		new ShellMenuItem("File","New","Example...").select();
 		new DefaultTreeItem("JBoss Tools","Project Examples").select();
 		new PushButton("Next >").click();
 		new DefaultShell("New Project Example");
@@ -71,23 +70,23 @@ public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 		new LabeledCombo("Project name").setText(projectName);
 		new LabeledCombo("Package").setText(projectName);
 		new PushButton("Finish").click();
-		new WaitWhile(new ShellWithTextIsActive("New Project Example"), TimePeriod.VERY_LONG);
+		new WaitWhile(new ShellIsAvailable("New Project Example"), TimePeriod.VERY_LONG);
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		PackageExplorer pexplorer = new PackageExplorer();
+		PackageExplorerPart pexplorer = new PackageExplorerPart();
 		pexplorer.open();
 		new	DefaultTreeItem(projectName,"Maven Dependencies").select();
-		new ContextMenu("Copy Classpath Libraries...").select();
-		new WaitUntil(new ShellWithTextIsActive("Copy Classpath Libraries"),TimePeriod.NORMAL);
+		new ContextMenuItem("Copy Classpath Libraries...").select();
+		new WaitUntil(new ShellIsAvailable("Copy Classpath Libraries"),TimePeriod.DEFAULT);
 		new PushButton("OK").click();
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsActive("Materialize Classpath Library"), TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsAvailable("Materialize Classpath Library"), TimePeriod.DEFAULT);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		testExcludedResources(projectName);
 	}
 	
 	private void testExcludedResources(String project) throws Exception{
 		PropertyDialog pd = openPropertiesPackage(project);
-		new WaitUntil(new ShellWithTextIsActive("Properties for "+project),TimePeriod.NORMAL);
+		new WaitUntil(new ShellIsAvailable("Properties for "+project),TimePeriod.DEFAULT);
 		new DefaultTreeItem("Java Build Path").select();
 		new DefaultTabItem("Source").activate();
 		for(TreeItem item: new DefaultTree(1).getAllItems()){
@@ -98,7 +97,7 @@ public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 			}
 		}
 		pd.ok();
-		new WaitWhile(new ShellWithTextIsActive("Properties for "+project),TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsAvailable("Properties for "+project),TimePeriod.DEFAULT);
 		deleteProjects(true);
 	}
 	

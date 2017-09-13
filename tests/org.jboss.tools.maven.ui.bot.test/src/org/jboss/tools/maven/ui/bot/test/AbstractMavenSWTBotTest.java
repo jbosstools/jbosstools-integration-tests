@@ -21,51 +21,48 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.AbstractWait;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.matcher.WithTextMatchers;
-import org.jboss.reddeer.eclipse.condition.ProjectExists;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectFirstPage;
-import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectThirdPage;
-import org.jboss.reddeer.eclipse.jst.servlet.ui.WebProjectWizard;
-import org.jboss.reddeer.eclipse.m2e.core.ui.wizard.MavenProjectWizard;
-import org.jboss.reddeer.eclipse.m2e.core.ui.wizard.MavenProjectWizardArtifactPage;
-import org.jboss.reddeer.eclipse.m2e.core.ui.wizard.MavenProjectWizardPage;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
-import org.jboss.reddeer.eclipse.ui.dialogs.PropertyDialog;
-import org.jboss.reddeer.swt.api.StyledText;
-import org.jboss.reddeer.swt.condition.WidgetIsEnabled;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.api.Editor;
-import org.jboss.reddeer.workbench.handler.EditorHandler;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.core.matcher.WithTextMatchers;
+import org.eclipse.reddeer.eclipse.condition.ProjectExists;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
+import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectThirdPage;
+import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectWizard;
+import org.eclipse.reddeer.eclipse.m2e.core.ui.wizard.MavenProjectWizard;
+import org.eclipse.reddeer.eclipse.m2e.core.ui.wizard.MavenProjectWizardArtifactPage;
+import org.eclipse.reddeer.eclipse.m2e.core.ui.wizard.MavenProjectWizardPage;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.swt.api.StyledText;
+import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.api.Editor;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.handler.EditorHandler;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.reddeer.preferences.MavenPreferencePage;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsBuilt;
 import org.junit.AfterClass;
@@ -80,7 +77,7 @@ public abstract class AbstractMavenSWTBotTest{
 		new WorkbenchShell().maximize();
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		MavenPreferencePage mpreferencesp = new MavenPreferencePage();
+		MavenPreferencePage mpreferencesp = new MavenPreferencePage(preferenceDialog);
 		preferenceDialog.select(mpreferencesp);
 		mpreferencesp.updateIndexesOnStartup(false);
 		preferenceDialog.ok();
@@ -95,11 +92,11 @@ public abstract class AbstractMavenSWTBotTest{
 		pe.open();
 		for(Project p: pe.getProjects()){
 			try{
-				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+				org.eclipse.reddeer.direct.project.Project.delete(p.getName(), true, true);
 			} catch (Exception ex) {
-				AbstractWait.sleep(TimePeriod.NORMAL);
+				AbstractWait.sleep(TimePeriod.DEFAULT);
 				if(!p.getTreeItem().isDisposed()){
-					org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+					org.eclipse.reddeer.direct.project.Project.delete(p.getName(), true, true);
 				}
 			}
 		}
@@ -107,23 +104,23 @@ public abstract class AbstractMavenSWTBotTest{
 	
 	public boolean hasNature(String projectName, String version, String... natureID){
 		PropertyDialog pd = openPropertiesProject(projectName);
-		new WaitUntil(new ShellWithTextIsActive("Properties for "+projectName), TimePeriod.NORMAL);
+		new WaitUntil(new ShellIsAvailable("Properties for "+projectName), TimePeriod.DEFAULT);
 		new DefaultTreeItem("Project Facets").select();
 		boolean result = new DefaultTreeItem(new DefaultTree(1),natureID).isChecked();
 		if(version!=null){
 			result = result && new DefaultTreeItem(new DefaultTree(1),natureID).getCell(1).equals(version);
 		}
 		pd.ok();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+projectName), TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsAvailable("Properties for "+projectName), TimePeriod.DEFAULT);
 		return result;
 	}
 	
 	protected void addDependency(String projectName, String groupId, String artifactId, String version){
-		PackageExplorer pexplorer = new PackageExplorer();
+		PackageExplorerPart pexplorer = new PackageExplorerPart();
 		pexplorer.open();
 		pexplorer.getProject(projectName).select();
-		new ContextMenu("Maven","Add Dependency").select();
-		new WaitUntil(new ShellWithTextIsActive("Add Dependency"), TimePeriod.NORMAL);
+		new ContextMenuItem("Maven","Add Dependency").select();
+		new WaitUntil(new ShellIsAvailable("Add Dependency"), TimePeriod.DEFAULT);
 		new LabeledText("Group Id:").setText(groupId);
 		new LabeledText("Artifact Id:").setText(artifactId);
 		new LabeledText("Version: ").setText(version);
@@ -133,11 +130,11 @@ public abstract class AbstractMavenSWTBotTest{
 	}
 	
 	public void addPlugin(String projectName, String groupId, String artifactId, String version){
-		PackageExplorer pexplorer = new PackageExplorer();
+		PackageExplorerPart pexplorer = new PackageExplorerPart();
 		pexplorer.open();
 		pexplorer.getProject(projectName).select();
-		new ContextMenu("Maven","Add Plugin").select();
-		new WaitUntil(new ShellWithTextIsActive("Add Plugin"), TimePeriod.NORMAL);
+		new ContextMenuItem("Maven","Add Plugin").select();
+		new WaitUntil(new ShellIsAvailable("Add Plugin"), TimePeriod.DEFAULT);
 		new LabeledText("Group Id:").setText(groupId);
 		new LabeledText("Artifact Id:").setText(artifactId);
 		new LabeledText("Version: ").setText(version);
@@ -150,14 +147,14 @@ public abstract class AbstractMavenSWTBotTest{
 	}
 	
 	protected static void updateConf(String projectName,boolean forceDependencies){
-		PackageExplorer pexplorer = new PackageExplorer();
+		PackageExplorerPart pexplorer = new PackageExplorerPart();
 		pexplorer.open();
 		pexplorer.getProject(projectName).select();
-		new ContextMenu("Maven","Update Project...").select();
-		new WaitUntil(new ShellWithTextIsActive("Update Maven Project"),TimePeriod.LONG);
+		new ContextMenuItem("Maven","Update Project...").select();
+		new WaitUntil(new ShellIsAvailable("Update Maven Project"),TimePeriod.LONG);
 		new CheckBox("Force Update of Snapshots/Releases").toggle(forceDependencies);
 		new PushButton("OK").click();
-		new WaitWhile(new ShellWithTextIsAvailable("Update Maven Project"),TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsAvailable("Update Maven Project"),TimePeriod.DEFAULT);
 		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 	}
 	
@@ -169,14 +166,14 @@ public abstract class AbstractMavenSWTBotTest{
 		} catch (CoreLayerException ex){
 			//there's not clear console button, since nothing run before
 		}
-		PackageExplorer pexplorer = new PackageExplorer();
+		PackageExplorerPart pexplorer = new PackageExplorerPart();
 		pexplorer.open();
 		pexplorer.getProject(projectName).select();
 		RegexMatcher rm1 = new RegexMatcher("Run As");
 		RegexMatcher rm2 = new RegexMatcher(mavenBuild);
 		WithTextMatchers m = new WithTextMatchers(rm1,rm2);
-		new ContextMenu(m.getMatchers()).select();
-		new WaitUntil(new ShellWithTextIsActive("Edit Configuration"),TimePeriod.NORMAL);
+		new ContextMenuItem(m.getMatchers()).select();
+		new WaitUntil(new ShellIsAvailable("Edit Configuration"),TimePeriod.DEFAULT);
 		new LabeledText("Goals:").setText(goals);
 		new PushButton("Run").click();
 		ProjectIsBuilt pb = new ProjectIsBuilt();
@@ -194,54 +191,54 @@ public abstract class AbstractMavenSWTBotTest{
 		pe.open();
 		for(Project p: pe.getProjects()){
 			try{
-				org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+				org.eclipse.reddeer.direct.project.Project.delete(p.getName(), true, true);
 			} catch (Exception ex) {
-				AbstractWait.sleep(TimePeriod.NORMAL);
+				AbstractWait.sleep(TimePeriod.DEFAULT);
 				if(!p.getTreeItem().isDisposed()){
-					org.jboss.reddeer.direct.project.Project.delete(p.getName(), true, true);
+					org.eclipse.reddeer.direct.project.Project.delete(p.getName(), true, true);
 				}
 			}
 		}
 	}
 	
 	public void checkWebTarget(String projectName, String finalName){
-	    PackageExplorer pe = new PackageExplorer();
+	    PackageExplorerPart pe = new PackageExplorerPart();
 	    pe.open();
 	    pe.getProject(projectName).select();
-	    new ContextMenu("Refresh").select();
+	    new ContextMenuItem("Refresh").select();
 	    new WaitWhile(new JobIsRunning());
-	    assertTrue(pe.getProject(projectName).containsItem("target",finalName+".war"));
+	    assertTrue(pe.getProject(projectName).containsResource("target",finalName+".war"));
 	}
 	
 	public void convertToMavenProject(String projectName, String defaultPackaging, boolean withDependencies){
-		PackageExplorer pexplorer = new PackageExplorer();
+		PackageExplorerPart pexplorer = new PackageExplorerPart();
 		pexplorer.open();
 		new WaitUntil(new ProjectExists(projectName));
 		pexplorer.getProject(projectName).select();
-		new ContextMenu("Configure","Convert to Maven Project").select();
+		new ContextMenuItem("Configure","Convert to Maven Project").select();
 		new DefaultShell("Create new POM");
 		assertEquals("Project " +projectName+" packaging should be set to "+defaultPackaging, defaultPackaging, new LabeledCombo(new DefaultGroup("Artifact"),"Packaging:").getText());
 		new PushButton("Finish").click();
 		try{
 		    new DefaultShell("Convert to Maven Dependencies");
-		    new WaitUntil(new WidgetIsEnabled(new PushButton("Finish")), TimePeriod.LONG);
+		    new WaitUntil(new ControlIsEnabled(new PushButton("Finish")), TimePeriod.LONG);
 		    if(withDependencies){
 		        new PushButton("Finish").click();
 		    } else {
 		        new PushButton("Skip Dependency Conversion").click();
 		    }
-	        new WaitWhile(new ShellWithTextIsAvailable("Convert to Maven Dependencies"));
-		} catch (SWTLayerException ex){
+	        new WaitWhile(new ShellIsAvailable("Convert to Maven Dependencies"));
+		} catch (CoreLayerException ex){
 		    
 		} finally {
- 		    new WaitWhile(new ShellWithTextIsAvailable("Create new POM"));
+ 		    new WaitWhile(new ShellIsAvailable("Create new POM"));
 	        new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 		}
 	}
 	
 	//TODO editor is missing in Reddeer...and check the packaging
 	public void checkPackaging(String projectName, String packaging){
-		PackageExplorer pExplorer = new PackageExplorer();
+		PackageExplorerPart pExplorer = new PackageExplorerPart();
 		pExplorer.open();
 		//new ViewTreeItem(projectName,"pom.xml").select();
 		//new ContextMenu("Open").select();
@@ -251,7 +248,7 @@ public abstract class AbstractMavenSWTBotTest{
 	public void createWebProject(String name,String runtime, boolean webxml){
 		WebProjectWizard dw = new WebProjectWizard();
 		dw.open();
-		WebProjectFirstPage dfp = new WebProjectFirstPage();
+		WebProjectFirstPage dfp = new WebProjectFirstPage(dw);
 		dfp.setProjectName(name);
 		if(runtime == null){
 			dfp.setTargetRuntime("<None>");
@@ -260,7 +257,7 @@ public abstract class AbstractMavenSWTBotTest{
 		}
 		dw.next();
 		dw.next();
-		WebProjectThirdPage dtp = new WebProjectThirdPage();
+		WebProjectThirdPage dtp = new WebProjectThirdPage(dw);
 		dtp.setGenerateWebXmlDeploymentDescriptor(webxml);
 		dw.finish();
 		waitForAllScheduledJobs();
@@ -282,10 +279,10 @@ public abstract class AbstractMavenSWTBotTest{
 	public void createBasicMavenProject(String artifactId, String groupId, String projectPackage, String javaTarget){
 		MavenProjectWizard mw = new MavenProjectWizard();
 		mw.open();
-		MavenProjectWizardPage mp = new MavenProjectWizardPage();
+		MavenProjectWizardPage mp = new MavenProjectWizardPage(mw);
 		mp.createSimpleProject(true);
 		mw.next();
-		MavenProjectWizardArtifactPage ap = new MavenProjectWizardArtifactPage();
+		MavenProjectWizardArtifactPage ap = new MavenProjectWizardArtifactPage(mw);
 		ap.setArtifactId(artifactId);
 		ap.setGroupId(groupId);
 		ap.setPackage(projectPackage);
@@ -334,17 +331,17 @@ public abstract class AbstractMavenSWTBotTest{
 	public PropertyDialog openPropertiesProject(String project){
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		Project explorerProject = pe.getProject(project);
-		PropertyDialog pd = new ExplorerItemPropertyDialog(explorerProject);
+		pe.selectProjects(project);
+		PropertyDialog pd = new PropertyDialog(project);
 		pd.open();
 		return pd;
 	}
 	
 	public PropertyDialog openPropertiesPackage(String project){
-		PackageExplorer pe = new PackageExplorer();
+		PackageExplorerPart pe = new PackageExplorerPart();
 		pe.open();
-		Project explorerProject = pe.getProject(project);
-		PropertyDialog pd = new ExplorerItemPropertyDialog(explorerProject);
+		pe.selectProjects(project);
+		PropertyDialog pd = new PropertyDialog(project);
 		pd.open();
 		return pd;
 	}

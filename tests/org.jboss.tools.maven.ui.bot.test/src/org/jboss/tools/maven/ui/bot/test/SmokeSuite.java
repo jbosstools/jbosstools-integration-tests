@@ -1,6 +1,6 @@
 package org.jboss.tools.maven.ui.bot.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.maven.ui.bot.test.conversion.MavenConversionTest;
 import org.jboss.tools.maven.ui.bot.test.profile.MavenProfilesTest;
 import org.jboss.tools.maven.ui.bot.test.project.ArchetypesTest;

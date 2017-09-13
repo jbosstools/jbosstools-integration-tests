@@ -2,8 +2,8 @@ package org.jboss.tools.maven.ui.bot.test.utils;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.reddeer.preferences.MavenUserPreferencePage;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -18,7 +18,7 @@ public class RepositoryExists{
 	public RepositoryExists(String repoID){
 		WorkbenchPreferenceDialog wd = new WorkbenchPreferenceDialog();
 		wd.open();
-		MavenUserPreferencePage mu = new MavenUserPreferencePage();
+		MavenUserPreferencePage mu = new MavenUserPreferencePage(wd);
 		wd.select(mu);
 		settingsPath = mu.getUserSettings();
 		wd.ok();
