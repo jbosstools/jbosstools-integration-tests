@@ -15,13 +15,15 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.jsf.ui.test.requirement.DoNotUseVPERequirement.DoNotUseVPE;
 import org.jboss.tools.jsf.ui.test.utils.JSFTestUtils;
 import org.junit.After;
@@ -34,7 +36,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 @RunWith(RedDeerSuite.class)
 @DoNotUseVPE
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
-@JBossServer(type = ServerReqType.EAP7_0, state = ServerReqState.PRESENT)
+@JBossServer(state = ServerRequirementState.PRESENT)
 public class CreateJSFProjectTest {
 
 	protected static final String PROJECT_NAME_BASE = "JSFTestProject";
@@ -50,6 +52,11 @@ public class CreateJSFProjectTest {
 						{"JSF 1.2 with Facelets", "FaceletsKickStartWithoutLibs"}});
 	}
 
+	@RequirementRestriction
+	public static RequirementMatcher getRestrictionMatcher() {
+	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.EAP());
+	}
+	
 	public CreateJSFProjectTest(String jsfEnvironment, String template) {
 		this.jsfEnvironment = jsfEnvironment;
 		this.template = template;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<launchConfiguration type="org.jboss.reddeer.eclipse.ui.launcher.JunitLaunchConfig">
+<launchConfiguration type="org.eclipse.reddeer.eclipse.ui.launcher.JunitLaunchConfig">
 <setAttribute key="additional_plugins"/>
 <booleanAttribute key="append.args" value="true"/>
 <booleanAttribute key="askclear" value="false"/>
@@ -40,11 +40,12 @@
 <stringAttribute key="rd.launch.property.rd.captureScreenshot" value="true"/>
 <stringAttribute key="rd.launch.property.rd.closeShells" value="true"/>
 <stringAttribute key="rd.launch.property.rd.closeWelcomeScreen" value="true"/>
-<stringAttribute key="rd.launch.property.rd.config" value="resources/"/>
+<stringAttribute key="rd.launch.property.rd.config" value="resources/requirements.json"/>
 <stringAttribute key="rd.launch.property.rd.disableMavenIndex" value="true"/>
 <stringAttribute key="rd.launch.property.rd.logCollectorEnabled" value="true"/>
 <stringAttribute key="rd.launch.property.rd.logLevel" value="ALL"/>
 <stringAttribute key="rd.launch.property.rd.logMessageFilter" value="ALL"/>
+<stringAttribute key="rd.launch.property.rd.maximizeWorkbench" value="true"/>
 <stringAttribute key="rd.launch.property.rd.openAssociatedPerspective" value="never"/>
 <stringAttribute key="rd.launch.property.rd.pauseFailedTest" value="false"/>
 <stringAttribute key="rd.launch.property.rd.timePeriodFactor" value="1.0"/>

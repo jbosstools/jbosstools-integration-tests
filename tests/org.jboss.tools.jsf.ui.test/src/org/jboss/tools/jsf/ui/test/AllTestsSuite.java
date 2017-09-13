@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.jsf.ui.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.jsf.ui.test.project.CreateJSFProjectTest;
 import org.jboss.tools.jsf.ui.test.project.ExportImportWARTest;
 import org.jboss.tools.jsf.ui.test.project.RunJSFProjectTest;
