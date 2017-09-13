@@ -21,6 +21,6 @@ public class AsYouTypeValidationTestCDI11 extends AsYouTypeValidationTemplate {
 
 	@Before
 	public void prepareBeans() {
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 	}
 }

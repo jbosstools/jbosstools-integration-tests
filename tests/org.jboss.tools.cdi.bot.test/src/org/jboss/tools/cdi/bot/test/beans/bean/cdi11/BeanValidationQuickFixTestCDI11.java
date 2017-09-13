@@ -23,6 +23,6 @@ public class BeanValidationQuickFixTestCDI11 extends BeanValidationQuickFixTempl
 	@Before
 	public void changeDiscoveryMode() {
 		validationProvider = new BeanValidationProviderCDI11();
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 	}
 }

@@ -21,7 +21,7 @@ public class DecoratorFromWebBeanTestCDI11 extends DecoratorFromWebBeanTemplate{
 	
 	@Before
 	public void changeDiscoveryMode(){
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 	}
 
 }

@@ -15,6 +15,6 @@ public class WeldScanTestCDI10 extends WeldScanTemplate{
 
 	@RequirementRestriction
 	public static RequirementMatcher getRestrictionMatcher() {
-	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.Eap());
+	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.AS());
 	}
 }

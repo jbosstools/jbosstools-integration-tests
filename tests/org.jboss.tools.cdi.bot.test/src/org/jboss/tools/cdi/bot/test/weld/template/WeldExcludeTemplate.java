@@ -60,7 +60,6 @@ public class WeldExcludeTemplate extends CDITestBase{
 		editResourceUtil.replaceInEditor("\">", 
 				" http://jboss.org/schema/weld/beans http://jboss.org/schema/weld/beans_1_1.xsd\">");
 		editResourceUtil.replaceInEditor("</beans>", readFile("resources/excluded/weld/beans.xm_"),true);
-		beans.save();
 	}
 	
 	@Test

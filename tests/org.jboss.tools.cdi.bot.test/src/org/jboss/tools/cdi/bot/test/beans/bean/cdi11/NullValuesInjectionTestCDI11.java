@@ -21,7 +21,7 @@ public class NullValuesInjectionTestCDI11 extends NullValuesInjectionTemplate{
 	
 	@Before
 	public void changeDiscoveryMode(){
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 		CDIVersion = "1.1";
 	}
 

@@ -40,7 +40,7 @@ public class BeansXMLValidationTestCDI11 extends BeansXMLValidationTemplate {
 	@Before
 	public void changeDiscoveryMode(){
 		validationProvider = new BeansXmlValidationProviderCDI11();
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 	}
 	
 }

@@ -21,7 +21,7 @@ public class BeanInjectOpenOnTestCDI11 extends BeanInjectOpenOnTemplate{
 		
 	@Before
 	public void changeDiscoveryMode(){
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 	}
 
 }

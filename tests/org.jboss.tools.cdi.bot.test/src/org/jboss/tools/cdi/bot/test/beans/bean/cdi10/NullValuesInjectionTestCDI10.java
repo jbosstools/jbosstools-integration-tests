@@ -15,7 +15,7 @@ public class NullValuesInjectionTestCDI10 extends NullValuesInjectionTemplate{
 
 	@RequirementRestriction
 	public static RequirementMatcher getRestrictionMatcher() {
-	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.Eap());
+	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.AS());
 	}
 	
 	public NullValuesInjectionTestCDI10(){

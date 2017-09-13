@@ -17,7 +17,7 @@ public class QualifierValidationQuickFixTestCDI10 extends QualifierValidationQui
 
 	@RequirementRestriction
 	public static RequirementMatcher getRestrictionMatcher() {
-	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.Eap());
+	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.AS());
 	}
 	
 	@Before

@@ -21,7 +21,7 @@ public class AssignableDialogFilterTestCDI11 extends AssignableDialogFilterTempl
 		
 	@Before
 	public void prepareBeansXML() {
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 	}
 
 }

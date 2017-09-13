@@ -15,6 +15,6 @@ public class DecoratorFromWebBeanTestCDI10 extends DecoratorFromWebBeanTemplate{
 
 	@RequirementRestriction
 	public static RequirementMatcher getRestrictionMatcher() {
-	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.Eap());
+	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.AS());
 	}
 }

@@ -21,7 +21,7 @@ public class BeansXMLBeansEditorTestCDI11 extends BeansXMLBeansEditorTemplate{
 	
 	@Before
 	public void changeDiscoveryMode(){
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 	}
 
 }

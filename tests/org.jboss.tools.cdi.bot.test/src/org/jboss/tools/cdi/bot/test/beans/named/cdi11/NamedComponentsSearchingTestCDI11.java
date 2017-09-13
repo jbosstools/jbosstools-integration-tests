@@ -38,7 +38,7 @@ public class NamedComponentsSearchingTestCDI11 extends NamedComponentsSearchingT
 		
 	@Before
 	public void changeDiscoveryMode(){
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 	}
 
 }

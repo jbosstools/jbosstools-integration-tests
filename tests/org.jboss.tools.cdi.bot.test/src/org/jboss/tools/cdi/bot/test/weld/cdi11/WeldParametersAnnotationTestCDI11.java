@@ -21,7 +21,7 @@ public class WeldParametersAnnotationTestCDI11 extends WeldParametersAnnotationT
 	
 	@Before
 	public void prepareBeansXML(){
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 	}
 
 }

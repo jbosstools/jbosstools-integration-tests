@@ -17,7 +17,7 @@ public class DecoratorValidationQuickFixTestCDI10 extends DecoratorValidationQui
 
 	@RequirementRestriction
 	public static RequirementMatcher getRestrictionMatcher() {
-	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.Eap());
+	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.AS());
 	}
 	
 	@Before

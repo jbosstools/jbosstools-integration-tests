@@ -23,7 +23,7 @@ public class StereotypeValidationQuickFixTestCDI11 extends StereotypeValidationQ
 	@Before
 	public void changeDiscoveryMode(){
 		validationProvider = new StereotypeValidationProviderCDI11();
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 		CDIVersion = "1.1";
 	}
 
