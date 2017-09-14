@@ -26,7 +26,7 @@ import org.junit.Test;
  * 
  */
 @OpenPerspective(JavaPerspective.class)
-@JBossServer(state=ServerRequirementState.RUNNING)
+@JBossServer(state=ServerRequirementState.PRESENT)
 @DefineMavenRepository(predefinedRepositories = { @PredefinedMavenRepository(ID="jboss-public-repository",snapshots=true) })
 public class ArchetypesTest extends AbstractMavenSWTBotTest{
 	
