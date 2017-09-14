@@ -13,7 +13,7 @@
 	
 	<properties>
 		<jbosstools.test.jboss-eap-7.0.home>${requirementsDirectory}/jboss-eap-7.0</jbosstools.test.jboss-eap-7.0.home>
-		<rd.config>${project.build.directory}/classes/EAP70.xml</rd.config>
+		<rd.config>${project.build.directory}/classes/requirements.json</rd.config>
 		<systemProperties>${integrationTestsSystemProperties} -Dusage_reporting_enabled=false -Drd.config=${rd.config}</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 		<test.class>org.jboss.tools.jsf.ui.test.AllTestsSuite</test.class>

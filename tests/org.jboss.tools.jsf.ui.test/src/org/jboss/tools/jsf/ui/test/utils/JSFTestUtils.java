@@ -15,17 +15,17 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.reddeer.core.lookup.WidgetLookup;
+import org.eclipse.reddeer.core.matcher.WithStyleMatcher;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.eclipse.ui.views.log.LogMessage;
+import org.eclipse.reddeer.eclipse.ui.views.log.LogView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
-import org.jboss.reddeer.core.lookup.WidgetLookup;
-import org.jboss.reddeer.core.matcher.WithStyleMatcher;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
-import org.jboss.reddeer.eclipse.ui.views.log.LogView;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectFirstPage;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectSecondPage;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectWizard;
@@ -71,14 +71,15 @@ public class JSFTestUtils {
 		jsfNewProjectWizard.open();
 
 		// first page
-		JSFNewProjectFirstPage jsfNewProjectFirstPage = new JSFNewProjectFirstPage();
+		JSFNewProjectFirstPage jsfNewProjectFirstPage = new JSFNewProjectFirstPage(jsfNewProjectWizard);
 		jsfNewProjectFirstPage.setProjectName(projectName);
 		jsfNewProjectFirstPage.setJSFEnvironment(jsfEnvironment);
 		jsfNewProjectFirstPage.setProjectTemplate(template);
 
 		// second page
 		jsfNewProjectWizard.next();
-		JSFNewProjectSecondPage jsfNewProjectSecondPage = new JSFNewProjectSecondPage();
+		@SuppressWarnings("unused")
+		JSFNewProjectSecondPage jsfNewProjectSecondPage = new JSFNewProjectSecondPage(jsfNewProjectWizard);
 		// toggle automatic deployment
 		getCheckboxes().forEach(checkBox -> checkBox.toggle(autodeploy));
 

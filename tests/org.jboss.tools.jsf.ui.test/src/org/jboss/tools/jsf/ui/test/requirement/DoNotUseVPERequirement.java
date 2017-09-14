@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat, Inc.
+O * Copyright (c) 2016 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -16,9 +16,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.jboss.reddeer.eclipse.ui.ide.ExtendedFileEditorsPreferencePage;
-import org.jboss.reddeer.junit.requirement.Requirement;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.eclipse.ui.ide.ExtendedFileEditorsPreferencePage;
+import org.eclipse.reddeer.junit.requirement.Requirement;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.jsf.ui.test.requirement.DoNotUseVPERequirement.DoNotUseVPE;
 
 public class DoNotUseVPERequirement implements Requirement<DoNotUseVPE> {
@@ -33,11 +33,6 @@ public class DoNotUseVPERequirement implements Requirement<DoNotUseVPE> {
 	}
 
 	@Override
-	public boolean canFulfill() {
-		return true;
-	}
-
-	@Override
 	public void fulfill() {
 		ExtendedFileEditorsPreferencePage prefPage = openPreferencePage();
 		prefPage.selectFileType("*.html");
@@ -48,7 +43,7 @@ public class DoNotUseVPERequirement implements Requirement<DoNotUseVPE> {
 	}
 
 	private ExtendedFileEditorsPreferencePage openPreferencePage() {
-		ExtendedFileEditorsPreferencePage prefPage = new ExtendedFileEditorsPreferencePage();
+		ExtendedFileEditorsPreferencePage prefPage = new ExtendedFileEditorsPreferencePage(this.prefDialog);
 		prefDialog = new WorkbenchPreferenceDialog();
 		prefDialog.open();
 		prefDialog.select(prefPage);
@@ -63,6 +58,11 @@ public class DoNotUseVPERequirement implements Requirement<DoNotUseVPE> {
 	@Override
 	public void cleanUp() {
 		// no need to cleanup
+	}
+
+	@Override
+	public DoNotUseVPE getDeclaration() {
+		return null;
 	}
 
 }

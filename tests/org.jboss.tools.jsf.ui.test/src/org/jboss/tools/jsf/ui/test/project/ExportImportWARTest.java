@@ -15,21 +15,23 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.Server;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.exception.EclipseLayerException;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.jsf.reddeer.ui.ImportJSFWarWizard;
 import org.jboss.tools.jsf.reddeer.ui.ImportWebWarWizardPage;
 import org.jboss.tools.jsf.reddeer.ui.WebComponentExportWizardPage;
@@ -42,7 +44,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(RedDeerSuite.class)
 @DoNotUseVPE
-@JBossServer(type = ServerReqType.EAP7_0, state = ServerReqState.RUNNING)
+@JBossServer(state = ServerRequirementState.RUNNING)
 public class ExportImportWARTest {
 
 	private static final String PROJECT_NAME = "JSFProject";
@@ -53,6 +55,11 @@ public class ExportImportWARTest {
 	@InjectRequirement
 	static ServerRequirement serverReq;
 
+	@RequirementRestriction
+	public static RequirementMatcher getRestrictionMatcher() {
+	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.EAP());
+	}
+	
 	@BeforeClass
 	public static void setupClass() {
 		JSFTestUtils.createJSFProject(PROJECT_NAME, "JSF 2.2", "JSFKickStartWithoutLibs");
@@ -81,9 +88,9 @@ public class ExportImportWARTest {
 	}
 
 	private static void removeModulesFromServer() {
-		ServersView serversView = new ServersView();
+		ServersView2 serversView = new ServersView2();
 		serversView.open();
-		Server server = serversView.getServer(serverReq.getServerNameLabelText(serverReq.getConfig()));
+		Server server = serversView.getServer(serverReq.getServerNameLabelText());
 		server.getModules().forEach(serverModule -> serverModule.remove());
 	}
 
@@ -99,7 +106,7 @@ public class ExportImportWARTest {
 	private void importProject() {
 		ImportJSFWarWizard importDialog = new ImportJSFWarWizard();
 		importDialog.open();
-		ImportWebWarWizardPage importPage = new ImportWebWarWizardPage();
+		ImportWebWarWizardPage importPage = new ImportWebWarWizardPage(importDialog);
 		importPage.setWarLocation(new File(WAR_FILE_LOCATION).getAbsolutePath());
 		importPage.setName(NEW_PROJECT_NAME);
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG, false);
@@ -112,7 +119,7 @@ public class ExportImportWARTest {
 	}
 
 	private void exportProject() {
-		new ContextMenu("Export", "WAR file").select();
+		new ContextMenuItem("Export", "WAR file").select();
 		WebComponentExportWizardPage exportDialog = new WebComponentExportWizardPage();
 		exportDialog.setWebProject(PROJECT_NAME);
 		exportDialog.setDestination(new File(WAR_FILE_LOCATION).getAbsolutePath());
