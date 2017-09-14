@@ -11,15 +11,14 @@
 package org.jboss.tools.freemarker.ui.bot.test.editor;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.workbench.handler.EditorHandler;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.handler.EditorHandler;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,19 +44,14 @@ public class FreemarkerPreferencePageTest {
 		JavaPerspective jp = new JavaPerspective();
 		jp.open();
 	}
-
-	@Test
-	public void emptyTest() {
-		assertTrue(true);
-	}
-
+	
 	@Test
 	public void freeMarkerPreferenceTest() {
 		log.step("Open Preference dialog");
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
 		log.step("Select Freemarker Preference Page");
-		FreemarkerPreferencePage page = new FreemarkerPreferencePage();
+		FreemarkerPreferencePage page = new FreemarkerPreferencePage(preferenceDialog);
 		preferenceDialog.select(page);
 		
 		log.step("Set Highlight Related Directives on Freemarker page");

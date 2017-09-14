@@ -26,29 +26,28 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.platform.RunningPlatform;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasText;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
-import org.jboss.reddeer.eclipse.ui.views.log.LogView;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.workbench.handler.EditorHandler;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.platform.RunningPlatform;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.eclipse.ui.views.log.LogMessage;
+import org.eclipse.reddeer.eclipse.ui.views.log.LogView;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.handler.EditorHandler;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.freemarker.ui.bot.test.Activator;
 import org.junit.After;
 import org.junit.Before;
@@ -82,7 +81,7 @@ public abstract class AbstractFreemarkerTest {
 	public void after() {
 		removeTestProject(projectName);
 		ConsoleView console = new ConsoleView();
-		if (console.isOpened()) {
+		if (console.isOpen()) {
 			console.clearConsole();
 			console.close();
 		}
@@ -106,7 +105,7 @@ public abstract class AbstractFreemarkerTest {
 		dlg.select("FreeMarker");
 		
 		log.step("Set Freemarker outline level to full level on freemarker preference page");
-		FreemarkerPreferencePage page = new FreemarkerPreferencePage();
+		FreemarkerPreferencePage page = new FreemarkerPreferencePage(dlg);
 		page.setOutlineLevelOfDetail(OutlineLevelOfDetail.FULL);
 		
 		dlg.ok();
@@ -131,7 +130,7 @@ public abstract class AbstractFreemarkerTest {
 			fail("Unable to copy freemarker test project");
 		}
 		
-		WizardProjectsImportPage firstPage = new WizardProjectsImportPage();
+		WizardProjectsImportPage firstPage = new WizardProjectsImportPage(wizard);
 		
 		firstPage.setRootDirectory(wpath);
 		firstPage.selectAllProjects();
@@ -337,7 +336,7 @@ public abstract class AbstractFreemarkerTest {
 
 		runJavaFile(runFile);
 		
-		new WaitUntil(new ConsoleHasText(outputExpected), TimePeriod.NORMAL, false);
+		new WaitUntil(new ConsoleHasText(outputExpected), TimePeriod.DEFAULT, false);
 		ConsoleView cv = new ConsoleView();
 		cv.open();
 		String consoleText = cv.getConsoleText();
@@ -416,15 +415,15 @@ public abstract class AbstractFreemarkerTest {
 	 */
 	@SuppressWarnings("unchecked")
 	private void runJavaFile(String... javaFilePath) {
-		PackageExplorer explorer = new PackageExplorer();
+		ProjectExplorer explorer = new ProjectExplorer();
 		Project project = explorer.getProject(projectName);
 		ProjectItem item = project.getProjectItem(javaFilePath);
 		item.select();
 		WithTextMatcher regex = new WithTextMatcher(new RegexMatcher(".*Java Application.*"));
-		new ContextMenu(new WithTextMatcher("Run As"), regex).select();
+		new ContextMenuItem(new WithTextMatcher("Run As"), regex).select();
 
-		new WaitUntil(new ShellWithTextIsAvailable("Progress Information"), TimePeriod.NORMAL, false);
-		new WaitWhile(new ShellWithTextIsAvailable("Progress Information"));
+		new WaitUntil(new ShellIsAvailable("Progress Information"), TimePeriod.DEFAULT, false);
+		new WaitWhile(new ShellIsAvailable("Progress Information"));
 		new WaitWhile(new JobIsRunning());		
 	}
 

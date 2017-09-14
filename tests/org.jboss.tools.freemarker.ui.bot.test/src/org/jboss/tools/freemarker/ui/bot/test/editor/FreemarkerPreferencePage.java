@@ -10,10 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.freemarker.ui.bot.test.editor;
 
-import org.jboss.reddeer.jface.preference.PreferencePage;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.preference.PreferencePage;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
 
 
 /**
@@ -27,8 +28,8 @@ public class FreemarkerPreferencePage extends PreferencePage {
 	/**
 	 * Freemarker preference page
 	 */
-	public FreemarkerPreferencePage() {
-		super(new String[] {"FreeMarker"});
+	public FreemarkerPreferencePage(ReferencedComposite composite) {
+		super(composite, "FreeMarker");
 	}
 
 	/**

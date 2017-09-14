@@ -10,7 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.freemarker.ui.bot.test;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.freemarker.ui.bot.test.editor.FreeMarkerBaseEditorTest;
 import org.jboss.tools.freemarker.ui.bot.test.editor.FreeMarkerCodeAssistTest;
 import org.jboss.tools.freemarker.ui.bot.test.editor.FreemarkerDataModelTest;

@@ -11,18 +11,19 @@
 package org.jboss.tools.freemarker.ui.bot.test.editor;
 
 import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.jdt.ui.packageexplorer.PackageExplorer;
-import org.jboss.reddeer.eclipse.ui.views.contentoutline.OutlineView;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.views.contentoutline.ContentOutline;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -50,7 +51,8 @@ public class FreeMarkerBaseEditorTest extends AbstractFreemarkerTest {
 
 	private void openFTLFileInEditor() {
 		
-		PackageExplorer explorer = new PackageExplorer();
+		ProjectExplorer explorer = new ProjectExplorer();
+		explorer.open();
 		Project project = explorer.getProject(projectName);
 		project.expand();
 		project.refresh();
@@ -60,7 +62,7 @@ public class FreeMarkerBaseEditorTest extends AbstractFreemarkerTest {
 		new TextEditor("welcome.ftl");
 		
 		log.step("Open outline view and check freemarker elements there");
-		OutlineView ov = new OutlineView();
+		ContentOutline ov = new ContentOutline();
 		ov.open();
 		
 		Collection<TreeItem> outlineElements = ov.outlineElements();
