@@ -26,7 +26,7 @@ public class BeansXMLValidationQuickFixTestCDI11 extends BeansXMLValidationQuick
 	public void setValidationProvider(){
 		validationProvider = new BeansXmlValidationProviderCDI11();
 		requireBeansXML = false;
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 		new WaitWhile(new JobIsRunning());
 	}
 

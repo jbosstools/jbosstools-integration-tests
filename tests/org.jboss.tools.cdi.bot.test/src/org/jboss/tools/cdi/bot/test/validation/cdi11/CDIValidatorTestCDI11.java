@@ -21,7 +21,7 @@ public class CDIValidatorTestCDI11 extends CDIValidatorTemplate{
 	
 	@Before
 	public void changeDiscoveryMode(){
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 	}
 
 }

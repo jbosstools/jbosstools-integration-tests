@@ -8,7 +8,7 @@
 		{
 			"runtime": "${jbosstools.test.jboss-as-7.1.home}",
 			"version": "7.1",
-			"family": "EAP"
+			"family": "AS"
 		}
 	]
 }

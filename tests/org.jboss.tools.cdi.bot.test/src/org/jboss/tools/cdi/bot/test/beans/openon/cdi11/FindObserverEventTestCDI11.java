@@ -21,7 +21,7 @@ public class FindObserverEventTestCDI11 extends FindObserverEventTemplate{
 		
 	@Before
 	public void changeDiscoveryMode(){
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 	}
 
 }

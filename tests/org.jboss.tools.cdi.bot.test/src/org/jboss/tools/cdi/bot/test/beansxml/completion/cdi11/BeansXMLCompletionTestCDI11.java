@@ -40,7 +40,7 @@ public class BeansXMLCompletionTestCDI11 extends BeansXMLCompletionTemplate {
 	
 	@Before
 	public void changeDiscoveryMode(){
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 		setBeansXmlTags(Arrays.asList("alternatives", "decorators", "interceptors","scan"));
 	}
 	

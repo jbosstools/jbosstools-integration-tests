@@ -17,7 +17,7 @@ public class ScopeValidationQuickFixTestCDI10 extends ScopeValidationQuickFixTem
 
 	@RequirementRestriction
 	public static RequirementMatcher getRestrictionMatcher() {
-	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.Eap());
+	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.AS());
 	}
 	
 	@Before

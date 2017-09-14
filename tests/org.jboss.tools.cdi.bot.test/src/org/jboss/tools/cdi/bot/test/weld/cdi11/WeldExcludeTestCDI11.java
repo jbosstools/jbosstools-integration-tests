@@ -24,7 +24,7 @@ public class WeldExcludeTestCDI11 extends WeldExcludeTemplate{
 	@Before
 	public void setValidationProvider(){
 		validationProvider = new BeanValidationProviderCDI11();
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", false);
 	}
 
 }

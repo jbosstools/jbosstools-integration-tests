@@ -21,7 +21,7 @@ public class BeansXMLAsYouTypeValidationTestCDI11 extends BeansXMLAsYouTypeValid
 	
 	@Before
 	public void prepareBeans() {
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 	}
 
 }

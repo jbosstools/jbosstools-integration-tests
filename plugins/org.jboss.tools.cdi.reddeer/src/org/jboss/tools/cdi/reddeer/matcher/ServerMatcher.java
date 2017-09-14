@@ -12,8 +12,8 @@ public class ServerMatcher extends BaseMatcher<Object>{
 		this.family = family;
 	}
 
-	public static ServerMatcher Eap() {
-		return new ServerMatcher(JBossFamily.EAP);
+	public static ServerMatcher AS() {
+		return new ServerMatcher(JBossFamily.AS);
 	}
 	
 	public static ServerMatcher WildFly() {

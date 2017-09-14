@@ -38,7 +38,7 @@ public class NamedRefactoringTestCDI11 extends NamedRefactoringTemplate{
 	
 	@Before
 	public void changeDiscoveryMode(){
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 	}
 	
 

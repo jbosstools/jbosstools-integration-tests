@@ -21,7 +21,7 @@ public class AllAssignableDialogTestCDI11 extends AllAssignableDialogTemplate {
 	
 	@Before
 	public void prepareBeansXML() {
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 	}
 	
 }

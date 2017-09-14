@@ -25,6 +25,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.core.resources.Project;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
@@ -40,6 +41,7 @@ import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.api.Editor;
+import org.eclipse.reddeer.workbench.condition.EditorIsDirty;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.core.exception.WorkbenchCoreLayerException;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
@@ -118,6 +120,7 @@ public class EditorResourceHelper {
 		String text = dt.getText();
 		dt.setText("");
 		dt.setText(text.replace(target, replacement));		
+		new WaitUntil(new EditorIsDirty(editor));
 		if (save) editor.save();
 	}
 
@@ -139,6 +142,7 @@ public class EditorResourceHelper {
 				target + (replacement.equals("") ? System
 								.getProperty("line.separator") : ""),
 				replacement));
+			new WaitUntil(new EditorIsDirty(editor));
 			if (save) editor.save();
 		} catch (WorkbenchCoreLayerException ex){
 			Editor textEditor = new DefaultEditor(editorName);
@@ -149,6 +153,7 @@ public class EditorResourceHelper {
 					target + (replacement.equals("") ? System
 									.getProperty("line.separator") : ""),
 					replacement));		
+			new WaitUntil(new EditorIsDirty(textEditor));
 			if (save) textEditor.save();
 		}
 	}

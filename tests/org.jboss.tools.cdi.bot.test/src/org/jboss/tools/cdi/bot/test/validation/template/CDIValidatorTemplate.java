@@ -84,7 +84,7 @@ public class CDIValidatorTemplate extends CDITestBase {
 		preferenceDialog.open();
 		
 		CDIValidatorPreferencePage cdiValidatorPage = new CDIValidatorPreferencePage(preferenceDialog);
-		preferenceDialog.select();
+		preferenceDialog.select(cdiValidatorPage.getPath());
 		
 		boolean stateChanged = cdiValidatorPage.isValidationEnabled() != enable;
 		if (enable) {

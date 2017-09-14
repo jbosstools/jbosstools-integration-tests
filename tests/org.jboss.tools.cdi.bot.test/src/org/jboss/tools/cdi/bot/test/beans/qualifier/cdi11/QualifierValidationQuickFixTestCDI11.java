@@ -23,7 +23,7 @@ public class QualifierValidationQuickFixTestCDI11 extends QualifierValidationQui
 	@Before
 	public void changeDiscoveryMode(){
 		validationProvider = new QualifierValidationProviderCDI11();
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 		CDIVersion = "1.1";
 	}
 

@@ -23,7 +23,7 @@ public class DecoratorValidationQuickFixTestCDI11 extends DecoratorValidationQui
 	@Before
 	public void changeDiscoveryMode(){
 		validationProvider = new DecoratorValidationProviderCDI11();
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 	}
 	
 }

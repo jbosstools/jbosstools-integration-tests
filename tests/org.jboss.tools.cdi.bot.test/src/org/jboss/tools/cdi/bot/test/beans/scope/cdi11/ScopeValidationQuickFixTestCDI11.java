@@ -23,7 +23,7 @@ public class ScopeValidationQuickFixTestCDI11 extends ScopeValidationQuickFixTem
 	@Before
 	public void changeDiscoveryMode(){
 		validationProvider = new ScopeValidationProviderCDI11();
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 		CDIVersion = "1.1";
 	}
 

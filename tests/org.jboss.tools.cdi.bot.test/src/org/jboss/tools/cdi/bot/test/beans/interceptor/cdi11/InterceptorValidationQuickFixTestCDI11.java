@@ -23,7 +23,7 @@ public class InterceptorValidationQuickFixTestCDI11 extends InterceptorValidatio
 	@Before
 	public void changeDiscoveryMode(){
 		validationProvider = new InterceptorValidationProviderCDI11();
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 	}
 
 }

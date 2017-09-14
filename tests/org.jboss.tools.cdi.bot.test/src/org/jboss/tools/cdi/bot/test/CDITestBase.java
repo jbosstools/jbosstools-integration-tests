@@ -163,7 +163,7 @@ public class CDITestBase {
 		pe.open();
 		pe.getProject(getProjectName()).refresh();
 	}
-	
+
 	/**
 	 * Set bean discovery mode. This feature is available since CDI 1.1.<br>
 	 * Bean discovery mode may be:<br>
@@ -176,13 +176,24 @@ public class CDITestBase {
 	 * @param beanDiscoveryMode
 	 *            bean discovery mode
 	 */
-	public void setBeanDiscoveryMode(String beanDiscoveryMode) {
+	public void prepareBeanXml(String beanDiscoveryMode, boolean replaceBeansTag) {
+		boolean editorShouldBeDirty = false;
+		
 		EditorPartWrapper beansEditor = beansXMLHelper.openBeansXml(PROJECT_NAME);
 		beansEditor.activateTreePage();
+		
 		if (!beansEditor.getBeanDiscoveryMode().equals(beanDiscoveryMode)) {
 			beansEditor.selectBeanDiscoveryMode(beanDiscoveryMode);
+			editorShouldBeDirty = true;
+		}
+		
+		if (replaceBeansTag) {
 			beansEditor.activateSourcePage();
 			new EditorResourceHelper().replaceInEditor("/>", "></beans>", false);
+			editorShouldBeDirty = true;
+		}
+		
+		if (editorShouldBeDirty) {
 			new WaitUntil(new EditorIsDirty(beansEditor), false);
 			beansEditor.save();
 			beansEditor.close();

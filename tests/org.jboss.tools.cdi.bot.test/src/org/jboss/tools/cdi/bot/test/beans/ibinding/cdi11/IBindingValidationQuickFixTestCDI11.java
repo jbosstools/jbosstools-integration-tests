@@ -23,7 +23,7 @@ public class IBindingValidationQuickFixTestCDI11 extends IBindingValidationQuick
 	@Before
 	public void changeDiscoveryMode(){
 		validationProvider = new InterceptorBindingValidationProviderCDI11();
-		setBeanDiscoveryMode("all");
+		prepareBeanXml("all", true);
 	}
 
 }
