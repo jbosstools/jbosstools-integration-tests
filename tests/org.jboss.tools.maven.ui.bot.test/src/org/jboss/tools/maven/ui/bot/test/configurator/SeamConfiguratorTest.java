@@ -12,18 +12,17 @@ package org.jboss.tools.maven.ui.bot.test.configurator;
 
 import static org.junit.Assert.assertEquals;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.DefineMavenRepository;
 import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.PredefinedMavenRepository;
@@ -39,7 +38,7 @@ import org.junit.Test;
  * 
  */
 @OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
+@JBossServer(state=ServerRequirementState.PRESENT)
 @DefineMavenRepository(predefinedRepositories = { @PredefinedMavenRepository(ID="jboss-public-repository",snapshots=true) })
 public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 	
@@ -49,7 +48,7 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 	public static void setupRuntimes(){
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		SeamPreferencePage sp = new SeamPreferencePage();
+		SeamPreferencePage sp = new SeamPreferencePage(preferenceDialog);
 		preferenceDialog.select(sp);
 		sp.addRuntime(SeamProjectTest.SEAM_2_1_NAME, SeamProjectTest.SEAM_2_1, "2.1");
 		sp.addRuntime(SeamProjectTest.SEAM_2_2_NAME, SeamProjectTest.SEAM_2_2, "2.2");
@@ -61,7 +60,7 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 	public static void cleanRepo(){
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage(preferenceDialog);
 		preferenceDialog.select(jm);
 
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
@@ -181,7 +180,7 @@ public class SeamConfiguratorTest extends AbstractConfiguratorsTest{
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(project).select();
-		new ContextMenu("Properties").select();
+		new ContextMenuItem("Properties").select();
 		new DefaultTreeItem("Seam Settings").select();
 		String runtime =  new LabeledCombo("Seam Runtime:").getSelection();
 		new PushButton("OK").click();

@@ -20,23 +20,22 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.matcher.WithTextMatchers;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.core.matcher.WithTextMatchers;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.text.LabeledText;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.preferences.MavenUserPreferencePage;
 import org.jboss.tools.maven.reddeer.profiles.SelectProfilesDialog;
@@ -53,7 +52,7 @@ import org.junit.Test;
  * 
  */
 @OpenPerspective(JavaPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
+@JBossServer(state=ServerRequirementState.PRESENT)
 public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	
 	public static final String AUTOACTIVATED_PROFILE_IN_POM = "active-profile";
@@ -67,7 +66,7 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	public static void setup() throws IOException {
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage(preferenceDialog);
 		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		boolean deleted = mr.removeAllRepos();
@@ -78,7 +77,7 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 		}
 		preferenceDialog.ok();
 		preferenceDialog.open();
-		MavenUserPreferencePage mu = new MavenUserPreferencePage();
+		MavenUserPreferencePage mu = new MavenUserPreferencePage(preferenceDialog);
 		preferenceDialog.select(mu);
 		mu.setUserSettings(new File("resources/usersettings/settings.xml").getCanonicalPath());
 		mu.apply();
@@ -146,7 +145,7 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
         RegexMatcher rm1 = new RegexMatcher("Run As");
         RegexMatcher rm2 = new RegexMatcher("..Maven build...");
         WithTextMatchers m = new WithTextMatchers(rm1,rm2);
-        new ContextMenu(m.getMatchers()).select();
+        new ContextMenuItem(m.getMatchers()).select();
         new DefaultShell("Edit Configuration");
         String activeProfiles = new LabeledText("Profiles:").getText();
         new PushButton("Close").click();
@@ -156,7 +155,7 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
         } catch(SWTLayerException ex){
             ex.printStackTrace();
         } finally {
-            new WaitWhile(new ShellWithTextIsAvailable("Edit Configuration"));
+            new WaitWhile(new ShellIsAvailable("Edit Configuration"));
             profiles = activeProfiles.split(", ");
             assertTrue("not all profiles are activated",profiles.length == 5);
             for(String p:profiles){
@@ -183,7 +182,7 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 		RegexMatcher rm1 = new RegexMatcher("Run As");
         RegexMatcher rm2 = new RegexMatcher("..Maven build...");
         WithTextMatchers m = new WithTextMatchers(rm1,rm2);
-        new ContextMenu(m.getMatchers()).select();
+        new ContextMenuItem(m.getMatchers()).select();
         new DefaultShell("Edit Configuration");
         String activeProfile = new LabeledText("Profiles:").getText();
         new PushButton("Close").click();
@@ -193,7 +192,7 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
         } catch(SWTLayerException ex){
             ex.printStackTrace();
         } finally {
-            new WaitWhile(new ShellWithTextIsAvailable("Edit Configuration"));
+            new WaitWhile(new ShellIsAvailable("Edit Configuration"));
             assertEquals(SIMPLE_JAR_ALL_PROFILES[0], activeProfile);
         }
 	}
@@ -216,6 +215,6 @@ public class MavenProfilesTest extends AbstractMavenSWTBotTest {
 	private static void importMavenProject(String pomPath) throws IOException{
 		MavenImportWizard importWizard = new MavenImportWizard();
 		importWizard.open();
-		new MavenImportWizardFirstPage().importProject((new File(pomPath)).getParentFile().getCanonicalPath());
+		new MavenImportWizardFirstPage(importWizard).importProject((new File(pomPath)).getParentFile().getCanonicalPath());
 	}
 }

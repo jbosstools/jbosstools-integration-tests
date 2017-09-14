@@ -1,13 +1,18 @@
 package org.jboss.tools.seam.reddeer.wizards;
 
-import org.jboss.reddeer.jface.wizard.WizardPage;
-import org.jboss.reddeer.swt.impl.button.RadioButton;
-import org.jboss.reddeer.swt.impl.combo.DefaultCombo;
-import org.jboss.reddeer.swt.impl.combo.LabeledCombo;
-import org.jboss.reddeer.swt.impl.group.DefaultGroup;
+import org.eclipse.reddeer.core.reference.ReferencedComposite;
+import org.eclipse.reddeer.jface.wizard.WizardPage;
+import org.eclipse.reddeer.swt.impl.button.RadioButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
+import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
 
 public class SeamProjectFifthPage extends WizardPage{
 	
+	public SeamProjectFifthPage(ReferencedComposite referencedComposite) {
+		super(referencedComposite);
+	}
+
 	public void setSeamRuntime(String runtime){
 		new LabeledCombo("Seam Runtime:").setSelection(runtime);
 	}

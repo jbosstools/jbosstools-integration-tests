@@ -12,12 +12,11 @@ package org.jboss.tools.maven.ui.bot.test.configurator;
 
 import java.io.FileNotFoundException;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasNature;
 import org.junit.Test;
 
@@ -26,7 +25,7 @@ import org.junit.Test;
  * 
  */
 @OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
+@JBossServer(state=ServerRequirementState.PRESENT)
 public class JPAConfiguratorTest extends AbstractConfiguratorsTest {
 	
 	private String projectNameNoRuntime = PROJECT_NAME_JPA + "_noRuntime";

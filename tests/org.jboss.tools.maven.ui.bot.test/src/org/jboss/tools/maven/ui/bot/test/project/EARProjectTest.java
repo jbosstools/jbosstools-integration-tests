@@ -12,18 +12,17 @@ package org.jboss.tools.maven.ui.bot.test.project;
 
 import static org.junit.Assert.assertTrue;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
+import org.eclipse.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectFirstPage;
+import org.eclipse.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectInstallPage;
+import org.eclipse.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectWizard;
+import org.eclipse.reddeer.eclipse.jst.j2ee.wizard.DefaultJ2EEComponentCreationWizard;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.eclipse.core.resources.ProjectItem;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectFirstPage;
-import org.jboss.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectInstallPage;
-import org.jboss.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectWizard;
-import org.jboss.reddeer.eclipse.jst.j2ee.wizard.NewJ2EEComponentSelectionPage;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Test;
 
@@ -32,7 +31,7 @@ import org.junit.Test;
  * 
  */
 @OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
+@JBossServer(state=ServerRequirementState.PRESENT)
 public class EARProjectTest extends AbstractMavenSWTBotTest{
 	
 	public static final String WAR_PROJECT_NAME="earWeb";
@@ -49,10 +48,10 @@ public class EARProjectTest extends AbstractMavenSWTBotTest{
 		convertToMavenProject(EAR_PROJECT_NAME, "ear",true);
 		buildProject(EAR_PROJECT_NAME, "..Maven build...", "clean package",true);
 		ProjectItem targetFiles = getTargetFiles(EAR_PROJECT_NAME);
-		assertTrue(targetFiles.getChild(EAR_PROJECT_NAME+"EJB-0.0.1-SNAPSHOT.jar") != null);
-		assertTrue(targetFiles.getChild(EAR_PROJECT_NAME+"Client-0.0.1-SNAPSHOT.jar") != null);
-		assertTrue(targetFiles.getChild(EAR_PROJECT_NAME+"Connector-0.0.1-SNAPSHOT.rar") != null);
-		assertTrue(targetFiles.getChild(EAR_PROJECT_NAME+"Web-0.0.1-SNAPSHOT.war") != null);
+		assertTrue(targetFiles.getResource(EAR_PROJECT_NAME+"EJB-0.0.1-SNAPSHOT.jar") != null);
+		assertTrue(targetFiles.getResource(EAR_PROJECT_NAME+"Client-0.0.1-SNAPSHOT.jar") != null);
+		assertTrue(targetFiles.getResource(EAR_PROJECT_NAME+"Connector-0.0.1-SNAPSHOT.rar") != null);
+		assertTrue(targetFiles.getResource(EAR_PROJECT_NAME+"Web-0.0.1-SNAPSHOT.war") != null);
 		
 	}
 	
@@ -60,7 +59,7 @@ public class EARProjectTest extends AbstractMavenSWTBotTest{
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(projectName).select();
-		new ContextMenu("Refresh").select();
+		new ContextMenuItem("Refresh").select();
 		return pe.getProject(projectName).getProjectItem("target",projectName+"-0.0.1-SNAPSHOT");
 	}
 	
@@ -73,12 +72,12 @@ public class EARProjectTest extends AbstractMavenSWTBotTest{
 	public void createEARProject(){
 		EarProjectWizard earw = new EarProjectWizard();
 		earw.open();
-		EarProjectFirstPage ef = new EarProjectFirstPage();
+		EarProjectFirstPage ef = new EarProjectFirstPage(earw);
 		ef.setProjectName(EAR_PROJECT_NAME);
 		ef.setTargetRuntime("<None>");
 		earw.next();
-		EarProjectInstallPage es = new EarProjectInstallPage();
-		NewJ2EEComponentSelectionPage p = es.newModule();
+		EarProjectInstallPage es = new EarProjectInstallPage(earw);
+		DefaultJ2EEComponentCreationWizard p = es.newModule();
 		p.finish();
 		earw.finish();
 	}

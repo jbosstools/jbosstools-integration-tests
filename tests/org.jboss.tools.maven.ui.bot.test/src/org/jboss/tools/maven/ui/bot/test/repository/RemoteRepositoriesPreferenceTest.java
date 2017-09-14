@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.RemoteRepositoriesPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.Repository;
 import org.junit.After;
@@ -18,7 +18,7 @@ public class RemoteRepositoriesPreferenceTest {
 	public void cleanAddedRepo(){
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		RemoteRepositoriesPreferencePage rem = new RemoteRepositoriesPreferencePage();
+		RemoteRepositoriesPreferencePage rem = new RemoteRepositoriesPreferencePage(preferenceDialog);
 		preferenceDialog.select(rem);
 		if(rem.getRepository(r.getName())!=null){
 			rem.deleteRepository(r);
@@ -37,7 +37,7 @@ public class RemoteRepositoriesPreferenceTest {
 	public void addRepo(){
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		RemoteRepositoriesPreferencePage rem = new RemoteRepositoriesPreferencePage();
+		RemoteRepositoriesPreferencePage rem = new RemoteRepositoriesPreferencePage(preferenceDialog);
 		preferenceDialog.select(rem);
 		rem.addRepository(r);
 		assertNotNull("Repository was not added",rem.getRepository(r.getName()));
@@ -48,7 +48,7 @@ public class RemoteRepositoriesPreferenceTest {
 	public void removeRepo(){
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		RemoteRepositoriesPreferencePage rem = new RemoteRepositoriesPreferencePage();
+		RemoteRepositoriesPreferencePage rem = new RemoteRepositoriesPreferencePage(preferenceDialog);
 		preferenceDialog.select(rem);
 		rem.addRepository(r);
 		rem.deleteRepository(r);
@@ -60,7 +60,7 @@ public class RemoteRepositoriesPreferenceTest {
 	public void modifyRepo(){
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		RemoteRepositoriesPreferencePage rem = new RemoteRepositoriesPreferencePage();
+		RemoteRepositoriesPreferencePage rem = new RemoteRepositoriesPreferencePage(preferenceDialog);
 		preferenceDialog.select(rem);
 		rem.addRepository(r);
 		Repository r1= new Repository("test1", "testURL1", false);

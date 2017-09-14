@@ -3,8 +3,8 @@ package org.jboss.tools.maven.ui.bot.test.utils;
 import java.io.InputStream;
 import java.util.Scanner;
 
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 
 public class EditorResourceHelper {
     

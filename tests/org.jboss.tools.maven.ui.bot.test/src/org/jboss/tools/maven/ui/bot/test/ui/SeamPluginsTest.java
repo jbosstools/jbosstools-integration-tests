@@ -5,16 +5,16 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.core.matcher.WithTextMatcher;
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ public class SeamPluginsTest extends AbstractMavenSWTBotTest{
 	
 	@Test
 	public void testSeamIsNotPresent(){
-		new ShellMenu("Help","About Red Hat JBoss Developer Studio").select();
+		new ShellMenuItem("Help","About Red Hat JBoss Developer Studio").select();
 		new PushButton("Installation Details").click();
 		new DefaultShell(new WithTextMatcher(new RegexMatcher(".*Installation Details")));
 		new DefaultTabItem("Plug-ins").activate();

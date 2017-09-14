@@ -11,22 +11,21 @@
 
 package org.jboss.tools.maven.ui.bot.test.project;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.eclipse.datatools.ui.DriverDefinition;
-import org.jboss.reddeer.eclipse.datatools.ui.DriverTemplate;
-import org.jboss.reddeer.eclipse.datatools.ui.preference.DriverDefinitionPreferencePage;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.ConnectionProfileWizard;
-import org.jboss.reddeer.eclipse.datatools.ui.wizard.DriverDefinitionWizard;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.button.NextButton;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.datatools.connectivity.ui.dialogs.DriverDialog;
+import org.eclipse.reddeer.eclipse.datatools.connectivity.ui.preferences.DriverPreferences;
+import org.eclipse.reddeer.eclipse.datatools.connectivity.ui.wizards.NewCPWizard;
+import org.eclipse.reddeer.eclipse.datatools.ui.DriverDefinition;
+import org.eclipse.reddeer.eclipse.datatools.ui.DriverTemplate;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.button.NextButton;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasErrors;
 import org.jboss.tools.seam.reddeer.perspective.SeamPerspective;
@@ -41,7 +40,7 @@ import org.junit.Test;
  * 
  */
 @OpenPerspective(SeamPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
+@JBossServer(state=ServerRequirementState.PRESENT)
 public class SeamProjectTest extends AbstractMavenSWTBotTest {
     
     @InjectRequirement
@@ -73,7 +72,7 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 	public static void setup() {
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		SeamPreferencePage sp = new SeamPreferencePage();
+		SeamPreferencePage sp = new SeamPreferencePage(preferenceDialog);
 		preferenceDialog.select(sp);
 		sp.addRuntime(SEAM23_NAME, SEAM_2_3, "2.3");
 		sp.addRuntime(SEAM22_NAME, SEAM_2_2, "2.2");
@@ -88,14 +87,15 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
         dd.setDriverLibrary(HSQLDB_DRIVER_LOCATION);
 		
 		preferenceDialog.open();
-		DriverDefinitionPreferencePage dpref = new DriverDefinitionPreferencePage();
-		preferenceDialog.select(dpref);
+		preferenceDialog.select("Data Management", "Connectivity", "Driver Definitions");
 		
-		DriverDefinitionWizard ddw = dpref.addDriverDefinition();
-		ddw.create(dd);
+		DriverPreferences preferencePage = new DriverPreferences(preferenceDialog);
+		DriverDialog wizard = preferencePage
+				.addDriverDefinition();
+		wizard.create(dd);
 		preferenceDialog.ok();
 		
-		ConnectionProfileWizard cw = new ConnectionProfileWizard();
+		NewCPWizard cw = new NewCPWizard();
 		cw.open();
 		new DefaultTable().select("HSQLDB");
 		new NextButton().click();
@@ -133,13 +133,13 @@ public class SeamProjectTest extends AbstractMavenSWTBotTest {
 	private void createSeamProject(String projectName, String seamRuntime, String seamVersion, boolean EAR){
 		SeamProjectDialog sd = new SeamProjectDialog();
 		sd.open();
-		SeamProjectFirstPage sf = new SeamProjectFirstPage();
+		SeamProjectFirstPage sf = new SeamProjectFirstPage(sd);
 		sf.setProjectName(projectName);
-		sf.setRuntime(sr.getRuntimeNameLabelText(sr.getConfig()));
+		sf.setRuntime(sr.getRuntimeNameLabelText());
 		//sf.setServer(serverName);
 		sf.activateFacet("Seam", seamVersion);
 		sf.activateFacet("JBoss Maven Integration", null);
-		SeamProjectFifthPage sfp = new SeamProjectFifthPage();
+		SeamProjectFifthPage sfp = new SeamProjectFifthPage(sd);
 		sfp.setSeamRuntime(seamRuntime);
 		sfp.toggleEAR(EAR);
 		sfp.setConnectionProfile("New HSQLDB");

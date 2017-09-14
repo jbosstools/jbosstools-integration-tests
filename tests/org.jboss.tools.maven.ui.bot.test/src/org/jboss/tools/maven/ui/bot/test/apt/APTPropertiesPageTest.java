@@ -10,40 +10,39 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.platform.RunningPlatform;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.api.StyledText;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.YesButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
+import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.swt.impl.table.DefaultTableItem;
+import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.workbench.api.Editor;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.platform.RunningPlatform;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardDialog;
-import org.jboss.reddeer.eclipse.jdt.ui.NewJavaClassWizardPage;
-import org.jboss.reddeer.eclipse.ui.dialogs.PropertyDialog;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.api.StyledText;
-import org.jboss.reddeer.swt.api.Table;
-import org.jboss.reddeer.swt.api.TableItem;
-import org.jboss.reddeer.swt.api.TreeItem;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.button.CheckBox;
-import org.jboss.reddeer.swt.impl.button.YesButton;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.jboss.reddeer.swt.impl.tab.DefaultTabItem;
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.swt.impl.table.DefaultTableItem;
-import org.jboss.reddeer.swt.impl.text.DefaultText;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.jboss.reddeer.workbench.api.Editor;
-import org.jboss.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.reddeer.apt.ui.preferences.AnnotationProcessingSettingsPage;
 import org.jboss.tools.maven.reddeer.apt.ui.preferences.AnnotationProcessingSettingsPage.ProcessingMode;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
@@ -51,7 +50,7 @@ import org.junit.After;
 import org.junit.Test;
 
 @OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state=ServerReqState.PRESENT, type=ServerReqType.WILDFLY10x)
+@JBossServer(state=ServerRequirementState.PRESENT)
 public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 	
 	@InjectRequirement
@@ -210,7 +209,7 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 	private void setProcessingMode(ProcessingMode mode){
 		WorkbenchPreferenceDialog pd = new WorkbenchPreferenceDialog();
 		pd.open();
-		AnnotationProcessingSettingsPage ap = new AnnotationProcessingSettingsPage();
+		AnnotationProcessingSettingsPage ap = new AnnotationProcessingSettingsPage(pd);
 		pd.select(ap);
 		ap.setAnnotationProcessingMode(mode);
 		boolean runUpdate = false;
@@ -226,7 +225,7 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 		}
 
 		
-		new WaitWhile(new ShellWithTextIsAvailable("Preferences"));
+		new WaitWhile(new ShellIsAvailable("Preferences"));
 		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 		if(runUpdate){
 			updateConf(PROJECT_NAME);
@@ -340,7 +339,7 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 			assertTrue("Build path items "+itemsPaths+" expected "+additionalPath,itemsPaths.contains(additionalPath));
 		}
 		pd.ok();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+PROJECT_NAME));
+		new WaitWhile(new ShellIsAvailable("Properties for "+PROJECT_NAME));
 	}
 	
 	private void checkAnnotationProcessingSettings(String project, boolean enabled, String sourceDir, List<String>args){
@@ -367,7 +366,7 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 			assertTrue(args.containsAll(compilerArgs));
 		}
 		pd.ok();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+PROJECT_NAME));
+		new WaitWhile(new ShellIsAvailable("Properties for "+PROJECT_NAME));
 		
 	}
 	
@@ -375,13 +374,13 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 		createBasicMavenProject(PROJECT_NAME, PROJECT_NAME, "war","1.7");
 		PropertyDialog pd = openPropertiesProject(PROJECT_NAME);
 		new DefaultTreeItem("Targeted Runtimes").select();
-		new DefaultTableItem(sr.getRuntimeNameLabelText(sr.getConfig())).setChecked(true);
+		new DefaultTableItem(sr.getRuntimeNameLabelText()).setChecked(true);
 		pd.ok();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for "+PROJECT_NAME));
+		new WaitWhile(new ShellIsAvailable("Properties for "+PROJECT_NAME));
 		new WaitWhile(new JobIsRunning());
-		NewJavaClassWizardDialog jd = new NewJavaClassWizardDialog();
+		NewClassCreationWizard jd = new NewClassCreationWizard();
 		jd.open();
-		NewJavaClassWizardPage jp = new NewJavaClassWizardPage();
+		NewClassWizardPage jp = new NewClassWizardPage(jd);
 		jp.setPackage(PROJECT_NAME);
 		jp.setName("Member");
 		jd.finish();

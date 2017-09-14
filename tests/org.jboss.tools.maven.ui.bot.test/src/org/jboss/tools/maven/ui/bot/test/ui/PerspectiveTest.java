@@ -12,9 +12,9 @@ package org.jboss.tools.maven.ui.bot.test.ui;
 
 import static org.junit.Assert.fail;
 
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
-import org.jboss.reddeer.swt.exception.SWTLayerException;
-import org.jboss.reddeer.swt.impl.menu.ShellMenu;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.swt.exception.SWTLayerException;
+import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.jboss.tools.common.reddeer.perspectives.JBossPerspective;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class PerspectiveTest extends AbstractMavenSWTBotTest {
 	public void testJBossPerspective() {
 		new JBossPerspective().open();
 		try{
-			new ShellMenu("File","New","Maven Project");
+			new ShellMenuItem("File","New","Maven Project");
 		} catch (SWTLayerException ex){
 			fail("Maven project menu not found in JBoss perspective");
 		}
@@ -45,7 +45,7 @@ public class PerspectiveTest extends AbstractMavenSWTBotTest {
 	public void testJ2EEPerspective(){
 		new JavaEEPerspective().open(); 
 		try{
-			new ShellMenu("File","New","Maven Project");
+			new ShellMenuItem("File","New","Maven Project");
 		} catch (SWTLayerException ex){
 			fail("Maven project menu not found in Java EE perspective");
 		}

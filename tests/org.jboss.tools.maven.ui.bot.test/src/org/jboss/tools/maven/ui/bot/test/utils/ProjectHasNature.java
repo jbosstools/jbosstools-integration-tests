@@ -1,17 +1,15 @@
 package org.jboss.tools.maven.ui.bot.test.utils;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.ShellWithTextIsActive;
-import org.jboss.reddeer.core.condition.ShellWithTextIsAvailable;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.dialogs.ExplorerItemPropertyDialog;
-import org.jboss.reddeer.eclipse.ui.dialogs.PropertyDialog;
-import org.jboss.reddeer.swt.impl.tree.DefaultTree;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 
 public class ProjectHasNature extends AbstractWaitCondition {
 
@@ -43,9 +41,9 @@ public class ProjectHasNature extends AbstractWaitCondition {
 	}
 
 	public boolean test() {
-		PropertyDialog pd = new ExplorerItemPropertyDialog(project);
+		PropertyDialog pd = new PropertyDialog(project.getName());
 		pd.open();
-		new WaitUntil(new ShellWithTextIsActive("Properties for " + projectName), TimePeriod.NORMAL);
+		new WaitUntil(new ShellIsAvailable("Properties for " + projectName), TimePeriod.DEFAULT);
 		new DefaultTreeItem("Project Facets").select();
 		boolean result;
 		if (natureParent != null) {
@@ -61,7 +59,7 @@ public class ProjectHasNature extends AbstractWaitCondition {
 			}
 		}
 		pd.ok();
-		new WaitWhile(new ShellWithTextIsAvailable("Properties for " + projectName), TimePeriod.NORMAL);
+		new WaitWhile(new ShellIsAvailable("Properties for " + projectName), TimePeriod.DEFAULT);
 		return result;
 	}
 

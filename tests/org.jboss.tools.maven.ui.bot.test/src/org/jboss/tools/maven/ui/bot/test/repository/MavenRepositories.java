@@ -1,13 +1,16 @@
 package org.jboss.tools.maven.ui.bot.test.repository;
 
 
-import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
@@ -32,7 +35,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 	public static void setup(){
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage(preferenceDialog);
 		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		boolean deleted = mr.removeAllRepos();
@@ -48,7 +51,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 	public static void clean(){
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage(preferenceDialog);
 		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		boolean deleted = mr.removeAllRepos();
@@ -64,7 +67,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 	public void checkPredefinedRepositories(){
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage(preferenceDialog);
 		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		List<String> repositories = mr.getRepositoriesList();
@@ -105,7 +108,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 	public String addRepo(String repo){
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage(preferenceDialog);
 		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		String repoId = mr.chooseRepositoryFromList(repo,true,false);
@@ -118,7 +121,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 	public void editRepo(String repoId){
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage(preferenceDialog);
 		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		mr.editRepo(repoId, false, null, null, null);
@@ -130,7 +133,7 @@ public class MavenRepositories extends AbstractMavenSWTBotTest{
 	public void removeRepo(String repoId){
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage();
+		ConfiguratorPreferencePage jm = new ConfiguratorPreferencePage(preferenceDialog);
 		preferenceDialog.select(jm);
 		ConfigureMavenRepositoriesWizard mr = jm.configureRepositories();
 		mr.removeRepo(repoId);
