@@ -1,7 +1,7 @@
 package org.jboss.tools.eclipsecs.ui.test.view;
 
-import org.jboss.reddeer.swt.impl.table.DefaultTable;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 
 /**
  * Checkstyle violations view
@@ -23,7 +23,7 @@ public class MarkerStatsView extends WorkbenchView {
 	 * Return Checkstyle violations item count
 	 */
 	public int getItemCount() {
-		DefaultTable t = new DefaultTable();
+		DefaultTable t = new DefaultTable(this);
 		return t.getItems().size();		
 	}
 

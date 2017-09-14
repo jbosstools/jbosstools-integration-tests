@@ -14,19 +14,19 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.eclipse.ui.problems.matcher.ProblemsTypeMatcher;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
-import org.jboss.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.tree.DefaultTreeItem;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.eclipse.ui.markers.matcher.MarkerTypeMatcher;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
+import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.jboss.tools.eclipsecs.ui.test.view.MarkerStatsView;
 import org.junit.After;
 import org.junit.Test;
@@ -56,14 +56,14 @@ public class CheckstyleTest {
 		
 		new DefaultTreeItem(PROJECT_NAME,"src","org.jbds.cs","CSTestClass.java").select();
 		
-		new ContextMenu("Checkstyle","Check Code with Checkstyle").select();
+		new ContextMenuItem("Checkstyle","Check Code with Checkstyle").select();
 		
 		new WaitWhile(new JobIsRunning());
 		
 		ProblemsView pv = new ProblemsView();
 		pv.open();
 		
-		List<Problem> problems = pv.getProblems(ProblemType.WARNING, new ProblemsTypeMatcher("Checkstyle Problem"));
+		List<Problem> problems = pv.getProblems(ProblemType.WARNING, new MarkerTypeMatcher("Checkstyle Problem"));
 		assertTrue("There must be Checkstyle Problems reported", problems.size() > 0);
 	 }
 	
@@ -79,7 +79,7 @@ public class CheckstyleTest {
 		
 		new DefaultTreeItem(PROJECT_NAME,"src","org.jbds.cs","CSTestClass.java").select();
 		
-		new ContextMenu("Checkstyle","Check Code with Checkstyle").select();
+		new ContextMenuItem("Checkstyle","Check Code with Checkstyle").select();
 		
 		new WaitWhile(new JobIsRunning());
 		
@@ -109,7 +109,7 @@ public class CheckstyleTest {
 			fail("Unable to copy checkstyle test project");
 		}
 		
-		WizardProjectsImportPage firstPage = new WizardProjectsImportPage();
+		WizardProjectsImportPage firstPage = new WizardProjectsImportPage(wizard);
 		
 		firstPage.setRootDirectory(wpath);
 		firstPage.selectAllProjects();

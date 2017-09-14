@@ -1,8 +1,8 @@
 package org.jboss.tools.eclipsecs.ui.test;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.eclipse.ui.perspectives.JavaPerspective;
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 import org.jboss.tools.eclipsecs.ui.test.view.GraphStatsView;
 import org.jboss.tools.eclipsecs.ui.test.view.MarkerStatsView;
 import org.junit.After;
