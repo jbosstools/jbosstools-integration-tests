@@ -1,6 +1,6 @@
 package org.jboss.tools.eclipsecs.ui.test.view;
 
-import org.jboss.reddeer.workbench.impl.view.WorkbenchView;
+import org.eclipse.reddeer.workbench.impl.view.WorkbenchView;
 
 /**
  * Checkstyle violations chart view
