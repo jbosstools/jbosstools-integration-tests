@@ -17,8 +17,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.central.reddeer.preferences.OfflineSupportPreferencePage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +37,7 @@ public class PrepareOfflineCommand {
 	@Test
 	public void prepareOffline() {
 		WorkbenchPreferenceDialog prefDialog = new WorkbenchPreferenceDialog();
-		OfflineSupportPreferencePage offlinePrefPage = new OfflineSupportPreferencePage();
+		OfflineSupportPreferencePage offlinePrefPage = new OfflineSupportPreferencePage(prefDialog);
 		prefDialog.open();
 		prefDialog.select(offlinePrefPage);
 		String command = offlinePrefPage.getCommand();
