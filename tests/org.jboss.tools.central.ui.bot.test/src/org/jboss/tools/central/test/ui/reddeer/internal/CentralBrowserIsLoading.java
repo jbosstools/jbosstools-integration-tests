@@ -11,7 +11,7 @@
 
 package org.jboss.tools.central.test.ui.reddeer.internal;
 
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 import org.jboss.tools.central.reddeer.api.JavaScriptHelper;
 
 /**

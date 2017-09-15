@@ -14,32 +14,14 @@ package org.jboss.tools.central.test.ui.reddeer;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
-import java.util.List;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.ui.problems.Problem;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView;
-import org.jboss.reddeer.eclipse.ui.problems.ProblemsView.ProblemType;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.junit.requirement.inject.InjectRequirement;
-import org.jboss.reddeer.requirements.server.ServerReqState;
-import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.central.reddeer.api.ExamplesOperator;
 import org.jboss.tools.central.reddeer.api.JavaScriptHelper;
 import org.jboss.tools.central.reddeer.wizards.NewProjectExamplesWizardDialogCentral;
@@ -56,7 +38,6 @@ import org.junit.Test;
  *
  */
 
-@JBossServer(type = ServerReqType.WILDFLY, state = ServerReqState.RUNNING)
 public class HTML5Test {
 
 	private static DefaultEditor centralEditor;
@@ -66,9 +47,6 @@ public class HTML5Test {
 	private static ErrorsReporter reporter = ErrorsReporter.getInstance();
 	private ExamplesOperator operator = ExamplesOperator.getInstance();
 	private JavaScriptHelper jsHelper = JavaScriptHelper.getInstance();
-
-	@InjectRequirement
-	ServerRequirement req;
 
 	@BeforeClass
 	public static void setupClass() {
@@ -84,7 +62,7 @@ public class HTML5Test {
 
 	@After
 	public void teardown() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ProjectExplorer().deleteAllProjects(true);
 		new DefaultToolItem(new WorkbenchShell(), "JBoss Central").click();
 		// activate central editor
@@ -126,51 +104,13 @@ public class HTML5Test {
 	 * @param exampleName
 	 */
 	private void processCurrentExample(String exampleName) {
-		boolean skip = false;
 
 		// import
 		try {
 			importExample(exampleName);
 		} catch (Exception e) {
-			skip = true;
 			reporter.addError(new org.jboss.tools.central.reddeer.projects.Project(exampleName, null),
 					"Error importing example: " + stacktraceToString(e));
-		}
-
-		org.jboss.tools.central.reddeer.projects.Project currentProject;
-
-		if (!skip) {
-			currentProject = new org.jboss.tools.central.reddeer.projects.Project(exampleName, getProjectName());
-			// check for errors/warning
-			checkErrorLog(currentProject);
-			// try to deploy
-			try {
-				operator.deployProject(currentProject.getProjectName(), req.getServerNameLabelText(req.getConfig()));
-				if (!exampleName.equals("ejb-security")) { // due to native
-															// window popping up
-					operator.checkDeployedProject(currentProject.getProjectName(),
-							req.getServerNameLabelText(req.getConfig()));
-				}
-			} catch (CoreLayerException cle) {
-				// log error
-				reporter.addError(currentProject, "Unable to deploy example: " + currentProject.getName() + "("
-						+ currentProject.getProjectName() + ")");
-				try {
-					new OkButton().click();
-				} catch (Exception e) {
-					reporter.addError(currentProject, stacktraceToString(cle));
-				}
-			}
-		}
-		// delete
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
-		new ProjectExplorer().deleteAllProjects(true);
-		ServersView serversView = new ServersView();
-		serversView.open();
-		Server server = serversView.getServer(req.getServerNameLabelText(req.getConfig()));
-		List<ServerModule> modules = server.getModules();
-		for (ServerModule serverModule : modules) {
-			serverModule.remove();
 		}
 
 	}
@@ -189,35 +129,4 @@ public class HTML5Test {
 		wizardDialog.finish(exampleName);
 	}
 
-	private void checkErrorLog(org.jboss.tools.central.reddeer.projects.Project p) {
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		ProblemsView pv = new ProblemsView();
-		pv.open();
-		for (Problem error : pv.getProblems(ProblemType.ERROR)) {
-			reporter.addError(p, error.getDescription());
-		}
-		for (Problem warning : pv.getProblems(ProblemType.WARNING)) {
-			reporter.addWarning(p, warning.getDescription());
-		}
-
-	}
-
-	private String getProjectName() {
-		projectExplorer.activate();
-		List<Project> projects = projectExplorer.getProjects();
-		// if (projects.size() !=1){
-		// StringBuilder sb = new StringBuilder();
-		// sb.append("There is more/less then one project imported\n");
-		// for (Project project : projects) {
-		// sb.append(project.getName()+"\n");
-		// }
-		// fail(sb.toString());
-		// }
-		return projects.get(0).getName();
-	}
-
-	// private void deleteProject(String exampleProjectName) {
-	// projectExplorer.activate();
-	// projectExplorer.getProject(exampleProjectName).delete(true);
-	// }
 }

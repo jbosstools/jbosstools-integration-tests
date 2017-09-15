@@ -17,16 +17,15 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.List;
 
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
-import org.jboss.reddeer.swt.impl.browser.InternalBrowser;
-import org.jboss.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.impl.shell.WorkbenchShell;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.ui.browser.BrowserEditor;
+import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.central.reddeer.api.JavaScriptHelper;
 import org.jboss.tools.central.reddeer.wait.CentralIsLoaded;
 import org.junit.Before;
@@ -67,14 +66,14 @@ public class BasicTests {
 
 	@Test
 	public void learnAboutRedHatButton() {
-		centralBrowser.execute("$(\'a[href=\"http://developers.redhat.com/\"]\').click()");
-		new BrowserEditor(new RegexMatcher("Red Hat Developers.*")).close();
+		centralBrowser.execute("$(\'a[href=\"http://developers.redhat.com/\"]\').click()");	
+		new BrowserEditor("http://developers.redhat.com/").close();
 	}
 
 	@Test
 	public void catButton() {
 		centralBrowser.execute("$(\'a[href=\"http://tools.jboss.org/cat/\"]\').click()");
-		new BrowserEditor("JBoss Tools - Community Acceptance Testing (CAT)").close();
+		new BrowserEditor("http://tools.jboss.org/cat/").close();
 	}
 
 	@Test
@@ -116,4 +115,5 @@ public class BasicTests {
 		new DefaultShell("New Project Example").close();
 		jsHelper.clearSearch();
 	}
+	
 }
