@@ -24,42 +24,42 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
+import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.core.util.FileUtil;
+import org.eclipse.reddeer.eclipse.condition.ConsoleHasNoChange;
+import org.eclipse.reddeer.eclipse.core.resources.DefaultProject;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.m2e.core.ui.preferences.MavenSettingsPreferencePage;
+import org.eclipse.reddeer.eclipse.ui.browser.BrowserEditor;
+import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.views.log.LogMessage;
+import org.eclipse.reddeer.eclipse.ui.views.log.LogView;
+import org.eclipse.reddeer.eclipse.utils.DeleteUtils;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ModuleLabel;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.Server;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServerModule;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerState;
+import org.eclipse.reddeer.jface.wizard.WizardDialog;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.exception.WorkbenchLayerException;
+import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
+import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerModule;
-import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerView;
-import org.jboss.reddeer.common.condition.AbstractWaitCondition;
-import org.jboss.reddeer.common.exception.RedDeerException;
-import org.jboss.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.jboss.reddeer.common.logging.Logger;
-import org.jboss.reddeer.common.matcher.RegexMatcher;
-import org.jboss.reddeer.common.wait.TimePeriod;
-import org.jboss.reddeer.common.wait.WaitUntil;
-import org.jboss.reddeer.common.wait.WaitWhile;
-import org.jboss.reddeer.core.condition.JobIsRunning;
-import org.jboss.reddeer.core.exception.CoreLayerException;
-import org.jboss.reddeer.core.handler.ShellHandler;
-import org.jboss.reddeer.core.util.FileUtil;
-import org.jboss.reddeer.eclipse.condition.ConsoleHasNoChange;
-import org.jboss.reddeer.eclipse.core.resources.Project;
-import org.jboss.reddeer.eclipse.jdt.ui.ProjectExplorer;
-import org.jboss.reddeer.eclipse.m2e.core.ui.preferences.MavenSettingsPreferencePage;
-import org.jboss.reddeer.eclipse.ui.browser.BrowserEditor;
-import org.jboss.reddeer.eclipse.ui.console.ConsoleView;
-import org.jboss.reddeer.eclipse.ui.views.log.LogMessage;
-import org.jboss.reddeer.eclipse.ui.views.log.LogView;
-import org.jboss.reddeer.eclipse.utils.DeleteUtils;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ModuleLabel;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.Server;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServerModule;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersView;
-import org.jboss.reddeer.eclipse.wst.server.ui.view.ServersViewEnums.ServerState;
-import org.jboss.reddeer.jface.wizard.WizardDialog;
-import org.jboss.reddeer.swt.impl.button.OkButton;
-import org.jboss.reddeer.swt.impl.button.PushButton;
-import org.jboss.reddeer.swt.impl.menu.ContextMenu;
-import org.jboss.reddeer.swt.impl.shell.DefaultShell;
-import org.jboss.reddeer.workbench.exception.WorkbenchLayerException;
-import org.jboss.reddeer.workbench.impl.editor.DefaultEditor;
-import org.jboss.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.central.reddeer.api.ExamplesOperator;
 import org.jboss.tools.maven.reddeer.wizards.MavenImportWizard;
 import org.jboss.tools.maven.reddeer.wizards.MavenImportWizard.MavenImportWizardException;
@@ -106,7 +106,7 @@ public abstract class AbstractImportQuickstartsTest {
 	}
 
 	protected void checkServerStatus() {
-		ServersView serversView = new ServersView();
+		ServersView2 serversView = new ServersView2();
 		serversView.open();
 		Server server = serversView.getServer(getServerFullName(serversView.getServers(), SERVER_NAME));
 		assertTrue("Server has not been started!", server.getLabel().getState() == ServerState.STARTED);
@@ -124,7 +124,7 @@ public abstract class AbstractImportQuickstartsTest {
 
 		findDeployableProjects(qstart, explorer);
 
-		ServersView serversView = new ServersView();
+		ServersView2 serversView = new ServersView2();
 		serversView.open();
 		String fullServerName = getServerFullName(serversView.getServers(), serverName);
 		Server server = serversView.getServer(fullServerName);
@@ -156,7 +156,7 @@ public abstract class AbstractImportQuickstartsTest {
 		for (Project project : explorer.getProjects()) {
 			explorer.getProject(project.getName()).select();
 			try {
-				if (new ContextMenu("Run As", "1 Run on Server").isEnabled()) {
+				if (new ContextMenuItem("Run As", "1 Run on Server").isEnabled()) {
 					qstart.addDeployableProjectName(project.getName());
 				}
 				new WizardDialog().finish();
@@ -173,7 +173,7 @@ public abstract class AbstractImportQuickstartsTest {
 		explorer.activate();
 		Project project = explorer.getProject(deployableProject);
 		project.select();
-		new ContextMenu("Run As", "1 Run on Server").select();
+		new ContextMenuItem("Run As", "1 Run on Server").select();
 		new WizardDialog().finish();
 	}
 
@@ -211,14 +211,18 @@ public abstract class AbstractImportQuickstartsTest {
 				return arg0.isDirectory();
 			}
 		};
-		for (File f : file.listFiles(directoryFilter)) {
-			if (!f.getPath().contains("/.")) {
-				if (specificQuickstarts.size() == 0 || specificQuickstarts.contains(f.getName())) {
-					log.info("PROCESSING " + f.getAbsolutePath());
-					Quickstart qstart = new Quickstart(f.getName(), f.getAbsolutePath());
-					resultList.add(qstart);
+		try {
+			for (File f : file.listFiles(directoryFilter)) {
+				if (!f.getPath().contains("/.")) {
+					if (specificQuickstarts.size() == 0 || specificQuickstarts.contains(f.getName())) {
+						log.info("PROCESSING " + f.getAbsolutePath());
+						Quickstart qstart = new Quickstart(f.getName(), f.getAbsolutePath());
+						resultList.add(qstart);
+					}
 				}
 			}
+		} catch (NullPointerException ex) {
+			fail("Please check path to quickstarts. Folder does not exist!");
 		}
 		return resultList;
 	}
@@ -232,7 +236,10 @@ public abstract class AbstractImportQuickstartsTest {
 	protected static void clearWorkspace() {
 		cleanupShells();
 		deleteAllProjects();
-		closeBrowser();
+		if (System.getProperty("deployOnServer") != null
+						&& System.getProperty("deployOnServer").equals("true")) {
+			closeBrowser();
+		}
 		try {
 			new ConsoleView().clearConsole();
 		} catch (WorkbenchLayerException ex) {
@@ -295,7 +302,7 @@ public abstract class AbstractImportQuickstartsTest {
 	}
 
 	private void restartServer() {
-		ServersView serversView = new ServersView();
+		ServersView2 serversView = new ServersView2();
 		serversView.open();
 		Server server = serversView.getServer(getServerFullName(serversView.getServers(), SERVER_NAME));
 		server.clean();
@@ -347,7 +354,7 @@ public abstract class AbstractImportQuickstartsTest {
 
 	private void runUpdate() {
 		new ProjectExplorer().getProjects().get(0).select();
-		new ContextMenu("Maven", "Update Project...").select();
+		new ContextMenuItem("Maven", "Update Project...").select();
 		new DefaultShell("Update Maven Project");
 		new PushButton("Select All").click();
 		new PushButton("OK").click();
@@ -358,21 +365,21 @@ public abstract class AbstractImportQuickstartsTest {
 	protected static void deleteAllProjects() {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
-		List<Project> projects = projectExplorer.getProjects();
-		for (Project p : projects) {
+		List<DefaultProject> projects = projectExplorer.getProjects();
+		for (DefaultProject p : projects) {
 			DeleteUtils.forceProjectDeletion(p, false);
 		}
 	}
 
 	protected static void cleanupShells() {
-		ShellHandler.getInstance().closeAllNonWorbenchShells();
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 	}
 
 	protected void importQuickstart(Quickstart quickstart) throws NoProjectException {
 		if (!quickstartImported(quickstart)) {
 			ExtendedMavenImportWizard mavenImportWizard = new ExtendedMavenImportWizard();
 			mavenImportWizard.open();
-			MavenImportWizardFirstPage wizPage = new MavenImportWizardFirstPage();
+			MavenImportWizardFirstPage wizPage = new MavenImportWizardFirstPage(mavenImportWizard);
 			try {
 				wizPage.setRootDirectory(quickstart.getPath().getAbsolutePath());
 			} catch (WaitTimeoutExpiredException e) {
@@ -392,8 +399,8 @@ public abstract class AbstractImportQuickstartsTest {
 	private boolean quickstartImported(Quickstart qstart) {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
-		List<Project> projects = projectExplorer.getProjects();
-		for (Project p : projects) {
+		List<DefaultProject> projects = projectExplorer.getProjects();
+		for (DefaultProject p : projects) {
 			if (p.getName().equals(qstart.getName())){
 				return true;
 			}
@@ -444,7 +451,7 @@ public abstract class AbstractImportQuickstartsTest {
 		String mvnConfigFileName = new File("target/classes/settings.xml").getAbsolutePath();
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		MavenSettingsPreferencePage prefPage = new MavenSettingsPreferencePage();
+		MavenSettingsPreferencePage prefPage = new MavenSettingsPreferencePage(preferenceDialog);
 		preferenceDialog.select(prefPage);
 		prefPage.setUserSettingsLocation(mvnConfigFileName);
 		preferenceDialog.ok();
@@ -491,7 +498,7 @@ public abstract class AbstractImportQuickstartsTest {
 			new WaitWhile(new JobIsRunning());
 			new WaitUntil(new ConsoleHasNoChange(TimePeriod.LONG), TimePeriod.VERY_LONG);
 		}
-		JBossServerView serversView = new JBossServerView();
+		ServersView2 serversView = new ServersView2();
 		serversView.open();
 		String moduleName = qstart.getName().equals("template") ? "QUICKSTART_NAME" : qstart.getName();
 		JBossServerModule module = (JBossServerModule) serversView.getServer(serverNameLabel)
@@ -504,7 +511,7 @@ public abstract class AbstractImportQuickstartsTest {
 																		// with
 																		// parent
 																		// projects
-		if (new ContextMenu("Show In", "Web Browser").isEnabled()) {
+		if (new ContextMenuItem("Show In", "Web Browser").isEnabled()) {
 			module.openWebPage();
 
 			final BrowserEditor browser = new BrowserEditor(new RegexMatcher(".*"));
@@ -530,7 +537,7 @@ public abstract class AbstractImportQuickstartsTest {
 	}
 
 	protected void checkServerViewForStatus(String projectName, String serverNameLabel) {
-		ServersView serversView = new ServersView();
+		ServersView2 serversView = new ServersView2();
 		serversView.open();
 		Server server = serversView.getServer(serverNameLabel);
 		ServerModule serverModule = server.getModule(new RegexMatcher(".*" + projectName + ".*"));
@@ -584,7 +591,7 @@ public abstract class AbstractImportQuickstartsTest {
 		}
 
 		public boolean test() {
-			ServersView serversView = new ServersView();
+			ServersView2 serversView = new ServersView2();
 			serversView.open();
 			Server server = serversView.getServer(serverNameLabel);
 			ServerModule serverModule = server.getModule(new RegexMatcher(".*" + projectName + ".*"));
