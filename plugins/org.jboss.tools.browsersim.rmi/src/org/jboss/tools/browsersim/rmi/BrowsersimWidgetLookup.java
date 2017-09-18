@@ -16,7 +16,7 @@ public class BrowsersimWidgetLookup {
 	
 	public static Shell getBrowsersimShell(){
 		WidgetIsFound found = new WidgetIsFound(org.eclipse.swt.widgets.Shell.class, new WithTextMatcher("Device size will be truncated"));
-		new WaitUntil(found, TimePeriod.DEFAULT);
+		new WaitUntil(found, TimePeriod.DEFAULT, false);
 		if(found.getResult() != null) {
 			Shell s = new DefaultShell((org.eclipse.swt.widgets.Shell)found.getResult());
 			new PushButton(s,"Truncate (recommended)").click();

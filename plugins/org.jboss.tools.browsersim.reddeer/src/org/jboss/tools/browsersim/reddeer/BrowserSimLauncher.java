@@ -50,8 +50,14 @@ public class BrowserSimLauncher extends SimLauncher{
 
 	private List<Bundle> getBundles() {
 		Bundle bsAPI = Platform.getBundle(BROWSERSIM_API_BUNDLE);
+		Bundle reddeerCommon = Platform.getBundle("org.eclipse.reddeer.common");
+		Bundle reddeerCore = Platform.getBundle("org.eclipse.reddeer.core");
+		Bundle reddeerSwt = Platform.getBundle("org.eclipse.reddeer.swt");
 		List<Bundle> bundles = new ArrayList<>();
 		bundles.add(bsAPI);
+		bundles.add(reddeerCommon);
+		bundles.add(reddeerCore);
+		bundles.add(reddeerSwt);
 		return bundles;
 	}
 
