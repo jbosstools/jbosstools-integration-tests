@@ -25,8 +25,6 @@
 		<tycho.scmUrl>scm:git:https://github.com/jbosstools/jbosstools-integration-tests.git</tycho.scmUrl>
 		<!-- URLs needed to resolve dependencies at build time (see <repositories> below) and at install time (see site/pom.xml#associateSites) -->
 
-		<!-- https://issues.jboss.org/browse/JBIDE-25013 temporary workaround for missing JBoss Red Deer 1.2 -->
-		<jboss-reddeer-1.2-site>http://download.jboss.org/jbosstools/neon/development/updates/reddeer/1.2.2.20170619</jboss-reddeer-1.2-site>
 		<jbosstools-integrationtests-site>http://download.jboss.org/jbosstools/${eclipseReleaseName}/snapshots/updates/integration-tests/${stream_jbt}/</jbosstools-integrationtests-site>
 		<jbosstools-site>http://download.jboss.org/jbosstools/${eclipseReleaseName}/snapshots/updates/core/${stream_jbt}/</jbosstools-site>
 		<jbosstools-tests-site>http://download.jboss.org/jbosstools/${eclipseReleaseName}/snapshots/updates/coretests/${stream_jbt}/</jbosstools-tests-site>
@@ -59,11 +57,6 @@
 	</profiles>
 
 	<repositories>
-		<repository>
-			<id>jboss-reddeer-1.2</id>
-			<layout>p2</layout>
-			<url>${jboss-reddeer-1.2-site}</url>
-		</repository>
 		<repository>
 			<id>jbosstools</id>
 			<layout>p2</layout>
