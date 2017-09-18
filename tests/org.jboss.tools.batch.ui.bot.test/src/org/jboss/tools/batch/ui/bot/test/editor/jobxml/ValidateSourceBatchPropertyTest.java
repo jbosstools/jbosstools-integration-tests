@@ -53,7 +53,7 @@ public class ValidateSourceBatchPropertyTest extends AbstractJobXMLTest {
 	private void checkProperty(String textToFind, String textToInsert, int errorNum, int warningNum) {
 		TextEditor source = (TextEditor) getSourcePage();
 		source.insertText(source.getPositionOfText(textToFind) + textToFind.length(), textToInsert);
-		editor.save();
+		performSave(editor.getEditorPart());
 		assertNumberOfProblems(errorNum, warningNum);
 	}
 	

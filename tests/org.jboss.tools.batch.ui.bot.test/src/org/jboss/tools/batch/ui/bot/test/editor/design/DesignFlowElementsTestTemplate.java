@@ -100,7 +100,7 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 				public String errorMessageUntil() {
 					return "Editor was still dirty";
 				}
-			}, TimePeriod.SHORT);
+			}, TimePeriod.MEDIUM);
 	}
 	
 	@Override

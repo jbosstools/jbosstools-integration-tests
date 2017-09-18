@@ -52,7 +52,7 @@ public class CreateBatchXMLArtifactTest extends AbstractCreateArtifactTest {
 	}
 	
 	private void assertBatchXMLFileExists() {
-		assertTrue(getProject().containsResource(new String[]{RESOURCES_FOLDER, META_INF_FOLDER, "batch.xml"}));
+		assertTrue(getProject().containsResource(new String[]{ JAVA_RESOURCES, RESOURCES_FOLDER, META_INF_FOLDER, "batch.xml"}));
 	}
 	
 	private void assertBatchXMLFile() {
