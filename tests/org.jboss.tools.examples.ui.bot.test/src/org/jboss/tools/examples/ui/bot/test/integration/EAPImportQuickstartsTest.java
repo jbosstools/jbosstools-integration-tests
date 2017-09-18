@@ -13,13 +13,12 @@ package org.jboss.tools.examples.ui.bot.test.integration;
 
 import java.util.Collection;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerReqType;
+import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
-import org.jboss.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.reddeer.requirements.server.ServerReqState;
 import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.DefineMavenRepository;
-import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.PropertyDefinedMavenRepository;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.MavenRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized.Parameter;
@@ -35,8 +34,8 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
 @RunWith(RedDeerSuite.class)
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
-@DefineMavenRepository(propDefMavenRepo = @PropertyDefinedMavenRepository(ID = "test", snapshots = true) )
-@JBossServer(state=ServerReqState.RUNNING, type=ServerReqType.EAP7_0)
+@DefineMavenRepository(newRepositories = {@MavenRepository(url="https://maven.repository.redhat.com/ga/",ID="ga",snapshots=true)})
+@JBossServer(state=ServerRequirementState.RUNNING)
 public class EAPImportQuickstartsTest extends AbstractImportQuickstartsTest {
 	public static final String SERVER_NAME ="Enterprise Application Platform";
 	public static final String BLACKLIST_FILE = "resources/servers/eap-blacklist";

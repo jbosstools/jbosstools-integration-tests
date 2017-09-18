@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jboss.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.logging.Logger;
 
 /**
  * This class gathers info of all errors and warnings for all quickstarts. Also
