@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Scanner;
 
 import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
@@ -20,7 +21,7 @@ import org.eclipse.reddeer.workbench.impl.editor.Marker;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.tools.cdi.reddeer.uiutils.EditorResourceHelper;
-import org.jboss.tools.deltaspike.ui.bot.test.condition.ClassHasErrorMarker;
+import org.jboss.tools.deltaspike.ui.bot.test.condition.ClassHasErrorOrWarningMarker;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,7 +47,7 @@ public class PartialBeanTest extends DeltaspikeTestBase{
 		String classesPath = "resources/classes/binding/";
 		
 		createClassWithContent("ExamplePartialBeanBinding", classesPath+"ExamplePartialBeanBinding.jav_");
-		new WaitWhile(new ClassHasErrorMarker("ExamplePartialBeanBinding"));
+		new WaitWhile(new ClassHasErrorOrWarningMarker("ExamplePartialBeanBinding"));
 		
 		// Each partial bean should be bound to an invocation handler.
 		createClassWithContent("ExamplePartialBeanInterface", classesPath+"ExamplePartialBeanInterface.jav_");
@@ -70,9 +71,9 @@ public class PartialBeanTest extends DeltaspikeTestBase{
 		assertErrorExists("ExamplePartialBeanAbstractClass","Partial bean test.ExamplePartialBeanAbstractClass should have an invocation handler for binding annotation test.ExamplePartialBeanBinding");
 		
 		createClassWithContent("ExamplePartialBeanImplementation", classesPath+"ExamplePartialBeanImplementation.jav_");
-		new WaitWhile(new ClassHasErrorMarker("ExamplePartialBeanImplementation"));
-		new WaitWhile(new ClassHasErrorMarker("ExamplePartialBeanAbstractClass"));
-		new WaitWhile(new ClassHasErrorMarker("ExamplePartialBeanInterface"));
+		new WaitWhile(new ClassHasErrorOrWarningMarker("ExamplePartialBeanImplementation"));
+		new WaitWhile(new ClassHasErrorOrWarningMarker("ExamplePartialBeanAbstractClass"));
+		new WaitWhile(new ClassHasErrorOrWarningMarker("ExamplePartialBeanInterface"));
 		
 		//Class annotated with a binding annotation should be either abstract, or interface, or implement InvocationHandler.
 		TextEditor ed = new TextEditor("ExamplePartialBeanImplementation.java");
@@ -82,7 +83,7 @@ public class PartialBeanTest extends DeltaspikeTestBase{
 		assertErrorExists("ExamplePartialBeanImplementation","Binding annotation test.ExamplePartialBeanBinding can be applied only to abstract classes, interfaces, and classes implementing InvocationHandler");
 	
 		replaceClassContent("ExamplePartialBeanImplementation", classesPath+"ExamplePartialBeanImplementation.jav_");
-		new WaitWhile(new ClassHasErrorMarker("ExamplePartialBeanImplementation"));
+		new WaitWhile(new ClassHasErrorOrWarningMarker("ExamplePartialBeanImplementation"));
 		
 		//There should be no more than one invocation handler for each binding annotation.
 		createClassWithContent("AnotherImplementation", classesPath+"AnotherImplementation.jav_");
@@ -90,7 +91,7 @@ public class PartialBeanTest extends DeltaspikeTestBase{
 		assertErrorExists("ExamplePartialBeanImplementation","Multiple handlers are found for binding annotation test.ExamplePartialBeanBinding");
 		pe.open();
 		pe.getProject(projectName).getProjectItem("Java Resources","src","test","AnotherImplementation.java").delete();
-		new WaitWhile(new ClassHasErrorMarker("ExamplePartialBeanImplementation"));
+		new WaitWhile(new ClassHasErrorOrWarningMarker("ExamplePartialBeanImplementation"));
 		
 		// Invocation handler class should be normal-scoped.
 		ed = new TextEditor("ExamplePartialBeanImplementation.java");
@@ -100,10 +101,10 @@ public class PartialBeanTest extends DeltaspikeTestBase{
 		assertErrorExists("ExamplePartialBeanImplementation","Invocation handler class should be a normal-scoped bean");
 	
 		replaceClassContent("ExamplePartialBeanImplementation", classesPath+"ExamplePartialBeanImplementation.jav_");
-		new WaitWhile(new ClassHasErrorMarker("ExamplePartialBeanImplementation"));
+		new WaitWhile(new ClassHasErrorOrWarningMarker("ExamplePartialBeanImplementation"));
 		
 		createClassWithContent("AnotherBinding", classesPath+"AnotherBinding.jav_");
-		new WaitWhile(new ClassHasErrorMarker("AnotherBinding"));
+		new WaitWhile(new ClassHasErrorOrWarningMarker("AnotherBinding"));
 		
 		//Deltaspike implementation of the extension reads the first binding annotation on a class and ignores the next ones. Hence, they should be marked with a warning:
 		ed = new TextEditor("ExamplePartialBeanImplementation.java");
@@ -130,14 +131,17 @@ public class PartialBeanTest extends DeltaspikeTestBase{
 	}
 	
 	private void assertErrorExists(String className, String errorMessage){
-		TextEditor ed = new TextEditor(className+".java");
-		new WaitUntil(new EditorHasValidationMarkers(ed),TimePeriod.LONG);
-		assertEquals(1,ed.getMarkers().size());
-		Marker marker = ed.getMarkers().get(0);
+		ClassHasErrorOrWarningMarker cond = new ClassHasErrorOrWarningMarker(className);
+		new WaitUntil(cond ,TimePeriod.LONG);
+		
+		List<Marker> markers = cond.getResult();
+		assertEquals(1,markers.size());
+		
+		Marker marker = markers.get(0);
 		assertEquals(errorMessage, marker.getText());
 		assertEquals("org.eclipse.ui.workbench.texteditor.warning", marker.getType());
 	}
-	
+
 	protected static String readFile(String path) {
 		Scanner s = null;
 		try {
@@ -150,10 +154,5 @@ public class PartialBeanTest extends DeltaspikeTestBase{
 		s.close();
 		s1.close();
 		return file;
-		
 	}
-	
-	
-	
-
 }

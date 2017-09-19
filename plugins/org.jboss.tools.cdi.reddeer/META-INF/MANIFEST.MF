@@ -18,8 +18,7 @@ Export-Package: org.jboss.tools.cdi.reddeer,
  org.jboss.tools.cdi.reddeer.quickfix,
  org.jboss.tools.cdi.reddeer.uiutils,
  org.jboss.tools.cdi.reddeer.validators,
- org.jboss.tools.cdi.reddeer.xhtml,
- org.jboss.tools.cdi.reddeer.matcher
+ org.jboss.tools.cdi.reddeer.xhtml
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.reddeer.go;bundle-version="[2.0.0,2.1.0)",

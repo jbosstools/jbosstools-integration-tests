@@ -8,9 +8,11 @@ import java.util.List;
 import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.workbench.api.Editor;
 import org.eclipse.reddeer.workbench.condition.EditorHasValidationMarkers;
+import org.eclipse.reddeer.workbench.condition.EditorIsDirty;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.eclipse.reddeer.workbench.impl.editor.Marker;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
@@ -92,21 +94,31 @@ public class BeansXMLUITemplate extends CDITestBase{
 	private void setAndCheckSourceDiscoveryMode(EditorPartWrapper beans, String mode, int expectedNumberOfErrors, String type){
 		beans.activateTreePage();
 		String currentMode = beans.getBeanDiscoveryMode();
+		
 		beans.activateSourcePage();
 		DefaultStyledText ds = new DefaultStyledText();
 		String s = ds.getText().replace(currentMode, mode);
 		ds.setText(s);
 		Editor e = new DefaultEditor();
+		new WaitUntil(new EditorIsDirty(e));
 		e.save();
-		new WaitUntil(new EditorHasValidationMarkers(e),TimePeriod.DEFAULT,false);
+		
+		if (expectedNumberOfErrors > 0) {
+			new WaitUntil(new EditorHasValidationMarkers(e),TimePeriod.LONG,false);
+		} else {
+			new WaitUntil(new EditorHasValidationMarkers(e),TimePeriod.DEFAULT,false);
+			new WaitWhile(new EditorHasValidationMarkers(e),TimePeriod.LONG,false);
+		}
+		
 		List<Marker> markers = e.getMarkers();
 		assertEquals(expectedNumberOfErrors,markers.size());
+		
 		for(Marker m: markers){
 			m.getType().equals(type);
 		}
+		
 		beans.activateTreePage();
 		assertEquals(mode,beans.getBeanDiscoveryMode());
-		beans.save();
 	}
 	
 
