@@ -40,7 +40,7 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
     
 	@Test
 	public void createJSFProjectTest_AS7_JSFv2(){
-		createJSFProject(PROJECT_NAME7, "JSF 2.0", "JSFKickStartWithoutLibs", sr.getRuntimeNameLabelText());
+		createJSFProject(PROJECT_NAME7, "JSF 2.0", "JSFKickStartWithoutLibs", sr.getRuntimeName());
 		convertToMavenProject(PROJECT_NAME7, "war", false);
 		addDependency(PROJECT_NAME7, GROUPID,ARTIFACTID,JSF_VERSION_2);
 		buildProject(PROJECT_NAME7,"..Maven build...","clean package",true);
@@ -49,7 +49,7 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 	
 	@Test
 	public void createJSFProjectTest_AS7_JSFv1() {
-		createJSFProject(PROJECT_NAME7_v1, "JSF 1.2", "JSFKickStartWithoutLibs", sr.getRuntimeNameLabelText());
+		createJSFProject(PROJECT_NAME7_v1, "JSF 1.2", "JSFKickStartWithoutLibs", sr.getRuntimeName());
 		convertToMavenProject(PROJECT_NAME7_v1, "war", false);
 		addDependency(PROJECT_NAME7_v1, GROUPID,ARTIFACTID,JSF_VERSION_1_2);
 		buildProject(PROJECT_NAME7_v1,"..Maven build...","clean package",true);

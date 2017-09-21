@@ -77,7 +77,7 @@ public class CDITestBase {
 			cw.open();
 			WebProjectFirstPage fp = new WebProjectFirstPage(cw);
 			fp.setProjectName(PROJECT_NAME);
-			fp.setTargetRuntime(sr.getRuntimeNameLabelText());
+			fp.setTargetRuntime(sr.getRuntimeName());
 			cw.finish();
 			new WaitUntil(new JobIsRunning(), TimePeriod.DEFAULT, false);
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);

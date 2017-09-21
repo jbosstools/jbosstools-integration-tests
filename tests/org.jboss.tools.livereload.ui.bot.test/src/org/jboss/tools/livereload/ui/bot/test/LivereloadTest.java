@@ -44,8 +44,8 @@ public class LivereloadTest extends LivereloadBaseTest{
 		te.insertText(8, 0, browserText);
 		te.save();
 		
-		deployProjectToServer(sr.getServerNameLabelText(), PROJECT_NAME);
-		injectLivereload(sr.getServerNameLabelText(), PROJECT_NAME);
+		deployProjectToServer(sr.getServerName(), PROJECT_NAME);
+		injectLivereload(sr.getServerName(), PROJECT_NAME);
 
 		WebBrowserView bw = new WebBrowserView();
 		bw.open();

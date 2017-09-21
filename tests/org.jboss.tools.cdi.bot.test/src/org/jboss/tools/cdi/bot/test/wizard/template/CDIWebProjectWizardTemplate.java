@@ -72,7 +72,7 @@ public class CDIWebProjectWizardTemplate{
 		cw.open();
 		WebProjectFirstPage fp = new WebProjectFirstPage(cw);
 		fp.setProjectName(PROJECT_NAME);
-		assertEquals(sr.getRuntimeNameLabelText(),fp.getTargetRuntime());
+		assertEquals(sr.getRuntimeName(),fp.getTargetRuntime());
 		assertEquals("Dynamic Web Project with CDI "+CDIVersion+" (Contexts and Dependency Injection)",fp.getConfiguration());
 		cw.finish();
 		isCDISupportEnabled(PROJECT_NAME);
@@ -97,7 +97,7 @@ public class CDIWebProjectWizardTemplate{
 		cw.open();
 		WebProjectFirstPage fp = new WebProjectFirstPage(cw);
 		fp.setProjectName(PROJECT_NAME);
-		assertEquals(sr.getRuntimeNameLabelText(),fp.getTargetRuntime());
+		assertEquals(sr.getRuntimeName(),fp.getTargetRuntime());
 		assertEquals("Dynamic Web Project with CDI "+CDIVersion+" (Contexts and Dependency Injection)",fp.getConfiguration());
 		cw.next();
 		cw.next();

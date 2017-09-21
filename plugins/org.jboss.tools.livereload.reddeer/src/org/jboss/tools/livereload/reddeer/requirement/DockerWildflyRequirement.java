@@ -44,7 +44,6 @@ import org.eclipse.reddeer.eclipse.rse.ui.wizards.newconnection.RSEMainNewConnec
 import org.eclipse.reddeer.eclipse.rse.ui.wizards.newconnection.RSENewConnectionWizardSelectionPage;
 import org.eclipse.reddeer.eclipse.rse.ui.wizards.newconnection.RSENewConnectionWizardSelectionPage.SystemType;
 import org.eclipse.reddeer.junit.requirement.Requirement;
-import org.eclipse.reddeer.requirements.server.ConfiguredServerInfo;
 import org.eclipse.reddeer.swt.api.Shell;
 import org.eclipse.reddeer.swt.api.TreeItem;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
@@ -73,7 +72,6 @@ public class DockerWildflyRequirement extends AbstractServerRequirement implemen
 	private String ipAddress;
 	private DockerClient docker;
 	private String widlflyContId;
-	private static ConfiguredServerInfo lastServerConfiguration;
 	private static String macSSHPort = "2022";
 
 	DockerWildfly config;
@@ -97,7 +95,6 @@ public class DockerWildflyRequirement extends AbstractServerRequirement implemen
 	@Override
 	public void fulfill() {
 		try {
-			lastServerConfiguration = new ConfiguredServerInfo(config.name(), config.name(),null);
 			docker = DefaultDockerClient.fromEnv().build();
 			docker.pull(config.imageName());
 			Builder builder = ContainerConfig.builder();
@@ -273,15 +270,12 @@ public class DockerWildflyRequirement extends AbstractServerRequirement implemen
 	public void cleanUp() {
 		if (config.cleanup()) {
 			try{
-				if (lastServerConfiguration != null) {
-					ServersView2 sw = new ServersView2();
-					sw.open();
-					sw.getServer(config.name()).delete();
-					lastServerConfiguration = null;
-					SystemViewPart sview = new SystemViewPart();
-					sview.open();
-					sview.getSystem(ipAddress).delete();
-				}
+				ServersView2 sw = new ServersView2();
+				sw.open();
+				sw.getServer(config.name()).delete();
+				SystemViewPart sview = new SystemViewPart();
+				sview.open();
+				sview.getSystem(ipAddress).delete();
 			} finally {
 				try {
 					removeDocker();
@@ -330,12 +324,12 @@ public class DockerWildflyRequirement extends AbstractServerRequirement implemen
 	}
 
 	@Override
-	public String getServerNameLabelText() {
+	public String getServerName() {
 		return config.name();
 	}
 
 	@Override
-	public String getRuntimeNameLabelText() {
+	public String getRuntimeName() {
 		return config.name();
 	}
 
@@ -343,11 +337,6 @@ public class DockerWildflyRequirement extends AbstractServerRequirement implemen
 	public RequirementConfiguration getConfiguration() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public org.eclipse.reddeer.requirements.server.ConfiguredServerInfo getConfiguredConfig() {
-		return lastServerConfiguration;
 	}
 
 	@Override

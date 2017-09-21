@@ -374,7 +374,7 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 		createBasicMavenProject(PROJECT_NAME, PROJECT_NAME, "war","1.7");
 		PropertyDialog pd = openPropertiesProject(PROJECT_NAME);
 		new DefaultTreeItem("Targeted Runtimes").select();
-		new DefaultTableItem(sr.getRuntimeNameLabelText()).setChecked(true);
+		new DefaultTableItem(sr.getRuntimeName()).setChecked(true);
 		pd.ok();
 		new WaitWhile(new ShellIsAvailable("Properties for "+PROJECT_NAME));
 		new WaitWhile(new JobIsRunning());

@@ -69,7 +69,7 @@ public class DeployScaffoldDBTest extends WizardTestBase {
 	@BeforeClass
 	public static void startSakila() {
 		startSakilaDatabase();
-		SERVER_NAME = sr.getServerNameLabelText();
+		SERVER_NAME = sr.getServerName();
 	}
 
 	@Before

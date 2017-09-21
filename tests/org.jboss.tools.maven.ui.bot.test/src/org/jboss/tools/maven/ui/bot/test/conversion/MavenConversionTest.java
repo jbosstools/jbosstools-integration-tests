@@ -126,7 +126,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 					libs.get(i).contains(expectedLibsKeep.get(i)));
 			if(libs.get(i).contains("Runtime")){
 				assertTrue("Wrong runtime added after conversion",
-						libs.get(i).contains(sr.getRuntimeNameLabelText()));
+						libs.get(i).contains(sr.getRuntimeName()));
 			}
 		}
 		pd.ok();
@@ -216,7 +216,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 	private void createWithRuntime(){
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		createWebProject(WEB_PROJECT_NAME, sr.getRuntimeNameLabelText(), false);
+		createWebProject(WEB_PROJECT_NAME, sr.getRuntimeName(), false);
 		pe.open();
 		pe.getProject(WEB_PROJECT_NAME).select();
 		new ContextMenuItem("Configure","Convert to Maven Project").select();

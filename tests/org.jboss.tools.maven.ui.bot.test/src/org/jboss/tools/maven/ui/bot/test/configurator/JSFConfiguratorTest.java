@@ -74,7 +74,7 @@ public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@Test
 	public void testJSFConfigurator() {
-		createWebProject(PROJECT_NAME_JSF, sr.getRuntimeNameLabelText(), false);
+		createWebProject(PROJECT_NAME_JSF, sr.getRuntimeName(), false);
 		convertToMavenProject(PROJECT_NAME_JSF, "war", true);
 		checkProjectWithRuntime(PROJECT_NAME_JSF);
 		new WaitUntil(new ProjectHasNature(PROJECT_NAME_JSF, JSF_FACET, null));
