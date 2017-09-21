@@ -22,15 +22,12 @@ import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.NewServerWizardPage;
 import org.eclipse.reddeer.junit.requirement.Requirement;
 import org.eclipse.reddeer.junit.requirement.configuration.RequirementConfiguration;
 import org.eclipse.reddeer.requirements.server.AbstractServerRequirement;
-import org.eclipse.reddeer.requirements.server.ConfiguredServerInfo;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.tools.livereload.reddeer.requirement.LivereloadServerRequirement.LivereloadServer;
 
 public class LivereloadServerRequirement extends AbstractServerRequirement implements Requirement<LivereloadServer>{
 	
 	private LivereloadServer server;
-	
-	private static ConfiguredServerInfo lastServerConfiguration;
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
@@ -49,7 +46,6 @@ public class LivereloadServerRequirement extends AbstractServerRequirement imple
 			sw.getServer(server.name());
 			//already exists, do nothing
 		} catch (EclipseLayerException e) {
-			lastServerConfiguration = new ConfiguredServerInfo(server.name(), server.name(), null);
 			NewServerWizard serverW = new NewServerWizard();
 			serverW.open();
 			NewServerWizardPage sp = new NewServerWizardPage(serverW);
@@ -77,7 +73,7 @@ public class LivereloadServerRequirement extends AbstractServerRequirement imple
 		if(server.cleanup()){
 			ServersView2 sw = new ServersView2();
 			sw.open();
-			sw.getServer(lastServerConfiguration.getServerName()).delete(true);
+			sw.getServer(getServerName()).delete(true);
 		}
 		
 	}
@@ -90,13 +86,13 @@ public class LivereloadServerRequirement extends AbstractServerRequirement imple
 
 
 	@Override
-	public String getServerNameLabelText() {
+	public String getServerName() {
 		return server.name();
 	}
 
 
 	@Override
-	public String getRuntimeNameLabelText() {
+	public String getRuntimeName() {
 		return server.name();
 	}
 
@@ -104,12 +100,6 @@ public class LivereloadServerRequirement extends AbstractServerRequirement imple
 	@Override
 	public RequirementConfiguration getConfiguration() {
 		return null;
-	}
-
-
-	@Override
-	public ConfiguredServerInfo getConfiguredConfig() {
-		return lastServerConfiguration;
 	}
 	
 }

@@ -108,7 +108,7 @@ public class DeltaspikeTestBase {
 		PropertyDialog dialog = project.openProperties();
 		RuntimesPropertyPage runtimePage = new RuntimesPropertyPage(dialog);
 		CDISettingsPreferencePage cdiPage = new CDISettingsPreferencePage(dialog);
-		String targetRuntime = sr.getRuntimeNameLabelText();
+		String targetRuntime = sr.getRuntimeName();
 
 		dialog.open();
 		dialog.select(runtimePage);

@@ -123,6 +123,6 @@ public class RunJSFProjectTest {
 
 	private Server getServer() {
 		ServersView2 serversView = new ServersView2();
-		return serversView.getServer(serverReq.getServerNameLabelText());
+		return serversView.getServer(serverReq.getServerName());
 	}
 }

@@ -90,7 +90,7 @@ public class ExportImportWARTest {
 	private static void removeModulesFromServer() {
 		ServersView2 serversView = new ServersView2();
 		serversView.open();
-		Server server = serversView.getServer(serverReq.getServerNameLabelText());
+		Server server = serversView.getServer(serverReq.getServerName());
 		server.getModules().forEach(serverModule -> serverModule.remove());
 	}
 

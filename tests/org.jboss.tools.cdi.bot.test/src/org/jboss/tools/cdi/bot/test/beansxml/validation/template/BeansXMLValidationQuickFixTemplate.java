@@ -219,7 +219,7 @@ public class BeansXMLValidationQuickFixTemplate extends CDITestBase {
 		List<Problem> foundProblems = validationHelper.findProblems(vProblem);
 		assertEquals(1, foundProblems.size());
 		QuickFixWizard qf = foundProblems.get(0).openQuickFix();
-		QuickFixPage qp = new QuickFixPage();
+		QuickFixPage qp = new QuickFixPage(qf);
 		List<String> fixes = qp.getAvailableFixes();
 		String chosenFix = null;
 		for(String fix: fixes){

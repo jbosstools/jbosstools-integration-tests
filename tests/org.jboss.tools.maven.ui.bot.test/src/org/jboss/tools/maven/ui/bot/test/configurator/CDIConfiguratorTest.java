@@ -75,14 +75,14 @@ public class CDIConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@Test
 	public void testCDIConfigurator() {
-		createWebProject(PROJECT_NAME_CDI, sr.getRuntimeNameLabelText(),false);
+		createWebProject(PROJECT_NAME_CDI, sr.getRuntimeName(),false);
 		convertToMavenProject(PROJECT_NAME_CDI, "war", true);
 		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI, CDI_FACET, "1.2"));
 	}
 	
 	@Test
 	public void testCDIConfiguratorEjb() {
-		createEJBProject(PROJECT_NAME_CDI_EJB, sr.getRuntimeNameLabelText());
+		createEJBProject(PROJECT_NAME_CDI_EJB, sr.getRuntimeName());
 		convertToMavenProject(PROJECT_NAME_CDI_EJB, "ejb", true);
 		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI_EJB, CDI_FACET, "1.2"));
 	}

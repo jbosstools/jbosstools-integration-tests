@@ -79,7 +79,7 @@ public class ValidationHelper {
 	public void openQuickfix(ValidationProblem validationProblem, int quickfixIndex){
 		List<Problem> foundProblems = findProblems(validationProblem);
 		QuickFixWizard qf = foundProblems.get(0).openQuickFix();
-		QuickFixPage qp = new QuickFixPage();
+		QuickFixPage qp = new QuickFixPage(qf);
 		List<String> fixes = qp.getAvailableFixes();
 		String chosenFix = null;
 		String proposedFix = validationProblem.getQuickFixes().get(quickfixIndex);

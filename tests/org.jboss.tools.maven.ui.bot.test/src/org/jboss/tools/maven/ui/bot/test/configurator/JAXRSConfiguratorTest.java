@@ -58,7 +58,7 @@ public class JAXRSConfiguratorTest extends AbstractConfiguratorsTest{
 	
 	@Test
 	public void testJAXRSConfigurator() {
-		createWebProject(PROJECT_NAME_JAXRS, sr.getRuntimeNameLabelText(),false);
+		createWebProject(PROJECT_NAME_JAXRS, sr.getRuntimeName(),false);
 		convertToMavenProject(PROJECT_NAME_JAXRS, "war", true);
 		updateConf(PROJECT_NAME_JAXRS);
 		checkProjectWithRuntime(PROJECT_NAME_JAXRS);
