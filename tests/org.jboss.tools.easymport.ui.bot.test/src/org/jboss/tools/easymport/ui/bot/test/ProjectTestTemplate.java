@@ -11,14 +11,16 @@
 package org.jboss.tools.easymport.ui.bot.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.eclipse.core.resources.Project;
@@ -41,7 +43,18 @@ import org.junit.Test;
 
 public abstract class ProjectTestTemplate {
 
-	Set<String> ignoredErrors = new HashSet<>(Arrays.asList("Current Eclipse instance does not support software installation."));
+	public static final String IGNORED_ERRORS_PROPERTY = "ignored.errors.regexp";
+	private static final Logger LOG = new Logger(ProjectTestTemplate.class);
+
+	private String ignoredErrorsRegExp = "Current Eclipse instance does not support software installation.";
+
+	public ProjectTestTemplate() {
+		String extraPattern = System.getProperty(IGNORED_ERRORS_PROPERTY);
+
+		if (extraPattern != null && !extraPattern.isEmpty()) {
+			ignoredErrorsRegExp = ignoredErrorsRegExp + "|" + extraPattern;
+		}
+	}
 
 	@After
 	public void cleanup() {
@@ -58,6 +71,7 @@ public abstract class ProjectTestTemplate {
 
 	@BeforeClass
 	public static void setupClass() {
+		AbstractWait.sleep(TimePeriod.DEFAULT);
 		LogView logView = new LogView();
 		logView.open();
 		logView.deleteLog();
@@ -98,21 +112,24 @@ public abstract class ProjectTestTemplate {
 		logView.open();
 		List<LogMessage> errorMessages = logView.getErrorMessages();
 
-		if (errorMessages.size() == 1 && errorMessages.get(0).getMessage()
-				.contains("Current Eclipse instance does not support software installation.")) {
-			errorMessages.remove(0);
-		}
-		
-		int exceptedErrors = 0;
-		
-		// Increase exceptedErrors if log contains error which can be ignored.		
-		for (LogMessage logMessage : errorMessages) {
-		    if (ignoredErrors.contains(logMessage.getMessage())) {
-		    	exceptedErrors++;
-		    }
+		RegexMatcher matcher = new RegexMatcher(ignoredErrorsRegExp);
+		int ignoredErrors = 0;
+
+		Iterator<LogMessage> iterator = errorMessages.iterator();
+
+		while (iterator.hasNext()) {
+			LogMessage logMessage = iterator.next();
+
+			if (matcher.matches(logMessage.getMessage())) {
+				LOG.info("Ignoring error message: " + logMessage.getMessage());
+				iterator.remove();
+				// Increase exceptedErrors if log contains error which can be ignored.
+				ignoredErrors++;
+			}
 		}
 
-		assertEquals("There are errors in error log: " + errorMessages, exceptedErrors, errorMessages.size());
+		assertTrue("There are unexpected errors in error log: " + errorMessages,
+				((errorMessages.size() - ignoredErrors) <= 0));
 	}
 
 	private void checkProblemsView() {

@@ -16,6 +16,7 @@
 		<skipTests>false</skipTests>
 		<usage_reporting_enabled>false</usage_reporting_enabled>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
+		<systemProperties>-Dignored.errors.regexp=${ignored.errors.regexp}</systemProperties>
 	</properties>
 
 	<build>
