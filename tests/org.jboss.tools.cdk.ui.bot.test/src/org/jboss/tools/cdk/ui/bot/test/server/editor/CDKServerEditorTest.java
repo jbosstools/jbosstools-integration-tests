@@ -41,7 +41,7 @@ public class CDKServerEditorTest extends CDKServerWizardAbstractTest {
 	private CDEServerEditor editor;
 	
 	private void setServerEditor() {
-		serversView = new CDEServersView(false);
+		serversView = new CDEServersView();
 		serversView.open();
 		serversView.getServer(getServerAdapter()).open();
 		editor = new CDKServerEditor(getServerAdapter());

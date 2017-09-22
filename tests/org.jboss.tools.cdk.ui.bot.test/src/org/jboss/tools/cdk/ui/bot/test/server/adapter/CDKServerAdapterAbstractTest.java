@@ -103,7 +103,7 @@ public abstract class CDKServerAdapterAbstractTest extends CDKAbstractTest {
 	@Before
 	public void setUpServers() {
 		log.info("Open Servers view tab"); //$NON-NLS-1$
-		setServersView(new CDEServersView(isCDK3()));
+		setServersView(new CDEServersView());
 		getServersView().open();
 		log.info("Getting server object from Servers View with name: " + getServerAdapter()); //$NON-NLS-1$
 		setCDEServer(getServersView().getServer(getServerAdapter()));
