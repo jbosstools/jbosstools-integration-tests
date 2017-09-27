@@ -86,11 +86,11 @@ public abstract class SOAPTestBase {
 	}
 
 	protected static String getConfiguredRuntimeName() {
-		return serverReq.getRuntimeNameLabelText();
+		return serverReq.getRuntimeName();
 	}
 
 	protected static String getConfiguredServerName() {
-		return serverReq.getServerNameLabelText();
+		return serverReq.getServerName();
 	}
 
 	protected static String getConfiguredServerType() {
