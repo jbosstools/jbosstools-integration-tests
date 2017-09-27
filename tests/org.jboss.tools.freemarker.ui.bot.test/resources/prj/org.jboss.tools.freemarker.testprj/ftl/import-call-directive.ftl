@@ -1,1 +1,0 @@
-<@my.copyright date="1999-2002"/>
