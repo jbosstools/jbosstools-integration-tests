@@ -17,7 +17,6 @@ import org.eclipse.reddeer.workbench.impl.editor.Marker;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
-import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +43,7 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 	
 	@Test
 	public void testModeAll(){
-		setMode("all");
+		prepareBeanXml("all", false);
 		TextEditor ed = new TextEditor("Bean1.java");
 		try{
 			new WaitWhile(new EditorHasValidationMarkers(ed));
@@ -57,7 +56,7 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 	
 	@Test
 	public void testModeAnnotated(){
-		setMode("annotated");
+		prepareBeanXml("annotated", false);
 		TextEditor ed = new TextEditor("Bean1.java");
 		List<Marker> markers = ed.getMarkers();
 		assertEquals(0,markers.size());
@@ -87,7 +86,7 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 	
 	@Test
 	public void testModeNone(){
-		setMode("none");
+		prepareBeanXml("none", false);
 		TextEditor ed = new TextEditor("Bean1.java");
 		new WaitWhile(new EditorHasValidationMarkers(ed),TimePeriod.DEFAULT, false);
 		List<Marker> markers = ed.getMarkers();
@@ -123,13 +122,6 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 		assertEquals(0,markers.size());
 		
 		
-	}
-	
-	private void setMode(String mode){
-		EditorPartWrapper beans = beansXMLHelper.openBeansXml(PROJECT_NAME);
-		beans.activateTreePage();
-		beans.setBeanDiscoveryMode(mode);
-		beans.save();
 	}
 	
 	private void createClass(String project, String className){

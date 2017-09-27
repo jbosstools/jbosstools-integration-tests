@@ -48,10 +48,10 @@ import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.EditorHandler;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.cdi.reddeer.cdi.ui.preferences.CDISettingsPreferencePage;
-import org.jboss.tools.cdi.reddeer.matcher.ServerMatcher;
 import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage;
 import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage.SourceAttachmentEnum;
 import org.jboss.tools.deltaspike.ui.bot.test.condition.SpecificProblemExists;
@@ -59,7 +59,7 @@ import org.junit.BeforeClass;
 
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
-@JBossServer(state = ServerRequirementState.PRESENT)
+@JBossServer(state = ServerRequirementState.PRESENT, cleanup = false)
 public class DeltaspikeTestBase {
 
 	private static final Logger log = Logger.getLogger(DeltaspikeTestBase.class);

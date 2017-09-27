@@ -11,18 +11,24 @@
 package org.jboss.tools.deltaspike.ui.bot.test.condition;
 
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.reddeer.common.condition.WaitCondition;
 import org.eclipse.reddeer.workbench.impl.editor.Marker;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 
-public class ClassHasErrorMarker implements WaitCondition{
+public class ClassHasErrorOrWarningMarker implements WaitCondition{
+	
+	protected static final Set<String> ALLOWED_MARKERS_TYPES = new HashSet<String>(Arrays.asList("org.eclipse.ui.workbench.texteditor.warning", "org.eclipse.ui.workbench.texteditor.error"));
 	
 	private String className;
 	private List<Marker> markers;
 	
-	public ClassHasErrorMarker(String className) {
+	public ClassHasErrorOrWarningMarker(String className) {
 		this.className = className;
 	}
 
@@ -30,8 +36,9 @@ public class ClassHasErrorMarker implements WaitCondition{
 	public boolean test() {
 		TextEditor ed = new TextEditor(className+".java");
 		
-		if (ed.getMarkers().size() > 0) {
-			markers = ed.getMarkers();
+		markers = filterErrorsAndWarnings(ed.getMarkers());
+		
+		if (markers.size() > 0) {
 			return true;
 		}
 		return false;
@@ -54,6 +61,20 @@ public class ClassHasErrorMarker implements WaitCondition{
 
 	@Override
 	public List<Marker> getResult() {
+		return markers;
+	}
+	
+	/**
+	 * Remove uninteresting markers like "org.eclipse.jdt.ui.overrideIndicator" for example.
+	 * @param markers List of the markers which will be cleaned.
+	 */
+	private List<Marker> filterErrorsAndWarnings(List<Marker> markers) {
+		Iterator<Marker> markersIterator = markers.iterator();
+		while(markersIterator.hasNext()) {
+			if (!ALLOWED_MARKERS_TYPES.contains(markersIterator.next().getType())) {
+				markersIterator.remove();
+			}
+		}
 		return markers;
 	}
 

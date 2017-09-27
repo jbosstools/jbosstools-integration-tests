@@ -109,7 +109,7 @@ public class BeanValidationQuickFixTemplate extends CDITestBase {
 	}
 	
 	// https://issues.jboss.org/browse/JBIDE-7667
-//	@Test
+	@Test
 	public void testInjectDisposer() {
 			
 		String className = "Bean3";
@@ -145,7 +145,7 @@ public class BeanValidationQuickFixTemplate extends CDITestBase {
 	}
 	
 	// https://issues.jboss.org/browse/JBIDE-7667
-//	@Test
+	@Test
 	public void testInjectProducer() {
 		
 		String className = "Bean5";

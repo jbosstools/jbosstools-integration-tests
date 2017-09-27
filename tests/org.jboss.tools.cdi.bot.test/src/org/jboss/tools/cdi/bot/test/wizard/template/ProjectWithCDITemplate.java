@@ -22,6 +22,7 @@ import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.condition.ExactNumberOfProblemsExists;
 import org.eclipse.reddeer.eclipse.condition.ProblemExists;
 import org.eclipse.reddeer.eclipse.core.resources.Project;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
@@ -94,19 +95,23 @@ public class ProjectWithCDITemplate{
 		}
 		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellIsAvailable("Properties for "+PROJECT_NAME));
+		
 		openCDIPage();
 		cdiSupport = new LabeledCheckBox("CDI support:");
 		assertFalse(cdiSupport.isChecked());
 		cdiSupport.toggle(true);
 		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellIsAvailable("Properties for "+PROJECT_NAME));
-		new WaitUntil(new ProblemExists(ProblemType.ALL), TimePeriod.LONG, false);
+		
 		if(expectedProblemAdded != null){
 			ProblemsView pw = new ProblemsView();
 			pw.open();
+			
+			new WaitUntil(new ExactNumberOfProblemsExists(ProblemType.ALL, expectedProblemAdded.size()), TimePeriod.LONG, false);
 			assertEquals(expectedProblemAdded.size(),pw.getProblems(ProblemType.ALL).size());
+			
 			for(Problem p: pw.getProblems(ProblemType.ALL)){
-				boolean found =false;
+				boolean found = false;
 				for(String s: expectedProblemAdded){
 					if(p.getDescription().contains(s)){
 						found = true;
@@ -118,8 +123,10 @@ public class ProjectWithCDITemplate{
 				}
 			}
 		} else {
+			new WaitUntil(new ProblemExists(ProblemType.ALL), false);
 			new WaitWhile(new ProblemExists(ProblemType.ALL));
 		}
+		
 		openCDIPage();
 		cdiSupport = new LabeledCheckBox("CDI support:");
 		assertTrue(cdiSupport.isChecked());
@@ -142,11 +149,13 @@ public class ProjectWithCDITemplate{
 		cdiSupport.toggle(false);
 		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellIsAvailable("Properties for "+PROJECT_NAME));
-		new WaitUntil(new ProblemExists(ProblemType.ALL), TimePeriod.LONG, false);
+		
+		int expectedProblems = 1;
+		new WaitUntil(new ExactNumberOfProblemsExists(ProblemType.ALL, expectedProblems), TimePeriod.LONG, false);
 		if(expectedProblemRemoved != null){
 			ProblemsView pw = new ProblemsView();
 			pw.open();
-			assertEquals(1,pw.getProblems(ProblemType.ALL).size());
+			assertEquals(expectedProblems,pw.getProblems(ProblemType.ALL).size());
 			pw.getProblems(ProblemType.WARNING).get(0).getDescription().equals(expectedProblemRemoved);
 		} else {
 			new WaitWhile(new ProblemExists(ProblemType.ALL));
