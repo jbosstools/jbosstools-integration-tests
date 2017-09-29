@@ -62,7 +62,7 @@ public class CDK3ServerEditorTest extends CDKServerWizardAbstractTest {
 	private static Logger log = Logger.getLogger(CDK3ServerEditorTest.class);
 
 	private void setServerEditor() {
-		serversView = new CDEServersView(true);
+		serversView = new CDEServersView();
 		serversView.open();
 		serversView.getServer(getServerAdapter()).open();
 		editor = new CDK3ServerEditor(getServerAdapter());
