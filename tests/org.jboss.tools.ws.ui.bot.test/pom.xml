@@ -13,16 +13,13 @@
 	<artifactId>org.jboss.tools.ws.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<rd.config>${project.build.outputDirectory}/config</rd.config>
-		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
 		<jbosstools.test.jboss-wildfly-10.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.jboss-wildfly-10.home>
-		
 		<apache-cxf-2.x.dir>${requirementsDirectory}/apache-cxf-2.x</apache-cxf-2.x.dir>
 		<apache-cxf-2.x>${apache-cxf-2.x.dir}/apache-cxf-3.1.1/</apache-cxf-2.x>
 		<apache-cxf-2.x.url>http://archive.apache.org/dist/cxf/3.1.1/apache-cxf-3.1.1.zip</apache-cxf-2.x.url>
 		<apache-cxf-2.x.md5>142d0261de8012e6eafd780587313681</apache-cxf-2.x.md5>
 
-		<systemProperties>${integrationTestsSystemProperties} -Dws.scope=${ws.scope} -Dapache-cxf-2.x=${apache-cxf-2.x} -Drd.config=${rd.config} -Djbosstools.test.jboss-wildfly-10.home=${jbosstools.test.jboss-wildfly-10.home} -Dreddeer.close.shells=false</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dws.scope=${ws.scope} -Dapache-cxf-2.x=${apache-cxf-2.x} -Drd.config=target/classes/config/requirements.json -Djbosstools.test.jboss-wildfly-10.home=${jbosstools.test.jboss-wildfly-10.home} -Dreddeer.close.shells=false</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
 	
@@ -88,13 +85,13 @@
 			</build>
 		</profile>
 	</profiles>
-	
+
 	<repositories>
 		<repository>
 			<id>jbosstools-experiments</id>
 			<url>https://repository.jboss.org/nexus/content/repositories/jbosstools-experiments/</url>
 		</repository>
-	</repositories>
+	</repositories>	
 	<build>
 		<resources>
 			<resource>
@@ -155,29 +152,6 @@
 				<configuration>
 					<testSuite>org.jboss.tools.ws.ui.bot.test</testSuite>
 					<testClass>org.jboss.tools.ws.ui.bot.test.${ws.scope}WSBotTests</testClass>
-					<dependencies combine.children="append">
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.ws.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.ws.jaxrs.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-<!-- 						This entry should enable creating of default JDK on Mac -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.eclipse.jdt.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-					</dependencies>
 				</configuration>
 			</plugin>
 		</plugins>
