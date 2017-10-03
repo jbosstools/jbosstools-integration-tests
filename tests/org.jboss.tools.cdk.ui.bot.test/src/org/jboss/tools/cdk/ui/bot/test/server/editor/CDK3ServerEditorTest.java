@@ -110,6 +110,7 @@ public class CDK3ServerEditorTest extends CDKServerWizardAbstractTest {
 		assertCDK3ServerWizardFinished(MINISHIFT_HYPERVISOR, MINISHIFT_PATH);
 		setServerEditor();
 
+		checkEditorStateAfterSave(EXISTING_PATH, false);
 		checkEditorStateAfterSave(NON_EXECUTABLE_FILE, false);
 		checkEditorStateAfterSave(NON_EXISTING_PATH, false);
 		checkEditorStateAfterSave(EXECUTABLE_FILE, false);
@@ -135,7 +136,7 @@ public class CDK3ServerEditorTest extends CDKServerWizardAbstractTest {
 		LabeledText label = ((CDK3ServerEditor) editor).getMinishiftBinaryLabel();
 		label.setText(location);
 		new WaitUntil(new SystemJobIsRunning(getJobMatcher(MINISHIFT_VALIDATION_JOB)), TimePeriod.SHORT, false);
-		new WaitWhile(new SystemJobIsRunning(getJobMatcher(MINISHIFT_VALIDATION_JOB)), TimePeriod.SHORT, false);
+		new WaitWhile(new SystemJobIsRunning(getJobMatcher(MINISHIFT_VALIDATION_JOB)), TimePeriod.DEFAULT, false);
 		if (canSave) {
 			verifyEditorCanSave();
 		} else {
@@ -189,7 +190,7 @@ public class CDK3ServerEditorTest extends CDKServerWizardAbstractTest {
 				// TODO Auto-generated method stub
 				return null;
 			}
-		}, TimePeriod.SHORT);
+		}, TimePeriod.MEDIUM);
 	}
 
 	private void verifyEditorCannotSave() {
@@ -218,7 +219,7 @@ public class CDK3ServerEditorTest extends CDKServerWizardAbstractTest {
 
 	private void errorDialogAppeared() {
 		try {
-			new WaitUntil(new ShellIsAvailable(new DefaultShell(getServerAdapter())), TimePeriod.SHORT);
+			new WaitUntil(new ShellIsAvailable(new DefaultShell(getServerAdapter())), TimePeriod.MEDIUM);
 			log.info("Error Message Dialog appeared as expected");
 		} catch (WaitTimeoutExpiredException exc) {
 			log.error(exc.getMessage());

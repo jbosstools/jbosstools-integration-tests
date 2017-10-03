@@ -10,9 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.cdk.ui.bot.test;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.reddeer.common.exception.RedDeerException;
 import org.jboss.tools.cdk.ui.bot.test.utils.CDKTestUtils;
 
 public abstract class CDKAbstractTest {
@@ -67,5 +72,29 @@ public abstract class CDKAbstractTest {
 		Map<String, String> dict = new HashMap<>();
 		dict.put("Vagrantfile path", VAGRANTFILE_PATH);
 		CDKTestUtils.checkParameterNotNull(dict);		
+	}
+	
+	/**
+	 * Provide resource absolute path in project directory
+	 * @param path - resource relative path
+	 * @return resource absolute path
+	 */
+	public static String getProjectAbsolutePath(String... path) {
+
+		// Construct path
+		StringBuilder builder = new StringBuilder();
+		for (String fragment : path) {
+			builder.append("/" + fragment);
+		}
+
+		String filePath = "";
+		filePath = System.getProperty("user.dir");
+		File file = new File(filePath + builder.toString());
+		if (!file.exists()) {
+			throw new RedDeerException("Resource file does not exists within project path "
+					+ filePath);
+		}
+
+		return file.getAbsolutePath();
 	}
 }

@@ -61,15 +61,19 @@ public abstract class CDKServerWizardAbstractTest extends CDKAbstractTest {
 	
 	protected static final String CANNOT_RUN_PROGRAM = "Cannot run program";
 	
+	protected static final String NOT_EXECUTABLE = "is not executable";
+	
 	// possible dialog values passed by user
 
 	protected static boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().contains("win");
 	
-	protected static final String NON_EXISTING_PATH = System.getProperty("user.dir") + separator + "some_random_filename";
+	protected static final String EXISTING_PATH = System.getProperty("user.dir");
 	
-	protected static final String NON_EXECUTABLE_FILE = System.getProperty("java.home") + separator + "bin" + separator;
+	protected static final String NON_EXISTING_PATH = EXISTING_PATH + separator + "some_random_filename";
 	
-	protected static final String EXECUTABLE_FILE = NON_EXECUTABLE_FILE + (IS_WINDOWS ? "java.exe" : "java");	
+	protected static final String NON_EXECUTABLE_FILE = getProjectAbsolutePath("/resources/non-executable");
+	
+	protected static final String EXECUTABLE_FILE = getProjectAbsolutePath("resources/" + (IS_WINDOWS ? "executable.sh" : "executable.sh"));	
 	
 	protected static final String MINISHIFT_VALIDATION_JOB = "Validate minishift location";
 	
@@ -113,7 +117,7 @@ public abstract class CDKServerWizardAbstractTest extends CDKAbstractTest {
 		}
 		assertEquals(new LabeledText("Server's host name:").getText(), "localhost");
 		assertEquals(new LabeledText("Server name:").getText(), getServerAdapter());
-		new WaitUntil(new ControlIsEnabled(new NextButton()), TimePeriod.SHORT, false);
+		new WaitUntil(new ControlIsEnabled(new NextButton()), TimePeriod.MEDIUM, false);
 		assertTrue("Dialog button Next is not enabled!", wizard.isNextEnabled());
 		try {
 			new WaitWhile(new JobIsRunning(), TimePeriod.MEDIUM, false);
@@ -137,7 +141,7 @@ public abstract class CDKServerWizardAbstractTest extends CDKAbstractTest {
 	}
 	
 	protected void assertSameMessage(final NewServerWizard dialog, final String message) {
-		new WaitWhile(new SystemJobIsRunning(getJobMatcher(MINISHIFT_VALIDATION_JOB)), TimePeriod.MEDIUM, false);
+		new WaitWhile(new SystemJobIsRunning(getJobMatcher(MINISHIFT_VALIDATION_JOB)), TimePeriod.DEFAULT, false);
 		String description = dialog.getMessage();
 		assertTrue("Expected page description should contain text: " + message +
 				" but has: " + description,
@@ -145,7 +149,7 @@ public abstract class CDKServerWizardAbstractTest extends CDKAbstractTest {
 	}
 	
 	protected void assertDiffMessage(final NewServerWizard dialog, final String message) {
-		new WaitWhile(new SystemJobIsRunning(getJobMatcher(MINISHIFT_VALIDATION_JOB)), TimePeriod.MEDIUM, false);
+		new WaitWhile(new SystemJobIsRunning(getJobMatcher(MINISHIFT_VALIDATION_JOB)), TimePeriod.DEFAULT, false);
 		String description = dialog.getMessage();
 		assertFalse("Page descrition should not contain: " + message,
 				description.contains(message));
