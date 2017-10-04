@@ -52,7 +52,6 @@
 				<module>org.jboss.tools.jst.ui.bot.test</module>
 				<module>org.jboss.tools.maven.ui.bot.test</module>
 				<module>org.jboss.tools.mylyn.ui.bot.test</module>
-				<!-- disable because migrating to openshift repo <module>org.jboss.tools.openshift.ui.bot.test</module> -->
 				<module>org.jboss.tools.vpe.bot.test</module>
 				<module>org.jboss.tools.ws.ui.bot.test</module>
 				<module>org.jboss.tools.perf.test</module>
