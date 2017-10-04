@@ -13,7 +13,6 @@ package org.jboss.tools.forge2.ui.bot.wizard.test;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.reddeer.common.wait.TimePeriod;
-import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.swt.exception.SWTLayerException;
@@ -62,7 +61,7 @@ public class LinkWorkspaceSelectionTest extends WizardTestBase {
 		new ContextMenuItem("Show In", "Forge Console").select();
 		ForgeConsoleView forgeConsoleView = new ForgeConsoleView();
 		forgeConsoleView.open();
-		new WaitWhile(new ForgeConsoleHasNoChange(),false);
+		new WaitWhile(new ForgeConsoleHasNoChange(), TimePeriod.getCustom(15), false);
 		String consoleText = forgeConsoleView.getConsoleText();
 		assertTrue(consoleText.endsWith("[pom.xml]$ "));
 		setFocusOnProject();
@@ -79,7 +78,7 @@ public class LinkWorkspaceSelectionTest extends WizardTestBase {
 
 		pe.getProject(PROJECT_NAME).getProjectItem("src", "main", "webapp", "WEB-INF", "beans.xml").open();
 		forgeConsoleView.open();
-		new WaitUntil(new ForgeConsoleHasNoChange(), TimePeriod.LONG);
+		new WaitWhile(new ForgeConsoleHasNoChange(), TimePeriod.getCustom(15), false);
 		forgeConsoleView = new ForgeConsoleView();
 		forgeConsoleView.open();
 		String consoleText = forgeConsoleView.getConsoleText();
