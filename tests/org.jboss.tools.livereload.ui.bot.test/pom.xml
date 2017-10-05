@@ -13,7 +13,7 @@
 
 	<properties>
 		<suiteClass>org.jboss.tools.livereload.ui.bot.test.LivereloadAllBotTests</suiteClass>
-		<systemProperties>-Drd.logCollectorEnabled=false -Drd.config=target/classes/servers</systemProperties>
+		<systemProperties>-Drd.logCollectorEnabled=false -Drd.config=target/classes/servers/wildfly.json</systemProperties>
 		<jbosstools.test.wildfly.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.wildfly.home>
 	</properties>
 
