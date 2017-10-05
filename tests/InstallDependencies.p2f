@@ -153,11 +153,6 @@
         <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
       </repositories>
     </iu>
-    <iu id='org.jboss.tools.openshift.ui.bot.test' name='OpenShift UI Bot Tests' version='4.4.3'>
-      <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
-      </repositories>
-    </iu>
     <iu id='org.jboss.tools.perf' name='Performance Tests Core' version='4.4.3'>
       <repositories size='1'>
         <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
@@ -214,11 +209,6 @@
       </repositories>
     </iu>
     <iu id='org.jboss.tools.hibernate.reddeer' name='RedDeer API for Hibernate UI Tests' version='4.4.3'>
-      <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
-      </repositories>
-    </iu>
-    <iu id='org.jboss.tools.openshift.reddeer' name='RedDeer API for OpenShift UI Tests' version='4.4.3'>
       <repositories size='1'>
         <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
       </repositories>
