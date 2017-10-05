@@ -64,19 +64,26 @@ public class CDK3ServerWizardTest extends CDKServerWizardAbstractTest {
 		// just check that default domain is choosen correctly
 		assertTrue(containerPage.getDomain().equalsIgnoreCase(CREDENTIALS_DOMAIN));
 		
-		// to change dialog page description folder must be set with path where is no vagrantfile
-		containerPage.setMinishiftBinary(NON_EXECUTABLE_FILE);
+		// needs to activate validator
+		containerPage.setMinishiftBinary(EXISTING_PATH);
 		
-		// first error description will demand vagrantfile in the path or not?
-		// seems that adding the user has priority over checking vagrantfile
+		// first the credentials are checked
 		assertSameMessage(dialog, NO_USER);
 		containerPage.setCredentials(USERNAME, PASSWORD);
-		// now the description should have changed to "no vagrantfile" 
+		assertDiffMessage(dialog, NO_USER);
+
+		// checking of minishift binary validation
+		// test that existing folder cannot be run
+		containerPage.setMinishiftBinary(EXISTING_PATH);
 		assertSameMessage(dialog, CANNOT_RUN_PROGRAM);
+		containerPage.setMinishiftBinary(NON_EXECUTABLE_FILE);
+		assertSameMessage(dialog, NOT_EXECUTABLE);
 		containerPage.setMinishiftBinary(NON_EXISTING_PATH);
 		assertSameMessage(dialog, DOES_NOT_EXIST);
 		containerPage.setMinishiftBinary(EXECUTABLE_FILE);
 		assertSameMessage(dialog, CHECK_MINISHIFT_VERSION);
+		
+		// Positive test of proper minishift binary
 		containerPage.setMinishiftBinary(MINISHIFT_PATH);
 		assertDiffMessage(dialog, CHECK_MINISHIFT_VERSION);
 		new WaitUntil(new ControlIsEnabled(new FinishButton()), TimePeriod.MEDIUM, false);

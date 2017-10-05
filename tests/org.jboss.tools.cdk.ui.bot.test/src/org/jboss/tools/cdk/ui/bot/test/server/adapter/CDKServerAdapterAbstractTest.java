@@ -184,7 +184,7 @@ public abstract class CDKServerAdapterAbstractTest extends CDKAbstractTest {
 		}
 		log.info("Setting minishift binary file folder"); //$NON-NLS-1$
 		containerPage.setMinishiftBinary(path);
-		new WaitUntil(new ControlIsEnabled(new FinishButton()), TimePeriod.MEDIUM);
+		new WaitUntil(new ControlIsEnabled(new FinishButton()), TimePeriod.DEFAULT);
 		log.info("Finishing Add new server dialog"); //$NON-NLS-1$
 		if (!(new FinishButton().isEnabled())) {
 			log.error("Finish button was not enabled"); //$NON-NLS-1$
