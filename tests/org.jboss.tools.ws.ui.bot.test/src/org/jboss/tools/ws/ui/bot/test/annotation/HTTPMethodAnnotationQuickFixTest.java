@@ -54,7 +54,9 @@ public class HTTPMethodAnnotationQuickFixTest extends RESTfulTestBase {
 		/* check that there are quick fixes for both required annotations */
 		editor.openQuickFixContentAssistant().chooseProposal(
 				"Add missing attributes");
-		new TextEditor().save();
+		if(new TextEditor().isDirty()) {
+			new TextEditor().save();	
+		}
 		ProjectHelper.cleanAllProjects();
 		
 		
@@ -86,7 +88,9 @@ public class HTTPMethodAnnotationQuickFixTest extends RESTfulTestBase {
 				"Add @Retention annotation on type 'MyAnnot'");
 
 		/* save edited file */
-		new TextEditor().save();
+		if(new TextEditor().isDirty()) {
+			new TextEditor().save();
+		}
 		ProjectHelper.cleanAllProjects();
 
 		/* assert that there are no JAX-RS errors */
