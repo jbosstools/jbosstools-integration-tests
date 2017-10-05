@@ -37,7 +37,6 @@ public class InstallAddonTest extends WizardTestBase {
 	private static String INSTALL_ADDON_DIALOG_NAME = "Install an Addon from the catalog";
 	private static String REMOVE_ADDON_DIALOG_NAME = "Remove an Addon";
 	private static String ADDON_NAME = "RichFaces";
-	private static String ADDON_PACKAGE_NAME = "org.richfaces.forge:richfaces";
 
 	@Test
 	public void testAddonInstall() {

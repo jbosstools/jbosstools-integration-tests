@@ -32,18 +32,15 @@ import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.core.matcher.WithTextMatcher;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
-import org.eclipse.reddeer.jface.condition.WindowIsAvailable;
 import org.eclipse.reddeer.jface.wizard.WizardDialog;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.closeeditors.CloseAllEditorsRequirement.CloseAllEditors;
 import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
-import org.eclipse.reddeer.swt.condition.ShellIsActive;
-import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
-import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
@@ -188,6 +185,7 @@ public abstract class WizardTestBase {
 		new LabeledText("Project name:").setText(name);
 		new LabeledText("Project location:").setText(path);
 		wd.finish(TimePeriod.getCustom(600));
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		ProjectExplorer pe = new ProjectExplorer();
 		assertTrue(pe.containsProject(name));
 	}
