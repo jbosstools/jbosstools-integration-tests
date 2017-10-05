@@ -10,9 +10,9 @@ import java.util.List;
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNot;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.jface.exception.JFaceLayerException;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
@@ -55,7 +55,7 @@ public class CreateJAXRSResourceTest extends RESTfulTestBase {
 		//close the wizard if it's present
 		try {
 			wizard.cancel();
-		} catch(CoreLayerException e) {
+		} catch(JFaceLayerException e) {
 		}
 
 		super.cleanup();
