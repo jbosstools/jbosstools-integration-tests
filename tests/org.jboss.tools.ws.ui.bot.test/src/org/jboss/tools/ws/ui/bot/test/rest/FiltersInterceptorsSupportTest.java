@@ -100,7 +100,9 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 
 		//remove unused import
 		new ExtendedTextEditor().removeLine("import javax.ws.rs.ext.Provider;");
-		new ExtendedTextEditor().save();
+		if(new ExtendedTextEditor().isDirty()) {
+			new ExtendedTextEditor().save();
+		}
 		ProjectHelper.cleanAllProjects();
 
 		/* wait for JAX-RS validator */
