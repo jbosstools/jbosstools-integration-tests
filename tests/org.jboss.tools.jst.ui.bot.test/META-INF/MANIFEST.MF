@@ -14,4 +14,5 @@ Require-Bundle: org.junit,
  org.eclipse.core.resources;bundle-version="3.10.0",
  org.eclipse.jdt.debug;bundle-version="3.10.0",
  org.eclipse.wst.jsdt.debug.core;bundle-version="3.1.300",
- org.eclipse.debug.core;bundle-version="3.10.100"
+ org.eclipse.debug.core;bundle-version="3.10.100",
+ org.eclipse.ui.editors;bundle-version="3.11.0"

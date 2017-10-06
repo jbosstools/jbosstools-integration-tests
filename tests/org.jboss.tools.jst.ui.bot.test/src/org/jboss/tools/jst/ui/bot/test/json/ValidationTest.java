@@ -67,9 +67,8 @@ public class ValidationTest extends JSTTestBase {
 		editor.save();
 		
 		new WaitUntil(new EditorHasValidationMarkers(editor));
-		
 		List<Marker> markers = editor.getMarkers();
-		assertTrue("Error not detected!", markers.size() == 1);
+		assertTrue("Error not detected!", markers.size() >= 1);
 		assertThat(markers.get(0).getText(), is("Expected name at 1:1"));
 		
 	}
