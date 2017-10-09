@@ -4,11 +4,13 @@ import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
+import org.eclipse.reddeer.workbench.condition.EditorIsDirty;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.common.reddeer.requirements.JavaFoldingRequirement.JavaFolding;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
@@ -54,9 +56,8 @@ public class HTTPMethodAnnotationQuickFixTest extends RESTfulTestBase {
 		/* check that there are quick fixes for both required annotations */
 		editor.openQuickFixContentAssistant().chooseProposal(
 				"Add missing attributes");
-		if(new TextEditor().isDirty()) {
-			new TextEditor().save();	
-		}
+		new WaitUntil(new EditorIsDirty(editor));
+		editor.save();
 		ProjectHelper.cleanAllProjects();
 		
 		
@@ -88,8 +89,8 @@ public class HTTPMethodAnnotationQuickFixTest extends RESTfulTestBase {
 				"Add @Retention annotation on type 'MyAnnot'");
 
 		/* save edited file */
-		if(new TextEditor().isDirty()) {
-			new TextEditor().save();
+		if(editor.isDirty()) {
+			editor.save();
 		}
 		ProjectHelper.cleanAllProjects();
 

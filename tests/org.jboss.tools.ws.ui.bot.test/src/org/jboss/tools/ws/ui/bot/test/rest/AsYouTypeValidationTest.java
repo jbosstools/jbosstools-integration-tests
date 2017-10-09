@@ -7,17 +7,13 @@ import java.util.List;
 
 import org.hamcrest.core.Is;
 import org.hamcrest.core.IsNot;
-import org.hamcrest.core.StringContains;
-import org.eclipse.reddeer.common.wait.AbstractWait;
-import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
-import org.eclipse.reddeer.swt.keyboard.Keyboard;
-import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
+import org.eclipse.reddeer.workbench.condition.EditorHasValidationMarkers;
 import org.eclipse.reddeer.workbench.impl.editor.Marker;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,12 +53,12 @@ public class AsYouTypeValidationTest extends RESTfulTestBase {
 
 		/* change pathparam's value to be invalid */
 		openJavaFile(getWsProjectName(), "org.rest.test", "RestService.java");
-		ExtendedTextEditor textEditor = new ExtendedTextEditor();
-		int lineNumber = textEditor.getLineNum(StringContains.containsString("}")) -1;
-		textEditor.selectLine(lineNumber);
-		Keyboard keyboard = KeyboardFactory.getKeyboard();
-		keyboard.type("\t@Path(\"{id}\")\n\tpublic void test(@PathParam(\"test\") Integer test){\n");//enclosing } will be added automatically by editor
-		AbstractWait.sleep(TimePeriod.getCustom(2));
+		TextEditor textEditor = new TextEditor();
+		int lineNumber = textEditor.getLineOfText("}") - 1;
+		textEditor.insertLine(lineNumber, "\t@Path(\"{id}\")\n\tpublic void test(@PathParam(\"test\") Integer test){}\n");
+		textEditor.save();
+		
+		new WaitUntil(new EditorHasValidationMarkers(textEditor, 9));
 
 		/* error shows */
 		List<Marker> markers = textEditor.getMarkers();

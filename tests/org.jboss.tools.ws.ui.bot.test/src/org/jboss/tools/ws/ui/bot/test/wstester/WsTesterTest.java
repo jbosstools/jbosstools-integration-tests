@@ -401,7 +401,7 @@ public class WsTesterTest {
 		try {
 			dlg.openURL();
 			InputDialog wsdUrlDialog = new InputDialog("WSDL URL");
-			wsdUrlDialog.typeInputText(SERVICE_URL + "?WSDL");
+			wsdUrlDialog.setInputText(SERVICE_URL + "?WSDL");
 			wsdUrlDialog.ok();
 			new DefaultShell(dlg.TITLE);
 

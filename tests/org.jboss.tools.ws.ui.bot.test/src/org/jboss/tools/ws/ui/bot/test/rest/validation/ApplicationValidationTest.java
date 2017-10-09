@@ -14,7 +14,7 @@ package org.jboss.tools.ws.ui.bot.test.rest.validation;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
-import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Before;
@@ -87,8 +87,9 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 
 		/* fix class - should be no error */
 		openJavaFile(projectName, "test", "App.java");
-		ExtendedTextEditor textEditor = new ExtendedTextEditor();
-		textEditor.replace("@ApplicationPath(\"/rest\")", "");
+		TextEditor editor = new TextEditor();
+		editor.setText(editor.getText().replace("@ApplicationPath(\"/rest\")", ""));
+		editor.save();
 		ProjectHelper.cleanAllProjects();
 
 		/* test validation error */
@@ -108,8 +109,9 @@ public class ApplicationValidationTest extends RESTfulTestBase {
 
 		/* fix class - should be no error */
 		openJavaFile(projectName, "test", "App.java");
-		ExtendedTextEditor textEditor = new ExtendedTextEditor();
-		textEditor.replace("extends Application", "");
+		TextEditor editor = new TextEditor();
+		editor.setText(editor.getText().replace("extends Application", ""));
+		editor.save();
 		ProjectHelper.cleanAllProjects();
 
 		/* test validation error */

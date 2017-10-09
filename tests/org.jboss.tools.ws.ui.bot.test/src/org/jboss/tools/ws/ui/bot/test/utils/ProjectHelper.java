@@ -24,21 +24,31 @@ import org.eclipse.reddeer.common.exception.RedDeerException;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.matcher.TreeItemTextMatcher;
 import org.eclipse.reddeer.eclipse.core.resources.DefaultProject;
 import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.jdt.ui.preferences.BuildPathsPropertyPage;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.eclipse.reddeer.eclipse.utils.DeleteUtils;
+import org.eclipse.reddeer.eclipse.wst.common.project.facet.ui.RuntimesPropertyPage;
+import org.eclipse.reddeer.swt.api.Shell;
+import org.eclipse.reddeer.swt.api.Table;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.button.RadioButton;
 import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.workbench.condition.EditorWithTitleIsActive;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
@@ -50,9 +60,6 @@ import org.jboss.tools.ws.reddeer.ui.wizards.CreateNewFileWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.jst.j2ee.EARProjectWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.jst.servlet.DynamicWebProjectWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.NewWsdlFileWizard;
-import org.jboss.tools.ws.ui.bot.test.uiutils.JavaBuildPathPropertiesPage;
-import org.jboss.tools.ws.ui.bot.test.uiutils.PropertiesDialog;
-import org.jboss.tools.ws.ui.bot.test.uiutils.TargetedRuntimesPropertiesPage;
 
 /**
  * @author jjankovi
@@ -173,20 +180,22 @@ public class ProjectHelper {
 	}
 
 	public static void setProjectJRE(String projectName) {
-		PropertiesDialog dialog = new PropertiesDialog();
-		dialog.open(projectName);
+		ProjectExplorer projectExplorer = new ProjectExplorer();
+		projectExplorer.open();
+		PropertyDialog pd = projectExplorer.getProject(projectName).openProperties();
+		
+		BuildPathsPropertyPage buildPathsPage = new BuildPathsPropertyPage(pd);
+		pd.select(buildPathsPage);
+		
+		buildPathsPage.activateLibrariesTab();
+		buildPathsPage.selectLibrary(new TreeItemTextMatcher(StringContains.containsString("JRE System Library")));
 
-		JavaBuildPathPropertiesPage page = new JavaBuildPathPropertiesPage();
-		page.select();
-		page.activateLibrariesTab();
-		page.selectLibrary(StringContains.containsString("JRE System Library"));
-
-		new PushButton(IDELabel.Button.EDIT).click();
-		new DefaultShell("Edit Library");
-		new RadioButton("Alternate JRE:").click();
-		new PushButton(IDELabel.Button.FINISH).click();
-
-		dialog.finish();
+		new PushButton(buildPathsPage, IDELabel.Button.EDIT).click();
+		Shell editShell = new DefaultShell("Edit Library");
+		new RadioButton(editShell, "Alternate JRE:").click();
+		new FinishButton(editShell).click();
+		new WaitWhile(new ShellIsAvailable(editShell));
+		pd.ok();
 	}
 
 	public static boolean projectExists(String name) {
@@ -248,16 +257,19 @@ public class ProjectHelper {
 	 * @param project
 	 */
 	public static void addConfiguredRuntimeIntoProject(String projectName, String configuredRuntime) {
-		PropertiesDialog dialog = new PropertiesDialog();
-		dialog.open(projectName);
-
-		TargetedRuntimesPropertiesPage page = new TargetedRuntimesPropertiesPage();
-		page.select();
-		page.setSelectAllRuntimes(true);
-		page.checkAllRuntimes(false);
-		page.checkRuntime(configuredRuntime, true);
-
-		dialog.finish(TimePeriod.LONG);
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		PropertyDialog pd = pe.getProject(projectName).openProperties();
+		
+		RuntimesPropertyPage rpage = new RuntimesPropertyPage(pd);
+		pd.select(rpage);
+		new CheckBox(rpage, "Show all runtimes").toggle(false);
+		Table runtimes = new DefaultTable(rpage);
+		for(TableItem ti : runtimes.getItems()) {
+			ti.setChecked(false);
+		}
+		rpage.selectRuntime(configuredRuntime);
+		pd.ok();
 	}
 
 	private static void importProject(String projectLocation) {

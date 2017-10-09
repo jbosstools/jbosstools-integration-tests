@@ -33,12 +33,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * Checks behaviour of AnnotationProperties view and its 
- * impact on JAX-RS explorer 
+ * Checks behaviour of AnnotationProperties view and its impact on JAX-RS
+ * explorer
  * 
  * @author jjankovi
  *
- * Also improve tests (mainly testAbsenceOfAnnotation() and testPresenceOfAnnotation())
+ *         Also improve tests (mainly testAbsenceOfAnnotation() and
+ *         testPresenceOfAnnotation())
  * 
  */
 @RunWith(RedDeerSuite.class)
@@ -57,8 +58,8 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 	}
 
 	/**
-	 * 1 there are no incorrectly checked annotations
-	 * 2 there are no incorrectly unchecked annotations 
+	 * 1 there are no incorrectly checked annotations 2 there are no incorrectly
+	 * unchecked annotations
 	 * 
 	 * @author Radoslav Rabara
 	 */
@@ -69,20 +70,20 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 
 		AnnotationPropertiesView annotationsView = new AnnotationPropertiesView();
 		annotationsView.open();
-		
+
 		List<TreeItem> allAnnotations = annotationsView.getAllAnnotations();
 		List<TreeItem> deactiveAnnotations = annotationsView.getAllDeactiveAnnotation();
 
-		assertThat(deactiveAnnotations.size(), Is.is(allAnnotations.size()-1));
+		assertThat(deactiveAnnotations.size(), Is.is(allAnnotations.size() - 1));
 
-		for(TreeItem item : deactiveAnnotations) {
+		for (TreeItem item : deactiveAnnotations) {
 			assertThat("Path annotation isn't deactivated", item.getText(), IsNot.not("javax.ws.rs.Path"));
 		}
 	}
 
 	/**
-	 * 1 there are correctly checked annotations
-	 * 2 there are correctly unchecked annotations
+	 * 1 there are correctly checked annotations 2 there are correctly unchecked
+	 * annotations
 	 */
 	@Test
 	public void testPresenceOfAnnotation() {
@@ -99,10 +100,9 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 		assertThat("Path annotation should be active but active is " + activeAnnotations.get(0).getText(),
 				activeAnnotations.get(0).getText(), Is.is("javax.ws.rs.Path"));
 	}
-	
+
 	/**
-	 * 1 check equality of param values
-	 * 2 changing param values is mirrored to class
+	 * 1 check equality of param values 2 changing param values is mirrored to class
 	 */
 	@Test
 	public void testAnnotationParamValues() {
@@ -164,10 +164,8 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 
 		TreeItem pathAnnotation = annotationsView.getAnnotation("javax.ws.rs.Path");
 
-		annotationsView.changeAnnotationParamValue(
-				pathAnnotation, 
-				annotationsView.getAnnotationValues(pathAnnotation).get(0).getText(), 
-				"/edit");
+		annotationsView.changeAnnotationParamValue(pathAnnotation,
+				annotationsView.getAnnotationValues(pathAnnotation).get(0).getText(), "/edit");
 		new WaitUntil(new RestServicePathsHaveUpdated(getWsProjectName()), TimePeriod.getCustom(2), false);
 
 		for (RESTfulWebService service : restfulServicesForProject(getWsProjectName())) {
@@ -187,7 +185,7 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 
 		// It gets some time till it's shown in explorer
 		new WaitUntil(new RestServicePathsHaveUpdated(getWsProjectName()), TimePeriod.getCustom(2), false);
-		
+
 		assertThat("RESTful services", restfulServicesForProject(getWsProjectName()).size(), Is.is(3));
 	}
 
@@ -204,11 +202,9 @@ public class AnnotationPropertiesTest extends RESTfulTestBase {
 		activeValueIsContainedInActiveEditor(value, true);
 	}
 
-	private void activeValueIsContainedInActiveEditor(
-			String value, boolean shouldContain) {
+	private void activeValueIsContainedInActiveEditor(String value, boolean shouldContain) {
 		String text = new TextEditor().getText();
-		assertTrue("Editor should " + (shouldContain?"":"not ")
-				+ "contain \""+ value +"\" but the content is:\n" + text,
-				text.contains(value) == shouldContain);
+		assertTrue("Editor should " + (shouldContain ? "" : "not ") + "contain \"" + value + "\" but the content is:\n"
+				+ text, text.contains(value) == shouldContain);
 	}
 }
