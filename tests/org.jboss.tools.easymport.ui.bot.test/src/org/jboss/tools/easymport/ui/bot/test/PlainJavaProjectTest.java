@@ -48,7 +48,7 @@ public class PlainJavaProjectTest extends ProjectTestTemplate {
 	}
 
 	@Override
-	void cehckImportedProject() {
+	void checkImportedProject() {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("PlainJavaProject");
 		String[] natureIds = {};
 		try {

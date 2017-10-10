@@ -50,7 +50,7 @@ public class FeatureProjectTest extends ProjectTestTemplate {
 	}
 	
 	@Override
-	void cehckImportedProject() {
+	void checkImportedProject() {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJECT_NAME);
 		String[] natureIds = {};
 		try {

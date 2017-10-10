@@ -50,7 +50,7 @@ public class EclipseJavaProjectTest extends ProjectTestTemplate {
 
 	
 	@Override
-	void cehckImportedProject() {
+	void checkImportedProject() {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("JavaEclipseProject");
 		String[] natureIds = {};
 		try {
