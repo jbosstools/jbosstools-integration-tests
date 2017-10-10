@@ -14,11 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.reference.ReferencedComposite;
 import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
 import org.eclipse.reddeer.jface.wizard.WizardPage;
 import org.eclipse.reddeer.swt.api.Combo;
+import org.eclipse.reddeer.swt.api.Shell;
 import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
@@ -28,54 +31,53 @@ import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 
 public class SmartImportRootWizardPage extends WizardPage {
-	
+
 	private static final Logger log = Logger.getLogger(WizardProjectsImportPage.class);
-	
+
 	public SmartImportRootWizardPage(ReferencedComposite referencedComposite) {
 		super(referencedComposite);
 	}
-	
-	public void selectDirectory(String path){
-		log.info("Selecting directory \""+path+"\" in SelectImportRootWizardPage.");
-		Combo selectDirText = new LabeledCombo("Import source:");
+
+	public void selectDirectory(String path) {
+		log.info("Selecting directory \"" + path + "\" in SelectImportRootWizardPage.");
+		Combo selectDirText = new LabeledCombo(this, "Import source:");
 		selectDirText.setText(path);
 	}
-	
-	
-	public List<String> getDetectors(){
+
+	public List<String> getDetectors() {
 		List<String> resultList = new ArrayList<String>();
-		new DefaultLink("installed project configurators").click();
-		new DefaultShell("Installed project configuratos");
-		String labelText = new DefaultLabel(1).getText();
+		new DefaultLink(this, "installed project configurators").click();
+		Shell configuratorsShell = new DefaultShell("Installed project configuratos");
+		String labelText = new DefaultLabel(configuratorsShell, 1).getText();
 		String[] split = labelText.split("\n");
-		for (String row: split) {
-			if (row.startsWith("*")){
+		for (String row : split) {
+			if (row.startsWith("*")) {
 				resultList.add(row.substring(2));
 			}
 		}
-		new OkButton().click();
+		new OkButton(configuratorsShell).click();
+		new WaitWhile(new ShellIsAvailable(configuratorsShell));
 		return resultList;
 	}
-	
-	public void setSearchForNestedProjects(boolean value){
-		new CheckBox("Search for nested projects").toggle(value);
-	}
-	
-	public void setDetectAndConfigureNatures(boolean value){
-		new CheckBox("Detect and configure project natures").toggle(value);
-	}
-	
-	public void setHideOpenProjects(boolean value){
-		new CheckBox("Hide already open projects").toggle(value);
-	}
-	
-	public List<ProjectProposal> getAllProjectProposals() {
 
-		DefaultTree tree = new DefaultTree();
+	public void setSearchForNestedProjects(boolean value) {
+		new CheckBox(this, "Search for nested projects").toggle(value);
+	}
+
+	public void setDetectAndConfigureNatures(boolean value) {
+		new CheckBox(this, "Detect and configure project natures").toggle(value);
+	}
+
+	public void setHideOpenProjects(boolean value) {
+		new CheckBox(this, "Hide already open projects").toggle(value);
+	}
+
+	public List<ProjectProposal> getAllProjectProposals() {
+		DefaultTree tree = new DefaultTree(this);
 		List<ProjectProposal> returnList = parseTree(tree);
 		return returnList;
 	}
-	
+
 	private List<ProjectProposal> parseTree(DefaultTree tree) {
 		List<ProjectProposal> returnList = new ArrayList<>();
 		for (TreeItem treeItem : tree.getAllItems()) {

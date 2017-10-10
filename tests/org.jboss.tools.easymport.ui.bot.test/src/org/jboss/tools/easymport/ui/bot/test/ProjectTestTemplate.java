@@ -23,7 +23,6 @@ import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
-import org.eclipse.reddeer.eclipse.core.resources.Project;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.log.LogMessage;
@@ -59,9 +58,9 @@ public abstract class ProjectTestTemplate {
 	@After
 	public void cleanup() {
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
-		for (Project p : new ProjectExplorer().getProjects()) {
-			p.delete(false);
-		}
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.deleteAllProjects();
 		// empty error log
 
 		LogView logView = new LogView();
@@ -86,7 +85,7 @@ public abstract class ProjectTestTemplate {
 		selectImportRootWizardPage.selectDirectory(path);
 		selectImportRootWizardPage.setSearchForNestedProjects(true);
 		selectImportRootWizardPage.setDetectAndConfigureNatures(true);
-		new WaitUntil(new ControlIsEnabled(new FinishButton()), TimePeriod.LONG);
+		new WaitUntil(new ControlIsEnabled(new FinishButton(easymportWizard)), TimePeriod.LONG);
 
 		// check proposals
 		List<ProjectProposal> allProjectProposals = selectImportRootWizardPage.getAllProjectProposals();
@@ -104,7 +103,7 @@ public abstract class ProjectTestTemplate {
 		checkErrorLog();
 		checkProblemsView();
 
-		cehckImportedProject();
+		checkImportedProject();
 	}
 
 	private void checkErrorLog() {
@@ -150,6 +149,6 @@ public abstract class ProjectTestTemplate {
 	 * Checks whether the project was imported correctly.
 	 * 
 	 */
-	abstract void cehckImportedProject();
+	abstract void checkImportedProject();
 
 }
