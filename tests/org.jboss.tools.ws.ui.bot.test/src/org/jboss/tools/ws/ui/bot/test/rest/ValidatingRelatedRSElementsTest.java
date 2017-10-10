@@ -3,7 +3,7 @@ package org.jboss.tools.ws.ui.bot.test.rest;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
-import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,8 +35,9 @@ public class ValidatingRelatedRSElementsTest extends RESTfulTestBase {
 
 		/* fix the error */
 		openJavaFile(getWsProjectName(), "org.rest.test", "CarFromString.java");
-		ExtendedTextEditor textEditor = new ExtendedTextEditor();
-		textEditor.replace("Car fromString(", "CarFromString fromString(");
+		TextEditor editor = new TextEditor();
+		editor.setText(editor.getText().replace("Car fromString(", "CarFromString fromString("));
+		editor.save();
 		ProjectHelper.cleanAllProjects();
 
 		/* error disappeared */

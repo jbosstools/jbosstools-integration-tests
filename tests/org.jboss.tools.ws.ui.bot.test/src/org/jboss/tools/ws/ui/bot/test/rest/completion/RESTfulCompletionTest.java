@@ -16,13 +16,11 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hamcrest.core.StringContains;
 import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -110,8 +108,8 @@ public class RESTfulCompletionTest extends RESTfulTestBase{
 
 	private void testContentAssistantProposal(int position,
 			List<String> expected) {
-		ExtendedTextEditor editor = new ExtendedTextEditor(getWsName() + ".java");
-		int line = editor.getLineNum(StringContains.containsString(PATH_PARAM_NAVIGATION));
+		TextEditor editor = new TextEditor(getWsName() + ".java");
+		int line = editor.getLineOfText(PATH_PARAM_NAVIGATION);
 		int column = editor.getTextAtLine(line).indexOf(PATH_PARAM_NAVIGATION);
 		editor.setCursorPosition(line, column + position);
 

@@ -11,7 +11,7 @@ import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
-import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
@@ -79,10 +79,11 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 
 		/* open RestService class */
 		openJavaFile(PROJECT1_NAME, "org.rest.test", "RestService.java");
-		ExtendedTextEditor editor  = new ExtendedTextEditor();
+		TextEditor editor  = new TextEditor();
 
 		/* remove @Path annotation from RestService and assert there are two errors (one in RestService and one in BeanClass */
-		editor.removeLine(pathAnnotation);
+		editor.setText(editor.getText().replace(pathAnnotation, ""));
+		editor.save();
 		ProjectHelper.cleanAllProjects();
 		new WaitUntil(new RestServicePathsHaveUpdated(PROJECT1_NAME), TimePeriod.getCustom(3), false);
 		
@@ -91,16 +92,18 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertCountOfProblemsExists(ProblemType.ERROR, PROJECT1_NAME, null, null, 2);
 
 		/* add @Path annotation into RestService and assert that errors disappear */
-		editor.insertBeforeLine(pathAnnotation, "public void post(");
+		editor.insertLine(editor.getLineOfText("public void post("), pathAnnotation);
+		editor.save();
 		ProjectHelper.cleanAllProjects();
 		assertCountOfValidationProblemsExists(ProblemType.ERROR, PROJECT1_NAME, null, null, 0);
 
 		/* open BeanClass class */
 		openBeanClass(PROJECT1_NAME);
-		editor = new ExtendedTextEditor();
+		editor = new TextEditor();
 
 		/* remove @PathParam from BeanClass and assert that there is an warning */
-		editor.removeLine("@PathParam");
+		editor.setText(editor.getText().replace("@PathParam", ""));
+		editor.save();
 		ProjectHelper.cleanAllProjects();
 		assertCountOfValidationProblemsExists(ProblemType.WARNING, PROJECT1_NAME, pathParameterNotBoundToAnyFieldWarning, null, 1);
 	}
@@ -126,10 +129,11 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 
 		/* open BeanClass class */
 		openBeanClass(PROJECT2_NAME);
-		ExtendedTextEditor editor = new ExtendedTextEditor();
+		TextEditor editor = new TextEditor();
 		
 		/* remove @QueryParam from BeanClass and assert that endpoint URI was updated */
-		editor.removeLine("@QueryParam");
+		editor.setText(editor.getText().replace("@QueryParam(\"author\")", ""));
+		editor.save();
 		ProjectHelper.cleanAllProjects();
 		
 		refreshRestServices(PROJECT2_NAME);
@@ -139,9 +143,10 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertExpectedPathOfService("unstable ", restServices.get(0), "/rest");
 
 		/* add @QueryParam and @DefaultValue into BeanClass and assert that endpoint URI was updated */
-		editor.insertBeforeLine("@QueryParam(\"" + queryParam1 + "\")", queryType1);
-		editor.insertBeforeLine("import javax.ws.rs.DefaultValue;", "import javax.ws.rs.QueryParam;");
-		editor.insertBeforeLine("@DefaultValue(\"" + defaultValue + "\")", queryType1);
+		editor.insertLine(editor.getLineOfText(queryType1), "@QueryParam(\"" + queryParam1 + "\")");
+		editor.insertLine(editor.getLineOfText("import javax.ws.rs.QueryParam;"), "import javax.ws.rs.DefaultValue;");
+		editor.insertLine(editor.getLineOfText(queryType1), "@DefaultValue(\"" + defaultValue + "\")");
+		editor.save();
 		ProjectHelper.cleanAllProjects();
 		new WaitUntil(new RestServicePathsHaveUpdated(PROJECT2_NAME), TimePeriod.SHORT, false);
 		
@@ -173,10 +178,11 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		
 		/* open BeanClass class */
 		openBeanClass(PROJECT3_NAME);
-		ExtendedTextEditor editor = new ExtendedTextEditor();
+		TextEditor editor = new TextEditor();
 
 		/* remove @MatrixParam from BeanClass and assert that endpoint URI was updated */
-		editor.removeLine("@MatrixParam");
+		editor.setText(editor.getText().replace("@MatrixParam(\"country\")", ""));
+		editor.save();
 		ProjectHelper.cleanAllProjects();
 
 		refreshRestServices(PROJECT3_NAME);
@@ -187,9 +193,10 @@ public class BeanParamAnnotationSupportTest extends RESTfulTestBase {
 		assertExpectedPathOfService("unstable ", restServices.get(0), "/rest");
 
 		/* add @MatrixParam and @DefaultValue into BeanClass and assert that endpoint URI was updated */
-		editor.insertBeforeLine("@MatrixParam(\"" + matrixParam1 + "\")", matrixType1);
-		editor.insertBeforeLine("import javax.ws.rs.DefaultValue;", "import javax.ws.rs.MatrixParam;");
-		editor.insertBeforeLine("@DefaultValue(\"" + defaultValue + "\")", matrixType1);
+		editor.insertLine(editor.getLineOfText(matrixType1),"@MatrixParam(\"" + matrixParam1 + "\")");
+		editor.insertLine(editor.getLineOfText("import javax.ws.rs.MatrixParam;"),"import javax.ws.rs.DefaultValue;");
+		editor.insertLine(editor.getLineOfText( matrixType1), "@DefaultValue(\"" + defaultValue + "\")");
+		editor.save();
 		ProjectHelper.cleanAllProjects();
 		new WaitUntil(new RestServicePathsHaveUpdated(PROJECT3_NAME), TimePeriod.SHORT, false);
 		

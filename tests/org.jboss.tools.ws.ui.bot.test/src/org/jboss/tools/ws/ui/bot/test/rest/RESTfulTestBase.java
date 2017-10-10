@@ -52,7 +52,6 @@ import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
-import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
@@ -277,20 +276,21 @@ public class RESTfulTestBase extends WSTestBase {
 	protected void replaceInRestService(String projectName,
 			String regex, String replacement) {
 		openJavaFile(projectName, "org.rest.test", "RestService.java");
-		ExtendedTextEditor editor = new ExtendedTextEditor();
-		editor.replace(regex, replacement);
+		TextEditor editor = new TextEditor();
+		editor.setText(editor.getText().replace(regex, replacement));
+		editor.save();
 	}
 
 	protected TextEditor setCursorPositionToLineInTextEditor(String text) {
-		ExtendedTextEditor editor = new ExtendedTextEditor();
-		int line = editor.getLineNum(StringContains.containsString(text));
+		TextEditor editor = new TextEditor();
+		int line = editor.getLineOfText(text);
 		editor.setCursorPosition(line, 0);
 		return editor;
 	}
 
 	protected TextEditor setCursorPositionToTextInTextEditor(String text) {
-		ExtendedTextEditor editor = new ExtendedTextEditor();
-		int line = editor.getLineNum(StringContains.containsString(text));
+		TextEditor editor = new TextEditor();
+		int line = editor.getLineOfText(text);
 		editor.setCursorPosition(line, editor.getTextAtLine(line).indexOf(text)
 				+ text.length());
 		return editor;

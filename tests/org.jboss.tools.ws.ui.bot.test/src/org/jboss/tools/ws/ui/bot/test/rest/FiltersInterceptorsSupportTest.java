@@ -15,10 +15,10 @@ import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -96,13 +96,12 @@ public class FiltersInterceptorsSupportTest extends RESTfulTestBase {
 
 		//remove @Provider annotation
 		openJavaFile(projectName, "org.rest.test", className + ".java");
-		new ExtendedTextEditor().removeLine("@Provider");
-
+		TextEditor editor = new TextEditor();
+		editor.setText(editor.getText().replace("@Provider", ""));
+		
 		//remove unused import
-		new ExtendedTextEditor().removeLine("import javax.ws.rs.ext.Provider;");
-		if(new ExtendedTextEditor().isDirty()) {
-			new ExtendedTextEditor().save();
-		}
+		editor.setText(editor.getText().replace("import javax.ws.rs.ext.Provider;", ""));
+		editor.save();
 		ProjectHelper.cleanAllProjects();
 
 		/* wait for JAX-RS validator */

@@ -1,14 +1,15 @@
 package org.jboss.tools.ws.ui.bot.test.rest;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.autobuilding.AutoBuildingRequirement.AutoBuilding;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.workbench.condition.EditorIsDirty;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.common.reddeer.requirements.JavaFoldingRequirement.JavaFolding;
-import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,9 +44,10 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 		openJavaFile(projectName, "org.rest.test", "Authorized.java");
 
 		/* remove @Target and @Retention annotations*/
-		ExtendedTextEditor textEditor = new ExtendedTextEditor();
-		textEditor.removeLine("@Target({ElementType.METHOD, ElementType.TYPE})");
-		textEditor.removeLine("@Retention(RetentionPolicy.RUNTIME)");
+		TextEditor editor = new TextEditor();
+		editor.setText(editor.getText().replace("@Target({ElementType.METHOD, ElementType.TYPE})", ""));
+		editor.setText(editor.getText().replace("@Retention(RetentionPolicy.RUNTIME)", ""));
+		editor.save();
 		ProjectHelper.cleanAllProjects();
 
 		/* there should be 2 errors complaining about missing deleted annotations */
@@ -56,12 +58,12 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 
 		/* prepare editor */
 		openAuthorizedJavaFile(projectName);
-		TextEditor editor = setCursorPositionToTextInTextEditor("Authorized");
+		editor = setCursorPositionToTextInTextEditor("Authorized");
 
 		/* check that there are quick fixes for both required annotations */
 		editor.openQuickFixContentAssistant().chooseProposal("Add @Retention annotation on type 'Authorized'");
-		if(new TextEditor().isDirty()) {
-			new TextEditor().save();
+		if(editor.isDirty()) {
+			editor.save();
 		}
 		ProjectHelper.cleanAllProjects();
 
@@ -72,9 +74,8 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 		/* apply the second quixk fix */
 		editor.activate();
 		editor.openQuickFixContentAssistant().chooseProposal("Add @Target annotation on type 'Authorized'");
-		if(new TextEditor().isDirty()) {
-			new TextEditor().save();
-		}
+		new WaitUntil(new EditorIsDirty(editor));
+		editor.save();
 		ProjectHelper.cleanAllProjects();
 
 		/* both quickfixes were used which means that there should be no error */

@@ -19,7 +19,7 @@ import javax.ws.rs.PathParam;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
-import org.jboss.tools.ws.reddeer.editor.ExtendedTextEditor;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.ui.bot.test.rest.RESTfulTestBase;
 import org.junit.Test;
@@ -111,10 +111,10 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 		openRestService(projectPath2);
 
 		/* add new path param to @Path annotation */
-		ExtendedTextEditor editor = new ExtendedTextEditor();
-		editor.activate();
-		editor.replaceLine("@Path(\"{author}\"", "	@Path(\"{author}/{" + newPathParam + "}\")");
-
+		TextEditor editor = new TextEditor();
+		editor.setText(editor.getText().replace("@Path(\"{author}\")", "	@Path(\"{author}/{" + newPathParam + "}\")"));
+		editor.save();
+		
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		List<RESTfulWebService> restServices = restfulServicesForProject(projectPath2);
 
@@ -126,8 +126,9 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 
 		/* add new @PathParam */
 		editor.activate();
-		editor.insertBeforeLine("	@PathParam(\"" + newPathParam + "\")\n	"
-				+ newPathType + " year;", "@PathParam(\"author\")");
+		int textLine = editor.getLineOfText("@PathParam(\"author\")");
+		editor.insertLine(textLine, "@PathParam(\"" + newPathParam + "\")\n	" + newPathType + " year;");
+		editor.save();
 
 		/* get RESTful services from JAX-RS REST explorer for the project */
 		new WaitUntil(new RestServicePathsHaveUpdated(projectPath2), TimePeriod.getCustom(2), false);
@@ -149,9 +150,9 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 		openRestService(projectPath1);
 
 		/* replace path param's value */
-		ExtendedTextEditor editor = new ExtendedTextEditor();
-		editor.activate();
-		editor.replace(pathParam1, pathParam1New);
+		TextEditor editor = new TextEditor();
+		editor.setText(editor.getText().replace(pathParam1, pathParam1New));
+		editor.save();
 		refreshRestServices(projectPath1);
 
 		new WaitUntil(new RestServicePathsHaveUpdated(projectPath1), TimePeriod.getCustom(2), false);
@@ -175,9 +176,9 @@ public class PathParamAnnotationSupportTest extends RESTfulTestBase {
 		openRestService(projectPath1);
 
 		/* replace path param's type */
-		ExtendedTextEditor editor = new ExtendedTextEditor();
-		editor.activate();
-		editor.replace(pathType1, pathType1New);
+		TextEditor editor = new TextEditor();
+		editor.setText(editor.getText().replace(pathType1, pathType1New));
+		editor.save();
 
 		new WaitUntil(new RestServicePathsHaveUpdated(projectPath1), TimePeriod.getCustom(2), false);
 		

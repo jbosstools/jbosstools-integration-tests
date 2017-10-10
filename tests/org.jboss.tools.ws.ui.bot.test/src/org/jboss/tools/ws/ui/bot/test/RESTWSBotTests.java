@@ -32,6 +32,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
+	
 	JBossWSPreferencesTest.class,
 	JAXRSFacetTest.class,
 	CreateJAXRSApplicationTest.class,
@@ -43,7 +44,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	QueryParamAnnotationSupportTest.class,
 	MatrixParamAnnotationSupportTest.class,
 	DefaultValueAnnotationSupportTest.class,	
-	
 	//Automatic project build gets stuck, build projects manually
 	BeanParamAnnotationSupportTest.class,
 	RESTfulValidationTest.class,
