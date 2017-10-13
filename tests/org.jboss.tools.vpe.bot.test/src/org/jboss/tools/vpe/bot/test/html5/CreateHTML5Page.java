@@ -18,6 +18,8 @@ import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.eclipse.wst.html.ui.wizard.NewHTMLFileWizardPage;
 import org.eclipse.reddeer.eclipse.wst.html.ui.wizard.NewHTMLTemplatesWizardPage;
 import org.eclipse.reddeer.eclipse.wst.html.ui.wizard.NewHTMLWizard;
@@ -59,7 +61,8 @@ public class CreateHTML5Page extends VPETestBase{
 		new TextEditor().setCursorPosition(1, 1);
 		new ContextMenuItem("Validate").select();
 		new WaitWhile(new JobIsRunning());
-		assertTrue(htmlEditor.getMarkers().isEmpty());
+		ProblemsView pw = new ProblemsView();
+		assertEquals(0, pw.getProblems(ProblemType.ALL).size());
 		assertTrue(new PaletteView().isOpen());
 	}
 	
