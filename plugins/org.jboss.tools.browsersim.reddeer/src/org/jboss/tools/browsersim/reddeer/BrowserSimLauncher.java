@@ -93,7 +93,7 @@ public class BrowserSimLauncher extends SimLauncher{
 
 			try {
 				return handler.isStarted();
-			} catch (RemoteException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return false;
 			}

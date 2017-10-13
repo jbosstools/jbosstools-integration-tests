@@ -13,23 +13,28 @@ import org.jboss.tools.browsersim.browser.IBrowser;
 import org.jboss.tools.browsersim.ui.BrowserSim;
 
 public class BrowsersimWidgetLookup {
-	
-	public static Shell getBrowsersimShell(){
-		WidgetIsFound found = new WidgetIsFound(org.eclipse.swt.widgets.Shell.class, new WithTextMatcher("Device size will be truncated"));
-		new WaitUntil(found, TimePeriod.DEFAULT, false);
-		if(found.getResult() != null) {
-			Shell s = new DefaultShell((org.eclipse.swt.widgets.Shell)found.getResult());
-			new PushButton(s,"Truncate (recommended)").click();
-			new WaitWhile(new ShellIsAvailable(s));
+
+	private static boolean truncatedShell = false;
+
+	public static Shell getBrowsersimShell() {
+		if (!truncatedShell) {
+			WidgetIsFound found = new WidgetIsFound(org.eclipse.swt.widgets.Shell.class,
+					new WithTextMatcher("Device size will be truncated"));
+			new WaitUntil(found, TimePeriod.DEFAULT, false);
+			if (found.getResult() != null) {
+				Shell s = new DefaultShell((org.eclipse.swt.widgets.Shell) found.getResult());
+				new PushButton(s, "Truncate (recommended)").click();
+				new WaitWhile(new ShellIsAvailable(s));
+			}
+			truncatedShell = true;
 		}
-		
-		return new DefaultShell("BrowserSim");
+		return new DefaultShell(new BrowserSimWithSkinMatcher());
 	}
-	
-	public static IBrowser getBrowsersimBrowser(){
+
+	public static IBrowser getBrowsersimBrowser() {
 		getBrowsersimShell();
 		return BrowserSim.getInstances().get(0).getBrowser();
-		
+
 	}
 
 }
