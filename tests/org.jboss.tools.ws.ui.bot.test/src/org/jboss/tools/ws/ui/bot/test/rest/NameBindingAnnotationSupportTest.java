@@ -62,9 +62,6 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 
 		/* check that there are quick fixes for both required annotations */
 		editor.openQuickFixContentAssistant().chooseProposal("Add @Retention annotation on type 'Authorized'");
-		if(editor.isDirty()) {
-			editor.save();
-		}
 		ProjectHelper.cleanAllProjects();
 
 		/* one error should disappear as a result of using a quickfix */
@@ -74,8 +71,6 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 		/* apply the second quixk fix */
 		editor.activate();
 		editor.openQuickFixContentAssistant().chooseProposal("Add @Target annotation on type 'Authorized'");
-		new WaitUntil(new EditorIsDirty(editor));
-		editor.save();
 		ProjectHelper.cleanAllProjects();
 
 		/* both quickfixes were used which means that there should be no error */
