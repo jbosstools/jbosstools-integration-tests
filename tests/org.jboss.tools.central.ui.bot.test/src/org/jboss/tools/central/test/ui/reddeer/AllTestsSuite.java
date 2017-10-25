@@ -25,7 +25,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	ArchetypesTest.class,
 	HTML5Parameterized.class,
 	BasicTests.class,
-	DnDTest.class
+	DnDTest.class,
+	InstallationDetailsTest.class
 	})
 public class AllTestsSuite {
 
