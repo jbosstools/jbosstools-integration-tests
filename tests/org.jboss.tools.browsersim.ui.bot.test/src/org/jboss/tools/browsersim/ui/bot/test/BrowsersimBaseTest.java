@@ -58,7 +58,7 @@ public class BrowsersimBaseTest {
 				return area;
 			}
 		});
-		bsHandler.setBrowsersimLocation(area.width-browserSimSize.x, area.height);
+		bsHandler.setBrowsersimLocation(area.width-browserSimSize.x, area.height-browserSimSize.y);
 	}
 	
 	public String createProjectWithPage(){

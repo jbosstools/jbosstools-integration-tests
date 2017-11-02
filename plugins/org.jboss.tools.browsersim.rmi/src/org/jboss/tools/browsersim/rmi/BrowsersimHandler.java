@@ -23,6 +23,7 @@ import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.swt.graphics.Point;
 import org.jboss.tools.browsersim.browser.Browser;
+import org.jboss.tools.browsersim.browser.DeviceComposite;
 
 public class BrowsersimHandler extends UnicastRemoteObject implements IBrowsersimHandler{
 
@@ -94,21 +95,24 @@ public class BrowsersimHandler extends UnicastRemoteObject implements IBrowsersi
 	@Override
 	public List<String> getSkinsMenuItems() throws RemoteException {
 		Shell s= BrowsersimWidgetLookup.getBrowsersimShell();
-		List<MenuItem> skins = new ContextMenuItem(s, "Skin").getChildItems();
+		DeviceComposite browsersimComposite = new DeviceComposite(s);
+		List<MenuItem> skins = new ContextMenuItem(browsersimComposite,"Skin").getChildItems();
 		return skins.stream().map(t -> t.getText()).collect(Collectors.toList());
 	}
 
 	@Override
 	public void enableLivereload() throws RemoteException {
 		Shell s= BrowsersimWidgetLookup.getBrowsersimShell();
-		new ContextMenuItem(s, "Enable LiveReload");
+		DeviceComposite browsersimComposite = new DeviceComposite(s);
+		new ContextMenuItem(browsersimComposite, "Enable LiveReload");
 		
 	}
 
 	@Override
 	public boolean isLivereloadEnabled() throws RemoteException {
 		Shell s= BrowsersimWidgetLookup.getBrowsersimShell();
-		return new ContextMenuItem(s, "Enable LiveReload").isSelected();
+		DeviceComposite browsersimComposite = new DeviceComposite(s);
+		return new ContextMenuItem(browsersimComposite, "Enable LiveReload").isSelected();
 	}
 	
 	public void setBrowsersimLocation(final int x, final int y){
