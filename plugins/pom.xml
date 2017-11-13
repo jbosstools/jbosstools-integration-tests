@@ -19,7 +19,6 @@
 		<module>org.jboss.tools.browsersim.reddeer</module>
 		<module>org.jboss.tools.cdi.reddeer</module>
 		<module>org.jboss.tools.easymport.reddeer</module>
-		<module>org.jboss.tools.forge.reddeer</module>
 		<module>org.jboss.tools.jst.reddeer</module>
 		<module>org.jboss.tools.seam.reddeer</module>
 		<module>org.jboss.tools.perf</module>

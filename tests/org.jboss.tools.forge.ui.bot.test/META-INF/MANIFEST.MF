@@ -8,7 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.jboss.tools.forge.ui;bundle-version="1.0.0",
  org.jboss.tools.forge.core;bundle-version="1.0.0",
  org.jboss.tools.forge.runtime;bundle-version="1.0.0",
- org.jboss.tools.forge.reddeer;bundle-version="[4.4.2,4.5.0]",
+ org.jboss.tools.forge.reddeer;bundle-version="[2.0.201,3.0.0)",
  org.eclipse.ui;bundle-version="3.106.0",
  org.junit;bundle-version="4.11.0",
  org.eclipse.core.runtime;bundle-version="3.10.0",
