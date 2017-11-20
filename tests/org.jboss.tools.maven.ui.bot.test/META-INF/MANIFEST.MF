@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.tools.maven.reddeer;bundle-version="[1.8.100,1.9.0)",
  org.jboss.tools.jsf.reddeer;bundle-version="[3.8.3,3.9.0)",
  org.jboss.tools.seam.reddeer;bundle-version="[4.4.2,4.5.0]",
- org.jboss.ide.eclipse.as.reddeer;bundle-version="[3.3.0,3.4.0)",
+ org.jboss.ide.eclipse.as.reddeer,
  org.eclipse.ui.workbench,
  org.jboss.tools.central.reddeer;bundle-version="[2.1.100,2.2.0)",
  org.jboss.tools.common.reddeer;bundle-version="[3.9.0,3.10.0)"
