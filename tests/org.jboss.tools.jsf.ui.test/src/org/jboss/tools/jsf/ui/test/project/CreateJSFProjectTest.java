@@ -15,12 +15,12 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.eclipse.reddeer.eclipse.core.resources.Project;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.closeeditors.CloseAllEditorsRequirement.CloseAllEditors;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
@@ -37,6 +37,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 @DoNotUseVPE
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
 @JBossServer(state = ServerRequirementState.PRESENT)
+@CloseAllEditors
 public class CreateJSFProjectTest {
 
 	protected static final String PROJECT_NAME_BASE = "JSFTestProject";
@@ -48,8 +49,13 @@ public class CreateJSFProjectTest {
 	@Parameters(name = "{0} {1}")
 	public static Collection<String[]> data() {
 		return Arrays.asList(
-				new String[][] {{"JSF 1.2", "JSFKickStartWithoutLibs"}, {"JSF 2.2", "JSFKickStartWithoutLibs"},
-						{"JSF 1.2 with Facelets", "FaceletsKickStartWithoutLibs"}});
+				new String[][] {
+					{"JSF 1.2", "JSFKickStartWithoutLibs"},
+					{"JSF 1.2 with Facelets", "FaceletsKickStartWithoutLibs"},
+					{"JSF 2.0", "JSFBlankWithLibs"}, 
+					{"JSF 2.1", "JSFBlankWithoutLibs"}, 
+					{"JSF 2.2", "JSFKickStartWithoutLibs"}
+				});
 	}
 
 	@RequirementRestriction
@@ -74,7 +80,10 @@ public class CreateJSFProjectTest {
 
 		JSFTestUtils.checkProblemsView();
 
-		JSFTestUtils.checkErrorLog();
+		//JSFTestUtils.checkErrorLog();
+		assertTrue(projectExplorer.getProject(projectName).containsResource("WebContent", "WEB-INF"));
+		assertTrue(projectExplorer.getProject(projectName).containsResource("WebContent", "WEB-INF", "web.xml"));
+		assertTrue(projectExplorer.getProject(projectName).containsResource("WebContent", "WEB-INF", "faces-config.xml"));
 	}
 	
 	@Before
@@ -84,10 +93,7 @@ public class CreateJSFProjectTest {
 
 	@After
 	public void teardown() {
-		// delete test project
-		ProjectExplorer projectExplorer = new ProjectExplorer();
-		Project project = projectExplorer.getProject(projectName);
-		project.delete(true);
+		JSFTestUtils.deleteProject(projectName);
 	}
 
 }

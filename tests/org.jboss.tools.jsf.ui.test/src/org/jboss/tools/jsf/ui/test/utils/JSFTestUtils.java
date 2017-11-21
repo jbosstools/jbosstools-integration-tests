@@ -15,6 +15,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.lookup.WidgetLookup;
 import org.eclipse.reddeer.core.matcher.WithStyleMatcher;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
@@ -24,6 +26,7 @@ import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectFirstPage;
@@ -32,6 +35,8 @@ import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectWizard;
 
 public class JSFTestUtils {
 
+	private static final Logger log = Logger.getLogger(JSFTestUtils.class);
+	
 	public static void checkProblemsView() {
 		// problems view should be empty
 		ProblemsView problemsView = new ProblemsView();
@@ -85,6 +90,25 @@ public class JSFTestUtils {
 
 		jsfNewProjectWizard.finish();
 	}
+	
+	/**
+	 * Removes project from Project Explorer
+	 * @param log class logger from which method was called
+	 */
+	public static void deleteProject(String project) {
+		log.info("Removing " + project);
+		// temporary workaround until upstream patch is applied (eclipse bug 478634)
+		try {
+			org.eclipse.reddeer.direct.project.Project.delete(project, true, true);
+		} catch (RuntimeException exc) {
+			log.error("RuntimeException occured during deleting project");
+			exc.printStackTrace();
+			log.info("Deleting project second time ...");
+			org.eclipse.reddeer.direct.project.Project.delete(project, true, true);
+		} 
+		new WaitWhile(new JobIsRunning());
+	}
+
 
 	private static String errorsToString(List<LogMessage> errorMessages) {
 		StringBuilder sb = new StringBuilder();

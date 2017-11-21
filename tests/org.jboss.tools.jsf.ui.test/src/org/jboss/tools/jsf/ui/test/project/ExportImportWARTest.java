@@ -15,7 +15,9 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 
+import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.core.resources.Project;
 import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
@@ -26,6 +28,7 @@ import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.closeeditors.CloseAllEditorsRequirement.CloseAllEditors;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
@@ -45,12 +48,14 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @DoNotUseVPE
 @JBossServer(state = ServerRequirementState.RUNNING)
+@CloseAllEditors
 public class ExportImportWARTest {
 
 	private static final String PROJECT_NAME = "JSFProject";
 	private static final String NEW_PROJECT_NAME = "ImportedJSFProject";
 	private static final String WAR_FILE_LOCATION = "target/exported.war";
 	private static ProjectExplorer projectExplorer;
+	private static final Logger log = Logger.getLogger(ExportImportWARTest.class);
 
 	@InjectRequirement
 	static ServerRequirement serverReq;
@@ -115,15 +120,21 @@ public class ExportImportWARTest {
 
 	private void verifyExportedProject() {
 		File file = new File(WAR_FILE_LOCATION);
-		assertTrue(file.exists());
+		assertTrue("WAR file on path " + file.getAbsolutePath() + " does no exist", file.exists());
 	}
 
 	private void exportProject() {
 		new ContextMenuItem("Export", "WAR file").select();
 		WebComponentExportWizardPage exportDialog = new WebComponentExportWizardPage();
 		exportDialog.setWebProject(PROJECT_NAME);
-		exportDialog.setDestination(new File(WAR_FILE_LOCATION).getAbsolutePath());
+		log.info("Setting destination of WAR file: " + WAR_FILE_LOCATION);
+		File dest = new File(WAR_FILE_LOCATION);
+		exportDialog.setDestination(dest.getAbsolutePath());
+		log.info("Absolute path of WAR file: " + dest.getAbsolutePath());
 		exportDialog.toggleOverwriteExistingFile(true);
 		exportDialog.finish();
+		// we need to wait for file to be created
+		new WaitUntil(new JobIsRunning(), TimePeriod.MEDIUM, false);
+		new WaitWhile(new JobIsRunning(), TimePeriod.MEDIUM, false);
 	}
 }

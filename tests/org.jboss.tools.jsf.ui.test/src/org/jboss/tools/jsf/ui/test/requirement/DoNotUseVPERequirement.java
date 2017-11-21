@@ -43,9 +43,10 @@ public class DoNotUseVPERequirement implements Requirement<DoNotUseVPE> {
 	}
 
 	private ExtendedFileEditorsPreferencePage openPreferencePage() {
-		ExtendedFileEditorsPreferencePage prefPage = new ExtendedFileEditorsPreferencePage(this.prefDialog);
 		prefDialog = new WorkbenchPreferenceDialog();
 		prefDialog.open();
+
+		ExtendedFileEditorsPreferencePage prefPage = new ExtendedFileEditorsPreferencePage(this.prefDialog);
 		prefDialog.select(prefPage);
 		return prefPage;
 	}
