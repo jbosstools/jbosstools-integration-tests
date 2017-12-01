@@ -1,7 +1,5 @@
 package org.jboss.tools.cdi.bot.test.wizard.cdi10;
 
-import java.util.Arrays;
-
 import org.eclipse.reddeer.eclipse.jst.ejb.ui.project.facet.EjbProjectFirstPage;
 import org.eclipse.reddeer.eclipse.jst.ejb.ui.project.facet.EjbProjectWizard;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
@@ -26,10 +24,8 @@ public class EjbProjectWithCDITestCDI10 extends ProjectWithCDITemplate{
 	public EjbProjectWithCDITestCDI10(){
 		enabledByDefault = false;
 		PROJECT_NAME = "EjbProject";
-		expectedProblem = "An EJB module must contain one or more enterprise beans";
-		expectedProblemRemoved = "An EJB module must contain one or more enterprise beans";
-		expectedProblemAdded = Arrays.asList("An EJB module must contain one or more enterprise beans",
-				"Missing beans.xml file in the project");
+		ignoredProblem = "An EJB module must contain one or more enterprise beans";
+		expectedProblemAdded = "Missing beans.xml file in the project";
 	}
 	
 	@Before

@@ -9,13 +9,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.reddeer.common.wait.AbstractWait;
-import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.cdi.ui.wizard.CDIRefactorWizard;
+import org.jboss.tools.cdi.reddeer.condition.ContextMenuIsEnabled;
 import org.jboss.tools.cdi.reddeer.uiutils.CollectionsUtil;
 import org.jboss.tools.cdi.reddeer.xhtml.NewXHTMLFileWizardPage;
 import org.jboss.tools.cdi.reddeer.xhtml.NewXHTMLWizard;
@@ -159,7 +159,7 @@ public abstract class NamedRefactoringTemplate extends CDITestBase {//extends JS
 				"' Named Bean ";
 		//TODO
 		new TextEditor(className + ".java").selectText(text);
-		AbstractWait.sleep(TimePeriod.SHORT);
+		new WaitUntil(new ContextMenuIsEnabled(IDELabel.Menu.CDI_REFACTOR,renameContextMenuText));
 		new ContextMenu().getItem(IDELabel.Menu.CDI_REFACTOR,renameContextMenuText).select();
 		new DefaultShell("Refactoring");	
 		

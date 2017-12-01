@@ -16,10 +16,13 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 import org.jboss.tools.cdi.reddeer.validators.IValidationProvider;
+import org.junit.After;
 import org.junit.Test;
 
 /**
@@ -139,9 +142,9 @@ public class BeanValidationQuickFixTemplate extends CDITestBase {
 		List<Problem> problems= validationHelper.findProblems(validationProvider.getValidationProblem(ValidationType.OBSERVER_INJECT));
 		
 		assertEquals(2,problems.size());
-		
-		validationHelper.openQuickfix(validationProvider.getValidationProblem(ValidationType.OBSERVER_INJECT),1);
-		
+
+		validationHelper.openQuickfix(validationProvider.getValidationProblem(ValidationType.OBSERVER_INJECT), 1);
+
 	}
 	
 	// https://issues.jboss.org/browse/JBIDE-7667
@@ -181,6 +184,19 @@ public class BeanValidationQuickFixTemplate extends CDITestBase {
 		beansHelper.createBean(className, getPackageName(), false, false, false, false, false, false, false, null, null);
 		editResourceUtil.replaceClassContentByResource(className+".java", readFile(content), false);
 		editResourceUtil.replaceInEditor(className+".java","BeanComponent", className);		
+	}
+	
+	/**
+	 * Need to delete all created beans because some of the tests may
+	 * fail before applying quick fix and then it will affect all the next tests
+	 * (There will be more problems than expected).
+	 */
+	@After
+	public void cleanProject() {
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, getPackageName())
+				.delete();
 	}
 	
 }

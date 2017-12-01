@@ -266,6 +266,7 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 		AbstractWait.sleep(TimePeriod.SHORT);
 		new ShellMenu().getItem(IDELabel.Menu.NAVIGATE, IDELabel.Menu.OPEN_CDI_NAMED_BEAN).select();
 		new DefaultShell("Open CDI Named Bean");
+		AbstractWait.sleep(TimePeriod.SHORT);
 		return new OpenCDINamedBeanDialog();
 	}
 

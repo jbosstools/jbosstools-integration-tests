@@ -8,6 +8,7 @@ import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.cdi.bot.test.beansxml.template.BeansXMLUITemplate;
+import org.jboss.tools.cdi.reddeer.validators.BeansXmlUIValidationProviderCDI11;
 import org.junit.Before;
 
 @OpenPerspective(JavaEEPerspective.class)
@@ -22,5 +23,6 @@ public class BeansXMLUITestCDI11 extends BeansXMLUITemplate {
 	@Before
 	public void setCDIVersion() {
 		CDIVersion = "1.1";
+		validationProvider = new BeansXmlUIValidationProviderCDI11();
 	}
 }

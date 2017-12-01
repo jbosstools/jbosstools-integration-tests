@@ -19,7 +19,7 @@ import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
-import org.jboss.tools.deltaspike.ui.bot.test.condition.SpecificProblemExists;
+import org.jboss.tools.cdi.reddeer.condition.SpecificProblemExists;
 import org.junit.After;
 import org.junit.Test;
 

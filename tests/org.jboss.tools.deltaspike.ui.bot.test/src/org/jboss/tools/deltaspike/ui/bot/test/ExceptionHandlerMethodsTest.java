@@ -22,7 +22,7 @@ import org.eclipse.reddeer.eclipse.condition.ProblemExists;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
-import org.jboss.tools.deltaspike.ui.bot.test.condition.SpecificProblemExists;
+import org.jboss.tools.cdi.reddeer.condition.SpecificProblemExists;
 import org.junit.After;
 import org.junit.Test;
 

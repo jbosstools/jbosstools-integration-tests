@@ -51,10 +51,11 @@ import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.tools.cdi.reddeer.cdi.ui.UpdateMavenProjectDialog;
 import org.jboss.tools.cdi.reddeer.cdi.ui.preferences.CDISettingsPreferencePage;
+import org.jboss.tools.cdi.reddeer.condition.SpecificProblemExists;
 import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage;
 import org.jboss.tools.common.reddeer.preferences.SourceLookupPreferencePage.SourceAttachmentEnum;
-import org.jboss.tools.deltaspike.ui.bot.test.condition.SpecificProblemExists;
 import org.junit.BeforeClass;
 
 @CleanWorkspace
@@ -126,8 +127,10 @@ public class DeltaspikeTestBase {
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
 		pe.getProject(projectName).select();
-		new ContextMenu().getItem("Validate").select();
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new ContextMenu().getItem("Maven", "Update Project...").select();
+		UpdateMavenProjectDialog updateProject = new UpdateMavenProjectDialog();
+		updateProject.clean(true);
+		updateProject.ok();
 	}
 
 	public static void importMavenProject(String projectName) throws IOException {

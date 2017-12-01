@@ -24,7 +24,7 @@ public class OpenCDINamedBeanDialog{
 	public List<String> matchingItems() {
 		Table itemsTable = new DefaultTable();
 		new WaitUntil(new TableHasRows(itemsTable), TimePeriod.DEFAULT, false);
-		new WaitWhile(new TableIsUpdating(itemsTable, TimePeriod.getCustom(2)));
+		new WaitWhile(new TableIsUpdating(itemsTable, TimePeriod.getCustom(4)));
 		List<String> matchingItems = new ArrayList<String>();
 		int tableItemsCount = itemsTable.rowCount();
 		for (int i = 0; i < tableItemsCount; i++) {

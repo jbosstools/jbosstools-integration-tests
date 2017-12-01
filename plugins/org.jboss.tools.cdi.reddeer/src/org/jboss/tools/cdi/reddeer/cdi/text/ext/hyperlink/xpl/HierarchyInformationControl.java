@@ -78,7 +78,7 @@ public class HierarchyInformationControl extends AbstractShell{
 				description.appendText("containing label '" + label + "'");
 			}
 		};
-		return ShellLookup.getInstance().getShell(labelMatcher);
+		return ShellLookup.getInstance().getShell(TimePeriod.LONG, labelMatcher);
 	}
 
 }

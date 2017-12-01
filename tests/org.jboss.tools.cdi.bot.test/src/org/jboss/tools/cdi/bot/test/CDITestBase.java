@@ -176,29 +176,27 @@ public class CDITestBase {
 	 * @param beanDiscoveryMode
 	 *            bean discovery mode
 	 */
-	public void prepareBeanXml(String beanDiscoveryMode, boolean replaceBeansTag) {
-		boolean editorShouldBeDirty = false;
-		
+	public void prepareBeanXml(String beanDiscoveryMode, boolean replaceBeansTag) {		
 		EditorPartWrapper beansEditor = beansXMLHelper.openBeansXml(PROJECT_NAME);
 		beansEditor.activateTreePage();
 		
 		if (!beansEditor.getBeanDiscoveryMode().equals(beanDiscoveryMode)) {
 			beansEditor.selectBeanDiscoveryMode(beanDiscoveryMode);
-			editorShouldBeDirty = true;
+			new WaitUntil(new EditorIsDirty(beansEditor), false);
+			beansEditor.save();
+			new WaitUntil(new JobIsRunning(), TimePeriod.SHORT, false);
+			new WaitWhile(new JobIsRunning(), false);
 		}
 		
 		if (replaceBeansTag) {
 			beansEditor.activateSourcePage();
-			new EditorResourceHelper().replaceInEditor("/>", "></beans>", false);
-			editorShouldBeDirty = true;
-		}
-		
-		if (editorShouldBeDirty) {
+			editResourceUtil.replaceInEditor("/>", "></beans>", false);
 			new WaitUntil(new EditorIsDirty(beansEditor), false);
 			beansEditor.save();
-			beansEditor.close();
-			new WaitUntil(new JobIsRunning(), false);
+			new WaitUntil(new JobIsRunning(), TimePeriod.SHORT, false);
 			new WaitWhile(new JobIsRunning(), false);
 		}
+		
+		beansEditor.close();
 	}
 }

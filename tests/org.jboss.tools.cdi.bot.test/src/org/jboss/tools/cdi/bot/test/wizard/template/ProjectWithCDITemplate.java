@@ -16,13 +16,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
-import org.eclipse.reddeer.eclipse.condition.ExactNumberOfProblemsExists;
 import org.eclipse.reddeer.eclipse.condition.ProblemExists;
 import org.eclipse.reddeer.eclipse.core.resources.Project;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
@@ -36,6 +37,8 @@ import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.handler.EditorHandler;
+import org.hamcrest.core.StringContains;
+import org.jboss.tools.cdi.reddeer.condition.SpecificProblemExists;
 import org.junit.After;
 import org.junit.Test;
 
@@ -43,9 +46,8 @@ public class ProjectWithCDITemplate{
 	
 	protected String PROJECT_NAME = "CDIProject";
 	protected boolean enabledByDefault = true;
-	protected String expectedProblem;
-	protected List<String> expectedProblemAdded;
-	protected String expectedProblemRemoved;
+	protected String ignoredProblem;
+	protected String expectedProblemAdded;
 	
 
 	@After
@@ -75,15 +77,14 @@ public class ProjectWithCDITemplate{
 		}
 		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellIsAvailable("Properties for "+PROJECT_NAME));
-		new WaitUntil(new ProblemExists(ProblemType.ALL), TimePeriod.LONG, false);
-		if(expectedProblem != null){
-			ProblemsView pw = new ProblemsView();
-			pw.open();
-			assertEquals(1,pw.getProblems(ProblemType.ALL).size());
-			pw.getProblems(ProblemType.WARNING).get(0).getDescription().equals(expectedProblem);
+		new WaitUntil(new ProblemExists(ProblemType.ALL), false);
+		
+		if(enabledByDefault && expectedProblemAdded != null){
+			assertCdiProblemFound();
 		} else {
-			new WaitWhile(new ProblemExists(ProblemType.ALL));
+			assertNoProblemFound();
 		}
+		new WaitWhile(new ProblemExists(ProblemType.ALL), false);	
 	}
 	
 	@Test
@@ -104,27 +105,9 @@ public class ProjectWithCDITemplate{
 		new WaitWhile(new ShellIsAvailable("Properties for "+PROJECT_NAME));
 		
 		if(expectedProblemAdded != null){
-			ProblemsView pw = new ProblemsView();
-			pw.open();
-			
-			new WaitUntil(new ExactNumberOfProblemsExists(ProblemType.ALL, expectedProblemAdded.size()), TimePeriod.LONG, false);
-			assertEquals(expectedProblemAdded.size(),pw.getProblems(ProblemType.ALL).size());
-			
-			for(Problem p: pw.getProblems(ProblemType.ALL)){
-				boolean found = false;
-				for(String s: expectedProblemAdded){
-					if(p.getDescription().contains(s)){
-						found = true;
-						break;
-					}
-				}
-				if(!found){
-					fail(p.getDescription()+" problem was not expected");
-				}
-			}
+			assertCdiProblemFound();
 		} else {
-			new WaitUntil(new ProblemExists(ProblemType.ALL), false);
-			new WaitWhile(new ProblemExists(ProblemType.ALL));
+			assertNoProblemFound();
 		}
 		
 		openCDIPage();
@@ -143,23 +126,17 @@ public class ProjectWithCDITemplate{
 		}
 		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellIsAvailable("Properties for "+PROJECT_NAME));
+		
 		openCDIPage();
 		cdiSupport = new LabeledCheckBox("CDI support:");
 		assertTrue(cdiSupport.isChecked());
 		cdiSupport.toggle(false);
 		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellIsAvailable("Properties for "+PROJECT_NAME));
+		new WaitWhile(new SpecificProblemExists(new StringContains(expectedProblemAdded)));
 		
-		int expectedProblems = 1;
-		new WaitUntil(new ExactNumberOfProblemsExists(ProblemType.ALL, expectedProblems), TimePeriod.LONG, false);
-		if(expectedProblemRemoved != null){
-			ProblemsView pw = new ProblemsView();
-			pw.open();
-			assertEquals(expectedProblems,pw.getProblems(ProblemType.ALL).size());
-			pw.getProblems(ProblemType.WARNING).get(0).getDescription().equals(expectedProblemRemoved);
-		} else {
-			new WaitWhile(new ProblemExists(ProblemType.ALL));
-		}
+		assertNoProblemFound();
+		
 		openCDIPage();
 		cdiSupport = new LabeledCheckBox("CDI support:");
 		assertFalse(cdiSupport.isChecked());
@@ -178,6 +155,43 @@ public class ProjectWithCDITemplate{
 		pe.selectProjects(projectName);
 		new ContextMenu().getItem("Properties").select();
 		new DefaultShell("Properties for "+projectName);
+	}
+	
+	private List<Problem> removeIgnoredProblem(List<Problem> problems){
+		if (ignoredProblem == null) {
+			return problems;
+		}
+		Iterator<Problem> iterator = problems.iterator();
+		
+		while(iterator.hasNext()) {
+			if (iterator.next().getDescription().contains(ignoredProblem)) {
+				iterator.remove();
+				break;
+			}
+		}
+		return problems;
+	}
+	
+	private void assertCdiProblemFound() {
+		try {
+			new WaitUntil(new SpecificProblemExists(new StringContains(expectedProblemAdded)), TimePeriod.LONG);
+		} catch (WaitTimeoutExpiredException ex) {
+			fail("Problem '" + expectedProblemAdded + "' not found.");
+		}
+		ProblemsView pw = new ProblemsView();
+		pw.open();
+		List<Problem> problems = pw.getProblems(ProblemType.ALL);
+		assertEquals("Unexpected problem found. Problems: " + problems, 1, removeIgnoredProblem(problems).size());
+	}
+	
+	private void assertNoProblemFound() {
+		new WaitWhile(new ProblemExists(ProblemType.ALL), false);
+		
+		ProblemsView pw = new ProblemsView();
+		pw.open();
+		List<Problem> problems = removeIgnoredProblem(pw.getProblems(ProblemType.ALL));
+		
+		assertEquals("Unexpected problem found: " + problems, 0, problems.size());
 	}
 
 }

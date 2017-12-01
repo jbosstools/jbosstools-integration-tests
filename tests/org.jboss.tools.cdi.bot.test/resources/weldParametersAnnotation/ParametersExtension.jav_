@@ -1,0 +1,12 @@
+package cdi.parameters;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import java.util.List;
+import org.jboss.weld.environment.se.bindings.Parameters;
+
+@ApplicationScoped
+public class ParametersExtension {
+	@Inject @Parameters List<String> parameters;
+	@Inject @Parameters String[] paramsArray;
+}

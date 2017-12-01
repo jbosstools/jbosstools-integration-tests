@@ -96,12 +96,12 @@ public class WeldExcludeTemplate extends CDITestBase{
 					&& m.getText().contains(expected.getJSR())) );
 		}
 		
+		List<Problem> foundProblems = validationHelper.findProblems(expected);
+		assertEquals(4,foundProblems.size());
+		
 		ProblemsView pw = new ProblemsView();
 		pw.open();
 		assertEquals(4,pw.getProblems(ProblemType.ALL).size());
-		
-		List<Problem> foundProblems = validationHelper.findProblems(expected);
-		assertEquals(4,foundProblems.size());
 	}
 	
 	

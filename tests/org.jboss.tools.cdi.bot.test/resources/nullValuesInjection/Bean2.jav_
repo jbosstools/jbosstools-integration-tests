@@ -1,0 +1,10 @@
+package test;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
+@ApplicationScoped
+public class Bean2 {
+	@Inject @Qa boolean primitiveB;
+	@Inject @Qa Boolean objectB;
+}

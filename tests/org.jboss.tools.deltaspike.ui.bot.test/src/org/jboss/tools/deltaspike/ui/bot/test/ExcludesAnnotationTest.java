@@ -26,7 +26,7 @@ import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.hamcrest.core.IsEqual;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
-import org.jboss.tools.deltaspike.ui.bot.test.condition.SpecificProblemExists;
+import org.jboss.tools.cdi.reddeer.condition.SpecificProblemExists;
 import org.junit.After;
 import org.junit.Test;
 
