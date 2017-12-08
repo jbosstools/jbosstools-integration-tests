@@ -3,7 +3,7 @@ package org.jboss.tools.cdi.bot.test.condition;
 import java.util.List;
 
 import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
-import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.common.exception.RedDeerException;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
@@ -27,7 +27,7 @@ public class BeanXMLValidationProblemIsEmpty extends AbstractWaitCondition{
 						problem.getType().contains("CDI Problem")) {
 					toReturn = false;
 				}
-			} catch (CoreLayerException ex){
+			} catch (RedDeerException ex){
 				//do nothing. Problem is not there anymore
 			}
  		}
@@ -42,7 +42,7 @@ public class BeanXMLValidationProblemIsEmpty extends AbstractWaitCondition{
 		for(Problem p: problems){
 			try{
 				b.append("\n "+p.getDescription());
-			} catch (CoreLayerException ex){
+			} catch (RedDeerException e){
 				//do nothing. Problem is not there anymore
 			}
 		}

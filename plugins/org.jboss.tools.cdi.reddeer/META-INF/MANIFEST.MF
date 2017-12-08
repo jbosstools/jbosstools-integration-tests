@@ -31,7 +31,7 @@ Require-Bundle: org.eclipse.ui,
  org.jboss.tools.common.model.ui,
  org.jboss.ide.eclipse.as.reddeer
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
 Bundle-Vendor: JBoss by Red Hat

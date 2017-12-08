@@ -1,7 +1,5 @@
 package org.jboss.tools.cdi.bot.test.wizard.cdi10;
 
-import java.util.Arrays;
-
 import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
 import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectWizard;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
@@ -25,7 +23,7 @@ public class DynamicWebProjectWithCDITestCDI10 extends ProjectWithCDITemplate{
 	
 	public DynamicWebProjectWithCDITestCDI10(){
 		enabledByDefault = false;
-		expectedProblemAdded = Arrays.asList("Missing beans.xml file in the project");
+		expectedProblemAdded = "Missing beans.xml file in the project";
 	}
 	
 	@Before

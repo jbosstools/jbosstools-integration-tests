@@ -1,8 +1,8 @@
 package org.jboss.tools.cdi.bot.test.weld.template;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
@@ -42,25 +42,24 @@ public class WeldParametersAnnotationTemplate extends CDITestBase{
 	@Test
 	public void testParametersAnnotation(){
 		TextEditor te = new TextEditor("ParametersExtension.java");
-		te.insertLine(2, "import javax.enterprise.context.ApplicationScoped;");
-		te.insertLine(3, "import javax.inject.Inject;");
-		te.insertLine(4, "import java.util.List;");
-		te.insertLine(5, "import org.jboss.weld.environment.se.bindings.Parameters;");
-		te.insertLine(6, "@ApplicationScoped");
-		AbstractWait.sleep(TimePeriod.DEFAULT);
-		te.insertLine(8, "@Inject @Parameters List<String> parameters;");
-		te.insertLine(9, "@Inject @Parameters String[] paramsArray;");
+		
+		editResourceUtil.replaceClassContentByResource("ParametersExtension.java", 
+				readFile("resources/weldParametersAnnotation/ParametersExtension.jav_"), false, false);
 		new WaitWhile(new JobIsRunning());
-		new WaitWhile(new EditorHasValidationMarkers(te),TimePeriod.DEFAULT, false);
-		assertEquals(0,te.getMarkers().size());
+		
+		try {
+			new WaitWhile(new EditorHasValidationMarkers(te),TimePeriod.LONG);
+		} catch (WaitTimeoutExpiredException e) {
+			fail("Editor has validation markers: " + te.getMarkers());
+		}
+		
 		te.save();
 		new WaitUntil(new JobIsRunning(),TimePeriod.SHORT,false);
-		new WaitWhile(new JobIsRunning());
-		assertEquals(0,te.getMarkers().size());
 		
-		
+		try {
+			new WaitWhile(new EditorHasValidationMarkers(te),TimePeriod.LONG);
+		} catch (WaitTimeoutExpiredException e) {
+			fail("Editor has validation markers: " + te.getMarkers());
+		}		
 	}
-	
-	
-
 }

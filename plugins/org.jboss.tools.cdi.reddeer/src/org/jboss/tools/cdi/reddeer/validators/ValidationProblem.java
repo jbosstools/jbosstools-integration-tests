@@ -90,6 +90,11 @@ public class ValidationProblem {
 		}
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "ValidationProblem [problemType=" + problemType + ", message=" + message + "]";
+	}
 	
 	
 }

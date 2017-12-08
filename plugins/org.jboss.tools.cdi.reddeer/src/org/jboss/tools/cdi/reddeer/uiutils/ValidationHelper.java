@@ -5,71 +5,49 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
-import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
+import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
-import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.condition.ProblemExists;
+import org.eclipse.reddeer.eclipse.ui.markers.matcher.MarkerDescriptionMatcher;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.eclipse.ui.views.markers.QuickFixPage;
 import org.eclipse.reddeer.eclipse.ui.views.markers.QuickFixWizard;
+import org.hamcrest.core.StringContains;
 import org.jboss.tools.cdi.reddeer.validators.ValidationProblem;
 
 public class ValidationHelper {
 	
-	private class SpecificProblemExists extends AbstractWaitCondition {
-		
-		private ValidationProblem validationProblem;
-		
-		public SpecificProblemExists(ValidationProblem validationProblem){
-			this.validationProblem = validationProblem;
-		}
-
-		@Override
-		public boolean test() {
-			ProblemsView pw = new ProblemsView();
-			pw.open();
-			List<Problem> problems = pw.getProblems(ProblemType.ALL);
-			List<Problem> foundProblems = new ArrayList<Problem>();
-			for(Problem p: problems){
-				try{
-					if(validationProblem.equals(p)){
-						foundProblems.add(p);
-					}
-				} catch (CoreLayerException l){
-					//do nothing, problem was probably disposed
-				}
-			}
-			return !foundProblems.isEmpty();
-		}
-
-		@Override
-		public String description() {
-			return "validation problem is found";
-		}
-		
-		
-	
-	}
+	private static final Logger log = new Logger(ValidationHelper.class);
 	
 	public List<Problem> findProblems(ValidationProblem validationProblem){
-		new WaitUntil(new SpecificProblemExists(validationProblem),TimePeriod.DEFAULT,false);
-		ProblemsView pw = new ProblemsView();
-		pw.open();
-		List<Problem> problems = pw.getProblems(ProblemType.ALL);
-		List<Problem> foundProblems = new ArrayList<Problem>();
-		for(Problem p: problems){
-			try{
-				if(validationProblem.equals(p)){
-					foundProblems.add(p);
-				}
-			} catch (RedDeerException e) {
-				// disposed
-			}
+		StringContains regexpMatcher = new StringContains(validationProblem.getMessage());
+		MarkerDescriptionMatcher descriptionMatcher = new MarkerDescriptionMatcher(regexpMatcher);
+		List<Problem> filteredProblems = new ArrayList<Problem>();
+		
+		try {
+			/**
+			 * Sometimes happens that marker is displayed and suddenly is hidden and displayed again,
+			 * so it is better to wait and doublecheck.
+			 */
+			new WaitUntil(new ProblemExists(validationProblem.getProblemType(), descriptionMatcher),TimePeriod.LONG);
+			new WaitWhile(new ProblemExists(validationProblem.getProblemType(), descriptionMatcher),TimePeriod.getCustom(5), false);
+			new WaitUntil(new ProblemExists(validationProblem.getProblemType(), descriptionMatcher),TimePeriod.DEFAULT);
+			
+			ProblemsView pw = new ProblemsView();
+			pw.open();
+			filteredProblems = pw.getProblems(validationProblem.getProblemType(), descriptionMatcher);
+		} catch (WaitTimeoutExpiredException ex) {
+			log.warn(validationProblem.toString() + " not found.");
 		}
-		return foundProblems;
+		
+		logProblemViewStatus(filteredProblems);
+		
+		return filteredProblems;
 	}
 	
 	public void openQuickfix(ValidationProblem validationProblem){
@@ -98,4 +76,16 @@ public class ValidationHelper {
 		qp.selectFix(chosenFix);
 		qf.finish();
 	}
+	
+	private void logProblemViewStatus(List<Problem> filteredProblems) {
+		ProblemsView pw = new ProblemsView();
+		pw.open();
+		List<Problem> allProblems = pw.getProblems(ProblemType.ALL);
+		
+		String filteredProblemsString = filteredProblems.toString();
+		String allProblemsString = allProblems.toString();
+		
+		log.debug("Matching problems: " + filteredProblemsString);
+		log.debug("All problems: " + allProblemsString);
+	}	
 }

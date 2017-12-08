@@ -64,7 +64,7 @@ public class CDIValidatorTemplate extends CDITestBase {
 		modifyCDIValidatorState(true);
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
-		new WaitUntil(new ProblemExists(ProblemType.ALL), TimePeriod.DEFAULT);
+		new WaitUntil(new ProblemExists(ProblemType.ALL), TimePeriod.LONG);
 		assertEquals("Warnings node should contain one warning", 
 				problemsView.getProblems(ProblemType.WARNING).size(), 1);
 		//TODO use validatorHelper
@@ -75,7 +75,7 @@ public class CDIValidatorTemplate extends CDITestBase {
 	@Test
 	public void testDisabledValidator() {
 		modifyCDIValidatorState(false);
-		new WaitWhile(new ProblemExists(ProblemType.ALL), TimePeriod.DEFAULT);
+		new WaitWhile(new ProblemExists(ProblemType.ALL), TimePeriod.LONG);
 		modifyCDIValidatorState(true);
 	}
 	

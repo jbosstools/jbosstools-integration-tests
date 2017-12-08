@@ -1,0 +1,11 @@
+package test;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
+
+@ApplicationScoped
+public class Bean1 {
+	@Produces
+	@Qa
+	public Boolean getB(){return null;};
+}

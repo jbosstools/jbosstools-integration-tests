@@ -9,117 +9,117 @@ import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.workbench.api.Editor;
 import org.eclipse.reddeer.workbench.condition.EditorHasValidationMarkers;
-import org.eclipse.reddeer.workbench.condition.EditorIsDirty;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
-import org.eclipse.reddeer.workbench.impl.editor.Marker;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
+import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
+import org.jboss.tools.cdi.reddeer.validators.IValidationProvider;
+import org.jboss.tools.cdi.reddeer.validators.ValidationProblem;
 import org.junit.After;
 import org.junit.Test;
 
-public class BeansXMLUITemplate extends CDITestBase{
-	
+public class BeansXMLUITemplate extends CDITestBase {
+
 	private static final Logger logger = Logger.getLogger(BeansXMLUITemplate.class);
 	protected String CDIVersion = null;
-	
+	protected IValidationProvider validationProvider = null;
+
 	@After
-	public void cleanup(){
+	public void cleanup() {
 		deleteAllProjects();
 	}
-	
+
 	@Test
-	public void testBeanDiscoveryModes(){
+	public void testBeanDiscoveryModes() {
 		EditorPartWrapper beans = beansXMLHelper.openBeansXml(PROJECT_NAME);
 		beans.activateTreePage();
 		assertTrue(beans.isBeanDiscoveryModeEnabled());
 		assertEquals("annotated", beans.getBeanDiscoveryMode());
 		List<String> modes = beans.getBeanDiscoveryModes();
 		logger.debug("Discovery modes:");
-		for(String mode: modes){
-			logger.debug("  "+mode);
+		for (String mode : modes) {
+			logger.debug("  " + mode);
 		}
 		assertEquals(3, modes.size());
 		assertTrue(modes.contains("all"));
 		assertTrue(modes.contains("none"));
 		assertTrue(modes.contains("annotated"));
 	}
-	
+
 	@Test
-	public void testBeanDiscoveryTreeEditing(){
+	public void testBeanDiscoveryTreeEditing() {
 		EditorPartWrapper beans = beansXMLHelper.openBeansXml(PROJECT_NAME);
 		beans.activateTreePage();
 		beans.setBeanDiscoveryMode("non-existing-mode");
-		//TODO check error marker
+		// TODO check error marker
 		setAndCheckTreeDiscoveryMode(beans, "all");
 		setAndCheckTreeDiscoveryMode(beans, "none");
 		setAndCheckTreeDiscoveryMode(beans, "annotated");
 	}
-	
+
 	@Test
-	public void testBeanDiscoverySourceEditing(){
+	public void testBeanDiscoverySourceEditing() {
 		EditorPartWrapper beans = beansXMLHelper.openBeansXml(PROJECT_NAME);
-		setAndCheckSourceDiscoveryMode(beans, "non-existing-mode", 2, "org.eclipse.ui.workbench.texteditor.error");
-		setAndCheckSourceDiscoveryMode(beans, "annotated", 0, null);
+		setAndCheckSourceDiscoveryMode(beans, "non-existing-mode", ValidationType.INVALID_DISCOVERY_MODE,
+				ValidationType.INVALID_DISCOVERY_MODE_ENUM);
+		setAndCheckSourceDiscoveryMode(beans, "annotated");
 	}
-	
+
 	@Test
-	public void testBeansVersion(){
+	public void testBeansVersion() {
 		EditorPartWrapper beans = beansXMLHelper.openBeansXml(PROJECT_NAME);
 		beans.activateTreePage();
 		assertEquals(CDIVersion, beans.getVersion());
 	}
-	
+
 	@Test
-	public void testBeansName(){
+	public void testBeansName() {
 		EditorPartWrapper beans = beansXMLHelper.openBeansXml(PROJECT_NAME);
 		beans.activateTreePage();
 		assertEquals("beans", beans.getName());
 	}
-	
-	private void setAndCheckTreeDiscoveryMode(EditorPartWrapper beans, String mode){
+
+	private void setAndCheckTreeDiscoveryMode(EditorPartWrapper beans, String mode) {
 		beans.activateTreePage();
 		beans.selectBeanDiscoveryMode(mode);
 		beans.activateSourcePage();
 		DefaultStyledText st = new DefaultStyledText();
-		st.getText().contains("bean-discovery-mode=\""+mode+"\"");
+		st.getText().contains("bean-discovery-mode=\"" + mode + "\"");
 		DefaultEditor te = new DefaultEditor();
-		assertEquals(0,te.getMarkers().size());
+		assertEquals(0, te.getMarkers().size());
 		beans.save();
-		assertEquals(0,te.getMarkers().size());
+		assertEquals(0, te.getMarkers().size());
 	}
-	
-	private void setAndCheckSourceDiscoveryMode(EditorPartWrapper beans, String mode, int expectedNumberOfErrors, String type){
+
+	private void setAndCheckSourceDiscoveryMode(EditorPartWrapper beans, String mode,
+			ValidationType... expectedProblems) {
 		beans.activateTreePage();
 		String currentMode = beans.getBeanDiscoveryMode();
-		
+
 		beans.activateSourcePage();
-		DefaultStyledText ds = new DefaultStyledText();
-		String s = ds.getText().replace(currentMode, mode);
-		ds.setText(s);
+
+		editResourceUtil.replaceInEditor("beans.xml", currentMode, mode);
+
 		Editor e = new DefaultEditor();
-		new WaitUntil(new EditorIsDirty(e));
-		e.save();
-		
-		if (expectedNumberOfErrors > 0) {
-			new WaitUntil(new EditorHasValidationMarkers(e),TimePeriod.LONG,false);
+
+		if (expectedProblems.length > 0) {
+			for (ValidationType validationType : expectedProblems) {
+				ValidationProblem expectedProblem = validationProvider.getValidationProblem(validationType);
+				List<Problem> foundProblems = validationHelper.findProblems(expectedProblem);
+				assertTrue(expectedProblem + " not found. There are these markers: " + e.getMarkers(),
+						foundProblems.size() == 1);
+			}
 		} else {
-			new WaitUntil(new EditorHasValidationMarkers(e),TimePeriod.DEFAULT,false);
-			new WaitWhile(new EditorHasValidationMarkers(e),TimePeriod.LONG,false);
+			new WaitUntil(new EditorHasValidationMarkers(e), TimePeriod.DEFAULT, false);
+			new WaitWhile(new EditorHasValidationMarkers(e), TimePeriod.LONG, false);
 		}
-		
-		List<Marker> markers = e.getMarkers();
-		assertEquals(expectedNumberOfErrors,markers.size());
-		
-		for(Marker m: markers){
-			m.getType().equals(type);
-		}
-		
+
 		beans.activateTreePage();
-		assertEquals(mode,beans.getBeanDiscoveryMode());
+		assertEquals(mode, beans.getBeanDiscoveryMode());
 	}
-	
 
 }
