@@ -56,8 +56,8 @@ public class EngineConfigurationPage extends WizardPage{
 		return availableVersions;
 	}
 	
-	public void downloadEngineVersion(ThymPlatform engine, String version){
-		new PushButton("Download...").click();
+	public void addEngineVersion(ThymPlatform engine, String version){
+		new PushButton("Add...").click();
 		EngineDownloadDialog engineDownload = new EngineDownloadDialog();
 		
 		String v = version.substring(version.indexOf("@") + 1, version.length());

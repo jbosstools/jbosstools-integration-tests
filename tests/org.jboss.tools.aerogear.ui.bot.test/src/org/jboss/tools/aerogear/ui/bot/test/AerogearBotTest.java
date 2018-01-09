@@ -87,8 +87,8 @@ public class AerogearBotTest {
 	 * @param appName
 	 * @param appId
 	 * @param engine
-	 *            - cordova-platform@version e.g. ("cordova-android@4.1.1",
-	 *            "cordova-ios@3.9.0" ..)
+	 *            - platform@version e.g. ("android@7.0.0",
+	 *            "ios@4.5.4" ..)
 	 */
 	public static void createHTMLHybridMobileApplication(String projectName, String appName, String appId, ThymPlatform engine, 
 			String engineVersion) {
@@ -109,7 +109,7 @@ public class AerogearBotTest {
 		
 		if(!availableVersions.contains(engineVersion)){
 			//download requested version if not available
-			confPage.downloadEngineVersion(engine, engineVersion);
+			confPage.addEngineVersion(engine, engineVersion);
 		}
 		
 		confPage.selectEngine(engine, engineVersion);
@@ -119,7 +119,7 @@ public class AerogearBotTest {
 		
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		assertTrue(pe.getProject(projectName).containsResource("platforms",engine.getText().toLowerCase()));
+		assertTrue(pe.getProject(projectName).containsResource("platforms",engine.getText().toLowerCase() + " " + engineVersion.substring(engineVersion.indexOf("@") + 1, engineVersion.length())));
 	}
 
 	public void runTreeItemInAndroidEmulator(String projectName) {
@@ -285,7 +285,7 @@ public class AerogearBotTest {
 	}
 	
 	protected static String getLatestCordovaAndroid(){
-		return (String)System.getProperty("cordova.android","cordova-android@5.2.2");
+		return (String)System.getProperty("cordova.android","android@7.0.0"); //defined in pom.xml
 	}
 
 }
