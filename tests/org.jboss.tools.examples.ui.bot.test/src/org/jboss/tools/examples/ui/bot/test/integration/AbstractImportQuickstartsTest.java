@@ -18,11 +18,18 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 import org.eclipse.reddeer.common.exception.RedDeerException;
@@ -73,7 +80,7 @@ import org.junit.BeforeClass;
  * examples is defined by system property "examplesLocation") and checks for
  * errors and warnings.
  * 
- * @author rhopp, jkopriva
+ * @author rhopp, jkopriva, vprusa
  *
  */
 
@@ -82,6 +89,7 @@ public abstract class AbstractImportQuickstartsTest {
 	protected static String SERVER_NAME = "";
 	protected QuickstartsReporter reporter = QuickstartsReporter.getInstance();
 	protected String blacklistFileContents = "";
+	protected JSONObject blacklistErrorsFileContents;
 	protected static LogView errorLogView;
 
 	private static final Logger log = Logger.getLogger(AbstractImportQuickstartsTest.class);
@@ -236,19 +244,24 @@ public abstract class AbstractImportQuickstartsTest {
 	protected static void clearWorkspace() {
 		cleanupShells();
 		deleteAllProjects();
-		if (System.getProperty("deployOnServer") != null
-						&& System.getProperty("deployOnServer").equals("true")) {
+		if (System.getProperty("deployOnServer") != null && System.getProperty("deployOnServer").equals("true")) {
 			closeBrowser();
 		}
 		try {
 			new ConsoleView().clearConsole();
 		} catch (WorkbenchLayerException ex) {
-			//Swallowing exception - ConsoleView is not opened
+			// Swallowing exception - ConsoleView is not opened
 		}
 	}
 
 	protected void runQuickstarts(Quickstart qstart, String serverName, String blacklistFile) {
+		runQuickstarts(qstart, serverName, blacklistFile, "");
+	}
+
+	protected void runQuickstarts(Quickstart qstart, String serverName, String blacklistFile,
+			String blacklistErrorsFile) {
 		loadBlacklistFile(blacklistFile);
+		loadBlacklistErrorsFile(blacklistErrorsFile);
 		if (!blacklistFileContents.contains(qstart.getName())) {
 			try {
 				importQuickstart(qstart);
@@ -263,8 +276,15 @@ public abstract class AbstractImportQuickstartsTest {
 				return;
 			}
 			checkForWarnings(qstart);
-			checkForErrors(qstart);
-			checkErrorLog(qstart);
+			if (blacklistErrorsFileContents == null || (!blacklistErrorsFileContents.containsKey(qstart.getName()))) {
+				checkForErrors(qstart);
+				checkErrorLog(qstart);
+			} else {
+				JSONArray errorsToIgnore = (JSONArray) blacklistErrorsFileContents.get(qstart.getName());
+				List<String> errorsToIgnoreList = (List<String>) (List<?>) Arrays.asList(errorsToIgnore.toArray());
+				checkForErrors(qstart, errorsToIgnoreList);
+				checkErrorLog(qstart, errorsToIgnoreList);
+			}
 		}
 	}
 
@@ -278,6 +298,23 @@ public abstract class AbstractImportQuickstartsTest {
 		}
 	}
 
+	// https://www.mkyong.com/java/json-simple-example-read-and-write-json
+	private void loadBlacklistErrorsFile(String blacklisterrorsFile) {
+		if (blacklisterrorsFile.isEmpty()) {
+			return;
+		}
+		String pathToFile = "";
+		try {
+			pathToFile = new File(blacklisterrorsFile).getCanonicalPath();
+			JSONParser parser = new JSONParser();
+			blacklistErrorsFileContents = (JSONObject) parser.parse(new FileReader(pathToFile));
+		} catch (IOException ex) {
+			fail("Blacklist file not found! Path is: " + pathToFile);
+		} catch (ParseException e) {
+			fail("ParseException: unable to parse file at ath is: " + pathToFile);
+		}
+	}
+
 	protected static void createReports() {
 		QuickstartsReporter.getInstance().generateReport();
 		QuickstartsReporter.getInstance().generateErrorFilesForEachProject(new File("target/reports/"));
@@ -285,12 +322,17 @@ public abstract class AbstractImportQuickstartsTest {
 	}
 
 	protected void checkErrorLog(Quickstart qstart) {
+		checkErrorLog(qstart, Collections.emptyList());
+	}
+
+	protected void checkErrorLog(Quickstart qstart, List<String> expectedErrorsRegexes) {
 		List<LogMessage> allErrors = new ArrayList<LogMessage>();
 		List<LogMessage> errors = errorLogView.getErrorMessages();
 		String errorMessages = "";
 		for (LogMessage message : errors) {
-			if (!message.getMessage().contains("Unable to delete")
-					&& !message.getMessage().contains("Could not delete")) {
+			if (!message.getMessage().contains("Unable to delete") && !message.getMessage().contains("Could not delete")
+					&& !expectedErrorsRegexes.stream().filter(ee -> message.getMessage().matches(ee)).findAny()
+							.isPresent()) {
 				reporter.addError(qstart, "ERROR IN ERROR LOG: " + message.getMessage());
 				errorMessages += "\t" + message.getMessage() + "\n";
 			}
@@ -317,12 +359,17 @@ public abstract class AbstractImportQuickstartsTest {
 	}
 
 	protected void checkForErrors(Quickstart q) {
+		checkForErrors(q, Collections.emptyList());
+	}
+
+	protected void checkForErrors(Quickstart q, List<String> expectedErrorsRegexes) {
 		updateProjectsIfNeeded();
 		String errorMessages = "";
 		List<String> allErrors = new ArrayList<String>();
 		List<String> errors = ExamplesOperator.getInstance().getAllErrors();
 		for (String error : errors) {
-			if (!error.contains("Unable to delete") && !error.contains("Could not delete")) {
+			if (!error.contains("Unable to delete") && !error.contains("Could not delete")
+					&& !expectedErrorsRegexes.stream().filter(ee -> error.matches(ee)).findAny().isPresent()) {
 				reporter.addError(q, "ERROR IN PROJECT: " + error);
 				errorMessages += "\t" + error + "\n";
 				allErrors.add(error);
@@ -395,13 +442,13 @@ public abstract class AbstractImportQuickstartsTest {
 			}
 		}
 	}
-	
+
 	private boolean quickstartImported(Quickstart qstart) {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
 		List<DefaultProject> projects = projectExplorer.getProjects();
 		for (DefaultProject p : projects) {
-			if (p.getName().equals(qstart.getName())){
+			if (p.getName().equals(qstart.getName())) {
 				return true;
 			}
 		}
@@ -412,19 +459,19 @@ public abstract class AbstractImportQuickstartsTest {
 		for (String error : ExamplesOperator.getInstance().getAllErrors()) {
 			if (error.contains("Missing artifact org.javaee7:test-utils")) {
 				Quickstart testUtils = new Quickstart("test-utils",
-						qstart.getPath().getAbsolutePath().replaceAll(qstart.getName()+"$", "test-utils"));
+						qstart.getPath().getAbsolutePath().replaceAll(qstart.getName() + "$", "test-utils"));
 				importQuickstart(testUtils);
 				continue;
 			}
 			if (error.contains("Missing artifact org.javaee7:util")) {
 				Quickstart util = new Quickstart("util",
-						qstart.getPath().getAbsolutePath().replaceAll(qstart.getName()+"$", "util"));
+						qstart.getPath().getAbsolutePath().replaceAll(qstart.getName() + "$", "util"));
 				importQuickstart(util);
 				continue;
 			}
 			if (error.contains("Missing artifact org.javaee7:jaspic-common")) {
-				Quickstart jaspicCommon = new Quickstart("jaspic-common",
-						qstart.getPath().getAbsolutePath().replaceAll(qstart.getName()+"$", "jaspic" + File.separator + "common"));
+				Quickstart jaspicCommon = new Quickstart("jaspic-common", qstart.getPath().getAbsolutePath()
+						.replaceAll(qstart.getName() + "$", "jaspic" + File.separator + "common"));
 				importQuickstart(jaspicCommon);
 				continue;
 			}

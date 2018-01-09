@@ -5,11 +5,11 @@ Bundle-SymbolicName: org.jboss.tools.examples.ui.bot.test;singleton:=true
 Bundle-Version: 4.4.100.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: JBoss by Red Hat
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.reddeer.go;bundle-version="2.0.0",
  org.junit;bundle-version="4.8.2",
  org.jboss.tools.maven.reddeer;bundle-version="[1.8.100,1.9.0)",
  org.jboss.tools.central.reddeer;bundle-version="[2.1.100,2.2.0)",
  org.jboss.ide.eclipse.as.reddeer
-Import-Package: org.eclipse.wst.server.ui.internal.view.servers,
- org.eclipse.reddeer.requirements.server
+Import-Package: org.json.simple,
+ org.json.simple.parser
