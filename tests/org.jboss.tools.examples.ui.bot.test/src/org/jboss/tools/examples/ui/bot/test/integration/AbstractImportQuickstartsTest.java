@@ -230,7 +230,7 @@ public abstract class AbstractImportQuickstartsTest {
 				}
 			}
 		} catch (NullPointerException ex) {
-			fail("Please check path to quickstarts. Folder does not exist!");
+			fail("Please check path to quickstarts. Folder does not exist! " + file.getAbsolutePath());
 		}
 		return resultList;
 	}
@@ -275,12 +275,28 @@ public abstract class AbstractImportQuickstartsTest {
 				// there was no project in this directory. Pass the test.
 				return;
 			}
+			log.info("Check for warnings and errors");
 			checkForWarnings(qstart);
-			if (blacklistErrorsFileContents == null || (!blacklistErrorsFileContents.containsKey(qstart.getName()))) {
+			if (blacklistErrorsFileContents == null || (!blacklistErrorsFileContents.containsKey(qstart.getName())
+					&& !blacklistErrorsFileContents.containsKey("*"))) {
+				
 				checkForErrors(qstart);
 				checkErrorLog(qstart);
 			} else {
-				JSONArray errorsToIgnore = (JSONArray) blacklistErrorsFileContents.get(qstart.getName());
+				log.info("Lets ignore known errors:");
+
+				JSONArray errorsToIgnore = new JSONArray();
+				if (blacklistErrorsFileContents.containsKey(qstart.getName())) {
+					errorsToIgnore = (JSONArray) blacklistErrorsFileContents.get(qstart.getName());
+				}
+				if (blacklistErrorsFileContents.containsKey("*")) {
+					JSONArray errorsToIgnoreForAll = (JSONArray) blacklistErrorsFileContents.get("*");
+					for (Object o : errorsToIgnoreForAll) {
+						errorsToIgnore.add(o);
+					}
+				}
+				log.info(errorsToIgnore.toJSONString());
+
 				List<String> errorsToIgnoreList = (List<String>) (List<?>) Arrays.asList(errorsToIgnore.toArray());
 				checkForErrors(qstart, errorsToIgnoreList);
 				checkErrorLog(qstart, errorsToIgnoreList);
