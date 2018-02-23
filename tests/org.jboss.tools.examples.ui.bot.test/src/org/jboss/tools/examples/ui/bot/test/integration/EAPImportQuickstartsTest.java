@@ -39,6 +39,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 public class EAPImportQuickstartsTest extends AbstractImportQuickstartsTest {
 	public static final String SERVER_NAME ="Enterprise Application Platform";
 	public static final String BLACKLIST_FILE = "resources/servers/eap-blacklist";
+	public static final String BLACKLIST_ERRORS_REGEXES_FILE = "resources/servers/eap-blacklist-test-errors-regexes.json";
 
 	@Parameters(name = "{0}")
 	public static Collection<Quickstart> data() {
@@ -54,7 +55,7 @@ public class EAPImportQuickstartsTest extends AbstractImportQuickstartsTest {
 	 */
 	@Test
 	public void quickstartTest() {
-		runQuickstarts(qstart, SERVER_NAME, BLACKLIST_FILE);
+		runQuickstarts(qstart, SERVER_NAME, BLACKLIST_FILE, BLACKLIST_ERRORS_REGEXES_FILE);
 	}
 
 
