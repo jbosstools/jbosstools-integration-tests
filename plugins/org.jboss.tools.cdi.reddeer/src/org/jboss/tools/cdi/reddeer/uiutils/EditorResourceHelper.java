@@ -75,7 +75,6 @@ public class EditorResourceHelper {
 		} catch (WorkbenchCoreLayerException ex) {
 			Editor editor = new DefaultEditor(editorName);
 			StyledText t = new DefaultStyledText();
-			t.setText(""); // Workround for https://github.com/eclipse/reddeer/issues/1859
 			AbstractWait.sleep(TimePeriod.SHORT);
 			t.setText(code);
 			new WaitUntil(new EditorIsDirty(editor));
@@ -127,7 +126,6 @@ public class EditorResourceHelper {
 		Editor editor = new DefaultEditor();
 		DefaultStyledText dt = new DefaultStyledText();
 		String text = dt.getText();
-		dt.setText(""); // Workround for https://github.com/eclipse/reddeer/issues/1859
 		AbstractWait.sleep(TimePeriod.SHORT);
 		dt.setText(text.replace(target, replacement));
 		new WaitUntil(new EditorIsDirty(editor));
@@ -161,7 +159,6 @@ public class EditorResourceHelper {
 			Editor textEditor = new DefaultEditor(editorName);
 			DefaultStyledText dt = new DefaultStyledText();
 			String text = dt.getText();
-			dt.setText(""); // Workround for https://github.com/eclipse/reddeer/issues/1859
 			AbstractWait.sleep(TimePeriod.SHORT);
 			dt.setText(text.replace(target + (replacement.equals("") ? System.getProperty("line.separator") : ""),
 					replacement));
