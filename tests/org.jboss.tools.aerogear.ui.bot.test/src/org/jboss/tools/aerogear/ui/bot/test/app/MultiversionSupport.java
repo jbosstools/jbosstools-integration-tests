@@ -72,7 +72,7 @@ public class MultiversionSupport extends AerogearBotTest {
 		String jsString = new DefaultStyledText().getText();
 		jsString = jsString.replaceFirst("app\\.receivedEvent\\('deviceready'\\);",
 				"app.receivedEvent(\'deviceready\');" + "\nconsole.log(\"" + MultiversionSupport.VERSION_MESSSAGE_PREFIX
-						+ "\" + device.cordova );");
+						+ "\" + device.cordova);");
 		new DefaultStyledText().setText(jsString);
 		jsEditor.save();
 		jsEditor.close();
@@ -97,8 +97,7 @@ public class MultiversionSupport extends AerogearBotTest {
 		String consoleEngineVersion = parseConsoleTextForVersion(console.getConsoleText());
 		assertNotNull("Cordova Engine version was not displayed in console", consoleEngineVersion);
 		// change mobile engine version for project
-		PropertyDialog projectPropertiesDialog = new PropertyDialog(CORDOVA_PROJECT_NAME);
-		projectPropertiesDialog.open();
+		PropertyDialog projectPropertiesDialog = new ProjectExplorer().getProject(CORDOVA_PROJECT_NAME).openProperties();
 		EnginePropertyPage enginePropertyPage = new EnginePropertyPage(projectPropertiesDialog);
 		projectPropertiesDialog.select(enginePropertyPage);
 		String propEngineVersion = enginePropertyPage.getVersion(Platform.android);
@@ -107,7 +106,7 @@ public class MultiversionSupport extends AerogearBotTest {
 		List<String> versions = enginePropertyPage.getAvailableVersions(Platform.android);
 		// if just one version is downloaded download second one
 		if (versions.size() == 1) {
-			downloadMobileEngine("cordova-android@4.1.1");
+			downloadMobileEngine("android@5.2.2");
 		}
 		// Check other version
 		versions = enginePropertyPage.getAvailableVersions(Platform.android, true);

@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.util.FileUtil;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
 import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
@@ -29,18 +30,22 @@ import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 import org.jboss.tools.aerogear.reddeer.thym.ui.wizard.project.ThymPlatform;
 import org.jboss.tools.aerogear.ui.bot.test.AerogearBotTest;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
 @CleanWorkspace
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
+@RunWith(RedDeerSuite.class)
 public class CreateHybridApplication extends AerogearBotTest {
 
 	private ThymPlatform platform;
@@ -50,12 +55,9 @@ public class CreateHybridApplication extends AerogearBotTest {
 	@Parameters(name="{1}")
 	public static Collection<Object[]> data() {
 		return Arrays.asList(new Object[][] { 
-			{ThymPlatform.ANDROID, "cordova-android@3.6.4"},
-			{ThymPlatform.ANDROID, "cordova-android@3.7.2"},
-			{ThymPlatform.ANDROID, "cordova-android@4.0.0"},
-			{ThymPlatform.ANDROID, "cordova-android@4.1.1"},
-			{ThymPlatform.ANDROID, "cordova-android@5.2.1"},
-			{ThymPlatform.ANDROID, "cordova-android@5.2.2"}
+			{ThymPlatform.ANDROID, "android@5.2.2"},
+			{ThymPlatform.ANDROID, "android@6.4.0"},
+			{ThymPlatform.ANDROID, "android@7.0.0"}
 		});
 	}
 
@@ -111,12 +113,8 @@ public class CreateHybridApplication extends AerogearBotTest {
 	
 	private void checkErrorsDuringPrepare(){
 		ConsoleView cw = new ConsoleView();
-		cw.switchConsole(new RegexMatcher(".*cordova prepare "));
-		if(cordovaVersion.equals("5.2.2")){ //no text in case of 5.2.2 version
-			new WaitUntil(new ConsoleHasText(""));
-		} else {
-			new WaitUntil(new ConsoleHasText("Creating Cordova project"));
-		}
+		cw.switchConsole(new RegexMatcher(".*cordova.*"));
+		new WaitWhile(new JobIsRunning());
 		String consoleText = cw.getConsoleText();
 		assertFalse("ConsoleView has error: "+consoleText,consoleText.toLowerCase().contains("error"));
 	}

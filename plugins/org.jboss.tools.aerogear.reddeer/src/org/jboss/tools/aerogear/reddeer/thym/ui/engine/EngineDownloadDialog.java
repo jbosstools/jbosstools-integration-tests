@@ -21,7 +21,7 @@ public class EngineDownloadDialog extends DefaultShell {
 	
 	
 	public EngineDownloadDialog(){
-		super("Download Hybrid Mobile Engine");
+		super("Add Hybrid Mobile Engine");
 	}
 	
 	public void ok(){

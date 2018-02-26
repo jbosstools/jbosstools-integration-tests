@@ -108,7 +108,7 @@ public class EnginePropertyPage extends PropertyPage{
 	}
 	
 	public enum Platform {
-		android {public String toString(){return "cordova-android";}},
-		ios {public String toString(){return "cordova-ios";}}
+		android {public String toString(){return "android";}},
+		ios {public String toString(){return "ios";}}
 	}
 }

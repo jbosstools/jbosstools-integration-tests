@@ -16,7 +16,7 @@ import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 public class CordovaPluginWizard extends WizardDialog{
 	
 	public CordovaPluginWizard() {
-		new DefaultShell("Cordova Plug-in Discovery");
+		super(new DefaultShell("Cordova Plug-in Discovery"));
 	}
 
 }
