@@ -21,7 +21,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
     CreateJSFProjectTest.class,
     RunJSFProjectTest.class,
-    ExportImportWARTest.class
+    ExportImportWARTest.class,
     })
 public class AllTestsSuite {
 
