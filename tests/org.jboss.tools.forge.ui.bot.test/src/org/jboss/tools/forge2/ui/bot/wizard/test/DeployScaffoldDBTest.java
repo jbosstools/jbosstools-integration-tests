@@ -159,9 +159,6 @@ public class DeployScaffoldDBTest extends WizardTestBase {
 
 	public void deployOnServer() {
 		DeployOnServer ds = new DeployOnServer();
-		ds.deployProject(PROJECT_NAME, SERVER_NAME);
-		ds.restartServer(SERVER_NAME);
-		ds.checkDeployedProject(PROJECT_NAME, SERVER_NAME);
 		ds.deployUndeployProjectToServer(PROJECT_NAME, SERVER_NAME);
 	}
 	
