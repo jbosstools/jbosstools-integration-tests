@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.forge2.ui.bot.wizard.test;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.eclipse.reddeer.common.wait.TimePeriod;
@@ -63,7 +64,11 @@ public class LinkWorkspaceSelectionTest extends WizardTestBase {
 		forgeConsoleView.open();
 		new WaitWhile(new ForgeConsoleHasNoChange(), TimePeriod.getCustom(15), false);
 		String consoleText = forgeConsoleView.getConsoleText();
-		assertTrue(consoleText.endsWith("[pom.xml]$ "));
+		if (consoleText == null) {
+			consoleText = new ForgeConsoleView().getConsoleText();
+		}
+		assertNotNull("Forge console text is null!",consoleText);
+		assertTrue("Context is not changed in console!",consoleText.endsWith("[pom.xml]$ "));
 		setFocusOnProject();
 	}
 
@@ -82,6 +87,10 @@ public class LinkWorkspaceSelectionTest extends WizardTestBase {
 		forgeConsoleView = new ForgeConsoleView();
 		forgeConsoleView.open();
 		String consoleText = forgeConsoleView.getConsoleText();
+		if (consoleText == null) {
+			consoleText = new ForgeConsoleView().getConsoleText();
+		}
+		assertNotNull("Forge console text is null!",consoleText);
 		assertTrue(consoleText.endsWith("[beans.xml]$ "));
 		pe.getProject(PROJECT_NAME).select();
 		pe.getProject(PROJECT_NAME).collapse();

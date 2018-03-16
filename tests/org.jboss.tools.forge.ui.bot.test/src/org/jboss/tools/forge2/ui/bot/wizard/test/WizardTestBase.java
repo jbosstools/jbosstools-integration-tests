@@ -89,7 +89,7 @@ public abstract class WizardTestBase {
 	}
 
 	public void handleCleanup() {
-		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();;
+		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ProjectExplorer().deleteAllProjects();
 		if (!new ProjectExplorer().getProjectItems().isEmpty()) {
 			// workaround for windows issue - JDK_8029516
