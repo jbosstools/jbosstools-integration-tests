@@ -60,32 +60,25 @@
 					<testClass>${suiteClass}</testClass>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<configuration>
+					<dependency-resolution>
+						<extraRequirements combine.children="append">
+							<requirement>
+								<type>p2-installable-unit</type>
+								<id>org.jboss.tools.livereload.feature.feature.group</id>
+								<versionRange>0.0.0</versionRange>
+							</requirement>
+						</extraRequirements>
+					</dependency-resolution>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-	
+
 	<profiles>
-		<profile>
-			<id>check-pr</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>target-platform-configuration</artifactId>
-						<configuration>
-							<dependency-resolution>
-								<extraRequirements>
-									<requirement>
-										<type>p2-installable-unit</type>
-										<id>org.jboss.tools.livereload.feature.feature.group</id>
-										<versionRange>0.0.0</versionRange>
-									</requirement>
-								</extraRequirements>
-							</dependency-resolution>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 		<profile>
 			<id>osx-docker</id>
 			<activation>
