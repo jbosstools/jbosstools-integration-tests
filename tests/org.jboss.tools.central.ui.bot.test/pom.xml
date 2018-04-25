@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.jboss.tools.integration-tests</groupId>
 		<artifactId>tests</artifactId>
-		<version>4.4.100-SNAPSHOT</version>
+		<version>4.4.200-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.central.tests</groupId>
 	<artifactId>org.jboss.tools.central.ui.bot.test</artifactId>

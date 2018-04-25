@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: RedDeer API for Arquillian UI Tests
 Bundle-SymbolicName: org.jboss.tools.arquillian.reddeer
-Bundle-Version: 4.4.100.qualifier
+Bundle-Version: 4.4.200.qualifier
 Require-Bundle: org.eclipse.ui,
  org.apache.log4j,
  org.eclipse.core.runtime,
@@ -10,7 +10,7 @@ Require-Bundle: org.eclipse.ui,
  org.hamcrest.core,
  org.jboss.ide.eclipse.as.reddeer,
  org.jboss.tools.maven.reddeer;bundle-version="[1.8.100,1.9.0)",
- org.eclipse.reddeer.go;bundle-version="2.0.0"
+ org.eclipse.reddeer.go;bundle-version="2.1.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.eclipse.core.resources

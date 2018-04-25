@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.jboss.tools.integration-tests</groupId>
 		<artifactId>plugins</artifactId>
-		<version>4.4.100-SNAPSHOT</version>
+		<version>4.4.200-SNAPSHOT</version>
 	</parent>
 	<groupId>org.jboss.tools.browsersim</groupId>
 	<artifactId>org.jboss.tools.browsersim.rmi</artifactId>

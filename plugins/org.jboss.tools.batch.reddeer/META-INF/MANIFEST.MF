@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: RedDeer API for Batch UI Tests
 Bundle-SymbolicName: org.jboss.tools.batch.reddeer
-Bundle-Version: 4.4.100.qualifier
+Bundle-Version: 4.4.200.qualifier
 Require-Bundle: org.junit,
  org.hamcrest.core,
  org.jboss.tools.batch.ui;bundle-version="1.9.0",
- org.eclipse.reddeer.go;bundle-version="[2.0.0,2.1.0)",
+ org.eclipse.reddeer.go;bundle-version="2.1.0",
  org.eclipse.sapphire.ui;bundle-version="9.0.0",
  org.jboss.tools.common.text.ext;bundle-version="3.7.0",
  org.eclipse.wst.sse.ui,
