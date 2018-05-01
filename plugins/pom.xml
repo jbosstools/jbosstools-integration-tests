@@ -13,8 +13,6 @@
 	<packaging>pom</packaging>
 	
 	<modules>
-		<module>org.jboss.tools.aerogear.reddeer</module>
-		<module>org.jboss.tools.arquillian.reddeer</module>
 		<module>org.jboss.tools.batch.reddeer</module>
 		<module>org.jboss.tools.browsersim.reddeer</module>
 		<module>org.jboss.tools.cdi.reddeer</module>
@@ -25,7 +23,5 @@
 		<module>org.jboss.tools.mylyn.reddeer</module>
 		<module>org.jboss.tools.vpe.reddeer</module>
 		<module>org.jboss.tools.livereload.reddeer</module>
-		<module>org.jboss.tools.browsersim.rmi</module>
-		<module>org.jboss.tools.cordovasim.rmi</module>
 	</modules>
 </project>
