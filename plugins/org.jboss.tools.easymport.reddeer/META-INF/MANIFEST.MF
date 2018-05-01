@@ -4,12 +4,12 @@ Bundle-Name: RedDeer API for Easymport UI Tests
 Bundle-SymbolicName: org.jboss.tools.easymport.reddeer
 Bundle-Version: 4.4.200.qualifier
 Require-Bundle:  org.hamcrest.core,
- org.eclipse.reddeer.common;bundle-version="[2.0.0,2.1.0)",
- org.eclipse.reddeer.core;bundle-version="[2.0.0,2.1.0)",
- org.eclipse.reddeer.eclipse;bundle-version="[2.0.0,2.1.0)",
- org.eclipse.reddeer.jface;bundle-version="[2.0.0,2.1.0)",
- org.eclipse.reddeer.swt;bundle-version="[2.0.0,2.1.0)",
- org.eclipse.reddeer.workbench;bundle-version="[2.0.0,2.1.0)",
+ org.eclipse.reddeer.common;bundle-version="2.1.0",
+ org.eclipse.reddeer.core;bundle-version="2.1.0",
+ org.eclipse.reddeer.eclipse;bundle-version="2.1.0",
+ org.eclipse.reddeer.jface;bundle-version="2.1.0",
+ org.eclipse.reddeer.swt;bundle-version="2.1.0",
+ org.eclipse.reddeer.workbench;bundle-version="2.1.0",
  org.eclipse.swt,
  org.eclipse.jface
 Bundle-ActivationPolicy: lazy

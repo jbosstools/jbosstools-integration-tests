@@ -15,7 +15,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.jboss.ide.eclipse.as.reddeer,
  org.eclipse.ui.workbench,
  org.jboss.tools.central.reddeer;bundle-version="[2.1.100,2.2.0)",
- org.jboss.tools.common.reddeer;bundle-version="[3.9.0,3.10.0)"
+ org.jboss.tools.common.reddeer;bundle-version="3.10.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: JBoss by Red Hat

@@ -5,15 +5,15 @@ Bundle-SymbolicName: org.jboss.tools.easymport.ui.bot.test
 Bundle-Version: 4.4.200.qualifier
 Require-Bundle: org.eclipse.core.runtime,
  org.junit,
- org.eclipse.reddeer.core;bundle-version="[2.0.0,2.1.0)",
- org.eclipse.reddeer.common;bundle-version="[2.0.0,2.1.0)",
- org.eclipse.reddeer.eclipse;bundle-version="[2.0.0,2.1.0)",
- org.eclipse.reddeer.jface;bundle-version="[2.0.0,2.1.0)",
- org.eclipse.reddeer.junit;bundle-version="[2.0.0,2.1.0)",
- org.eclipse.reddeer.junit.extension;bundle-version="[2.0.0,2.1.0)",
- org.eclipse.reddeer.swt;bundle-version="[2.0.0,2.1.0)",
- org.eclipse.reddeer.workbench;bundle-version="[2.0.0,2.1.0)",
- org.eclipse.reddeer.workbench.core;bundle-version="[2.0.0,2.1.0)",
+ org.eclipse.reddeer.core;bundle-version="2.1.0",
+ org.eclipse.reddeer.common;bundle-version="2.1.0",
+ org.eclipse.reddeer.eclipse;bundle-version="2.1.0",
+ org.eclipse.reddeer.jface;bundle-version="2.1.0",
+ org.eclipse.reddeer.junit;bundle-version="2.1.0",
+ org.eclipse.reddeer.junit.extension;bundle-version="2.1.0",
+ org.eclipse.reddeer.swt;bundle-version="2.1.0",
+ org.eclipse.reddeer.workbench;bundle-version="2.1.0",
+ org.eclipse.reddeer.workbench.core;bundle-version="2.1.0",
  org.jboss.tools.easymport.reddeer;bundle-version="[4.4.100,4.5.0)"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
