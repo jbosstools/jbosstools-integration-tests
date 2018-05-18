@@ -120,15 +120,7 @@ public abstract class AbstractBatchTest {
 	 */
 	protected static void removeProject(Logger log) {
 		log.info("Removing " + getProjectName());
-		// temporary workaround until upstream patch is applied (eclipse bug 478634)
-		try {
-			org.eclipse.reddeer.direct.project.Project.delete(getProjectName(), true, true);
-		} catch (RuntimeException exc) {
-			log.error("RuntimeException occured during deleting project");
-			exc.printStackTrace();
-			log.info("Deleting project second time ...");
-			org.eclipse.reddeer.direct.project.Project.delete(getProjectName(), true, true);
-		} 
+		getProject().delete(true);
 		new WaitWhile(new JobIsRunning());
 	}
 	
