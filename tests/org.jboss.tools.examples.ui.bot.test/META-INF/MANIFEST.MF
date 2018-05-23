@@ -8,8 +8,8 @@ Bundle-Vendor: JBoss by Red Hat
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.eclipse.reddeer.go;bundle-version="2.1.0",
  org.junit;bundle-version="4.8.2",
- org.jboss.tools.maven.reddeer;bundle-version="[1.8.100,1.9.0)",
- org.jboss.tools.central.reddeer;bundle-version="[2.1.100,2.2.0)",
+ org.jboss.tools.maven.reddeer,
+ org.jboss.tools.central.reddeer,
  org.jboss.ide.eclipse.as.reddeer
 Import-Package: org.json.simple,
  org.json.simple.parser
