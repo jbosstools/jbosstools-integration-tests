@@ -22,7 +22,7 @@ public class SeamPluginsTest extends AbstractMavenSWTBotTest{
 	
 	@Test
 	public void testSeamIsNotPresent(){
-		new ShellMenuItem("Help","About Red Hat JBoss Developer Studio").select();
+		new ShellMenuItem("Help","About Red Hat Developer Studio").select();
 		new PushButton("Installation Details").click();
 		new DefaultShell(new WithTextMatcher(new RegexMatcher(".*Installation Details")));
 		new DefaultTabItem("Plug-ins").activate();
