@@ -33,4 +33,4 @@ Eclipse-RegisterBuddy: org.apache.log4j
 Bundle-ClassPath: .
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
-Bundle-Vendor: JBoss by Red Hat
+Bundle-Vendor: Red Hat

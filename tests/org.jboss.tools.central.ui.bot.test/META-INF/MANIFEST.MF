@@ -17,4 +17,4 @@ Require-Bundle: org.eclipse.ui.forms;bundle-version="3.5.101",
  org.apache.commons.lang;bundle-version="2.6.0",
  org.jboss.tools.common.reddeer;bundle-version="3.10.0"
 Eclipse-BundleShape: jar
-Bundle-Vendor: JBoss by Red Hat
+Bundle-Vendor: Red Hat

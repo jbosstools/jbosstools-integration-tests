@@ -16,7 +16,7 @@ Require-Bundle: org.junit,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: jar
-Bundle-Vendor: JBoss by Red Hat
+Bundle-Vendor: Red Hat
 Export-Package: org.jboss.tools.batch.reddeer.editor,
  org.jboss.tools.batch.reddeer.editor.jobxml,
  org.jboss.tools.batch.reddeer.wizard

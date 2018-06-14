@@ -16,7 +16,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.eclipse.core.resources
 Eclipse-BundleShape: jar
-Bundle-Vendor: JBoss by Red Hat 
+Bundle-Vendor: Red Hat 
 Export-Package: org.jboss.tools.easymport.reddeer.wizard
 
 
