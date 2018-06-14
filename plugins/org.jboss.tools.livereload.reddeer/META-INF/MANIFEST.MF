@@ -17,4 +17,4 @@ Export-Package: org.jboss.tools.livereload.reddeer,
  org.jboss.tools.livereload.reddeer.requirement,
  org.jboss.tools.livereload.reddeer.condition
 Eclipse-BundleShape: jar
-Bundle-Vendor: JBoss by Red Hat
+Bundle-Vendor: Red Hat

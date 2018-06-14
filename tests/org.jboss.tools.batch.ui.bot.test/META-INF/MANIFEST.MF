@@ -12,6 +12,6 @@ Require-Bundle: org.junit,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: jar
-Bundle-Vendor: JBoss by Red Hat
+Bundle-Vendor: Red Hat
 Bundle-Activator: org.jboss.tools.batch.ui.bot.test.Activator
 
