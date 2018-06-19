@@ -31,6 +31,7 @@ import org.junit.Test;
  */
 public class CDIValidatorTemplate extends CDITestBase {
 	
+	@SuppressWarnings("unused")
 	private final static CDIValidatorPreferencePage 
 		cdiValidatorPage = new CDIValidatorPreferencePage(new PreferenceDialog());
 	
