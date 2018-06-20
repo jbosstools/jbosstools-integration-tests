@@ -18,8 +18,8 @@
 		<systemProperties>${integrationTestsSystemProperties} -Dusage_reporting_enabled=false -Drd.config=${rd.config} -Djbosstools.test.jboss-eap-7.1.home=${jbosstools.test.jboss-eap-7.1.home}</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 		<test.class>org.jboss.tools.jsf.ui.test.AllTestsSuite</test.class>
-		<jbosstools.test.jboss-eap-7.0.url>http://download.eng.brq.redhat.com/released/JBEAP-7/7.0.0/jboss-eap-7.0.0.zip</jbosstools.test.jboss-eap-7.0.url>
-		<jbosstools.test.jboss-eap-7.1.url>http://download.eng.brq.redhat.com/released/JBEAP-7/7.1.0/jboss-eap-7.1.0.zip</jbosstools.test.jboss-eap-7.1.url>
+		<jbosstools.test.jboss-eap-7.0.url>http://download.eng.brq.redhat.com/released/JBoss-middleware/eap7/7.0.0/jboss-eap-7.0.0.zip</jbosstools.test.jboss-eap-7.0.url>
+		<jbosstools.test.jboss-eap-7.1.url>http://download.eng.brq.redhat.com/released/JBoss-middleware/eap7/7.1.0/jboss-eap-7.1.0.zip</jbosstools.test.jboss-eap-7.1.url>
 	</properties>
 
 	<profiles>
