@@ -581,6 +581,11 @@
 			<layout>p2</layout>
 			<url>http://m2e-code-quality.github.io/m2e-code-quality/site/latest/</url>
 		</repository>
+		<repository>
+			<id>m2e</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/technology/m2e/releases</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
