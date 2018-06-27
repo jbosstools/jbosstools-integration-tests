@@ -74,6 +74,7 @@ public class CDIWebProjectWizardTemplate{
 		fp.setProjectName(PROJECT_NAME);
 		assertEquals(sr.getRuntimeName(),fp.getTargetRuntime());
 		assertEquals("Dynamic Web Project with CDI "+CDIVersion+" (Contexts and Dependency Injection)",fp.getConfiguration());
+		fp.activateFacet("1.8", "Java");
 		cw.finish();
 		isCDISupportEnabled(PROJECT_NAME);
 		isCDIFacetEnabled(PROJECT_NAME, CDIVersion);
@@ -99,6 +100,7 @@ public class CDIWebProjectWizardTemplate{
 		fp.setProjectName(PROJECT_NAME);
 		assertEquals(sr.getRuntimeName(),fp.getTargetRuntime());
 		assertEquals("Dynamic Web Project with CDI "+CDIVersion+" (Contexts and Dependency Injection)",fp.getConfiguration());
+		fp.activateFacet("1.8", "Java");
 		cw.next();
 		cw.next();
 		cw.next();
@@ -112,10 +114,10 @@ public class CDIWebProjectWizardTemplate{
 		assertTrue(pe.containsProject(PROJECT_NAME));
 		assertFalse(pe.getProject(PROJECT_NAME).containsResource("WebContent","WEB-INF","beans.xml"));
 		new WaitUntil(new ProblemExists(ProblemType.ALL), TimePeriod.LONG, false);
-		if(CDIVersion.equals("1.0")){
-			assertTrue(new ProblemExists(ProblemType.ALL).test());
-		} else {
-			new WaitWhile(new ProblemExists(ProblemType.ALL));
+		if (CDIVersion.equals("1.0")) {
+			assertTrue(new ProblemExists(ProblemType.ALL).test());	
+		} else {	
+			new WaitWhile(new ProblemExists(ProblemType.ALL));	
 		}
 	}
 	

@@ -62,6 +62,7 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 		assertEquals(0,markers.size());
 		ed.insertLine(1, "import javax.enterprise.context.ApplicationScoped;");
 		ed.insertLine(3, "@ApplicationScoped");
+		ed.save();
 		new WaitUntil(new EditorHasValidationMarkers(ed, 7));
 		markers = ed.getMarkers();
 		assertEquals(1,markers.size());
@@ -74,7 +75,6 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 		ed.save();
 		
 		ed = new TextEditor("Bean1.java");
-		ed.save();
 		new WaitWhile(new EditorHasValidationMarkers(ed),TimePeriod.DEFAULT, false);
 		markers = ed.getMarkers();
 		try{
@@ -104,6 +104,7 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 		assertEquals(0,markers.size());
 		ed.insertLine(1, "import javax.enterprise.context.ApplicationScoped;");
 		ed.insertLine(3, "@ApplicationScoped");
+		ed.save();
 		new WaitUntil(new EditorHasValidationMarkers(ed,7));
 		markers = ed.getMarkers();
 		assertEquals(1,markers.size());
@@ -116,7 +117,6 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 		ed.save();
 		
 		ed = new TextEditor("Bean1.java");
-		ed.save();
 		new WaitWhile(new EditorHasValidationMarkers(ed),TimePeriod.DEFAULT, false);
 		markers = ed.getMarkers();
 		assertEquals(0,markers.size());

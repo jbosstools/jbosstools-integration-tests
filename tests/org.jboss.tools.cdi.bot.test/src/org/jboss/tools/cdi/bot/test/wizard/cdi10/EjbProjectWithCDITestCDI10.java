@@ -34,6 +34,7 @@ public class EjbProjectWithCDITestCDI10 extends ProjectWithCDITemplate{
 		dw.open();
 		EjbProjectFirstPage fp = new EjbProjectFirstPage(dw);
 		fp.setProjectName(PROJECT_NAME);
+		fp.activateFacet("1.8", "Java");
 		dw.finish();
 	}
 
