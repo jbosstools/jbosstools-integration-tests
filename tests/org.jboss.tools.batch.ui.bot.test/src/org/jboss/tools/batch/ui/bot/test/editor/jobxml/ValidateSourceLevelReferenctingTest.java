@@ -25,13 +25,13 @@ public class ValidateSourceLevelReferenctingTest extends AbstractJobXMLTest {
 	
 	private final String ELEMENT_ID = "my-id";
 	
-	private final String JOB_LEVEL_ID = "job-level-id";
+	private final String JOB_LEVEL_ID = "step-job-level-id";
 	
-	private final String FLOW_LEVEL_ID = "flow-level-id";
+	private final String FLOW_LEVEL_ID = "step-inner-level-id";
 	
 	private final String DECISION_REF = "decider";
 	
-	private final String FLOW_ID = "my-flow";
+	private final String FLOW_ID = "flow-job-level-id";
 	
 	@Override
 	@Before

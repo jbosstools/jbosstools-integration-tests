@@ -53,7 +53,7 @@ public abstract class AbstractFeatureBaseTest extends DesignFlowElementsTestTemp
 	@Override
 	public void setUp() {
 		setupJobXML();
-		setupEditor();;
+		setupEditor();
 	}
 
 	@After

@@ -49,6 +49,14 @@ public class JobXMLEditorSourcePage extends XMLSourcePage {
 	
 	public static final String PROCESSOR = ":processor";
 	
+	public static final String ANALYZER = ":analyzer";
+	
+	public static final String COLLECTOR = ":collector";
+	
+	public static final String MAPPER = ":mapper";
+	
+	public static final String REDUCER = ":reducer";
+	
 	public static final String ID = "@id";
 	
 	public static final String REF = "@ref";

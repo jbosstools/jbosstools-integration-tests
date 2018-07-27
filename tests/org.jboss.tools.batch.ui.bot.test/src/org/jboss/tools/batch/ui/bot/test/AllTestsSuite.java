@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016 Red Hat, Inc.
+ * Copyright (c) 2016-2018 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -18,6 +18,10 @@ import org.jboss.tools.batch.ui.bot.test.editor.design.DesignFlowElementTest;
 import org.jboss.tools.batch.ui.bot.test.editor.design.DesignSplitElementTest;
 import org.jboss.tools.batch.ui.bot.test.editor.features.CheckExistingReferenceTest;
 import org.jboss.tools.batch.ui.bot.test.editor.features.RenameTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ContentAssistNextAndToAttributeTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ContentAssistPropertyTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ContentAssistReferenceAttributeTest;
+import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ContentAssistRestartAttributeTest;
 import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateDesignRefAttributeTest;
 import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceBatchPropertyTest;
 import org.jboss.tools.batch.ui.bot.test.editor.jobxml.ValidateSourceClassAttributeTest;
@@ -59,7 +63,11 @@ import org.junit.runners.Suite.SuiteClasses;
 	ValidateSourceElementLoopingTest.class,
 	ValidateSourceLevelReferenctingTest.class,
 	ValidateSourceRestartAttributeTest.class,
-	ValidateDesignRefAttributeTest.class
+	ValidateDesignRefAttributeTest.class,
+	ContentAssistReferenceAttributeTest.class,
+	ContentAssistPropertyTest.class,
+	ContentAssistRestartAttributeTest.class,
+	ContentAssistNextAndToAttributeTest.class
 	})
 public class AllTestsSuite {
 

@@ -115,7 +115,7 @@ public abstract class DesignFlowElementsTestTemplate extends AbstractBatchTest {
 	
 	@AfterClass
 	public static void tearDownAfterClass() {
-		removeProject(log);
+		removeProject(log, getProjectName());
 	}	
 	
 	@Before
