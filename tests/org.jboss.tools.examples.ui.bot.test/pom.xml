@@ -301,16 +301,14 @@
 					</plugin>
 				</plugins>
 			</build>
-			<!-- because JBIDE-25742 -->
-			<!-- <repositories>
+			<repositories>
 				<repository>
 					<id>jaxws-repo</id>
 					<name>jaxws-repo</name>
 					<layout>p2</layout>
-					<url>http://coderplus.com/m2e-update-sites/jaxws-maven-plugin/</url>
+					<url>https://coderplus.github.io/m2e-connector-for-jaxws-maven-plugin/</url>
 				</repository>
 			</repositories>
-			-->
 		</profile>
 		<profile>
 			<id>SmokeTestsWildFly11</id>
