@@ -13,7 +13,6 @@ public class EditorResourceHelper {
         String code = s.useDelimiter("\\A").next();
         s.close();
         DefaultEditor e = new DefaultEditor();
-        new DefaultStyledText().setText("");
         new DefaultStyledText().setText(code);
         if (save) e.save();
         if (closeEdit) e.close();
