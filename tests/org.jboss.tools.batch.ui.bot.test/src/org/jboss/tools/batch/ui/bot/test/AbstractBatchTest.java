@@ -118,9 +118,17 @@ public abstract class AbstractBatchTest {
 	 * Removes project from Project Explorer
 	 * @param log class logger from which method was called
 	 */
-	protected static void removeProject(Logger log) {
-		log.info("Removing " + getProjectName());
-		getProject().delete(true);
+	protected static void removeProject(Logger log, String projectName) {
+		log.info("Removing " + projectName);
+		// temporary workaround until upstream patch is applied (eclipse bug 478634)
+		try {	
+			org.eclipse.reddeer.direct.project.Project.delete(getProjectName(), true, true);	
+		} catch (RuntimeException exc) {	
+			log.error("RuntimeException occured during deleting project");	
+			exc.printStackTrace();	
+			log.info("Deleting project second time ...");	
+			org.eclipse.reddeer.direct.project.Project.delete(projectName, true, true);	
+		}
 		new WaitWhile(new JobIsRunning());
 	}
 	
@@ -243,7 +251,7 @@ public abstract class AbstractBatchTest {
 		ProblemsView problemsView = new ProblemsView();
 		problemsView.open();
 		
-		new WaitUntil(new JobIsRunning(), TimePeriod.SHORT, false);
+		new WaitUntil(new JobIsRunning(), TimePeriod.MEDIUM, false);
 		
 		List<Problem> problems = null;
 		try {

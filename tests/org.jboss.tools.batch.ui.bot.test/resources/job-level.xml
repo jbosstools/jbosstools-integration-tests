@@ -4,11 +4,13 @@
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/jobXML_1_0.xsd"
     version="1.0">
     
-    <step id="job-level-id"></step>
+    <step id="step-job-level-id"></step>
     
-    <flow id="my-flow">
-    	<step id="flow-level-id"></step>
-    	
+    <flow id="flow-job-level-id">
+    	<step id="step-inner-level-id"/>
+		<flow id="flow-inner-level-id"/>
+		<split id="split-inner-level-id"/>
+			
     </flow>
     
 </job>

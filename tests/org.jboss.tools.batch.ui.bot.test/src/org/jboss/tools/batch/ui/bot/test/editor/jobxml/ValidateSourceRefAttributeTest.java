@@ -10,6 +10,7 @@
  ******************************************************************************/
 package org.jboss.tools.batch.ui.bot.test.editor.jobxml;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -18,7 +19,16 @@ import org.junit.Test;
  * @author odockal
  *
  */
-public class ValidateSourceRefAttributeTest extends AbstractJobXMLReferenceTest {
+public class ValidateSourceRefAttributeTest extends AbstractJobXMLTest {
+	
+	public static final String BATCH_FILE = "job-ref.xml";
+	
+	@Override
+	@Before
+	public void setUp() {
+		super.setUp();
+		setJobXMLContentFromFile(BATCH_FILE);
+	}
 	
 	@Test 
 	public void testDecisionReference() {

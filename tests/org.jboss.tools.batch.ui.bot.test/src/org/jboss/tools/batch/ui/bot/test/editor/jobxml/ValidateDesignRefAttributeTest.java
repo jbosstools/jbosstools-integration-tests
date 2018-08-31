@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Red Hat, Inc.
+ * Copyright (c) 2016-2018 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -16,9 +16,19 @@ import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.eclipse.reddeer.uiforms.impl.section.DefaultSection;
+import org.junit.Before;
 import org.junit.Test;
 
-public class ValidateDesignRefAttributeTest extends AbstractJobXMLReferenceTest {
+public class ValidateDesignRefAttributeTest extends AbstractJobXMLTest {
+	
+	public static final String BATCH_FILE = "job-ref.xml";
+	
+	@Override
+	@Before
+	public void setUp() {
+		super.setUp();
+		setJobXMLContentFromFile(BATCH_FILE);
+	}
 	
 	@Test
 	public void testBatchletReference() {
