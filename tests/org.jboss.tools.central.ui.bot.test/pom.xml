@@ -14,7 +14,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<systemProperties>-Dmaven.config.file=${project.build.directory}/classes/settings.xml</systemProperties>
+		<systemProperties>-Dmaven.config.file=${project.build.directory}/classes/settings.xml -DspecificQuickstarts=${specificQuickstarts}</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 		<test.class>org.jboss.tools.central.test.ui.reddeer.AllTestsSuite</test.class>
 	</properties>
@@ -125,11 +125,6 @@
 						<dependency>
 							<type>p2-installable-unit</type>
 							<artifactId>org.jboss.tools.maven.project.examples.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.openshift.express.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
 						<dependency>
