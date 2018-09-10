@@ -120,7 +120,7 @@ public abstract class AbstractJobXMLTest extends DesignFlowElementsTestTemplate 
 			performSave(editor.getEditorPart());
 			assertNumberOfProblems(0, 1);
 			editor.getSourcePage().setCursorPosition(editor.getSourcePage().getPositionOfText(textToFind + "x") + (textToFind).length());
-			KeyboardFactory.getKeyboard().type(SWT.DEL);
+			pressButton(SWT.DEL);
 			performSave(editor.getEditorPart());
 			assertNoProblems();
 		} else {
@@ -143,12 +143,12 @@ public abstract class AbstractJobXMLTest extends DesignFlowElementsTestTemplate 
 		int offset = editor.getSourcePage().getPositionOfText(textToFind, index);
 		if (offset != -1) {
 			editor.getSourcePage().selectText(textToFind + "\"", index);
-			KeyboardFactory.getKeyboard().type(SWT.DEL);
+			pressButton(SWT.DEL);
 			editor.getSourcePage().insertText(offset, referenceParam + "\"");
 			performSave(editor.getEditorPart());
 			assertNumberOfProblems(0, 1);
 			editor.getSourcePage().selectText(referenceParam + "\"");
-			KeyboardFactory.getKeyboard().type(SWT.DEL);
+			pressButton(SWT.DEL);
 			editor.getSourcePage().insertText(offset, referenceParam + referenceID + "\"");
 			performSave(editor.getEditorPart());
 		} else {
