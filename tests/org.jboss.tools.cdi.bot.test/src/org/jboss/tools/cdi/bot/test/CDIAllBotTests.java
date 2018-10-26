@@ -44,6 +44,7 @@ import org.jboss.tools.cdi.bot.test.beans.scope.cdi10.ScopeValidationQuickFixTes
 import org.jboss.tools.cdi.bot.test.beans.scope.cdi11.ScopeValidationQuickFixTestCDI11;
 import org.jboss.tools.cdi.bot.test.beans.stereotype.cdi10.StereotypeValidationQuickFixTestCDI10;
 import org.jboss.tools.cdi.bot.test.beans.stereotype.cdi11.StereotypeValidationQuickFixTestCDI11;
+import org.jboss.tools.cdi.bot.test.beansxml.annotation.cdi11.BeanParametersAnnotationTest;
 import org.jboss.tools.cdi.bot.test.beansxml.bean.cdi11.ExcludeBeanTestCDI11;
 import org.jboss.tools.cdi.bot.test.beansxml.cdi10.BeansXMLBeansEditorTestCDI10;
 import org.jboss.tools.cdi.bot.test.beansxml.cdi10.BeansXMLValidationTestCDI10;
@@ -53,6 +54,8 @@ import org.jboss.tools.cdi.bot.test.beansxml.cdi11.BeansXMLUITestCDI11;
 import org.jboss.tools.cdi.bot.test.beansxml.cdi11.BeansXMLValidationTestCDI11;
 import org.jboss.tools.cdi.bot.test.beansxml.completion.cdi10.BeansXMLCompletionTestCDI10;
 import org.jboss.tools.cdi.bot.test.beansxml.completion.cdi11.BeansXMLCompletionTestCDI11;
+import org.jboss.tools.cdi.bot.test.beansxml.discovery.cdi11.BeanDiscoveryInExplicitArchivesTest;
+import org.jboss.tools.cdi.bot.test.beansxml.discovery.cdi11.BeanDiscoveryInImplicitArchivesTest;
 import org.jboss.tools.cdi.bot.test.beansxml.openon.cdi10.BeansXMLOpenOnTestCDI10;
 import org.jboss.tools.cdi.bot.test.beansxml.openon.cdi11.BeansXMLOpenOnTestCDI11;
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi10.BeansXMLAsYouTypeValidationTestCDI10;
@@ -84,6 +87,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author rawagner
  * @author Lukas Jungmann
  * @author Jaroslav Jankovic
+ * @author odockal
  */
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({	
@@ -155,6 +159,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	BeansXMLDiscoveryModesTestCDI11.class,
 	ExcludeBeanTestCDI11.class,
 	VetoedAnnotationTestCDI11.class,
+	BeanDiscoveryInImplicitArchivesTest.class,
+	BeanDiscoveryInExplicitArchivesTest.class,
+	BeanParametersAnnotationTest.class
 	
 })
 public class CDIAllBotTests {

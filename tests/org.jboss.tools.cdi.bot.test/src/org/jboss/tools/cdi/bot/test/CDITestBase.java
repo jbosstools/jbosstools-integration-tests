@@ -24,6 +24,8 @@ import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.lookup.ShellLookup;
 import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
 import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
@@ -121,6 +123,18 @@ public class CDITestBase {
 				}
 			}
 		}
+	}
+	
+	protected void createClass(String project, String packageName, String className) {
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.selectProjects(project);
+		NewClassCreationWizard c = new NewClassCreationWizard();
+		c.open();
+		NewClassWizardPage page = new NewClassWizardPage(c);
+		page.setPackage(packageName);
+		page.setName(className);
+		c.finish();
 	}
 
 	protected static String readFile(String path) {
