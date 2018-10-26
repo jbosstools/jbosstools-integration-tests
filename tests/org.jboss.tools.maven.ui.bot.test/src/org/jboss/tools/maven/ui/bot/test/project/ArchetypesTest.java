@@ -33,18 +33,18 @@ public class ArchetypesTest extends AbstractMavenSWTBotTest{
 	@Test
 	public void createSimpleJarProjectArchetype(){
 		String projectName= "ArchetypeQuickstart";
-		createArchetype(projectName, "All Catalogs", "maven-archetype-quickstart");
-		buildProject(projectName, "..Maven build...","clean package",true); //version is 1.0.0
+		createArchetype(projectName, "All Catalogs", "maven-archetype-quickstart","org.apache.maven.archetype");
+		buildProject(projectName, "..Maven build...","clean package",true); //version is 1.3.0
 	}
 	
 	
 	
-	private void createArchetype(String name, String catalog, String type){
+	private void createArchetype(String name, String catalog, String type, String groupId){
 		MavenProjectWizard md = new MavenProjectWizard();
 		md.open();
 		md.next();
 		MavenProjectWizardSecondPage fp = new MavenProjectWizardSecondPage(md);
-		fp.selectArchetype(catalog, type);
+		fp.selectArchetype(catalog, type, groupId);
 		md.next();
 		MavenProjectWizardThirdPage tp = new MavenProjectWizardThirdPage(md);
 		tp.setGAV(name, name, null);

@@ -12,6 +12,8 @@ package org.jboss.tools.maven.ui.bot.test.project;
 
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
 import org.eclipse.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectFirstPage;
 import org.eclipse.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectInstallPage;
@@ -21,7 +23,9 @@ import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Test;
@@ -48,11 +52,10 @@ public class EARProjectTest extends AbstractMavenSWTBotTest{
 		convertToMavenProject(EAR_PROJECT_NAME, "ear",true);
 		buildProject(EAR_PROJECT_NAME, "..Maven build...", "clean package",true);
 		ProjectItem targetFiles = getTargetFiles(EAR_PROJECT_NAME);
-		assertTrue(targetFiles.getResource(EAR_PROJECT_NAME+"EJB-0.0.1-SNAPSHOT.jar") != null);
-		assertTrue(targetFiles.getResource(EAR_PROJECT_NAME+"Client-0.0.1-SNAPSHOT.jar") != null);
-		assertTrue(targetFiles.getResource(EAR_PROJECT_NAME+"Connector-0.0.1-SNAPSHOT.rar") != null);
-		assertTrue(targetFiles.getResource(EAR_PROJECT_NAME+"Web-0.0.1-SNAPSHOT.war") != null);
-		
+		assertTrue(targetFiles.getResource(EAR_PROJECT_NAME+"EJB-"+EAR_PROJECT_NAME+"EJB-0.0.1-SNAPSHOT.jar") != null);
+		assertTrue(targetFiles.getResource(EAR_PROJECT_NAME+"Client-"+EAR_PROJECT_NAME+"Client-0.0.1-SNAPSHOT.jar") != null);
+		assertTrue(targetFiles.getResource(EAR_PROJECT_NAME+"Connector-"+EAR_PROJECT_NAME+"Connector-0.0.1-SNAPSHOT.rar") != null);
+		assertTrue(targetFiles.getResource(EAR_PROJECT_NAME+"Web-"+EAR_PROJECT_NAME+"Web-0.0.1-SNAPSHOT.war") != null);
 	}
 	
 	public ProjectItem getTargetFiles(String projectName){
@@ -63,8 +66,19 @@ public class EARProjectTest extends AbstractMavenSWTBotTest{
 		return pe.getProject(projectName).getProjectItem("target",projectName+"-0.0.1-SNAPSHOT");
 	}
 	
+	public void generateWebXmlForProject(String projectName) {
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(projectName).select();
+		new ContextMenu().getItem("Java EE Tools","Generate Deployment Descriptor Stub").select();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
+	
 	public void prepareProject(String projectName, String mavenBuild,String packaging){
 		convertToMavenProject(projectName,packaging, false);
+		if(projectName.toLowerCase().contains("web")) {
+			generateWebXmlForProject(projectName);
+		}
 		buildProject(projectName, mavenBuild, "clean install",true);
 		checkPackaging(projectName, packaging);
 	}

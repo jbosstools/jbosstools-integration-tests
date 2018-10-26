@@ -325,11 +325,14 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 		new DefaultTreeItem("Java Build Path").select();
 		new DefaultTabItem("Source").activate();
 		List<TreeItem> items = new DefaultTree(1).getItems();
+		int expectedSize = 0;
 		if(additionalPath != null){
-			assertEquals(paths.size()+1,items.size());
+			expectedSize = paths.size()+1;
 		} else {
-			assertEquals(paths.size(),items.size());
+			expectedSize = paths.size();
 		}
+		String errMsg = "Additional path is: " + (additionalPath == null ? "" : additionalPath) + " , paths.size(): " + expectedSize + " and items.size(): " + items.size() ;
+		assertEquals(errMsg, expectedSize,items.size());
 		List<String> itemsPaths = new ArrayList<String>();
 		for(TreeItem i: items){
 			itemsPaths.add(i.getText());

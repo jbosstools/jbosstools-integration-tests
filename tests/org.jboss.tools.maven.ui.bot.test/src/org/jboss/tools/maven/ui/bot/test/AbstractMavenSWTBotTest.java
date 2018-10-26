@@ -70,7 +70,7 @@ import org.junit.BeforeClass;
 
 public abstract class AbstractMavenSWTBotTest{
 	
-	private static final Logger log = Logger.getLogger(AbstractMavenSWTBotTest.class);
+	protected static final Logger log = Logger.getLogger(AbstractMavenSWTBotTest.class);
 	
 	@BeforeClass 
 	public static void beforeClass(){
@@ -179,7 +179,8 @@ public abstract class AbstractMavenSWTBotTest{
 		ProjectIsBuilt pb = new ProjectIsBuilt();
 		new WaitUntil(pb,TimePeriod.VERY_LONG);
 		if(shouldBuild){
-			assertTrue(pb.isBuildSuccesfull());
+			assertTrue("Build should be succesfull but is not.. \n" + pb.description(),pb.isBuildSuccesfull());
+			
 		}else {
 			assertFalse(pb.isBuildSuccesfull());
 		}
