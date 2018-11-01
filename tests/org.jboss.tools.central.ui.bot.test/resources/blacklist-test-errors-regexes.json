@@ -1,0 +1,8 @@
+{
+	"*": [
+		".*Build path specifies execution environment .* There are no JREs installed in the workspace that are strictly compatible with this environment.*",
+		".*No connection specified for project. No database-specific validation will be performed.*",
+		".*No grammar constraints .*DTD or XML Schema.* referenced in the document.*",
+		".*The compiler compliance specified is 1.* but a JRE 1.* is used.*"
+	]
+}

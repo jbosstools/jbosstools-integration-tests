@@ -18,8 +18,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.wait.WaitUntil;
-import org.eclipse.reddeer.eclipse.ui.browser.BrowserEditor;
+import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.eclipse.condition.BrowserContainsText;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
@@ -48,11 +51,16 @@ public class BasicTests {
 
 	@Before
 	public void setup() {
+		try {
+			new DefaultEditor(CENTRAL_LABEL).close();
+		} catch (Exception e) {
+		}
 		new DefaultToolItem(new WorkbenchShell(), CENTRAL_LABEL).click();
 		// activate central editor
 		new DefaultEditor(CENTRAL_LABEL);
 		new WaitUntil(new CentralIsLoaded());
 		centralBrowser = new InternalBrowser();
+		
 		jsHelper.setBrowser(centralBrowser);
 	}
 
@@ -66,14 +74,15 @@ public class BasicTests {
 
 	@Test
 	public void learnAboutRedHatButton() {
-		centralBrowser.execute("$(\'a[href=\"http://developers.redhat.com/\"]\').click()");	
-		new BrowserEditor("http://developers.redhat.com/").close();
+		centralBrowser.execute("$(\'a[href=\"http://developers.redhat.com/\"]\').get( 0 ).click()");
+		new WaitUntil(new ShellIsAvailable(new WithTextMatcher(new RegexMatcher(".*Red.*Hat.*Developer.*"))));
 	}
 
 	@Test
 	public void catButton() {
-		centralBrowser.execute("$(\'a[href=\"http://tools.jboss.org/cat/\"]\').click()");
-		new BrowserEditor("http://tools.jboss.org/cat/").close();
+		centralBrowser.execute("$(\'a[href=\"http://tools.jboss.org/cat/\"]\').get( 0 ).click()");
+		new WaitUntil(new BrowserContainsText("JBoss Tools"));
+		new WaitUntil(new BrowserContainsText("Community Acceptance Testing (CAT)"));
 	}
 
 	@Test
@@ -84,7 +93,8 @@ public class BasicTests {
 		assertTrue(wizards.contains("AngularJS Forge"));
 		assertTrue(wizards.contains("Java EE Web Project"));
 		assertTrue(wizards.contains("Maven Project"));
-		assertTrue(wizards.contains("Hybrid Mobile Project"));
+		// removed from central
+		//assertTrue(wizards.contains("Hybrid Mobile Project"));
 	}
 
 	@Test

@@ -30,6 +30,7 @@ import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
 import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
@@ -44,11 +45,15 @@ import org.jboss.tools.central.reddeer.wizards.NewProjectExamplesWizardDialogCen
 import org.jboss.tools.central.test.ui.reddeer.internal.CentralBrowserIsLoading;
 import org.jboss.tools.central.test.ui.reddeer.internal.ErrorsReporter;
 import org.jboss.tools.common.reddeer.utils.StackTraceUtils;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.DefineMavenRepository;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.MavenRepository;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.PredefinedMavenRepository;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.Parameterized.UseParametersRunnerFactory;
@@ -57,16 +62,22 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
  * 
  * @author rhopp
  * @contributor jkopriva@redhat.com
+ * @contributor vprusa@redhat.com
  *
  */
 
+@RunWith(RedDeerSuite.class)
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
+//@DefineMavenRepository(newRepositories = {
+		//@MavenRepository(url = "https://maven.repository.redhat.com/ga/", ID = "ga", snapshots = true) })
 public class HTML5Parameterized {
 
 	private static final String CENTRAL_LABEL = "Red Hat Central";
 	private static final String SEARCH_STRING = "eap-7.0.0.GA";
-	private static final String MAVEN_SETTINGS_PATH = System.getProperty("maven.config.file");
-	
+	private static final String MAVEN_SETTINGS_PATH = System.getProperty("maven.config.file") == null
+			? "./target/classes/settings.xml"
+			: System.getProperty("maven.config.file");
+
 	private static DefaultEditor centralEditor;
 	private static InternalBrowser browser;
 	private static ErrorsReporter reporter = ErrorsReporter.getInstance();
@@ -88,7 +99,9 @@ public class HTML5Parameterized {
 		do {
 			String[] examples = jsHelper.getExamples();
 			for (String exampleName : examples) {
-				resultList.add(new CentralProject(exampleName, jsHelper.getDescriptionForExample(exampleName)));
+				if (System.getProperty("specificQuickstarts") == null || System.getProperty("specificQuickstarts").isEmpty() || System.getProperty("specificQuickstarts").contains(exampleName)) {
+					resultList.add(new CentralProject(exampleName, jsHelper.getDescriptionForExample(exampleName)));
+				}
 			}
 			jsHelper.nextPage();
 		} while (jsHelper.hasNext());
@@ -158,8 +171,8 @@ public class HTML5Parameterized {
 	}
 
 	/**
-	 * Imports current example, checks for warnings/errors, tries to deploy it
-	 * to server and finally deletes it.
+	 * Imports current example, checks for warnings/errors, tries to deploy it to
+	 * server and finally deletes it.
 	 * 
 	 * @param exampleName
 	 */
@@ -180,7 +193,8 @@ public class HTML5Parameterized {
 
 		org.jboss.tools.central.reddeer.projects.Project currentProject;
 
-		if (!skip) {
+		if (!skip && !getProjectName().contains("crash")) {
+			// todo skip tests failing on purpose
 			currentProject = new org.jboss.tools.central.reddeer.projects.Project(exampleName, getProjectName());
 			// check for errors/warning
 			checkErrorLog(currentProject);
@@ -223,5 +237,5 @@ public class HTML5Parameterized {
 		List<DefaultProject> projects = projectExplorer.getProjects();
 		return projects.get(0).getName();
 	}
-	
+
 }
