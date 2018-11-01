@@ -14,7 +14,11 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<systemProperties>-Dmaven.config.file=${project.build.directory}/classes/settings.xml -DspecificQuickstarts=${specificQuickstarts}</systemProperties>
+		<systemProperties>-DspecificQuickstarts=${specificQuickstarts} -Drd.config=${rd.config}</systemProperties>
+		<specificQuickstarts></specificQuickstarts>
+		<rd.config>${project.build.directory}/classes/eap-7.json</rd.config>
+		<jbosstools.test.eap7.home>${requirementsDirectory}/jboss-eap-7.0</jbosstools.test.eap7.home>
+		<jbosstools.test.jboss-eap-7.x.url>http://download.eng.brq.redhat.com/released/JBoss-middleware/eap7/7.0.9/jboss-eap-7.0.9-full-build.zip</jbosstools.test.jboss-eap-7.x.url>
 		<surefire.timeout>10800</surefire.timeout>
 		<test.class>org.jboss.tools.central.test.ui.reddeer.AllTestsSuite</test.class>
 	</properties>
@@ -149,6 +153,23 @@
 						<bundle>org.mozilla.xulrunner.win32.win32.x86</bundle>
 					</explodedBundles>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.googlecode.maven-download-plugin</groupId>
+				<artifactId>download-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>install-eap-7.x</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>wget</goal>
+						</goals>
+						<configuration>
+							<url>${jbosstools.test.jboss-eap-7.x.url}</url>
+							<unpack>true</unpack>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

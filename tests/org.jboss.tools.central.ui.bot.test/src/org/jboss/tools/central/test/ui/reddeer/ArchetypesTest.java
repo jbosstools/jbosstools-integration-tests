@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.central.test.ui.reddeer;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
@@ -38,8 +37,6 @@ import org.jboss.tools.central.reddeer.projects.ArchetypeProject;
 import org.jboss.tools.central.test.ui.reddeer.projects.AngularJSForge;
 import org.jboss.tools.central.test.ui.reddeer.projects.HTML5Project;
 import org.jboss.tools.central.test.ui.reddeer.projects.JavaEEWebProject;
-import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.DefineMavenRepository;
-import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.MavenRepository;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -57,11 +54,12 @@ import org.junit.runner.RunWith;
  * @contributor vprusa@redhat.com
  */
 @RunWith(RedDeerSuite.class)
-//@DefineMavenRepository(newRepositories = {@MavenRepository(url="https://maven.repository.redhat.com/",ID="ga",snapshots=true)})
 public class ArchetypesTest {
 
 	private static final String CENTRAL_LABEL = "Red Hat Central";
-	private static final String MAVEN_SETTINGS_PATH = System.getProperty("maven.config.file");
+	private static final String MAVEN_SETTINGS_PATH = System.getProperty("maven.config.file") == null
+			? "./target/classes/settings.xml"
+			: System.getProperty("maven.config.file");;
 	private static Map<org.jboss.tools.central.reddeer.projects.Project, List<String>> projectWarnings = new HashMap<org.jboss.tools.central.reddeer.projects.Project, List<String>>();
 	private static final Logger log = Logger.getLogger(ExamplesOperator.class);
 
@@ -126,11 +124,7 @@ public class ArchetypesTest {
 					
 					JSONArray errorsArr = (JSONArray) blacklistErrorsFileContents.get("*");
 					List<String> errorsToIgnoreList = (List<String>) (List<?>) Arrays.asList((errorsArr).toArray());
-					//List<String> errorsToIgnoreList = (List<String>) (List<?>) Arrays.asList(((JSONArray) blacklistErrorsFileContents.get("*")).toArray());
-
-					//for (String str : errorsToIgnoreList) {
-						
-						sb.append(projectWarning.getKey().getName() + "\n\r");
+					sb.append(projectWarning.getKey().getName() + "\n\r");
 						for (String warning : projectWarning.getValue()) {
 							if(!errorsToIgnoreList.stream().filter(s->warning.matches(s)).findAny().isPresent()) {
 								if (!projectWarning.getValue().isEmpty()) {
@@ -142,7 +136,6 @@ public class ArchetypesTest {
 								sb.append("\t" + warning + "\n\r");
 							}
 						}
-					//}
 				}
 				log.info(errorsToIgnore.toJSONString());
 			}

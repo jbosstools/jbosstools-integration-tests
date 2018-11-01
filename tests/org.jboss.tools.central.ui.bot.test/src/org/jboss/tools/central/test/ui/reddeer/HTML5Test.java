@@ -17,6 +17,7 @@ import java.util.Arrays;
 
 import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
 import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
@@ -31,6 +32,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * 
@@ -38,6 +40,7 @@ import org.junit.Test;
  *
  */
 
+@RunWith(RedDeerSuite.class)
 public class HTML5Test {
 
 	private static DefaultEditor centralEditor;
