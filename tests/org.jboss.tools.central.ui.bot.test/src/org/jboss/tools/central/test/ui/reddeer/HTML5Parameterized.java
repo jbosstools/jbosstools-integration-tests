@@ -11,6 +11,7 @@
 
 package org.jboss.tools.central.test.ui.reddeer;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -19,19 +20,31 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.util.Display;
 import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
+import org.eclipse.reddeer.eclipse.condition.ServerModuleHasState;
 import org.eclipse.reddeer.eclipse.core.resources.DefaultProject;
+import org.eclipse.reddeer.eclipse.core.resources.Project;
 import org.eclipse.reddeer.eclipse.m2e.core.ui.preferences.MavenSettingsPreferencePage;
 import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ModuleLabel;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.Server;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServerModule;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
+import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerState;
 import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.core.lookup.WorkbenchPartLookup;
@@ -40,14 +53,13 @@ import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.eclipse.ui.IViewReference;
+import org.jboss.ide.eclipse.as.reddeer.server.deploy.DeployOnServer;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.central.reddeer.api.JavaScriptHelper;
 import org.jboss.tools.central.reddeer.wizards.NewProjectExamplesWizardDialogCentral;
 import org.jboss.tools.central.test.ui.reddeer.internal.CentralBrowserIsLoading;
 import org.jboss.tools.central.test.ui.reddeer.internal.ErrorsReporter;
 import org.jboss.tools.common.reddeer.utils.StackTraceUtils;
-import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.DefineMavenRepository;
-import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.MavenRepository;
-import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.PredefinedMavenRepository;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -68,8 +80,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
 @RunWith(RedDeerSuite.class)
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
-//@DefineMavenRepository(newRepositories = {
-		//@MavenRepository(url = "https://maven.repository.redhat.com/ga/", ID = "ga", snapshots = true) })
+@JBossServer(state=ServerRequirementState.RUNNING)
 public class HTML5Parameterized {
 
 	private static final String CENTRAL_LABEL = "Red Hat Central";
@@ -77,7 +88,8 @@ public class HTML5Parameterized {
 	private static final String MAVEN_SETTINGS_PATH = System.getProperty("maven.config.file") == null
 			? "./target/classes/settings.xml"
 			: System.getProperty("maven.config.file");
-
+	
+	private static String FULL_SERVER_NAME = "";
 	private static DefaultEditor centralEditor;
 	private static InternalBrowser browser;
 	private static ErrorsReporter reporter = ErrorsReporter.getInstance();
@@ -135,6 +147,9 @@ public class HTML5Parameterized {
 		preferenceDialog.select(prefPage);
 		prefPage.setUserSettingsLocation(mvnConfigFileName);
 		preferenceDialog.ok();
+		ServersView2 serversView = new ServersView2();
+		serversView.open();
+		FULL_SERVER_NAME = getServerFullName();
 	}
 
 	@Before
@@ -146,10 +161,16 @@ public class HTML5Parameterized {
 	@After
 	public void teardown() {
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
+		//clean workspace
 		new ProjectExplorer().deleteAllProjects(true);
 		ConsoleView consoleView = new ConsoleView();
 		consoleView.open();
 		consoleView.clearConsole();
+		//clean server
+		ServersView2 serversView = new ServersView2();
+		serversView.open();
+		serversView.getServer(FULL_SERVER_NAME).clean();
+		
 		new DefaultToolItem(new WorkbenchShell(), CENTRAL_LABEL).click();
 		// activate central editor
 		new DefaultEditor(CENTRAL_LABEL);
@@ -194,15 +215,23 @@ public class HTML5Parameterized {
 		org.jboss.tools.central.reddeer.projects.Project currentProject;
 
 		if (!skip && !getProjectName().contains("crash")) {
-			// todo skip tests failing on purpose
+			// TODO skip tests failing on purpose
 			currentProject = new org.jboss.tools.central.reddeer.projects.Project(exampleName, getProjectName());
 			// check for errors/warning
 			checkErrorLog(currentProject);
 		}
+		for(Project project : findDeployableProjects()) {
+			DeployOnServer ds = new DeployOnServer();
+			//deploy project
+			ds.deployProject(project.getName(), FULL_SERVER_NAME);
+			//check deployed project
+			checkDeployedProject(project.getName());
+			//undeploy project
+			ds.unDeployModule(project.getName(), FULL_SERVER_NAME);
+		}
 		// delete
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ProjectExplorer().deleteAllProjects(true);
-
 	}
 
 	private void importExample(String exampleName) {
@@ -236,6 +265,43 @@ public class HTML5Parameterized {
 		projectExplorer.activate();
 		List<DefaultProject> projects = projectExplorer.getProjects();
 		return projects.get(0).getName();
+	}
+	
+	private static String getServerFullName() {
+		ServersView2 serversView = new ServersView2();
+		serversView.open();
+		for (Server srv : serversView.getServers()) {
+			if (srv.getLabel().getName().contains("Enterprise Application Platform")) {
+				return srv.getLabel().getName();
+			}
+		}
+		return null;
+	}
+
+	private void checkDeployedProject(String projectName) {
+		ServersView2 serversView = new ServersView2();
+		serversView.open();
+		ServerModule module = serversView.getServer(FULL_SERVER_NAME)
+				.getModule(new RegexMatcher(".*" + projectName + ".*"));
+		new WaitUntil(new ServerModuleHasState(module, ServerState.STARTED), TimePeriod.getCustom(30));
+		ModuleLabel moduleLabel = module.getLabel();
+		assertTrue("Module has not been started!", moduleLabel.getState() == ServerState.STARTED);
+	}
+	
+	private ArrayList<Project> findDeployableProjects() {
+		ArrayList<Project> projects = new ArrayList<Project>();
+		projectExplorer.activate();
+		for (Project project : projectExplorer.getProjects()) {
+			projectExplorer.getProject(project.getName()).select();
+			try {
+				if (new ContextMenuItem("Run As", "1 Run on Server").isEnabled()) {
+					projects.add(project);
+				}
+			} catch (CoreLayerException ex) {
+				continue;// non deployable project
+			}
+		}
+		return projects;
 	}
 
 }
