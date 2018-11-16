@@ -16,16 +16,16 @@
 		<!-- <systemProperties>${integrationTestsSystemProperties} -->
 		<!-- -DimportTestDefinition=${importTestDefinition}</systemProperties> -->
 		<systemProperties>${integrationTestsSystemProperties} -DexamplesLocation=${project.build.directory}/${examplesFolder} -Dmaven.settings.path=${maven.settings.path} -Drd.config=${reddeer.config} -DspecificQuickstarts=${specificQuickstarts} -DdeployOnServer=${deployOnServer}</systemProperties>
-		<quickstartsURLWildFly>https://github.com/wildfly/quickstart/archive/11.0.0.Final.zip</quickstartsURLWildFly>
+		<quickstartsURLWildFly>https://github.com/wildfly/quickstart/archive/14.0.1.Final.zip</quickstartsURLWildFly>
 		<quickstartsURLEAP>http://download.eng.brq.redhat.com/released/JBEAP-7/7.1.0/jboss-eap-7.1.0-quickstarts.zip</quickstartsURLEAP>
 		<quickstartsURLJavaEE>https://github.com/javaee-samples/javaee7-samples/archive/master.zip</quickstartsURLJavaEE>
 		<maven.settings.path>${project.build.directory}/classes/settings.xml</maven.settings.path>
-		<reddeer.config.wildfly11>${project.build.directory}/classes/servers/wildfly-11.json</reddeer.config.wildfly11>
+		<reddeer.config.wildfly14>${project.build.directory}/classes/servers/wildfly-14.json</reddeer.config.wildfly14>
 		<reddeer.config.eap7>${project.build.directory}/classes/servers/eap-7.json</reddeer.config.eap7>
-		<examplesFolderWildFly>quickstart-11.0.0.Final</examplesFolderWildFly>
+		<examplesFolderWildFly>quickstart-14.0.1.Final</examplesFolderWildFly>
 		<examplesFolderEAP>jboss-eap-7.1.0.GA-quickstarts</examplesFolderEAP>
 		<examplesFolderJavaEE>javaee7-samples-master</examplesFolderJavaEE>
-		<jbosstools.test.wildfly11.home>${requirementsDirectory}/wildfly-11.0.0.Final</jbosstools.test.wildfly11.home>
+		<jbosstools.test.wildfly14.home>${requirementsDirectory}/wildfly-14.0.1.Final</jbosstools.test.wildfly14.home>
 		<jbosstools.test.eap7.home>${requirementsDirectory}/jboss-eap-7.1</jbosstools.test.eap7.home>
 		<jbosstools.test.jboss-eap-7.x.url>http://download.eng.brq.redhat.com/released/JBEAP-7/7.1.0/jboss-eap-7.1.0.zip</jbosstools.test.jboss-eap-7.x.url>
 		<surefire.timeout>18000</surefire.timeout>
@@ -107,13 +107,13 @@
 
 	<profiles>
 		<profile>
-			<id>WildFly11</id>
+			<id>WildFly14</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
 				<test.class>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</test.class>
-				<reddeer.config>${project.build.directory}/classes/servers/wildfly-11.json</reddeer.config>
+				<reddeer.config>${project.build.directory}/classes/servers/wildfly-14.json</reddeer.config>
 				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
 				<examplesFolder>${examplesFolderWildFly}</examplesFolder>
 			</properties>
@@ -152,7 +152,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>11.0.0.Final</version>
+											<version>14.0.1.Final</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>
@@ -224,7 +224,7 @@
 			<id>JavaEE7</id>
 			<properties>
 				<test.class>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</test.class>
-				<reddeer.config>${project.build.directory}/classes/servers/wildfly-11.json</reddeer.config>
+				<reddeer.config>${project.build.directory}/classes/servers/wildfly-14.json</reddeer.config>
 				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
 				<examplesFolder>${examplesFolderJavaEE}</examplesFolder>
 			</properties>
@@ -263,7 +263,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>11.0.0.Final</version>
+											<version>14.0.1.Final</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>
@@ -311,10 +311,10 @@
 			</repositories>
 		</profile>
 		<profile>
-			<id>SmokeTestsWildFly11</id>
+			<id>SmokeTestsWildFly14</id>
 			<properties>
 				<test.class>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</test.class>
-				<reddeer.config>${project.build.directory}/classes/servers/wildfly-11.json</reddeer.config>
+				<reddeer.config>${project.build.directory}/classes/servers/wildfly-14.json</reddeer.config>
 				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
 				<examplesFolder>${examplesFolderWildFly}</examplesFolder>
 				<specificQuickstarts>temperature-converter,xml-dom4j,helloworld-ws,websocket-hello,helloworld</specificQuickstarts>
@@ -370,7 +370,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>11.0.0.Final</version>
+											<version>14.0.1.Final</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>
@@ -443,7 +443,7 @@
 			<id>SmokeTestsJavaEE7</id>
 			<properties>
 				<test.class>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</test.class>
-				<reddeer.config>${project.build.directory}/classes/servers/wildfly-11.json</reddeer.config>
+				<reddeer.config>${project.build.directory}/classes/servers/wildfly-14.json</reddeer.config>
 				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
 				<examplesFolder>${examplesFolderJavaEE}</examplesFolder>
 				<specificQuickstarts>util,test-utils,jta</specificQuickstarts>
@@ -483,7 +483,7 @@
 										<artifactItem>
 											<groupId>org.wildfly</groupId>
 											<artifactId>wildfly-dist</artifactId>
-											<version>11.0.0.Final</version>
+											<version>14.0.1.Final</version>
 											<type>zip</type>
 										</artifactItem>
 									</artifactItems>
