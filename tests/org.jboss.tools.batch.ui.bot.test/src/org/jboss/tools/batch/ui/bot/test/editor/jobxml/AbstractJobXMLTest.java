@@ -23,7 +23,6 @@ import org.eclipse.reddeer.common.util.Display;
 import org.eclipse.reddeer.core.lookup.WidgetLookup;
 import org.eclipse.reddeer.eclipse.wst.xml.ui.tabletree.XMLSourcePage;
 import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
-import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -114,13 +113,13 @@ public abstract class AbstractJobXMLTest extends DesignFlowElementsTestTemplate 
 		String textToFind = referencingParam + referenceID;
 		int offset = editor.getSourcePage().getPositionOfText(textToFind, index);
 		if (offset != -1) {
-			editor.activate();
 			editor.getSourcePage().setCursorPosition(offset + textToFind.length());
 			pressButton('x');
 			performSave(editor.getEditorPart());
 			assertNumberOfProblems(0, 1);
-			editor.getSourcePage().setCursorPosition(editor.getSourcePage().getPositionOfText(textToFind + "x") + (textToFind).length());
-			pressButton(SWT.DEL);
+			editor.getSourcePage().setCursorPosition(editor.getSourcePage().getPositionOfText(textToFind + "x") + (textToFind).length() + 1);
+			selectText(1);
+			pressButton(SWT.BS);
 			performSave(editor.getEditorPart());
 			assertNoProblems();
 		} else {
@@ -142,13 +141,14 @@ public abstract class AbstractJobXMLTest extends DesignFlowElementsTestTemplate 
 		String textToFind = referenceParam + referenceID;
 		int offset = editor.getSourcePage().getPositionOfText(textToFind, index);
 		if (offset != -1) {
+			editor.activate();
 			editor.getSourcePage().selectText(textToFind + "\"", index);
-			pressButton(SWT.DEL);
+			pressButton(SWT.BS);
 			editor.getSourcePage().insertText(offset, referenceParam + "\"");
 			performSave(editor.getEditorPart());
 			assertNumberOfProblems(0, 1);
 			editor.getSourcePage().selectText(referenceParam + "\"");
-			pressButton(SWT.DEL);
+			pressButton(SWT.BS);
 			editor.getSourcePage().insertText(offset, referenceParam + referenceID + "\"");
 			performSave(editor.getEditorPart());
 		} else {
@@ -287,7 +287,8 @@ public abstract class AbstractJobXMLTest extends DesignFlowElementsTestTemplate 
 			public void run() {
 				Display.getDisplay().post(e);
 			}
-		});		
+		});
+		sync();
 	}
 
 	private Event keyEvent(int key, int eventType, Widget w, int mask) {
@@ -302,7 +303,7 @@ public abstract class AbstractJobXMLTest extends DesignFlowElementsTestTemplate 
 		e.character = (char) key;
 		e.type = eventType;
 		e.widget = w;
-		return e;		
+		return e;
 	}
 	
 	private void sync() {
