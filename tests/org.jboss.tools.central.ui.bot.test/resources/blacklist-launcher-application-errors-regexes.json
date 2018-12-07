@@ -1,0 +1,5 @@
+{
+	"LauncherApplicationTest": [
+		".*The element type \"p\" must be terminated by the matching end-tag \"</p>\".*"
+	]
+}

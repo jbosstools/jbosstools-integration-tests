@@ -126,4 +126,9 @@ public class BasicTests {
 		jsHelper.clearSearch();
 	}
 	
+	@Test
+	public void launcherApplicationWizardCanBeEnvoked() {
+		jsHelper.clickWizard("Launcher Application");
+		new DefaultShell("New Launcher project").close();
+	}
 }

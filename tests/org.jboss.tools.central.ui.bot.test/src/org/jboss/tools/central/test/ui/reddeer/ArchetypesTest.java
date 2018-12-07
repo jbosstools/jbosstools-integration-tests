@@ -65,7 +65,7 @@ public class ArchetypesTest {
 
 	private static final String BLACKLIST_ERRORS_REGEXES_FILE = "resources/blacklist-test-errors-regexes.json";
 
-	private static JSONObject blacklistErrorsFileContents;
+	public static JSONObject blacklistErrorsFileContents;
 
 	@BeforeClass
 	public static void setup() {
@@ -146,7 +146,7 @@ public class ArchetypesTest {
 	}
 
 	// https://www.mkyong.com/java/json-simple-example-read-and-write-json
-	private static void loadBlacklistErrorsFile(String blacklisterrorsFile) {
+	public static void loadBlacklistErrorsFile(String blacklisterrorsFile) {
 		if (blacklisterrorsFile.isEmpty()) {
 			return;
 		}
