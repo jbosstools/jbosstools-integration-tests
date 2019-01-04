@@ -26,7 +26,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.reddeer.workbench,
  org.apache.commons.lang,
  org.eclipse.ui.editors,
- javax.ws.rs
+ javax.ws.rs,
+ javax.xml.soap,
+ javax.xml.ws,
+ javax.xml.bind
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Eclipse-RegisterBuddy: org.apache.log4j
