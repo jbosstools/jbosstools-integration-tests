@@ -2,6 +2,8 @@ package org.jboss.tools.deltaspike.ui.bot.test;
 
 import static org.junit.Assert.fail;
 
+import java.util.Collection;
+
 import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.wait.TimePeriod;
@@ -11,7 +13,9 @@ import org.eclipse.reddeer.core.handler.WidgetHandler;
 import org.eclipse.reddeer.eclipse.condition.ProblemExists;
 import org.eclipse.reddeer.eclipse.ui.markers.matcher.MarkerDescriptionMatcher;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
@@ -38,7 +42,12 @@ public class ValidationsInPreferenceTest extends DeltaspikeTestBase {
 	private static ServerRequirement sr;
 
 	private static WorkbenchPreferenceDialog preferenceDialog;
-
+	
+	@RequirementRestriction 
+	public static Collection<RequirementMatcher> getRestrictionMatcher() {
+		return getServerRuntimeRestriction();
+	}
+	
 	@After
 	public void closeAllEditors() {
 		deleteAllProjects();

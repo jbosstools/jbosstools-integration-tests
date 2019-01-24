@@ -10,11 +10,15 @@
  ******************************************************************************/
 
 package org.jboss.tools.deltaspike.ui.bot.test;
+import java.util.Collection;
+
 import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.tools.cdi.reddeer.condition.SpecificProblemExists;
 import org.junit.After;
@@ -39,6 +43,11 @@ public class SecuresAnnotationTest extends DeltaspikeTestBase {
 	
 	private RegexMatcher multipleSecutityBindingsProblemMatcher = new RegexMatcher(
 			"Authorizer method .* declares multiple security binding types");
+	
+	@RequirementRestriction 
+	public static Collection<RequirementMatcher> getRestrictionMatcher() {
+		return getServerRuntimeRestriction();
+	}
 	
 	@InjectRequirement
 	private ServerRequirement sr;

@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,7 +16,9 @@ import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.workbench.condition.EditorHasValidationMarkers;
 import org.eclipse.reddeer.workbench.impl.editor.Marker;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
@@ -30,6 +33,11 @@ import org.junit.Test;
 public class PartialBeanTest extends DeltaspikeTestBase{
 	
 	private String projectName = "partialBean";
+	
+	@RequirementRestriction 
+	public static Collection<RequirementMatcher> getRestrictionMatcher() {
+		return getServerRuntimeRestriction();
+	}
 	
 	@InjectRequirement
 	private ServerRequirement sr;

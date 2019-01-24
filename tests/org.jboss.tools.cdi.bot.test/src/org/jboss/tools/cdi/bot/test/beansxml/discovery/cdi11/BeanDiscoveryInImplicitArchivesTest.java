@@ -22,6 +22,7 @@ import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.workbench.condition.EditorHasValidationMarkers;
@@ -37,6 +38,7 @@ import org.junit.Test;
  * @author odockal
  *
  */
+@JRE(cleanup=true)
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerRequirementState.PRESENT, cleanup=false)
 public class BeanDiscoveryInImplicitArchivesTest extends BeanDiscoveryInArchivesTemplate {

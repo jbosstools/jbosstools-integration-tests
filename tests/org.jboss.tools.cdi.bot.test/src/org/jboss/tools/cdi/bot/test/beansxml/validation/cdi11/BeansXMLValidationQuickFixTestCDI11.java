@@ -14,6 +14,7 @@ import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
@@ -23,6 +24,7 @@ import org.jboss.tools.cdi.bot.test.beansxml.validation.template.BeansXMLValidat
 import org.jboss.tools.cdi.reddeer.validators.BeansXmlValidationProviderCDI11;
 import org.junit.Before;
 
+@JRE(cleanup=true)
 @JBossServer(state=ServerRequirementState.PRESENT, cleanup=false)
 @OpenPerspective(JavaEEPerspective.class)
 public class BeansXMLValidationQuickFixTestCDI11 extends BeansXMLValidationQuickFixTemplate{
