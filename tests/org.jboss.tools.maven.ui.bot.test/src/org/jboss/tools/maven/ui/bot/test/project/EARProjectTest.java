@@ -21,6 +21,7 @@ import org.eclipse.reddeer.eclipse.jst.j2ee.ui.project.facet.EarProjectWizard;
 import org.eclipse.reddeer.eclipse.jst.j2ee.wizard.DefaultJ2EEComponentCreationWizard;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
@@ -29,11 +30,13 @@ import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * @author Rastislav Wagner
  * 
  */
+@RunWith(RedDeerSuite.class)
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerRequirementState.PRESENT)
 public class EARProjectTest extends AbstractMavenSWTBotTest{

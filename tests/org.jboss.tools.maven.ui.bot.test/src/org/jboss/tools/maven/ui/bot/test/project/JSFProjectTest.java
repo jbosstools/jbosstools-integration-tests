@@ -12,6 +12,7 @@ package org.jboss.tools.maven.ui.bot.test.project;
 
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
@@ -21,7 +22,9 @@ import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectSecondPage;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectWizard;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
 @OpenPerspective(JavaPerspective.class)
 @JBossServer(state=ServerRequirementState.PRESENT)
 public class JSFProjectTest extends AbstractMavenSWTBotTest{

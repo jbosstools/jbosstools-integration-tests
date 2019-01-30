@@ -13,11 +13,13 @@ package org.jboss.tools.maven.ui.bot.test.ui;
 import static org.junit.Assert.fail;
 
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.swt.exception.SWTLayerException;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.jboss.tools.common.reddeer.perspectives.JBossPerspective;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * @author Alexey Kazakov
@@ -25,6 +27,7 @@ import org.junit.Test;
  * @author Rastislav Wagner
  * 
  */
+@RunWith(RedDeerSuite.class)
 public class PerspectiveTest extends AbstractMavenSWTBotTest {
 
 	/**

@@ -21,6 +21,7 @@ import org.eclipse.reddeer.eclipse.datatools.connectivity.ui.wizards.NewCPWizard
 import org.eclipse.reddeer.eclipse.datatools.ui.DriverDefinition;
 import org.eclipse.reddeer.eclipse.datatools.ui.DriverTemplate;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.swt.impl.button.NextButton;
@@ -35,10 +36,12 @@ import org.jboss.tools.seam.reddeer.wizards.SeamProjectFifthPage;
 import org.jboss.tools.seam.reddeer.wizards.SeamProjectFirstPage;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 /**
  * @author Rastislav Wagner
  * 
  */
+@RunWith(RedDeerSuite.class)
 @OpenPerspective(SeamPerspective.class)
 @JBossServer(state=ServerRequirementState.PRESENT)
 public class SeamProjectTest extends AbstractMavenSWTBotTest {

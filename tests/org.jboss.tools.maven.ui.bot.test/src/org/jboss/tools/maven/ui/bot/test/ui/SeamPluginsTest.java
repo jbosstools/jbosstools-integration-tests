@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.core.matcher.WithTextMatcher;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.swt.api.Table;
 import org.eclipse.reddeer.swt.api.TableItem;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
@@ -17,7 +18,9 @@ import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
 public class SeamPluginsTest extends AbstractMavenSWTBotTest{
 	
 	@Test

@@ -19,6 +19,7 @@ import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
 import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.swt.api.StyledText;
@@ -48,7 +49,9 @@ import org.jboss.tools.maven.reddeer.apt.ui.preferences.AnnotationProcessingSett
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerRequirementState.PRESENT)
 public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
@@ -62,8 +65,8 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 			PROJECT_NAME+"/src/test/resources");
 	
 	private String generatedSources =  "generated-sources/";
+	private String generatedTestSources =  "generated-test-sources/";
 	private String target = "target/";
-	
 	private String defaultCompilerPath = target+generatedSources+"annotations";
 	private String defaultProcessorPath = target+generatedSources+"apt";
 	
@@ -78,13 +81,17 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 		setProcessingMode(ProcessingMode.NONE);
 		addDependency(PROJECT_NAME, "org.hibernate","hibernate-jpamodelgen" , "1.2.0.Final");
 		updateConf(PROJECT_NAME);
+		
+		List<String> additionalPaths = Arrays.asList(PROJECT_NAME+"/"+defaultCompilerPath,
+				PROJECT_NAME+"/"+target+generatedTestSources+"test-annotations");
+		
 		checkBuildPath(PROJECT_NAME, defaultPaths, null);
 		checkAnnotationProcessingSettings(PROJECT_NAME, false, null, null);
 		setProcessingMode(ProcessingMode.JDT);
-		checkBuildPath(PROJECT_NAME, defaultPaths, PROJECT_NAME+"/"+defaultCompilerPath);
+		checkBuildPath(PROJECT_NAME, defaultPaths, additionalPaths);
 		checkAnnotationProcessingSettings(PROJECT_NAME, true, defaultCompilerPath, null);
 		setProcessingMode(ProcessingMode.MAVEN);
-		checkBuildPath(PROJECT_NAME, defaultPaths, PROJECT_NAME+"/"+defaultCompilerPath);
+		checkBuildPath(PROJECT_NAME, defaultPaths, additionalPaths);
 		checkAnnotationProcessingSettings(PROJECT_NAME, true, defaultCompilerPath, null);
 	}
 	
@@ -142,13 +149,19 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 		setProcessingMode(ProcessingMode.NONE);
 		addDependency(PROJECT_NAME, "org.hibernate","hibernate-jpamodelgen" , "1.2.0.Final");
 		updateConf(PROJECT_NAME);
+		
+		List<String> JDTadditionalPaths = Arrays.asList(PROJECT_NAME+"/"+defaultProcessorPath,
+				PROJECT_NAME+"/"+".apt_generated_tests");
+		
+		List<String> MAVENadditionalPaths = Arrays.asList(PROJECT_NAME+"/"+defaultProcessorPath);
+		
 		checkBuildPath(PROJECT_NAME, defaultPaths, null);
 		checkAnnotationProcessingSettings(PROJECT_NAME, false, null, null);
 		setProcessingMode(ProcessingMode.JDT);
-		checkBuildPath(PROJECT_NAME, defaultPaths, PROJECT_NAME+"/"+defaultProcessorPath);
+		checkBuildPath(PROJECT_NAME, defaultPaths, JDTadditionalPaths);
 		checkAnnotationProcessingSettings(PROJECT_NAME, true, defaultProcessorPath, null);
 		setProcessingMode(ProcessingMode.MAVEN);
-		checkBuildPath(PROJECT_NAME, defaultPaths, PROJECT_NAME+"/"+defaultProcessorPath);
+		checkBuildPath(PROJECT_NAME, defaultPaths, MAVENadditionalPaths);
 		checkAnnotationProcessingSettings(PROJECT_NAME, false, null, null);	
 	}
 	
@@ -160,16 +173,20 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 		setProcessingMode(ProcessingMode.NONE);
 		addDependency(PROJECT_NAME, "org.hibernate","hibernate-jpamodelgen" , "1.2.0.Final");
 		updateConf(PROJECT_NAME);
+		
+		List<String> additionalPaths = Arrays.asList(PROJECT_NAME+"/"+target+generatedSources+customFolder,
+				PROJECT_NAME+"/"+target+generatedTestSources+"test-annotations");
+		
 		checkBuildPath(PROJECT_NAME, defaultPaths, null);
 		checkAnnotationProcessingSettings(PROJECT_NAME, false, null, null);
 		setProcessingMode(ProcessingMode.JDT);
-		checkBuildPath(PROJECT_NAME, defaultPaths, PROJECT_NAME+"/"+target+generatedSources+customFolder);
+		checkBuildPath(PROJECT_NAME, defaultPaths, additionalPaths);
 		checkAnnotationProcessingSettings(PROJECT_NAME, true, target+generatedSources+customFolder, null);
 		setProcessingMode(ProcessingMode.MAVEN);
-		checkBuildPath(PROJECT_NAME, defaultPaths, PROJECT_NAME+"/"+target+generatedSources+customFolder);
+		checkBuildPath(PROJECT_NAME, defaultPaths, additionalPaths);
 		checkAnnotationProcessingSettings(PROJECT_NAME, true, target+generatedSources+customFolder, null);
 	}
-	
+
 	@Test
 	public void testProcessorCustomOutput(){
 		prepareProject();
@@ -179,13 +196,19 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 		setProcessingMode(ProcessingMode.NONE);
 		addDependency(PROJECT_NAME, "org.hibernate","hibernate-jpamodelgen" , "1.2.0.Final");
 		updateConf(PROJECT_NAME);
+		
+		List<String> JDTadditionalPaths = Arrays.asList(PROJECT_NAME+"/"+target+generatedSources+customFolder,
+				PROJECT_NAME+"/"+".apt_generated_tests");
+		
+		List<String> MAVENadditionalPaths = Arrays.asList(PROJECT_NAME+"/"+target+generatedSources+customFolder);
+		
 		checkBuildPath(PROJECT_NAME, defaultPaths, null);
 		checkAnnotationProcessingSettings(PROJECT_NAME, false, null, null);
 		setProcessingMode(ProcessingMode.JDT);
-		checkBuildPath(PROJECT_NAME, defaultPaths, PROJECT_NAME+"/"+target+generatedSources+customFolder);
+		checkBuildPath(PROJECT_NAME, defaultPaths, JDTadditionalPaths);
 		checkAnnotationProcessingSettings(PROJECT_NAME, true, target+generatedSources+customFolder, null);
 		setProcessingMode(ProcessingMode.MAVEN);
-		checkBuildPath(PROJECT_NAME, defaultPaths, PROJECT_NAME+"/"+target+generatedSources+customFolder);
+		checkBuildPath(PROJECT_NAME, defaultPaths, MAVENadditionalPaths);
 		checkAnnotationProcessingSettings(PROJECT_NAME, false, null, null);
 	}
 	
@@ -318,31 +341,35 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 		e.save();
 	}
 	
-	
-	
-	private void checkBuildPath(String project, List<String> paths, String additionalPath){
+	private void checkBuildPath(String project, List<String> defaultPaths, List<String> additionalPaths){
 		PropertyDialog pd = openPropertiesProject(project);
 		new DefaultTreeItem("Java Build Path").select();
 		new DefaultTabItem("Source").activate();
 		List<TreeItem> items = new DefaultTree(1).getItems();
+
 		int expectedSize = 0;
-		if(additionalPath != null){
-			expectedSize = paths.size()+1;
-		} else {
-			expectedSize = paths.size();
+		if (defaultPaths != null) {
+			expectedSize += defaultPaths.size();
 		}
-		String errMsg = "Additional path is: " + (additionalPath == null ? "" : additionalPath) + " , paths.size(): " + expectedSize + " and items.size(): " + items.size() ;
-		assertEquals(errMsg, expectedSize,items.size());
+		if (additionalPaths != null) {
+			expectedSize += additionalPaths.size();
+		}
+		String errMsg = "Additional paths are: " + (additionalPaths == null ? "" : additionalPaths)
+				+ " , expected path size is: " + expectedSize + " and real path size is: " + items.size();
+		assertEquals(errMsg, expectedSize, items.size());
+
 		List<String> itemsPaths = new ArrayList<String>();
-		for(TreeItem i: items){
+		for (TreeItem i : items) {
 			itemsPaths.add(i.getText());
 		}
-		assertTrue(itemsPaths.containsAll(paths));
-		if(additionalPath != null){
-			assertTrue("Build path items "+itemsPaths+" expected "+additionalPath,itemsPaths.contains(additionalPath));
+		assertTrue(itemsPaths.containsAll(defaultPaths));
+		if (additionalPaths != null) {
+			assertTrue("Build path items " + itemsPaths + " expected " + additionalPaths,
+					itemsPaths.containsAll(additionalPaths));
 		}
+
 		pd.ok();
-		new WaitWhile(new ShellIsAvailable("Properties for "+PROJECT_NAME));
+		new WaitWhile(new ShellIsAvailable("Properties for " + PROJECT_NAME));
 	}
 	
 	private void checkAnnotationProcessingSettings(String project, boolean enabled, String sourceDir, List<String>args){

@@ -11,6 +11,7 @@ import org.eclipse.reddeer.eclipse.m2e.scm.wizards.MavenCheckoutWizard;
 import org.eclipse.reddeer.eclipse.m2e.scm.wizards.MavenCheckoutLocationPage;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.swt.api.Tree;
 import org.eclipse.reddeer.swt.api.TreeItem;
@@ -22,7 +23,9 @@ import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
 @OpenPerspective(JavaEEPerspective.class)
 public class SCMCheckoutProject extends AbstractMavenSWTBotTest {
 	
