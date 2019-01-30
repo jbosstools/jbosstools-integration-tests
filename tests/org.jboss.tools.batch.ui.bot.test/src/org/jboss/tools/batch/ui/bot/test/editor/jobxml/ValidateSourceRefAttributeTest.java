@@ -38,8 +38,8 @@ public class ValidateSourceRefAttributeTest extends AbstractJobXMLTest {
 	
 	@Test
 	public void testBatchletReference() {
-		referenceCheck(BATCHLET_REF);
 		emptyReferenceCheck(BATCHLET_REF);
+		referenceCheck(BATCHLET_REF);
 	}
 	
 	@Test
