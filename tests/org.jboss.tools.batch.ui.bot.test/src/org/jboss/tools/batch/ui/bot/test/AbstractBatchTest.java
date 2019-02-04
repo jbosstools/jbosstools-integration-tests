@@ -29,16 +29,19 @@ import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.core.resources.DefaultProject;
+import org.eclipse.reddeer.eclipse.core.resources.MavenProject;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardDialog;
 import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardPage;
 
+@JRE(cleanup=true)
 public abstract class AbstractBatchTest {
 
 	private static final String PROJECT_NAME = "batch-test-project";
@@ -98,6 +101,8 @@ public abstract class AbstractBatchTest {
 		getProject().select();
 		log.info("Create empty batch-job xml file");
 		createJobXMLFile(JOB_ID);
+		// Update maven project to load proper jdk profile
+		new MavenProject(getProject().getTreeItem()).updateMavenProject();	
 	}
 	
 	/**
