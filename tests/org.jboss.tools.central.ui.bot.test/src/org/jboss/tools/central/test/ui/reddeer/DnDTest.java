@@ -16,6 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.eclipse.reddeer.common.exception.RedDeerException;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
 import org.eclipse.reddeer.swt.impl.button.NoButton;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
@@ -27,6 +28,7 @@ import org.jboss.tools.central.reddeer.api.JavaScriptHelper;
 import org.jboss.tools.central.test.ui.reddeer.internal.CentralBrowserIsLoading;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * 
@@ -35,6 +37,7 @@ import org.junit.Test;
  *
  */
 
+@RunWith(RedDeerSuite.class)
 public class DnDTest {
 
 	private static final String CENTRAL_LABEL = "Red Hat Central";

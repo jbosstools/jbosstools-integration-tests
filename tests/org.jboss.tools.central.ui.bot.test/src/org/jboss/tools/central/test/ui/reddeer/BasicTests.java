@@ -22,6 +22,7 @@ import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.core.matcher.WithTextMatcher;
 import org.eclipse.reddeer.eclipse.condition.BrowserContainsText;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
@@ -33,6 +34,7 @@ import org.jboss.tools.central.reddeer.api.JavaScriptHelper;
 import org.jboss.tools.central.reddeer.wait.CentralIsLoaded;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * 
@@ -40,6 +42,7 @@ import org.junit.Test;
  *
  */
 
+@RunWith(RedDeerSuite.class)
 public class BasicTests {
 
 	private static final String CONTACTS_MOBILE_BASIC = "contacts-mobile-basic";
