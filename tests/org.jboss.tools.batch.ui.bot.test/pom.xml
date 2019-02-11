@@ -14,6 +14,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
+		<systemProperties>${integrationTestsSystemProperties} -Drd.config=target/classes/requirements.json -Djbosstools.test.jre.8=${jbosstools.test.jre.8}</systemProperties>
 	</properties>
 	
 	<profiles>
@@ -72,6 +73,15 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>resources</directory>
+				<includes>
+					<include>requirements.json</include>
+				</includes>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 
 </project>
