@@ -20,7 +20,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Arrays;
-import java.util.Optional;
 
 import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.common.matcher.RegexMatcher;
@@ -29,13 +28,13 @@ import org.eclipse.reddeer.common.util.Display;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.matcher.WithTextMatcher;
-import org.eclipse.reddeer.swt.api.TabFolder;
-import org.eclipse.reddeer.swt.api.TabItem;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.api.CTabFolder;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
 import org.eclipse.reddeer.swt.impl.text.DefaultText;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
@@ -43,12 +42,15 @@ import org.eclipse.ui.internal.dialogs.AboutDialog;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  * 
  * @author vprusa
  *
  */
+
+@RunWith(RedDeerSuite.class)
 public class InstallationDetailsTest {
 
 	private static String HELP_BUTTON = "Help";
@@ -174,16 +176,14 @@ public class InstallationDetailsTest {
 		// validate that shell opened
 		installationDetails = new DefaultShell(new WithTextMatcher(new RegexMatcher(MODAL_DIALOG_ABOUT_DEVSTUDIO_INSTALLATION_DETAILS_TITLE)));
 
-		TabFolder tabFolder = new DefaultTabItem(MODAL_DIALOG_CONFIG_MENU_BUTTON).getTabFolder();
+		CTabFolder tabFolder = new DefaultCTabItem(MODAL_DIALOG_CONFIG_MENU_BUTTON).getFolder();
 
-		Optional<TabItem> configurationItem = tabFolder.getItems().stream()
-				.filter(i -> i.getText().matches(MODAL_DIALOG_CONFIG_MENU_BUTTON)).findAny();
+		String[] labels = tabFolder.getTabItemLabels();
+		Boolean isTabPresent = Arrays.stream(labels).anyMatch(MODAL_DIALOG_CONFIG_MENU_BUTTON::equals);
+		assertTrue("Tab item '" + MODAL_DIALOG_CONFIG_MENU_BUTTON + "' is missing", isTabPresent);
 
-		assertTrue("Tab item '" + MODAL_DIALOG_CONFIG_MENU_BUTTON + "' is missing", configurationItem.isPresent());
-		TabItem tabItem = configurationItem.get();
-		tabItem.activate();
-
-		new WaitWhile(new JobIsRunning(new RegexMatcher("Configuration Fetch Job"), true), TimePeriod.LONG);
+		new DefaultCTabItem(MODAL_DIALOG_CONFIG_MENU_BUTTON).activate();
+		new WaitWhile(new JobIsRunning(new RegexMatcher("Fetching configuration"), true), TimePeriod.LONG);
 	}
 
 	// JBDS-5064
