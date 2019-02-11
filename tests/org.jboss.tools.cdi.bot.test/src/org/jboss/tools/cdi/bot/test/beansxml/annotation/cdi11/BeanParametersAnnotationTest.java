@@ -18,14 +18,18 @@ import java.util.List;
 
 import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.ui.markers.matcher.MarkerTypeMatcher;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
+import org.eclipse.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
+import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.workbench.condition.EditorHasValidationMarkers;
-import org.eclipse.reddeer.workbench.impl.editor.Marker;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
@@ -40,6 +44,7 @@ import org.junit.Test;
  * @author odockal
  *
  */
+@JRE(cleanup=true)
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerRequirementState.PRESENT, cleanup=false)
 public class BeanParametersAnnotationTest extends CDITestBase {
@@ -81,11 +86,14 @@ public class BeanParametersAnnotationTest extends CDITestBase {
 		} catch (WaitTimeoutExpiredException ex){
 			fail("There is supposed to be warning present");
 		}
-		List<Marker> markers = ed.getMarkers();
-		assertEquals(1, markers.size());
-		Marker validation = markers.get(0);
-		assertEquals(validation.getLineNumber(), 7);
-		assertTrue(validation.getText().contains("No bean is eligible for injection"));
+		
+		ProblemsView pv = new ProblemsView();
+		pv.open();
+		List<Problem> problems = pv.getProblems(ProblemType.ALL, new MarkerTypeMatcher("CDI Problem"));
+		assertEquals(1, problems.size());
+		Problem validation = problems.get(0);
+		assertTrue(validation.getLocation().contains("7"));
+		assertTrue(validation.getDescription().contains("No bean is eligible for injection"));
 	}
 
 }

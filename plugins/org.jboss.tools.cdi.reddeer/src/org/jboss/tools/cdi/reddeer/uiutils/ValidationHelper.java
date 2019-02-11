@@ -50,6 +50,7 @@ public class ValidationHelper {
 			
 			ProblemsView pw = new ProblemsView();
 			pw.open();
+			new WaitUntil(new ProblemExists(ProblemType.ALL), TimePeriod.MEDIUM, false);
 			filteredProblems = pw.getProblems(validationProblem.getProblemType(), descriptionMatcher);
 		} catch (WaitTimeoutExpiredException ex) {
 			log.warn(validationProblem.toString() + " not found.");

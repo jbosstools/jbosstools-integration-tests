@@ -20,6 +20,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.common.matcher.RegexMatcher;
@@ -35,9 +37,9 @@ import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.wst.common.project.facet.ui.RuntimesPropertyPage;
-import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
+import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
@@ -60,16 +62,17 @@ import org.junit.BeforeClass;
 
 @CleanWorkspace
 @OpenPerspective(JavaEEPerspective.class)
+@JRE(cleanup=true)
 @JBossServer(state = ServerRequirementState.PRESENT, cleanup = false)
 public class DeltaspikeTestBase {
 
 	private static final Logger log = Logger.getLogger(DeltaspikeTestBase.class);
 
 	protected static final ProblemsView problemsView = new ProblemsView();
-
-	@RequirementRestriction
-	public static RequirementMatcher getRestrictionMatcher() {
-	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly());
+ 
+	public static Collection<RequirementMatcher> getServerRuntimeRestriction() {
+		return Arrays.asList(
+			new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly()));
 	}
 	
 	@BeforeClass
@@ -79,7 +82,7 @@ public class DeltaspikeTestBase {
 		preferenceDialog.open();
 		SourceLookupPreferencePage sp = new SourceLookupPreferencePage(preferenceDialog);
 		preferenceDialog.select(sp);
-		sp.setSourceAttachment(SourceAttachmentEnum.NEVER);;
+		sp.setSourceAttachment(SourceAttachmentEnum.NEVER);
 		preferenceDialog.ok();
 	}
 

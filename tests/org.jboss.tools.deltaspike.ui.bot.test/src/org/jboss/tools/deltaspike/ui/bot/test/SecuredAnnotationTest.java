@@ -11,12 +11,16 @@
 
 package org.jboss.tools.deltaspike.ui.bot.test;
 
+import java.util.Collection;
+
 import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.tools.cdi.reddeer.condition.SpecificProblemExists;
@@ -38,6 +42,11 @@ public class SecuredAnnotationTest extends DeltaspikeTestBase {
 
 	private RegexMatcher noMatchingAuthorizerProblemMatcher = new RegexMatcher("No matching authorizer found.*");
 
+	@RequirementRestriction 
+	public static Collection<RequirementMatcher> getRestrictionMatcher() {
+		return getServerRuntimeRestriction();
+	}
+	
 	@InjectRequirement
 	private static ServerRequirement sr;
 

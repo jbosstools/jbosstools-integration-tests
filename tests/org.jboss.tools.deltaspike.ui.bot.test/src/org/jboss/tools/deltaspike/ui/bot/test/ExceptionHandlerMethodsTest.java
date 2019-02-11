@@ -13,6 +13,8 @@ package org.jboss.tools.deltaspike.ui.bot.test;
 
 import static org.junit.Assert.fail;
 
+import java.util.Collection;
+
 import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.wait.TimePeriod;
@@ -20,7 +22,9 @@ import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.condition.ProblemExists;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.tools.cdi.reddeer.condition.SpecificProblemExists;
 import org.junit.After;
@@ -63,6 +67,11 @@ public class ExceptionHandlerMethodsTest extends DeltaspikeTestBase {
 
 	private RegexMatcher noBeanIsEligibleRegexMatcher = new RegexMatcher("No bean is eligible for injection.*");
 
+	@RequirementRestriction 
+	public static Collection<RequirementMatcher> getRestrictionMatcher() {
+		return getServerRuntimeRestriction();
+	}
+	
 	@InjectRequirement
 	private ServerRequirement sr;
 
