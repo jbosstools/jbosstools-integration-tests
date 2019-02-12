@@ -55,9 +55,9 @@ public class InstallationDetailsTest {
 
 	private static String HELP_BUTTON = "Help";
 
-	private static String ABOUT_MENU_BUTTON = ".*About Red Hat.*Developer Studio.*";
+	private static String ABOUT_MENU_BUTTON = ".*About Red Hat.*(Developer|CodeReady) Studio.*";
 	private static String MODAL_DIALOG_ABOUT_DEVSTUDIO_INSTALLATION_DETAILS_BUTTON = ".*Installation Details.*";
-	private static String MODAL_DIALOG_ABOUT_DEVSTUDIO_INSTALLATION_DETAILS_TITLE = ".*Red Hat.*Developer Studio Installation Details.*";
+	private static String MODAL_DIALOG_ABOUT_DEVSTUDIO_INSTALLATION_DETAILS_TITLE = ".*Red Hat.*(Developer|CodeReady) Studio Installation Details.*";
 	private static String MODAL_DIALOG_CONFIG_MENU_BUTTON = "Configuration";
 
 	private Logger log = new Logger(this.getClass());
