@@ -10,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.ConfiguratorPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.ConfigureMavenRepositoriesWizard;
@@ -18,7 +19,9 @@ import org.jboss.tools.maven.ui.bot.test.utils.RepositoryExists;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
 public class MavenRepositories extends AbstractMavenSWTBotTest{
 	
 	

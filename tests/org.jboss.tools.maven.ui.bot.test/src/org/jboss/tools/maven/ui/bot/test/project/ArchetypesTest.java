@@ -12,6 +12,7 @@ package org.jboss.tools.maven.ui.bot.test.project;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.DefineMavenRepository;
@@ -21,10 +22,12 @@ import org.jboss.tools.maven.reddeer.wizards.MavenProjectWizardSecondPage;
 import org.jboss.tools.maven.reddeer.wizards.MavenProjectWizardThirdPage;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 /**
  * @author Rastislav Wagner
  * 
  */
+@RunWith(RedDeerSuite.class)
 @OpenPerspective(JavaPerspective.class)
 @JBossServer(state=ServerRequirementState.PRESENT)
 @DefineMavenRepository(predefinedRepositories = { @PredefinedMavenRepository(ID="jboss-public-repository",snapshots=true) })

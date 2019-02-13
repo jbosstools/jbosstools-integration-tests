@@ -15,14 +15,17 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectHasNature;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 /**
  * @author Rastislav Wagner
  * 
  */
+@RunWith(RedDeerSuite.class)
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerRequirementState.PRESENT)
 public class JAXRSConfiguratorTest extends AbstractConfiguratorsTest{

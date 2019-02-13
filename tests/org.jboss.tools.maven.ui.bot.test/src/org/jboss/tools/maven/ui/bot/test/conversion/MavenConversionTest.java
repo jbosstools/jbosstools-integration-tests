@@ -20,6 +20,7 @@ import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.swt.api.TreeItem;
@@ -50,7 +51,9 @@ import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.Predef
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerRequirementState.PRESENT)
 @DefineMavenRepository(

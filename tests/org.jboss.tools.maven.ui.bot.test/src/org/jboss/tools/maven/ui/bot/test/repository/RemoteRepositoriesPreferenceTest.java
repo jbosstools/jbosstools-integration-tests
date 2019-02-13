@@ -4,12 +4,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.reddeer.maven.ui.preferences.RemoteRepositoriesPreferencePage;
 import org.jboss.tools.maven.reddeer.wizards.Repository;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+@RunWith(RedDeerSuite.class)
 public class RemoteRepositoriesPreferenceTest {
 	
 	private Repository r;
