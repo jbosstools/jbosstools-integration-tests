@@ -11,9 +11,9 @@
 	<artifactId>org.jboss.tools.forge.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>-Ddatabase.path=${test.database} -Djbosstools.test.wildfly10.home=${jbosstools.test.wildfly10.home} -Drd.config=${reddeer.config}</systemProperties>
-		<reddeer.config>${project.build.directory}/classes/servers/wildfly-10.json</reddeer.config>
-		<jbosstools.test.wildfly10.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.wildfly10.home>
+		<systemProperties>-Ddatabase.path=${test.database} -Djbosstools.test.wildfly15.home=${jbosstools.test.wildfly15.home} -Drd.config=${reddeer.config}</systemProperties>
+		<reddeer.config>${project.build.directory}/classes/servers/wildfly-15.json</reddeer.config>
+		<jbosstools.test.wildfly15.home>${requirementsDirectory}/wildfly-15.0.0.Final</jbosstools.test.wildfly15.home>
 		<test.database>${project.build.directory}/database/sakila-h2-master</test.database>
 	</properties>
 	<build>
@@ -70,7 +70,7 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>10.0.0.Final</version>
+									<version>15.0.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
