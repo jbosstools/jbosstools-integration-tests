@@ -12,14 +12,12 @@
 	<packaging>eclipse-test-plugin</packaging>
 	
 	<properties>
-		<jbosstools.test.jboss-eap-7.0.home>${requirementsDirectory}/jboss-eap-7.0</jbosstools.test.jboss-eap-7.0.home>
-		<jbosstools.test.jboss-eap-7.1.home>${requirementsDirectory}/jboss-eap-7.1</jbosstools.test.jboss-eap-7.1.home>
+		<jbosstools.test.jboss-eap-7.2.home>${requirementsDirectory}/jboss-eap-7.2</jbosstools.test.jboss-eap-7.2.home>
 		<rd.config>${project.build.directory}/classes/requirements.json</rd.config>
-		<systemProperties>${integrationTestsSystemProperties} -Dusage_reporting_enabled=false -Drd.config=${rd.config} -Djbosstools.test.jboss-eap-7.1.home=${jbosstools.test.jboss-eap-7.1.home}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dusage_reporting_enabled=false -Drd.config=${rd.config} -Djbosstools.test.jboss-eap-7.2.home=${jbosstools.test.jboss-eap-7.2.home}</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 		<test.class>org.jboss.tools.jsf.ui.test.AllTestsSuite</test.class>
-		<jbosstools.test.jboss-eap-7.0.url>http://download.eng.brq.redhat.com/released/JBoss-middleware/eap7/7.0.0/jboss-eap-7.0.0.zip</jbosstools.test.jboss-eap-7.0.url>
-		<jbosstools.test.jboss-eap-7.1.url>http://download.eng.brq.redhat.com/released/JBoss-middleware/eap7/7.1.0/jboss-eap-7.1.0.zip</jbosstools.test.jboss-eap-7.1.url>
+		<jbosstools.test.jboss-eap-7.2.url>http://download.eng.brq.redhat.com/released/JBoss-middleware/eap7/7.2.0/jboss-eap-7.2.0.zip</jbosstools.test.jboss-eap-7.2.url>
 	</properties>
 
 	<profiles>
@@ -52,13 +50,14 @@
 				<artifactId>download-maven-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>install-eap-7.1</id>
+						<id>install-eap-7.2</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>wget</goal>
 						</goals>
 						<configuration>
-							<url>${jbosstools.test.jboss-eap-7.1.url}</url>
+							<url>${jbosstools.test.jboss-eap-7.2.url}</url>
+							<md5>c06ac5dd62547d9982dea970c1b379f6</md5>
 							<unpack>true</unpack>
 						</configuration>
 					</execution>
