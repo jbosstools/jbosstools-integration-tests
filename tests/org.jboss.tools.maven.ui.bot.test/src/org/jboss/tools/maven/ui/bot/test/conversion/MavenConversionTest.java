@@ -14,6 +14,7 @@ import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.condition.ProblemExists;
+import org.eclipse.reddeer.eclipse.jdt.ui.preferences.BuildPathsPropertyPage;
 import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
@@ -23,7 +24,6 @@ import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
-import org.eclipse.reddeer.swt.api.TreeItem;
 import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.exception.SWTLayerException;
@@ -36,11 +36,8 @@ import org.eclipse.reddeer.swt.impl.link.DefaultLink;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
-import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
 import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
-import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
-import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
@@ -86,17 +83,11 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		finishConversionDialog();
 		checkProblemsAndResolve();
 		PropertyDialog pd = openPropertiesProject(WEB_PROJECT_NAME);
-		new DefaultTreeItem("Java Build Path").select();
-		new DefaultTabItem("Libraries").activate();
-		List<TreeItem> it = new DefaultTree(1).getItems();
-		log.debug("Libraries found after conversion:");
-		for(TreeItem i: it){
-			log.debug("  "+i.getText());
-		}
-		assertTrue("project contains more libraries than expected",it.size()==2);
-		for(TreeItem i: it){
-            if(!(i.getText().contains("JRE") || i.getText().contains("Maven Dependencies"))){
-                fail("Some dependencies are missing after conversion");
+		List<String> libs = getJavaBuildPathLibraries(pd);
+		assertTrue("project contains more libraries than expected", libs.size() == 2);
+		for (String i : libs) {
+			if (!(i.contains("JRE") || i.contains("Maven Dependencies"))) {
+				fail("Some dependencies are missing after conversion");
             }
         }
 		pd.ok();
@@ -110,16 +101,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		finishConversionDialog();
 		checkProblemsAndResolve();
 		PropertyDialog pd = openPropertiesProject(WEB_PROJECT_NAME);
-		new DefaultTreeItem("Java Build Path").select();
-		new DefaultTabItem("Libraries").activate();
-		List<TreeItem> it = new DefaultTree(1).getItems();
-		List<String> libs = new ArrayList<String>();
-		log.debug("Libraries found after conversion:");
-		for(TreeItem i: it){
-			String lib = i.getText();
-			log.debug("  "+lib);
-			libs.add(lib);
-		}
+		List<String> libs = getJavaBuildPathLibraries(pd);
 		assertTrue("project contains more libraries than expected",libs.size()==3);
 		Collections.sort(libs);
 		Collections.sort(expectedLibsKeep);
@@ -209,7 +191,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 			new PushButton("Cancel").click();
 		}
 		new PushButton("Skip Dependency Conversion").click();
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		if(!shellIsOpened){
 			fail("Shell Preferences was not opened after clicking on 'remote repositories' link");
 		}
@@ -271,4 +253,16 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		}
 	}
 
+	private List<String> getJavaBuildPathLibraries(PropertyDialog pd) {
+		pd.select(new BuildPathsPropertyPage(pd));
+		BuildPathsPropertyPage bppp = new BuildPathsPropertyPage(pd);
+		bppp.activateLibrariesTab();
+		List<String> libs = new ArrayList<String>();
+		libs.addAll(bppp.getLibraries());
+		log.debug("Libraries found after conversion:");
+		for (String i : libs) {
+			log.debug("  " + i);
+		}
+		return libs;
+	}
 }

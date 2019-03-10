@@ -43,10 +43,13 @@ import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.swt.api.StyledText;
+import org.eclipse.reddeer.swt.api.Tree;
 import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
@@ -64,6 +67,7 @@ import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.tools.maven.reddeer.preferences.MavenPreferencePage;
+import org.jboss.tools.maven.ui.bot.test.utils.JavaVersionHelper;
 import org.jboss.tools.maven.ui.bot.test.utils.ProjectIsBuilt;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -256,6 +260,18 @@ public abstract class AbstractMavenSWTBotTest{
 		} else {
 			dfp.setTargetRuntime(runtime);
 		}
+		
+		// update default configuration for Java 8
+		if (!JavaVersionHelper.getJavaVersion().equals("1.8")) {
+			new PushButton("Modify...").click();
+			Tree tree = new DefaultTree();
+			tree.getItem("Java").select();
+			tree.getContextMenu().getItem("Change Version...").select();
+			new DefaultCombo(0).setSelection("1.8");
+			new OkButton().click();
+			new OkButton().click();
+		}
+		
 		dw.next();
 		dw.next();
 		WebProjectThirdPage dtp = new WebProjectThirdPage(dw);
@@ -325,7 +341,7 @@ public abstract class AbstractMavenSWTBotTest{
 			} catch (WaitTimeoutExpiredException ex){
 				break;
 			}
-			new WaitWhile(new JobIsRunning(),TimePeriod.LONG);
+			new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
 		}
 	}
 	
