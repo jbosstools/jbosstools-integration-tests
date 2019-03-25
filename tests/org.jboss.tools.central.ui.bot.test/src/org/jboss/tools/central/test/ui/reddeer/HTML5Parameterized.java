@@ -17,8 +17,10 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.util.Display;
@@ -43,6 +45,7 @@ import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerStat
 import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.api.TreeItem;
 import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
@@ -75,6 +78,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
  * @author rhopp
  * @contributor jkopriva@redhat.com
  * @contributor vprusa@redhat.com
+ * @contributor zcervink@redhat.com
  *
  */
 
@@ -220,15 +224,41 @@ public class HTML5Parameterized {
 			// check for errors/warning
 			checkErrorLog(currentProject);
 		}
-		for(Project project : findDeployableProjects()) {
+		
+		if (isProjectMultimodular(exampleName)) {
+			List<Project> deployableModuls = findDeployableProjects();
+			String topNodeProjectName = "jboss-" + exampleName + "-ear";
+
+			Iterator<Project> dmi = deployableModuls.iterator();
+			while (dmi.hasNext()) {
+				Project proj = dmi.next();
+				if (proj.getText().equals(topNodeProjectName)) {
+					deployableModuls.remove(proj);
+					break;
+				}
+			}
+
 			DeployOnServer ds = new DeployOnServer();
-			//deploy project
-			ds.deployProject(project.getName(), FULL_SERVER_NAME);
-			//check deployed project
-			checkDeployedProject(project.getName());
-			//undeploy project
-			ds.unDeployModule(project.getName(), FULL_SERVER_NAME);
+			// deploy project
+			ds.deployProject(topNodeProjectName, FULL_SERVER_NAME);
+			// check deployed project
+			checkDeployedProject(topNodeProjectName);
+			// check deployed submodules
+			checkDeployedSubmodules(topNodeProjectName, deployableModuls);
+			// undeploy project
+			ds.unDeployModule(topNodeProjectName, FULL_SERVER_NAME);
+		} else {
+			for (Project project : findDeployableProjects()) {
+				DeployOnServer ds = new DeployOnServer();
+				// deploy project
+				ds.deployProject(project.getName(), FULL_SERVER_NAME);
+				// check deployed project
+				checkDeployedProject(project.getName());
+				// undeploy project
+				ds.unDeployModule(project.getName(), FULL_SERVER_NAME);
+			}
 		}
+
 		// delete
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 		new ProjectExplorer().deleteAllProjects(true);
@@ -248,7 +278,21 @@ public class HTML5Parameterized {
 		pv.open();
 		StringBuilder sb = new StringBuilder("Errors after project example import\n");
 		boolean errorsArePresent = false;
+		List<Problem> errorList = new ArrayList<Problem>();
+		// get all errors
 		for (Problem error : pv.getProblems(ProblemType.ERROR)) {
+			errorList.add(error);
+		}
+		// filter blacklisted errors
+		Iterator<Problem> it = errorList.iterator();
+		while (it.hasNext()) {
+			Problem oo = it.next();
+			if (oo.getResource().equals("README.md")) {
+				it.remove();
+			}
+		}
+		// process errors
+		for (Problem error : errorList) {
 			sb.append(error.getDescription() + "\n");
 			errorsArePresent = true;
 		}
@@ -304,4 +348,36 @@ public class HTML5Parameterized {
 		return projects;
 	}
 
+	private static boolean isProjectMultimodular(String exampleName) {
+		String[] multimoduleProject = { "app-client", "ejb-throws-exception", "kitchensink-ear", "kitchensink-ml-ear" };
+		return ArrayUtils.contains(multimoduleProject, exampleName);
+	}
+	
+	private static void checkDeployedSubmodules(String topNodeProjectName, List<Project> leafNodeProjects) {
+		ServersView2 serversView = new ServersView2();
+		serversView.open();
+		Server server = serversView.getServer(FULL_SERVER_NAME);
+
+		TreeItem serverTreeItem = server.getTreeItem();
+		List<TreeItem> serverChildrenTreeItems = serverTreeItem.getItems();
+		List<TreeItem> deployedSubmodulesTreeItems = new ArrayList<TreeItem>();
+		for (TreeItem item : serverChildrenTreeItems) {
+			if (item.getText().contains(topNodeProjectName)) {
+				deployedSubmodulesTreeItems = item.getItems();
+				break;
+			}
+		}
+
+		for (Project module : leafNodeProjects) {
+			boolean moduleDeployed = false;
+			for (TreeItem item : deployedSubmodulesTreeItems) {
+				if (item.getText().contains(module.getName())) {
+					moduleDeployed = true;
+				}
+			}
+
+			assertTrue("Deployable project from Project Explorer has not been found deployed in the Servers view.",
+					moduleDeployed);
+		}
+	}
 }

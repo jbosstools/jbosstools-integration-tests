@@ -22,8 +22,8 @@ import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.core.matcher.WithTextMatcher;
 import org.eclipse.reddeer.eclipse.condition.BrowserContainsText;
+import org.eclipse.reddeer.eclipse.ui.browser.BrowserEditor;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
-import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
@@ -78,7 +78,9 @@ public class BasicTests {
 	@Test
 	public void learnAboutRedHatButton() {
 		centralBrowser.execute("$(\'a[href=\"http://developers.redhat.com/\"]\').get( 0 ).click()");
-		new WaitUntil(new ShellIsAvailable(new WithTextMatcher(new RegexMatcher(".*Red.*Hat.*Developer.*"))));
+		BrowserEditor be = new BrowserEditor(new WithTextMatcher(new RegexMatcher(".*Red.*Hat.*Developer.*")));
+		assertTrue("The url in the browser has to be https://developers.redhat.com/.", be.getPageURL().equals("https://developers.redhat.com/"));
+		be.close();
 	}
 
 	@Test

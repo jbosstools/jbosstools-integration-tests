@@ -78,7 +78,7 @@ public class InstallationDetailsTest {
 	 */
 	class ConfigPropertiesHelper {
 
-		private final String urlStr = "http://download.jboss.org/jbosstools/configuration/ide-config.properties";
+		private final String urlStr = "https://download.jboss.org/jbosstools/configuration/ide-config.properties";
 
 		private String localText = "";
 		private String remoteText = "";
