@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.bot.test.beans.openon.cd10;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
@@ -26,7 +29,13 @@ import org.jboss.tools.cdi.bot.test.beans.openon.template.FindObserverEventTempl
 public class FindObserverEventTestCDI10 extends FindObserverEventTemplate{
 
 	@RequirementRestriction
-	public static RequirementMatcher getRestrictionMatcher() {
-	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.AS());
+	public static Collection<RequirementMatcher> getRestrictionMatcher() {
+		if (isJavaLE8()) { 
+			return Arrays.asList(new RequirementMatcher(JBossServer.class, "family", ServerMatcher.AS()));
+		} else {
+			return Arrays.asList(
+					new RequirementMatcher(JBossServer.class, "family", ServerMatcher.AS()),
+					new RequirementMatcher(JRE.class, "version", "1.8"));
+		}
 	}
 }

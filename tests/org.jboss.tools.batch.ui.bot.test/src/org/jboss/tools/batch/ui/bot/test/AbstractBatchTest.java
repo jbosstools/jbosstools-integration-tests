@@ -20,6 +20,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.runtime.FileLocator;
@@ -36,6 +38,8 @@ import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardDialog;
@@ -67,6 +71,25 @@ public abstract class AbstractBatchTest {
 	protected static final String[] JOB_XML_FILE_FULL_PATH = new String[]{ JAVA_RESOURCES, RESOURCES_FOLDER, META_INF_FOLDER, JOB_FILES_FOLDER, JOB_XML_FILE};
 
 	private static final Logger log = Logger.getLogger(AbstractBatchTest.class);
+	
+	private static final String JAVA_VERSION_STR;
+	
+	private static final Double JAVA_VERSION;
+ 
+	static {
+		JAVA_VERSION_STR = System.getProperty("java.version");
+		JAVA_VERSION = Double.parseDouble(JAVA_VERSION_STR.substring(0, JAVA_VERSION_STR.indexOf(".") + 1));
+	}
+	
+	@RequirementRestriction
+	public static Collection<RequirementMatcher> getServerRuntimeRestriction() {
+		if (JAVA_VERSION > 1.8) {
+			return Arrays.asList(
+					new RequirementMatcher(JRE.class, "version", "1.8"));
+		} else {
+			return Arrays.asList();
+		}
+	}
 	
 	/**
 	 * Abstract method for retrieving package name

@@ -64,6 +64,18 @@ public class CDITestBase {
 	protected static final OpenOnHelper openOnHelper = new OpenOnHelper();
 	protected static final ProjectHelper projectHelper = new ProjectHelper();
 
+	private static final String JAVA_VERSION_STR;
+	private static final Double JAVA_VERSION;
+ 
+	static {
+		JAVA_VERSION_STR = System.getProperty("java.version");
+		JAVA_VERSION = Double.parseDouble(JAVA_VERSION_STR.substring(0, JAVA_VERSION_STR.indexOf(".") + 1));
+	}
+	
+	public static boolean isJavaLE8() {
+		return JAVA_VERSION <= 1.8;
+	}
+	
 	@InjectRequirement
 	private ServerRequirement sr;
 

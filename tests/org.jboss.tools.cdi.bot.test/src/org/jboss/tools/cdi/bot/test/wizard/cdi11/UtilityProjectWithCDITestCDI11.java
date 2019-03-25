@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.bot.test.wizard.cdi11;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.eclipse.reddeer.eclipse.jst.j2ee.ui.project.facet.UtilityProjectFirstPage;
 import org.eclipse.reddeer.eclipse.jst.j2ee.ui.project.facet.UtilityProjectWizard;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
@@ -20,6 +23,7 @@ import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequireme
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.wizard.template.ProjectWithCDITemplate;
 import org.junit.Before;
 
@@ -29,8 +33,14 @@ import org.junit.Before;
 public class UtilityProjectWithCDITestCDI11 extends ProjectWithCDITemplate{
 
 	@RequirementRestriction
-	public static RequirementMatcher getRestrictionMatcher() {
-	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly());
+	public static Collection<RequirementMatcher> getRestrictionMatcher() {
+		if (CDITestBase.isJavaLE8()) { 
+			return Arrays.asList(new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly()));
+		} else {
+			return Arrays.asList(
+					new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly()),
+					new RequirementMatcher(JRE.class, "version", "1.8"));
+		}
 	}
 	
 	public UtilityProjectWithCDITestCDI11(){
