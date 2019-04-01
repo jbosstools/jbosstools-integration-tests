@@ -1,8 +1,8 @@
 {
 	"org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer": [
 		{
-			"runtime": "${jbosstools.test.jboss-eap-7.1.home}",
-			"version": "7.x",
+			"runtime": "${jbosstools.test.jboss-eap-7.2.home}",
+			"version": "7.2",
 			"family": "EAP"
 		}
 	]
