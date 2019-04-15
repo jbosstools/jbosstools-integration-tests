@@ -54,6 +54,51 @@
 				</repository>
 			</repositories>
 		</profile>
+		<profile>
+			<id>quality</id>
+			<properties>
+				<!-- sonar properties -->
+				<sonar.code.codeCoveragePlugin>jacoco</sonar.code.codeCoveragePlugin>
+				<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+				<!-- points to the target folder of the global parent project -->
+				<sonar.jacoco.reportPath>../../target/jacoco.exec</sonar.jacoco.reportPath>
+				<sonar.jacoco.itReportPath>../../target/jacoco-it.exec</sonar.jacoco.itReportPath>
+				<sonar.jacoco.reportPaths>${sonar.jacoco.reportPath},${sonar.jacoco.itReportPath}</sonar.jacoco.reportPaths>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>0.8.2</version>
+						<configuration>
+							<append>true</append>
+							<includes>
+								<include>org/jboss/tools/integration-tests/**/*</include>
+							</includes>
+						</configuration>
+						<executions>
+							<execution>
+								<id>agent-for-ut</id>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+								<configuration>
+									<destFile>${sonar.jacoco.reportPath}</destFile>
+								</configuration>
+							</execution>
+							<execution>
+								<id>jacoco-site</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>report</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 
 	<repositories>
