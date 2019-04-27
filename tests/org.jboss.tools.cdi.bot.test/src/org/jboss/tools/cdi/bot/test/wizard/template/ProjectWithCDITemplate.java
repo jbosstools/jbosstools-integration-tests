@@ -44,11 +44,15 @@ import org.junit.Test;
 
 public class ProjectWithCDITemplate{
 	
+	protected String CDIVersion;
+	
 	protected String PROJECT_NAME = "CDIProject";
 	protected boolean enabledByDefault = true;
 	protected String ignoredProblem;
 	protected String expectedProblemAdded;
 	
+	protected static final String VERSION = "version";
+	protected static final String FAMILY = "family";
 
 	@After
 	public void cleanUp() {

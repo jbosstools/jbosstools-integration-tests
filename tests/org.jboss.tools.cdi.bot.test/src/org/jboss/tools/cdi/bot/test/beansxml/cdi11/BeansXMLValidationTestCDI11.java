@@ -40,11 +40,13 @@ public class BeansXMLValidationTestCDI11 extends BeansXMLValidationTemplate {
 	@RequirementRestriction
 	public static Collection<RequirementMatcher> getRestrictionMatcher() {
 		if (isJavaLE8()) { 
-			return Arrays.asList(new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly()));
+			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
+					new RequirementMatcher(JBossServer.class, VERSION, "13"));
 		} else {
 			return Arrays.asList(
-					new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly()),
-					new RequirementMatcher(JRE.class, "version", "1.8"));
+					new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
+					new RequirementMatcher(JBossServer.class, VERSION, "13"),
+					new RequirementMatcher(JRE.class, VERSION, "1.8"));
 		}
 	}
 	

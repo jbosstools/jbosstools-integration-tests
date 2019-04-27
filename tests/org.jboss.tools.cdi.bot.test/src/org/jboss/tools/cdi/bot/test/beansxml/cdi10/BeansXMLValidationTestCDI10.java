@@ -42,11 +42,11 @@ public class BeansXMLValidationTestCDI10 extends BeansXMLValidationTemplate {
 	@RequirementRestriction
 	public static Collection<RequirementMatcher> getRestrictionMatcher() {
 		if (isJavaLE8()) { 
-			return Arrays.asList(new RequirementMatcher(JBossServer.class, "family", ServerMatcher.AS()));
+			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.AS()));
 		} else {
 			return Arrays.asList(
-					new RequirementMatcher(JBossServer.class, "family", ServerMatcher.AS()),
-					new RequirementMatcher(JRE.class, "version", "1.8"));
+					new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.AS()),
+					new RequirementMatcher(JRE.class, VERSION, "1.8"));
 		}
 	}
 

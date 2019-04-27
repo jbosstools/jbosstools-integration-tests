@@ -25,6 +25,6 @@ public class AllWizardsTestCDI11 extends WizardTemplate {
 
 	@RequirementRestriction
 	public static RequirementMatcher getRestrictionMatcher() {
-	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly());
+	  return new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly());
 	}
 }

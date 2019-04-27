@@ -25,8 +25,6 @@ import org.junit.Test;
 
 public class NullValuesInjectionTemplate extends CDITestBase {
 
-	protected String CDIVersion;
-
 	// cdi1.1+
 	@Test
 	public void injectNullValue() {
