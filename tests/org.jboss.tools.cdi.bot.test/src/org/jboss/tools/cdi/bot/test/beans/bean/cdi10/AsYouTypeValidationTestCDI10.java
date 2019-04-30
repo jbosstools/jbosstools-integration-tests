@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.bot.test.beans.bean.cdi10;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
@@ -20,13 +23,19 @@ import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.cdi.bot.test.beans.bean.template.AsYouTypeValidationTemplate;
 
-@JRE(cleanup=true)
-@JBossServer(state=ServerRequirementState.PRESENT, cleanup=false)
+@JRE(cleanup = true)
+@JBossServer(state = ServerRequirementState.PRESENT, cleanup = false)
 @OpenPerspective(JavaEEPerspective.class)
-public class AsYouTypeValidationTestCDI10 extends AsYouTypeValidationTemplate{
+public class AsYouTypeValidationTestCDI10 extends AsYouTypeValidationTemplate {
 
 	@RequirementRestriction
-	public static RequirementMatcher getRestrictionMatcher() {
-	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.AS());
+	public static Collection<RequirementMatcher> getRestrictionMatcher() {
+		if (isJavaLE8()) { 
+			return Arrays.asList(new RequirementMatcher(JBossServer.class, "family", ServerMatcher.AS()));
+		} else {
+			return Arrays.asList(
+					new RequirementMatcher(JBossServer.class, "family", ServerMatcher.AS()),
+					new RequirementMatcher(JRE.class, "version", "1.8"));
+		}
 	}
 }

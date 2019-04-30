@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.bot.test.weld.cdi11;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
@@ -26,8 +29,14 @@ import org.jboss.tools.cdi.bot.test.weld.template.WeldBuiltInContextsTemplate;
 public class WeldBuiltInContextsTestCDI11 extends WeldBuiltInContextsTemplate{
 
 	@RequirementRestriction
-	public static RequirementMatcher getRestrictionMatcher() {
-	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly());
+	public static Collection<RequirementMatcher> getRestrictionMatcher() {
+		if (isJavaLE8()) { 
+			return Arrays.asList(new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly()));
+		} else {
+			return Arrays.asList(
+					new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly()),
+					new RequirementMatcher(JRE.class, "version", "1.8"));
+		}
 	}
 	
 }

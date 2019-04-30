@@ -68,11 +68,25 @@ public class DeltaspikeTestBase {
 
 	private static final Logger log = Logger.getLogger(DeltaspikeTestBase.class);
 
+	private static final String JAVA_VERSION_STR;
+	private static final Double JAVA_VERSION;
+	
 	protected static final ProblemsView problemsView = new ProblemsView();
  
+	static {
+		JAVA_VERSION_STR = System.getProperty("java.version");
+		JAVA_VERSION = Double.parseDouble(JAVA_VERSION_STR.substring(0, JAVA_VERSION_STR.indexOf(".") + 1));
+	}
+	
 	public static Collection<RequirementMatcher> getServerRuntimeRestriction() {
-		return Arrays.asList(
-			new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly()));
+		if (JAVA_VERSION > 1.8) {
+			return Arrays.asList(
+					new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly()),
+					new RequirementMatcher(JRE.class, "version", "1.8"));
+		} else {
+			return Arrays.asList(
+					new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly()));
+		}
 	}
 	
 	@BeforeClass

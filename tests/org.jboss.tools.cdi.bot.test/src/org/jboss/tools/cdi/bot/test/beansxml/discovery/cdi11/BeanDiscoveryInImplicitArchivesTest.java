@@ -14,6 +14,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
@@ -44,8 +46,14 @@ import org.junit.Test;
 public class BeanDiscoveryInImplicitArchivesTest extends BeanDiscoveryInArchivesTemplate {
 
 	@RequirementRestriction
-	public static RequirementMatcher getRestrictionMatcher() {
-	  return new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly());
+	public static Collection<RequirementMatcher> getRestrictionMatcher() {
+		if (isJavaLE8()) { 
+			return Arrays.asList(new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly()));
+		} else {
+			return Arrays.asList(
+					new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly()),
+					new RequirementMatcher(JRE.class, "version", "1.8"));
+		}
 	}
 	
 	@Test
