@@ -46,11 +46,11 @@ public class NullValuesInjectionTemplate extends CDITestBase {
 		
 		te = new TextEditor("Bean2.java");
 		cond = new EditorHasValidationMarkers(te);
+		te.save();
 		
 		if (CDIVersion.equals("1.0")) {
 			new WaitUntil(cond, false);
 			assertTrue("Editor hasn't validation markers.", cond.test());
-			te.save();
 			new WaitWhile(new JobIsRunning());
 			new WaitUntil(new EditorHasValidationMarkers(te), false);
 			assertTrue("Editor hasn't validation markers.", cond.test());
@@ -58,7 +58,6 @@ public class NullValuesInjectionTemplate extends CDITestBase {
 			new WaitUntil(cond, false);
 			new WaitWhile(cond, false);
 			assertFalse("Editor has validation markers: " + cond.getResult(), cond.test());
-			te.save();
 			new WaitWhile(new JobIsRunning());
 			new WaitUntil(cond, false);
 			new WaitWhile(cond, false);
