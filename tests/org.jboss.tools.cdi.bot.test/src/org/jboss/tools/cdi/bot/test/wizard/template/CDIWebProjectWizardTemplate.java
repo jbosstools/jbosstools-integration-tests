@@ -99,11 +99,15 @@ public class CDIWebProjectWizardTemplate{
 	
 	//cdi1.1+
 	//cd1.0 should show warning
+	@Test
 	public void createCDIProjectWithoutBeansXml(){
 		CDIProjectWizard cw = new CDIProjectWizard();
 		cw.open();
 		WebProjectFirstPage fp = new WebProjectFirstPage(cw);
 		fp.setProjectName(PROJECT_NAME);
+		if (CDIVersion.equals("2.0")) {
+			new DefaultCombo(2).setSelection("Dynamic Web Project with CDI 2.0 (Contexts and Dependency Injection)");
+		}
 		assertEquals(sr.getRuntimeName(),fp.getTargetRuntime());
 		assertEquals("Dynamic Web Project with CDI "+CDIVersion+" (Contexts and Dependency Injection)",fp.getConfiguration());
 		fp.activateFacet("1.8", "Java");

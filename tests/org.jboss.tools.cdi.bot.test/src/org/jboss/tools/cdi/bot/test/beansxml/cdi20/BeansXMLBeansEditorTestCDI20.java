@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2018 Red Hat, Inc.
+ * Copyright (c) 2019 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.cdi.bot.test.wizard.cdi10;
+package org.jboss.tools.cdi.bot.test.beansxml.cdi20;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,26 +21,39 @@ import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequireme
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.cdi.bot.test.wizard.template.CDIWebProjectWizardTemplate;
+import org.jboss.tools.cdi.bot.test.beansxml.template.BeansXMLBeansEditorTemplate;
+import org.junit.Before;
 
+/** 
+ * 
+ * @author zcervink@redhat.com
+ * 
+ */
 @JRE(cleanup=true)
 @JBossServer(state=ServerRequirementState.PRESENT, cleanup=false)
 @OpenPerspective(JavaEEPerspective.class)
-public class CDIWebProjectWizardTestCDI10 extends CDIWebProjectWizardTemplate{
+public class BeansXMLBeansEditorTestCDI20 extends BeansXMLBeansEditorTemplate{
 
 	@RequirementRestriction
 	public static Collection<RequirementMatcher> getRestrictionMatcher() {
-		if (CDITestBase.isJavaLE8()) { 
-			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.AS()));
+		if (isJavaLE8()) { 
+			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
+					new RequirementMatcher(JBossServer.class, VERSION, "16"));
 		} else {
 			return Arrays.asList(
-					new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.AS()),
+					new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
+					new RequirementMatcher(JBossServer.class, VERSION, "16"),
 					new RequirementMatcher(JRE.class, VERSION, "1.8"));
 		}
 	}
-	
-	public CDIWebProjectWizardTestCDI10(){
-		CDIVersion = "1.0";
+
+	public BeansXMLBeansEditorTestCDI20() {
+		CDIVersion = "2.0";
 	}
+
+	@Before
+	public void changeDiscoveryMode(){
+		prepareBeanXml("all", true);
+	}
+
 }
