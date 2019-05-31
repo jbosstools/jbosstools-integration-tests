@@ -28,6 +28,7 @@ import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.LabeledCheckBox;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
@@ -42,9 +43,11 @@ import org.junit.Test;
 
 public class CDIWebProjectWizardTemplate{
 	
-	
-	private static final String PROJECT_NAME = "CDIProject";
 	protected String CDIVersion;
+	
+	protected static final String PROJECT_NAME = "CDIProject";
+	protected static final String VERSION = "version";
+	protected static final String FAMILY = "family";
 	
 	@InjectRequirement
 	protected ServerRequirement sr;
@@ -72,6 +75,10 @@ public class CDIWebProjectWizardTemplate{
 		cw.open();
 		WebProjectFirstPage fp = new WebProjectFirstPage(cw);
 		fp.setProjectName(PROJECT_NAME);
+		// set the right configuration for CDI 2.0
+		if (CDIVersion.equals("2.0")) {
+			new DefaultCombo(2).setSelection("Dynamic Web Project with CDI 2.0 (Contexts and Dependency Injection)");
+		}
 		assertEquals(sr.getRuntimeName(),fp.getTargetRuntime());
 		assertEquals("Dynamic Web Project with CDI "+CDIVersion+" (Contexts and Dependency Injection)",fp.getConfiguration());
 		fp.activateFacet("1.8", "Java");
@@ -92,7 +99,6 @@ public class CDIWebProjectWizardTemplate{
 	
 	//cdi1.1+
 	//cd1.0 should show warning
-	@Test
 	public void createCDIProjectWithoutBeansXml(){
 		CDIProjectWizard cw = new CDIProjectWizard();
 		cw.open();
@@ -123,7 +129,7 @@ public class CDIWebProjectWizardTemplate{
 	
 	//dynamic web..and other JEE7 project-enabled
 	
-	private boolean isCDISupportEnabled(String projectName){
+	protected boolean isCDISupportEnabled(String projectName){
 		openProjectProperties(projectName);
 		new DefaultTreeItem("CDI (Contexts and Dependency Injection) Settings").select();
 		boolean toReturn = new LabeledCheckBox("CDI support:").isChecked();
@@ -132,7 +138,7 @@ public class CDIWebProjectWizardTemplate{
 		return toReturn;
 	}
 	
-	private boolean isCDIFacetEnabled(String projectName, String cdiVersion){
+	protected boolean isCDIFacetEnabled(String projectName, String cdiVersion){
 		openProjectProperties(projectName);
 		new DefaultTreeItem("Project Facets").select();
 		boolean result = new DefaultTreeItem(new DefaultTree(1),"CDI (Contexts and Dependency Injection)").isChecked();
@@ -151,3 +157,4 @@ public class CDIWebProjectWizardTemplate{
 	}
 	
 }
+

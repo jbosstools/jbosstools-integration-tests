@@ -23,6 +23,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.wizard.template.CDIWebProjectWizardTemplate;
+import org.junit.Test;
 
 @JRE(cleanup=true)
 @OpenPerspective(JavaEEPerspective.class)
@@ -32,15 +33,22 @@ public class CDIWebProjectWizardTestCDI11 extends CDIWebProjectWizardTemplate{
 	@RequirementRestriction
 	public static Collection<RequirementMatcher> getRestrictionMatcher() {
 		if (CDITestBase.isJavaLE8()) { 
-			return Arrays.asList(new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly()));
+			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
+					new RequirementMatcher(JBossServer.class, VERSION, "13"));
 		} else {
 			return Arrays.asList(
-					new RequirementMatcher(JBossServer.class, "family", ServerMatcher.WildFly()),
-					new RequirementMatcher(JRE.class, "version", "1.8"));
+					new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
+					new RequirementMatcher(JBossServer.class, VERSION, "13"),
+					new RequirementMatcher(JRE.class, VERSION, "1.8"));
 		}
 	}
 	
 	public CDIWebProjectWizardTestCDI11(){
 		CDIVersion = "1.2";
+	}
+	
+	@Test
+	public void createCDIProjectWithoutBeansXmlCDI11() {
+		createCDIProjectWithoutBeansXml();
 	}
 }

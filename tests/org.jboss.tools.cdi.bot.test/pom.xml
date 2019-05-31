@@ -15,7 +15,8 @@
 		<systemProperties>${integrationTestsSystemProperties} -Drd.config=target/classes/servers/requirements.json -Djbosstools.test.weld-se.home=${jbosstools.test.weld-se.home} -Djbosstools.test.weld-api.home=${jbosstools.test.weld-api.home} -Djbosstools.test.jre.8=${jbosstools.test.jre.8}</systemProperties>
 		<surefire.timeout>14400</surefire.timeout>
 		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
-		<jbosstools.test.wildfly.10.home>${requirementsDirectory}/wildfly-10.0.0.Final</jbosstools.test.wildfly.10.home>
+		<jbosstools.test.wildfly.13.home>${requirementsDirectory}/wildfly-13.0.0.Final</jbosstools.test.wildfly.13.home>
+		<jbosstools.test.wildfly.16.home>${requirementsDirectory}/wildfly-16.0.0.Final</jbosstools.test.wildfly.16.home>
 		<jbosstools.test.weld-se.home>${requirementsDirectory}/weld/se/</jbosstools.test.weld-se.home>
 		<jbosstools.test.weld-api.home>${requirementsDirectory}/weld/api/</jbosstools.test.weld-api.home>
 	</properties>
@@ -55,6 +56,12 @@
 			<id>cdi11-tests</id>
 			<properties>
 				<suiteClass>org.jboss.tools.cdi.bot.test.CDI11SuiteTest</suiteClass>
+			</properties>
+		</profile>
+		<profile>
+			<id>cdi20-tests</id>
+			<properties>
+				<suiteClass>org.jboss.tools.cdi.bot.test.CDI20SuiteTest</suiteClass>
 			</properties>
 		</profile>
 		<profile>
@@ -117,7 +124,25 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>10.0.0.Final</version>
+									<version>13.0.0.Final</version>
+									<type>zip</type>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+					<execution>
+						<id>wildfly16</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<skip>${skipTests}</skip>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.wildfly</groupId>
+									<artifactId>wildfly-dist</artifactId>
+									<version>16.0.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>

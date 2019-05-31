@@ -53,6 +53,8 @@ import org.junit.BeforeClass;
 
 public class CDITestBase {
 
+	protected String CDIVersion;
+	
 	protected static String PROJECT_NAME = "CDIProject";
 	protected static final String PACKAGE_NAME = "cdi";
 
@@ -67,6 +69,9 @@ public class CDITestBase {
 	private static final String JAVA_VERSION_STR;
 	private static final Double JAVA_VERSION;
  
+	protected static final String VERSION = "version";
+	protected static final String FAMILY = "family";
+	
 	static {
 		JAVA_VERSION_STR = System.getProperty("java.version");
 		JAVA_VERSION = Double.parseDouble(JAVA_VERSION_STR.substring(0, JAVA_VERSION_STR.indexOf(".") + 1));
@@ -93,6 +98,7 @@ public class CDITestBase {
 			fp.setProjectName(PROJECT_NAME);
 			fp.setTargetRuntime(sr.getRuntimeName());
 			fp.activateFacet("1.8", "Java");
+			fp.activateFacet(CDIVersion, "CDI (Contexts and Dependency Injection)");
 			cw.finish();
 			new WaitUntil(new JobIsRunning(), TimePeriod.DEFAULT, false);
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);

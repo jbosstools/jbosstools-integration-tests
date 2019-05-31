@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2018 Red Hat, Inc.
+ * Copyright (c) 2019 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.cdi.bot.test.weld.cdi10;
+package org.jboss.tools.cdi.bot.test.beans.openon.cdi20;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,29 +21,39 @@ import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequireme
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.tools.cdi.bot.test.weld.template.WeldExcludeTemplate;
-import org.jboss.tools.cdi.reddeer.validators.BeanValidationProviderCDI10;
+import org.jboss.tools.cdi.bot.test.beans.openon.template.BeanInjectOpenOnTemplate;
 import org.junit.Before;
 
+/**
+ * 
+ * @author zcervink@redhat.com
+ * 
+ */
 @JRE(cleanup=true)
 @JBossServer(state=ServerRequirementState.PRESENT, cleanup=false)
 @OpenPerspective(JavaEEPerspective.class)
-public class WeldExcludeTestCDI10 extends WeldExcludeTemplate{
+public class BeanInjectOpenOnTestCDI20 extends BeanInjectOpenOnTemplate{
 
 	@RequirementRestriction
 	public static Collection<RequirementMatcher> getRestrictionMatcher() {
 		if (isJavaLE8()) { 
-			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.AS()));
+			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
+					new RequirementMatcher(JBossServer.class, VERSION, "16"));
 		} else {
 			return Arrays.asList(
-					new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.AS()),
+					new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
+					new RequirementMatcher(JBossServer.class, VERSION, "16"),
 					new RequirementMatcher(JRE.class, VERSION, "1.8"));
 		}
 	}
 	
+	public BeanInjectOpenOnTestCDI20() {
+		CDIVersion = "2.0";
+	}
+		
 	@Before
-	public void setValidationProvider(){
-		validationProvider = new BeanValidationProviderCDI10();
+	public void changeDiscoveryMode(){
+		prepareBeanXml("all", true);
 	}
 
 }
