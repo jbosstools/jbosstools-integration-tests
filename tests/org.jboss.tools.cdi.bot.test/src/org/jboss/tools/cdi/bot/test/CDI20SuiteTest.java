@@ -12,6 +12,7 @@ package org.jboss.tools.cdi.bot.test;
 
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.cdi.bot.test.beans.bean.cdi20.AsYouTypeValidationTestCDI20;
+import org.jboss.tools.cdi.bot.test.beans.bean.cdi20.BeanValidationQuickFixTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.bean.cdi20.NullValuesInjectionTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.bean.cdi20.VetoedAnnotationTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.decorator.cdi20.DecoratorFromWebBeanTestCDI20;
@@ -30,13 +31,16 @@ import org.jboss.tools.cdi.bot.test.beans.stereotype.cdi20.StereotypeValidationQ
 import org.jboss.tools.cdi.bot.test.beansxml.annotation.cdi20.BeanParametersAnnotationTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.bean.cdi20.ExcludeBeanTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.cdi20.BeansXMLBeansEditorTestCDI20;
+import org.jboss.tools.cdi.bot.test.beansxml.cdi20.BeansXMLDiscoveryModesTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.cdi20.BeansXMLUITestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.cdi20.BeansXMLValidationTestCDI20;
+import org.jboss.tools.cdi.bot.test.beansxml.completion.cdi20.BeansXMLCompletionTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.discovery.cdi20.BeanDiscoveryInExplicitArchivesTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.discovery.cdi20.BeanDiscoveryInImplicitArchivesTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.openon.cdi20.BeansXMLOpenOnTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi20.BeansXMLAsYouTypeValidationTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi20.BeansXMLValidationQuickFixTestCDI20;
+import org.jboss.tools.cdi.bot.test.validation.cdi20.CDIValidatorTestCDI20;
 import org.jboss.tools.cdi.bot.test.weld.cdi20.WeldBuiltInContextsTestCDI20;
 import org.jboss.tools.cdi.bot.test.weld.cdi20.WeldExcludeTestCDI20;
 import org.jboss.tools.cdi.bot.test.weld.cdi20.WeldParametersAnnotationTestCDI20;
@@ -89,6 +93,10 @@ import org.junit.runners.Suite.SuiteClasses;
 	WeldExcludeTestCDI20.class,
 	WeldParametersAnnotationTestCDI20.class,
 	WeldScanTestCDI20.class,
+	BeanValidationQuickFixTestCDI20.class,
+	BeansXMLCompletionTestCDI20.class,
+	CDIValidatorTestCDI20.class,
+	BeansXMLDiscoveryModesTestCDI20.class,
 })
 public class CDI20SuiteTest {
 

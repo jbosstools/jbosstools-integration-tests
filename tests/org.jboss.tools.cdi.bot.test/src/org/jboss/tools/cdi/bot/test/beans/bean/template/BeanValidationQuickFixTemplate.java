@@ -16,8 +16,12 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
@@ -182,6 +186,11 @@ public class BeanValidationQuickFixTemplate extends CDITestBase {
 	
 	private void createBean(String className, String content){
 		beansHelper.createBean(className, getPackageName(), false, false, false, false, false, false, false, null, null);
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.activate();
+		pe.selectAllProjects();
+		new ContextMenuItem("Refresh").select();
+		new WaitWhile(new JobIsRunning(), TimePeriod.MEDIUM);
 		editResourceUtil.replaceClassContentByResource(className+".java", readFile(content), false);
 		editResourceUtil.replaceInEditor(className+".java","BeanComponent", className);		
 	}

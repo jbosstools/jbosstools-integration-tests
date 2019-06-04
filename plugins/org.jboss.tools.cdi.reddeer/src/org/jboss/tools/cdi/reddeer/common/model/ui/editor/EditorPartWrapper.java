@@ -323,5 +323,15 @@ public class EditorPartWrapper extends AbstractEditor{
 		selectBeanXmlType("beans.xml");
 		return new DefaultText(new DefaultSection("Cdi Beans"), 0).isEnabled();
 	}
+	
+	public boolean isTrimItemAvailable(){
+		List<TreeItem> items = new DefaultTreeItem("beans.xml").getItems();
+		for (TreeItem item : items) {
+			if (item.getText().equals("trim")) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }
