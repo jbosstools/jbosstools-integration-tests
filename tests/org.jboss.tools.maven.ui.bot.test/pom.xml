@@ -13,8 +13,8 @@
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
-		<jbosstools.test.wildfly.16.home>${requirementsDirectory}/wildfly-16.0.0.Final</jbosstools.test.wildfly.16.home>
-		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${project.build.directory}/classes/servers/wildfly-16.json -Djbosstools.test.seam.2.1.0.home=${requirementsDirectory}/jboss-seam-2.1.2 -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Dproject.build.directory=${project.build.directory} -Dmaven.settings.path=target/classes/usersettings/settings.xml -Dscope=${scope} -Djbosstools.test.wildfly.16.home=${jbosstools.test.wildfly.16.home}</systemProperties>
+		<jbosstools.test.wildfly.17.home>${requirementsDirectory}/wildfly-17.0.0.Final</jbosstools.test.wildfly.17.home>
+		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${project.build.directory}/classes/servers/wildfly-17.json -Djbosstools.test.seam.2.1.0.home=${requirementsDirectory}/jboss-seam-2.1.2 -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Dproject.build.directory=${project.build.directory} -Dmaven.settings.path=target/classes/usersettings/settings.xml -Dscope=${scope} -Djbosstools.test.wildfly.17.home=${jbosstools.test.wildfly.17.home}</systemProperties>
  		<scope>MavenAllBotTests</scope>
 		<surefire.timeout>18000</surefire.timeout>
 	</properties>
@@ -45,7 +45,7 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>16.0.0.Final</version>
+									<version>17.0.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
