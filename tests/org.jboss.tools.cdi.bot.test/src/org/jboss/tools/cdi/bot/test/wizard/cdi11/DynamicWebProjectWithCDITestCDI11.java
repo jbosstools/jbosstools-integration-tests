@@ -55,6 +55,7 @@ public class DynamicWebProjectWithCDITestCDI11 extends ProjectWithCDITemplate{
 		dw.open();
 		WebProjectFirstPage fp = new WebProjectFirstPage(dw);
 		fp.setProjectName(PROJECT_NAME);
+		fp.activateFacet("1.8", "Java");
 		dw.finish();
 	}
 

@@ -56,6 +56,7 @@ public class UtilityProjectWithCDITestCDI11 extends ProjectWithCDITemplate{
 		uw.open();
 		UtilityProjectFirstPage up = new UtilityProjectFirstPage(uw);
 		up.setProjectName(PROJECT_NAME);
+		up.activateFacet("1.8", "Java");
 		uw.finish();
 	}
 
