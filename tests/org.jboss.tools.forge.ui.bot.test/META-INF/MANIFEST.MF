@@ -4,19 +4,19 @@ Bundle-Name: Forge UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.forge.ui.bot.test;singleton:=true
 Bundle-Version: 4.4.200.qualifier
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: org.jboss.tools.forge.ui;bundle-version="1.0.0",
- org.jboss.tools.forge.core;bundle-version="1.0.0",
- org.jboss.tools.forge.runtime;bundle-version="1.0.0",
- org.jboss.tools.forge.reddeer;bundle-version="[2.0.201,3.0.0)",
- org.eclipse.ui;bundle-version="3.106.0",
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.jboss.tools.forge.ui,
+ org.jboss.tools.forge.core,
+ org.jboss.tools.forge.runtime,
+ org.jboss.tools.forge.reddeer,
+ org.eclipse.ui,
  org.junit;bundle-version="4.11.0",
- org.eclipse.core.runtime;bundle-version="3.10.0",
- org.eclipse.datatools.connectivity.ui.dse;bundle-version="1.1.0",
+ org.eclipse.core.runtime,
+ org.eclipse.datatools.connectivity.ui.dse,
  org.jboss.ide.eclipse.as.reddeer,
  org.jboss.tools.hibernate.reddeer,
- org.eclipse.reddeer.go;bundle-version="2.1.0"
+ org.eclipse.reddeer.go
 Import-Package: org.eclipse.core.resources
 Eclipse-BundleShape: jar
-Bundle-Localization: plugin
 Bundle-Vendor: Red Hat
+Automatic-Module-Name: org.jboss.tools.forge.ui.bot.test
