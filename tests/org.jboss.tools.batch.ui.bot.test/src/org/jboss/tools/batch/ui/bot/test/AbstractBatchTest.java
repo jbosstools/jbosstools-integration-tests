@@ -45,7 +45,6 @@ import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardDialog;
 import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardPage;
 
-@JRE(cleanup=true)
 public abstract class AbstractBatchTest {
 
 	private static final String PROJECT_NAME = "batch-test-project";
@@ -72,9 +71,9 @@ public abstract class AbstractBatchTest {
 
 	private static final Logger log = Logger.getLogger(AbstractBatchTest.class);
 	
-	private static final String JAVA_VERSION_STR;
+	protected static final String JAVA_VERSION_STR;
 	
-	private static final Double JAVA_VERSION;
+	protected static final Double JAVA_VERSION;
  
 	static {
 		JAVA_VERSION_STR = System.getProperty("java.version");
