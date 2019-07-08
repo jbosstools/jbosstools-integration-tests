@@ -1,9 +1,0 @@
-{
-	"org.eclipse.reddeer.requirements.jre.JRERequirement.JRE": [
-		{
-			"name": "openjdk-1.8",
-			"version": "1.8",
-			"path": "${jbosstools.test.jre.8}"
-		}
-	]
-}

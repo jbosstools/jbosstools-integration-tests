@@ -77,7 +77,8 @@ public abstract class AbstractJobXMLTest extends DesignFlowElementsTestTemplate 
 	
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		initTestResources(log, "projects/" + getProjectName() + "2.zip");
+		String suffix = JAVA_VERSION > 1.8 ? "2-11.zip" : "2.zip";
+		initTestResources(log, "projects/" + getProjectName() + suffix);
 	}
 	
 	@AfterClass

@@ -47,7 +47,7 @@ public abstract class AbstractCreateArtifactTest extends AbstractBatchTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() {
-		initTestResources(log, "projects/" + getProjectName() + ".zip");
+		initTestResources(log, "projects/" + getProjectName() + (JAVA_VERSION > 1.8 ? "-11.zip" : ".zip"));
 	}
 	
 	@AfterClass
