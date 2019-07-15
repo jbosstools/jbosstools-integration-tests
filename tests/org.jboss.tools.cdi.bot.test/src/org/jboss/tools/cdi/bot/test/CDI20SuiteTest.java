@@ -18,7 +18,10 @@ import org.jboss.tools.cdi.bot.test.beans.named.cdi20.NamedComponentsSearchingTe
 import org.jboss.tools.cdi.bot.test.beans.openon.cdi20.BeanInjectOpenOnTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.openon.cdi20.FindObserverEventTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.cdi20.BeansXMLBeansEditorTestCDI20;
+import org.jboss.tools.cdi.bot.test.beansxml.cdi20.BeansXMLUITestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.cdi20.BeansXMLValidationTestCDI20;
+import org.jboss.tools.cdi.bot.test.beansxml.openon.cdi20.BeansXMLOpenOnTestCDI20;
+import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi20.BeansXMLAsYouTypeValidationTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi20.BeansXMLValidationQuickFixTestCDI20;
 import org.jboss.tools.cdi.bot.test.wizard.cdi20.CDIWebProjectWizardTestCDI20;
 import org.junit.runner.RunWith;
@@ -41,6 +44,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	AllAssignableDialogTestCDI20.class,
 	AssignableDialogFilterTestCDI20.class,
 	AsYouTypeValidationTestCDI20.class,
+	BeansXMLAsYouTypeValidationTestCDI20.class,
+	BeansXMLOpenOnTestCDI20.class,
+	BeansXMLUITestCDI20.class,
 })
 public class CDI20SuiteTest {
 

@@ -13,12 +13,13 @@ package org.jboss.tools.cdi.reddeer.validators;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 
-public class BeansXmlUIValidationProviderCDI11 extends AbstractValidationProvider {
+public class BeansXmlUIValidationProvider extends AbstractValidationProvider {
 	
-	private final String jsr = "JSR-346";
-	
-	public BeansXmlUIValidationProviderCDI11() {
+	private String jsr;
+
+	public BeansXmlUIValidationProvider(String jsrVersion) {
 		super();
+		jsr = jsrVersion;
 	}
 
 	@Override
