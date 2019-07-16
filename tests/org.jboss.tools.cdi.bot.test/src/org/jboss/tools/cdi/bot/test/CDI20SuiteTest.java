@@ -14,6 +14,9 @@ import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.cdi.bot.test.beans.named.cdi20.NamedComponentsSearchingTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.openon.cdi20.BeanInjectOpenOnTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.openon.cdi20.FindObserverEventTestCDI20;
+import org.jboss.tools.cdi.bot.test.beansxml.cdi20.BeansXMLBeansEditorTestCDI20;
+import org.jboss.tools.cdi.bot.test.beansxml.cdi20.BeansXMLValidationTestCDI20;
+import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi20.BeansXMLValidationQuickFixTestCDI20;
 import org.jboss.tools.cdi.bot.test.wizard.cdi20.CDIWebProjectWizardTestCDI20;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -29,6 +32,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	BeanInjectOpenOnTestCDI20.class,
 	FindObserverEventTestCDI20.class,
 	CDIWebProjectWizardTestCDI20.class,
+	BeansXMLBeansEditorTestCDI20.class,
+	BeansXMLValidationTestCDI20.class,
+	BeansXMLValidationQuickFixTestCDI20.class,
 })
 public class CDI20SuiteTest {
 

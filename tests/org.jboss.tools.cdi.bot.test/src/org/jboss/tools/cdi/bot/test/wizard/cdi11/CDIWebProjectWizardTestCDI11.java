@@ -23,7 +23,6 @@ import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.wizard.template.CDIWebProjectWizardTemplate;
-import org.junit.Test;
 
 @JRE(cleanup=true)
 @OpenPerspective(JavaEEPerspective.class)
@@ -45,10 +44,5 @@ public class CDIWebProjectWizardTestCDI11 extends CDIWebProjectWizardTemplate{
 	
 	public CDIWebProjectWizardTestCDI11(){
 		CDIVersion = "1.2";
-	}
-	
-	@Test
-	public void createCDIProjectWithoutBeansXmlCDI11() {
-		createCDIProjectWithoutBeansXml();
 	}
 }
