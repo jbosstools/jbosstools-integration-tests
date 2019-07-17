@@ -2,8 +2,16 @@
 	"org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer": [
 		{
 			"runtime": "${jbosstools.test.eap7.home}",
-			"version": "7.x",
-			"family": "EAP"
+			"version": "7.0",
+			"family": "EAP",
+			"runtimeEnvironment": "JavaSE-1.8"
+		}
+	],
+	"org.eclipse.reddeer.requirements.jre.JRERequirement.JRE": [
+		{
+			"name": "openjdk-1.8",
+			"version": "1.8",
+			"path": "${jbosstools.test.jre.8}"
 		}
 	]
 } 

@@ -15,13 +15,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.eclipse.reddeer.common.exception.RedDeerException;
 import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
 import org.eclipse.reddeer.swt.impl.button.NoButton;
-import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
-import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.central.reddeer.api.JavaScriptHelper;
@@ -73,9 +73,9 @@ public class DnDTest {
 	}
 
 	private boolean installationStartedCheck() {
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		try {
-			new DefaultShell("Install New Software");
+			new WaitUntil(new ShellIsAvailable("Progress Information"), TimePeriod.LONG);
+			new WaitUntil(new ShellIsAvailable("Install New Software"), TimePeriod.LONG);
 		} catch (RedDeerException e) {
 			return false;
 		}

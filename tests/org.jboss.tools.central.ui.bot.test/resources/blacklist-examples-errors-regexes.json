@@ -1,0 +1,36 @@
+{
+	"jts": [
+		".*cvc-complex-type.2.4.a: Invalid content was found starting with element 'iiop:binding-name'.*",
+		".*Referenced file contains errors (.*)..*"
+	],
+	"jts-distributed-crash-rec": [
+		".*cvc-complex-type.2.4.a: Invalid content was found starting with element 'iiop:binding-name'.*",
+		".*Referenced file contains errors (.*)..*"
+	],
+	"ejb-remote": [
+		".*Quick Fix should not be enabled.*",
+		".*For artifact .*: The version cannot be empty.*",
+		".*Project build error: 'dependencies.dependency.version' for org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:jar is missing.*",
+		".*Project build error: Non-resolvable import POM: Failure to find org.jboss.spec:jboss-javaee-7.0:pom:1.0.3.Final-redhat-2.*",
+		".*Remote cannot be resolved to a type.*",
+		".*Stateful cannot be resolved to a type.*",
+		".*Stateless cannot be resolved to a type.*",
+		".*The import javax.ejb cannot be resolved.*"
+	],
+	"ejb-security-interceptors": [
+		".*Quick Fix should not be enabled.*",
+		".*cvc-complex-type.2.4.a: Invalid content was found starting with element 'jee:interceptor-binding'.*",
+		".*Referenced file contains errors.*"
+	],
+	"jaxws-retail": [
+		".*Customer cannot be resolved to a type.*",
+		".*DiscountRequest cannot be resolved to a type.*",
+		".*DiscountResponse cannot be resolved to a type.*",
+		".*ProfileMgmt cannot be resolved to a type.*",
+		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.*cannot be resolved.*",
+		".*Type mismatch: cannot convert from ProfileMgmt to ProfileMgmt.*",
+		".*DiscountRequest cannot be resolved to a type.*",
+		".*DiscountResponse cannot be resolved to a type.*",
+		".*Error while running wsconsume.*"
+	]
+}

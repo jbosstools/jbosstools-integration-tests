@@ -16,17 +16,26 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.reddeer.common.logging.Logger;
-import org.eclipse.reddeer.eclipse.core.resources.Project;
-import org.eclipse.reddeer.eclipse.m2e.core.ui.preferences.MavenSettingsPreferencePage;
+import org.eclipse.reddeer.eclipse.jdt.debug.ui.jres.JREsPreferencePage;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
+import org.eclipse.reddeer.swt.api.TableItem;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
@@ -53,13 +62,28 @@ import org.junit.runner.RunWith;
  * @contributor jkopriva@redhat.com
  * @contributor vprusa@redhat.com
  */
+@JRE(cleanup=false)
 @RunWith(RedDeerSuite.class)
 public class ArchetypesTest {
 
+	@RequirementRestriction
+	public static Collection<RequirementMatcher> getRestrictionMatcher() {
+		return Arrays.asList(new RequirementMatcher(JRE.class, "version", "1.8"));
+	}
+	
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	public @interface JRE {
+
+		/**
+		 * Cleanup.
+		 *
+		 * @return true, if successful
+		 */
+		boolean cleanup() default false;
+	}
+	
 	private static final String CENTRAL_LABEL = "Red Hat Central";
-	private static final String MAVEN_SETTINGS_PATH = System.getProperty("maven.config.file") == null
-			? "./target/classes/settings.xml"
-			: System.getProperty("maven.config.file");;
 	private static Map<org.jboss.tools.central.reddeer.projects.Project, List<String>> projectWarnings = new HashMap<org.jboss.tools.central.reddeer.projects.Project, List<String>>();
 	private static final Logger log = Logger.getLogger(ExamplesOperator.class);
 
@@ -69,13 +93,20 @@ public class ArchetypesTest {
 
 	@BeforeClass
 	public static void setup() {
-		String mvnConfigFileName = new File(MAVEN_SETTINGS_PATH).getAbsolutePath();
 		WorkbenchPreferenceDialog preferenceDialog = new WorkbenchPreferenceDialog();
 		preferenceDialog.open();
-		MavenSettingsPreferencePage prefPage = new MavenSettingsPreferencePage(preferenceDialog);
-		preferenceDialog.select(prefPage);
-		prefPage.setUserSettingsLocation(mvnConfigFileName);
+
+		JREsPreferencePage jrePreferencePage = new JREsPreferencePage(preferenceDialog);
+		preferenceDialog.select(jrePreferencePage);
+		List<TableItem> tis = new DefaultTable(0).getItems();
+		for (TableItem ti : tis) {
+			if (ti.getText(0).startsWith("Java SE 8") || ti.getText(0).startsWith("openjdk-1.8")) {
+				ti.setChecked(true);
+				jrePreferencePage.apply();
+			}
+		}
 		preferenceDialog.ok();
+		
 		new DefaultToolItem(new WorkbenchShell(), CENTRAL_LABEL).click();
 		// activate central editor
 		new DefaultEditor(CENTRAL_LABEL);
@@ -84,9 +115,7 @@ public class ArchetypesTest {
 	@After
 	public void teardown() {
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
-		for (Project p : new ProjectExplorer().getProjects()) {
-			p.delete(true);
-		}
+		new ProjectExplorer().deleteAllProjects();
 		new DefaultToolItem(new WorkbenchShell(), CENTRAL_LABEL).click();
 		// activate central editor
 		new DefaultEditor(CENTRAL_LABEL);

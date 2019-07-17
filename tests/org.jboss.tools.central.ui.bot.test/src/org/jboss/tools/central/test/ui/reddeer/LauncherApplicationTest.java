@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
 import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
-import org.eclipse.reddeer.eclipse.core.resources.Project;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
@@ -63,9 +62,7 @@ public class LauncherApplicationTest {
 	@After
 	public void teardown() {
 		WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
-		for (Project p : new ProjectExplorer().getProjects()) {
-			p.delete(true);
-		}
+		new ProjectExplorer().deleteAllProjects();
 		new DefaultToolItem(new WorkbenchShell(), CENTRAL_LABEL).click();
 		// activate central editor
 		new DefaultEditor(CENTRAL_LABEL);
