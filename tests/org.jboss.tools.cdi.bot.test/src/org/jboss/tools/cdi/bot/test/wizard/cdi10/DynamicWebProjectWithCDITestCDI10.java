@@ -23,6 +23,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.wizard.template.ProjectWithCDITemplate;
+import org.junit.Before;
 
 @JRE(cleanup=true)
 @JBossServer(state=ServerRequirementState.PRESENT, cleanup=false)
@@ -43,6 +44,11 @@ public class DynamicWebProjectWithCDITestCDI10 extends ProjectWithCDITemplate{
 	public DynamicWebProjectWithCDITestCDI10(){
 		enabledByDefault = false;
 		expectedProblemAdded = "Missing beans.xml file in the project";
+	}
+	
+	@Before
+	public void createWebProjectBeforeClass() {
+		super.createWebProject();
 	}
 
 }

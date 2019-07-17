@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2019 Red Hat, Inc.
+ * Copyright (c) 2019 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.cdi.bot.test.beans.ibinding.cdi11;
+package org.jboss.tools.cdi.bot.test.beans.interceptor.cdi20;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,31 +21,40 @@ import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequireme
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.tools.cdi.bot.test.beans.ibinding.template.IBindingValidationQuickFixTemplate;
-import org.jboss.tools.cdi.reddeer.validators.InterceptorBindingValidationProvider;
+import org.jboss.tools.cdi.bot.test.beans.interceptor.template.InterceptorValidationQuickFixTemplate;
+import org.jboss.tools.cdi.reddeer.validators.InterceptorValidationProvider;
 import org.junit.Before;
 
+/** 
+ * 
+ * @author zcervink@redhat.com
+ * 
+ */
 @JRE(cleanup=true)
 @JBossServer(state=ServerRequirementState.PRESENT, cleanup=false)
 @OpenPerspective(JavaEEPerspective.class)
-public class IBindingValidationQuickFixTestCDI11 extends IBindingValidationQuickFixTemplate{
+public class InterceptorValidationQuickFixTestCDI20 extends InterceptorValidationQuickFixTemplate{
 
 	@RequirementRestriction
 	public static Collection<RequirementMatcher> getRestrictionMatcher() {
 		if (isJavaLE8()) { 
 			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
-					new RequirementMatcher(JBossServer.class, VERSION, "13"));
+					new RequirementMatcher(JBossServer.class, VERSION, "16"));
 		} else {
 			return Arrays.asList(
 					new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
-					new RequirementMatcher(JBossServer.class, VERSION, "13"),
+					new RequirementMatcher(JBossServer.class, VERSION, "16"),
 					new RequirementMatcher(JRE.class, VERSION, "1.8"));
 		}
 	}
-		
+	
+	public InterceptorValidationQuickFixTestCDI20() {
+		CDIVersion = "2.0";
+	}
+	
 	@Before
 	public void changeDiscoveryMode(){
-		validationProvider = new InterceptorBindingValidationProvider("JSR-346");
+		validationProvider = new InterceptorValidationProvider("JSR-365");
 		prepareBeanXml("all", true);
 	}
 

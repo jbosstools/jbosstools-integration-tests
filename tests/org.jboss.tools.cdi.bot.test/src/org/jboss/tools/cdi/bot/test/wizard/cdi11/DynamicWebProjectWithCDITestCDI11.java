@@ -23,6 +23,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.wizard.template.ProjectWithCDITemplate;
+import org.junit.Before;
 
 @JRE(cleanup=true)
 @OpenPerspective(JavaEEPerspective.class)
@@ -44,6 +45,11 @@ public class DynamicWebProjectWithCDITestCDI11 extends ProjectWithCDITemplate{
 	
 	public DynamicWebProjectWithCDITestCDI11(){
 		enabledByDefault = true;
+	}
+	
+	@Before
+	public void createWebProjectBeforeClass() {
+		super.createWebProject();
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2018 Red Hat, Inc.
+ * Copyright (c) 2010-2019 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -13,8 +13,6 @@ package org.jboss.tools.cdi.bot.test.wizard.cdi10;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.eclipse.reddeer.eclipse.jst.ejb.ui.project.facet.EjbProjectFirstPage;
-import org.eclipse.reddeer.eclipse.jst.ejb.ui.project.facet.EjbProjectWizard;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
@@ -51,13 +49,8 @@ public class EjbProjectWithCDITestCDI10 extends ProjectWithCDITemplate{
 	}
 	
 	@Before
-	public void createEjbProject(){
-		EjbProjectWizard dw = new EjbProjectWizard();
-		dw.open();
-		EjbProjectFirstPage fp = new EjbProjectFirstPage(dw);
-		fp.setProjectName(PROJECT_NAME);
-		fp.activateFacet("1.8", "Java");
-		dw.finish();
+	public void createEjbProjectBeforeClass() {
+		super.createEjbProject();
 	}
-
+	
 }

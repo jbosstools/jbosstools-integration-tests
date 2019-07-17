@@ -19,8 +19,14 @@ import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 public abstract class AbstractValidationProvider implements IValidationProvider {
 
 	protected List<ValidationProblem> problems = null;
+	protected String jsr;
+
+	public AbstractValidationProvider() {
+		this("");
+	}
 	
-	public AbstractValidationProvider() {		
+	public AbstractValidationProvider(String jsr) {	
+		this.jsr = jsr;
 		problems = new ArrayList<ValidationProblem>();		
 		init();
 	}

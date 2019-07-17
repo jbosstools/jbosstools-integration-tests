@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Red Hat, Inc.
+ * Copyright (c) 2019 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -11,18 +11,20 @@
 
 package org.jboss.tools.cdi.reddeer.validators;
 
-
+/** 
+ * 
+ * @author zcervink@redhat.com
+ * 
+ */
 import java.util.Arrays;
 
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 
-public class InterceptorBindingValidationProviderCDI11 extends AbstractValidationProvider {
-	
-	private final String jsr = "JSR-346"; 
+public class InterceptorBindingValidationProvider extends AbstractValidationProvider {
 
-	public InterceptorBindingValidationProviderCDI11() {
-		super();
+	public InterceptorBindingValidationProvider(String jsr) {
+		super(jsr);
 	}
 	
 	@Override

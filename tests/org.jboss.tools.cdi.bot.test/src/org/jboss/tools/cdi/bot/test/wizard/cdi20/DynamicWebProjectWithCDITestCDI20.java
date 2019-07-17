@@ -23,6 +23,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.wizard.template.ProjectWithCDITemplate;
+import org.junit.Before;
 
 /** 
  * 
@@ -50,6 +51,11 @@ public class DynamicWebProjectWithCDITestCDI20 extends ProjectWithCDITemplate{
 	public DynamicWebProjectWithCDITestCDI20(){
 		enabledByDefault = true;
 		CDIVersion = "2.0";
+	}
+	
+	@Before
+	public void createWebProjectBeforeClass() {
+		super.createWebProject();
 	}
 
 }

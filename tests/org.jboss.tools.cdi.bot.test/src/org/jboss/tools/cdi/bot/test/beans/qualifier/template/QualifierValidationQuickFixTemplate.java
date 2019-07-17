@@ -30,10 +30,7 @@ import org.junit.Test;
  * @author Jaroslav Jankovic
  */
 public class QualifierValidationQuickFixTemplate extends CDITestBase {
-	
-	protected String CDIVersion;
-	
-	
+
 	protected IValidationProvider validationProvider;
 
 	// https://issues.jboss.org/browse/JBIDE-7630
