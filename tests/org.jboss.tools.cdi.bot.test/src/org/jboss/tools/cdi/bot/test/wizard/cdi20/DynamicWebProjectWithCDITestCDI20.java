@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2019 Red Hat, Inc.
+ * Copyright (c) 2019 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -8,7 +8,7 @@
  * Contributor:
  *     Red Hat, Inc. - initial API and implementation
  ******************************************************************************/
-package org.jboss.tools.cdi.bot.test.wizard.cdi11;
+package org.jboss.tools.cdi.bot.test.wizard.cdi20;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -24,26 +24,32 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.wizard.template.ProjectWithCDITemplate;
 
+/** 
+ * 
+ * @author zcervink@redhat.com
+ * 
+ */
 @JRE(cleanup=true)
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state=ServerRequirementState.PRESENT, cleanup=false)
-public class DynamicWebProjectWithCDITestCDI11 extends ProjectWithCDITemplate{
+public class DynamicWebProjectWithCDITestCDI20 extends ProjectWithCDITemplate{
 
 	@RequirementRestriction
 	public static Collection<RequirementMatcher> getRestrictionMatcher() {
 		if (CDITestBase.isJavaLE8()) { 
 			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
-					new RequirementMatcher(JBossServer.class, VERSION, "13"));
+					new RequirementMatcher(JBossServer.class, VERSION, "16"));
 		} else {
 			return Arrays.asList(
 					new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
-					new RequirementMatcher(JBossServer.class, VERSION, "13"),
+					new RequirementMatcher(JBossServer.class, VERSION, "16"),
 					new RequirementMatcher(JRE.class, VERSION, "1.8"));
 		}
 	}
 	
-	public DynamicWebProjectWithCDITestCDI11(){
+	public DynamicWebProjectWithCDITestCDI20(){
 		enabledByDefault = true;
+		CDIVersion = "2.0";
 	}
 
 }

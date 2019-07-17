@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011-2012 Red Hat, Inc.
+ * Copyright (c) 2011-2019 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -26,6 +26,8 @@ import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.condition.ProblemExists;
 import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
+import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectWizard;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
@@ -40,6 +42,7 @@ import org.eclipse.reddeer.workbench.handler.EditorHandler;
 import org.hamcrest.core.StringContains;
 import org.jboss.tools.cdi.reddeer.condition.SpecificProblemExists;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class ProjectWithCDITemplate{
@@ -53,6 +56,16 @@ public class ProjectWithCDITemplate{
 	
 	protected static final String VERSION = "version";
 	protected static final String FAMILY = "family";
+	
+	@Before
+	public void createWebProject(){
+		WebProjectWizard dw = new WebProjectWizard();
+		dw.open();
+		WebProjectFirstPage fp = new WebProjectFirstPage(dw);
+		fp.setProjectName(PROJECT_NAME);
+		fp.activateFacet("1.8", "Java");
+		dw.finish();
+	}
 
 	@After
 	public void cleanUp() {

@@ -13,6 +13,8 @@ package org.jboss.tools.cdi.bot.test;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.cdi.bot.test.beans.bean.cdi20.AsYouTypeValidationTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.bean.cdi20.VetoedAnnotationTestCDI20;
+import org.jboss.tools.cdi.bot.test.beans.decorator.cdi20.DecoratorFromWebBeanTestCDI20;
+import org.jboss.tools.cdi.bot.test.beans.decorator.cdi20.DecoratorValidationQuickFixTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.dialog.cdi20.AllAssignableDialogTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.dialog.cdi20.AssignableDialogFilterTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.named.cdi20.NamedComponentsSearchingTestCDI20;
@@ -30,6 +32,7 @@ import org.jboss.tools.cdi.bot.test.beansxml.openon.cdi20.BeansXMLOpenOnTestCDI2
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi20.BeansXMLAsYouTypeValidationTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi20.BeansXMLValidationQuickFixTestCDI20;
 import org.jboss.tools.cdi.bot.test.wizard.cdi20.CDIWebProjectWizardTestCDI20;
+import org.jboss.tools.cdi.bot.test.wizard.cdi20.DynamicWebProjectWithCDITestCDI20;
 import org.jboss.tools.cdi.bot.test.wizard.cdi20.UtilityProjectWithCDITestCDI20;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -61,6 +64,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	StereotypeValidationQuickFixTestCDI20.class,
 	UtilityProjectWithCDITestCDI20.class,
 	VetoedAnnotationTestCDI20.class,
+	DecoratorFromWebBeanTestCDI20.class,
+	DecoratorValidationQuickFixTestCDI20.class,
+	DynamicWebProjectWithCDITestCDI20.class,
 })
 public class CDI20SuiteTest {
 

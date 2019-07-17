@@ -22,7 +22,7 @@ import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.cdi.bot.test.beans.decorator.template.DecoratorValidationQuickFixTemplate;
-import org.jboss.tools.cdi.reddeer.validators.DecoratorValidationProviderCDI10;
+import org.jboss.tools.cdi.reddeer.validators.DecoratorValidationProvider;
 import org.junit.Before;
 
 @JRE(cleanup=true)
@@ -43,7 +43,7 @@ public class DecoratorValidationQuickFixTestCDI10 extends DecoratorValidationQui
 	
 	@Before
 	public void setProvider(){
-		validationProvider = new DecoratorValidationProviderCDI10();
+		validationProvider = new DecoratorValidationProvider("JSR-299");
 	}
 
 }
