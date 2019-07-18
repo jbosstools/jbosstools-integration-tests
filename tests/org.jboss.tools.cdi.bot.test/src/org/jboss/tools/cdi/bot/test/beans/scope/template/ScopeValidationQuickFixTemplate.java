@@ -31,7 +31,6 @@ import org.junit.Test;
 public class ScopeValidationQuickFixTemplate extends CDITestBase {
 	
 	protected IValidationProvider validationProvider;
-	protected String CDIVersion;
 
 	public IValidationProvider validationProvider() {
 		return validationProvider;

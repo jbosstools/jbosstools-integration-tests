@@ -49,7 +49,7 @@ public class VetoedAnnotationTemplate extends CDITestBase{
 		TextEditor te = new TextEditor("Injector.java");
 		AbstractWait.sleep(TimePeriod.DEFAULT);
 		String warning = "org.eclipse.ui.workbench.texteditor.warning";
-		String noInjection = "No bean is eligible for injection to the injection point [JSR-346 §5.2.2]";
+		String noInjection = CDIVersion.equals("2.0") ? "No bean is eligible for injection to the injection point [JSR-365 §5.2.2]" : "No bean is eligible for injection to the injection point [JSR-346 §5.2.2]";
 		List<Marker> markers = te.getMarkers();
 		assertEquals(5, markers.size());
 		for(Marker m: te.getMarkers()){

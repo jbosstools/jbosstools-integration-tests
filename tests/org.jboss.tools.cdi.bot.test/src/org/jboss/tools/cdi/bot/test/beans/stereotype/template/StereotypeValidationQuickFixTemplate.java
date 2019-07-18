@@ -35,8 +35,7 @@ import org.junit.Test;
  */
 public class StereotypeValidationQuickFixTemplate extends CDITestBase {
 	
-	public static IValidationProvider validationProvider;
-	protected String CDIVersion;
+	public IValidationProvider validationProvider;
 
 	public IValidationProvider validationProvider() {
 		return validationProvider;
