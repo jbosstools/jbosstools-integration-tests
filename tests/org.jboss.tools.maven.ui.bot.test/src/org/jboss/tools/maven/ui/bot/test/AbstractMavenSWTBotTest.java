@@ -262,7 +262,7 @@ public abstract class AbstractMavenSWTBotTest{
 		}
 		
 		// update default configuration for Java 8
-		if (!JavaVersionHelper.getJavaVersion().equals("1.8")) {
+		if (JavaVersionHelper.getJavaVersion().equals("1.8")) {
 			new PushButton("Modify...").click();
 			Tree tree = new DefaultTree();
 			tree.getItem("Java").select();

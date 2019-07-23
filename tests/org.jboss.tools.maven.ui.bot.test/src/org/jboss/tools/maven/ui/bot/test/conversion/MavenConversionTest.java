@@ -207,8 +207,8 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new ContextMenuItem("Configure","Convert to Maven Project").select();
 		new DefaultShell("Create new POM");
 		new PushButton("Finish").click();
-		new DefaultShell("Convert to Maven Dependencies");
-		new WaitUntil(new ControlIsEnabled(new PushButton("Finish")), TimePeriod.LONG);
+		new WaitUntil(new ShellIsAvailable("Convert to Maven Dependencies"), TimePeriod.VERY_LONG);
+		new WaitUntil(new ControlIsEnabled(new PushButton("Finish")), TimePeriod.VERY_LONG);
 	}
 		
 	

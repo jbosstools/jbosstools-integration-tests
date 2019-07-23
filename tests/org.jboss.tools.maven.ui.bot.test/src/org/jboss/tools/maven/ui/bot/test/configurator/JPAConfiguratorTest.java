@@ -38,7 +38,7 @@ public class JPAConfiguratorTest extends AbstractConfiguratorsTest {
 		createWebProject(projectNameNoRuntime, null, false);
 		convertToMavenProject(projectNameNoRuntime, "war", false);
 		addPersistence(projectNameNoRuntime);
-		updateConf(projectNameNoRuntime);
+		updateConf(projectNameNoRuntime, true);
 		new WaitUntil(new ProjectHasNature(projectNameNoRuntime, JPA_FACET, "2.0"));
 	}
 }
