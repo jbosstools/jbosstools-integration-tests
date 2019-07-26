@@ -11,6 +11,9 @@
 package org.jboss.tools.cdi.bot.test;
 
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.tools.cdi.bot.test.beans.bean.cdi20.AsYouTypeValidationTestCDI20;
+import org.jboss.tools.cdi.bot.test.beans.dialog.cdi20.AllAssignableDialogTestCDI20;
+import org.jboss.tools.cdi.bot.test.beans.dialog.cdi20.AssignableDialogFilterTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.named.cdi20.NamedComponentsSearchingTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.openon.cdi20.BeanInjectOpenOnTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.openon.cdi20.FindObserverEventTestCDI20;
@@ -35,6 +38,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	BeansXMLBeansEditorTestCDI20.class,
 	BeansXMLValidationTestCDI20.class,
 	BeansXMLValidationQuickFixTestCDI20.class,
+	AllAssignableDialogTestCDI20.class,
+	AssignableDialogFilterTestCDI20.class,
+	AsYouTypeValidationTestCDI20.class,
 })
 public class CDI20SuiteTest {
 
