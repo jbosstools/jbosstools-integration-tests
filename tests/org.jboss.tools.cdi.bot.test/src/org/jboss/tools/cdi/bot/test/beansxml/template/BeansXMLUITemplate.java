@@ -35,7 +35,6 @@ import org.junit.Test;
 public class BeansXMLUITemplate extends CDITestBase {
 
 	private static final Logger logger = Logger.getLogger(BeansXMLUITemplate.class);
-	protected String CDIVersion = null;
 	protected IValidationProvider validationProvider = null;
 
 	@After
