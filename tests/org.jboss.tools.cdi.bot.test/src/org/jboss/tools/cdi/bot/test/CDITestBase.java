@@ -15,6 +15,8 @@ import static org.junit.Assert.fail;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -34,9 +36,11 @@ import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.workbench.condition.EditorIsDirty;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.EditorHandler;
+import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.cdi.ui.CDIProjectWizard;
 import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
 import org.jboss.tools.cdi.reddeer.uiutils.BeansHelper;
@@ -68,6 +72,12 @@ public class CDITestBase {
 
 	private static final String JAVA_VERSION_STR;
 	private static final Double JAVA_VERSION;
+	
+	protected static final String CDI_BEAN_1_JAVA_FILE_NAME = "CdiBean1";
+	protected static final String CDI_BEAN_2_JAVA_FILE_NAME = "CdiBean2";
+	protected static final String JAVA_FILE_EXTENSION = ".java";
+	
+	protected Map<Integer, String> valuesToInsertDuringProjectSetup = new HashMap<Integer, String>();
  
 	protected static final String VERSION = "version";
 	protected static final String FAMILY = "family";
@@ -231,5 +241,19 @@ public class CDITestBase {
 		}
 		
 		beansEditor.close();
+	}
+	
+	public void setupProject(Map<Integer, String> valuesToInsertIntoTextEditor) {
+		createClass(PROJECT_NAME, "test", CDI_BEAN_1_JAVA_FILE_NAME);
+		createClass(PROJECT_NAME, "test", CDI_BEAN_2_JAVA_FILE_NAME);
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.getProject(PROJECT_NAME).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, "test",
+				CDI_BEAN_2_JAVA_FILE_NAME + JAVA_FILE_EXTENSION).open();
+		TextEditor ed = new TextEditor(CDI_BEAN_2_JAVA_FILE_NAME + JAVA_FILE_EXTENSION);
+		for (Map.Entry<Integer, String> entry : valuesToInsertIntoTextEditor.entrySet()) {
+			ed.insertLine(entry.getKey(), entry.getValue());
+		}
+		ed.save();
 	}
 }
