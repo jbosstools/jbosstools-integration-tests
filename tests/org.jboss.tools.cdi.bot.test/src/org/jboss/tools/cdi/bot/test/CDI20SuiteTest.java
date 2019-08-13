@@ -12,11 +12,14 @@ package org.jboss.tools.cdi.bot.test;
 
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.jboss.tools.cdi.bot.test.beans.bean.cdi20.AsYouTypeValidationTestCDI20;
+import org.jboss.tools.cdi.bot.test.beans.bean.cdi20.VetoedAnnotationTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.dialog.cdi20.AllAssignableDialogTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.dialog.cdi20.AssignableDialogFilterTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.named.cdi20.NamedComponentsSearchingTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.openon.cdi20.BeanInjectOpenOnTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.openon.cdi20.FindObserverEventTestCDI20;
+import org.jboss.tools.cdi.bot.test.beans.scope.cdi20.ScopeValidationQuickFixTestCDI20;
+import org.jboss.tools.cdi.bot.test.beans.stereotype.cdi20.StereotypeValidationQuickFixTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.annotation.cdi20.BeanParametersAnnotationTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.cdi20.BeansXMLBeansEditorTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.cdi20.BeansXMLUITestCDI20;
@@ -27,6 +30,7 @@ import org.jboss.tools.cdi.bot.test.beansxml.openon.cdi20.BeansXMLOpenOnTestCDI2
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi20.BeansXMLAsYouTypeValidationTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi20.BeansXMLValidationQuickFixTestCDI20;
 import org.jboss.tools.cdi.bot.test.wizard.cdi20.CDIWebProjectWizardTestCDI20;
+import org.jboss.tools.cdi.bot.test.wizard.cdi20.UtilityProjectWithCDITestCDI20;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -53,6 +57,10 @@ import org.junit.runners.Suite.SuiteClasses;
 	BeanDiscoveryInExplicitArchivesTestCDI20.class,
 	BeanDiscoveryInImplicitArchivesTestCDI20.class,
 	BeanParametersAnnotationTestCDI20.class,
+	ScopeValidationQuickFixTestCDI20.class,
+	StereotypeValidationQuickFixTestCDI20.class,
+	UtilityProjectWithCDITestCDI20.class,
+	VetoedAnnotationTestCDI20.class,
 })
 public class CDI20SuiteTest {
 
