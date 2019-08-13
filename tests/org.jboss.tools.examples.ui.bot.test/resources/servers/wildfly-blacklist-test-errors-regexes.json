@@ -1,10 +1,6 @@
 {
 	"jts": [
-		".*Invalid content was found starting with element 'iiop:ejb-name'.*",
-		".*Referenced file contains errors.*jboss-ejb3-spec-2_0\\.xsd.*"
-	],
-	"ejb-security-interceptors": [
-		".*Invalid content was found starting with element 'jee:interceptor-binding'.*",
+		".*Invalid content was found starting with element.*",
 		".*Referenced file contains errors.*jboss-ejb3-spec-2_0\\.xsd.*"
 	],
 	"messaging-clustering-singleton": [
@@ -13,19 +9,71 @@
 		".*Referenced file contains errors.*jboss-ejb3-spec-2_0\\.xsd.*"
 	],
 	"jaxws-retail": [
-		".*Customer cannot be resolved to a type.*",
-		".*DiscountRequest cannot be resolved to a type.*",
-		".*DiscountResponse cannot be resolved to a type.*",
-		".*ProfileMgmt cannot be resolved to a type.*",
-		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.Customer cannot be resolved.*",
-		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountRequest cannot be resolved.*",
-		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountResponse cannot be resolved.*",
-		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.ProfileMgmt cannot be resolved.*",
-		".*Type mismatch: cannot convert from ProfileMgmt to ProfileMgmt.*"
+		".*Missing artifact com.sun.xml.messaging.saaj:saaj-impl:jar:1.3.16-jbossorg-1.*",
+		".*Missing artifact org.slf4j:slf4j-api:jar:1.7.22.jbossorg-1.*",
+		".*The container 'Maven Dependencies' references non existing library '.*slf4j-api-1.7.22.jbossorg-1.jar'.*",
+		".*The project cannot be built until build path errors are resolved.*"
 	],
-	"jsf":[
-		".*Element 'value' must have no element.*",
-		".*Value 'param1 flow1 value' is not facet-valid with respect to pattern.*",
-		".*Invalid content was found starting with elemen 'flow-call'.*"
+	"spring-greeter":[
+		".*Can not find the tag library descriptor for \"http://java.sun.com/jsp/jstl/core\".*",
+		".*Missing artifact org.apache.taglibs:taglibs-standard-impl:jar:1.2.6-RC1.*",
+		".*Missing artifact org.apache.taglibs:taglibs-standard-spec:jar:1.2.6-RC1.*",
+		".*The superclass \"javax.servlet.http.HttpServlet\" was not found on the Java Build Path.*",
+		".*The container 'Maven Dependencies' references non existing library.*",
+		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*",
+		".*The project cannot be built until build path errors are resolved.*"
+	],
+	"helloworld-jms":[
+		".*Missing artifact org.slf4j:jcl-over-slf4j:jar:1.7.22.jbossorg-1.*",
+		".*Missing artifact org.slf4j:slf4j-api:jar:1.7.22.jbossorg-1.*",
+		".*The project cannot be built until build path errors are resolved.*",
+		".*The container 'Maven Dependencies' references non existing library.*"
+	],
+	"jaxws-addressing":[
+		".*Missing artifact org.slf4j:slf4j-api:jar:1.7.22.jbossorg-1.*",
+		".*The container 'Maven Dependencies' references non existing library.*",
+		".*The project cannot be built until build path errors are resolved.*"
+	],
+	"jaxws-ejb":[
+		".*Missing artifact org.slf4j:slf4j-api:jar:1.7.22.jbossorg-1.*",
+		".*The container 'Maven Dependencies' references non existing library.*",
+		".*The project cannot be built until build path errors are resolved.*"
+	],
+	"jaxws-pojo":[
+		".*Missing artifact org.slf4j:slf4j-api:jar:1.7.22.jbossorg-1.*",
+		".*The container 'Maven Dependencies' references non existing library.*",
+		".*The project cannot be built until build path errors are resolved.*"
+	],
+	"kitchensink-jsp":[
+		".*Can not find the tag library descriptor for \"http://java.sun.com/jsp/jstl/core\".*",
+		".*Missing artifact org.apache.taglibs:taglibs-standard-impl:jar:1.2.6-RC1.*",
+		".*Missing artifact org.apache.taglibs:taglibs-standard-spec:jar:1.2.6-RC1.*",
+		".*The container 'Maven Dependencies' references non existing library.*",
+		".*The project cannot be built until build path errors are resolved.*"
+	],
+	"spring-kitchensink-basic":[
+		".*Can not find the tag library descriptor for \"http://java.sun.com/jsp/jstl/core\".*",
+		".*Missing artifact org.apache.taglibs:taglibs-standard-impl:jar:1.2.6-RC1.*",
+		".*Missing artifact org.apache.taglibs:taglibs-standard-spec:jar:1.2.6-RC1.*",
+		".*The container 'Maven Dependencies' references non existing library.*",
+		".*The project cannot be built until build path errors are resolved.*",
+		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*"
+	],
+	"spring-kitchensink-springmvctest":[
+		".*Can not find the tag library descriptor for \"http://java.sun.com/jsp/jstl/core\".*",
+		".*Missing artifact org.apache.taglibs:taglibs-standard-impl:jar:1.2.6-RC1.*",
+		".*Missing artifact org.apache.taglibs:taglibs-standard-spec:jar:1.2.6-RC1.*",
+		".*Missing artifact org.slf4j:slf4j-api:jar:1.7.22.jbossorg-1.*",
+		".*The container 'Maven Dependencies' references non existing library.*",
+		".*The project cannot be built until build path errors are resolved.*",
+		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*"
+	],
+	"contacts-jquerymobile":[
+		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*"
+	],
+	"wicket-war":[
+		".*Missing artifact org.slf4j:slf4j-api:jar:1.7.22.jbossorg-1.*",
+		".*The container 'Maven Dependencies' references non existing library.*",
+		".*The project cannot be built until build path errors are resolved.*"
 	]
 }

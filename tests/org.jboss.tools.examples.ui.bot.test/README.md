@@ -3,18 +3,18 @@ Executing tests:
 mvn clean install -P{profile} -Dswtbot.test.skip=true -Dusage_reporting_enable=false -DdeployOnServer=true
 
 Where
-	${profile} select maven profile: WildFly14, EAP7, JavaEE7, SmokeTestsEAP7, SmokeTestsWildFly14, SmokeTestsJavaEE7 (WildFly14 profile is selected, if you don't specify profile)
+	${profile} select maven profile: WildFly, EAP7, JavaEE7, SmokeTestsEAP7, SmokeTestsWildFly, SmokeTestsJavaEE7 (WildFly profile is selected, if you don't specify profile)
 	
 You can specify other parameters as well(depending on profile you have selected):
 WildFly profile:
--PWildFly14
+-PWildFly
 -DquickstartsURLWildFly=${quickstartsURLWildFly}		-	URL for WildFly Quickstarts
 -DexamplesFolderWildFly=${examplesFolderWildFly}		-	examples folder of WildFly Quickstarts
 
 G.e.
 
 ```
-mvn clean verify -DexamplesFolderWildFly=quickstart-14.0.1.Final -DquickstartsURLWildFly=https://github.com/wildfly/quickstart/archive/14.0.1.Final.zip -PWildFly14 -DspecificQuickstarts=helloworld-jms
+mvn clean verify -DexamplesFolderWildFly=quickstart-17.0.0.Final -DquickstartsURLWildFly=https://github.com/wildfly/quickstart/archive/17.0.0.Final.zip -PWildFly -DspecificQuickstarts=helloworld-jms
 ```
 
 EAP profile:
