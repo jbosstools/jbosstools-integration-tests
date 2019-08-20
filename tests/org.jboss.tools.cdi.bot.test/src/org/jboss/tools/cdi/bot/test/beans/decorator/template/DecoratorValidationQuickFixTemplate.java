@@ -36,7 +36,7 @@ import org.junit.Test;
  */
 public class DecoratorValidationQuickFixTemplate extends CDITestBase {
 	
-	protected static IValidationProvider validationProvider;
+	protected IValidationProvider validationProvider;
 
 	public IValidationProvider validationProvider() {
 		return validationProvider;
