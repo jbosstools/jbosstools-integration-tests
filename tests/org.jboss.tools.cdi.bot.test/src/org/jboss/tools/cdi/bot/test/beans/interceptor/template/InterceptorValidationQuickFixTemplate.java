@@ -29,7 +29,7 @@ import org.junit.Test;
  */
 public class InterceptorValidationQuickFixTemplate extends CDITestBase {
 	
-	protected static IValidationProvider validationProvider;
+	protected IValidationProvider validationProvider;
 	
 	// https://issues.jboss.org/browse/JBIDE-7680
 	@Test

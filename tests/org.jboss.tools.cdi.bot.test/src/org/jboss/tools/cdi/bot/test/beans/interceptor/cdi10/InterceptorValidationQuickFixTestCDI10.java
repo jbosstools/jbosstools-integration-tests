@@ -22,7 +22,7 @@ import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.cdi.bot.test.beans.interceptor.template.InterceptorValidationQuickFixTemplate;
-import org.jboss.tools.cdi.reddeer.validators.InterceptorValidationProviderCDI10;
+import org.jboss.tools.cdi.reddeer.validators.InterceptorValidationProvider;
 import org.junit.Before;
 
 @JRE(cleanup=true)
@@ -43,7 +43,7 @@ public class InterceptorValidationQuickFixTestCDI10 extends InterceptorValidatio
 	
 	@Before
 	public void setProvider(){
-		validationProvider = new InterceptorValidationProviderCDI10();
+		validationProvider = new InterceptorValidationProvider("JSR-299");
 	}
 
 }

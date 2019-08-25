@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010-2018 Red Hat, Inc.
+ * Copyright (c) 2010-2019 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -22,7 +22,7 @@ import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.cdi.bot.test.weld.template.WeldExcludeTemplate;
-import org.jboss.tools.cdi.reddeer.validators.BeanValidationProviderCDI10;
+import org.jboss.tools.cdi.reddeer.validators.BeanValidationProvider;
 import org.junit.Before;
 
 @JRE(cleanup=true)
@@ -43,7 +43,7 @@ public class WeldExcludeTestCDI10 extends WeldExcludeTemplate{
 	
 	@Before
 	public void setValidationProvider(){
-		validationProvider = new BeanValidationProviderCDI10();
+		validationProvider = new BeanValidationProvider("JSR-299");
 	}
 
 }

@@ -26,6 +26,10 @@ import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.condition.ProblemExists;
 import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.jst.ejb.ui.project.facet.EjbProjectFirstPage;
+import org.eclipse.reddeer.eclipse.jst.ejb.ui.project.facet.EjbProjectWizard;
+import org.eclipse.reddeer.eclipse.jst.j2ee.ui.project.facet.UtilityProjectFirstPage;
+import org.eclipse.reddeer.eclipse.jst.j2ee.ui.project.facet.UtilityProjectWizard;
 import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
 import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectWizard;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
@@ -42,7 +46,6 @@ import org.eclipse.reddeer.workbench.handler.EditorHandler;
 import org.hamcrest.core.StringContains;
 import org.jboss.tools.cdi.reddeer.condition.SpecificProblemExists;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 public class ProjectWithCDITemplate{
@@ -56,16 +59,6 @@ public class ProjectWithCDITemplate{
 	
 	protected static final String VERSION = "version";
 	protected static final String FAMILY = "family";
-	
-	@Before
-	public void createWebProject(){
-		WebProjectWizard dw = new WebProjectWizard();
-		dw.open();
-		WebProjectFirstPage fp = new WebProjectFirstPage(dw);
-		fp.setProjectName(PROJECT_NAME);
-		fp.activateFacet("1.8", "Java");
-		dw.finish();
-	}
 
 	@After
 	public void cleanUp() {
@@ -209,6 +202,33 @@ public class ProjectWithCDITemplate{
 		List<Problem> problems = removeIgnoredProblem(pw.getProblems(ProblemType.ALL));
 		
 		assertEquals("Unexpected problem found: " + problems, 0, problems.size());
+	}
+	
+	public void createUtilityProject() {
+		UtilityProjectWizard uw = new UtilityProjectWizard();
+		uw.open();
+		UtilityProjectFirstPage up = new UtilityProjectFirstPage(uw);
+		up.setProjectName(PROJECT_NAME);
+		up.activateFacet("1.8", "Java");
+		uw.finish();
+	}
+
+	public void createWebProject() {
+		WebProjectWizard dw = new WebProjectWizard();
+		dw.open();
+		WebProjectFirstPage fp = new WebProjectFirstPage(dw);
+		fp.setProjectName(PROJECT_NAME);
+		fp.activateFacet("1.8", "Java");
+		dw.finish();
+	}
+	
+	public void createEjbProject() {
+		EjbProjectWizard dw = new EjbProjectWizard();
+		dw.open();
+		EjbProjectFirstPage fp = new EjbProjectFirstPage(dw);
+		fp.setProjectName(PROJECT_NAME);
+		fp.activateFacet("1.8", "Java");
+		dw.finish();
 	}
 
 }
