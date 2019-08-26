@@ -31,7 +31,6 @@ import org.junit.Test;
 public class WeldBuiltInContextsTemplate extends CDITestBase{
 	
 	public static final String WELD_API_JAR=System.getProperty("jbosstools.test.weld-api.home");
-	protected String CDIVersion;
 	
 	@Before
 	public void addLibs(){
@@ -62,6 +61,8 @@ public class WeldBuiltInContextsTemplate extends CDITestBase{
 			String JSRspec = "[JSR-346 §5.2.2]";
 			if("1.0".equals(CDIVersion)){
 				JSRspec = "[JSR-299 §5.2.1]";
+			} else if ("2.0".equals(CDIVersion)) {
+				JSRspec = "[JSR-365 §5.2.2]";
 			}
 			assertEquals("Multiple beans are eligible for injection to the injection point "+JSRspec, m.getText());
 			assertTrue(m.getLineNumber() == 70 || m.getLineNumber() == 73 || m.getLineNumber() == 76);

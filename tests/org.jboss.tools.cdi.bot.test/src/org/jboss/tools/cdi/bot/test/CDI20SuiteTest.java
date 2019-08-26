@@ -37,6 +37,10 @@ import org.jboss.tools.cdi.bot.test.beansxml.discovery.cdi20.BeanDiscoveryInImpl
 import org.jboss.tools.cdi.bot.test.beansxml.openon.cdi20.BeansXMLOpenOnTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi20.BeansXMLAsYouTypeValidationTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi20.BeansXMLValidationQuickFixTestCDI20;
+import org.jboss.tools.cdi.bot.test.weld.cdi20.WeldBuiltInContextsTestCDI20;
+import org.jboss.tools.cdi.bot.test.weld.cdi20.WeldExcludeTestCDI20;
+import org.jboss.tools.cdi.bot.test.weld.cdi20.WeldParametersAnnotationTestCDI20;
+import org.jboss.tools.cdi.bot.test.weld.cdi20.WeldScanTestCDI20;
 import org.jboss.tools.cdi.bot.test.wizard.cdi20.CDIWebProjectWizardTestCDI20;
 import org.jboss.tools.cdi.bot.test.wizard.cdi20.DynamicWebProjectWithCDITestCDI20;
 import org.jboss.tools.cdi.bot.test.wizard.cdi20.EjbProjectWithCDITestCDI20;
@@ -81,6 +85,10 @@ import org.junit.runners.Suite.SuiteClasses;
 	NamedRefactoringTestCDI20.class,
 	NullValuesInjectionTestCDI20.class,
 	QualifierValidationQuickFixTestCDI20.class,
+	WeldBuiltInContextsTestCDI20.class,
+	WeldExcludeTestCDI20.class,
+	WeldParametersAnnotationTestCDI20.class,
+	WeldScanTestCDI20.class,
 })
 public class CDI20SuiteTest {
 

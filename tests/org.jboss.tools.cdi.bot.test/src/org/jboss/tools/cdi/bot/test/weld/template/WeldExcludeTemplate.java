@@ -111,7 +111,14 @@ public class WeldExcludeTemplate extends CDITestBase{
 		
 		ProblemsView pw = new ProblemsView();
 		pw.open();
-		assertEquals(4,pw.getProblems(ProblemType.ALL).size());
+		// JBIDE-26793
+		if (CDIVersion.equals("2.0")) {
+			assertEquals(4, pw.getProblems(ProblemType.WARNING).size());
+			assertTrue("Issue JBIDE-26793 seems to be fixed.", pw.getProblems(ProblemType.ERROR).size() == 1
+					&& pw.getProblems(ProblemType.ERROR).get(0).toString().contains("cvc-complex-type.2.4.a: Invalid content was found starting with element 'weld:scan'."));
+		} else {
+			assertEquals(4, pw.getProblems(ProblemType.ALL).size());
+		}
 	}
 	
 	
