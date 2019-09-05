@@ -51,6 +51,27 @@
 		".*The container 'Maven Dependencies' references non existing library.*",
 		".*The project cannot be built until build path errors are resolved.*"
 	],
+	"deltaspike-beanbuilder":[
+		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*"
+	],
+	"kitchensink":[
+		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*"
+	],
+	"kitchensink-angularjs":[
+		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*"
+	],	
+	"kitchensink-ml":[
+		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*"
+	],	
+	"kitchensink-ear":[
+		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*"
+	],
+	"tasks-jsf":[
+		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*"
+	],	
+	"tasks-rs":[
+		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*"
+	],
 	"spring-kitchensink-basic":[
 		".*Can not find the tag library descriptor for \"http://java.sun.com/jsp/jstl/core\".*",
 		".*Missing artifact org.apache.taglibs:taglibs-standard-impl:jar:1.2.6-RC1.*",
@@ -72,6 +93,11 @@
 		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*"
 	],
 	"wicket-war":[
+		".*Missing artifact org.slf4j:slf4j-api:jar:1.7.22.jbossorg-1.*",
+		".*The container 'Maven Dependencies' references non existing library.*",
+		".*The project cannot be built until build path errors are resolved.*"
+	],
+	"wildfly-wicket-ear-parent":[
 		".*Missing artifact org.slf4j:slf4j-api:jar:1.7.22.jbossorg-1.*",
 		".*The container 'Maven Dependencies' references non existing library.*",
 		".*The project cannot be built until build path errors are resolved.*"
