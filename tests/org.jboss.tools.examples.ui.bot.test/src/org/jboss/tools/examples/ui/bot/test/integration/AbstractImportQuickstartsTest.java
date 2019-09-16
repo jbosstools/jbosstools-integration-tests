@@ -447,7 +447,7 @@ public abstract class AbstractImportQuickstartsTest {
 		TreeItem projectItem;
 		String quickstartBaseName = quickstart.getName();
 		String quickstartBaseNameWF = "wildfly-" + quickstartBaseName;
-		String quickstartBaseNameJB = "jboss-" + quickstartBaseName;
+		String quickstartBaseNameJB = getQuickstartBaseNameJB(quickstartBaseName);
 
 		if (pe.containsProject(quickstartBaseName)) {
 			projectItem = pe.getProject(quickstartBaseName).getTreeItem();
@@ -460,6 +460,26 @@ public abstract class AbstractImportQuickstartsTest {
 		}
 		MavenProject project = new MavenProject(projectItem);
 		project.updateMavenProject();
+	}
+	
+	// JBIDE-26758
+	private String getQuickstartBaseNameJB(String quickstartBaseName) {
+		String quickstartBaseNameJB;
+		switch (quickstartBaseName) {
+			case "dist":
+				quickstartBaseNameJB = "quickstarts-dist";
+				break;
+			case "wicket-ear":
+				quickstartBaseNameJB = "wildfly-wicket-ear-parent";
+				break;
+			case "helloworld-classfiletransformer":
+				quickstartBaseNameJB = "helloworld-classfiletransformers";
+				break;
+			default:
+				quickstartBaseNameJB = "jboss-" + quickstartBaseName;
+				break;
+		}
+		return quickstartBaseNameJB;
 	}
 
 	protected void importQuickstart(Quickstart quickstart) throws NoProjectException {
