@@ -29,12 +29,13 @@ import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 
 public class ProjectHelper {
 	
-	public void addLibrariesIntoProject(String projectName, String libDir) {
+	public void addLibrariesIntoProject(String projectName, String libDir, boolean isJava11FacetActivated) {
 
 		File[] libraries = addLibraryIntoProjectFolder(projectName, new File(libDir));
 		if (libraries == null)
@@ -51,7 +52,10 @@ public class ProjectHelper {
 		new DefaultShell("Properties for "+projectName);
 		new DefaultTreeItem("Java Build Path").select();
 		new DefaultTabItem("Libraries").activate();
-
+		if (isJava11FacetActivated) {
+			new DefaultTree(1).getItem("Classpath").select();
+		}
+		
 		for (File library : libraries) {
 			new PushButton("Add JARs...").click();
 			new DefaultShell("JAR Selection");

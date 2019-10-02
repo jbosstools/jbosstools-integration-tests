@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.bot.test.wizard.cdi10;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
@@ -19,9 +18,7 @@ import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
-import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.wizard.template.ProjectWithCDITemplate;
 import org.junit.Before;
 
@@ -32,23 +29,24 @@ public class UtilityProjectWithCDITestCDI10 extends ProjectWithCDITemplate{
 
 	@RequirementRestriction
 	public static Collection<RequirementMatcher> getRestrictionMatcher() {
-		if (CDITestBase.isJavaLE8()) { 
-			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.AS()));
-		} else {
-			return Arrays.asList(
-					new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.AS()),
-					new RequirementMatcher(JRE.class, VERSION, "1.8"));
-		}
+		return getRestrictionMatcherCDI10();
 	}
 	
 	public UtilityProjectWithCDITestCDI10(){
+		CDIVersion = "1.0";
 		enabledByDefault = true;
 		PROJECT_NAME = "UtilityProject";
 		expectedProblemAdded = "Missing beans.xml file in the project";
 	}
 	
+	/*
+	 * Override of @Before annotation is needed because tests requires another type
+	 * of project to be created (not the same type of project which is created in
+	 * the CDITestBase @Before method)
+	 */
 	@Before
-	public void createUtilityProjectBeforeClass() {
+	@Override
+	public void prepareWorkspace() {
 		super.createUtilityProject();
 	}
 

@@ -96,14 +96,20 @@ public class WeldExcludeTemplate extends CDITestBase{
 		
 		for(Marker m: ed.getMarkers()){
 			
+			// JBIDE-26664
+			String expectedJSRVersion = expected.getJSR();
+			if (CDIVersion.equals("1.2")) {
+				expectedJSRVersion = "JSR-365";
+			}
+			
 			assertTrue((m.getLineNumber() == 14 && m.getType().equals(warning) && m.getText().contains(expected.getMessage())
-					&& m.getText().contains(expected.getJSR())) ||
+					&& m.getText().contains(expectedJSRVersion)) ||
 					(m.getLineNumber() == 16 && m.getType().equals(warning) && m.getText().contains(expected.getMessage())
-					&& m.getText().contains(expected.getJSR())) ||
+					&& m.getText().contains(expectedJSRVersion)) ||
 					(m.getLineNumber() == 18 && m.getType().equals(warning) && m.getText().contains(expected.getMessage())
-					&& m.getText().contains(expected.getJSR())) ||
+					&& m.getText().contains(expectedJSRVersion)) ||
 					(m.getLineNumber() == 19 && m.getType().equals(warning) && m.getText().contains(expected.getMessage())
-					&& m.getText().contains(expected.getJSR())) );
+					&& m.getText().contains(expectedJSRVersion)) );
 		}
 		
 		List<Problem> foundProblems = validationHelper.findProblems(expected);

@@ -34,7 +34,7 @@ public class WeldParametersAnnotationTemplate extends CDITestBase{
 	
 	@Before
 	public void addLibs(){
-		projectHelper.addLibrariesIntoProject(PROJECT_NAME, WELD_SE_JAR);
+		projectHelper.addLibrariesIntoProject(PROJECT_NAME, WELD_SE_JAR, isJava11FacetActivated);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(PROJECT_NAME).select();

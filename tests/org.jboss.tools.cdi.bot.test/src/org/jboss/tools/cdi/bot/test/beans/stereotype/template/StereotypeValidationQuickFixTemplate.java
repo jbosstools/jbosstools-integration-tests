@@ -43,7 +43,7 @@ public class StereotypeValidationQuickFixTemplate extends CDITestBase {
 	
 	@After
 	public void deleteProjects(){
-		deleteAllProjects();
+		cleanUp();
 	}
 	
 	// https://issues.jboss.org/browse/JBIDE-7630

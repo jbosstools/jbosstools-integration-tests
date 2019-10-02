@@ -12,11 +12,12 @@
     <packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<jbosstools.test.jre.8>${NATIVE_TOOLS}${SEP}${OPENJDK18}</jbosstools.test.jre.8>
-		<systemProperties>${integrationTestsSystemProperties} -Drd.config=target/classes/servers/requirements.json -Djbosstools.test.weld-se.home=${jbosstools.test.weld-se.home} -Djbosstools.test.weld-api.home=${jbosstools.test.weld-api.home} -Djbosstools.test.jre.8=${jbosstools.test.jre.8}</systemProperties>
+		<jbosstools.test.jre.11>${NATIVE_TOOLS}${SEP}${OPENJDK11}</jbosstools.test.jre.11>
+		<systemProperties>${integrationTestsSystemProperties} -Drd.config=target/classes/servers/requirements.json -Djbosstools.test.weld-se.home=${jbosstools.test.weld-se.home} -Djbosstools.test.weld-api.home=${jbosstools.test.weld-api.home} -Djbosstools.test.jre.8=${jbosstools.test.jre.8} -Djbosstools.test.jre.11=${jbosstools.test.jre.11}</systemProperties>
 		<surefire.timeout>14400</surefire.timeout>
 		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
 		<jbosstools.test.wildfly.13.home>${requirementsDirectory}/wildfly-13.0.0.Final</jbosstools.test.wildfly.13.home>
-		<jbosstools.test.wildfly.16.home>${requirementsDirectory}/wildfly-16.0.0.Final</jbosstools.test.wildfly.16.home>
+		<jbosstools.test.wildfly.18.home>${requirementsDirectory}/wildfly-18.0.0.Final</jbosstools.test.wildfly.18.home>
 		<jbosstools.test.weld-se.home>${requirementsDirectory}/weld/se/</jbosstools.test.weld-se.home>
 		<jbosstools.test.weld-api.home>${requirementsDirectory}/weld/api/</jbosstools.test.weld-api.home>
 	</properties>
@@ -131,7 +132,7 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>wildfly16</id>
+						<id>wildfly18</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>unpack</goal>
@@ -142,7 +143,7 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>16.0.0.Final</version>
+									<version>18.0.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>

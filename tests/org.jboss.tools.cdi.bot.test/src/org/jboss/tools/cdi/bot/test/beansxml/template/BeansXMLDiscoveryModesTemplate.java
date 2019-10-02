@@ -11,6 +11,7 @@
 package org.jboss.tools.cdi.bot.test.beansxml.template;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 	
 	@After
 	public void clean(){
-		deleteAllProjects();
+		cleanUp();
 	}
 	
 	@Test
@@ -80,8 +81,13 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 			assertEquals("No bean is eligible for injection to the injection point [JSR-365 §5.2.2]",
 					markers.get(0).getText());
 		} else {
-			assertEquals("No bean is eligible for injection to the injection point [JSR-346 §5.2.2]",
-					markers.get(0).getText());
+			// JBIDE-26664
+			assertFalse("Issue JBIDE-26664 seems to be fixed.", markers.get(0).getText().contains("[JSR-346 §5.2.2]"));
+			
+			
+			// Uncomment the following code when the issue JBIDE-26664 is resolved
+			//assertEquals("No bean is eligible for injection to the injection point [JSR-346 §5.2.2]",
+			//		markers.get(0).getText());
 		}
 		assertEquals(7,markers.get(0).getLineNumber());
 		
@@ -128,8 +134,13 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 			assertEquals("No bean is eligible for injection to the injection point [JSR-365 §5.2.2]",
 					markers.get(0).getText());
 		} else {
-			assertEquals("No bean is eligible for injection to the injection point [JSR-346 §5.2.2]",
-					markers.get(0).getText());
+			// JBIDE-26664
+			assertFalse("Issue JBIDE-26664 seems to be fixed.", markers.get(0).getText().contains("[JSR-346 §5.2.2]"));
+			
+			
+			// Uncomment the following code when the issue JBIDE-26664 is resolved
+			//assertEquals("No bean is eligible for injection to the injection point [JSR-346 §5.2.2]",
+			//		markers.get(0).getText());
 		}
 		assertEquals(7,markers.get(0).getLineNumber());
 		

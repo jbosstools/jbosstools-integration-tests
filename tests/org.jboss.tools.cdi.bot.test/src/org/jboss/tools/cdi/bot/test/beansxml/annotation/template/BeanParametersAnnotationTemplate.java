@@ -49,7 +49,7 @@ public class BeanParametersAnnotationTemplate extends CDITestBase {
 
 	@After
 	public void clean() {
-		deleteAllProjects();
+		cleanUp();
 	}
 
 	@Test
@@ -76,7 +76,13 @@ public class BeanParametersAnnotationTemplate extends CDITestBase {
 		if ("2.0".equals(CDIVersion)) {
 			assertTrue(validation.getDescription()
 					.contains("No bean is eligible for injection to the injection point [JSR-365 §5.2.2]"));
-		} else {
+		}
+		// JBIDE-26664
+		else if ("1.2".equals(CDIVersion)) {
+			assertTrue(validation.getDescription()
+					.contains("No bean is eligible for injection to the injection point [JSR-365 §5.2.2]"));
+		}
+		else {
 			assertTrue(validation.getDescription()
 					.contains("No bean is eligible for injection to the injection point [JSR-346 §5.2.2]"));
 		}

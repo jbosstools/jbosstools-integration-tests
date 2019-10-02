@@ -39,7 +39,7 @@ public abstract class BeansXMLBeansEditorTemplate extends CDITestBase {
 	
 	@After
 	public void cleanup(){
-		deleteAllProjects();
+		cleanUp();
 	}
 			
 	@Test

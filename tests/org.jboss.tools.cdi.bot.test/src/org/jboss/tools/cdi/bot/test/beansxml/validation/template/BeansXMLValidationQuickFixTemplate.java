@@ -58,7 +58,7 @@ public class BeansXMLValidationQuickFixTemplate extends CDITestBase {
 
 	@After
 	public void cleanup() {
-		deleteAllProjects();
+		cleanUp();
 	}
 	
 	@Test

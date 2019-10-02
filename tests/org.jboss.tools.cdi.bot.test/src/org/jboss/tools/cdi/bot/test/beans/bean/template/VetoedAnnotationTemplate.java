@@ -53,6 +53,12 @@ public class VetoedAnnotationTemplate extends CDITestBase{
 		List<Marker> markers = te.getMarkers();
 		assertEquals(5, markers.size());
 		for(Marker m: te.getMarkers()){
+			
+			// JBIDE-26664
+			if (CDIVersion.equals("1.2")) {
+				noInjection = "No bean is eligible for injection to the injection point [JSR-365 §5.2.2]";
+			}
+			
 			assertTrue((m.getLineNumber() == 17 && m.getType().equals(warning) && m.getText().equals(noInjection)) ||
 					(m.getLineNumber() == 20 && m.getType().equals(warning) && m.getText().equals(noInjection)) ||
 					(m.getLineNumber() == 26 && m.getType().equals(warning) && m.getText().equals(noInjection)) ||

@@ -21,7 +21,6 @@ import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
-import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.cdi.bot.test.beansxml.completion.template.BeansXMLCompletionTemplate;
 import org.junit.Before;
@@ -39,18 +38,16 @@ public class BeansXMLCompletionTestCDI10 extends BeansXMLCompletionTemplate {
 
 	@RequirementRestriction
 	public static Collection<RequirementMatcher> getRestrictionMatcher() {
-		if (isJavaLE8()) { 
-			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.AS()));
-		} else {
-			return Arrays.asList(
-					new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.AS()),
-					new RequirementMatcher(JRE.class, VERSION, "1.8"));
-		}
+		return getRestrictionMatcherCDI10();
 	}
 	
 	@Before
 	public void changeBeansXml(){
 		setBeansXmlTags(Arrays.asList("alternatives", "decorators", "interceptors"));
+	}
+	
+	public BeansXMLCompletionTestCDI10() {
+		CDIVersion = "1.0";
 	}
 	
 }
