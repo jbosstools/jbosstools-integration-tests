@@ -76,7 +76,13 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 		new WaitUntil(new EditorHasValidationMarkers(ed, 7));
 		markers = ed.getMarkers();
 		assertEquals(1,markers.size());
-		assertEquals("No bean is eligible for injection to the injection point [JSR-346 §5.2.2]",markers.get(0).getText());
+		if ("2.0".equals(CDIVersion)) {
+			assertEquals("No bean is eligible for injection to the injection point [JSR-365 §5.2.2]",
+					markers.get(0).getText());
+		} else {
+			assertEquals("No bean is eligible for injection to the injection point [JSR-346 §5.2.2]",
+					markers.get(0).getText());
+		}
 		assertEquals(7,markers.get(0).getLineNumber());
 		
 		ed = new TextEditor("Bean2.java");
@@ -118,7 +124,13 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 		new WaitUntil(new EditorHasValidationMarkers(ed,7));
 		markers = ed.getMarkers();
 		assertEquals(1,markers.size());
-		assertEquals("No bean is eligible for injection to the injection point [JSR-346 §5.2.2]",markers.get(0).getText());
+		if ("2.0".equals(CDIVersion)) {
+			assertEquals("No bean is eligible for injection to the injection point [JSR-365 §5.2.2]",
+					markers.get(0).getText());
+		} else {
+			assertEquals("No bean is eligible for injection to the injection point [JSR-346 §5.2.2]",
+					markers.get(0).getText());
+		}
 		assertEquals(7,markers.get(0).getLineNumber());
 		
 		ed = new TextEditor("Bean2.java");

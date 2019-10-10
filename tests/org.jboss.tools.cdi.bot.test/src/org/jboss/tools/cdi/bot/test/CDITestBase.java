@@ -26,9 +26,11 @@ import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.lookup.ShellLookup;
 import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.AbstractJavaWizardPage;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
-import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewInterfaceCreationWizard;
 import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
@@ -42,6 +44,8 @@ import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.cdi.ui.CDIProjectWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewInterceptorCreationWizard;
+import org.jboss.tools.cdi.reddeer.cdi.ui.NewStereotypeCreationWizard;
 import org.jboss.tools.cdi.reddeer.common.model.ui.editor.EditorPartWrapper;
 import org.jboss.tools.cdi.reddeer.uiutils.BeansHelper;
 import org.jboss.tools.cdi.reddeer.uiutils.BeansXMLHelper;
@@ -153,15 +157,38 @@ public class CDITestBase {
 		}
 	}
 	
-	protected void createClass(String project, String packageName, String className) {
+	protected void createNewClass(String project, String packageName, String className) {
+		NewClassCreationWizard c = new NewClassCreationWizard();
+		AbstractJavaWizardPage page = new AbstractJavaWizardPage(c) {};
+		createNewProjectFile(project, packageName, className, c, page);
+	}
+
+	protected void createNewInterface(String project, String packageName, String interfaceName) {
+		NewInterfaceCreationWizard c = new NewInterfaceCreationWizard();
+		AbstractJavaWizardPage page = new AbstractJavaWizardPage(c) {};
+		createNewProjectFile(project, packageName, interfaceName, c, page);
+	}
+
+	protected void createNewInterceptor(String project, String packageName, String interceptorName) {
+		NewInterceptorCreationWizard c = new NewInterceptorCreationWizard();
+		AbstractJavaWizardPage page = new AbstractJavaWizardPage(c) {};
+		createNewProjectFile(project, packageName, interceptorName, c, page);
+	}
+
+	protected void createNewStereotype(String project, String packageName, String stereotypeName) {
+		NewStereotypeCreationWizard c = new NewStereotypeCreationWizard();
+		AbstractJavaWizardPage page = new AbstractJavaWizardPage(c) {};
+		createNewProjectFile(project, packageName, stereotypeName, c, page);
+	}
+
+	protected void createNewProjectFile(String project, String packageName, String fileName, NewMenuWizard c,
+			AbstractJavaWizardPage page) {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.selectProjects(project);
-		NewClassCreationWizard c = new NewClassCreationWizard();
 		c.open();
-		NewClassWizardPage page = new NewClassWizardPage(c);
 		page.setPackage(packageName);
-		page.setName(className);
+		page.setName(fileName);
 		c.finish();
 	}
 
@@ -244,8 +271,8 @@ public class CDITestBase {
 	}
 	
 	public void setupProject(Map<Integer, String> valuesToInsertIntoTextEditor) {
-		createClass(PROJECT_NAME, "test", CDI_BEAN_1_JAVA_FILE_NAME);
-		createClass(PROJECT_NAME, "test", CDI_BEAN_2_JAVA_FILE_NAME);
+		createNewClass(PROJECT_NAME, "test", CDI_BEAN_1_JAVA_FILE_NAME);
+		createNewClass(PROJECT_NAME, "test", CDI_BEAN_2_JAVA_FILE_NAME);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(PROJECT_NAME).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, "test",
