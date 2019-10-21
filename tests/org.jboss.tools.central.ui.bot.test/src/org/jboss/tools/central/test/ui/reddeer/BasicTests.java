@@ -21,7 +21,6 @@ import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.core.matcher.WithTextMatcher;
-import org.eclipse.reddeer.eclipse.condition.BrowserContainsText;
 import org.eclipse.reddeer.eclipse.ui.browser.BrowserEditor;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
@@ -77,29 +76,23 @@ public class BasicTests {
 
 	@Test
 	public void learnAboutRedHatButton() {
-		centralBrowser.execute("$(\'a[href=\"http://developers.redhat.com/\"]\').get( 0 ).click()");
+		centralBrowser.execute("$(\'a[href=\"https://developers.redhat.com/\"]\').get( 0 ).click()");
 		BrowserEditor be = new BrowserEditor(new WithTextMatcher(new RegexMatcher(".*Red.*Hat.*Developer.*")));
 		assertTrue("The url in the browser has to be https://developers.redhat.com/.", be.getPageURL().equals("https://developers.redhat.com/"));
 		be.close();
 	}
 
 	@Test
-	public void catButton() {
-		centralBrowser.execute("$(\'a[href=\"http://tools.jboss.org/cat/\"]\').get( 0 ).click()");
-		new WaitUntil(new BrowserContainsText("JBoss Tools"));
-		new WaitUntil(new BrowserContainsText("Community Acceptance Testing (CAT)"));
-	}
-
-	@Test
 	public void archetypesArePresent() {
 		List<String> wizards = Arrays.asList(jsHelper.getWizards());
-		assertTrue(wizards.contains("HTML5 Project"));
 		assertTrue(wizards.contains("OpenShift Application"));
-		assertTrue(wizards.contains("AngularJS Forge"));
-		assertTrue(wizards.contains("Java EE Web Project"));
 		assertTrue(wizards.contains("Maven Project"));
+		assertTrue(wizards.contains("Launcher Application"));
 		// removed from central
 		//assertTrue(wizards.contains("Hybrid Mobile Project"));
+		//assertTrue(wizards.contains("HTML5 Project"));
+		//assertTrue(wizards.contains("AngularJS Forge"));
+		//assertTrue(wizards.contains("Java EE Web Project"));
 	}
 
 	@Test
@@ -115,12 +108,6 @@ public class BasicTests {
 			assertTrue("There should be at least one label", labels.length > 0);
 		}
 		jsHelper.clearSearch();
-	}
-
-	@Test
-	public void HTML5ProjectWizardCanBeEnvoked() {
-		jsHelper.clickWizard("HTML5 Project");
-		new DefaultShell("New Project Example").close();
 	}
 
 	@Test

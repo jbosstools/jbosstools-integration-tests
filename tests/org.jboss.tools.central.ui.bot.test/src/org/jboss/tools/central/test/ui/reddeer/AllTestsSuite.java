@@ -22,7 +22,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
-	ArchetypesTest.class,
 	HTML5Parameterized.class,
 	LauncherApplicationTest.class,
 	BasicTests.class,

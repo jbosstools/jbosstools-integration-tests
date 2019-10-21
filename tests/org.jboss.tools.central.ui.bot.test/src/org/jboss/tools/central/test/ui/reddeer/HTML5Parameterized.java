@@ -16,6 +16,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -42,8 +43,11 @@ import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.Server;
 import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServerModule;
 import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
 import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerState;
+import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.swt.api.TreeItem;
 import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
@@ -82,6 +86,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
  *
  */
 
+@JRE(cleanup = true)
 @RunWith(RedDeerSuite.class)
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
 @JBossServer(state=ServerRequirementState.RUNNING)
@@ -100,6 +105,7 @@ public class HTML5Parameterized {
 	private static JavaScriptHelper jsHelper = JavaScriptHelper.getInstance();
 	private static Logger log = new Logger(HTML5Parameterized.class);
 	private ProjectExplorer projectExplorer;
+	protected static final String VERSION = "version";
 
 	@Parameters(name = "{0}")
 	public static Collection<CentralProject> data() {
@@ -139,6 +145,11 @@ public class HTML5Parameterized {
 				break;
 			}
 		}
+	}
+	
+	@RequirementRestriction
+	public static Collection<RequirementMatcher> getRestrictionMatcher() {
+		return Arrays.asList(new RequirementMatcher(JRE.class, VERSION, "1.8"));
 	}
 
 	@BeforeClass
