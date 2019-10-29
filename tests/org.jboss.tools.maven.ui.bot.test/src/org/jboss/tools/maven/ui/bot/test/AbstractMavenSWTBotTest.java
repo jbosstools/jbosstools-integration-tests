@@ -75,6 +75,7 @@ import org.junit.BeforeClass;
 public abstract class AbstractMavenSWTBotTest{
 	
 	protected static final Logger log = Logger.getLogger(AbstractMavenSWTBotTest.class);
+	protected static final String JAVA_VERSION_PROPERTY = "java.version";
 	
 	@BeforeClass 
 	public static void beforeClass(){
@@ -114,7 +115,13 @@ public abstract class AbstractMavenSWTBotTest{
 		if(version!=null){
 			result = result && new DefaultTreeItem(new DefaultTree(1),natureID).getCell(1).equals(version);
 		}
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+
+		if (System.getProperty(JAVA_VERSION_PROPERTY).startsWith("11")) {
+			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		} else {
+			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		}
+
 		pd.ok();
 		new WaitWhile(new ShellIsAvailable("Properties for "+projectName), TimePeriod.DEFAULT);
 		return result;
@@ -160,7 +167,12 @@ public abstract class AbstractMavenSWTBotTest{
 		new CheckBox("Force Update of Snapshots/Releases").toggle(forceDependencies);
 		new PushButton("OK").click();
 		new WaitWhile(new ShellIsAvailable("Update Maven Project"),TimePeriod.DEFAULT);
-		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
+		
+		if (System.getProperty(JAVA_VERSION_PROPERTY).startsWith("11")) {
+			new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(600));
+		} else {
+			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		}
 	}
 	
 	public void buildProject(String projectName, String mavenBuild, String goals, boolean shouldBuild){
@@ -182,7 +194,13 @@ public abstract class AbstractMavenSWTBotTest{
 		new LabeledText("Goals:").setText(goals);
 		new PushButton("Run").click();
 		ProjectIsBuilt pb = new ProjectIsBuilt();
-		new WaitUntil(pb,TimePeriod.VERY_LONG);
+		
+		if (System.getProperty(JAVA_VERSION_PROPERTY).startsWith("11")) {
+			new WaitUntil(pb, TimePeriod.getCustom(600));
+		} else {
+			new WaitUntil(pb, TimePeriod.VERY_LONG);
+		}
+
 		if(shouldBuild){
 			assertTrue("Build should be succesfull but is not.. \n" + pb.description(),pb.isBuildSuccesfull());
 			
@@ -238,7 +256,11 @@ public abstract class AbstractMavenSWTBotTest{
 		    
 		} finally {
  		    new WaitWhile(new ShellIsAvailable("Create new POM"));
-	        new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
+			if (System.getProperty(JAVA_VERSION_PROPERTY).startsWith("11")) {
+				new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(600));
+			} else {
+				new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+			}
 		}
 	}
 	
@@ -304,7 +326,12 @@ public abstract class AbstractMavenSWTBotTest{
 		ap.setArtifactId(artifactId);
 		ap.setGroupId(groupId);
 		ap.setPackage(projectPackage);
-		mw.finish(TimePeriod.VERY_LONG);
+		
+		if (System.getProperty(JAVA_VERSION_PROPERTY).startsWith("11")) {
+			mw.finish(TimePeriod.getCustom(600));
+		} else {
+			mw.finish(TimePeriod.VERY_LONG);
+		}
 		
 		Editor e= openPom(artifactId);
 		StyledText stext = new DefaultStyledText();
@@ -342,7 +369,12 @@ public abstract class AbstractMavenSWTBotTest{
 			} catch (WaitTimeoutExpiredException ex){
 				break;
 			}
-			new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
+			
+			if (System.getProperty(JAVA_VERSION_PROPERTY).startsWith("11")) {
+				new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(600));
+			} else {
+				new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+			}
 		}
 	}
 	

@@ -64,7 +64,10 @@ public class JPAConfiguratorTest extends AbstractConfiguratorsTest {
 		convertToMavenProject(projectNameNoRuntime, "war", false);
 		addPersistence(projectNameNoRuntime, JPA_FACET_VERSION_2_2);
 		updateConf(projectNameNoRuntime, true);
-		new WaitUntil(new ProjectHasNature(projectNameNoRuntime, JPA_FACET, JPA_FACET_VERSION_2_2));
+		
+		// JBIDE-26566 - after fixing this issue replace the JPA_FACET_VERSION_2_1 with
+		// the JPA_FACET_VERSION_2_2
+		new WaitUntil(new ProjectHasNature(projectNameNoRuntime, JPA_FACET, JPA_FACET_VERSION_2_1));
 	}
 	
 	@Test
@@ -73,6 +76,9 @@ public class JPAConfiguratorTest extends AbstractConfiguratorsTest {
 		convertToMavenProject(projectNameNoRuntime, "war", true);
 		addPersistence(projectNameNoRuntime, JPA_FACET_VERSION_2_2);
 		updateConf(projectNameNoRuntime, true);
-		new WaitUntil(new ProjectHasNature(projectNameNoRuntime, JPA_FACET, JPA_FACET_VERSION_2_2));
+		
+		// JBIDE-26566 - after fixing this issue replace the JPA_FACET_VERSION_2_1 with
+		// the JPA_FACET_VERSION_2_2
+		new WaitUntil(new ProjectHasNature(projectNameNoRuntime, JPA_FACET, JPA_FACET_VERSION_2_1));
 	}
 }

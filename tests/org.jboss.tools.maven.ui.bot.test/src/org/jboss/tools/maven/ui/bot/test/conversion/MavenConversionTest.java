@@ -190,7 +190,8 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 			new PushButton("Cancel").click();
 		}
 		new PushButton("Skip Dependency Conversion").click();
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		waitWhileJobIsRunning(TimePeriod.VERY_LONG, TimePeriod.getCustom(600));
+
 		if (!shellIsOpened) {
 			fail(errorMsg);
 		}
@@ -205,7 +206,13 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new ContextMenuItem("Configure","Convert to Maven Project").select();
 		new DefaultShell("Create new POM");
 		new PushButton("Finish").click();
-		new WaitUntil(new ShellIsAvailable("Convert to Maven Dependencies"), TimePeriod.VERY_LONG);
+		
+		if (System.getProperty(JAVA_VERSION_PROPERTY).startsWith("11")) {
+			new WaitUntil(new ShellIsAvailable("Convert to Maven Dependencies"), TimePeriod.getCustom(600));
+		} else {
+			new WaitUntil(new ShellIsAvailable("Convert to Maven Dependencies"), TimePeriod.VERY_LONG);
+		}
+		
 		new WaitUntil(new ControlIsEnabled(new PushButton("Finish")), TimePeriod.VERY_LONG);
 	}
 		
@@ -226,6 +233,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new WaitUntil(new ProblemExists(ProblemType.ERROR),TimePeriod.DEFAULT,false);
 		ProblemsView pw = new ProblemsView();
 		pw.open();
+		
 		if(pw.getProblems(ProblemType.ERROR).size() > 0){
 			updateConf(WEB_PROJECT_NAME,true);
 			try{
@@ -247,7 +255,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 			} catch (WaitTimeoutExpiredException ex){
 				break;
 			}
-			new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
+			waitWhileJobIsRunning(TimePeriod.VERY_LONG, TimePeriod.getCustom(600));
 		}
 	}
 
@@ -262,5 +270,13 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 			log.debug("  " + i);
 		}
 		return libs;
+	}
+	
+	private void waitWhileJobIsRunning(TimePeriod timeoutForJava8, TimePeriod timeoutForJava11) {
+		if (System.getProperty(JAVA_VERSION_PROPERTY).startsWith("11")) {
+			new WaitWhile(new JobIsRunning(), timeoutForJava11);
+		} else {
+			new WaitWhile(new JobIsRunning(), timeoutForJava8);
+		}
 	}
 }

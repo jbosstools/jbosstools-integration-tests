@@ -98,7 +98,11 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		} else {
 			efp.setTargetRuntime(runtime);
 		}
-		ejb.finish(TimePeriod.VERY_LONG);
+		if (System.getProperty("java.version").startsWith("11")) {
+			ejb.finish(TimePeriod.getCustom(600));
+		} else {
+			ejb.finish(TimePeriod.VERY_LONG);
+		}
 	}
 	
 	public void addFacesConf(String projectName){
