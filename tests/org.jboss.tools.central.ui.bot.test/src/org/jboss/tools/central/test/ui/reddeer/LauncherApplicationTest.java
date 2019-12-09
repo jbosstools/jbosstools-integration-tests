@@ -31,9 +31,11 @@ import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.central.reddeer.api.ExamplesOperator;
+import org.jboss.tools.central.reddeer.utils.CentralUtils;
 import org.jboss.tools.common.launcher.reddeer.wizards.NewLauncherProjectWizard;
 import org.jboss.tools.common.launcher.reddeer.wizards.NewLauncherProjectWizardPage;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -51,6 +53,8 @@ public class LauncherApplicationTest {
 	private static final String CENTRAL_LABEL = "Red Hat Central";
 	private static final Logger log = Logger.getLogger(ExamplesOperator.class);
 	private static final String BLACKLIST_ERRORS_REGEXES_FILE = "resources/blacklist-launcher-application-errors-regexes.json";
+	private JSONObject blacklistErrorsFileContents;
+	
 
 	@BeforeClass
 	public static void setup() {
@@ -169,7 +173,7 @@ public class LauncherApplicationTest {
 		boolean atLeastOneErrorFound = false;
 
 		if (!errors.isEmpty()) {
-			ArchetypesTest.loadBlacklistErrorsFile(BLACKLIST_ERRORS_REGEXES_FILE);
+			this.blacklistErrorsFileContents = CentralUtils.loadBlacklistErrorsFile(BLACKLIST_ERRORS_REGEXES_FILE);
 			String failureMessage = "There are errors after importing project";
 			for (Problem problem : errors) {
 
@@ -190,7 +194,7 @@ public class LauncherApplicationTest {
 	 * Checks if the given error description is in the regex blacklist
 	 */
 	private boolean isThisErrorInBlacklist(String errorDescription) {
-		JSONArray regexArray = (JSONArray)(ArchetypesTest.blacklistErrorsFileContents).get("LauncherApplicationTest");
+		JSONArray regexArray = (JSONArray)(blacklistErrorsFileContents).get("LauncherApplicationTest");
 
 		for (int i=0; i<regexArray.size(); i++) {
 			if (Pattern.compile((String)regexArray.get(i)).matcher(errorDescription).find()) {

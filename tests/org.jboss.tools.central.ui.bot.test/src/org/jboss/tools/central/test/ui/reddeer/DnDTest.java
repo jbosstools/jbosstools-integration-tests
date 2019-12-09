@@ -60,7 +60,7 @@ public class DnDTest {
 	@Test
 	public void centralBrowserDnDTestPositive() {
 		dropStringToCentralBrowser(
-				"http://download.jboss.org/jbosstools/central/install?connectors=org.tigris.subversion.subclipse.mylyn,org.jboss.tools.arquillian,org.eclipse.m2e");
+				"https://download.jboss.org/jbosstools/central/install?connectors=org.tigris.subversion.subclipse.mylyn,org.jboss.tools.arquillian,org.eclipse.m2e");
 		assertThat("Installation should have been started", installationStartedCheck());
 	}
 

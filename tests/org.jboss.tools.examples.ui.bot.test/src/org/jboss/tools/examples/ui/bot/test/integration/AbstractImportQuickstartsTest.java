@@ -18,18 +18,11 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 import org.eclipse.reddeer.common.exception.RedDeerException;
@@ -40,12 +33,10 @@ import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.exception.CoreLayerException;
-import org.eclipse.reddeer.core.util.FileUtil;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasNoChange;
 import org.eclipse.reddeer.eclipse.core.resources.DefaultProject;
 import org.eclipse.reddeer.eclipse.core.resources.MavenProject;
 import org.eclipse.reddeer.eclipse.core.resources.Project;
-import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
 import org.eclipse.reddeer.eclipse.m2e.core.ui.preferences.MavenSettingsPreferencePage;
 import org.eclipse.reddeer.eclipse.ui.browser.BrowserEditor;
 import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
@@ -71,9 +62,12 @@ import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerModule;
 import org.jboss.tools.central.reddeer.api.ExamplesOperator;
+import org.jboss.tools.central.reddeer.utils.CentralUtils;
 import org.jboss.tools.maven.reddeer.wizards.MavenImportWizard;
 import org.jboss.tools.maven.reddeer.wizards.MavenImportWizard.MavenImportWizardException;
 import org.jboss.tools.maven.reddeer.wizards.MavenImportWizardFirstPage;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -263,8 +257,8 @@ public abstract class AbstractImportQuickstartsTest {
 
 	protected void runQuickstarts(Quickstart qstart, String serverName, String blacklistFile,
 			String blacklistErrorsFile) {
-		loadBlacklistFile(blacklistFile);
-		loadBlacklistErrorsFile(blacklistErrorsFile);
+		this.blacklistFileContents = CentralUtils.loadBlacklistFile(blacklistFile);
+		this.blacklistErrorsFileContents = CentralUtils.loadBlacklistErrorsFile(blacklistErrorsFile);
 		if (!blacklistFileContents.contains(qstart.getName())) {
 			try {
 				importQuickstart(qstart);
@@ -305,33 +299,6 @@ public abstract class AbstractImportQuickstartsTest {
 				checkForErrors(qstart, errorsToIgnoreList);
 				checkErrorLog(qstart, errorsToIgnoreList);
 			}
-		}
-	}
-
-	private void loadBlacklistFile(String blacklistFile) {
-		String pathToFile = "";
-		try {
-			pathToFile = new File(blacklistFile).getCanonicalPath();
-			blacklistFileContents = FileUtil.readFile(pathToFile);
-		} catch (IOException ex) {
-			fail("Blacklist file not found! Path is: " + pathToFile);
-		}
-	}
-
-	// https://www.mkyong.com/java/json-simple-example-read-and-write-json
-	private void loadBlacklistErrorsFile(String blacklisterrorsFile) {
-		if (blacklisterrorsFile.isEmpty()) {
-			return;
-		}
-		String pathToFile = "";
-		try {
-			pathToFile = new File(blacklisterrorsFile).getCanonicalPath();
-			JSONParser parser = new JSONParser();
-			blacklistErrorsFileContents = (JSONObject) parser.parse(new FileReader(pathToFile));
-		} catch (IOException ex) {
-			fail("Blacklist file not found! Path is: " + pathToFile);
-		} catch (ParseException e) {
-			fail("ParseException: unable to parse file at ath is: " + pathToFile);
 		}
 	}
 

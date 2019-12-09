@@ -23,7 +23,6 @@ import org.eclipse.reddeer.swt.impl.toolbar.DefaultToolItem;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
-import org.jboss.tools.central.reddeer.api.ExamplesOperator;
 import org.jboss.tools.central.reddeer.api.JavaScriptHelper;
 import org.jboss.tools.central.reddeer.wizards.NewProjectExamplesWizardDialogCentral;
 import org.jboss.tools.central.test.ui.reddeer.internal.ErrorsReporter;
@@ -48,7 +47,6 @@ public class HTML5Test {
 	private Logger log = new Logger(this.getClass());
 	private ProjectExplorer projectExplorer;
 	private static ErrorsReporter reporter = ErrorsReporter.getInstance();
-	private ExamplesOperator operator = ExamplesOperator.getInstance();
 	private JavaScriptHelper jsHelper = JavaScriptHelper.getInstance();
 
 	@BeforeClass
