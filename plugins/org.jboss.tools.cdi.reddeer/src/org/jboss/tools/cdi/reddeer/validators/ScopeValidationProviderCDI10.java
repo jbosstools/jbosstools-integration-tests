@@ -17,11 +17,10 @@ import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 
 public class ScopeValidationProviderCDI10 extends AbstractValidationProvider {
-	
-	private final String jsr = "JSR-299"; 
 
 	public ScopeValidationProviderCDI10() {
 		super();
+		jsr = "JSR-299"; 
 	}
 	
 	@Override

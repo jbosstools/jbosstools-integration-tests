@@ -23,32 +23,31 @@ import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
  */
 public class StereotypeValidationProviderCDI20 extends AbstractValidationProvider {
 	
-	private static final String JSR = "JSR-365"; 
-	
 	public StereotypeValidationProviderCDI20() {
 		super();
+		jsr = "JSR-365";
 	}
 	
 	@Override
 	void init() {
 		
 		problems.add(new ValidationProblem(ProblemType.WARNING, ValidationType.TARGET, 
-				"Stereotype annotation type must be annotated with one of", JSR, null));
+				"Stereotype annotation type must be annotated with one of", jsr, null));
 		
 		problems.add(new ValidationProblem(ProblemType.WARNING, ValidationType.RETENTION,
-				"Stereotype annotation type must be annotated with @Retention(RUNTIME)", JSR, 
+				"Stereotype annotation type must be annotated with @Retention(RUNTIME)", jsr, 
 				Arrays.asList("to @Retention(RUNTIME)")));
 		
 		problems.add(new ValidationProblem(ProblemType.WARNING, ValidationType.NO_RETENTION,
-				"Stereotype annotation type must be annotated with @Retention(RUNTIME)", JSR, 
+				"Stereotype annotation type must be annotated with @Retention(RUNTIME)", jsr, 
 				Arrays.asList("Add annotation @Retention(RUNTIME) to class")));
 		
 		problems.add(new ValidationProblem(ProblemType.WARNING, ValidationType.TYPED,
-				"A stereotype should not be annotated @Typed", JSR, Arrays.asList(
+				"A stereotype should not be annotated @Typed", jsr, Arrays.asList(
 				"Delete annotation @Typed")));
 		
 		problems.add(new ValidationProblem(ProblemType.ERROR, ValidationType.NAMED, 
-				"Stereotype declares a non-empty @Named annotation", JSR, Arrays.asList(
+				"Stereotype declares a non-empty @Named annotation", jsr, Arrays.asList(
 				"to @Named")));
 						
 	}

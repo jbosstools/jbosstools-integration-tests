@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Red Hat, Inc.
+ * Copyright (c) 2010 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -16,16 +16,11 @@ import java.util.Arrays;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 
-/** 
- * 
- * @author zcervink@redhat.com
- * 
- */
-public class ScopeValidationProviderCDI20 extends AbstractValidationProvider {
+public class ScopeValidationProviderCDI12 extends AbstractValidationProvider {
 
-	public ScopeValidationProviderCDI20() {
+	public ScopeValidationProviderCDI12() {
 		super();
-		jsr = "JSR-365"; 
+		jsr = "JSR-346"; 
 	}
 	
 	@Override
