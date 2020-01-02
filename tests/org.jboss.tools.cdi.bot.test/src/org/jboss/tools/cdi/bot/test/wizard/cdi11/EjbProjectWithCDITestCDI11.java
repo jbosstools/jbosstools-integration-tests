@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.bot.test.wizard.cdi11;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
@@ -19,9 +18,7 @@ import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
-import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.wizard.template.ProjectWithCDITemplate;
 import org.junit.Before;
 
@@ -32,24 +29,23 @@ public class EjbProjectWithCDITestCDI11 extends ProjectWithCDITemplate{
 
 	@RequirementRestriction
 	public static Collection<RequirementMatcher> getRestrictionMatcher() {
-		if (CDITestBase.isJavaLE8()) { 
-			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
-					new RequirementMatcher(JBossServer.class, VERSION, "13"));
-		} else {
-			return Arrays.asList(
-					new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
-					new RequirementMatcher(JBossServer.class, VERSION, "13"),
-					new RequirementMatcher(JRE.class, VERSION, "1.8"));
-		}
+		return getRestrictionMatcherCDI11();
 	}
 	
 	public EjbProjectWithCDITestCDI11(){
 		enabledByDefault = true;
 		PROJECT_NAME = "EjbProject";
+		CDIVersion = "1.2";
 	}
 	
+	/*
+	 * Override of @Before annotation is needed because tests requires another type
+	 * of project to be created (not the same type of project which is created in
+	 * the CDITestBase @Before method)
+	 */
 	@Before
-	public void createEjbProjectBeforeClass() {
+	@Override
+	public void prepareWorkspace() {
 		super.createEjbProject();
 	}
 

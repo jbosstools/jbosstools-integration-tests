@@ -91,12 +91,18 @@ public class ExcludeBeanTemplate extends CDITestBase{
 		
 		for(Marker m: ed.getMarkers()){
 			
+			// JBIDE-26664
+			String expectedJSRVersion = expected.getJSR();
+			if (CDIVersion.equals("1.2")) {
+				expectedJSRVersion = "JSR-365";
+			}
+			
 			assertTrue((m.getLineNumber() == 16 && m.getType().equals(warning) && m.getText().contains(expected.getMessage())
-					&& m.getText().contains(expected.getJSR())) ||
+					&& m.getText().contains(expectedJSRVersion)) ||
 					(m.getLineNumber() == 18 && m.getType().equals(warning) && m.getText().contains(expected.getMessage())
-					&& m.getText().contains(expected.getJSR())) ||
+					&& m.getText().contains(expectedJSRVersion)) ||
 					(m.getLineNumber() == 19 && m.getType().equals(warning) && m.getText().contains(expected.getMessage())
-					&& m.getText().contains(expected.getJSR())) );
+					&& m.getText().contains(expectedJSRVersion)) );
 		}
 		
 		ProblemsView pw = new ProblemsView();

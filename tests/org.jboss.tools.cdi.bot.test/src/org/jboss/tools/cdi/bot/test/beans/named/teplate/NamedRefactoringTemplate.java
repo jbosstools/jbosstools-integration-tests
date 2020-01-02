@@ -44,7 +44,7 @@ public abstract class NamedRefactoringTemplate extends CDITestBase {//extends JS
 
 	@After
 	public void waitForJobs() {
-		deleteAllProjects();
+		cleanUp();
 	}
 	
 	@Test

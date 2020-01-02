@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.bot.test.beans.bean.cdi11;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
@@ -19,7 +18,6 @@ import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
-import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.cdi.bot.test.beans.bean.template.BeanValidationQuickFixTemplate;
 import org.jboss.tools.cdi.reddeer.validators.BeanValidationProvider;
@@ -32,15 +30,11 @@ public class BeanValidationQuickFixTestCDI11 extends BeanValidationQuickFixTempl
 
 	@RequirementRestriction
 	public static Collection<RequirementMatcher> getRestrictionMatcher() {
-		if (isJavaLE8()) { 
-			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
-					new RequirementMatcher(JBossServer.class, VERSION, "13"));
-		} else {
-			return Arrays.asList(
-					new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
-					new RequirementMatcher(JBossServer.class, VERSION, "13"),
-					new RequirementMatcher(JRE.class, VERSION, "1.8"));
-		}
+		return getRestrictionMatcherCDI11();
+	}
+	
+	public BeanValidationQuickFixTestCDI11() {
+		CDIVersion = "1.2";
 	}
 
 	@Before

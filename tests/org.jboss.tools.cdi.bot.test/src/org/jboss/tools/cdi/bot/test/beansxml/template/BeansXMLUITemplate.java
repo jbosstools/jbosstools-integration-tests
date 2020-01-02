@@ -39,7 +39,7 @@ public class BeansXMLUITemplate extends CDITestBase {
 
 	@After
 	public void cleanup() {
-		deleteAllProjects();
+		cleanUp();
 	}
 
 	@Test
@@ -82,7 +82,13 @@ public class BeansXMLUITemplate extends CDITestBase {
 	public void testBeansVersion() {
 		EditorPartWrapper beans = beansXMLHelper.openBeansXml(PROJECT_NAME);
 		beans.activateTreePage();
-		assertEquals(CDIVersion, beans.getVersion());
+		
+		// JBIDE-26947
+		if (CDIVersion.equals("1.2")) {
+			assertEquals("1.1", beans.getVersion());
+		} else {
+			assertEquals(CDIVersion, beans.getVersion());
+		}
 	}
 
 	@Test

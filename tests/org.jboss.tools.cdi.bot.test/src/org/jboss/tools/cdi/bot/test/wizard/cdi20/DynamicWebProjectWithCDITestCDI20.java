@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.bot.test.wizard.cdi20;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
@@ -19,9 +18,7 @@ import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
-import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.bot.test.wizard.template.ProjectWithCDITemplate;
 import org.junit.Before;
 
@@ -37,15 +34,7 @@ public class DynamicWebProjectWithCDITestCDI20 extends ProjectWithCDITemplate{
 
 	@RequirementRestriction
 	public static Collection<RequirementMatcher> getRestrictionMatcher() {
-		if (CDITestBase.isJavaLE8()) { 
-			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
-					new RequirementMatcher(JBossServer.class, VERSION, "16"));
-		} else {
-			return Arrays.asList(
-					new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
-					new RequirementMatcher(JBossServer.class, VERSION, "16"),
-					new RequirementMatcher(JRE.class, VERSION, "1.8"));
-		}
+		return getRestrictionMatcherCDI20();
 	}
 	
 	public DynamicWebProjectWithCDITestCDI20(){
@@ -53,9 +42,15 @@ public class DynamicWebProjectWithCDITestCDI20 extends ProjectWithCDITemplate{
 		CDIVersion = "2.0";
 	}
 	
+	/*
+	 * Override of @Before annotation is needed because tests requires another type
+	 * of project to be created (not the same type of project which is created in
+	 * the CDITestBase @Before method)
+	 */
 	@Before
-	public void createWebProjectBeforeClass() {
-		super.createWebProject();
+	@Override
+	public void prepareWorkspace() {
+		super.createDynamicWebProject();
 	}
 
 }

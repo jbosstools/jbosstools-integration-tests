@@ -45,7 +45,7 @@ public class BeanDiscoveryInArchivesTemplate extends CDITestBase {
 	
 	@After
 	public void clean() {
-		deleteAllProjects();
+		cleanUp();
 	}
 	
 	public void validationOfBeanDiscoveryInExplicitArchives() {
@@ -65,7 +65,13 @@ public class BeanDiscoveryInArchivesTemplate extends CDITestBase {
 		assertEquals(1, markers.size());
 		Marker validation = markers.get(0);
 		assertEquals(validation.getLineNumber(), 8);
-		String jsrVersion = "2.0".equals(CDIVersion) ? "JSR-365" : "JSR-346";
+		String jsrVersion = "2.0".equals(CDIVersion) ? JSR_365 : "JSR-346";
+		
+		// JBIDE-26664
+		if (CDIVersion.equals("1.2")) {
+			jsrVersion = JSR_365;
+		}
+		
 		assertTrue(validation.getText().contains("No bean is eligible for injection to the injection point [" + jsrVersion + " §5.2.2]"));
 	}
 	
@@ -84,7 +90,13 @@ public class BeanDiscoveryInArchivesTemplate extends CDITestBase {
 		assertEquals(1, markers.size());
 		Marker validation = markers.get(0);
 		assertEquals(validation.getLineNumber(), 7);
-		String jsrVersion = "2.0".equals(CDIVersion) ? "JSR-365" : "JSR-346";
+		String jsrVersion = "2.0".equals(CDIVersion) ? JSR_365 : "JSR-346";
+		
+		// JBIDE-26664
+		if (CDIVersion.equals("1.2")) {
+			jsrVersion = JSR_365;
+		}
+		
 		assertTrue(validation.getText().contains("No bean is eligible for injection to the injection point [" + jsrVersion + " §5.2.2]"));
 	}
 }

@@ -68,7 +68,7 @@ public abstract class BeansXMLCompletionTemplate extends CDITestBase {
 	
 	@After
 	public void cleanup(){
-		deleteAllProjects();
+		cleanUp();
 	}
 	
 	protected void setBeansXmlTags(List<String> tags){
@@ -197,8 +197,7 @@ public abstract class BeansXMLCompletionTemplate extends CDITestBase {
 
 	}
 	
-	@Test
-	public void testTrimUiSupport() {
+	protected void testTrimUiSupport() {
 		addTheTrimTagToBeansXmlFile();
 
 		ProblemsView pv = new ProblemsView();
@@ -214,8 +213,7 @@ public abstract class BeansXMLCompletionTemplate extends CDITestBase {
 		beansEditor.close();
 	}
 	
-	@Test
-	public void testTrimDiscoverAllScopeAnnotations() {
+	protected void testTrimDiscoverAllScopeAnnotations() {
 		addTheTrimTagToBeansXmlFile();
 
 		String[] annotationsThatShouldBeDiscovered = { "ApplicationScoped", "SessionScoped", "ConversationScoped",
@@ -235,8 +233,7 @@ public abstract class BeansXMLCompletionTemplate extends CDITestBase {
 		}
 	}
 	
-	@Test
-	public void testTrimDiscoverAllBeanDefinitionAnnotations() {
+	protected void testTrimDiscoverAllBeanDefinitionAnnotations() {
 		addTheTrimTagToBeansXmlFile();
 
 		createNewClass(PROJECT_NAME, TEST_PACKAGE_NAME, "Test");

@@ -46,7 +46,7 @@ public class WeldBuiltInContextsTemplate extends CDITestBase{
 		jp.setPackage("test");
 		jp.setName("BuiltInContexts");
 		jd.finish();
-		projectHelper.addLibrariesIntoProject(PROJECT_NAME, WELD_API_JAR);
+		projectHelper.addLibrariesIntoProject(PROJECT_NAME, WELD_API_JAR, isJava11FacetActivated);
 		editResourceUtil.replaceClassContentByResource("BuiltInContexts.java", readFile("resources/cdi11/BuiltInContexts.jav_"), false);
 	}
 	
@@ -61,6 +61,9 @@ public class WeldBuiltInContextsTemplate extends CDITestBase{
 			String JSRspec = "[JSR-346 §5.2.2]";
 			if("1.0".equals(CDIVersion)){
 				JSRspec = "[JSR-299 §5.2.1]";
+			} else if ("1.2".equals(CDIVersion)) {
+				// JBIDE-26664
+				JSRspec = "[JSR-365 §5.2.2]";
 			} else if ("2.0".equals(CDIVersion)) {
 				JSRspec = "[JSR-365 §5.2.2]";
 			}

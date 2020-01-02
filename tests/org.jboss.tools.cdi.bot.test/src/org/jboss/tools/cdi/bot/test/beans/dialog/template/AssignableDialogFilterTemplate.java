@@ -40,7 +40,7 @@ public class AssignableDialogFilterTemplate extends CDITestBase {
 	
 	@After
 	public void deleteAll(){
-		deleteAllProjects();
+		cleanUp();
 	}
 	
 	private void createWithContent(String name){

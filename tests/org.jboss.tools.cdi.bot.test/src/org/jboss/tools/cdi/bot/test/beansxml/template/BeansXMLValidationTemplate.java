@@ -59,7 +59,7 @@ public abstract class BeansXMLValidationTemplate extends CDITestBase {
 	
 	@After
 	public void cleanup(){
-		deleteAllProjects();
+		cleanUp();
 	}
 	
 	@Test

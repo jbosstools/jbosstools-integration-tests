@@ -65,7 +65,7 @@ public abstract class DecoratorFromWebBeanTemplate extends CDITestBase {
 
 	@After
 	public void deleteProjects() {
-		deleteAllProjects();
+		cleanUp();
 	}
 	
 	@Test

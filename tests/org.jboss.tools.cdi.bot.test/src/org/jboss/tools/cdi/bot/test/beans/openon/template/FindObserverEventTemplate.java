@@ -72,7 +72,7 @@ public abstract class FindObserverEventTemplate extends CDITestBase {
 	
 	@After
 	public void clean(){
-		deleteAllProjects();
+		cleanUp();
 	}
 	
 	@Test

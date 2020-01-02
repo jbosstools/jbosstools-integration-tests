@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.bot.test.weld.cdi10;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
@@ -19,7 +18,6 @@ import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
-import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.cdi.bot.test.weld.template.WeldExcludeTemplate;
 import org.jboss.tools.cdi.reddeer.validators.BeanValidationProvider;
@@ -32,18 +30,16 @@ public class WeldExcludeTestCDI10 extends WeldExcludeTemplate{
 
 	@RequirementRestriction
 	public static Collection<RequirementMatcher> getRestrictionMatcher() {
-		if (isJavaLE8()) { 
-			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.AS()));
-		} else {
-			return Arrays.asList(
-					new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.AS()),
-					new RequirementMatcher(JRE.class, VERSION, "1.8"));
-		}
+		return getRestrictionMatcherCDI10();
 	}
 	
 	@Before
 	public void setValidationProvider(){
 		validationProvider = new BeanValidationProvider("JSR-299");
+	}
+	
+	public WeldExcludeTestCDI10() {
+		CDIVersion = "1.0";
 	}
 
 }

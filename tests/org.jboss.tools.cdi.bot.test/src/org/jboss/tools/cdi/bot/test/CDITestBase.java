@@ -15,6 +15,8 @@ import static org.junit.Assert.fail;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -32,8 +34,12 @@ import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewInterfaceCreationWizard;
 import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
 import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
+import org.eclipse.reddeer.eclipse.wst.web.ui.wizards.DataModelFacetCreationWizardPage;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
+import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.workbench.condition.EditorIsDirty;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
@@ -41,7 +47,9 @@ import org.eclipse.reddeer.workbench.handler.EditorHandler;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
+import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.cdi.ui.CDIProjectWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewInterceptorCreationWizard;
@@ -62,6 +70,7 @@ import org.junit.BeforeClass;
 public class CDITestBase {
 
 	protected String CDIVersion;
+	protected boolean isJava11FacetActivated;
 	
 	protected static String PROJECT_NAME = "CDIProject";
 	protected static final String PACKAGE_NAME = "cdi";
@@ -85,6 +94,7 @@ public class CDITestBase {
  
 	protected static final String VERSION = "version";
 	protected static final String FAMILY = "family";
+	protected static final String JSR_365 = "JSR-365";
 	
 	static {
 		JAVA_VERSION_STR = System.getProperty("java.version");
@@ -95,6 +105,28 @@ public class CDITestBase {
 		return JAVA_VERSION <= 1.8;
 	}
 	
+	protected static Collection<RequirementMatcher> getRestrictionMatcherCDI10() {
+		if (isJavaLE8()) {
+			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.AS()));
+		} else {
+			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.AS()),
+					new RequirementMatcher(JRE.class, VERSION, "1.8"));
+		}
+	}
+
+	protected static Collection<RequirementMatcher> getRestrictionMatcherCDI11() {
+		return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
+				new RequirementMatcher(JBossServer.class, VERSION, "13"),
+				new RequirementMatcher(JRE.class, VERSION, "1.8"));
+	}
+
+	protected static Collection<RequirementMatcher> getRestrictionMatcherCDI20() {
+		return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
+				new RequirementMatcher(JBossServer.class, VERSION, "18"),
+				new RequirementMatcher(JRE.class, VERSION, "11"));
+
+	}
+
 	@InjectRequirement
 	private ServerRequirement sr;
 
@@ -106,15 +138,17 @@ public class CDITestBase {
 	@Before
 	public void prepareWorkspace() {
 		if (!projectHelper.projectExists(PROJECT_NAME)) {
-			CDIProjectWizard cw = new CDIProjectWizard();
-			cw.open();
-			WebProjectFirstPage fp = new WebProjectFirstPage(cw);
+			CDIProjectWizard pw = new CDIProjectWizard();
+			pw.open();
+			WebProjectFirstPage fp = new WebProjectFirstPage(pw);
 			fp.setProjectName(PROJECT_NAME);
+			if (CDIVersion.equals("2.0")) {
+				new DefaultCombo(2).setSelection("Dynamic Web Project with CDI 2.0 (Contexts and Dependency Injection)");
+			}
 			fp.setTargetRuntime(sr.getRuntimeName());
-			fp.activateFacet("1.8", "Java");
+			activateFacets(fp);
 			fp.activateFacet(CDIVersion, "CDI (Contexts and Dependency Injection)");
-			cw.finish();
-			new WaitUntil(new JobIsRunning(), TimePeriod.DEFAULT, false);
+			pw.finish();
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		}
 	}
@@ -136,23 +170,6 @@ public class CDITestBase {
 			} catch (RuntimeException ex) {
 				AbstractWait.sleep(TimePeriod.DEFAULT);
 				org.eclipse.reddeer.direct.project.Project.delete(p.getName(), true, true);
-			}
-		}
-	}
-
-	protected void deleteAllProjects() {
-		new WaitWhile(new JobIsRunning());
-		EditorHandler.getInstance().closeAll(false);
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		for (Project p : pe.getProjects()) {
-			try {
-				org.eclipse.reddeer.direct.project.Project.delete(p.getName(), true, true);
-			} catch (Exception ex) {
-				AbstractWait.sleep(TimePeriod.DEFAULT);
-				if (!p.getTreeItem().isDisposed()) {
-					org.eclipse.reddeer.direct.project.Project.delete(p.getName(), true, true);
-				}
 			}
 		}
 	}
@@ -283,4 +300,23 @@ public class CDITestBase {
 		}
 		ed.save();
 	}
+	
+	protected void createProject(NewMenuWizard pw, DataModelFacetCreationWizardPage fp) {
+		pw.open();
+		fp.setProjectName(PROJECT_NAME);
+		activateFacets(fp);
+		pw.finish();
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+	}
+	
+	protected void activateFacets(DataModelFacetCreationWizardPage fp) {
+		if (CDIVersion.equals("1.0") || CDIVersion.equals("1.2")) {
+			fp.activateFacet("1.8", "Java");
+			this.isJava11FacetActivated = false;
+		} else {
+			fp.activateFacet("11", "Java");
+			this.isJava11FacetActivated = true;
+		}
+	}
+	
 }

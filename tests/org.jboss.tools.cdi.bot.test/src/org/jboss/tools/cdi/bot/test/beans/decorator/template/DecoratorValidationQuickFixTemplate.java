@@ -45,7 +45,7 @@ public class DecoratorValidationQuickFixTemplate extends CDITestBase {
 	
 	@After
 	public void deleteProjects() {
-		deleteAllProjects();
+		cleanUp();
 	}
 	
 	@Before

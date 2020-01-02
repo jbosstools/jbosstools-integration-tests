@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.bot.test.beans.openon.cdi11;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
@@ -19,7 +18,6 @@ import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
-import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.cdi.bot.test.beans.openon.template.FindObserverEventTemplate;
 import org.junit.Before;
@@ -31,15 +29,11 @@ public class FindObserverEventTestCDI11 extends FindObserverEventTemplate{
 
 	@RequirementRestriction
 	public static Collection<RequirementMatcher> getRestrictionMatcher() {
-		if (isJavaLE8()) { 
-			return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
-					new RequirementMatcher(JBossServer.class, VERSION, "13"));
-		} else {
-			return Arrays.asList(
-					new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
-					new RequirementMatcher(JBossServer.class, VERSION, "13"),
-					new RequirementMatcher(JRE.class, VERSION, "1.8"));
-		}
+		return getRestrictionMatcherCDI11();
+	}
+	
+	public FindObserverEventTestCDI11() {
+		CDIVersion = "1.2";
 	}
 		
 	@Before

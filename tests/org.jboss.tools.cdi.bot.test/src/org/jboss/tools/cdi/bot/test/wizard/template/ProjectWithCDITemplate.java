@@ -20,61 +20,45 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
-import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.condition.ProblemExists;
-import org.eclipse.reddeer.eclipse.core.resources.Project;
 import org.eclipse.reddeer.eclipse.jst.ejb.ui.project.facet.EjbProjectFirstPage;
 import org.eclipse.reddeer.eclipse.jst.ejb.ui.project.facet.EjbProjectWizard;
 import org.eclipse.reddeer.eclipse.jst.j2ee.ui.project.facet.UtilityProjectFirstPage;
 import org.eclipse.reddeer.eclipse.jst.j2ee.ui.project.facet.UtilityProjectWizard;
 import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
 import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectWizard;
+import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.eclipse.wst.web.ui.wizards.DataModelFacetCreationWizardPage;
+import org.eclipse.reddeer.requirements.cleanworkspace.CleanWorkspaceRequirement.CleanWorkspace;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.LabeledCheckBox;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
-import org.eclipse.reddeer.workbench.handler.EditorHandler;
 import org.hamcrest.core.StringContains;
+import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.cdi.reddeer.condition.SpecificProblemExists;
 import org.junit.After;
 import org.junit.Test;
 
-public class ProjectWithCDITemplate{
+@CleanWorkspace
+public class ProjectWithCDITemplate extends CDITestBase {
 	
-	protected String CDIVersion;
-	
-	protected String PROJECT_NAME = "CDIProject";
 	protected boolean enabledByDefault = true;
 	protected String ignoredProblem;
 	protected String expectedProblemAdded;
-	
-	protected static final String VERSION = "version";
-	protected static final String FAMILY = "family";
 
 	@After
-	public void cleanUp() {
-		EditorHandler.getInstance().closeAll(false);
-		ProjectExplorer pe = new ProjectExplorer();
-		pe.open();
-		for(Project p: pe.getProjects()){
-			try{
-				org.eclipse.reddeer.direct.project.Project.delete(p.getName(), true, true);
-			} catch (Exception ex) {
-				AbstractWait.sleep(TimePeriod.DEFAULT);
-				if(!p.getTreeItem().isDisposed()){
-					org.eclipse.reddeer.direct.project.Project.delete(p.getName(), true, true);
-				}
-			}
-		}
+	public void cleanUpTheWorkspace() {
+		cleanUp();
 	}
 	
 	@Test
@@ -205,30 +189,21 @@ public class ProjectWithCDITemplate{
 	}
 	
 	public void createUtilityProject() {
-		UtilityProjectWizard uw = new UtilityProjectWizard();
-		uw.open();
-		UtilityProjectFirstPage up = new UtilityProjectFirstPage(uw);
-		up.setProjectName(PROJECT_NAME);
-		up.activateFacet("1.8", "Java");
-		uw.finish();
+		NewMenuWizard pw = new UtilityProjectWizard();
+		DataModelFacetCreationWizardPage fp = new UtilityProjectFirstPage(pw);
+		createProject(pw, fp);
 	}
 
-	public void createWebProject() {
-		WebProjectWizard dw = new WebProjectWizard();
-		dw.open();
-		WebProjectFirstPage fp = new WebProjectFirstPage(dw);
-		fp.setProjectName(PROJECT_NAME);
-		fp.activateFacet("1.8", "Java");
-		dw.finish();
+	public void createDynamicWebProject() {
+		NewMenuWizard pw = new WebProjectWizard();
+		DataModelFacetCreationWizardPage fp = new WebProjectFirstPage(pw);
+		createProject(pw, fp);
 	}
 	
 	public void createEjbProject() {
-		EjbProjectWizard dw = new EjbProjectWizard();
-		dw.open();
-		EjbProjectFirstPage fp = new EjbProjectFirstPage(dw);
-		fp.setProjectName(PROJECT_NAME);
-		fp.activateFacet("1.8", "Java");
-		dw.finish();
+		NewMenuWizard pw = new EjbProjectWizard();
+		DataModelFacetCreationWizardPage fp = new EjbProjectFirstPage(pw);
+		createProject(pw, fp);
 	}
 
 }
