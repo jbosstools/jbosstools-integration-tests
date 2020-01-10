@@ -114,7 +114,7 @@ public class CDITestBase {
 		}
 	}
 
-	protected static Collection<RequirementMatcher> getRestrictionMatcherCDI11() {
+	protected static Collection<RequirementMatcher> getRestrictionMatcherCDI12() {
 		return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
 				new RequirementMatcher(JBossServer.class, VERSION, "13"),
 				new RequirementMatcher(JRE.class, VERSION, "1.8"));

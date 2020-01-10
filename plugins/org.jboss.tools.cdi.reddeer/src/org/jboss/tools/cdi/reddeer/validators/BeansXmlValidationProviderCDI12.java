@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019 Red Hat, Inc.
+ * Copyright (c) 2010-2018 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,11 +10,11 @@
  ******************************************************************************/
 package org.jboss.tools.cdi.reddeer.validators;
 
-public class BeansXmlValidationProviderCDI20 extends AbstractValidationProvider {
+public class BeansXmlValidationProviderCDI12 extends AbstractValidationProvider {
 	
-	public BeansXmlValidationProviderCDI20() {
+	public BeansXmlValidationProviderCDI12() {
 		super();
-		jsr = "JSR-365";
+		jsr = "JSR-346";
 	}
 
 	@Override

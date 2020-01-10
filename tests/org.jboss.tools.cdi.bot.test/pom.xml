@@ -36,9 +36,9 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>cdi11-smoke-tests</id>
+			<id>cdi12-smoke-tests</id>
 			<properties>
-				<suiteClass>org.jboss.tools.cdi.bot.test.CDI11SmokeSuite</suiteClass>
+				<suiteClass>org.jboss.tools.cdi.bot.test.CDI12SmokeSuite</suiteClass>
 			</properties>
 		</profile>
 		<profile>
@@ -54,9 +54,9 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>cdi11-tests</id>
+			<id>cdi12-tests</id>
 			<properties>
-				<suiteClass>org.jboss.tools.cdi.bot.test.CDI11SuiteTest</suiteClass>
+				<suiteClass>org.jboss.tools.cdi.bot.test.CDI12SuiteTest</suiteClass>
 			</properties>
 		</profile>
 		<profile>

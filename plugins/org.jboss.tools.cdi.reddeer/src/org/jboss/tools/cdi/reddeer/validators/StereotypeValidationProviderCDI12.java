@@ -16,20 +16,18 @@ import java.util.Arrays;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.jboss.tools.cdi.reddeer.annotation.ValidationType;
 
-public class StereotypeValidationProviderCDI10 extends AbstractValidationProvider {
+public class StereotypeValidationProviderCDI12 extends AbstractValidationProvider {
 	
-	public StereotypeValidationProviderCDI10() {
+	public StereotypeValidationProviderCDI12() {
 		super();
-		jsr = "JSR-299"; 
+		jsr = "JSR-346"; 
 	}
 	
 	@Override
 	void init() {
 		
 		problems.add(new ValidationProblem(ProblemType.WARNING, ValidationType.TARGET, 
-				"Stereotype annotation type must be annotated with one of", jsr, Arrays.asList(
-				"to @Target({FIELD})","to @Target({METHOD, FIELD})","to @Target({METHOD})",
-				"to @Target({TYPE, METHOD, FIELD})","to @Target({TYPE})")));
+				"Stereotype annotation type must be annotated with one of", jsr, null));
 		
 		problems.add(new ValidationProblem(ProblemType.WARNING, ValidationType.RETENTION,
 				"Stereotype annotation type must be annotated with @Retention(RUNTIME)", jsr, 
@@ -45,7 +43,8 @@ public class StereotypeValidationProviderCDI10 extends AbstractValidationProvide
 		
 		problems.add(new ValidationProblem(ProblemType.ERROR, ValidationType.NAMED, 
 				"Stereotype declares a non-empty @Named annotation", jsr, Arrays.asList(
-				"to @Named")));			
+				"to @Named")));
+						
 	}
 		
 }
