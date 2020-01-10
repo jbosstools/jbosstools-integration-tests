@@ -31,7 +31,7 @@
 		<jbosstools.test.jboss-eap-7.x.url>http://download.eng.brq.redhat.com/released/JBoss-middleware/eap7/7.2.1/jboss-eap-7.2.1-full-build.zip</jbosstools.test.jboss-eap-7.x.url>
 		<surefire.timeout>18000</surefire.timeout>
 		<skipTests>false</skipTests>
-		<deployOnServer>false</deployOnServer>
+		<deployOnServer>true</deployOnServer>
 	</properties>
 	<build>
 		<resources>
