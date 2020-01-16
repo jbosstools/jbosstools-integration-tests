@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2020 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/
 package org.jboss.tools.maven.ui.bot.test.conversion;
 
 import static org.junit.Assert.assertTrue;
@@ -159,45 +169,33 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		new PushButton("OK").click();
 		new DefaultShell("Convert to Maven Dependencies");
 		new AnchorLink("here").click();
-		boolean shellIsOpened = true;
-		try{
-			new DefaultShell("Maven Repositories");
-		} catch (SWTLayerException ex){
-			shellIsOpened = false;
-		}
-		if(shellIsOpened){
-			new PushButton("Cancel").click();
-		}
-		new PushButton("Skip Dependency Conversion").click();
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
-		if(!shellIsOpened){
-			fail("Shell Maven Repositories was not opened after clicking on 'here' link");
-		}
-
+		testShellIsOpened("Maven Repositories", "Shell Maven Repositories was not opened after clicking on 'here' link");
 	}
-	
 	
 	@Test
 	public void testRemoteRepositoriesLinkInConversionWizard(){
 		createWithRuntime();
 		new DefaultLink("Manage remote repositories used to identify dependencies.").click();
+		testShellIsOpened("Preferences (Filtered)", "Shell Preferences was not opened after clicking on 'remote repositories' link");
+	}
+
+	private void testShellIsOpened(String shellName, String errorMsg) {
 		boolean shellIsOpened = true;
-		try{
-			new DefaultShell("Preferences (Filtered)");
-		} catch (SWTLayerException ex){
+		try {
+			new DefaultShell(shellName);
+		} catch (SWTLayerException ex) {
 			shellIsOpened = false;
 		}
-		if(shellIsOpened){
+		if (shellIsOpened) {
 			new PushButton("Cancel").click();
 		}
 		new PushButton("Skip Dependency Conversion").click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		if(!shellIsOpened){
-			fail("Shell Preferences was not opened after clicking on 'remote repositories' link");
+		if (!shellIsOpened) {
+			fail(errorMsg);
 		}
-
 	}
-	
+
 	private void createWithRuntime(){
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();

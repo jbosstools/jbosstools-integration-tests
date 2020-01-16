@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Red Hat, Inc.
+ * Copyright (c) 2011-2020 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -83,7 +83,7 @@ public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 		new PushButton("OK").click();
 		new PushButton("OK").click();
 		new WaitWhile(new ShellIsAvailable("Materialize Classpath Library"), TimePeriod.DEFAULT);
-		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		testExcludedResources(projectName);
 	}
 	
