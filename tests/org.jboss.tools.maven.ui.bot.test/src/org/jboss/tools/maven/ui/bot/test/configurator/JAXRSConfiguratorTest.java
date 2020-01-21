@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Red Hat, Inc.
+ * Copyright (c) 2011-2020 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -54,7 +54,7 @@ public class JAXRSConfiguratorTest extends AbstractConfiguratorsTest{
 		
 		checkProjectWithoutRuntime(projectName);
 		
-		addDependency(projectName, "org.jboss.jbossas", "jboss-as-resteasy", "6.1.0.Final");
+		addDependency(projectName, "org.jboss.resteasy", "resteasy-jaxrs", "3.11.0.Final");
 		updateConf(projectName);
 		new WaitUntil(new ProjectHasNature(projectName, JAXRS_FACET, null));
 	}

@@ -16,8 +16,6 @@ import org.jboss.tools.maven.ui.bot.test.configurator.CDIConfiguratorTest;
 import org.jboss.tools.maven.ui.bot.test.configurator.JAXRSConfiguratorTest;
 import org.jboss.tools.maven.ui.bot.test.configurator.JPAConfiguratorTest;
 import org.jboss.tools.maven.ui.bot.test.configurator.JSFConfiguratorTest;
-import org.jboss.tools.maven.ui.bot.test.configurator.PortletConfiguratorTest;
-import org.jboss.tools.maven.ui.bot.test.configurator.SeamConfiguratorTest;
 import org.jboss.tools.maven.ui.bot.test.conversion.MaterializeLibraryTest;
 import org.jboss.tools.maven.ui.bot.test.conversion.MavenConversionTest;
 import org.jboss.tools.maven.ui.bot.test.profile.MavenProfilesTest;
@@ -50,15 +48,9 @@ import org.junit.runners.Suite;
 	JSFProjectTest.class, 
 	
 	JPAConfiguratorTest.class,
-	
 	JSFConfiguratorTest.class,
-	
-	//SeamConfiguratorTest.class,
-
 	CDIConfiguratorTest.class, 
-	
 	JAXRSConfiguratorTest.class,
-	//PortletConfiguratorTest.class,
 	
 	MavenRepositories.class,
 	

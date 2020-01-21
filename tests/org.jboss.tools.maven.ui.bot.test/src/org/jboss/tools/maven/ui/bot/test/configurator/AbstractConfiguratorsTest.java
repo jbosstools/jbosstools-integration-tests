@@ -40,22 +40,14 @@ import org.junit.After;
 public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 	
 	public static final String PROJECT_NAME_JSF="testWEB_JSF";
-	public static final String PROJECT_NAME_PORTLET="testWEB_PORTLET";
 	public static final String PROJECT_NAME_JAXRS="testWEB_JAXRS";
 	public static final String PROJECT_NAME_CDI="testWEB_CDI";
 	public static final String PROJECT_NAME_CDI_EJB="testEJB_CDI";
-	public static final String PROJECT_NAME_SEAM="testWEB_SEAM";
 	public static final String PROJECT_NAME_JPA="testWEB_JPA";
 	public static final String JSF_FACET="JavaServer Faces";
 	public static final String JAXRS_FACET="JAX-RS (REST Web Services)";
 	public static final String CDI_FACET="CDI (Contexts and Dependency Injection)";
-	public static final String SEAM_FACET="Seam";
 	public static final String JPA_FACET="JPA";
-	public static final String PORTLET_FACET="JBoss Portlets";
-	public static final String PORTLET_CORE_FACET="JBoss Core Portlet";
-	public static final String PORTLET_JSF_FACET="JBoss JSF Portlet";
-	public static final String PORTLET_SEAM_FACET="JBoss Seam Portlet";
-	
 	public static final String WEB_XML_LOCATION="/WebContent/WEB-INF/web.xml"; 
 	//jpa config, gwt, hibernate
 	
@@ -64,7 +56,7 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		deleteProjects(true);
 	}
 	
-	public void addPersistence(String projectName) throws FileNotFoundException{
+	public void addPersistence(String projectName, String jpaVersion) throws FileNotFoundException{
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(projectName).select();
@@ -79,7 +71,7 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		
 		new DefaultEditor("persistence.xml");
 		new DefaultCTabItem("Source").activate();
-		EditorResourceHelper.replaceClassContentByResource(new FileInputStream("resources/persistence.xm_"), true, true);
+		EditorResourceHelper.replaceClassContentByResource(new FileInputStream("resources/persistence_jpa_" + jpaVersion + ".xm_"), true, true);
 	}
 	
 	public void checkProjectWithoutRuntime(String projectName){
