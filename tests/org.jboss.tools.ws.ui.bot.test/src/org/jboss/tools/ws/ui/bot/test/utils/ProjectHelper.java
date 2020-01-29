@@ -16,25 +16,19 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.logging.Logger;
 
-import org.hamcrest.core.StringContains;
-import org.eclipse.reddeer.common.exception.RedDeerException;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.matcher.TreeItemTextMatcher;
-import org.eclipse.reddeer.eclipse.core.resources.DefaultProject;
-import org.eclipse.reddeer.eclipse.core.resources.Project;
 import org.eclipse.reddeer.eclipse.jdt.ui.preferences.BuildPathsPropertyPage;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
+import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
 import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
 import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.WizardProjectsImportPage;
-import org.eclipse.reddeer.eclipse.utils.DeleteUtils;
 import org.eclipse.reddeer.eclipse.wst.common.project.facet.ui.RuntimesPropertyPage;
 import org.eclipse.reddeer.swt.api.Shell;
 import org.eclipse.reddeer.swt.api.Table;
@@ -55,6 +49,7 @@ import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.EditorHandler;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
+import org.hamcrest.core.StringContains;
 import org.jboss.tools.common.reddeer.label.IDELabel;
 import org.jboss.tools.ws.reddeer.ui.wizards.CreateNewFileWizardPage;
 import org.jboss.tools.ws.reddeer.ui.wizards.jst.j2ee.EARProjectWizard;
@@ -66,8 +61,6 @@ import org.jboss.tools.ws.reddeer.ui.wizards.wst.NewWsdlFileWizard;
  * @author Radoslav Rabara
  */
 public class ProjectHelper {
-
-	private static final Logger LOGGER = Logger.getLogger(ProjectHelper.class.getName());
 
 	private ProjectHelper() {
 	};
@@ -128,6 +121,8 @@ public class ProjectHelper {
 		wizard.open();
 
 		wizard.setProjectName(name);
+		WebProjectFirstPage fp = new WebProjectFirstPage(wizard);
+		fp.activateFacet("1.8", "Java");
 		wizard.next();
 		wizard.next();
 		wizard.setGenerateDeploymentDescriptor(true);
@@ -150,6 +145,8 @@ public class ProjectHelper {
 
 		wizard.setProjectName(name);
 		wizard.addProjectToEar(earProject);
+		WebProjectFirstPage fp = new WebProjectFirstPage(wizard);
+		fp.activateFacet("1.8", "Java");
 		wizard.finish();
 
 		new WaitWhile(new JobIsRunning());
@@ -208,24 +205,7 @@ public class ProjectHelper {
 		ProjectExplorer projectExplorer = new ProjectExplorer();
 		projectExplorer.open();
 		
-		List<DefaultProject> projects = projectExplorer.getProjects();
-		try {
-			for (Project project: projects) {
-				project.delete(true);
-			}
-		} catch(RedDeerException e) {
-			projectExplorer.close();
-			projectExplorer.open();
-			projects = projectExplorer.getProjects();
-			for (DefaultProject project: projects) {
-				try {
-					LOGGER.info("Forcing removal of " + project);
-					DeleteUtils.forceProjectDeletion(project, true);
-				} catch(RuntimeException exception) {
-					LOGGER.info("Project " + project.getName() + " was not deleted");
-				}
-			}
-		}
+		projectExplorer.deleteAllProjects(true);
 	}
 
 	/**

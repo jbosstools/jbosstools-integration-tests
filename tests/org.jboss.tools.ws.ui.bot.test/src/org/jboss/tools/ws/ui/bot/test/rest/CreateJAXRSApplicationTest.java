@@ -263,7 +263,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 		final String WEB_XML_TEXT = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + LINE_SEPARATOR
 		+ "<web-app xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
 				+ "xmlns=\"http://xmlns.jcp.org/xml/ns/javaee\" xsi:schemaLocation=\"http://xmlns.jcp.org/xml/ns/javaee "
-				+ "http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd\" id=\"WebApp_ID\" version=\"3.1\">" + LINE_SEPARATOR
+				+ "http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd\" id=\"WebApp_ID\" version=\"4.0\">" + LINE_SEPARATOR
 		+ "  <display-name>" + getWsProjectName() + "</display-name>" + LINE_SEPARATOR
 		+ "  <welcome-file-list>" + LINE_SEPARATOR
 		+ "    <welcome-file>index.html</welcome-file>" + LINE_SEPARATOR

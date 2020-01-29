@@ -5,15 +5,15 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
-import org.hamcrest.core.Is;
-import org.hamcrest.core.IsNot;
 import org.eclipse.reddeer.common.wait.WaitUntil;
-import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.workbench.condition.EditorHasValidationMarkers;
+import org.eclipse.reddeer.workbench.exception.WorkbenchLayerException;
 import org.eclipse.reddeer.workbench.impl.editor.Marker;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
+import org.hamcrest.core.Is;
+import org.hamcrest.core.IsNot;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,8 +34,8 @@ public class AsYouTypeValidationTest extends RESTfulTestBase {
 		//save the modified file
 		try {
 			new TextEditor().save();
-		} catch(CoreLayerException e) {
-			
+		} catch(WorkbenchLayerException e) {
+			// nothing to do
 		}
 		//delete the project
 		super.cleanup();
@@ -55,7 +55,7 @@ public class AsYouTypeValidationTest extends RESTfulTestBase {
 		openJavaFile(getWsProjectName(), "org.rest.test", "RestService.java");
 		TextEditor textEditor = new TextEditor();
 		int lineNumber = textEditor.getLineOfText("}") - 1;
-		textEditor.insertLine(lineNumber, "\t@Path(\"{id}\")\n\tpublic void test(@PathParam(\"test\") Integer test){}\n");
+		textEditor.insertLine(lineNumber, "\tpublic static final String TEST_NAME=\"test\";\n\t@Path(\"{id}\")\n\tpublic void test(@PathParam(TEST_NAME) Integer test){}\n");
 		textEditor.save();
 		
 		new WaitUntil(new EditorHasValidationMarkers(textEditor, 9));

@@ -2,15 +2,12 @@ package org.jboss.tools.ws.ui.bot.test.utils;
 
 import java.util.logging.Logger;
 
-import org.hamcrest.core.StringContains;
 import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
-import org.eclipse.reddeer.core.matcher.WithMnemonicTextMatcher;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
-import org.eclipse.reddeer.eclipse.condition.ServerExists;
 import org.eclipse.reddeer.eclipse.exception.EclipseLayerException;
 import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
@@ -59,7 +56,7 @@ public class ServersViewHelper {
 		if (serverModule != null) {
 			String moduleName = serverModule.getLabel().getName();
 			ServerState moduleState = serverModule.getLabel().getState();
-			clearServerConsole(serverName);
+			clearServerConsole();
 			serverModule.remove();
 
 			if (moduleState.equals(ServerState.STARTED)) {
@@ -93,7 +90,7 @@ public class ServersViewHelper {
 				serversView.activate();
 				String moduleName = module.getLabel().getName();
 				ServerState moduleState = module.getLabel().getState();
-				clearServerConsole(serverName);
+				clearServerConsole();
 				
 				new WaitWhile(new JobIsRunning(), TimePeriod.DEFAULT, false);
 				serversView.activate();
@@ -149,14 +146,15 @@ public class ServersViewHelper {
 		new WaitUntil(new ProjectIsDeployed(projectName, serverName), TimePeriod.getCustom(20), false);
 	}
 	
-	private static void clearServerConsole(String serverName) {
+	private static void clearServerConsole() {
 		ConsoleView consoleView = new ConsoleView();
 		if (!consoleView.isOpen()) {
 			consoleView.open();
 		}
 		consoleView.activate();
-		consoleView.switchConsole(new WithMnemonicTextMatcher(new StringContains(serverName)));
-		consoleView.clearConsole();
+		if (consoleView.canClearConsole()) {
+			consoleView.clearConsole();
+		}
 	}
 	
 	private static class ProjectIsDeployed extends AbstractWaitCondition {

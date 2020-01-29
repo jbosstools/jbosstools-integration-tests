@@ -31,7 +31,7 @@ Require-Bundle: org.eclipse.ui,
  javax.xml.ws,
  javax.xml.bind
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-RegisterBuddy: org.apache.log4j
 Bundle-ClassPath: .
 Eclipse-BundleShape: jar

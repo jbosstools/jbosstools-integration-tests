@@ -57,8 +57,14 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 public class WsTesterTest {
 
-	private static final String SERVICE_URL = "http://www.webservicex.net/BibleWebservice.asmx";
+	private static final String SERVICE_URL = "https://petras-cz.eu/bible/bible.asmx";
 	private static final Logger LOGGER = Logger.getLogger(WsTesterTest.class.getName());
+	private static final String WSDL_PARAM = "?WSDL";
+	private static final String SOAP_PORT = "BibleSoap";
+	private static final String SOAP_PORT12 = "BibleSoap12";
+	private static final String BOOK = "Kniha";
+	private static final String CHAPTER = "Kapitola";
+	private static final String VERSE = "Vers";
 
 	private WsTesterView wstv;
 
@@ -114,10 +120,10 @@ public class WsTesterTest {
 		Assert.assertEquals(0, wstv.getHeaderRequestArgs().keySet().size());
 
 		wstv.setRequestType(RequestType.JAX_WS);
-		selectPort(wstv, "BibleWebserviceSoap");
+		selectPort(wstv, SOAP_PORT);
 		Assert.assertTrue(wstv.getRequestBody().contains("http://schemas.xmlsoap.org/soap/envelope/"));
 
-		selectPort(wstv, "BibleWebserviceSoap12");
+		selectPort(wstv, SOAP_PORT12);
 		Assert.assertTrue("Got: " + wstv.getRequestBody(),
 				wstv.getRequestBody().contains("http://www.w3.org/2003/05/soap-envelope"));
 	}
@@ -150,7 +156,9 @@ public class WsTesterTest {
 		dlg.ok();
 
 		LOGGER.log(Level.INFO, "Request: {0}", wstv.getRequestBody());
-		Assert.assertTrue(wstv.getRequestBody().contains("<echo xmlns=\"http://test.jboss.org/ns\""));
+		Assert.assertTrue("Expects: \r\n" + wstv.getRequestBody() + "\r\nto contain: \r\n"
+				+ "<echo xmlns=\"http://test.jboss.org/ns\"",
+				wstv.getRequestBody().contains("<echo xmlns=\"http://test.jboss.org/ns\""));
 		dlg = wstv.invokeGetFromWSDL();
 		dlg.setURI(uri);
 		AbstractWait.sleep(TimePeriod.SHORT);
@@ -188,7 +196,7 @@ public class WsTesterTest {
 	public void testSOAPService() {
 		wstv.setRequestType(RequestType.JAX_WS);
 		Assert.assertEquals(RequestType.JAX_WS, wstv.getRequestType());
-		wstv.setServiceURL(SERVICE_URL + "?WSDL");
+		wstv.setServiceURL(SERVICE_URL + WSDL_PARAM, false);
 
 		InputStream is = WsTesterTest.class.getResourceAsStream("/resources/jbossws/message_soap_out.xml");
 		wstv.setRequestBody(readResource(is));
@@ -198,7 +206,8 @@ public class WsTesterTest {
 		String rsp = wstv.getResponseBody();
 		LOGGER.log(Level.FINE, "SOAP response: {0}", rsp);
 		Assert.assertTrue(rsp.trim().length() > 0);
-		checkResponse(rsp, "&lt;BookTitle&gt;Mark&lt;/BookTitle&gt;");
+		checkResponse(rsp, "<NajdiVersResult>");
+		checkResponse(rsp, "Krista, Syna Bo");
 	}
 
 	/**
@@ -217,18 +226,19 @@ public class WsTesterTest {
 			selectWSDLDialog.openURL();
 			final String wsdlURLDialogTitle = "WSDL URL";
 			InputDialog wsdlURLDialog = new InputDialog(wsdlURLDialogTitle);
-			wsdlURLDialog.setInputText(SERVICE_URL + "?WSDL");
+			wsdlURLDialog.setInputText(SERVICE_URL + WSDL_PARAM);
 			wsdlURLDialog.ok();
 			new DefaultShell(selectWSDLDialog.TITLE);
-			assertEquals(SERVICE_URL + "?WSDL", selectWSDLDialog.getURI());
-			selectWSDLDialog.selectPort("BibleWebserviceSoap12");
+			assertEquals(SERVICE_URL + WSDL_PARAM, selectWSDLDialog.getURI());
+			selectWSDLDialog.selectPort(SOAP_PORT12);
 			selectWSDLDialog.ok();
 		} finally {
 			if (new ShellIsAvailable(selectWSDLDialog.TITLE).test()) {
 				selectWSDLDialog.close();
 			}
 		}
-		Assert.assertEquals(SERVICE_URL + "?WSDL", wstv.getServiceURL());
+		wstv.toggleBasicAuthentication(false);
+		Assert.assertEquals(SERVICE_URL + WSDL_PARAM, wstv.getServiceURL());
 		InputStream is = WsTesterTest.class.getResourceAsStream("/resources/jbossws/message_soap12_out.xml");
 		wstv.setRequestBody(readResource(is));
 		wstv.invoke();
@@ -236,7 +246,8 @@ public class WsTesterTest {
 		String rsp = wstv.getResponseBody();
 		LOGGER.log(Level.FINE, "SOAP response: {0}", rsp);
 		Assert.assertTrue(rsp.trim().length() > 0);
-		checkResponse(rsp, "&lt;BookTitle&gt;Mark&lt;/BookTitle&gt;");
+		checkResponse(rsp, "<NajdiVersResult>");
+		checkResponse(rsp, "Krista, Syna Bo");
 	}
 
 	/**
@@ -245,12 +256,12 @@ public class WsTesterTest {
 	@Test
 	public void testRESTGETService() {
 		wstv.setRequestType(RequestType.GET);
-		wstv.setServiceURL(SERVICE_URL + "/GetBibleWordsByChapterAndVerse");
+		wstv.setServiceURL(SERVICE_URL + "/NajdiVers", false);
 		wstv.setRequestParametersSectionExpansion(true);
-		wstv.addParameterRequestArg("BookTitle", "Luke");
-		wstv.addParameterRequestArg("chapter", "2");
-		wstv.addParameterRequestArg("Verse", "2");
-		wstv.editParameterRequestArg("chapter", "2", "chapter", "1");
+		wstv.addParameterRequestArg(BOOK, "Jan");
+		wstv.addParameterRequestArg(CHAPTER, "2");
+		wstv.addParameterRequestArg(VERSE, "2");
+		wstv.editParameterRequestArg(CHAPTER, "2", CHAPTER, "1");
 
 		try {
 			wstv.invoke();
@@ -260,8 +271,8 @@ public class WsTesterTest {
 			LOGGER.log(Level.FINE, "REST response: {0}", rsp);
 			LOGGER.log(Level.FINE, "Response headers: {0}", Arrays.asList(rspHeaders));
 			Assert.assertTrue(rsp.trim().length() > 0);
-			checkResponse(rsp, "&lt;Chapter&gt;1&lt;/Chapter&gt;");
-			checkResponse(rsp, "ministers of the word");
+			checkResponse(rsp, "<string");
+			checkResponse(rsp, "u Boha");
 		} finally {
 			wstv.clearParameterRequestArgs();
 		}
@@ -273,8 +284,8 @@ public class WsTesterTest {
 	@Test
 	public void testRESTPOSTService() {
 		wstv.setRequestType(WsTesterView.RequestType.POST);
-		wstv.setServiceURL(SERVICE_URL + "/GetBibleWordsByChapterAndVerse");
-		String requestBody = "BookTitle=John&chapter=3&Verse=1\r";
+		wstv.setServiceURL(SERVICE_URL + "/NajdiVers", false);
+		String requestBody = BOOK + "=Jan&" + CHAPTER + "=3&" + VERSE + "=1\r";
 		wstv.setRequestBody(requestBody);
 		wstv.setResponseHeadersSectionExpansion(true);
 		wstv.addHeaderRequestArg("Content-Type", "application/x-www-form-urlencoded");
@@ -288,8 +299,8 @@ public class WsTesterTest {
 			LOGGER.log(Level.FINE, "REST response: {0}", rsp);
 			LOGGER.log(Level.FINE, "Response headers: {0}", Arrays.asList(rspHeaders));
 			Assert.assertTrue("Empty response body", rsp.trim().length() > 0);
-			checkResponse(rsp, "&lt;Chapter&gt;3&lt;/Chapter&gt;");
-			checkResponse(rsp, "There was a man of the Pharisees, named Nicodemus, a ruler of the Jews");
+			checkResponse(rsp, "<string");
+			checkResponse(rsp, "Mezi farizeji byl");
 		} finally {
 			wstv.clearHeaderRequestArgs();
 		}
@@ -298,7 +309,7 @@ public class WsTesterTest {
 	@Test
 	public void testErrorResponse() {
 		wstv.setRequestType(RequestType.GET);
-		wstv.setServiceURL("https://watchful.li/api/v1/sites");
+		wstv.setServiceURL("https://app.watchful.net:443/api/v1/sites");
 		wstv.invoke();
 
 		new WaitUntil(new ShellIsAvailable(""));
@@ -401,31 +412,31 @@ public class WsTesterTest {
 		try {
 			dlg.openURL();
 			InputDialog wsdUrlDialog = new InputDialog("WSDL URL");
-			wsdUrlDialog.setInputText(SERVICE_URL + "?WSDL");
+			wsdUrlDialog.setInputText(SERVICE_URL + WSDL_PARAM);
 			wsdUrlDialog.ok();
 			new DefaultShell(dlg.TITLE);
 
-			Assert.assertEquals(SERVICE_URL + "?WSDL", dlg.getURI());
+			Assert.assertEquals(SERVICE_URL + WSDL_PARAM, dlg.getURI());
 			List<String> items = dlg.getServices();
 			LOGGER.log(Level.INFO, "Services: {0}", items);
 			Assert.assertEquals(1, items.size());
-			Assert.assertTrue(items.contains("BibleWebservice"));
+			Assert.assertTrue(items.contains("Bible"));
 			items = dlg.getPorts();
 
 			LOGGER.log(Level.INFO, "Ports: {0}", items);
 			Assert.assertEquals(2, items.size());
-			Assert.assertTrue(items.contains("BibleWebserviceSoap"));
-			Assert.assertTrue(items.contains("BibleWebserviceSoap12"));
+			Assert.assertTrue(items.contains(SOAP_PORT));
+			Assert.assertTrue(items.contains(SOAP_PORT12));
 			dlg.selectPort(portName);
 			items = dlg.getOperations();
 
 			LOGGER.log(Level.INFO, "Operations: {0}", items);
-			Assert.assertEquals(4, items.size());
-			Assert.assertTrue(items.contains("GetBookTitles"));
-			Assert.assertTrue(items.contains("GetBibleWordsByChapterAndVerse"));
-			dlg.selectOperation("GetBibleWordsbyKeyWord");
+			Assert.assertEquals(7, items.size());
+			Assert.assertTrue(items.contains("NajdiVers"));
+			Assert.assertTrue(items.contains("NajdiCitatDleOdkazu"));
+			dlg.selectOperation("SeznamKnih");
 			dlg.ok();
-			Assert.assertEquals("http://www.webservicex.net/BibleWebservice.asmx?WSDL", wstv.getServiceURL());
+			Assert.assertEquals(SERVICE_URL + WSDL_PARAM, wstv.getServiceURL());
 		} finally {
 			if (new ShellIsAvailable(dlg.TITLE).test()) {
 				dlg.close();
