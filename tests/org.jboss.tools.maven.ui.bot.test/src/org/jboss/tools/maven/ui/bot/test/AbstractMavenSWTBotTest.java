@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Red Hat, Inc.
+ * Copyright (c) 2011-2020 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -114,6 +114,7 @@ public abstract class AbstractMavenSWTBotTest{
 		if(version!=null){
 			result = result && new DefaultTreeItem(new DefaultTree(1),natureID).getCell(1).equals(version);
 		}
+		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		pd.ok();
 		new WaitWhile(new ShellIsAvailable("Properties for "+projectName), TimePeriod.DEFAULT);
 		return result;
@@ -276,7 +277,7 @@ public abstract class AbstractMavenSWTBotTest{
 		dw.next();
 		WebProjectThirdPage dtp = new WebProjectThirdPage(dw);
 		dtp.setGenerateWebXmlDeploymentDescriptor(webxml);
-		dw.finish();
+		dw.finish(TimePeriod.VERY_LONG);
 		waitForAllScheduledJobs();
 	}
 	
@@ -303,7 +304,7 @@ public abstract class AbstractMavenSWTBotTest{
 		ap.setArtifactId(artifactId);
 		ap.setGroupId(groupId);
 		ap.setPackage(projectPackage);
-		mw.finish();
+		mw.finish(TimePeriod.VERY_LONG);
 		
 		Editor e= openPom(artifactId);
 		StyledText stext = new DefaultStyledText();

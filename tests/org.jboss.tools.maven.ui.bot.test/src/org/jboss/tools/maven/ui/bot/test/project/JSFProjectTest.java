@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Red Hat, Inc.
+ * Copyright (c) 2011-2020 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -10,6 +10,7 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test.project;
 
+import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
@@ -69,7 +70,7 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 		jsfd.next();
 		JSFNewProjectSecondPage sp = new JSFNewProjectSecondPage(jsfd);
 		sp.setRuntime(runtime);
-		jsfd.finish();
+		jsfd.finish(TimePeriod.VERY_LONG);
 		
 	}
 }

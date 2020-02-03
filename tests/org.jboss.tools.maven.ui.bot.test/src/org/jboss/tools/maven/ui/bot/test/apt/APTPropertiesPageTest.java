@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2020 Red Hat, Inc.
+ * Distributed under license by Red Hat, Inc. All rights reserved.
+ * This program is made available under the terms of the
+ * Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Red Hat, Inc. - initial API and implementation
+ ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test.apt;
 
 import static org.junit.Assert.assertEquals;
@@ -407,7 +417,7 @@ public class APTPropertiesPageTest extends AbstractMavenSWTBotTest{
 		new DefaultTableItem(sr.getRuntimeName()).setChecked(true);
 		pd.ok();
 		new WaitWhile(new ShellIsAvailable("Properties for "+PROJECT_NAME));
-		new WaitWhile(new JobIsRunning());
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		NewClassCreationWizard jd = new NewClassCreationWizard();
 		jd.open();
 		NewClassWizardPage jp = new NewClassWizardPage(jd);

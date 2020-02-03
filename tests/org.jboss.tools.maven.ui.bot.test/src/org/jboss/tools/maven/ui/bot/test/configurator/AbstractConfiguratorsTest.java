@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Red Hat, Inc.
+ * Copyright (c) 2011-2020 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -106,7 +106,7 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		} else {
 			efp.setTargetRuntime(runtime);
 		}
-		ejb.finish();
+		ejb.finish(TimePeriod.VERY_LONG);
 	}
 	
 	public void addFacesConf(String projectName){
