@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Red Hat, Inc.
+ * Copyright (c) 2011-2020 Red Hat, Inc.
  * Distributed under license by Red Hat, Inc. All rights reserved.
  * This program is made available under the terms of the
  * Eclipse Public License v1.0 which accompanies this distribution,
@@ -49,7 +49,7 @@ public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 		createWebProject(projectName, null,false);
 		convertToMavenProject(projectName, "war", false);
 		checkProjectWithoutRuntime(projectName);
-		addDependency(projectName, "com.sun.faces", "mojarra-jsf-api", "2.0.0-b04");
+		addDependency(projectName, "com.sun.faces", "jsf-api", "2.2.20");
 		updateConf(projectName);
 		new WaitUntil(new ProjectHasNature(projectName, JSF_FACET, null));
 	}
@@ -88,7 +88,7 @@ public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 		createWebProject(PROJECT_NAME_JSF, null, false);
 		convertToMavenProject(PROJECT_NAME_JSF, "war", false);
 		checkProjectWithoutRuntime(PROJECT_NAME_JSF);
-		addDependency(PROJECT_NAME_JSF, "org.apache.deltaspike.modules", "deltaspike-jsf-module-api", "0.4");
+		addDependency(PROJECT_NAME_JSF, "org.apache.deltaspike.modules", "deltaspike-jsf-module-api", "1.9.3");
 		updateConf(PROJECT_NAME_JSF);
 		new WaitUntil(new ProjectHasNature(PROJECT_NAME_JSF, JSF_FACET, null));
 	}
@@ -98,7 +98,7 @@ public class JSFConfiguratorTest extends AbstractConfiguratorsTest{
 		createWebProject(PROJECT_NAME_JSF, null, false);
 		convertToMavenProject(PROJECT_NAME_JSF, "war", false);
 		checkProjectWithoutRuntime(PROJECT_NAME_JSF);
-		addDependency(PROJECT_NAME_JSF, "org.apache.deltaspike.modules", "deltaspike-jsf-module-impl", "0.4");
+		addDependency(PROJECT_NAME_JSF, "org.apache.deltaspike.modules", "deltaspike-jsf-module-impl", "1.9.3");
 		updateConf(PROJECT_NAME_JSF);
 		new WaitUntil(new ProjectHasNature(PROJECT_NAME_JSF, JSF_FACET, null));
 	}
