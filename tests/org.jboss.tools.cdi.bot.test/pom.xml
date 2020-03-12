@@ -42,6 +42,12 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>cdi20-smoke-tests</id>
+			<properties>
+				<suiteClass>org.jboss.tools.cdi.bot.test.CDI20SmokeSuite</suiteClass>
+			</properties>
+		</profile>
+		<profile>
 			<id>all-bot-tests</id>
 			<properties>
 				<suiteClass>org.jboss.tools.cdi.bot.test.CDIAllBotTests</suiteClass>
