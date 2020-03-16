@@ -139,9 +139,22 @@ public class JBossWSPreferencesTest {
 		String expectedVersion;
 		JBossFamily serverFamily = serverReq.getConfiguration().getFamily();
 		switch(serverFamily.getLabel()) {
+		/*
+		 * Depending on wf versions, Stack CFX client version differs:
+		 * WF 17, 18 -> 5.3.0
+		 * WF 15,16 -> 5.2.4
+		 * WF 13 -> 5.2.1
+		 */
 		case "WildFly":
-			if ("10.x".equals(serverReq.getConfiguration().getVersion())) {
+			String version = serverReq.getConfiguration().getVersion();
+			if (version.startsWith("10")) {
 				expectedVersion = "5.1.3.Final";
+			} else if (version.startsWith("13")) {
+				expectedVersion = "5.2.1.Final";
+			} else if (version.startsWith("15") || version.startsWith("16")) {
+				expectedVersion = "5.2.4.Final";
+			} else if (version.startsWith("17") || version.startsWith("18")) {
+				expectedVersion = "5.3.0.Final";
 			} else {
 				expectedVersion = "5.0.0.Final";
 			}

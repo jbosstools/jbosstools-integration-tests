@@ -23,7 +23,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	SOAPWSToolingIntegrationTest.class,
 	BottomUpWSTest.class,
 	TopDownWSTest.class, 
-	WsClientTest.class, 
+	WsClientTest.class,
 	WsTesterTest.class,
 	CxfWsClientTest.class
 })

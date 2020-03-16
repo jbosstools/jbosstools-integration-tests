@@ -58,14 +58,14 @@ public class StubMethodsTest extends WSTestBase {
 
 	@Test
 	public void testProposalsWithPrefixes() {
-		TextEditor editor = prepareClass(SERVER_CLASS_NAME);
 		String[] prefixes = {"o", "on", "onC", "onClose"};
 
 		for (String prefix : prefixes) {
+			TextEditor editor = prepareClass(SERVER_CLASS_NAME);
 			setPrefixIntoFirstClassLine(editor, prefix);
 			Collection<String> matchingProposals = filterStubProposalsWithPrefix(prefix);
 			assertThereAreOnlySpecifiedStubProposals(editor, matchingProposals);
-			clearFirstClassLine(editor);
+			deleteClass(SERVER_CLASS_NAME);
 		}
 	}
 	

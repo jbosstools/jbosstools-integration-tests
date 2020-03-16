@@ -134,7 +134,7 @@ public class WebServiceClientHelper {
 		if (!consoleName.getText().contains(serverName)) {
 			new DefaultToolItem("Display Selected Console").click();
 			consoleName = new DefaultLabel();
-			if (!consoleName.getText().contains(serverName)) {
+			if (!consoleName.getText().contains(serverName) && !consoleName.getText().contains("Apache CXF")) {
 				fail("Console of configured server was not found.");
 			}
 		}

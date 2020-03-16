@@ -10,7 +10,29 @@
  ******************************************************************************/
 package org.jboss.tools.ws.ui.bot.test.websocket;
 
-import org.eclipse.swt.SWT;
+import static org.jboss.tools.ws.ui.bot.test.utils.ClassHelper.addClassAnnotation;
+import static org.jboss.tools.ws.ui.bot.test.utils.ClassHelper.addImport;
+import static org.jboss.tools.ws.ui.bot.test.utils.ClassHelper.getClassDefinitionLine;
+import static org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper.createClass;
+import static org.jboss.tools.ws.ui.bot.test.websocket.NameBindingTest.Constants.CLASS_NAME_ANNOTATION;
+import static org.jboss.tools.ws.ui.bot.test.websocket.NameBindingTest.Constants.CLASS_NAME_FILTER;
+import static org.jboss.tools.ws.ui.bot.test.websocket.StubMethodsTest.Constants.CLIENT_CLASS_NAME;
+import static org.jboss.tools.ws.ui.bot.test.websocket.StubMethodsTest.Constants.EXPECTED_PROPOSALS;
+import static org.jboss.tools.ws.ui.bot.test.websocket.StubMethodsTest.Constants.PROJECT_NAME;
+import static org.jboss.tools.ws.ui.bot.test.websocket.StubMethodsTest.Constants.PROJECT_PACKAGE;
+import static org.jboss.tools.ws.ui.bot.test.websocket.StubMethodsTest.Constants.SERVER_CLASS_NAME;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang.StringUtils;
+import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
 import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.views.contentoutline.ContentOutline;
@@ -22,18 +44,7 @@ import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
 import org.eclipse.reddeer.workbench.impl.editor.Marker;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
-
-
-import java.util.*;
-import org.apache.commons.lang.StringUtils;
-
-import static org.jboss.tools.ws.ui.bot.test.utils.ClassHelper.*;
-import static org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper.createClass;
-import static org.jboss.tools.ws.ui.bot.test.websocket.NameBindingTest.Constants.CLASS_NAME_ANNOTATION;
-import static org.jboss.tools.ws.ui.bot.test.websocket.NameBindingTest.Constants.CLASS_NAME_FILTER;
-import static org.jboss.tools.ws.ui.bot.test.websocket.StubMethodsTest.Constants.*;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.eclipse.swt.SWT;
 
 class WebSocketHelper {
 
@@ -89,8 +100,15 @@ class WebSocketHelper {
 		contentAssistant.close();
 
 		//check
-		assertTrue("There are not all expected proposals!", actualProposals.containsAll(shouldBe));
-		assertTrue("There are proposals those should not be there!", Collections.disjoint(actualProposals, shouldNotBe));
+		assertTrue("There are not all expected proposals! Expected: \r\n" 
+				+ shouldBe.stream().collect(Collectors.joining(", "))
+				+ "\r\nBut was: \r\n" 
+				+ actualProposals.stream().collect(Collectors.joining(", ")) + "\r\n", 
+				actualProposals.containsAll(shouldBe));
+		boolean testPass = actualProposals.retainAll(shouldNotBe);
+		assertTrue("There are proposals those should not be there!\r\n" 
+				+ actualProposals.stream().collect(Collectors.joining(", ")) + "\r\n", 
+				testPass);
 	}
 
 	private static void assertOutlineViewContainsNewMethod(TextEditor editor, String proposal) {
@@ -166,6 +184,19 @@ class WebSocketHelper {
 				throw new RuntimeException("Unknown class to prepare!");
 		}
 	}
+	
+	static void deleteClass(String className) {
+		TextEditor editor = new TextEditor(className + ".java");
+		if (editor.isDirty()) {
+			editor.activate();
+			editor.save();
+		}
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		
+		ProjectItem item = pe.getProject(PROJECT_NAME).getProjectItem("Java Resources", "src", PROJECT_PACKAGE, className + ".java");
+		item.delete();
+	}
 
 	private static TextEditor prepareClass(
 			String className, String importCommand, String annotation) {
@@ -220,6 +251,8 @@ class WebSocketHelper {
 
 	static void enableJAXRSSupport(String projectName) {
 		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		pe.selectProjects(projectName);
 		PropertyDialog dialog = new PropertyDialog(projectName);
 		dialog.open();
 		dialog.select("JAX-RS");

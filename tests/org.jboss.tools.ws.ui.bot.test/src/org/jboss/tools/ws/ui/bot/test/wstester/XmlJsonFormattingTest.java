@@ -36,8 +36,8 @@ public class XmlJsonFormattingTest extends RESTfulTestBase {
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
 	
 	private final static String XML_RESPONSE_FORMAT = 
-			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + LINE_SEPARATOR +
-			"<collection>" + LINE_SEPARATOR + "    <user>" + LINE_SEPARATOR + "        <id>1</id>" + LINE_SEPARATOR + "        " +
+			"<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + LINE_SEPARATOR + "<collection>" + LINE_SEPARATOR + 
+			"    <user>" + LINE_SEPARATOR + "        <id>1</id>" + LINE_SEPARATOR + "        " +
 			"<name>James</name>" + LINE_SEPARATOR + "        <phoneNumber>6545646</phoneNumber>" +
 			"" + LINE_SEPARATOR + "    </user>" + LINE_SEPARATOR + "    <user>" + LINE_SEPARATOR + "        <id>2</id>" + LINE_SEPARATOR + "        " +
 			"<name>John</name>" + LINE_SEPARATOR + "        <phoneNumber>8546544</phoneNumber>" + LINE_SEPARATOR + "    " +
@@ -92,8 +92,8 @@ public class XmlJsonFormattingTest extends RESTfulTestBase {
 
 		invokeMethodInWSTester(wsTesterView, RequestType.GET);
 
-		assertThat(wsTesterView.getResponseBody(), 
-				IsEqual.equalTo(format.formattedMessage));
+		assertThat(wsTesterView.getResponseBody().replaceAll("\\s", "").trim(),
+				IsEqual.equalTo(format.formattedMessage.replaceAll("\\s", "").trim()));
 	}
 
 	private RESTfulWebService getProperRestService(RESTfulWebServicesNode restWebServicesNode, 

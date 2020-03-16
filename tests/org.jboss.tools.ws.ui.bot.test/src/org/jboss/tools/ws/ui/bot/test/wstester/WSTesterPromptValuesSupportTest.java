@@ -15,14 +15,18 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.hamcrest.core.Is;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.eclipse.reddeer.common.logging.Logger;
+import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.swt.api.TreeItem;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.text.DefaultText;
+import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.hamcrest.core.Is;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
+import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebService;
 import org.jboss.tools.ws.reddeer.jaxrs.core.RESTfulWebServicesNode;
 import org.jboss.tools.ws.reddeer.ui.dialogs.WSTesterParametersDialog;
 import org.jboss.tools.ws.reddeer.ui.tester.views.WsTesterView;
@@ -50,6 +54,8 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	private WSTesterParametersDialog dialog;
 
 	private RESTfulWebServicesNode restWebServicesNode;
+	
+	private static final Logger log = Logger.getLogger(WSTesterPromptValuesSupportTest.class);
 
 	@Override
 	public void setup() {
@@ -115,6 +121,7 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 		List<TreeItem> parameters = dialog.getAllParameters();
 		setParametersValues(parameters);
 		dialog.ok();
+		new WaitUntil(new JobIsRunning(), TimePeriod.MEDIUM, false);
 
 		checkWSResponse();
 	}
@@ -122,9 +129,12 @@ public class WSTesterPromptValuesSupportTest extends RESTfulTestBase {
 	private void invokeWSParametersDialog() {
 		restWebServicesNode = new RESTfulWebServicesNode(getWsProjectName());
 
-		runRestServiceOnServer(restWebServicesNode.getWebServices().get(0));
+		RESTfulWebService ws = restWebServicesNode.getWebServices().get(0);
+		log.debug("Testing Web Service endpoint: " + ws.getPath());
+		runRestServiceOnServer(ws);
 
 		testerView.open();
+		log.debug("Invoked " + testerView.getRequestType() + " on " + testerView.getServiceURL());
 		testerView.invoke();
 
 		new WaitUntil(new ShellIsAvailable(WSTesterParametersDialog.DIALOG_TITLE));

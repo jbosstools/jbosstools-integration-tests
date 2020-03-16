@@ -118,7 +118,7 @@ public class WSClientTestTemplate extends SOAPTestBase {
 	protected void clientTest(String targetPkg) {
 		WebServiceClientHelper.createClient(
 				getConfiguredServerName(),
-				 "http://soaptest.parasoft.com/calculator.wsdl",
+				 "http://www.dneonline.com/calculator.asmx?wsdl",
 				serviceRuntime,
 				null,
 				null,
@@ -137,10 +137,10 @@ public class WSClientTestTemplate extends SOAPTestBase {
 		project.refresh();
 		
 		String pkg = (targetPkg != null && !"".equals(targetPkg.trim())) ? getWsPackage() :
-			"com.parasoft.wsdl.calculator";
+			"org.tempuri";
 		String src = "src/" + pkg.replace('.', '/') + "/";
 		String[] expectedFiles = {
-				src + "ICalculator.java",
+				src + "Calculator.java",
 				src + "Add.java",
 				src + "AddResponse.java",
 				src + "Divide.java",
