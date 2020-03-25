@@ -21,6 +21,8 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectFirstPage;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectSecondPage;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectWizard;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.DefineMavenRepository;
+import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.PredefinedMavenRepository;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +30,8 @@ import org.junit.runner.RunWith;
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(JavaPerspective.class)
 @JBossServer(state=ServerRequirementState.PRESENT)
+@DefineMavenRepository(predefinedRepositories = {
+		@PredefinedMavenRepository(ID = "jboss-public-repository", snapshots = true) })
 public class JSFProjectTest extends AbstractMavenSWTBotTest{
 	public static final String POM_FILE = "pom.xml";
 	public static final String PROJECT_NAME7_V22="JSFProject7_2.2";
@@ -43,7 +47,7 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 	@Test
 	public void createJSFProjectTestAS7JSFv22() {
 		createJSFProject(PROJECT_NAME7_V22, "JSF 2.2", "JSFKickStartWithoutLibs", sr.getRuntimeName());
-		convertToMavenProject(PROJECT_NAME7_V22, "war", false);
+		convertToMavenProject(PROJECT_NAME7_V22, "war", true);
 		addDependency(PROJECT_NAME7_V22, GROUPID,ARTIFACTID,JSF_VERSION_2_2);
 		buildProject(PROJECT_NAME7_V22,"..Maven build...","clean package",true);
 		checkWebTarget(PROJECT_NAME7_V22, PROJECT_NAME7_V22+"-0.0.1-SNAPSHOT");
@@ -52,7 +56,7 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 	@Test
 	public void createJSFProjectTestAS7JSFv23() {
 		createJSFProject(PROJECT_NAME7_V23, "JSF 2.3", "JSFKickStartWithoutLibs", sr.getRuntimeName());
-		convertToMavenProject(PROJECT_NAME7_V23, "war", false);
+		convertToMavenProject(PROJECT_NAME7_V23, "war", true);
 		addDependency(PROJECT_NAME7_V23, GROUPID,ARTIFACTID,JSF_VERSION_2_3);
 		buildProject(PROJECT_NAME7_V23,"..Maven build...","clean package",true);
 		checkWebTarget(PROJECT_NAME7_V23,PROJECT_NAME7_V23+"-0.0.1-SNAPSHOT");
