@@ -122,7 +122,7 @@ public class CDITestBase {
 
 	protected static Collection<RequirementMatcher> getRestrictionMatcherCDI20() {
 		return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
-				new RequirementMatcher(JBossServer.class, VERSION, "18"),
+				new RequirementMatcher(JBossServer.class, VERSION, "19"),
 				new RequirementMatcher(JRE.class, VERSION, "11"));
 
 	}
