@@ -20,6 +20,7 @@ import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.impl.menu.WorkbenchPartMenuItem;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +48,7 @@ public class SCMCheckoutProject extends AbstractMavenSWTBotTest {
 		ignoreM2eConnectors();
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
+		new WorkbenchPartMenuItem("Projects Presentation", "Flat").select();
 		assertTrue(pe.containsProject("eclipsetutorial"));
 		assertTrue(pe.containsProject("eclipsetutorial.core"));
 		assertTrue(pe.containsProject("eclipsetutorial.feature"));

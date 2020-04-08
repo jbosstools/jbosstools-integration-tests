@@ -10,12 +10,16 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test.project;
 
+import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.jsf.reddeer.ui.JSFNewProjectFirstPage;
@@ -47,6 +51,14 @@ public class JSFProjectTest extends AbstractMavenSWTBotTest{
 	@Test
 	public void createJSFProjectTestAS7JSFv22() {
 		createJSFProject(PROJECT_NAME7_V22, "JSF 2.2", "JSFKickStartWithoutLibs", sr.getRuntimeName());
+		// issue NODE-529
+		try {
+			new WaitUntil(new ShellIsAvailable("Missing node.js"), TimePeriod.DEFAULT);
+			new PushButton("OK").click();
+		}
+		catch (WaitTimeoutExpiredException e) {
+			// issue appears randomly
+		}
 		convertToMavenProject(PROJECT_NAME7_V22, "war", true);
 		addDependency(PROJECT_NAME7_V22, GROUPID,ARTIFACTID,JSF_VERSION_2_2);
 		buildProject(PROJECT_NAME7_V22,"..Maven build...","clean package",true);
