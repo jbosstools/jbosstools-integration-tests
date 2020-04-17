@@ -23,7 +23,7 @@ public class CxfWsClientTest extends WSClientTestTemplate {
 	private static final String CXF_HOME_LOCATION;
 
 	static {
-		CXF_HOME_LOCATION = System.getProperty("apache-cxf-2.x");
+		CXF_HOME_LOCATION = System.getProperty("apache-cxf-3.x");
 	}
 
 	public CxfWsClientTest() {

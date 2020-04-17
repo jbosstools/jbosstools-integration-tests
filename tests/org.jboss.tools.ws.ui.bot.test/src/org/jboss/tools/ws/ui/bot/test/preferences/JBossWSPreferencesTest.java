@@ -141,7 +141,7 @@ public class JBossWSPreferencesTest {
 		switch(serverFamily.getLabel()) {
 		/*
 		 * Depending on wf versions, Stack CFX client version differs:
-		 * WF 19 -> 5.4.1
+		 * WF 19, 20 -> 5.4.1
 		 * WF 17, 18 -> 5.3.0
 		 * WF 15,16 -> 5.2.4
 		 * WF 13 -> 5.2.1
@@ -156,7 +156,7 @@ public class JBossWSPreferencesTest {
 				expectedVersion = "5.2.4.Final";
 			} else if (version.startsWith("17") || version.startsWith("18")) {
 				expectedVersion = "5.3.0.Final";
-			} else if (version.startsWith("19")) {
+			} else if (version.startsWith("19") || version.startsWith("20")) {
 				expectedVersion = "5.4.1.Final";
 			} else {
 				expectedVersion = "5.0.0.Final";
