@@ -31,6 +31,8 @@
 		<jbosstools.test.wildfly.home>${requirementsDirectory}/wildfly-${wildflyVersion}</jbosstools.test.wildfly.home>
 		<jbosstools.test.eap7.home>${requirementsDirectory}/jboss-eap-7.2</jbosstools.test.eap7.home>
 		<jbosstools.test.jboss-eap-7.x.url>http://download.eng.brq.redhat.com/released/JBoss-middleware/eap7/7.2.1/jboss-eap-7.2.1-full-build.zip</jbosstools.test.jboss-eap-7.x.url>
+		<wildFlyImportQuickstartsTestClass>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</wildFlyImportQuickstartsTestClass>
+		<eapImportQuickstartsTestClass>org.jboss.tools.examples.ui.bot.test.integration.EAPImportQuickstartsTest</eapImportQuickstartsTestClass>
 		<surefire.timeout>18000</surefire.timeout>
 		<skipTests>false</skipTests>
 		<deployOnServer>true</deployOnServer>
@@ -74,11 +76,6 @@
 								<artifactId>org.eclipse.jpt.jpa.feature.feature.group</artifactId>
 								<version>0.0.0</version>
 							</dependency>
-							<dependency>
-								<type>p2-installable-unit</type>
-								<artifactId>org.eclipse.jpt.jpa.feature.feature.group</artifactId>
-								<version>0.0.0</version>
-							</dependency>
 						</dependencies>
 					</configuration>
 				</plugin>
@@ -115,7 +112,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<test.class>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</test.class>
+				<test.class>${wildFlyImportQuickstartsTestClass}</test.class>
 				<reddeer.config>${project.build.directory}/classes/servers/wildfly.json</reddeer.config>
 				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
 				<examplesFolder>${examplesFolderWildFly}</examplesFolder>
@@ -168,7 +165,7 @@
 						<groupId>org.eclipse.tycho</groupId>
 						<artifactId>tycho-surefire-plugin</artifactId>
 						<configuration>
-							<testClass>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</testClass>
+							<testClass>${wildFlyImportQuickstartsTestClass}</testClass>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -177,7 +174,7 @@
 		<profile>
 			<id>EAP7</id>
 			<properties>
-				<test.class>org.jboss.tools.examples.ui.bot.test.integration.EAPImportQuickstartsTest</test.class>
+				<test.class>${eapImportQuickstartsTestClass}</test.class>
 				<reddeer.config>${project.build.directory}/classes/servers/eap-7.json</reddeer.config>
 				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
 				<examplesFolder>${examplesFolderEAP}</examplesFolder>
@@ -217,7 +214,7 @@
 						<groupId>org.eclipse.tycho</groupId>
 						<artifactId>tycho-surefire-plugin</artifactId>
 						<configuration>
-							<testClass>org.jboss.tools.examples.ui.bot.test.integration.EAPImportQuickstartsTest</testClass>
+							<testClass>${eapImportQuickstartsTestClass}</testClass>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -226,7 +223,7 @@
 		<profile>
 			<id>JavaEE7</id>
 			<properties>
-				<test.class>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</test.class>
+				<test.class>${wildFlyImportQuickstartsTestClass}</test.class>
 				<reddeer.config>${project.build.directory}/classes/servers/wildfly.json</reddeer.config>
 				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
 				<examplesFolder>${examplesFolderJavaEE7}</examplesFolder>
@@ -279,7 +276,7 @@
 						<groupId>org.eclipse.tycho</groupId>
 						<artifactId>tycho-surefire-plugin</artifactId>
 						<configuration>
-							<testClass>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</testClass>
+							<testClass>${wildFlyImportQuickstartsTestClass}</testClass>
 						</configuration>
 					</plugin>
 					<plugin>
@@ -316,7 +313,7 @@
 		<profile>
 			<id>JavaEE8</id>
 			<properties>
-				<test.class>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</test.class>
+				<test.class>${wildFlyImportQuickstartsTestClass}</test.class>
 				<reddeer.config>${project.build.directory}/classes/servers/wildfly.json</reddeer.config>
 				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
 				<examplesFolder>${examplesFolderJavaEE8}</examplesFolder>
@@ -369,7 +366,7 @@
 						<groupId>org.eclipse.tycho</groupId>
 						<artifactId>tycho-surefire-plugin</artifactId>
 						<configuration>
-							<testClass>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</testClass>
+							<testClass>${wildFlyImportQuickstartsTestClass}</testClass>
 						</configuration>
 					</plugin>
 					<plugin>
@@ -406,7 +403,7 @@
 		<profile>
 			<id>SmokeTestsWildFly</id>
 			<properties>
-				<test.class>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</test.class>
+				<test.class>${wildFlyImportQuickstartsTestClass}</test.class>
 				<reddeer.config>${project.build.directory}/classes/servers/wildfly.json</reddeer.config>
 				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
 				<examplesFolder>${examplesFolderWildFly}</examplesFolder>
@@ -476,7 +473,7 @@
 						<groupId>org.eclipse.tycho</groupId>
 						<artifactId>tycho-surefire-plugin</artifactId>
 						<configuration>
-							<testClass>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</testClass>
+							<testClass>${wildFlyImportQuickstartsTestClass}</testClass>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -485,7 +482,7 @@
 		<profile>
 			<id>SmokeTestsEAP7</id>
 			<properties>
-				<test.class>org.jboss.tools.examples.ui.bot.test.integration.EAPImportQuickstartsTest</test.class>
+				<test.class>${eapImportQuickstartsTestClass}</test.class>
 				<reddeer.config>${project.build.directory}/classes/servers/eap-7.json</reddeer.config>
 				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
 				<examplesFolder>${examplesFolderEAP}</examplesFolder>
@@ -526,7 +523,7 @@
 						<groupId>org.eclipse.tycho</groupId>
 						<artifactId>tycho-surefire-plugin</artifactId>
 						<configuration>
-							<testClass>org.jboss.tools.examples.ui.bot.test.integration.EAPImportQuickstartsTest</testClass>
+							<testClass>${eapImportQuickstartsTestClass}</testClass>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -535,7 +532,7 @@
 		<profile>
 			<id>SmokeTestsJavaEE7</id>
 			<properties>
-				<test.class>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</test.class>
+				<test.class>${wildFlyImportQuickstartsTestClass}</test.class>
 				<reddeer.config>${project.build.directory}/classes/servers/wildfly.json</reddeer.config>
 				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
 				<examplesFolder>${examplesFolderJavaEE7}</examplesFolder>
@@ -589,7 +586,7 @@
 						<groupId>org.eclipse.tycho</groupId>
 						<artifactId>tycho-surefire-plugin</artifactId>
 						<configuration>
-							<testClass>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</testClass>
+							<testClass>${wildFlyImportQuickstartsTestClass}</testClass>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -598,7 +595,7 @@
 		<profile>
 			<id>SmokeTestsJavaEE8</id>
 			<properties>
-				<test.class>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</test.class>
+				<test.class>${wildFlyImportQuickstartsTestClass}</test.class>
 				<reddeer.config>${project.build.directory}/classes/servers/wildfly.json</reddeer.config>
 				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
 				<examplesFolder>${examplesFolderJavaEE8}</examplesFolder>
@@ -652,71 +649,7 @@
 						<groupId>org.eclipse.tycho</groupId>
 						<artifactId>tycho-surefire-plugin</artifactId>
 						<configuration>
-							<testClass>org.jboss.tools.examples.ui.bot.test.integration.WildFlyImportQuickstartsTest</testClass>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>check-pr</id>
-			<properties>
-				<test.class>org.jboss.tools.examples.ui.bot.test.integration.EAPImportQuickstartsTest</test.class>
-				<reddeer.config>${project.build.directory}/classes/servers/eap-7.json</reddeer.config>
-				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
-				<examplesFolder>${examplesFolderEAP}</examplesFolder>
-			</properties>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>com.googlecode.maven-download-plugin</groupId>
-						<artifactId>download-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>download-examples-eap</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>wget</goal>
-								</goals>
-								<configuration>
-									<url>${quickstartsURLEAP}</url>
-									<unpack>true</unpack>
-									<outputDirectory>${project.build.directory}</outputDirectory>
-								</configuration>
-							</execution>
-							<execution>
-								<id>install-eap-7.x</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>wget</goal>
-								</goals>
-								<configuration>
-									<url>${jbosstools.test.jboss-eap-7.x.url}</url>
-									<unpack>true</unpack>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>tycho-surefire-plugin</artifactId>
-						<configuration>
-							<testClass>org.jboss.tools.examples.ui.bot.test.integration.EAPImportQuickstartsTest</testClass>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>target-platform-configuration</artifactId>
-						<configuration>
-							<dependency-resolution>
-								<extraRequirements>
-									<requirement>
-										<type>p2-installable-unit</type>
-										<id>org.jboss.tools.central.feature.feature.group</id>
-										<versionRange>0.0.0</versionRange>
-									</requirement>
-								</extraRequirements>
-							</dependency-resolution>
+							<testClass>${wildFlyImportQuickstartsTestClass}</testClass>
 						</configuration>
 					</plugin>
 				</plugins>
