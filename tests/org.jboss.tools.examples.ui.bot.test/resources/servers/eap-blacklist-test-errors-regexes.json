@@ -4,11 +4,16 @@
 		".*Referenced file contains errors.*jboss-ejb3-spec-2_0\\.xsd.*"
 	],
 	"messaging-clustering-singleton": [
-		".*Referenced file contains errors.*jboss-ejb-delivery-active_1_1\\.xsd.*",
-		".*Referenced file contains errors.*jboss-ejb3-2_0\\.xsd.*",
-		".*Referenced file contains errors.*jboss-ejb3-spec-2_0\\.xsd.*"
+		".*Referenced file contains errors.*"
+	],
+	"spring-greeter": [
+		".*The superclass \"javax.servlet.http.HttpServlet\" was not found on the Java Build Path.*"
 	],
 	"jaxws-retail": [
+		".*The superclass \"javax.servlet.http.HttpServlet\" was not found on the Java Build Path.*"
+	],
+	"*": [
+		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*",
 		".*Customer cannot be resolved to a type.*",
 		".*DiscountRequest cannot be resolved to a type.*",
 		".*DiscountResponse cannot be resolved to a type.*",
@@ -17,12 +22,9 @@
 		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountRequest cannot be resolved.*",
 		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountResponse cannot be resolved.*",
 		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.ProfileMgmt cannot be resolved.*",
-		".*Type mismatch: cannot convert from ProfileMgmt to ProfileMgmt.*"
-	],
-	"spring-greeter": [
-		".*The superclass \"javax.servlet.http.HttpServlet\" was not found on the Java Build Path.*"
-	],
-	"*": [
-		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*"
+		".*Type mismatch: cannot convert from ProfileMgmt to ProfileMgmt.*",
+		".*Missing artifact org.jboss.eap.quickstarts.*",
+		".*The container 'Maven Dependencies' references non existing library '.*.jar'.*",
+		".*The project cannot be built until build path errors are resolved.*"
 	]
 }
