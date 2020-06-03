@@ -442,6 +442,12 @@ public abstract class AbstractImportQuickstartsTest {
 			case "helloworld-classfiletransformer":
 				quickstartBaseNameJB = "helloworld-classfiletransformers";
 				break;
+			case "microprofile-openapi":
+				quickstartBaseNameJB = "microprofile-openapi-quickstart";
+				break;
+			case "microprofile-rest-client":
+				quickstartBaseNameJB = "country-client";
+				break;
 			default:
 				quickstartBaseNameJB = "jboss-" + quickstartBaseName;
 				break;

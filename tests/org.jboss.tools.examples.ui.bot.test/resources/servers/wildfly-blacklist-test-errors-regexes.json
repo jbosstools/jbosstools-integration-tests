@@ -2,14 +2,8 @@
 	"*": [
 		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*"
 	],
-	"jts": [
-		".*Invalid content was found starting with element.*",
-		".*Referenced file contains errors.*jboss-ejb3-spec-2_0\\.xsd.*"
-	],
-	"messaging-clustering-singleton": [
-		".*Referenced file contains errors.*jboss-ejb-delivery-active_1_1\\.xsd.*",
-		".*Referenced file contains errors.*jboss-ejb3-2_0\\.xsd.*",
-		".*Referenced file contains errors.*jboss-ejb3-spec-2_0\\.xsd.*"
+	"country-client": [
+		".*Multiple JAX-RS Activators are defined for the project.*"
 	],
 	"jaxws-retail": [
 		".*Customer cannot be resolved to a type.*",
@@ -22,7 +16,28 @@
 		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.ProfileMgmt cannot be resolved.*",
 		".*Type mismatch: cannot convert from ProfileMgmt to ProfileMgmt.*"
 	],
-	"spring-greeter":[
+	"microprofile-config":[
 		".*The superclass \"javax.servlet.http.HttpServlet\" was not found on the Java Build Path.*"
+	],
+	"ejb-security":[
+		".*Missing artifact org.wildfly.quickstarts:ejb-throws-exception.*",
+		".*The container 'Maven Dependencies' references non existing library '.*jar'.*",
+		".*The project cannot be built until build path errors are resolved.*"
+	],
+	"jsonp":[
+		".*Customer cannot be resolved to a type.*",
+		".*DiscountRequest cannot be resolved to a type.*",
+		".*DiscountResponse cannot be resolved to a type.*",
+		".*ProfileMgmt cannot be resolved to a type.*",
+		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.* cannot be resolved.*",
+		".*Type mismatch: cannot convert from ProfileMgmt to ProfileMgmt.*"
+	],
+	"hibernate":[
+		".*Customer cannot be resolved to a type.*",
+		".*DiscountRequest cannot be resolved to a type.*",
+		".*DiscountResponse cannot be resolved to a type.*",
+		".*ProfileMgmt cannot be resolved to a type.*",
+		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.* cannot be resolved.*",
+		".*Type mismatch: cannot convert from ProfileMgmt to ProfileMgmt.*"
 	]
 }
