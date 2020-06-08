@@ -1,0 +1,8 @@
+{
+	"microprofile-config": [
+		".*The superclass \"javax.servlet.http.HttpServlet\" was not found on the Java Build Path.*"
+	],
+	"*": [
+		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*"
+	]
+}
