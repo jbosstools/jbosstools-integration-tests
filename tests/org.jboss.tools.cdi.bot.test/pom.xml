@@ -17,7 +17,7 @@
 		<surefire.timeout>14400</surefire.timeout>
 		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
 		<jbosstools.test.wildfly.13.home>${requirementsDirectory}/wildfly-13.0.0.Final</jbosstools.test.wildfly.13.home>
-		<jbosstools.test.wildfly.19.home>${requirementsDirectory}/wildfly-19.0.0.Final</jbosstools.test.wildfly.19.home>
+		<jbosstools.test.wildfly.20.home>${requirementsDirectory}/wildfly-20.0.0.Final</jbosstools.test.wildfly.20.home>
 		<jbosstools.test.weld-se.home>${requirementsDirectory}/weld/se/</jbosstools.test.weld-se.home>
 		<jbosstools.test.weld-api.home>${requirementsDirectory}/weld/api/</jbosstools.test.weld-api.home>
 	</properties>
@@ -138,7 +138,7 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>wildfly19</id>
+						<id>wildfly20</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>unpack</goal>
@@ -149,7 +149,7 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>19.0.0.Final</version>
+									<version>20.0.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>

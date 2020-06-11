@@ -1,8 +1,8 @@
 {
 	"org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer": [
 		{
-			"runtime": "${jbosstools.test.wildfly.19.home}",
-			"version": "19",
+			"runtime": "${jbosstools.test.wildfly.20.home}",
+			"version": "20",
 			"family": "WILDFLY",
 			"runtimeEnvironment": "JavaSE-11"
 		},
