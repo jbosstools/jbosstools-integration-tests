@@ -59,13 +59,13 @@ import org.eclipse.reddeer.workbench.api.Editor;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.tools.livereload.reddeer.requirement.DockerWildflyRequirement.DockerWildfly;
 
-import com.spotify.docker.client.DefaultDockerClient;
-import com.spotify.docker.client.DockerClient;
-import com.spotify.docker.client.messages.ContainerConfig;
-import com.spotify.docker.client.messages.ContainerCreation;
-import com.spotify.docker.client.messages.HostConfig;
-import com.spotify.docker.client.messages.PortBinding;
-import com.spotify.docker.client.messages.ContainerConfig.Builder;
+import org.mandas.docker.client.DefaultDockerClient;
+import org.mandas.docker.client.DockerClient;
+import org.mandas.docker.client.messages.ContainerConfig;
+import org.mandas.docker.client.messages.ContainerCreation;
+import org.mandas.docker.client.messages.HostConfig;
+import org.mandas.docker.client.messages.PortBinding;
+import org.mandas.docker.client.messages.ContainerConfig.Builder;
 
 public class DockerWildflyRequirement extends AbstractServerRequirement implements Requirement<DockerWildfly> {
 
