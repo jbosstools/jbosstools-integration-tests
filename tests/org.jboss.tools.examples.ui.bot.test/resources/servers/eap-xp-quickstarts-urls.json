@@ -1,0 +1,10 @@
+{
+	"microprofile-config": "http://localhost:8080/microprofile-config/converter/value",
+	"microprofile-fault-tolerance": "http://localhost:8080/microprofile-fault-tolerance/coffee/2/availability",
+	"microprofile-health": "http://localhost:9990/health/ready",
+	"microprofile-jwt": "http://localhost:8080/microprofile-jwt/rest/Sample/birthday",
+	"microprofile-metrics": "http://localhost:8080/microprofile-metrics/prime/7",
+	"microprofile-openapi-quickstart": "http://localhost:8080/openapi?format=JSON",
+	"microprofile-opentracing": "http://localhost:8080/microprofile-opentracing/hello/cdi-trace",
+	"country-client": "http://localhost:8080/country-client/country/cdi/doesNotExist"
+}

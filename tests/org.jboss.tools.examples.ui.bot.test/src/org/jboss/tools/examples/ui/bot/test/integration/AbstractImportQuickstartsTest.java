@@ -49,6 +49,7 @@ import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.Server;
 import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServerModule;
 import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
 import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerState;
+import org.eclipse.reddeer.jface.exception.JFaceLayerException;
 import org.eclipse.reddeer.jface.wizard.WizardDialog;
 import org.eclipse.reddeer.swt.api.TreeItem;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
@@ -56,6 +57,7 @@ import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
+import org.eclipse.reddeer.workbench.core.exception.WorkbenchCoreLayerException;
 import org.eclipse.reddeer.workbench.exception.WorkbenchLayerException;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
@@ -142,7 +144,7 @@ public abstract class AbstractImportQuickstartsTest {
 				checkDeployedProject(qstart, fullServerName);
 				// undeploy
 				unDeployModule(qstart.getName().equals("template") ? "QUICKSTART_NAME" : qstart.getName(), server);
-			} catch (CoreLayerException ex) {
+			} catch (JFaceLayerException ex) {
 				new DefaultShell("Server Error");
 				new OkButton().click();
 			}
@@ -165,7 +167,7 @@ public abstract class AbstractImportQuickstartsTest {
 					qstart.addDeployableProjectName(project.getName());
 				}
 				new WizardDialog().finish();
-			} catch (CoreLayerException ex) {
+			} catch (JFaceLayerException ex) {
 				continue;// non deployable project
 			}
 
@@ -179,7 +181,7 @@ public abstract class AbstractImportQuickstartsTest {
 		Project project = explorer.getProject(deployableProject);
 		project.select();
 		new ContextMenuItem("Run As", "1 Run on Server").select();
-		new WizardDialog().finish();
+		new WizardDialog("Run On Server").finish();
 	}
 
 	private String getServerFullName(List<Server> servers, String partOfName) {
@@ -523,7 +525,7 @@ public abstract class AbstractImportQuickstartsTest {
 					browser = null;
 				}
 			}
-		} catch (CoreLayerException ex) {
+		} catch (WorkbenchCoreLayerException ex) {
 			return;
 		}
 	}
