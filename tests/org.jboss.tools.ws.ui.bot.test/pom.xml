@@ -13,13 +13,13 @@
 	<artifactId>org.jboss.tools.ws.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<jbosstools.test.jboss-wildfly.home>${requirementsDirectory}/wildfly-19.0.0.Final</jbosstools.test.jboss-wildfly.home>
-		<apache-cxf-2.x.dir>${requirementsDirectory}/apache-cxf-2.x</apache-cxf-2.x.dir>
-		<apache-cxf-2.x>${apache-cxf-2.x.dir}/apache-cxf-3.3.5/</apache-cxf-2.x>
-		<apache-cxf-2.x.url>http://archive.apache.org/dist/cxf/3.3.5/apache-cxf-3.3.5.zip</apache-cxf-2.x.url>
-		<apache-cxf-2.x.sha256>973c8b962ab7abfcc899c1ab6046bc17749a6f0c8f305c3779e7174da1f1d595</apache-cxf-2.x.sha256>
+		<jbosstools.test.jboss-wildfly.home>${requirementsDirectory}/wildfly-20.0.0.Final</jbosstools.test.jboss-wildfly.home>
+		<apache-cxf-3.x.dir>${requirementsDirectory}/apache-cxf-3.x</apache-cxf-3.x.dir>
+		<apache-cxf-3.x>${apache-cxf-3.x.dir}/apache-cxf-3.3.5/</apache-cxf-3.x>
+		<apache-cxf-3.x.url>http://archive.apache.org/dist/cxf/3.3.5/apache-cxf-3.3.5.zip</apache-cxf-3.x.url>
+		<apache-cxf-3.x.sha256>973c8b962ab7abfcc899c1ab6046bc17749a6f0c8f305c3779e7174da1f1d595</apache-cxf-3.x.sha256>
 
-		<systemProperties>${integrationTestsSystemProperties} -Dws.scope=${ws.scope} -Dapache-cxf-2.x=${apache-cxf-2.x} -Drd.config=target/classes/config/requirements.json -Djbosstools.test.jboss-wildfly.home=${jbosstools.test.jboss-wildfly.home} -Dreddeer.close.shells=false</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Dws.scope=${ws.scope} -Dapache-cxf-3.x=${apache-cxf-3.x} -Drd.config=target/classes/config/requirements.json -Djbosstools.test.jboss-wildfly.home=${jbosstools.test.jboss-wildfly.home} -Dreddeer.close.shells=false</systemProperties>
 		<surefire.timeout>10800</surefire.timeout>
 	</properties>
 	
@@ -40,16 +40,16 @@
 						<artifactId>download-maven-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>install-apache-cxf-2.x</id>
+								<id>install-apache-cxf-3.x</id>
 								<phase>pre-integration-test</phase>
 								<goals>
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>${apache-cxf-2.x.url}</url>
+									<url>${apache-cxf-3.x.url}</url>
 									<unpack>true</unpack>
-									<sha256>${apache-cxf-2.x.sha256}</sha256>
-									<outputDirectory>${apache-cxf-2.x.dir}</outputDirectory>
+									<sha256>${apache-cxf-3.x.sha256}</sha256>
+									<outputDirectory>${apache-cxf-3.x.dir}</outputDirectory>
 								</configuration>
 							</execution>
 						</executions>
@@ -138,7 +138,7 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>19.0.0.Final</version>
+									<version>20.0.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>

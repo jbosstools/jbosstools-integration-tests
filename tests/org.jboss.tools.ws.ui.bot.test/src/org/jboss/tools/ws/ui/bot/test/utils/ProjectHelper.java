@@ -61,9 +61,14 @@ import org.jboss.tools.ws.reddeer.ui.wizards.wst.NewWsdlFileWizard;
  * @author Radoslav Rabara
  */
 public class ProjectHelper {
-
+	
 	private ProjectHelper() {
 	};
+	
+	public static double getSystemJavaVersion() {
+		String java_version_string = System.getProperty("java.version");
+		return Double.parseDouble(java_version_string.substring(0, java_version_string.indexOf(".") + 1));
+	}
 	
 	/**
 	 * Method creates basic java class for entered project with entered package
@@ -122,7 +127,11 @@ public class ProjectHelper {
 
 		wizard.setProjectName(name);
 		WebProjectFirstPage fp = new WebProjectFirstPage(wizard);
-		fp.activateFacet("1.8", "Java");
+		if (getSystemJavaVersion() > 1.8) {
+			fp.activateFacet("11", "Java");
+		} else {
+			fp.activateFacet("1.8", "Java");
+		}
 		wizard.next();
 		wizard.next();
 		wizard.setGenerateDeploymentDescriptor(true);
@@ -146,7 +155,11 @@ public class ProjectHelper {
 		wizard.setProjectName(name);
 		wizard.addProjectToEar(earProject);
 		WebProjectFirstPage fp = new WebProjectFirstPage(wizard);
-		fp.activateFacet("1.8", "Java");
+		if (getSystemJavaVersion() > 1.8) {
+			fp.activateFacet("11", "Java");
+		} else {
+			fp.activateFacet("1.8", "Java");
+		}
 		wizard.finish();
 
 		new WaitWhile(new JobIsRunning());
