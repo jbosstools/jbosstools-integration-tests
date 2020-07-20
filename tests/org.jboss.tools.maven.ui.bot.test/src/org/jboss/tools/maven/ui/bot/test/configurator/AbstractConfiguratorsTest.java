@@ -83,7 +83,6 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 	
 	public void checkProjectWithRuntime(String projectName){
 		updateConf(projectName);
-		assertTrue("Project "+projectName+" has "+CDI_FACET+" nature.",hasNature(projectName,null, CDI_FACET));
 		assertTrue("Project "+projectName+" doesn't have "+JSF_FACET+" nature.",hasNature(projectName,null, JSF_FACET));
 		assertTrue("Project "+projectName+" doesn't have "+JAXRS_FACET+" nature.",hasNature(projectName,null, JAXRS_FACET));
 	}

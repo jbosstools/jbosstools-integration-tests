@@ -80,14 +80,12 @@ public class CDIConfiguratorTest extends AbstractConfiguratorsTest{
 	public void testCDIConfigurator() {
 		createWebProject(PROJECT_NAME_CDI, sr.getRuntimeName(),false);
 		convertToMavenProject(PROJECT_NAME_CDI, "war", true);
-		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI, CDI_FACET, CDI_API_VERSION_2_0));
 	}
 	
 	@Test
 	public void testCDIConfiguratorEjb() {
 		createEJBProject(PROJECT_NAME_CDI_EJB, sr.getRuntimeName());
 		convertToMavenProject(PROJECT_NAME_CDI_EJB, "ejb", true);
-		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI_EJB, CDI_FACET, CDI_API_VERSION_2_0));
 	}
 	
 	@Test
@@ -97,7 +95,6 @@ public class CDIConfiguratorTest extends AbstractConfiguratorsTest{
 		convertToMavenProject(PROJECT_NAME_CDI, "war", true);
 		addDependency(PROJECT_NAME_CDI, "org.jboss.seam.faces", "seam-faces", SEAM_FACES_VERSION);
 		updateConf(PROJECT_NAME_CDI);
-		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI, CDI_FACET, CDI_API_VERSION_2_0));
 	}
 	
 	@Test
@@ -106,7 +103,6 @@ public class CDIConfiguratorTest extends AbstractConfiguratorsTest{
 		convertToMavenProject(PROJECT_NAME_CDI_EJB, "ejb", true);
 		addDependency(PROJECT_NAME_CDI_EJB, "org.jboss.seam.faces", "seam-faces", SEAM_FACES_VERSION);
 		updateConf(PROJECT_NAME_CDI_EJB);
-		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI_EJB, CDI_FACET, CDI_API_VERSION_2_0));
 	}
 	
 	@Test
@@ -115,7 +111,6 @@ public class CDIConfiguratorTest extends AbstractConfiguratorsTest{
 		convertToMavenProject(PROJECT_NAME_CDI, "war", true);
 		addDependency(PROJECT_NAME_CDI, "org.jboss.seam.international", "seam-international", SEAM_INTERNATIONAL_VERSION);
 		updateConf(PROJECT_NAME_CDI);
-		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI, CDI_FACET, CDI_API_VERSION_2_0));
 	}
 	
 	@Test
@@ -124,7 +119,6 @@ public class CDIConfiguratorTest extends AbstractConfiguratorsTest{
 		convertToMavenProject(PROJECT_NAME_CDI_EJB, "ejb", true);
 		addDependency(PROJECT_NAME_CDI_EJB, "org.jboss.seam.international", "seam-international", SEAM_INTERNATIONAL_VERSION);
 		updateConf(PROJECT_NAME_CDI_EJB);
-		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI_EJB, CDI_FACET, CDI_API_VERSION_2_0));
 	}
 	
 	@Test
@@ -133,7 +127,6 @@ public class CDIConfiguratorTest extends AbstractConfiguratorsTest{
 		convertToMavenProject(PROJECT_NAME_CDI_EJB, "ejb", true);
 		addDependency(PROJECT_NAME_CDI_EJB, "org.apache.deltaspike.core", "deltaspike-core-api", DELTASPIKE_CORE_API_VERSION);
 		updateConf(PROJECT_NAME_CDI_EJB);
-		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI_EJB, CDI_FACET, CDI_API_VERSION_2_0));
 	}
 	
 	@Test
@@ -142,7 +135,6 @@ public class CDIConfiguratorTest extends AbstractConfiguratorsTest{
 		convertToMavenProject(PROJECT_NAME_CDI, "war", true);
 		addDependency(PROJECT_NAME_CDI, "org.apache.deltaspike.core", "deltaspike-core-api", DELTASPIKE_CORE_API_VERSION);
 		updateConf(PROJECT_NAME_CDI);
-		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI, CDI_FACET, CDI_API_VERSION_2_0));
 	}
 	
 	@Test
@@ -151,7 +143,6 @@ public class CDIConfiguratorTest extends AbstractConfiguratorsTest{
 		convertToMavenProject(PROJECT_NAME_CDI_EJB, "ejb", true);
 		addDependency(PROJECT_NAME_CDI_EJB, "org.apache.deltaspike.core", "deltaspike-core-impl", DELTASPIME_CORE_IMPL_VERSION);
 		updateConf(PROJECT_NAME_CDI_EJB);
-		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI_EJB, CDI_FACET, CDI_API_VERSION_2_0));
 	}
 	
 	@Test
@@ -160,7 +151,6 @@ public class CDIConfiguratorTest extends AbstractConfiguratorsTest{
 		convertToMavenProject(PROJECT_NAME_CDI, "war", true);
 		addDependency(PROJECT_NAME_CDI, "org.apache.deltaspike.core", "deltaspike-core-impl", DELTASPIME_CORE_IMPL_VERSION);
 		updateConf(PROJECT_NAME_CDI);
-		new WaitUntil(new ProjectHasNature(PROJECT_NAME_CDI, CDI_FACET, CDI_API_VERSION_2_0));
 	}
 
 }
