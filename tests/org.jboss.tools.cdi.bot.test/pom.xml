@@ -11,8 +11,6 @@
 	<artifactId>org.jboss.tools.cdi.bot.test</artifactId>
     <packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<jbosstools.test.jre.8>${NATIVE_TOOLS}${SEP}${OPENJDK18}</jbosstools.test.jre.8>
-		<jbosstools.test.jre.11>${NATIVE_TOOLS}${SEP}${OPENJDK11}</jbosstools.test.jre.11>
 		<systemProperties>${integrationTestsSystemProperties} -Drd.config=target/classes/servers/requirements.json -Djbosstools.test.weld-se.home=${jbosstools.test.weld-se.home} -Djbosstools.test.weld-api.home=${jbosstools.test.weld-api.home} -Djbosstools.test.jre.8=${jbosstools.test.jre.8} -Djbosstools.test.jre.11=${jbosstools.test.jre.11}</systemProperties>
 		<surefire.timeout>14400</surefire.timeout>
 		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>

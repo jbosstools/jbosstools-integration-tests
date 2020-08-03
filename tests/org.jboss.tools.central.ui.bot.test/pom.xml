@@ -14,7 +14,6 @@
 	<packaging>eclipse-test-plugin</packaging>
 
 	<properties>
-		<jbosstools.test.jre.8>${NATIVE_TOOLS}${SEP}${OPENJDK18}</jbosstools.test.jre.8>
 		<systemProperties>-DspecificQuickstarts=${specificQuickstarts} -Drd.config=${rd.config} -Djbosstools.test.jre.8=${jbosstools.test.jre.8}</systemProperties>
 		<specificQuickstarts></specificQuickstarts>
 		<rd.config>${project.build.directory}/classes/eap-7.json</rd.config>
