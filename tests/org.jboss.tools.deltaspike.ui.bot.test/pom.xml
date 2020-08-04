@@ -12,7 +12,6 @@
 	<packaging>eclipse-test-plugin</packaging>
 	
 	<properties>
-		<jbosstools.test.jre.8>${NATIVE_TOOLS}${SEP}${OPENJDK18}</jbosstools.test.jre.8>
 		<systemProperties>${integrationTestsSystemProperties} -Drd.config=target/classes/servers/requirements.json -Djbosstools.test.jre.8=${jbosstools.test.jre.8}</systemProperties>
 		<suiteClass>org.jboss.tools.deltaspike.ui.bot.test.DeltaspikeAllBotTests</suiteClass>
 		<jbosstools.test.wildfly.16.home>${requirementsDirectory}/wildfly-16.0.0.Final</jbosstools.test.wildfly.16.home>
