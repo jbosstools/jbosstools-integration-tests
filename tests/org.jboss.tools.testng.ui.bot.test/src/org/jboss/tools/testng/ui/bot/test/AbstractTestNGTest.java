@@ -21,12 +21,19 @@ import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.swt.impl.button.FinishButton;
+import org.eclipse.reddeer.swt.impl.button.NextButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.list.DefaultList;
+import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
 import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.junit.After;
 
 /**
@@ -62,6 +69,21 @@ public abstract class AbstractTestNGTest {
 		new LabeledText("Filter:").setText("quarkus-amazon-lambda-archetype");
 		new DefaultTable(0).select(0);
 		MPW.next();
+	}
+
+	public void addTestNGLibrary(String projectName) {
+		new WorkbenchShell().setFocus();
+		new ProjectExplorer().selectProjects(projectName);
+
+		new ContextMenuItem("Properties").select();
+		new DefaultTreeItem("Java Build Path").select();
+		new DefaultTabItem("Libraries").activate();
+		new PushButton("Add Library...").click();
+		new DefaultList().select("TestNG");
+		new NextButton().click();
+		new FinishButton().click();
+		new PushButton("Apply and Close").click();
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 
 	@After
