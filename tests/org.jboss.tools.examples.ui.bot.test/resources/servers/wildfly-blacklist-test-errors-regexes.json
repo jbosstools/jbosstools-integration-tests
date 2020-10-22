@@ -14,9 +14,6 @@
 		".*The container 'Maven Dependencies' references non existing library '.*.jar'.*",
 		".*The project cannot be built until build path errors are resolved.*"
 	],
-	"country-client": [
-		".*Multiple JAX-RS Activators are defined for the project.*"
-	],
 	"microprofile-config":[
 		".*The superclass \"javax.servlet.http.HttpServlet\" was not found on the Java Build Path.*"
 	]
