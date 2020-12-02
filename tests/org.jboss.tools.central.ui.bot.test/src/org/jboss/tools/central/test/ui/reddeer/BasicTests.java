@@ -88,11 +88,7 @@ public class BasicTests {
 		assertTrue(wizards.contains("OpenShift Application"));
 		assertTrue(wizards.contains("Maven Project"));
 		assertTrue(wizards.contains("Launcher Application"));
-		// removed from central
-		//assertTrue(wizards.contains("Hybrid Mobile Project"));
-		//assertTrue(wizards.contains("HTML5 Project"));
-		//assertTrue(wizards.contains("AngularJS Forge"));
-		//assertTrue(wizards.contains("Java EE Web Project"));
+		assertTrue(wizards.contains("Quarkus Project"));
 	}
 
 	@Test
