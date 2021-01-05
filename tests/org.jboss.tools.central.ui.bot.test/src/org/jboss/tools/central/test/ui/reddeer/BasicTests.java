@@ -23,6 +23,7 @@ import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.core.matcher.WithTextMatcher;
 import org.eclipse.reddeer.eclipse.ui.browser.BrowserEditor;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
@@ -31,6 +32,7 @@ import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.central.reddeer.api.JavaScriptHelper;
 import org.jboss.tools.central.reddeer.wait.CentralIsLoaded;
+import org.jboss.tools.quarkus.reddeer.wizard.QuarkusWizard;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,7 +64,7 @@ public class BasicTests {
 		new DefaultEditor(CENTRAL_LABEL);
 		new WaitUntil(new CentralIsLoaded());
 		centralBrowser = new InternalBrowser();
-		
+
 		jsHelper.setBrowser(centralBrowser);
 	}
 
@@ -78,7 +80,8 @@ public class BasicTests {
 	public void learnAboutRedHatButton() {
 		centralBrowser.execute("$(\'a[href=\"https://developers.redhat.com/\"]\').get( 0 ).click()");
 		BrowserEditor be = new BrowserEditor(new WithTextMatcher(new RegexMatcher(".*Red.*Hat.*Developer.*")));
-		assertTrue("The url in the browser has to be https://developers.redhat.com/.", be.getPageURL().equals("https://developers.redhat.com/"));
+		assertTrue("The url in the browser has to be https://developers.redhat.com/.",
+				be.getPageURL().equals("https://developers.redhat.com/"));
 		be.close();
 	}
 
@@ -113,10 +116,18 @@ public class BasicTests {
 		new DefaultShell("New Project Example").close();
 		jsHelper.clearSearch();
 	}
-	
+
 	@Test
 	public void launcherApplicationWizardCanBeEnvoked() {
 		jsHelper.clickWizard("Launcher Application");
 		new DefaultShell("New Launcher project").close();
+	}
+
+	@Test
+	public void quarkusProjectWizardCanBeEnvoked() {
+		jsHelper.clickWizard("Quarkus Project");
+		new WaitUntil(new ShellIsAvailable("New Quarkus project"));
+		QuarkusWizard qw = new QuarkusWizard();
+		qw.cancel();
 	}
 }
