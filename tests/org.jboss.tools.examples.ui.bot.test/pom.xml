@@ -57,6 +57,7 @@
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-surefire-plugin</artifactId>
 					<configuration>
+						<failIfNoTests>false</failIfNoTests>
 						<testSuite>org.jboss.tools.examples.ui.bot.test</testSuite>
 						<appArgLine>-testpluginname ${project.artifactId}</appArgLine>
 						<dependencies combine.children="append">
