@@ -36,7 +36,6 @@
 		<jbosstools.test.eap.xp.home>${requirementsDirectory}/jboss-eap-7.3</jbosstools.test.eap.xp.home>
 		<jbosstools.test.jboss-eap-xp.url>http://download.eng.bos.redhat.com/devel/candidates/jboss/eap-xp/JBEAPXP-2.0.0.GA-CR1/jboss-eap-xp-2.0.0.GA-CR1.zip</jbosstools.test.jboss-eap-xp.url>
 		<surefire.timeout>18000</surefire.timeout>
-		<skipTests>false</skipTests>
 		<deployOnServer>true</deployOnServer>
 		<quickstarts.URL>${quickstartsURLEAP}</quickstarts.URL>
 		<server.url>${jbosstools.test.jboss-eap-7.x.url}</server.url>
