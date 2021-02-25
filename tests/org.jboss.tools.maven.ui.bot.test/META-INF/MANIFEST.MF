@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Maven UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.maven.ui.bot.test;singleton:=true
-Bundle-Version: 4.4.200.qualifier
+Bundle-Version: 4.4.300.qualifier
 Bundle-Activator: org.jboss.tools.maven.ui.bot.test.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
@@ -10,7 +10,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.log4j,
  org.eclipse.reddeer.go,
  org.jboss.tools.maven.reddeer,
- org.jboss.tools.jsf.reddeer;bundle-version="[3.8.3,3.9.0)",
+ org.jboss.tools.jsf.reddeer;bundle-version="[3.9.0,3.10.0)",
  org.jboss.tools.seam.reddeer;bundle-version="[4.4.2,4.5.0]",
  org.jboss.ide.eclipse.as.reddeer,
  org.eclipse.ui.workbench,

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Livereload UI Bot Tests
 Bundle-SymbolicName: org.jboss.tools.livereload.ui.bot.test
-Bundle-Version: 4.4.200.qualifier
+Bundle-Version: 4.4.300.qualifier
 Bundle-Activator: org.jboss.tools.livereload.ui.bot.test.Activator
 Require-Bundle: org.eclipse.reddeer.go;bundle-version="2.1.0",
  org.eclipse.reddeer.gef;bundle-version="2.1.0",
