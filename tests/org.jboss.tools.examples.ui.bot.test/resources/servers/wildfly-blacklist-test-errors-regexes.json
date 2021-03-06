@@ -1,18 +1,42 @@
 {
 	"*": [
 		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*",
-		".*Customer cannot be resolved to a type.*",
+		".*Missing artifact org.wildfly.quickstarts.*",
+		".*The container 'Maven Dependencies' references non existing library '.*.jar'.*",
+		".*The project cannot be built until build path errors are resolved.*"
+	],
+	"jaxws-retail":[
 		".*DiscountRequest cannot be resolved to a type.*",
 		".*DiscountResponse cannot be resolved to a type.*",
+		".*Customer cannot be resolved to a type.*",
 		".*ProfileMgmt cannot be resolved to a type.*",
 		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.Customer cannot be resolved.*",
 		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountRequest cannot be resolved.*",
 		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountResponse cannot be resolved.*",
 		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.ProfileMgmt cannot be resolved.*",
-		".*Type mismatch: cannot convert from ProfileMgmt to ProfileMgmt.*",
-		".*Missing artifact org.wildfly.quickstarts.*",
-		".*The container 'Maven Dependencies' references non existing library '.*.jar'.*",
-		".*The project cannot be built until build path errors are resolved.*"
+		".*Type mismatch: cannot convert from ProfileMgmt to ProfileMgmt.*"
+	],
+	"jsonp":[
+		".*DiscountRequest cannot be resolved to a type.*",
+		".*DiscountResponse cannot be resolved to a type.*",
+		".*Customer cannot be resolved to a type.*",
+		".*ProfileMgmt cannot be resolved to a type.*",
+		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.Customer cannot be resolved.*",
+		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountRequest cannot be resolved.*",
+		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountResponse cannot be resolved.*",
+		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.ProfileMgmt cannot be resolved.*",
+		".*Type mismatch: cannot convert from ProfileMgmt to ProfileMgmt.*"
+	],
+	"kitchensink-ml":[
+		".*DiscountRequest cannot be resolved to a type.*",
+		".*DiscountResponse cannot be resolved to a type.*",
+		".*Customer cannot be resolved to a type.*",
+		".*ProfileMgmt cannot be resolved to a type.*",
+		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.Customer cannot be resolved.*",
+		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountRequest cannot be resolved.*",
+		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountResponse cannot be resolved.*",
+		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.ProfileMgmt cannot be resolved.*",
+		".*Type mismatch: cannot convert from ProfileMgmt to ProfileMgmt.*"
 	],
 	"microprofile-config":[
 		".*The superclass \"javax.servlet.http.HttpServlet\" was not found on the Java Build Path.*"
