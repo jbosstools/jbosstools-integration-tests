@@ -1,5 +1,6 @@
 {
 	"*": [
+		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*",
 		".*Missing artifact org.wildfly.quickstarts.*",
 		".*The container 'Maven Dependencies' references non existing library '.*.jar'.*",
 		".*The project cannot be built until build path errors are resolved.*"
