@@ -284,7 +284,7 @@ public abstract class AbstractMavenSWTBotTest{
 	public static void setGit(){
 		WorkbenchPreferenceDialog wd = new WorkbenchPreferenceDialog();
 		wd.open();
-		wd.select("Team","Git","Label Decorations");
+		wd.select("Version Control (Team)","Git","Label Decorations");
 		new DefaultTabItem("Text Decorations").activate();
 		if(!new LabeledText("Projects:").getText().equals("{name}")){
 			new LabeledText("Projects:").setText("{name}");
