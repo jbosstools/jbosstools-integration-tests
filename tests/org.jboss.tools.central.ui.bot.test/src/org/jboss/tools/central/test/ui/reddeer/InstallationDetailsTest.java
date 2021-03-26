@@ -190,7 +190,7 @@ public class InstallationDetailsTest {
 	@Test
 	public void validateLinksWithGlobalConfig() {
 		log.info("Navigate to '" + MODAL_DIALOG_CONFIG_MENU_BUTTON + "' and validate links with global config");
-		DefaultText dt = new DefaultText(installationDetails);
+		DefaultText dt = new DefaultText(installationDetails, 1);
 		String localText = dt.getText();
 		log.debug("Text of global config:\n" + localText);
 		ConfigPropertiesHelper rcph = new ConfigPropertiesHelper(localText);
