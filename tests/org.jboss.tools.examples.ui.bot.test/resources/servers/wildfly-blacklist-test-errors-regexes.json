@@ -18,5 +18,13 @@
 	],
 	"microprofile-config":[
 		".*The superclass \"javax.servlet.http.HttpServlet\" was not found on the Java Build Path.*"
+	],
+	"ejb-txn-remote-call-server":[
+		".*The Java class for mapped type \"CalleeUser\" has a private zero-argument constructor; it must be public or protected.*",
+		".*The Java class for mapped type \"CalleeUser\" is final.*"
+	],
+	"ejb-txn-remote-call-client":[
+		".*The Java class for mapped type \"CallerUser\" has a private zero-argument constructor; it must be public or protected.*",
+		".*The Java class for mapped type \"CallerUser\" is final.*"
 	]
 }
