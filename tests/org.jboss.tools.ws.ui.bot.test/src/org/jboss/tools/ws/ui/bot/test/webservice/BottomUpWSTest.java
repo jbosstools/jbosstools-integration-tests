@@ -61,31 +61,31 @@ public class BottomUpWSTest extends WebServiceTestBase {
 		bottomUpJbossWebService();
 	}
 
-	@Test
+//	@Test
 	public void testAssembleService() {
 		setLevel(SliderLevel.ASSEMBLE);
 		bottomUpJbossWebService();
 	}
 
-	@Test
+//	@Test
 	public void testDeployService() {
 		setLevel(SliderLevel.DEPLOY);
 		bottomUpJbossWebService();
 	}
 
-	@Test
+//	@Test
 	public void testInstallService() {
 		setLevel(SliderLevel.INSTALL);
 		bottomUpJbossWebService();
 	}
 
-	@Test
+//	@Test
 	public void testStartService() {
 		setLevel(SliderLevel.START);
 		bottomUpJbossWebService();
 	}
 
-	@Test
+//	@Test
 	public void testTestService() {
 		setLevel(SliderLevel.TEST);
 		bottomUpJbossWebService();

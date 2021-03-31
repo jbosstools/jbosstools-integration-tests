@@ -19,10 +19,10 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
-	SampleSoapServicesTest.class,
+	SampleSoapServicesTest.class, // jaxws.spi.Provider not found
 	SOAPWSToolingIntegrationTest.class,
 	BottomUpWSTest.class,
-	TopDownWSTest.class, 
+	TopDownWSTest.class,
 	WsClientTest.class,
 	WsTesterTest.class,
 	CxfWsClientTest.class

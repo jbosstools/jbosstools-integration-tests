@@ -1,14 +1,12 @@
 package org.jboss.tools.ws.ui.bot.test.rest;
 
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.hamcrest.core.Is;
-import org.hamcrest.core.IsNot;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.eclipse.reddeer.common.exception.RedDeerException;
 import org.eclipse.reddeer.eclipse.core.resources.Project;
@@ -43,7 +41,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 	
 	private final String[] webXmlPath = {"WebContent", "WEB-INF", "web.xml"};
 	
-	private final String PROJECT_SRC_FOLDER_PATH = getWsProjectName() + "/src";
+	private final String PROJECT_SRC_FOLDER_PATH = getWsProjectName() + "/src/main/java";
 	private final String PACKAGE_NAME = "org.rest.test";
 	private final String FILE_NAME = "RestApp";
 	private final String APPLICATION_PATH = "/app/path";
@@ -89,7 +87,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 		wizard.finish();
 		
 		/* get source folder */
-		ProjectItem srcProjectItem = getProject().getProjectItem("Java Resources", "src");
+		ProjectItem srcProjectItem = getProject().getProjectItem("src");
 		
 		/* source folder contains the specified package */
 		List<Resource> srcChildren = srcProjectItem.getChildren();
@@ -143,7 +141,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 		wizard.finish();
 		
 		/* get generated class */
-		Resource generatedClass = getProject().getProjectItem("Java Resources", "src")
+		Resource generatedClass = getProject().getProjectItem("src")
 				.getChildren().get(0).getChildren().get(0);
 		
 		/* the class contains @ApplicationPath and that it extends Application */
@@ -179,26 +177,25 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 		SubclassOfApplicationWizardPart wp = page.useSubclassOfApplication();
 		
 		/* button, which is used to browse source folder, is always enabled */
-		assertThat("Browse source folder should be always enabled",
-				wp.isBrowseSourceFolderEnabled(), Is.is(true));
+		assertTrue("Browse source folder should be always enabled",
+				wp.isBrowseSourceFolderEnabled());
 		
 		/* error is showed when the source folder is empty */
 		wp.setSourceFolder("");
-		assertThat(page.getWizardPageInfoText(),
-				Is.is(ERROR_SOURCE_FOLDER_NAME_IS_EMPTY));
-		assertThat("Browse package button should be disabled when source folder is not set",
-				wp.isBrowsePackageEnabled(), Is.is(false));
+		assertTrue("Source folder name is empty error did not appear", ERROR_SOURCE_FOLDER_NAME_IS_EMPTY.indexOf(page.getWizardPageInfoText()) >= 0);
+		assertFalse("Browse package button should be disabled when source folder is not set",
+				wp.isBrowsePackageEnabled());
 		
 		/* error is showed when the source folder doesn't exist */
 		wp.setSourceFolder(NON_EXISTING_PROJECT_NAME);
-		assertThat(page.getWizardPageInfoText(), Is.is(" Folder '" + NON_EXISTING_PROJECT_NAME
-				+ "' does not exist."));
+		String  expectedMessage = " Folder '" + NON_EXISTING_PROJECT_NAME + "' does not exist.";
+		assertTrue(expectedMessage.contains(page.getWizardPageInfoText()));
 		
 		/* error disappear when the source folder is set */
 		wp.setSourceFolder(PROJECT_SRC_FOLDER_PATH);
-		assertThat(page.getWizardPageInfoText(), IsNot.not(Is.is(ERROR_SOURCE_FOLDER_NAME_IS_EMPTY)));
-		assertThat( "Browse package button should be enabled when source folder is set",
-				wp.isBrowsePackageEnabled(), Is.is(true));
+		assertFalse("Source folder name is empty error did not appear", ERROR_SOURCE_FOLDER_NAME_IS_EMPTY.contains(page.getWizardPageInfoText()));
+		assertTrue( "Browse package button should be enabled when source folder is set",
+				wp.isBrowsePackageEnabled());
 	}
 	
 	@Test
@@ -211,7 +208,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 		
 		/* error is showed when name is empty */
 		wp.setName("");
-		assertThat(page.getWizardPageInfoText(), Is.is(ERROR_TYPE_NAME_IS_EMPTY));
+		assertTrue(page.getWizardPageInfoText().contains(ERROR_TYPE_NAME_IS_EMPTY));
 	}
 	
 	@Test
@@ -228,26 +225,21 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 		
 		/* warning is showed when the package name is empty */
 		wp.setPackage("");
-		assertThat(page.getWizardPageInfoText(),
-				Is.is(WARNING_USE_OF_DEFAULT_PACKAGE_IS_DISCOURAGED));
+		assertTrue(page.getWizardPageInfoText().contains(WARNING_USE_OF_DEFAULT_PACKAGE_IS_DISCOURAGED));
 		
 		/* warning disappear when the package name is set */
 		wp.setPackage(PACKAGE_NAME);
-		assertThat(page.getWizardPageInfoText(),
-				IsNot.not(Is.is(WARNING_USE_OF_DEFAULT_PACKAGE_IS_DISCOURAGED)));
+		assertFalse(page.getWizardPageInfoText().contains(ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT));
 		
 		/* package name cannot end with a dot */
 		wp.setPackage(PACKAGE_NAME + ".");
-		assertThat(page.getWizardPageInfoText(),
-				Is.is(ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT));
+		assertTrue(page.getWizardPageInfoText().contains(ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT));
 		wp.setPackage(PACKAGE_NAME);
-		assertThat(page.getWizardPageInfoText(),
-				IsNot.not(Is.is(ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT)));
+		assertFalse(page.getWizardPageInfoText().contains(ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT));
 		
 		/* package name cannot start with a dot */
 		wp.setPackage("." + PACKAGE_NAME);
-		assertThat(page.getWizardPageInfoText(),
-				Is.is(ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT));
+		assertTrue(page.getWizardPageInfoText().contains(ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT));
 	}
 	
 	private void assertContains(List<Resource> list, String name, String errorMessage) {
@@ -279,7 +271,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 		+ "  </servlet-mapping>" + LINE_SEPARATOR
 		+ "</web-app>";
 		
-		assertThat(getWebXmlContent(), Is.is(WEB_XML_TEXT));
+		assertTrue(getWebXmlContent().equals(WEB_XML_TEXT));
 	}
 	
 	private String getWebXmlContent() {

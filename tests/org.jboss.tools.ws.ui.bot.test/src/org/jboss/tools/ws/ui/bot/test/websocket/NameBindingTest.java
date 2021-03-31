@@ -65,7 +65,7 @@ public class NameBindingTest extends WSTestBase {
 		deleteAllProjects();
 	}
 
-	//@Test
+	@Test
 	public void test() {
 		cleanAllProjects();
 		assertProposals(appEditor, PROPOSAL_FILTER, PROPOSAL_APP);
@@ -97,7 +97,7 @@ public class NameBindingTest extends WSTestBase {
 				new ArrayList<String>());
 	}
 
-	//@Test
+	@Test
 	public void annotationRemoveTest() {
 		TextEditor duplicateFilterEditor =
 				duplicateClass(filterEditor, CLASS_NAME_FILTER, CLASS_NAME_FILTER_DUPLICATED);

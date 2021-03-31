@@ -74,7 +74,7 @@ public abstract class WebServiceTestBase extends SOAPTestBase {
 	}
 
 	protected void createTopDownWS(InputStream input, WebServiceRuntime serviceRuntime, String pkg, boolean useDefaultProjects) {
-		createService(ServiceType.TOP_DOWN, "/" + getWsProjectName() + "/src/"
+		createService(ServiceType.TOP_DOWN, "/" + getWsProjectName() + "/src/main/java/"
 				+ getWsName() + ".wsdl", getLevel(), pkg, input, serviceRuntime, useDefaultProjects);
 	}	
 

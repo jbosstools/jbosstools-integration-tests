@@ -158,6 +158,8 @@ public class JBossWSPreferencesTest {
 				expectedVersion = "5.3.0.Final";
 			} else if (version.startsWith("19") || version.startsWith("20")) {
 				expectedVersion = "5.4.1.Final";
+			} else if (version.startsWith("21") || version.startsWith("22")) {
+				expectedVersion = "5.4.2.Final";
 			} else {
 				expectedVersion = "5.0.0.Final";
 			}

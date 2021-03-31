@@ -71,7 +71,7 @@ public class SampleSoapServicesTest extends SOAPTestBase {
 	}
 
 	private IFile getDeploymentDescriptor(String project) {
-		return getProject(project).getFile("WebContent/WEB-INF/web.xml");
+		return getProject(project).getFile("src/main/webapp/WEB-INF/web.xml");
 	}
 
 	private void createSampleService(String project, String name, String pkg, String cls) {
