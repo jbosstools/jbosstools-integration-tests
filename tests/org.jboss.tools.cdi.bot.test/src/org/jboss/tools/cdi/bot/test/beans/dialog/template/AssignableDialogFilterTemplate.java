@@ -53,7 +53,7 @@ public class AssignableDialogFilterTemplate extends CDITestBase {
 	public void testFilterAssignableBeans() {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC,
+		pe.getProject(getProjectName()).getProjectItem("src","main","java",
 				getPackageName(), appClass).open();
 		TextEditor ed = new TextEditor(appClass);
 		ed.selectText("animal");
@@ -69,7 +69,7 @@ public class AssignableDialogFilterTemplate extends CDITestBase {
 				.getAllBeans()
 				.get(0)
 				.equals("Cat - " + getPackageName() + " - /" + getProjectName()
-						+ "/src"));
+						+ "/src/main/java"));
 
 		assignDialog.typeInFilter("CAT");
 		assertTrue(assignDialog.getAllBeans().size() == 1);
@@ -77,17 +77,17 @@ public class AssignableDialogFilterTemplate extends CDITestBase {
 				.getAllBeans()
 				.get(0)
 				.equals("Cat - " + getPackageName() + " - /" + getProjectName()
-						+ "/src"));
+						+ "/src/main/java"));
 
 		/** test '*' asterisk */
 		assignDialog.typeInFilter("*at");
 		assertTrue(assignDialog.getAllBeans().size() == 2);
 		assertTrue(assignDialog.getAllBeans().contains(
 				"Cat - " + getPackageName() + " - /" + getProjectName()
-						+ "/src"));
+						+ "/src/main/java"));
 		assertTrue(assignDialog.getAllBeans().contains(
 				"@Decorator AnimalDecorator - " + getPackageName() + " - /"
-						+ getProjectName() + "/src"));
+						+ getProjectName() + "/src/main/java"));
 
 		/** test '?' asterisk */
 		assignDialog.typeInFilter("??g");
@@ -96,7 +96,7 @@ public class AssignableDialogFilterTemplate extends CDITestBase {
 				.getAllBeans()
 				.get(0)
 				.equals("Dog - " + getPackageName() + " - /" + getProjectName()
-						+ "/src"));
+						+ "/src/main/java"));
 
 		/** test non-existing bean */
 		assignDialog.typeInFilter("?*?s");
@@ -110,7 +110,7 @@ public class AssignableDialogFilterTemplate extends CDITestBase {
 
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC,
+		pe.getProject(getProjectName()).getProjectItem("src","main","java",
 				getPackageName(), appClass).open();
 		TextEditor ed = new TextEditor(appClass);
 		ed.selectText("animal");
@@ -133,10 +133,10 @@ public class AssignableDialogFilterTemplate extends CDITestBase {
 		assertTrue(assignDialog.getAllBeans().size() == 1);
 		assertTrue(assignDialog.getAllBeans().contains(
 				"Cat - " + getPackageName() + " - /" + getProjectName()
-						+ "/src"));
+						+ "/src/main/java"));
 		assertFalse(assignDialog.getAllBeans().contains(
 				"@Decorator AnimalDecorator - " + getPackageName() + " - /"
-						+ getProjectName() + "/src"));
+						+ getProjectName() + "/src/main/java"));
 
 		/** test '?' asterisk */
 		assignDialog.typeInFilter("??i");

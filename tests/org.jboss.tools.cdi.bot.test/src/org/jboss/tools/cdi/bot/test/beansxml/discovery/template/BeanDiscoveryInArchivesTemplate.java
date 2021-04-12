@@ -52,7 +52,7 @@ public class BeanDiscoveryInArchivesTemplate extends CDITestBase {
 		prepareBeanXml("all", false);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(PROJECT_NAME).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, "test", CDI_BEAN_1_JAVA_FILE_NAME + JAVA_FILE_EXTENSION).open();
+		pe.getProject(PROJECT_NAME).getProjectItem("src", "main", "java", "test", CDI_BEAN_1_JAVA_FILE_NAME + JAVA_FILE_EXTENSION).open();
 		TextEditor ed = new TextEditor(CDI_BEAN_2_JAVA_FILE_NAME + JAVA_FILE_EXTENSION);
 		ed.insertLine(7, "@Inject String warningHere;");
 		ed.save();
@@ -79,7 +79,7 @@ public class BeanDiscoveryInArchivesTemplate extends CDITestBase {
 		prepareBeanXml("annotated", false);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(PROJECT_NAME).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, "test", CDI_BEAN_1_JAVA_FILE_NAME + JAVA_FILE_EXTENSION).open();
+		pe.getProject(PROJECT_NAME).getProjectItem("src", "main", "java", "test", CDI_BEAN_1_JAVA_FILE_NAME + JAVA_FILE_EXTENSION).open();
 		TextEditor ed = new TextEditor(CDI_BEAN_2_JAVA_FILE_NAME + JAVA_FILE_EXTENSION);
 		try{
 			new WaitUntil(new EditorHasValidationMarkers(ed));

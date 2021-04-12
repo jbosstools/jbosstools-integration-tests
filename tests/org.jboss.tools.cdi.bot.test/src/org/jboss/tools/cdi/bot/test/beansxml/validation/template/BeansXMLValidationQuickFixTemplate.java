@@ -182,7 +182,7 @@ public class BeansXMLValidationQuickFixTemplate extends CDITestBase {
 		
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(PROJECT_NAME).getProjectItem("WebContent","WEB-INF","beans.xml").delete();
+		pe.getProject(PROJECT_NAME).getProjectItem("src","main","webapp","WEB-INF","beans.xml").delete();
 		if(requireBeansXML){
 			new WaitUntil(new ProblemExists(ProblemType.WARNING));
 			pe.getProject(PROJECT_NAME).select();
