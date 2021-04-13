@@ -235,7 +235,7 @@ public class DeltaspikeTestBase {
 	protected void openClass(String projectName, String packageName, String classFullName) {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(projectName).getProjectItem("Java Resources", "src", packageName, classFullName).open();
+		pe.getProject(projectName).getProjectItem("src", packageName, classFullName).open();
 	}
 
 	protected static void cleanProjects() {
