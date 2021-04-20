@@ -48,8 +48,6 @@ import org.jboss.tools.batch.reddeer.wizard.NewJobXMLFileWizardPage;
 public abstract class AbstractBatchTest {
 
 	private static final String PROJECT_NAME = "batch-test-project";
-	
-	protected static final String JAVA_RESOURCES = "Java Resources";
 
 	protected static final String JAVA_FOLDER = "src/main/java";
 	
@@ -59,7 +57,7 @@ public abstract class AbstractBatchTest {
 
 	protected static final String BATCH_XML_FILE = "batch.xml";
 
-	protected static final String[] BATCH_XML_FILE_FULL_PATH = new String[]{ JAVA_RESOURCES, RESOURCES_FOLDER, META_INF_FOLDER, BATCH_XML_FILE};
+	protected static final String[] BATCH_XML_FILE_FULL_PATH = new String[]{ RESOURCES_FOLDER, META_INF_FOLDER, BATCH_XML_FILE};
 
 	protected static final String JOB_FILES_FOLDER = "batch-jobs";
 	
@@ -67,7 +65,7 @@ public abstract class AbstractBatchTest {
 	
 	protected static final String JOB_ID = "batch-test";
 
-	protected static final String[] JOB_XML_FILE_FULL_PATH = new String[]{ JAVA_RESOURCES, RESOURCES_FOLDER, META_INF_FOLDER, JOB_FILES_FOLDER, JOB_XML_FILE};
+	protected static final String[] JOB_XML_FILE_FULL_PATH = new String[]{ RESOURCES_FOLDER, META_INF_FOLDER, JOB_FILES_FOLDER, JOB_XML_FILE};
 
 	private static final Logger log = Logger.getLogger(AbstractBatchTest.class);
 	

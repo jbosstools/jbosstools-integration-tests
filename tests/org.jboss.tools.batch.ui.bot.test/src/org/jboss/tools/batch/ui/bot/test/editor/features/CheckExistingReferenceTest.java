@@ -53,7 +53,7 @@ public class CheckExistingReferenceTest extends AbstractFeatureBaseTest {
 		assertNoProblems();
 		
 		assertTrue(searchForClassReference(JOB_XML_FILE, 
-				new String[]{ JAVA_RESOURCES, JAVA_FOLDER, getPackage(), BATCHLET_JAVA_CLASS}));
+				new String[]{ JAVA_FOLDER, getPackage(), BATCHLET_JAVA_CLASS}));
 	}
 	
 	@Test
@@ -72,7 +72,7 @@ public class CheckExistingReferenceTest extends AbstractFeatureBaseTest {
 		
 		assertTrue("Property with name " + PROPERTY_NAME + " was not found in search results.", 
 				searchForPropertyInFile(JOB_XML_FILE, PROPERTY_NAME, 
-						new String[]{ JAVA_RESOURCES, JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS}));
+						new String[]{ JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS}));
 	}
 	
 	@Test
@@ -106,6 +106,6 @@ public class CheckExistingReferenceTest extends AbstractFeatureBaseTest {
 		assertNoProblems();
 		
 		assertTrue(searchForClassReference(JOB_XML_FILE, 
-				new String[]{ JAVA_RESOURCES, JAVA_FOLDER, getPackage(), EXCEPTION_JAVA_CLASS}));
+				new String[]{ JAVA_FOLDER, getPackage(), EXCEPTION_JAVA_CLASS}));
 	}
 }

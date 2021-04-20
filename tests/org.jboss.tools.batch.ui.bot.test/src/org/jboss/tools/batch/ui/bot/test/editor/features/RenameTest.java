@@ -63,8 +63,8 @@ public class RenameTest extends AbstractFeatureBaseTest {
 
 		String newId = RENAMED_PREFIX + BATCHLET_PROPERTY_ID;
 		String newFileName = RENAMED_PREFIX + BATCHLET_PROPERTY_JAVA_CLASS;
-		String[] pathToClass = new String[] { JAVA_RESOURCES, JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS };
-		String[] pathToClassRenamed = new String[] { JAVA_RESOURCES, JAVA_FOLDER, getPackage(), newFileName };
+		String[] pathToClass = new String[] { JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS };
+		String[] pathToClassRenamed = new String[] { JAVA_FOLDER, getPackage(), newFileName };
 
 		// Rename to "Renamed..." and search for reference
 		assertTrue("Can't rename class " + BATCHLET_PROPERTY_JAVA_CLASS, renameClass(newId, pathToClass));
@@ -76,7 +76,7 @@ public class RenameTest extends AbstractFeatureBaseTest {
 	public void renameProperty() {
 		this.createBatchletWithProperty();
 
-		String[] pathToClass = new String[] { JAVA_RESOURCES, JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS };
+		String[] pathToClass = new String[] { JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS };
 
 		// Rename property in bachlet class.
 		renamePropertyInFile(PROPERTY_NAME, RENAMED_PROPERTY_NAME, pathToClass);
@@ -84,7 +84,7 @@ public class RenameTest extends AbstractFeatureBaseTest {
 		// Search for renamed property
 		assertTrue("Property with name " + RENAMED_PROPERTY_NAME + " was not found in search results.",
 				searchForPropertyInFile(JOB_XML_FILE, RENAMED_PROPERTY_NAME,
-						new String[] { JAVA_RESOURCES, JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS }));
+						new String[] { JAVA_FOLDER, getPackage(), BATCHLET_PROPERTY_JAVA_CLASS }));
 	}
 
 	@Test
@@ -93,8 +93,8 @@ public class RenameTest extends AbstractFeatureBaseTest {
 
 		String newId = RENAMED_PREFIX + EXCEPTION_ID;
 		String newFileName = RENAMED_PREFIX + EXCEPTION_JAVA_CLASS;
-		String[] pathToClass = new String[] { JAVA_RESOURCES, JAVA_FOLDER, getPackage(), EXCEPTION_JAVA_CLASS };
-		String[] pathToClassRenamed = new String[] { JAVA_RESOURCES, JAVA_FOLDER, getPackage(), newFileName };
+		String[] pathToClass = new String[] { JAVA_FOLDER, getPackage(), EXCEPTION_JAVA_CLASS };
+		String[] pathToClassRenamed = new String[] { JAVA_FOLDER, getPackage(), newFileName };
 
 		// Rename to "Renamed..." and search for reference
 		assertTrue("Can't rename class " + EXCEPTION_JAVA_CLASS, renameClass(newId, pathToClass));
