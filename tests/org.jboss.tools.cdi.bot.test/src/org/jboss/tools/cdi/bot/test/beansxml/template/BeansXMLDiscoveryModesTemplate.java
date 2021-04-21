@@ -39,7 +39,7 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 		createClass(PROJECT_NAME, "Bean2");
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(PROJECT_NAME).getProjectItem(CDIConstants.JAVA_RESOURCES,CDIConstants.SRC,"test","Bean1.java").open();
+		pe.getProject(PROJECT_NAME).getProjectItem("src","main","java","test","Bean1.java").open();
 		TextEditor ed = new TextEditor("Bean1.java");
 		ed.insertLine(1, "import javax.inject.Inject;");
 		ed.insertLine(4, "@Inject");
@@ -119,7 +119,7 @@ public class BeansXMLDiscoveryModesTemplate extends CDITestBase{
 	public void testWithoutBeansXml(){
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(PROJECT_NAME).getProjectItem("WebContent","WEB-INF","beans.xml").delete();
+		pe.getProject(PROJECT_NAME).getProjectItem("src","main","webapp","WEB-INF","beans.xml").delete();
 		TextEditor ed = new TextEditor("Bean1.java");
 		new WaitUntil(new EditorHasValidationMarkers(ed),TimePeriod.DEFAULT, false);
 		List<Marker> markers = ed.getMarkers();

@@ -133,8 +133,7 @@ public abstract class NamedRefactoringTemplate extends CDITestBase {//extends JS
 		NewXHTMLWizard xhtmlWizard = new NewXHTMLWizard();
 		xhtmlWizard.open();
 		NewXHTMLFileWizardPage page = new NewXHTMLFileWizardPage(xhtmlWizard);
-		page.setDestination(getProjectName() + "/" 
-				+ IDELabel.WebProjectsTree.WEB_CONTENT 
+		page.setDestination(getProjectName() + "/"  
 				+ "/pages");
 		page.setName(pageName);
 		xhtmlWizard.finish();

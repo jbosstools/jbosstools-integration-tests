@@ -57,7 +57,7 @@ public class BeanParametersAnnotationTemplate extends CDITestBase {
 		prepareBeanXml("annotated", false);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(PROJECT_NAME).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, "test",
+		pe.getProject(PROJECT_NAME).getProjectItem("src", "main", "java", "test",
 				CDI_BEAN_1_JAVA_FILE_NAME + JAVA_FILE_EXTENSION).open();
 		TextEditor ed = new TextEditor(CDI_BEAN_2_JAVA_FILE_NAME + JAVA_FILE_EXTENSION);
 		try {

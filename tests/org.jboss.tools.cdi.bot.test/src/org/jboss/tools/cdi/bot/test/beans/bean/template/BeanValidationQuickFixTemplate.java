@@ -204,7 +204,7 @@ public class BeanValidationQuickFixTemplate extends CDITestBase {
 	public void cleanProject() {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, getPackageName())
+		pe.getProject(getProjectName()).getProjectItem(CDIConstants.SRC, "main", "java", getPackageName())
 				.delete();
 	}
 	

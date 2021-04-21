@@ -61,7 +61,7 @@ public class AllAssignableDialogTemplate extends CDITestBase {
 	public void testDecorator() {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC,
+		pe.getProject(getProjectName()).getProjectItem("src", "main", "java",
 				getPackageName(), appClass).open();
 		TextEditor editor = new TextEditor(appClass);
 		editor.selectText("manager");
@@ -72,13 +72,13 @@ public class AllAssignableDialogTemplate extends CDITestBase {
 		assertTrue(assignDialog.getAllBeans().size() == 6);
 		assertTrue(assignDialog.getAllBeans().contains(
 				"@Decorator D1 - " + getPackageName() + " - /"
-						+ getProjectName() + "/src"));
+						+ getProjectName() + "/src/main/java"));
 
 		assignDialog.hideDecorators();
 		assertTrue(assignDialog.getAllBeans().size() == 5);
 		assertFalse(assignDialog.getAllBeans().contains(
 				"@Decorator D1 - " + getPackageName() + " - /"
-						+ getProjectName() + "/src"));
+						+ getProjectName() + "/src/main/java"));
 		assignDialog.close();
 
 	}
@@ -88,7 +88,7 @@ public class AllAssignableDialogTemplate extends CDITestBase {
 
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES,CDIConstants.SRC,
+		pe.getProject(getProjectName()).getProjectItem("src", "main", "java",
 				getPackageName(), appClass).open();
 		TextEditor editor = new TextEditor(appClass);
 		editor.selectText("manager");
@@ -99,12 +99,12 @@ public class AllAssignableDialogTemplate extends CDITestBase {
 		assertTrue(assignDialog.getAllBeans().size() == 6);
 		assertTrue(assignDialog.getAllBeans().contains(
 				"@Interceptor I1 - " + getPackageName() + " - /"
-						+ getProjectName() + "/src"));
+						+ getProjectName() + "/src/main/java"));
 		assignDialog.hideInterceptors();
 		assertTrue(assignDialog.getAllBeans().size() == 5);
 		assertFalse(assignDialog.getAllBeans().contains(
 				"@Interceptor I1 - " + getPackageName() + " - /"
-						+ getProjectName() + "/src"));
+						+ getProjectName() + "/src/main/java"));
 		assignDialog.close();
 
 	}
@@ -114,7 +114,7 @@ public class AllAssignableDialogTemplate extends CDITestBase {
 
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC,
+		pe.getProject(getProjectName()).getProjectItem("src", "main", "java",
 				getPackageName(), appClass).open();
 		TextEditor editor = new TextEditor(appClass);
 		editor.selectText("manager");
@@ -125,12 +125,12 @@ public class AllAssignableDialogTemplate extends CDITestBase {
 		assertTrue(assignDialog.getAllBeans().size() == 6);
 		assertTrue(assignDialog.getAllBeans().contains(
 				"@Alternative BasicManager - " + getPackageName() + " - /"
-						+ getProjectName() + "/src"));
+						+ getProjectName() + "/src/main/java"));
 		assignDialog.hideUnselectedAlternatives();
 		assertTrue(assignDialog.getAllBeans().size() == 5);
 		assertFalse(assignDialog.getAllBeans().contains(
 				"@Alternative BasicManager - " + getPackageName() + " - /"
-						+ getProjectName() + "/src"));
+						+ getProjectName() + "/src/main/java"));
 		assignDialog.close();
 
 	}
@@ -140,7 +140,7 @@ public class AllAssignableDialogTemplate extends CDITestBase {
 
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC,
+		pe.getProject(getProjectName()).getProjectItem("src", "main", "java",
 				getPackageName(), appClass).open();
 		TextEditor editor = new TextEditor(appClass);
 		editor.selectText("manager");
@@ -151,12 +151,12 @@ public class AllAssignableDialogTemplate extends CDITestBase {
 		assertTrue(assignDialog.getAllBeans().size() == 6);
 		assertTrue(assignDialog.getAllBeans().contains(
 				"@Produces BasicManager.getManager() - " + getPackageName()
-						+ " - /" + getProjectName() + "/src"));
+						+ " - /" + getProjectName() + "/src/main/java"));
 		assignDialog.hideUnavailableProducers();
 		assertTrue(assignDialog.getAllBeans().size() == 5);
 		assertFalse(assignDialog.getAllBeans().contains(
 				"@Produces BasicManager.getManager() - " + getPackageName()
-						+ " - /" + getProjectName() + "/src"));
+						+ " - /" + getProjectName() + "/src/main/java"));
 		assignDialog.close();
 
 	}
@@ -166,7 +166,7 @@ public class AllAssignableDialogTemplate extends CDITestBase {
 
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC,
+		pe.getProject(getProjectName()).getProjectItem("src", "main", "java",
 				getPackageName(), appClass).open();
 		TextEditor editor = new TextEditor(appClass);
 		editor.selectText("manager");
@@ -177,12 +177,12 @@ public class AllAssignableDialogTemplate extends CDITestBase {
 		assertTrue(assignDialog.getAllBeans().size() == 6);
 		assertTrue(assignDialog.getAllBeans().contains(
 				"AbstractManager - " + getPackageName() + " - /"
-						+ getProjectName() + "/src"));
+						+ getProjectName() + "/src/main/java"));
 		assignDialog.hideSpecializedBeans();
 		assertTrue(assignDialog.getAllBeans().size() == 5);
 		assertFalse(assignDialog.getAllBeans().contains(
 				"AbstractManager - " + getPackageName() + " - /"
-						+ getProjectName() + "/src"));
+						+ getProjectName() + "/src/main/java"));
 		assignDialog.close();
 
 	}
@@ -192,7 +192,7 @@ public class AllAssignableDialogTemplate extends CDITestBase {
 		
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(getProjectName()).getProjectItem(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC,
+		pe.getProject(getProjectName()).getProjectItem("src", "main", "java",
 				getPackageName(), appClass).open();
 		TextEditor editor = new TextEditor(appClass);
 		editor.selectText("managerImpl");
@@ -203,24 +203,24 @@ public class AllAssignableDialogTemplate extends CDITestBase {
 		assertTrue(assignDialog.getAllBeans().size() == 3);
 		assertTrue(assignDialog.getAllBeans().contains(
 				"@Alternative Manager1 - " + getPackageName() + " - /"
-						+ getProjectName() + "/src"));
+						+ getProjectName() + "/src/main/java"));
 		assertTrue(assignDialog.getAllBeans().contains(
 				"Manager2 - " + getPackageName() + " - /" + getProjectName()
-						+ "/src"));
+						+ "/src/main/java"));
 		assertTrue(assignDialog.getAllBeans().contains(
 				"Manager3 - " + getPackageName() + " - /" + getProjectName()
-						+ "/src"));
+						+ "/src/main/java"));
 		assignDialog.hideAmbiguousBeans();
 		assertTrue(assignDialog.getAllBeans().size() == 1);
 		assertTrue(assignDialog.getAllBeans().contains(
 				"@Alternative Manager1 - " + getPackageName() + " - /"
-						+ getProjectName() + "/src"));
+						+ getProjectName() + "/src/main/java"));
 		assertFalse(assignDialog.getAllBeans().contains(
 				"Manager2 - " + getPackageName() + " - /" + getProjectName()
-						+ "/src"));
+						+ "/src/main/java"));
 		assertFalse(assignDialog.getAllBeans().contains(
 				"Manager3 - " + getPackageName() + " - /" + getProjectName()
-						+ "/src"));
+						+ "/src/main/java"));
 		assignDialog.close();
 
 	}

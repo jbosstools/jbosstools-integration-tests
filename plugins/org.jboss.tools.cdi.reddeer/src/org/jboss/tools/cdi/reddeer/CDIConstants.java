@@ -23,12 +23,11 @@ public class CDIConstants {
 	public static final String SRC = "src";
 	public static final String JAVA_RESOURCES_SRC_FOLDER = JAVA_RESOURCES+"/"+SRC+"/";
 	public static final String META_INF = "META-INF";
-	public static final String META_INF_BEANS_XML_PATH = IDELabel.WebProjectsTree.WEB_CONTENT
-			 + "/" + META_INF + "/" + IDELabel.WebProjectsTree.BEANS_XML;
+	public static final String META_INF_BEANS_XML_PATH = META_INF + "/" + IDELabel.WebProjectsTree.BEANS_XML;
 	public static final String EJB_BEANS_XML_PATH = "ejbModule"
 			 + "/" + META_INF + "/" + IDELabel.WebProjectsTree.BEANS_XML;
-	public static final String WEB_INF_BEANS_XML_PATH = IDELabel.WebProjectsTree.WEB_CONTENT +
-			"/" + IDELabel.WebProjectsTree.WEB_INF + "/" + IDELabel.WebProjectsTree.BEANS_XML;
+	public static final String WEB_INF_BEANS_XML_PATH = "src/main/webapp/" + IDELabel.WebProjectsTree.WEB_INF
+			+ "/" + IDELabel.WebProjectsTree.BEANS_XML;
 	public static final String SHOW_ALL_ASSIGNABLE = "Show All Assignable Beans...";
 	public static final String OPEN_INJECT_BEAN = "Open @Inject Bean";
 	public static final String OPEN_CDI_OBSERVER_METHOD= "Open CDI Observer Method";

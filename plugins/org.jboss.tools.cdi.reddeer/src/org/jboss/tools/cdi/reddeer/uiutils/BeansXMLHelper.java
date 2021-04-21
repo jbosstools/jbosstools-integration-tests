@@ -27,7 +27,7 @@ public class BeansXMLHelper {
 	public EditorPartWrapper openBeansXml(String project){
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		pe.getProject(project).getProjectItem("WebContent","WEB-INF","beans.xml").open();
+		pe.getProject(project).getProjectItem("src","main","webapp","WEB-INF","beans.xml").open();
 		return new EditorPartWrapper();
 	}
 	
