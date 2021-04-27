@@ -30,6 +30,7 @@ import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
 import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
@@ -58,7 +59,7 @@ public abstract class AbstractTestNGTest {
 		new LabeledCombo("Artifact Id:").setText(projectName);
 
 		new PushButton("Finish").click();
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(600));
 	}
 
 	public static void openProjectWizard() {
@@ -78,6 +79,7 @@ public abstract class AbstractTestNGTest {
 		new ContextMenuItem("Properties").select();
 		new DefaultTreeItem("Java Build Path").select();
 		new DefaultTabItem("Libraries").activate();
+		new DefaultTree(1).getItem("Modulepath").select();
 		new PushButton("Add Library...").click();
 		new DefaultList().select("TestNG");
 		new NextButton().click();
