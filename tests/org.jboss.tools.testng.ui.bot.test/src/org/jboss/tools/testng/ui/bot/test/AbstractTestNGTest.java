@@ -59,7 +59,7 @@ public abstract class AbstractTestNGTest {
 		new LabeledCombo("Artifact Id:").setText(projectName);
 
 		new PushButton("Finish").click();
-		new WaitWhile(new JobIsRunning(), imePeriod.getCustom(600));
+		new WaitWhile(new JobIsRunning(), TimePeriod.getCustom(600));
 	}
 
 	public static void openProjectWizard() {
