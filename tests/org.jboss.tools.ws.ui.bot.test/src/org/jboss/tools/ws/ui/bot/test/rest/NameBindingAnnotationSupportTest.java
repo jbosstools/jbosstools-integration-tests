@@ -87,7 +87,7 @@ public class NameBindingAnnotationSupportTest extends RESTfulTestBase {
 
 		/* remove the filter */
 		new ProjectExplorer().getProject(projectName)
-			.getProjectItem("Java Resources", "src", "org.rest.test", "Filter.java").delete();
+			.getProjectItem("src", "org.rest.test", "Filter.java").delete();
 		ProjectHelper.cleanAllProjects();
 		
 		/* there should be an error */

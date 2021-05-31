@@ -194,7 +194,7 @@ class WebSocketHelper {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		
-		ProjectItem item = pe.getProject(PROJECT_NAME).getProjectItem("Java Resources", "src", PROJECT_PACKAGE, className + ".java");
+		ProjectItem item = pe.getProject(PROJECT_NAME).getProjectItem("src/main/java", PROJECT_PACKAGE, className + ".java");
 		item.delete();
 	}
 

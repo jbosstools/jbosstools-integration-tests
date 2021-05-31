@@ -19,7 +19,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
-		ExampleProjectsDeployTest.class,
+		//ExampleProjectsDeployTest.class,
 		StubMethodsTest.class,
 		NameBindingTest.class,
 })

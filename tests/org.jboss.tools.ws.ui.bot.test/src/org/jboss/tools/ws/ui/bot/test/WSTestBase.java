@@ -64,7 +64,7 @@ public class WSTestBase {
 			ProjectHelper.createEARProject(getEarProjectName());
 			if (!ProjectHelper.projectExists(getWsProjectName())) {
 				ProjectHelper.createProjectForEAR(getWsProjectName(),
-						getEarProjectName());
+						getEarProjectName(), "src");
 			}
 		}
 		if (!ProjectHelper.projectExists(getWsProjectName())) {
@@ -118,7 +118,7 @@ public class WSTestBase {
 
 	protected void openJavaFile(String projectName, String pkgName, String javaFileName) {
 		new ProjectExplorer().getProject(projectName)
-			.getProjectItem("Java Resources", "src", pkgName, javaFileName).open();
+			.getProjectItem("src", pkgName, javaFileName).open();
 	}
 
 	protected String getWsProjectName() {

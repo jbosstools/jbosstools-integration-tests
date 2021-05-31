@@ -25,6 +25,7 @@ import org.eclipse.reddeer.eclipse.jdt.ui.preferences.BuildPathsPropertyPage;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassWizardPage;
 import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
+import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectSecondPage;
 import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.wizards.datatransfer.ExternalProjectImportWizardDialog;
@@ -86,7 +87,7 @@ public class ProjectHelper {
 		NewClassWizardPage page = new NewClassWizardPage(wizard);
 		page.setPackage(pkg);
 		page.setName(className);
-		page.setSourceFolder(projectName + "/src");
+		page.setSourceFolder(projectName + "/src/main/java");
 		wizard.finish();
 
 		return new TextEditor(className + ".java");
@@ -105,7 +106,7 @@ public class ProjectHelper {
 
 		CreateNewFileWizardPage page = new CreateNewFileWizardPage(wizard);
 		page.setFileName(wsdlFileName + ".wsdl");
-		page.setParentFolder(projectName + "/src");
+		page.setParentFolder(projectName + "/src/main/java");
 
 		wizard.next();
 		wizard.finish();
@@ -133,9 +134,12 @@ public class ProjectHelper {
 			fp.activateFacet("1.8", "Java");
 		}
 		wizard.next();
+//		WebProjectSecondPage fp2 = new WebProjectSecondPage(wizard);
+//		fp2.removeSourceFoldersOnBuildPath("src/main/java");
+//		fp2.addSourceFoldersOnBuildPath("src");
 		wizard.next();
 		wizard.setGenerateDeploymentDescriptor(true);
-		wizard.finish();
+		wizard.finish(TimePeriod.getCustom(120));
 
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		ProjectExplorer projectExplorer = new ProjectExplorer();
@@ -148,7 +152,7 @@ public class ProjectHelper {
 	 * 
 	 * @param name
 	 */
-	public static void createProjectForEAR(String name, String earProject) {
+	public static void createProjectForEAR(String name, String earProject, String sourceFolder) {
 		DynamicWebProjectWizard wizard = new DynamicWebProjectWizard();
 		wizard.open();
 
@@ -160,6 +164,10 @@ public class ProjectHelper {
 		} else {
 			fp.activateFacet("1.8", "Java");
 		}
+		wizard.next();
+//		WebProjectSecondPage fp2 = new WebProjectSecondPage(wizard);
+//		fp2.removeSourceFoldersOnBuildPath("src/main/java");
+//		fp2.addSourceFoldersOnBuildPath(sourceFolder);
 		wizard.finish();
 
 		new WaitWhile(new JobIsRunning());
@@ -180,7 +188,7 @@ public class ProjectHelper {
 		new LabeledText("Project name:").setText(name);
 		// set EAR version
 		DefaultCombo combo = new DefaultCombo(1);
-		combo.setSelection(combo.getItems().size() - 1);
+		combo.setSelection(combo.getItems().size() - 2);
 
 		wizard.next();
 

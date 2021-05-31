@@ -133,7 +133,7 @@ public class TopDownWSTest extends WebServiceTestBase {
 		ProjectItem item = null;
 		try {
 			item = new ProjectExplorer().getProject(getWsProjectName())
-						.getProjectItem("Java Resources", "src", wsdlFileName);
+						.getProjectItem("src","main", "java", wsdlFileName);
 		} catch(EclipseLayerException e) {
 			return;
 		}

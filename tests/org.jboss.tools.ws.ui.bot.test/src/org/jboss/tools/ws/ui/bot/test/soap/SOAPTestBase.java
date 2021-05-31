@@ -8,6 +8,7 @@ import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBo
 import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
+import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
@@ -29,6 +30,7 @@ import org.junit.Before;
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state = ServerRequirementState.RUNNING, cleanup = false)
 @JavaFolding(false)
+@JRE(cleanup=true)
 public abstract class SOAPTestBase {
 
 	@InjectRequirement
@@ -62,7 +64,7 @@ public abstract class SOAPTestBase {
 			ProjectHelper.createEARProject(getEarProjectName());
 			if (!ProjectHelper.projectExists(getWsProjectName())) {
 				ProjectHelper.createProjectForEAR(getWsProjectName(),
-						getEarProjectName());
+						getEarProjectName(), "src/jbossws");
 			}
 		} else if (!ProjectHelper.projectExists(getWsProjectName())) {
 			ProjectHelper.createProject(getWsProjectName());

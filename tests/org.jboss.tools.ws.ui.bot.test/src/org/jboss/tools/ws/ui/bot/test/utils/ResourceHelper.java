@@ -93,7 +93,7 @@ public class ResourceHelper {
 	 */
 	public static void openJavaFile(String projectName, String pkgName, String javaFileName) {
 		new ProjectExplorer().getProject(projectName)
-			.getProjectItem("Java Resources", "src", pkgName, javaFileName).open();
+			.getProjectItem("src", pkgName, javaFileName).open();
 	}
 
 	/**
