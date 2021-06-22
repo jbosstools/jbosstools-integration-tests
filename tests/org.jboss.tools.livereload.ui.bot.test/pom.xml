@@ -14,7 +14,7 @@
 	<properties>
 		<suiteClass>org.jboss.tools.livereload.ui.bot.test.LivereloadAllBotTests</suiteClass>
 		<systemProperties>-Drd.logCollectorEnabled=false -Drd.config=target/classes/servers/wildfly.json</systemProperties>
-		<jbosstools.test.wildfly.home>${requirementsDirectory}/wildfly-23.0.0.Final</jbosstools.test.wildfly.home>
+		<jbosstools.test.wildfly.home>${requirementsDirectory}/wildfly-24.0.0.Final</jbosstools.test.wildfly.home>
 	</properties>
 
 	<build>
@@ -43,7 +43,7 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>23.0.0.Final</version>
+									<version>24.0.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
