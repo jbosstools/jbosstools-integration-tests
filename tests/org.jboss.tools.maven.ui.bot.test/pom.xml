@@ -12,7 +12,7 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<wildflyVersion>23.0.0.Final</wildflyVersion>
+		<wildflyVersion>24.0.0.Final</wildflyVersion>
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
 		<jbosstools.test.wildfly.home>${requirementsDirectory}/wildfly-${wildflyVersion}</jbosstools.test.wildfly.home>
 		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${project.build.directory}/classes/servers/wildfly.json -Djbosstools.test.seam.2.1.0.home=${requirementsDirectory}/jboss-seam-2.1.2 -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Dproject.build.directory=${project.build.directory} -Dmaven.settings.path=target/classes/usersettings/settings.xml -Dscope=${scope} -Djbosstools.test.wildfly.home=${jbosstools.test.wildfly.home}</systemProperties>
