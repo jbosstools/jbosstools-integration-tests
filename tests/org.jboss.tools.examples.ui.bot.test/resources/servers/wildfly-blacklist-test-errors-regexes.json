@@ -1,10 +1,8 @@
 {
 	"*": [
-		".*Missing artifact org.wildfly.quickstarts.*",
+		".*Missing artifact org.wildfly.*",
 		".*The container 'Maven Dependencies' references non existing library '.*.jar'.*",
-		".*The project cannot be built until build path errors are resolved.*"
-	],
-	"jaxws-retail":[
+		".*The project cannot be built until build path errors are resolved.*",
 		".*DiscountRequest cannot be resolved to a type.*",
 		".*DiscountResponse cannot be resolved to a type.*",
 		".*Customer cannot be resolved to a type.*",
