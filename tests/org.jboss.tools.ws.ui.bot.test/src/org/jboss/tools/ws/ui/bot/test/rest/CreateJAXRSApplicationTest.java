@@ -39,7 +39,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 	protected final JAXRSApplicationWizard wizard = new JAXRSApplicationWizard();
 	protected final JAXRSApplicationWizardPage page = new JAXRSApplicationWizardPage(wizard);
 	
-	private final String[] webXmlPath = {"WebContent", "WEB-INF", "web.xml"};
+	private final String[] webXmlPath = {"src", "main", "webapp", "WEB-INF", "web.xml"};
 	
 	private final String PROJECT_SRC_FOLDER_PATH = getWsProjectName() + "/src/main/java";
 	private final String PACKAGE_NAME = "org.rest.test";
@@ -87,7 +87,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 		wizard.finish();
 		
 		/* get source folder */
-		ProjectItem srcProjectItem = getProject().getProjectItem("src");
+		ProjectItem srcProjectItem = getProject().getProjectItem("src/main/java");
 		
 		/* source folder contains the specified package */
 		List<Resource> srcChildren = srcProjectItem.getChildren();
@@ -189,7 +189,8 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 		/* error is showed when the source folder doesn't exist */
 		wp.setSourceFolder(NON_EXISTING_PROJECT_NAME);
 		String  expectedMessage = " Folder '" + NON_EXISTING_PROJECT_NAME + "' does not exist.";
-		assertTrue(expectedMessage.contains(page.getWizardPageInfoText()));
+		assertTrue("Expects: " + expectedMessage + ", but got: " + page.getWizardPageInfoText(),
+				expectedMessage.contains(page.getWizardPageInfoText()));
 		
 		/* error disappear when the source folder is set */
 		wp.setSourceFolder(PROJECT_SRC_FOLDER_PATH);
@@ -200,7 +201,7 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 	
 	@Test
 	public void setNameTest() {
-		final String ERROR_TYPE_NAME_IS_EMPTY = " Type name is empty.";
+		final String ERROR_TYPE_NAME_IS_EMPTY = "Type name is empty.";
 		
 		/* select "Subclass of javax.ws.rs.core.Application" option */
 		SubclassOfApplicationWizardPart wp = page.useSubclassOfApplication();
@@ -208,13 +209,14 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 		
 		/* error is showed when name is empty */
 		wp.setName("");
-		assertTrue(page.getWizardPageInfoText().contains(ERROR_TYPE_NAME_IS_EMPTY));
+		assertTrue("Expects wizard message to contain: " + ERROR_TYPE_NAME_IS_EMPTY + ", but has: " + page.getWizardPageInfoText(),
+				page.getWizardPageInfoText().contains(ERROR_TYPE_NAME_IS_EMPTY));
 	}
 	
 	@Test
 	public void setPackageTest() {
-		final String WARNING_USE_OF_DEFAULT_PACKAGE_IS_DISCOURAGED = " The use of the default package is discouraged.";
-		final String ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT = " Package name is not valid. A package name cannot start or end with a dot";
+		final String WARNING_USE_OF_DEFAULT_PACKAGE_IS_DISCOURAGED = "The use of the default package is discouraged.";
+		final String ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT = "Package name is not valid. A package name cannot start or end with a dot";
 		
 		/* select "Subclass of javax.ws.rs.core.Application" option */
 		SubclassOfApplicationWizardPart wp = page.useSubclassOfApplication();
@@ -225,21 +227,26 @@ public class CreateJAXRSApplicationTest extends WSTestBase {
 		
 		/* warning is showed when the package name is empty */
 		wp.setPackage("");
-		assertTrue(page.getWizardPageInfoText().contains(WARNING_USE_OF_DEFAULT_PACKAGE_IS_DISCOURAGED));
+		assertTrue("Expects wizard message to contain: " + WARNING_USE_OF_DEFAULT_PACKAGE_IS_DISCOURAGED + ", but has: " + page.getWizardPageInfoText(),
+				page.getWizardPageInfoText().contains(WARNING_USE_OF_DEFAULT_PACKAGE_IS_DISCOURAGED));
 		
 		/* warning disappear when the package name is set */
 		wp.setPackage(PACKAGE_NAME);
-		assertFalse(page.getWizardPageInfoText().contains(ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT));
+		assertFalse("Expects wizard message to contain: " + ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT + ", but has: " + page.getWizardPageInfoText(),
+				page.getWizardPageInfoText().contains(ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT));
 		
 		/* package name cannot end with a dot */
 		wp.setPackage(PACKAGE_NAME + ".");
-		assertTrue(page.getWizardPageInfoText().contains(ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT));
+		assertTrue("Expects wizard message to contain: " + ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT + ", but has: " + page.getWizardPageInfoText(),
+				page.getWizardPageInfoText().contains(ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT));
 		wp.setPackage(PACKAGE_NAME);
-		assertFalse(page.getWizardPageInfoText().contains(ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT));
+		assertFalse("Expects wizard message to contain: " + ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT + ", but has: " + page.getWizardPageInfoText(),
+				page.getWizardPageInfoText().contains(ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT));
 		
 		/* package name cannot start with a dot */
 		wp.setPackage("." + PACKAGE_NAME);
-		assertTrue(page.getWizardPageInfoText().contains(ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT));
+		assertTrue("Expects wizard message to contain: " + ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT + ", but has: " + page.getWizardPageInfoText(),
+				page.getWizardPageInfoText().contains(ERROR_PACKAGE_NAME_CANNOT_START_OR_END_WITH_A_DOT));
 	}
 	
 	private void assertContains(List<Resource> list, String name, String errorMessage) {

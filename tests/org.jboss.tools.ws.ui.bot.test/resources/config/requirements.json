@@ -2,16 +2,8 @@
 	"org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer": [
 		{
 			"runtime": "${jbosstools.test.jboss-wildfly.home}",
-			"version": "22",
-			"family": "WILDFLY",
-			"runtimeEnvironment": "JavaSE-1.8"
-		}
-	],
-	"org.eclipse.reddeer.requirements.jre.JRERequirement.JRE": [
-		{
-			"name": "openjdk-1.8",
-			"version": "1.8",
-			"path": "${jbosstools.test.jre.8}"
+			"version": "23",
+			"family": "WILDFLY"
 		}
 	]
 }
