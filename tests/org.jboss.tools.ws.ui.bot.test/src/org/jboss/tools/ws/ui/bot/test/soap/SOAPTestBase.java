@@ -3,15 +3,14 @@ package org.jboss.tools.ws.ui.bot.test.soap;
 import java.text.MessageFormat;
 import java.util.logging.Logger;
 
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
-import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
-import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.common.reddeer.requirements.JavaFoldingRequirement.JavaFolding;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.WSTestBase;
@@ -30,7 +29,6 @@ import org.junit.Before;
 @OpenPerspective(JavaEEPerspective.class)
 @JBossServer(state = ServerRequirementState.RUNNING, cleanup = false)
 @JavaFolding(false)
-@JRE(cleanup=true)
 public abstract class SOAPTestBase {
 
 	@InjectRequirement

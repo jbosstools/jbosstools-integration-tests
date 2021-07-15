@@ -32,14 +32,20 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
 import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.views.contentoutline.ContentOutline;
 import org.eclipse.reddeer.jface.text.contentassist.ContentAssistant;
 import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.label.DefaultLabel;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
 import org.eclipse.reddeer.workbench.impl.editor.Marker;
@@ -256,6 +262,13 @@ class WebSocketHelper {
 		PropertyDialog dialog = new PropertyDialog(projectName);
 		dialog.open();
 		dialog.select("JAX-RS");
+		ShellIsAvailable settingsJBP = new ShellIsAvailable("Setting Java Build Path");
+		new WaitUntil(settingsJBP, TimePeriod.MEDIUM, false);
+		if(settingsJBP.getResult() != null) {
+			new DefaultShell(settingsJBP.getResult());
+			new PushButton("Apply").click();
+			new WaitWhile(settingsJBP, TimePeriod.MEDIUM);
+		}
 		new CheckBox().toggle(true);
 		dialog.ok();
 	}
