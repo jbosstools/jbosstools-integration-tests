@@ -16,11 +16,18 @@ import static org.junit.Assert.fail;
 import java.util.List;
 
 import org.eclipse.reddeer.common.exception.RedDeerException;
+import org.eclipse.reddeer.common.wait.TimePeriod;
+import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.eclipse.core.resources.Project;
 import org.eclipse.reddeer.eclipse.core.resources.ProjectItem;
 import org.eclipse.reddeer.eclipse.core.resources.Resource;
-import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
+import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.views.navigator.ResourceNavigator;
+import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.soap.SOAPTestBase;
 import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
@@ -138,7 +145,7 @@ public class WSClientTestTemplate extends SOAPTestBase {
 		
 		String pkg = (targetPkg != null && !"".equals(targetPkg.trim())) ? getWsPackage() :
 			"org.tempuri";
-		String src = "src/" + pkg.replace('.', '/') + "/";
+		String src = "src/main/java/" + pkg.replace('.', '/') + "/";
 		String[] expectedFiles = {
 				src + "Calculator.java",
 				src + "Add.java",
@@ -176,18 +183,26 @@ public class WSClientTestTemplate extends SOAPTestBase {
 	}
 
 	private void deleteAllPackages() {
-		PackageExplorerPart pe = new PackageExplorerPart();
+		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		Project p = pe.getProject(getWsProjectName());
-		ProjectItem src = p.getProjectItem("src");
+		ProjectItem src = p.getProjectItem("src/main/java");
 		try {
 			for(Resource pkg: src.getChildren()) {
 				pkg.select();
 				pkg.delete();
 			}
+		} catch(CoreLayerException exc ) {
+			ShellIsAvailable confirmDeletion = new ShellIsAvailable("Confirm Folder Delete");
+			new WaitUntil(confirmDeletion, TimePeriod.MEDIUM, false);
+			if (confirmDeletion.getResult() != null) {
+				DefaultShell confirmShell = new DefaultShell(confirmDeletion.getResult());
+				new PushButton(confirmShell, "Yes").click();
+				new WaitWhile(confirmDeletion, TimePeriod.MEDIUM);
+			}
 		} catch(RedDeerException e) {
 			pe.open();
-			src = p.getProjectItem("src");
+			src = p.getProjectItem("src/main/java");
 			List<Resource> pkgs = src.getChildren();
 			for(Resource pkg: pkgs) {
 				pkg.select();

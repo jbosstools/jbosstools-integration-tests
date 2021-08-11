@@ -21,11 +21,11 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	SampleSoapServicesTest.class, // jaxws.spi.Provider not found
 	SOAPWSToolingIntegrationTest.class,
-	BottomUpWSTest.class,
-	TopDownWSTest.class,
-	WsClientTest.class,
-	WsTesterTest.class,
-	CxfWsClientTest.class
+	BottomUpWSTest.class, // PASS
+	TopDownWSTest.class, // PASS
+	WsClientTest.class, // PASS
+	WsTesterTest.class, // DH key exchange
+	CxfWsClientTest.class // exc. in UI thread
 })
 public class SOAPWSBotTests {
 

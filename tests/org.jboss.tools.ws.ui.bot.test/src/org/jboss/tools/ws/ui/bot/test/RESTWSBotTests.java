@@ -32,7 +32,6 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
-	
 	JBossWSPreferencesTest.class,
 	JAXRSFacetTest.class,
 	CreateJAXRSApplicationTest.class,

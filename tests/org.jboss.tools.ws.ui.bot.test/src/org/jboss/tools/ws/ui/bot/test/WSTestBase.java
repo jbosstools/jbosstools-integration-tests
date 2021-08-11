@@ -44,7 +44,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(RedDeerSuite.class)
 @OpenPerspective(JavaEEPerspective.class)
-@JBossServer()
+@JBossServer
 public class WSTestBase {
 
 	@InjectRequirement
