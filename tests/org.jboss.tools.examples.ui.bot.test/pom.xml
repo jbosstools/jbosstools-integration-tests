@@ -15,7 +15,7 @@
 	<properties>
 		<!-- <systemProperties>${integrationTestsSystemProperties} -->
 		<!-- -DimportTestDefinition=${importTestDefinition}</systemProperties> -->
-		<wildflyVersion>23.0.0.Final</wildflyVersion>
+		<wildflyVersion>24.0.0.Final</wildflyVersion>
 		<systemProperties>${integrationTestsSystemProperties} -DexamplesLocation=${project.build.directory}/${examplesFolder} -Dmaven.settings.path=${maven.settings.path} -Drd.config=${reddeer.config} -DspecificQuickstarts=${specificQuickstarts} -DdeployOnServer=${deployOnServer}</systemProperties>
 		<quickstartsURLWildFly>https://github.com/wildfly/quickstart/archive/${wildflyVersion}.zip</quickstartsURLWildFly>
 		<quickstartsURLEAP>http://download.eng.brq.redhat.com/released/JBoss-middleware/eap7/7.3.0/jboss-eap-7.3.0-quickstarts.zip</quickstartsURLEAP>
@@ -709,7 +709,7 @@
 		<repository>
 			<id>m2e-code-quality-plugins</id>
 			<layout>p2</layout>
-			<url>http://m2e-code-quality.github.io/m2e-code-quality/site/latest/</url>
+			<url>https://m2e-code-quality.github.io/m2e-code-quality-p2-site/</url>
 		</repository>
 		<repository>
 			<id>m2e</id>
