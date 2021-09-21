@@ -141,6 +141,13 @@ public class ProjectWithCDITemplate extends CDITestBase {
 	private void openCDIPage(){
 		openProjectProperties(PROJECT_NAME);
 		new DefaultTreeItem("CDI (Contexts and Dependency Injection) Settings").select();
+		ShellIsAvailable jbp = new ShellIsAvailable("Setting Java Build Path");
+		new WaitUntil(jbp, TimePeriod.MEDIUM, false);
+		if(jbp.getResult() != null) {
+			new DefaultShell(jbp.getResult());
+			new PushButton("Apply").click();
+			new WaitWhile(jbp, TimePeriod.MEDIUM);
+		}
 	}
 	
 	private void openProjectProperties(String projectName){

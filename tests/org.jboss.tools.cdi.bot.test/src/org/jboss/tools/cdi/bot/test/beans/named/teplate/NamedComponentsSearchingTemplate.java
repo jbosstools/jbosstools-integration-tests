@@ -20,6 +20,7 @@ import java.util.Map;
 import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
+import org.eclipse.reddeer.eclipse.core.resources.DefaultProject;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenu;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
@@ -50,8 +51,9 @@ public abstract class NamedComponentsSearchingTemplate extends CDITestBase{
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(getProjectName()).refresh();
-		if(pe.getProject(getProjectName()).
-				containsResource(CDIConstants.JAVA_RESOURCES,CDIConstants.SRC,getPackageName())){
+		DefaultProject project = pe.getProject(getProjectName());
+		if(project.containsResource(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, getPackageName())
+				|| project.containsResource("src/main/java", getPackageName())) {
 			new EditorResourceHelper().deletePackage(getProjectName(), getPackageName());
 		}
 	}

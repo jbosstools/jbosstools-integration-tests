@@ -68,12 +68,12 @@ public class CDIWebProjectWizardTemplate extends CDITestBase {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		assertTrue(pe.containsProject(PROJECT_NAME));
-		assertTrue(pe.getProject(PROJECT_NAME).containsResource("WebContent","WEB-INF","beans.xml"));
-		pe.getProject(PROJECT_NAME).getProjectItem("WebContent","WEB-INF","beans.xml").open();
+		assertTrue(pe.getProject(PROJECT_NAME).containsResource("src", "main", "webapp", "WEB-INF", "beans.xml"));
+		pe.getProject(PROJECT_NAME).getProjectItem("src", "main", "webapp", "WEB-INF", "beans.xml").open();
 		EditorPartWrapper beans = new EditorPartWrapper();
 		beans.activateSourcePage();
 		assertEquals(0,beans.getMarkers().size());
-		new WaitUntil(new ProblemExists(ProblemType.ALL), TimePeriod.LONG, false);
+		new WaitUntil(new ProblemExists(ProblemType.ALL), TimePeriod.DEFAULT, false);
 		new WaitWhile(new ProblemExists(ProblemType.ALL));
 	}
 	
@@ -99,14 +99,15 @@ public class CDIWebProjectWizardTemplate extends CDITestBase {
 		ip.toggleCreateBeansXml(false);
 		cw.finish();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+		workaroundJBIDE27781(PROJECT_NAME);
 		
 		isCDISupportEnabled(PROJECT_NAME);
 		isCDIFacetEnabled(PROJECT_NAME, CDIVersion);
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		assertTrue(pe.containsProject(PROJECT_NAME));
-		assertFalse(pe.getProject(PROJECT_NAME).containsResource("WebContent","WEB-INF","beans.xml"));
-		new WaitUntil(new ProblemExists(ProblemType.ALL), TimePeriod.LONG, false);
+		assertFalse(pe.getProject(PROJECT_NAME).containsResource("src", "main", "webapp", "WEB-INF", "beans.xml"));
+		new WaitUntil(new ProblemExists(ProblemType.ALL), TimePeriod.DEFAULT, false);
 		if (CDIVersion.equals("1.0")) {
 			assertTrue(new ProblemExists(ProblemType.ALL).test());	
 		} else {	
@@ -119,6 +120,13 @@ public class CDIWebProjectWizardTemplate extends CDITestBase {
 	protected boolean isCDISupportEnabled(String projectName){
 		openProjectProperties(projectName);
 		new DefaultTreeItem("CDI (Contexts and Dependency Injection) Settings").select();
+		ShellIsAvailable jbp = new ShellIsAvailable("Setting Java Build Path");
+		new WaitUntil(jbp, TimePeriod.MEDIUM, false);
+		if(jbp.getResult() != null) {
+			new DefaultShell(jbp.getResult());
+			new PushButton("Apply").click();
+			new WaitWhile(jbp, TimePeriod.MEDIUM);
+		}
 		boolean toReturn = new LabeledCheckBox("CDI support:").isChecked();
 		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellIsAvailable("Properties for "+projectName));

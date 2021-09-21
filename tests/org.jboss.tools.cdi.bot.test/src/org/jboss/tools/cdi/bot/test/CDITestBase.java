@@ -27,20 +27,26 @@ import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.lookup.ShellLookup;
+import org.eclipse.reddeer.eclipse.core.resources.DefaultProject;
 import org.eclipse.reddeer.eclipse.core.resources.Project;
+import org.eclipse.reddeer.eclipse.jdt.ui.preferences.BuildPathsPropertyPage;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.AbstractJavaWizardPage;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewClassCreationWizard;
 import org.eclipse.reddeer.eclipse.jdt.ui.wizards.NewInterfaceCreationWizard;
 import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
 import org.eclipse.reddeer.eclipse.selectionwizard.NewMenuWizard;
+import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.wst.web.ui.wizards.DataModelFacetCreationWizardPage;
 import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
 import org.eclipse.reddeer.requirements.jre.JRERequirement.JRE;
+import org.eclipse.reddeer.swt.api.TableItem;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.eclipse.reddeer.workbench.condition.EditorIsDirty;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.handler.EditorHandler;
@@ -50,7 +56,6 @@ import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
 import org.jboss.ide.eclipse.as.reddeer.server.family.ServerMatcher;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
-import org.jboss.tools.cdi.reddeer.CDIConstants;
 import org.jboss.tools.cdi.reddeer.cdi.ui.CDIProjectWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewInterceptorCreationWizard;
 import org.jboss.tools.cdi.reddeer.cdi.ui.NewStereotypeCreationWizard;
@@ -122,7 +127,7 @@ public class CDITestBase {
 
 	protected static Collection<RequirementMatcher> getRestrictionMatcherCDI20() {
 		return Arrays.asList(new RequirementMatcher(JBossServer.class, FAMILY, ServerMatcher.WildFly()),
-				new RequirementMatcher(JBossServer.class, VERSION, "20"),
+				new RequirementMatcher(JBossServer.class, VERSION, "24+"),
 				new RequirementMatcher(JRE.class, VERSION, "11"));
 
 	}
@@ -150,6 +155,7 @@ public class CDITestBase {
 			fp.activateFacet(CDIVersion, "CDI (Contexts and Dependency Injection)");
 			pw.finish();
 			new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
+			workaroundJBIDE27781(PROJECT_NAME);
 		}
 	}
 
@@ -317,6 +323,26 @@ public class CDITestBase {
 			fp.activateFacet("11", "Java");
 			this.isJava11FacetActivated = true;
 		}
+	}
+	
+	public static void workaroundJBIDE27781(String projectName) {
+		ProjectExplorer pe = new ProjectExplorer();
+		pe.open();
+		DefaultProject project = pe.getProject(projectName);
+		project.select();
+		// Workaround for https://issues.redhat.com/browse/JBIDE-27781
+		PropertyDialog properties = project.openProperties();
+		BuildPathsPropertyPage buildPathsPropertyPage = new BuildPathsPropertyPage(properties);
+		properties.select(buildPathsPropertyPage);
+		buildPathsPropertyPage.activateOrderAndExportTab();
+		DefaultTable orders = new DefaultTable();
+		TableItem source = orders.getItems().stream().filter(item -> item.getText(0).contains("src/main")).findFirst().get();
+		source.select();
+		while(new PushButton("Up").isEnabled()) {
+			new PushButton("Up").click();
+		}
+		buildPathsPropertyPage.apply();
+		properties.ok();
 	}
 	
 }
