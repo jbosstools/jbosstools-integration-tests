@@ -1,0 +1,13 @@
+package cdi;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
+@ApplicationScoped
+public class CdiBean1 {
+	@Inject
+	@ConfigProperty(name = "property.key")
+	String value;
+}

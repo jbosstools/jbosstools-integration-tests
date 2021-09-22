@@ -40,6 +40,7 @@ import org.jboss.tools.cdi.bot.test.beansxml.discovery.cdi12.BeanDiscoveryInImpl
 import org.jboss.tools.cdi.bot.test.beansxml.openon.cdi12.BeansXMLOpenOnTestCDI12;
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi12.BeansXMLAsYouTypeValidationTestCDI12;
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi12.BeansXMLValidationQuickFixTestCDI12;
+import org.jboss.tools.cdi.bot.test.microprofiile.cdi12.ConfigPropertyTestCDI12;
 import org.jboss.tools.cdi.bot.test.validation.cdi12.CDIValidatorTestCDI12;
 import org.jboss.tools.cdi.bot.test.weld.cdi12.WeldBuiltInContextsTestCDI12;
 import org.jboss.tools.cdi.bot.test.weld.cdi12.WeldExcludeTestCDI12;
@@ -91,7 +92,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	VetoedAnnotationTestCDI12.class,
 	BeanDiscoveryInExplicitArchivesTestCDI12.class,
 	BeanDiscoveryInImplicitArchivesTestCDI12.class,
-	BeanParametersAnnotationTestCDI12.class
+	BeanParametersAnnotationTestCDI12.class,
+	ConfigPropertyTestCDI12.class
 })
 public class CDI12SuiteTest {
 
