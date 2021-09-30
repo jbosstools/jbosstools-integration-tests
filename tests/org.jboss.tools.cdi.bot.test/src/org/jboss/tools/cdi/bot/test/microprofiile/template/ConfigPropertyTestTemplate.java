@@ -58,7 +58,8 @@ public class ConfigPropertyTestTemplate extends CDITestBase {
 		te.save();
 		new WaitWhile(new EditorHasValidationMarkers(te));
 
-		new AbstractMavenSWTBotTest(){}.convertToMavenProject(PROJECT_NAME, "war", false);
+		new AbstractMavenSWTBotTest() {
+		}.convertToMavenProject(PROJECT_NAME, "war", false);
 		addDependency(PROJECT_NAME, "org.eclipse.microprofile.config", "microprofile-config-api", "2.0");
 		createApplicationPropertiesFile(PROJECT_NAME);
 	}
@@ -73,8 +74,8 @@ public class ConfigPropertyTestTemplate extends CDITestBase {
 		ProblemsView pw = new ProblemsView();
 		pw.open();
 		int error_count = pw.getProblems(ProblemType.ERROR).size();
-		assertEquals("There are errors after including the Microprofile @ConfigProperty annotation into the project.",
-				error_count, 0);
+		assertEquals("There are errors after including the Microprofile @ConfigProperty annotation into the project - "
+				+ pw.getProblems(ProblemType.ERROR).toString(), error_count, 0);
 	}
 
 	private void addDependency(String projectName, String groupId, String artifactId, String version) {
