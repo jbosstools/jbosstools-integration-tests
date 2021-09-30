@@ -78,7 +78,7 @@ public abstract class BeansXMLValidationTemplate extends CDITestBase {
 		pe.open();
 		Project p = pe.getProject(getProjectName());
 		p.refresh();
-		if (!p.containsResource(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, getPackageName(),
+		if (!p.containsResource("src/main/java", getPackageName(),
 				someBean + ".java")) {
 			beansHelper.createClass(someBean, getPackageName());
 		}
@@ -127,7 +127,7 @@ public abstract class BeansXMLValidationTemplate extends CDITestBase {
 		pe.open();
 		Project p = pe.getProject(getProjectName());
 		p.refresh();
-		if (!p.containsResource(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, getPackageName(),
+		if (!p.containsResource("src/main/java", getPackageName(),
 				someBean + ".java")) {
 			beansHelper.createClass(someBean, getPackageName());
 		}
@@ -176,7 +176,7 @@ public abstract class BeansXMLValidationTemplate extends CDITestBase {
 		pe.open();
 		Project p =pe.getProject(getProjectName());
 		p.refresh();
-		if (!p.containsResource(CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, getPackageName(),
+		if (!p.containsResource("src/main/java", getPackageName(),
 				someBean + ".java")) {
 			beansHelper.createClass(someBean, getPackageName());
 		}

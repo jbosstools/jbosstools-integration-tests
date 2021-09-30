@@ -110,7 +110,7 @@ public class BeanInjectOpenOnTemplate extends CDITestBase{
 			openOnHelper.selectProposal("MainBean", injectionPoint, "Show All Assignable Beans...");
 			Shell s = new DefaultShell("Assignable Beans");
 			Table eventsTable = new DefaultTable();
-			String packageProjectPath = getPackageName() + " - /" + getProjectName() + "/src";
+			String packageProjectPath = getPackageName() + " - /" + getProjectName() + "/src/main/java";
 			assertEquals(beans.size(), eventsTable.getItems().size());
 			for(String bean : beans){
 				assertTrue(eventsTable.containsItem(

@@ -72,7 +72,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	BeansXMLAsYouTypeValidationTestCDI20.class,
 	BeansXMLOpenOnTestCDI20.class,
 	BeansXMLUITestCDI20.class,
-	BeanDiscoveryInExplicitArchivesTestCDI20.class,
+	BeanDiscoveryInExplicitArchivesTestCDI20.class, // bug
 	BeanDiscoveryInImplicitArchivesTestCDI20.class,
 	BeanParametersAnnotationTestCDI20.class,
 	ScopeValidationQuickFixTestCDI20.class,

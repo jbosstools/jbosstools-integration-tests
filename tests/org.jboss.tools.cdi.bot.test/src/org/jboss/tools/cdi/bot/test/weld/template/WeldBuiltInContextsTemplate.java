@@ -37,7 +37,7 @@ public class WeldBuiltInContextsTemplate extends CDITestBase{
 		disableSourceLookup();
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		if(pe.getProject(PROJECT_NAME).containsResource("Java Resources","src","test","BuiltInContexts.java")){
+		if(pe.getProject(PROJECT_NAME).containsResource("src/main/java", "test", "BuiltInContexts.java")){
 			return;
 		}
 		NewClassCreationWizard jd = new NewClassCreationWizard();

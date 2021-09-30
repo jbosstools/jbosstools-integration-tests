@@ -107,7 +107,7 @@ public abstract class FindObserverEventTemplate extends CDITestBase {
 		openOnHelper.selectProposal(className, eventName, "Show CDI Observer Methods...");
 		HierarchyInformationControl hic = new HierarchyInformationControl(HierarchyInformationControl.OBSERVER_LABEL);
 		
-		String packageProjectPath = getPackageName() + " - /" + getProjectName() + "/src";
+		String packageProjectPath = getPackageName() + " - /" + getProjectName() + "/src/main/java";
 		List<String> expectedObservers = eventWithObservers.get(eventName);
 		assertEquals(expectedObservers.size(), hic.getProposals().size());
 		for(String expectedObserver : expectedObservers){
@@ -169,7 +169,7 @@ public abstract class FindObserverEventTemplate extends CDITestBase {
 			openOnHelper.selectProposal(className, observer, "Show CDI Events...");
 			HierarchyInformationControl hic = new HierarchyInformationControl(HierarchyInformationControl.EVENTS_LABEL);
 
-			String packageProjectPath = getPackageName() + " - /" + getProjectName() + "/src";
+			String packageProjectPath = getPackageName() + " - /" + getProjectName() + "/src/main/java";
 			List<String> expectedEvents = observerWithEvents.get(observer);
 			assertEquals(expectedEvents.size(), hic.getProposals().size());
 			for(String expectedEvent : expectedEvents){

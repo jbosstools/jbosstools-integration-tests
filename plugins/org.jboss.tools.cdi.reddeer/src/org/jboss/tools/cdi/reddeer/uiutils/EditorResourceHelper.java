@@ -221,7 +221,11 @@ public class EditorResourceHelper {
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
 		pe.getProject(projectName).refresh();
-		deleteInProjectExplorer(projectName, CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, packageName);
+		if (pe.getProject(projectName).containsResource(CDIConstants.JAVA_RESOURCES)) {
+			deleteInProjectExplorer(projectName, CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, packageName);
+		} else {
+			deleteInProjectExplorer(projectName, "src/main/java" ,packageName);
+		}
 	}
 
 	/**
