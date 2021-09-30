@@ -18,20 +18,14 @@ import java.util.List;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
-import org.eclipse.reddeer.core.exception.CoreLayerException;
-import org.eclipse.reddeer.eclipse.condition.ProjectExists;
 import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
-import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
-import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
-import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.condition.EditorHasValidationMarkers;
@@ -39,6 +33,7 @@ import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
+import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -63,7 +58,7 @@ public class ConfigPropertyTestTemplate extends CDITestBase {
 		te.save();
 		new WaitWhile(new EditorHasValidationMarkers(te));
 
-		convertToMavenProject(PROJECT_NAME, "war", false);
+		new AbstractMavenSWTBotTest(){}.convertToMavenProject(PROJECT_NAME, "war", false);
 		addDependency(PROJECT_NAME, "org.eclipse.microprofile.config", "microprofile-config-api", "2.0");
 		createApplicationPropertiesFile(PROJECT_NAME);
 	}
@@ -80,33 +75,6 @@ public class ConfigPropertyTestTemplate extends CDITestBase {
 		int error_count = pw.getProblems(ProblemType.ERROR).size();
 		assertEquals("There are errors after including the Microprofile @ConfigProperty annotation into the project.",
 				error_count, 0);
-	}
-
-	private void convertToMavenProject(String projectName, String defaultPackaging, boolean withDependencies) {
-		PackageExplorerPart pexplorer = new PackageExplorerPart();
-		pexplorer.open();
-		new WaitUntil(new ProjectExists(projectName));
-		pexplorer.getProject(projectName).select();
-		new ContextMenuItem("Configure", "Convert to Maven Project").select();
-		new DefaultShell("Create new POM");
-		assertEquals("Project " + projectName + " packaging should be set to " + defaultPackaging, defaultPackaging,
-				new LabeledCombo(new DefaultGroup("Artifact"), "Packaging:").getText());
-		new PushButton("Finish").click();
-		try {
-			new DefaultShell("Convert to Maven Dependencies");
-			new WaitUntil(new ControlIsEnabled(new PushButton("Finish")), TimePeriod.LONG);
-			if (withDependencies) {
-				new PushButton("Finish").click();
-			} else {
-				new PushButton("Skip Dependency Conversion").click();
-			}
-			new WaitWhile(new ShellIsAvailable("Convert to Maven Dependencies"));
-		} catch (CoreLayerException ex) {
-
-		} finally {
-			new WaitWhile(new ShellIsAvailable("Create new POM"));
-			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		}
 	}
 
 	private void addDependency(String projectName, String groupId, String artifactId, String version) {
