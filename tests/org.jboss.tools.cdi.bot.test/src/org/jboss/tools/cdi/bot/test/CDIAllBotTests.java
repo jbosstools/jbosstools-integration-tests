@@ -91,7 +91,6 @@ import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi12.BeansXMLAsYouTypeV
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi12.BeansXMLValidationQuickFixTestCDI12;
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi20.BeansXMLAsYouTypeValidationTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi20.BeansXMLValidationQuickFixTestCDI20;
-import org.jboss.tools.cdi.bot.test.microprofiile.cdi12.ConfigPropertyTestCDI12;
 import org.jboss.tools.cdi.bot.test.microprofiile.cdi20.ConfigPropertyTestCDI20;
 import org.jboss.tools.cdi.bot.test.validation.cdi10.CDIValidatorTestCDI10;
 import org.jboss.tools.cdi.bot.test.validation.cdi12.CDIValidatorTestCDI12;
@@ -241,7 +240,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	BeanDiscoveryInExplicitArchivesTestCDI20.class,
 	BeanParametersAnnotationTestCDI12.class,
 	BeanParametersAnnotationTestCDI20.class,
-	ConfigPropertyTestCDI12.class,
 	ConfigPropertyTestCDI20.class,
 	
 })
