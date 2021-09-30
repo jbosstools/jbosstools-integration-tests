@@ -11,6 +11,7 @@
 package org.jboss.tools.cdi.bot.test.microprofiile.template;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,6 @@ public class ConfigPropertyTestTemplate extends CDITestBase {
 
 		new AbstractMavenSWTBotTest() {
 		}.convertToMavenProject(PROJECT_NAME, "war", false);
-		addDependency(PROJECT_NAME, "org.eclipse.microprofile.config", "microprofile-config-api", "2.0");
 		createApplicationPropertiesFile(PROJECT_NAME);
 	}
 
@@ -70,10 +70,21 @@ public class ConfigPropertyTestTemplate extends CDITestBase {
 		pexplorer.open();
 		pexplorer.getProject(PROJECT_NAME)
 				.getProjectItem("src/main/java", PACKAGE_NAME, CDI_BEAN_1_JAVA_FILE_NAME + JAVA_FILE_EXTENSION).open();
-
 		ProblemsView pw = new ProblemsView();
 		pw.open();
 		int error_count = pw.getProblems(ProblemType.ERROR).size();
+		String error_msgs = pw.getProblems(ProblemType.ERROR).toString();
+		assertTrue(
+				"When missing Microprofile dependency in the pom.xml there should be 2 errors in the Problems View ('ConfigProperty cannot be resolved to a type' and 'The import org.eclipse cannot be resolved').",
+				error_count == 2 && error_msgs.contains("ConfigProperty cannot be resolved to a type")
+						&& error_msgs.contains("The import org.eclipse cannot be resolved"));
+
+		addDependency(PROJECT_NAME, "org.eclipse.microprofile.config", "microprofile-config-api", "2.0");
+
+		pexplorer.getProject(PROJECT_NAME)
+				.getProjectItem("src/main/java", PACKAGE_NAME, CDI_BEAN_1_JAVA_FILE_NAME + JAVA_FILE_EXTENSION).open();
+		pw.open();
+		error_count = pw.getProblems(ProblemType.ERROR).size();
 		assertEquals("There are errors after including the Microprofile @ConfigProperty annotation into the project - "
 				+ pw.getProblems(ProblemType.ERROR).toString(), error_count, 0);
 	}
