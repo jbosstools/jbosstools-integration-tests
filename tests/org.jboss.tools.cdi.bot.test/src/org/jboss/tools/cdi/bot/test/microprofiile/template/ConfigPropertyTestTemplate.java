@@ -13,9 +13,6 @@ package org.jboss.tools.cdi.bot.test.microprofiile.template;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
@@ -24,14 +21,10 @@ import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
-import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
-import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
-import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.condition.EditorHasValidationMarkers;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
-import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
 import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
@@ -59,9 +52,7 @@ public class ConfigPropertyTestTemplate extends CDITestBase {
 		te.save();
 		new WaitWhile(new EditorHasValidationMarkers(te));
 
-		new AbstractMavenSWTBotTest() {
-		}.convertToMavenProject(PROJECT_NAME, "war", false);
-		createApplicationPropertiesFile(PROJECT_NAME);
+		new AbstractMavenSWTBotTest(){}.convertToMavenProject(PROJECT_NAME, "war", false);
 	}
 
 	@Test
@@ -101,42 +92,5 @@ public class ConfigPropertyTestTemplate extends CDITestBase {
 		new PushButton("OK").click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 
-	}
-
-	private void createApplicationPropertiesFile(String projectName) {
-		PackageExplorerPart pexplorer = new PackageExplorerPart();
-		pexplorer.open();
-		pexplorer.getProject(projectName).select();
-		new ContextMenuItem("New", "Folder").select();
-		new LabeledText("Folder name:").setText("src/main/resources");
-		new PushButton("Finish").click();
-		new WaitWhile(new ShellIsAvailable("New Folder"), TimePeriod.DEFAULT);
-
-		new ShellMenuItem("File", "New", "Other...").select();
-		new WaitUntil(new ShellIsAvailable("Select a wizard"), TimePeriod.DEFAULT);
-		new DefaultTreeItem("JBoss Tools Web", "Properties File").select();
-		new PushButton("Next >").click();
-		new LabeledText("Folder:*").setText(projectName + "/src/main/resources");
-		new LabeledText("Name:*").setText("application.properties");
-		new PushButton("Finish").click();
-		new WaitWhile(new ShellIsAvailable("New File Properties"), TimePeriod.DEFAULT);
-
-		List<String[]> entries = new ArrayList<String[]>();
-		String[] entry = { "property.key", "data" };
-		entries.add(entry);
-		addEntryToApplicationProperties(entries);
-	}
-
-	private void addEntryToApplicationProperties(List<String[]> entries) {
-		new DefaultEditor("application.properties");
-		for (String[] entry : entries) {
-			new DefaultCTabItem("Properties").activate();
-			new PushButton("Add").click();
-			new LabeledText("Name:*").setText(entry[0]);
-			new LabeledText("Value:").setText(entry[1]);
-			new PushButton("Finish").click();
-			new WaitWhile(new ShellIsAvailable("Add Property"), TimePeriod.DEFAULT);
-		}
-		new ShellMenuItem("File", "Save").select();
 	}
 }
