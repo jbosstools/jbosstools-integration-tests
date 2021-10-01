@@ -50,7 +50,7 @@ public class ConfigPropertyTestTemplate extends CDITestBase {
 	}
 
 	@Test
-	public void isConfigPropertyValidationAllowedTest() {
+	public void testConfigPropertyAnnotation() {
 		PackageExplorerPart pexplorer = new PackageExplorerPart();
 		pexplorer.open();
 		pexplorer.getProject(PROJECT_NAME)
