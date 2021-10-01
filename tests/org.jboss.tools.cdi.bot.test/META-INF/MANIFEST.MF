@@ -14,5 +14,4 @@ Eclipse-BundleShape: jar
 Bundle-Localization: plugin
 Bundle-Vendor: Red Hat
 Import-Package: org.eclipse.jdt.ui.wizards,
- org.jboss.tools.maven.ui.bot.test,
  org.jboss.tools.maven.ui.bot.test.utils
