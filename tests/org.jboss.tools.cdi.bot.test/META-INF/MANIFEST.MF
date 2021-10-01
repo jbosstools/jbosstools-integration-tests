@@ -13,4 +13,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: jar
 Bundle-Localization: plugin
 Bundle-Vendor: Red Hat
-Import-Package: org.eclipse.jdt.ui.wizards
+Import-Package: org.eclipse.jdt.ui.wizards,
+ org.jboss.tools.maven.ui.bot.test.utils

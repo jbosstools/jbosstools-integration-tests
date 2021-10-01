@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test.configurator;
 
+import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.addDependency;
+import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.convertToMavenProject;
+
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.eclipse.reddeer.common.wait.WaitUntil;

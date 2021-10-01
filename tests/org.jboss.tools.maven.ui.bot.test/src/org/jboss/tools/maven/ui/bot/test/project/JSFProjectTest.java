@@ -10,6 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test.project;
 
+import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.addDependency;
+import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.convertToMavenProject;
+
 import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;

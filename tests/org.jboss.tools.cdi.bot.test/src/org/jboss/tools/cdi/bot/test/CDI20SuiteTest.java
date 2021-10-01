@@ -40,6 +40,7 @@ import org.jboss.tools.cdi.bot.test.beansxml.discovery.cdi20.BeanDiscoveryInImpl
 import org.jboss.tools.cdi.bot.test.beansxml.openon.cdi20.BeansXMLOpenOnTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi20.BeansXMLAsYouTypeValidationTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi20.BeansXMLValidationQuickFixTestCDI20;
+import org.jboss.tools.cdi.bot.test.microprofiile.cdi20.ConfigPropertyTestCDI20;
 import org.jboss.tools.cdi.bot.test.validation.cdi20.CDIValidatorTestCDI20;
 import org.jboss.tools.cdi.bot.test.weld.cdi20.WeldBuiltInContextsTestCDI20;
 import org.jboss.tools.cdi.bot.test.weld.cdi20.WeldExcludeTestCDI20;
@@ -97,6 +98,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	BeansXMLCompletionTestCDI20.class,
 	CDIValidatorTestCDI20.class,
 	BeansXMLDiscoveryModesTestCDI20.class,
+	ConfigPropertyTestCDI20.class
 })
 public class CDI20SuiteTest {
 

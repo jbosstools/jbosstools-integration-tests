@@ -12,6 +12,7 @@ package org.jboss.tools.maven.ui.bot.test.apt;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.addDependency;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

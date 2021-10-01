@@ -11,6 +11,7 @@
 package org.jboss.tools.maven.ui.bot.test.project;
 
 import static org.junit.Assert.assertTrue;
+import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.convertToMavenProject;
 
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
