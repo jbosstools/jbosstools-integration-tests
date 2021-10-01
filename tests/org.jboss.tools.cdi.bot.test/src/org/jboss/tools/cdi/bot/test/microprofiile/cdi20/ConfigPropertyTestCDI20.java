@@ -23,6 +23,9 @@ import org.jboss.tools.cdi.bot.test.microprofiile.template.ConfigPropertyTestTem
 
 /**
  * 
+ * Relevant JIRA: https://issues.redhat.com/browse/JBIDE-27533 
+ * Customer issue: https://issues.redhat.com/browse/JBIDE-27762
+ * 
  * @author zcervink@redhat.com
  * 
  */
