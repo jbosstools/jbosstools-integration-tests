@@ -10,6 +10,8 @@
  ******************************************************************************/
 package org.jboss.tools.maven.ui.bot.test.configurator;
 
+import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.convertToMavenProject;
+
 import java.io.FileNotFoundException;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;

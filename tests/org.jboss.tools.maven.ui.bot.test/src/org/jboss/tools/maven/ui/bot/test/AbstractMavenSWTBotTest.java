@@ -13,7 +13,6 @@ package org.jboss.tools.maven.ui.bot.test;
  * @author Rastislav Wagner
  * 
  */
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -30,7 +29,6 @@ import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.core.matcher.WithTextMatchers;
-import org.eclipse.reddeer.eclipse.condition.ProjectExists;
 import org.eclipse.reddeer.eclipse.core.resources.Project;
 import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
 import org.eclipse.reddeer.eclipse.jst.servlet.ui.project.facet.WebProjectFirstPage;
@@ -44,17 +42,13 @@ import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.swt.api.StyledText;
 import org.eclipse.reddeer.swt.api.Tree;
-import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
-import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
-import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
-import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
@@ -118,20 +112,6 @@ public abstract class AbstractMavenSWTBotTest{
 		pd.ok();
 		new WaitWhile(new ShellIsAvailable("Properties for "+projectName), TimePeriod.DEFAULT);
 		return result;
-	}
-	
-	protected void addDependency(String projectName, String groupId, String artifactId, String version){
-		PackageExplorerPart pexplorer = new PackageExplorerPart();
-		pexplorer.open();
-		pexplorer.getProject(projectName).select();
-		new ContextMenuItem("Maven","Add Dependency").select();
-		new WaitUntil(new ShellIsAvailable("Add Dependency"), TimePeriod.DEFAULT);
-		new LabeledText("Group Id:").setText(groupId);
-		new LabeledText("Artifact Id:").setText(artifactId);
-		new LabeledText("Version: ").setText(version);
-		new PushButton("OK").click();
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		
 	}
 	
 	public void addPlugin(String projectName, String groupId, String artifactId, String version){
@@ -214,32 +194,6 @@ public abstract class AbstractMavenSWTBotTest{
 	    new ContextMenuItem("Refresh").select();
 	    new WaitWhile(new JobIsRunning());
 	    assertTrue(pe.getProject(projectName).containsResource("target",finalName+".war"));
-	}
-	
-	public void convertToMavenProject(String projectName, String defaultPackaging, boolean withDependencies){
-		PackageExplorerPart pexplorer = new PackageExplorerPart();
-		pexplorer.open();
-		new WaitUntil(new ProjectExists(projectName));
-		pexplorer.getProject(projectName).select();
-		new ContextMenuItem("Configure","Convert to Maven Project").select();
-		new DefaultShell("Create new POM");
-		assertEquals("Project " +projectName+" packaging should be set to "+defaultPackaging, defaultPackaging, new LabeledCombo(new DefaultGroup("Artifact"),"Packaging:").getText());
-		new PushButton("Finish").click();
-		try{
-		    new DefaultShell("Convert to Maven Dependencies");
-		    new WaitUntil(new ControlIsEnabled(new PushButton("Finish")), TimePeriod.LONG);
-		    if(withDependencies){
-		        new PushButton("Finish").click();
-		    } else {
-		        new PushButton("Skip Dependency Conversion").click();
-		    }
-	        new WaitWhile(new ShellIsAvailable("Convert to Maven Dependencies"));
-		} catch (CoreLayerException ex){
-		    
-		} finally {
- 		    new WaitWhile(new ShellIsAvailable("Create new POM"));
-	        new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
-		}
 	}
 	
 	//TODO editor is missing in Reddeer...and check the packaging

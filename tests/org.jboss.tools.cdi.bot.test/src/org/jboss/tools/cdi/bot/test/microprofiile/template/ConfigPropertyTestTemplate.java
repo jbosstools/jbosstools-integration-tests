@@ -12,22 +12,16 @@ package org.jboss.tools.cdi.bot.test.microprofiile.template;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.addDependency;
+import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.convertToMavenProject;
 
-import org.eclipse.reddeer.common.wait.TimePeriod;
-import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
 import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
-import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
-import org.eclipse.reddeer.swt.impl.button.PushButton;
-import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
-import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.workbench.condition.EditorHasValidationMarkers;
-import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
 import org.jboss.tools.cdi.bot.test.CDITestBase;
-import org.jboss.tools.maven.ui.bot.test.AbstractMavenSWTBotTest;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,7 +46,7 @@ public class ConfigPropertyTestTemplate extends CDITestBase {
 		te.save();
 		new WaitWhile(new EditorHasValidationMarkers(te));
 
-		new AbstractMavenSWTBotTest(){}.convertToMavenProject(PROJECT_NAME, "war", false);
+		convertToMavenProject(PROJECT_NAME, "war", false);
 	}
 
 	@Test
@@ -78,19 +72,5 @@ public class ConfigPropertyTestTemplate extends CDITestBase {
 		error_count = pw.getProblems(ProblemType.ERROR).size();
 		assertEquals("There are errors after including the Microprofile @ConfigProperty annotation into the project - "
 				+ pw.getProblems(ProblemType.ERROR).toString(), error_count, 0);
-	}
-
-	private void addDependency(String projectName, String groupId, String artifactId, String version) {
-		PackageExplorerPart pexplorer = new PackageExplorerPart();
-		pexplorer.open();
-		pexplorer.getProject(projectName).select();
-		new ContextMenuItem("Maven", "Add Dependency").select();
-		new WaitUntil(new ShellIsAvailable("Add Dependency"), TimePeriod.DEFAULT);
-		new LabeledText("Group Id:").setText(groupId);
-		new LabeledText("Artifact Id:").setText(artifactId);
-		new LabeledText("Version: ").setText(version);
-		new PushButton("OK").click();
-		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-
 	}
 }
