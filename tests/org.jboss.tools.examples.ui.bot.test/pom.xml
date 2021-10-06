@@ -18,7 +18,7 @@
 		<wildflyVersion>24.0.0.Final</wildflyVersion>
 		<systemProperties>${integrationTestsSystemProperties} -DexamplesLocation=${project.build.directory}/${examplesFolder} -Dmaven.settings.path=${maven.settings.path} -Drd.config=${reddeer.config} -DspecificQuickstarts=${specificQuickstarts} -DdeployOnServer=${deployOnServer}</systemProperties>
 		<quickstartsURLWildFly>https://github.com/wildfly/quickstart/archive/${wildflyVersion}.zip</quickstartsURLWildFly>
-		<quickstartsURLEAP>http://download.eng.brq.redhat.com/released/JBoss-middleware/eap7/7.3.0/jboss-eap-7.3.0-quickstarts.zip</quickstartsURLEAP>
+		<quickstartsURLEAP>http://download.eng.bos.redhat.com/released/JBoss-middleware/eap7/7.4.0/jboss-eap-7.4.0-quickstarts.zip</quickstartsURLEAP>
 		<quickstartsURLEAPXP>http://download.eng.bos.redhat.com/released/JBoss-middleware/eap-xp/3.0.0/jboss-eap-xp-3.0.0-quickstarts.zip</quickstartsURLEAPXP>
 		<quickstartsURLJavaEE7>https://github.com/javaee-samples/javaee7-samples/archive/master.zip</quickstartsURLJavaEE7>
 		<quickstartsURLJavaEE8>https://github.com/javaee-samples/javaee8-samples/archive/master.zip</quickstartsURLJavaEE8>
@@ -26,13 +26,13 @@
 		<reddeer.config.wildfly>${project.build.directory}/classes/servers/wildfly.json</reddeer.config.wildfly>
 		<reddeer.config.eap7>${project.build.directory}/classes/servers/eap-7.json</reddeer.config.eap7>
 		<examplesFolderWildFly>quickstart-${wildflyVersion}</examplesFolderWildFly>
-		<examplesFolderEAP>jboss-eap-7.3.0.GA-quickstarts</examplesFolderEAP>
+		<examplesFolderEAP>jboss-eap-7.4.0.GA-quickstarts</examplesFolderEAP>
 		<examplesFolderEAPXP>jboss-eap-xp-3.0.0.GA-quickstarts</examplesFolderEAPXP>
 		<examplesFolderJavaEE7>javaee7-samples-master</examplesFolderJavaEE7>
 		<examplesFolderJavaEE8>javaee8-samples-master</examplesFolderJavaEE8>
 		<jbosstools.test.wildfly.home>${requirementsDirectory}/wildfly-${wildflyVersion}</jbosstools.test.wildfly.home>
-		<jbosstools.test.eap7.home>${requirementsDirectory}/jboss-eap-7.3</jbosstools.test.eap7.home>
-		<jbosstools.test.jboss-eap-7.x.url>http://download.eng.brq.redhat.com/released/JBoss-middleware/eap7/7.3.0/jboss-eap-7.3.0.zip</jbosstools.test.jboss-eap-7.x.url>
+		<jbosstools.test.eap7.home>${requirementsDirectory}/jboss-eap-7.4</jbosstools.test.eap7.home>
+		<jbosstools.test.jboss-eap-7.x.url>http://download.eng.bos.redhat.com/released/JBoss-middleware/eap7/7.4.0/jboss-eap-7.4.0.zip</jbosstools.test.jboss-eap-7.x.url>
 		<jbosstools.test.eap.xp.home>${requirementsDirectory}/jboss-eap-7.4</jbosstools.test.eap.xp.home>
 		<jbosstools.test.jboss-eap-xp.url>http://download.eng.bos.redhat.com/released/JBoss-middleware/eap-xp/3.0.0/jboss-eap-xp-3.0.0.zip</jbosstools.test.jboss-eap-xp.url>
 		<surefire.timeout>18000</surefire.timeout>

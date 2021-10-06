@@ -62,7 +62,6 @@ import org.eclipse.reddeer.workbench.exception.WorkbenchLayerException;
 import org.eclipse.reddeer.workbench.handler.WorkbenchShellHandler;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.eclipse.reddeer.workbench.ui.dialogs.WorkbenchPreferenceDialog;
-import org.jboss.ide.eclipse.as.reddeer.server.view.JBossServerModule;
 import org.jboss.tools.central.reddeer.api.ExamplesOperator;
 import org.jboss.tools.central.reddeer.utils.CentralUtils;
 import org.jboss.tools.maven.reddeer.wizards.MavenImportWizard;
@@ -563,6 +562,8 @@ public abstract class AbstractImportQuickstartsTest {
 
 	class NoProjectException extends RedDeerException {
 
+		private static final long serialVersionUID = 5273871816618074004L;
+
 		public NoProjectException() {
 			super("There is no project in this directory");
 		}
@@ -584,7 +585,7 @@ public abstract class AbstractImportQuickstartsTest {
 		ServersView2 serversView = new ServersView2();
 		serversView.open();
 		String moduleName = qstart.getName().equals("template") ? "QUICKSTART_NAME" : qstart.getName();
-		JBossServerModule module = (JBossServerModule) serversView.getServer(serverNameLabel)
+		ServerModule module = serversView.getServer(serverNameLabel)
 				.getModule(new RegexMatcher(".*" + moduleName + ".*")); // cannot
 																		// be
 																		// used
@@ -594,8 +595,9 @@ public abstract class AbstractImportQuickstartsTest {
 																		// with
 																		// parent
 																		// projects
+		module.select();
 		if (new ContextMenuItem("Show In", "Web Browser").isEnabled()) {
-			module.openWebPage();
+			new ContextMenuItem("Show In", "Web Browser").select();
 
 			final BrowserEditor browser = new BrowserEditor(new RegexMatcher(".*"));
 			try {
