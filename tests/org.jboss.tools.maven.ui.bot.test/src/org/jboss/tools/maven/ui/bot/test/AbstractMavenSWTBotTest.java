@@ -127,22 +127,6 @@ public abstract class AbstractMavenSWTBotTest{
 		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 	
-	protected static void updateConf(String projectName){
-		updateConf(projectName,false);
-	}
-	
-	protected static void updateConf(String projectName,boolean forceDependencies){
-		PackageExplorerPart pexplorer = new PackageExplorerPart();
-		pexplorer.open();
-		pexplorer.getProject(projectName).select();
-		new ContextMenuItem("Maven","Update Project...").select();
-		new WaitUntil(new ShellIsAvailable("Update Maven Project"),TimePeriod.LONG);
-		new CheckBox("Force Update of Snapshots/Releases").toggle(forceDependencies);
-		new PushButton("OK").click();
-		new WaitWhile(new ShellIsAvailable("Update Maven Project"),TimePeriod.DEFAULT);
-		new WaitWhile(new JobIsRunning(),TimePeriod.VERY_LONG);
-	}
-	
 	public void buildProject(String projectName, String mavenBuild, String goals, boolean shouldBuild){
 		ConsoleView cview = new ConsoleView();
 		cview.open();

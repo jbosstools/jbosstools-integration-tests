@@ -12,6 +12,7 @@ package org.jboss.tools.maven.ui.bot.test.configurator;
 
 import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.addDependency;
 import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.convertToMavenProject;
+import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.updateConf;
 
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
