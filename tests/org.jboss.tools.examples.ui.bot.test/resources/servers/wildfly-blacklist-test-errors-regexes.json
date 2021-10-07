@@ -11,10 +11,13 @@
 		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountRequest cannot be resolved.*",
 		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountResponse cannot be resolved.*",
 		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.ProfileMgmt cannot be resolved.*",
-		".*Type mismatch: cannot convert from ProfileMgmt to ProfileMgmt.*"
+		".*Type mismatch: cannot convert from ProfileMgmt to ProfileMgmt.*",
+		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*",
+		".*Could not read maven project.*",
+		".*Project build error: 'dependencies.dependency.version' for org.jboss.resteasy:resteasy-jaxrs:jar is missing.*"
 	],
 	"microprofile-config":[
-		".*The superclass \"javax.servlet.http.HttpServlet\" was not found on the Java Build Path.*"
+		".*The superclass \"javax.servlet.http.HttpServlet\".*was not found on the Java Build Path.*"
 	],
 	"ejb-txn-remote-call-server":[
 		".*The Java class for mapped type \"CalleeUser\" has a private zero-argument constructor; it must be public or protected.*",
@@ -23,5 +26,14 @@
 	"ejb-txn-remote-call-client":[
 		".*The Java class for mapped type \"CallerUser\" has a private zero-argument constructor; it must be public or protected.*",
 		".*The Java class for mapped type \"CallerUser\" is final.*"
+	],
+	"deltaspike-authorization":[
+		".*Project build error: 'dependencies.dependency.version' for org.picketlink:picketlink-.*:jar is missing.*"
+	],
+	"jaxrs-jwt":[
+		".*Project build error: 'dependencies.dependency.version' for org.jboss.resteasy:resteasy-jaxrs:jar is missing.*"
+	],
+	"wsat-simple":[
+		".*Referenced file contains errors.*"
 	]
 }

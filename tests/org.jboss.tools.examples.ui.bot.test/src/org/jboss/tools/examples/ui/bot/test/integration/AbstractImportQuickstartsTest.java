@@ -52,6 +52,7 @@ import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerStat
 import org.eclipse.reddeer.jface.exception.JFaceLayerException;
 import org.eclipse.reddeer.jface.wizard.WizardDialog;
 import org.eclipse.reddeer.swt.api.TreeItem;
+import org.eclipse.reddeer.swt.impl.button.CancelButton;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
@@ -469,6 +470,14 @@ public abstract class AbstractImportQuickstartsTest {
 			}
 			try {
 				mavenImportWizard.finish();
+				
+				try {
+					new CancelButton().click();
+				}
+				catch (Exception e) {
+					
+				}
+				
 				mavenUpdate(quickstart);
 			} catch (MavenImportWizardException e) {
 				for (String error : e.getErrors()) {
