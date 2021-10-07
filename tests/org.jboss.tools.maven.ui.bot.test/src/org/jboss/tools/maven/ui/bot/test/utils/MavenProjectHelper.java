@@ -20,6 +20,7 @@ import org.eclipse.reddeer.eclipse.condition.ProjectExists;
 import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
 import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
+import org.eclipse.reddeer.swt.impl.button.CheckBox;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
 import org.eclipse.reddeer.swt.impl.group.DefaultGroup;
@@ -73,5 +74,21 @@ public class MavenProjectHelper {
 			new WaitWhile(new ShellIsAvailable("Create new POM"));
 			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 		}
+	}
+
+	public static void updateConf(String projectName) {
+		updateConf(projectName, false);
+	}
+
+	public static void updateConf(String projectName, boolean forceDependencies) {
+		PackageExplorerPart pexplorer = new PackageExplorerPart();
+		pexplorer.open();
+		pexplorer.getProject(projectName).select();
+		new ContextMenuItem("Maven", "Update Project...").select();
+		new WaitUntil(new ShellIsAvailable("Update Maven Project"), TimePeriod.LONG);
+		new CheckBox("Force Update of Snapshots/Releases").toggle(forceDependencies);
+		new PushButton("OK").click();
+		new WaitWhile(new ShellIsAvailable("Update Maven Project"), TimePeriod.DEFAULT);
+		new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
 	}
 }

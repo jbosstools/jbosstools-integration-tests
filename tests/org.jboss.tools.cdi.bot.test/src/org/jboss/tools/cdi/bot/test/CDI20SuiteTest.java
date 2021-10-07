@@ -60,6 +60,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
+	ConfigPropertyTestCDI20.class,
 	NamedComponentsSearchingTestCDI20.class,
 	BeanInjectOpenOnTestCDI20.class,
 	FindObserverEventTestCDI20.class,
@@ -97,8 +98,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	BeanValidationQuickFixTestCDI20.class,
 	BeansXMLCompletionTestCDI20.class,
 	CDIValidatorTestCDI20.class,
-	BeansXMLDiscoveryModesTestCDI20.class,
-	ConfigPropertyTestCDI20.class
+	BeansXMLDiscoveryModesTestCDI20.class
 })
 public class CDI20SuiteTest {
 

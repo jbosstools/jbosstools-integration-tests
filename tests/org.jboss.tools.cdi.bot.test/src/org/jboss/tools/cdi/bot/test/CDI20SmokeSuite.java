@@ -20,6 +20,7 @@ import org.jboss.tools.cdi.bot.test.beansxml.cdi20.BeansXMLDiscoveryModesTestCDI
 import org.jboss.tools.cdi.bot.test.beansxml.cdi20.BeansXMLValidationTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.completion.cdi20.BeansXMLCompletionTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi20.BeansXMLValidationQuickFixTestCDI20;
+import org.jboss.tools.cdi.bot.test.microprofiile.cdi20.ConfigPropertyTestCDI20;
 import org.jboss.tools.cdi.bot.test.validation.cdi20.CDIValidatorTestCDI20;
 import org.jboss.tools.cdi.bot.test.wizard.cdi20.CDIWebProjectWizardTestCDI20;
 import org.junit.runner.RunWith;
@@ -32,6 +33,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
+	ConfigPropertyTestCDI20.class,
 	BeanValidationQuickFixTestCDI20.class,
 	NamedComponentsSearchingTestCDI20.class,
 	BeanInjectOpenOnTestCDI20.class,

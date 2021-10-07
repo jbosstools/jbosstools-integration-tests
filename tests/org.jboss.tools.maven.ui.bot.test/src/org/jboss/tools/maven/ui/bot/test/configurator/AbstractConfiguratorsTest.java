@@ -12,6 +12,7 @@ package org.jboss.tools.maven.ui.bot.test.configurator;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.updateConf;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
