@@ -1,1 +1,9 @@
 template
+kitchensink-ml
+logging-tools
+ejb-throws-exception
+ejb-security-context-propagation
+jaxws-addressing
+security-domain-to-domain
+ejb-security
+ejb-remote
