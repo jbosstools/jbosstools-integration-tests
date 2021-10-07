@@ -66,7 +66,7 @@ public class ConfigPropertyTestTemplate extends CDITestBase {
 						&& error_msgs.contains("The import org.eclipse cannot be resolved"));
 
 		addDependency(PROJECT_NAME, "org.eclipse.microprofile.config", "microprofile-config-api", "2.0");
-		updateConf(PROJECT_NAME, true);
+		updateConf(PROJECT_NAME);
 		
 		pexplorer.getProject(PROJECT_NAME)
 				.getProjectItem("src/main/java", PACKAGE_NAME, CDI_BEAN_1_JAVA_FILE_NAME + JAVA_FILE_EXTENSION).open();
