@@ -15,7 +15,7 @@
 	<properties>
 		<!-- <systemProperties>${integrationTestsSystemProperties} -->
 		<!-- -DimportTestDefinition=${importTestDefinition}</systemProperties> -->
-		<wildflyVersion>24.0.0.Final</wildflyVersion>
+		<wildflyVersion>25.0.0.Final</wildflyVersion>
 		<systemProperties>${integrationTestsSystemProperties} -DexamplesLocation=${project.build.directory}/${examplesFolder} -Dmaven.settings.path=${maven.settings.path} -Drd.config=${reddeer.config} -DspecificQuickstarts=${specificQuickstarts} -DdeployOnServer=${deployOnServer}</systemProperties>
 		<quickstartsURLWildFly>https://github.com/wildfly/quickstart/archive/${wildflyVersion}.zip</quickstartsURLWildFly>
 		<quickstartsURLEAP>http://download.eng.bos.redhat.com/released/JBoss-middleware/eap7/7.4.0/jboss-eap-7.4.0-quickstarts.zip</quickstartsURLEAP>
