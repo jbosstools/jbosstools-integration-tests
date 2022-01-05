@@ -1,5 +1,6 @@
 package org.jboss.tools.ws.ui.bot.test.utils;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.reddeer.common.condition.AbstractWaitCondition;
@@ -18,9 +19,11 @@ import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerPubl
 import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersViewEnums.ServerState;
 import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesDialog;
 import org.eclipse.reddeer.eclipse.wst.server.ui.wizard.ModifyModulesPage;
+import org.eclipse.reddeer.swt.api.TreeItem;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.jboss.tools.common.reddeer.label.IDELabel;
 
@@ -107,11 +110,27 @@ public class ServersViewHelper {
 	 * Method runs project on the configured server
 	 */
 	public static void runProjectOnServer(String projectName) {
+		openRunOnServerShell(projectName);
+		new PushButton(IDELabel.Button.FINISH).click();
+	}
+	
+	/**
+	 * Method runs project on the configured server passed as parameter
+	 */
+	public static void runProjectOnServer(String projectName, String server) {
+		openRunOnServerShell(projectName);
+		DefaultTree serversTree = new DefaultTree();
+		TreeItem item = serversTree.getItem("localhost", server);
+		item.select();
+		new PushButton(IDELabel.Button.FINISH).click();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static DefaultShell openRunOnServerShell(String projectName) {
 		new ProjectExplorer().getProject(projectName).select();
 		new ShellMenuItem(org.hamcrest.core.Is.is(IDELabel.Menu.RUN), org.hamcrest.core.Is.is(IDELabel.Menu.RUN_AS),
 				org.hamcrest.core.StringContains.containsString("Run on Server")).select();
-		new DefaultShell("Run On Server");
-		new PushButton(IDELabel.Button.FINISH).click();
+		return new DefaultShell("Run On Server");
 	}
 
 	/**
