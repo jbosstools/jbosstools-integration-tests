@@ -199,7 +199,7 @@
 
 		<repository>
 			<id>mylyn</id>
-			<url>http://download.jboss.org/jbosstools/updates/requirements/luna/201406120900-RC4/</url>
+			<url>https://download.jboss.org/jbosstools/updates/requirements/luna/201406120900-RC4/</url>
 			<layout>p2</layout>
 			<snapshots>
 				<enabled>true</enabled>
