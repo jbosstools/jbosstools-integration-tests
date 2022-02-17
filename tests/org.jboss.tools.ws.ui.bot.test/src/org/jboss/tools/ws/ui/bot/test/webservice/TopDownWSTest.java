@@ -24,6 +24,7 @@ import org.eclipse.reddeer.eclipse.wst.server.ui.cnf.ServersView2;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.InternalBrowserRequirement.UseInternalBrowser;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ProjectHelper;
@@ -36,6 +37,7 @@ import org.junit.runner.RunWith;
  * @author jlukas
  *
  */
+@UseInternalBrowser
 @RunWith(RedDeerSuite.class)
 public class TopDownWSTest extends WebServiceTestBase {
 
@@ -167,7 +169,7 @@ public class TopDownWSTest extends WebServiceTestBase {
 		 choosing 'Deploy' should normally deploy the project automatically*/
 		case DEPLOY:
 			ProjectHelper.cleanAllProjects();
-			ServersViewHelper.runProjectOnServer(getEarProjectName());
+			ServersViewHelper.runProjectOnServer(getEarProjectName(), "localhost");
 			break;
 
 		case INSTALL:
@@ -181,7 +183,7 @@ public class TopDownWSTest extends WebServiceTestBase {
 			}
 			module.remove();
 			ProjectHelper.cleanAllProjects();
-			ServersViewHelper.runProjectOnServer(getEarProjectName());
+			ServersViewHelper.runProjectOnServer(getEarProjectName(), "localhost");
 			break;
 		}
 		ServersViewHelper.waitForDeployment(getEarProjectName(), getConfiguredServerName());

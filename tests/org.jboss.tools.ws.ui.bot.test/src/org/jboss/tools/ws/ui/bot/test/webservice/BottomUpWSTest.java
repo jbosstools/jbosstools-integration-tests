@@ -11,6 +11,7 @@
 package org.jboss.tools.ws.ui.bot.test.webservice;
 
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.InternalBrowserRequirement.UseInternalBrowser;
 import org.jboss.tools.ws.reddeer.ui.wizards.wst.WebServiceWizardPageBase.SliderLevel;
 import org.jboss.tools.ws.ui.bot.test.utils.DeploymentHelper;
 import org.jboss.tools.ws.ui.bot.test.utils.ServersViewHelper;
@@ -24,6 +25,7 @@ import org.junit.runner.RunWith;
  * @author jlukas
  *
  */
+@UseInternalBrowser
 @RunWith(RedDeerSuite.class)
 public class BottomUpWSTest extends WebServiceTestBase {
 
@@ -61,31 +63,31 @@ public class BottomUpWSTest extends WebServiceTestBase {
 		bottomUpJbossWebService();
 	}
 
-//	@Test
+	@Test
 	public void testAssembleService() {
 		setLevel(SliderLevel.ASSEMBLE);
 		bottomUpJbossWebService();
 	}
 
-//	@Test
+	@Test
 	public void testDeployService() {
 		setLevel(SliderLevel.DEPLOY);
 		bottomUpJbossWebService();
 	}
 
-//	@Test
+	@Test
 	public void testInstallService() {
 		setLevel(SliderLevel.INSTALL);
 		bottomUpJbossWebService();
 	}
 
-//	@Test
+	@Test
 	public void testStartService() {
 		setLevel(SliderLevel.START);
 		bottomUpJbossWebService();
 	}
 
-//	@Test
+	@Test
 	public void testTestService() {
 		setLevel(SliderLevel.TEST);
 		bottomUpJbossWebService();
@@ -104,7 +106,7 @@ public class BottomUpWSTest extends WebServiceTestBase {
 			 * 'Deploy' should normally deploy the project automatically
 			 */
 			case DEPLOY:
-				ServersViewHelper.runProjectOnServer(getEarProjectName());
+				ServersViewHelper.runProjectOnServer(getEarProjectName(), getConfiguredServerName());
 
 			default:
 				ServersViewHelper.waitForDeployment(getEarProjectName(), getConfiguredServerName());

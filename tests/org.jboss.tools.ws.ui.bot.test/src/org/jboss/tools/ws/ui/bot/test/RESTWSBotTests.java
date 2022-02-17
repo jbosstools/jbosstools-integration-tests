@@ -42,7 +42,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	PathParamAnnotationSupportTest.class,
 	QueryParamAnnotationSupportTest.class,
 	MatrixParamAnnotationSupportTest.class,
-	DefaultValueAnnotationSupportTest.class,	
+	DefaultValueAnnotationSupportTest.class,
 	//Automatic project build gets stuck, build projects manually
 	BeanParamAnnotationSupportTest.class,
 	RESTfulValidationTest.class,

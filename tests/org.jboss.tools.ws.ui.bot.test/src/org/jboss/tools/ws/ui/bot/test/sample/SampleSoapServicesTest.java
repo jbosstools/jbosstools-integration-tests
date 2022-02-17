@@ -25,6 +25,7 @@ import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.workbench.impl.editor.TextEditor;
+import org.jboss.ide.eclipse.as.reddeer.server.requirement.InternalBrowserRequirement.UseInternalBrowser;
 import org.jboss.tools.ws.reddeer.ui.wizards.ws.ui.SampleWebServiceWizard;
 import org.jboss.tools.ws.reddeer.ui.wizards.ws.ui.SimpleWebServiceWizard;
 import org.jboss.tools.ws.ui.bot.test.soap.SOAPTestBase;
@@ -43,6 +44,7 @@ import org.junit.runner.RunWith;
  *
  */
 @RunWith(RedDeerSuite.class)
+@UseInternalBrowser
 public class SampleSoapServicesTest extends SOAPTestBase {
 
 	private static final String SOAP_REQUEST = getSoapRequest(
@@ -102,7 +104,7 @@ public class SampleSoapServicesTest extends SOAPTestBase {
 		String dd = ResourceHelper.readFile(getDeploymentDescriptor(project));
 		Asserts.assertContain(dd, "<servlet-name>" + svcName + "</servlet-name>");
 		ServersViewHelper.removeProjectFromServer(project, getConfiguredServerName());
-		ServersViewHelper.runProjectOnServer(project);
+		ServersViewHelper.runProjectOnServer(project, getConfiguredServerName());
 		ServersViewHelper.waitForDeployment(project, getConfiguredServerName());
 		try {
 			WSClient c = new WSClient(new URL("http://" + SERVER_URL + "/" + project + "/" + svcName),

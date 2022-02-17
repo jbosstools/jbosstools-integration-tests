@@ -168,7 +168,7 @@ public class WSClientTestTemplate extends SOAPTestBase {
 		/*workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=428982
 		 choosing 'Deploy' should normally deploy the project automatically*/
 		case DEPLOY:
-			ServersViewHelper.runProjectOnServer(getEarProjectName());
+			ServersViewHelper.runProjectOnServer(getEarProjectName(), getConfiguredRuntimeName());
 			
 		case TEST:
 		case START:

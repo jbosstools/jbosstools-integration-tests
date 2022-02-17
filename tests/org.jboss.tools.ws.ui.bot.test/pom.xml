@@ -13,7 +13,7 @@
 	<artifactId>org.jboss.tools.ws.ui.bot.test</artifactId>
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<jbosstools.test.jboss-wildfly.home>${requirementsDirectory}/wildfly-23.0.2.Final</jbosstools.test.jboss-wildfly.home>
+		<jbosstools.test.jboss-wildfly.home>${requirementsDirectory}/wildfly-26.0.0.Final</jbosstools.test.jboss-wildfly.home>
 		<apache-cxf-3.x.dir>${requirementsDirectory}/apache-cxf-3.x</apache-cxf-3.x.dir>
 		<apache-cxf-3.x>${apache-cxf-3.x.dir}/apache-cxf-3.4.3/</apache-cxf-3.x>
 		<apache-cxf-3.x.url>https://archive.apache.org/dist/cxf/3.4.3/apache-cxf-3.4.3.zip</apache-cxf-3.x.url>
@@ -138,7 +138,7 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>23.0.2.Final</version>
+									<version>26.0.0.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
