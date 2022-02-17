@@ -253,7 +253,7 @@
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>http://download.eng.bos.redhat.com/devel/candidates/jboss/eap-xp/JBEAP-XP-3.0.0/jboss-eap-xp-3.0.0-full-maven-repository.zip</url>
+									<url>https://download.eng.bos.redhat.com/devel/candidates/jboss/eap-xp/JBEAP-XP-3.0.0-7.4.3/jboss-eap-xp-3.0.0-7.4.3-full-maven-repository.zip</url>
 									<unpack>true</unpack>
 									<outputDirectory>${settings.localRepository}</outputDirectory>
 								</configuration>
