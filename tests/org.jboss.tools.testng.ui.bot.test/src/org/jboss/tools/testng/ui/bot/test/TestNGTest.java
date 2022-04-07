@@ -13,6 +13,7 @@ package org.jboss.tools.testng.ui.bot.test;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.direct.preferences.Preferences;
 import org.eclipse.reddeer.eclipse.condition.ConsoleHasText;
 import org.eclipse.reddeer.eclipse.ui.console.ConsoleView;
 import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
@@ -40,6 +41,7 @@ public class TestNGTest extends AbstractTestNGTest {
 
 	@BeforeClass
 	public static void createNewProject() {
+		Preferences.set("org.eclipse.debug.ui", "Console.limitConsoleOutput", "false");
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 		new WorkbenchShell().setFocus();
 
