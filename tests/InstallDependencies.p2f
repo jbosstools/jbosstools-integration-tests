@@ -143,16 +143,6 @@
         <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
       </repositories>
     </iu>
-    <iu id='org.jboss.tools.mylyn.reddeer' name='Mylyn Reddeer' version='4.4.3'>
-      <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
-      </repositories>
-    </iu>
-    <iu id='org.jboss.tools.mylyn.ui.bot.test' name='Mylyn UI Bot Tests' version='4.4.3'>
-      <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
-      </repositories>
-    </iu>
     <iu id='org.jboss.tools.perf' name='Performance Tests Core' version='4.4.3'>
       <repositories size='1'>
         <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
