@@ -21,6 +21,5 @@
 		<module>org.jboss.tools.perf</module>
 		<module>org.jboss.tools.mylyn.reddeer</module>
 		<module>org.jboss.tools.vpe.reddeer</module>
-		<module>org.jboss.tools.livereload.reddeer</module>
 	</modules>
 </project>
