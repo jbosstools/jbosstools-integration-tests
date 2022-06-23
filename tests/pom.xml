@@ -22,7 +22,8 @@
 		<integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots -Dusage_reporting_enabled=false -Dcom.atlassian.connector.eclipse.monitor.usage.first.time=false -Dcom.atlassian.connector.eclipse.monitor.usage.enabled=false ${junitExtensionsProperties}</integrationTestsSystemProperties>
 		<skipTests>true</skipTests>
 		<test.installPath.OSX></test.installPath.OSX>
-		<testProduct>com.jboss.devstudio.core.product</testProduct>
+		<testProduct>org.eclipse.ui.ide.workbench</testProduct>
+		<jbtRepository>https://download.jboss.org/jbosstools/photon/snapshots/updates/</jbtRepository>
 	</properties>
 
 	<profiles>
@@ -86,7 +87,7 @@
 				</os>
 			</activation>
 			<properties>
-				<test.installPath.OSX>/devstudio.app/Contents/Eclipse/</test.installPath.OSX>
+				<test.installPath.OSX>/Eclipse.app/Contents/Eclipse/</test.installPath.OSX>
 			</properties>
 		</profile>
 
@@ -126,7 +127,7 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>download-devstudio</id>
+			<id>download-jbt</id>
 			<activation>
 				<property>
 					<name>!test.installBase</name>
@@ -141,29 +142,14 @@
 							<product>${testProduct}</product>
 						</configuration>
 					</plugin>
-					<plugin>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>target-platform-configuration</artifactId>
-						<configuration>
-      							<dependency-resolution>
-           							<extraRequirements>
-									<requirement>
-										<type>p2-installable-unit</type>
-										<id>com.jboss.devstudio.core.feature.feature.group</id>
-										<versionRange>0.0.0</versionRange>
-									</requirement>
-         							</extraRequirements>
-    							</dependency-resolution>
-						</configuration>
-					</plugin>
 				</plugins>
 			</build>
 			<repositories>
 				<repository>
-					<id>devstudio-repo</id>
-					<name>devstudio-repo</name>
+					<id>devstudio-jbt</id>
+					<name>devstudio-jbt</name>
 					<layout>p2</layout>
-					<url>${devstudioRepository}</url>
+					<url>${jbtRepository}</url>
 				</repository>
 			</repositories>
 		</profile>
