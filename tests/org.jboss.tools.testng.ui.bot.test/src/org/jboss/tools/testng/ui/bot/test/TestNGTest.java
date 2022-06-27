@@ -37,7 +37,7 @@ import org.junit.runner.RunWith;
 public class TestNGTest extends AbstractTestNGTest {
 
 	private static String testNG_file_name = "NewTest.java";
-	private static String PROJECT_NAME = "testTestNG";
+	private static String PROJECT_NAME = "testng_project";
 
 	@BeforeClass
 	public static void createNewProject() {
@@ -59,10 +59,10 @@ public class TestNGTest extends AbstractTestNGTest {
 		new FinishButton().click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
-		addTestNGLibrary(PROJECT_NAME);
+		addLibraries(PROJECT_NAME);
 
 		new TextEditor(testNG_file_name);
-		new ShellMenuItem("Run", "Run As", "2 TestNG Test").select();
+		new ShellMenuItem("Run", "Run As", "1 TestNG Test").select();
 
 		ConsoleView consoleView = new ConsoleView();
 		new WaitUntil(new ConsoleHasText(consoleView, "Total tests run: 1, Passes: 1, Failures: 0, Skips: 0"),
