@@ -48,7 +48,6 @@
 				<module>org.jboss.tools.jsf.ui.test</module>
 				<module>org.jboss.tools.jst.ui.bot.test</module>
 				<module>org.jboss.tools.maven.ui.bot.test</module>
-				<module>org.jboss.tools.mylyn.ui.bot.test</module>
 				<module>org.jboss.tools.vpe.bot.test</module>
 				<module>org.jboss.tools.ws.ui.bot.test</module>
 				<module>org.jboss.tools.perf.test</module>

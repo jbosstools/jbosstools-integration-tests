@@ -158,14 +158,6 @@
 <setEntry value="org.eclipse.m2e.wtp.jaxrs.feature:default"/>
 <setEntry value="org.eclipse.m2e.wtp.jpa.feature:default"/>
 <setEntry value="org.eclipse.m2e.wtp.jsf.feature:default"/>
-<setEntry value="org.eclipse.mylyn.commons.identity:default"/>
-<setEntry value="org.eclipse.mylyn.commons.notifications:default"/>
-<setEntry value="org.eclipse.mylyn.commons.repositories:default"/>
-<setEntry value="org.eclipse.mylyn.commons:default"/>
-<setEntry value="org.eclipse.mylyn.discovery:default"/>
-<setEntry value="org.eclipse.mylyn.monitor:default"/>
-<setEntry value="org.eclipse.mylyn.wikitext_feature:default"/>
-<setEntry value="org.eclipse.mylyn_feature:default"/>
 <setEntry value="org.eclipse.pde:default"/>
 <setEntry value="org.eclipse.platform:default"/>
 <setEntry value="org.eclipse.rcp:default"/>
