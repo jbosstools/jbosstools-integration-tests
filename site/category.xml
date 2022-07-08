@@ -34,8 +34,6 @@
 <bundle id="org.jboss.tools.ws.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.perf.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.vpe.reddeer"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.livereload.reddeer"><category name="JBoss Tools Core - Integration Test"/></bundle>
-<bundle id="org.jboss.tools.livereload.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 
 <!-- sources -->
 <bundle id="org.jboss.tools.batch.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
@@ -57,6 +55,4 @@
 <bundle id="org.jboss.tools.ws.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.perf.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.vpe.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.livereload.reddeer.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.livereload.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 </site>
