@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Usage UI Tests
+Bundle-SymbolicName: org.jboss.tools.usage.ui.bot.test
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: org.junit,
+ org.eclipse.reddeer.go;bundle-version="2.1.0",
+ org.eclipse.ui.forms,
+ org.eclipse.swt
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Eclipse-BundleShape: jar
+Bundle-Vendor: Red Hat
+Bundle-Activator: org.jboss.tools.usage.ui.bot.test.Activator
