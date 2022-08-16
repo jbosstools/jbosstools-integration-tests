@@ -19,7 +19,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Tamara Babalova */
 
 @RunWith (RedDeerSuite.class)
-@SuiteClasses ({CloseUsageWindowTest.class})
+@SuiteClasses ({CloseUsageWindowTest.class,
+	ChangeUsagePreferenceTest.class})
 public class AllTestsSuite {
 
 }
