@@ -97,11 +97,11 @@
 								<id>net.sf.eclipsecs.feature.group</id>
 								<versionRange>8.0.0</versionRange>
 							</requirement>
-							<requirement>
+							<!--requirement>
 								<type>p2-installable-unit</type>
 								<id>com.basistech.m2e.code.quality.checkstyle.feature.feature.group</id>
 								<versionRange>1.0.0</versionRange>
-							</requirement>
+							</requirement-->
 						</extraRequirements>
 					</dependency-resolution>
 				</configuration>
