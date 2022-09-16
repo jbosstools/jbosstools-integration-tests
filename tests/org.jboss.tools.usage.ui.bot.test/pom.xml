@@ -14,6 +14,7 @@
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
+		<usage_reporting_enabled>true</usage_reporting_enabled>
 		<systemProperties>${integrationTestsSystemProperties}</systemProperties>
 	</properties>
 	
