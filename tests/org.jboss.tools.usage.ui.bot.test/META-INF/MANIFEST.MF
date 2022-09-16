@@ -4,9 +4,14 @@ Bundle-Name: Usage UI Tests
 Bundle-SymbolicName: org.jboss.tools.usage.ui.bot.test
 Bundle-Version: 4.4.300.qualifier
 Require-Bundle: org.junit,
- org.eclipse.reddeer.go;bundle-version="2.1.0",
+ org.eclipse.reddeer.go,
  org.eclipse.ui.forms,
- org.eclipse.swt
+ org.eclipse.swt,
+ org.jboss.tools.usage,
+ org.eclipse.ui,
+ org.jboss.tools.common.model.ui,
+ org.eclipse.jface,
+ org.eclipse.ui.ide
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Eclipse-BundleShape: jar
