@@ -22,13 +22,17 @@ import org.eclipse.reddeer.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.reddeer.eclipse.ui.problems.Problem;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView;
 import org.eclipse.reddeer.eclipse.ui.views.markers.ProblemsView.ProblemType;
+import org.eclipse.reddeer.swt.api.TabItem;
 import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
 import org.eclipse.reddeer.swt.impl.button.FinishButton;
 import org.eclipse.reddeer.swt.impl.button.NextButton;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabFolder;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.list.DefaultList;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.tab.DefaultTabFolder;
 import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -72,7 +76,8 @@ public abstract class AbstractTestNGTest {
 
 		new ContextMenuItem("Properties").select();
 		new DefaultTreeItem("Java Build Path").select();
-		new DefaultTabItem("Libraries").activate();
+		new DefaultCTabItem("Libraries").activate();
+//		new DefaultTabItem("Libraries").activate(); // for eclipse 06 and less
 		
 		addLibrary("TestNG");
 		addLibrary("JUnit");
