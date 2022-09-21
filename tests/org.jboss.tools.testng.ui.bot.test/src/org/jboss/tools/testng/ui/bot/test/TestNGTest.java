@@ -56,6 +56,7 @@ public class TestNGTest extends AbstractTestNGTest {
 		new ProjectExplorer().selectProjects(PROJECT_NAME);
 
 		new ContextMenuItem("TestNG", "Create TestNG class").select();
+		
 		new FinishButton().click();
 		new WaitWhile(new JobIsRunning(), TimePeriod.LONG);
 
