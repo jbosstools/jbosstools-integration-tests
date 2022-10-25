@@ -38,14 +38,12 @@
 				</property>
 			</activation>
 			<modules>
-				<module>org.jboss.tools.batch.ui.bot.test</module>
 				<module>org.jboss.tools.cdi.bot.test</module>
 				<module>org.jboss.tools.central.ui.bot.test</module>
 				<module>org.jboss.tools.deltaspike.ui.bot.test</module>
 				<module>org.jboss.tools.easymport.ui.bot.test</module>
 				<module>org.jboss.tools.eclipsecs.ui.test</module>
 				<module>org.jboss.tools.examples.ui.bot.test</module>
-				<module>org.jboss.tools.jsf.ui.test</module>
 				<module>org.jboss.tools.jst.ui.bot.test</module>
 				<module>org.jboss.tools.maven.ui.bot.test</module>
 				<module>org.jboss.tools.ws.ui.bot.test</module>

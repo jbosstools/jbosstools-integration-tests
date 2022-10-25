@@ -32,11 +32,6 @@
         <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
       </repositories>
     </iu>
-    <iu id='org.jboss.tools.batch.ui.bot.test' name='Batch UI Tests' version='4.4.3'>
-      <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
-      </repositories>
-    </iu>
     <iu id='org.jboss.tools.cdi.seam3.bot.test' name='CDI Seam3 UI Bot Tests' version='4.4.3'>
       <repositories size='1'>
         <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
@@ -103,16 +98,6 @@
         <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
       </repositories>
     </iu>
-    <iu id='org.jboss.tools.jsf.reddeer' name='JSF Reddeer' version='4.4.3'>
-      <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
-      </repositories>
-    </iu>
-    <iu id='org.jboss.tools.jsf.ui.bot.test' name='JSF UI Bot Tests' version='4.4.3'>
-      <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
-      </repositories>
-    </iu>
     <iu id='org.jboss.tools.jst.reddeer' name='JST Reddeer' version='4.4.3'>
       <repositories size='1'>
         <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
@@ -159,11 +144,6 @@
       </repositories>
     </iu>
     <iu id='org.jboss.ide.eclipse.as.reddeer' name='RedDeer API for AS UI Tests' version='4.4.3'>
-      <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
-      </repositories>
-    </iu>
-    <iu id='org.jboss.tools.batch.reddeer' name='RedDeer API for Batch UI Tests' version='4.4.3'>
       <repositories size='1'>
         <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
       </repositories>
