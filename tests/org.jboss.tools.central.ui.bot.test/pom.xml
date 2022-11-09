@@ -131,16 +131,9 @@
 							<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
 							<version>0.0.0</version>
 						</dependency>
-<!-- 						Because of AngularJS Forge quickstart -->
-						<dependency>
-							<type>p2-installable-unit</type>
-							<artifactId>org.jboss.tools.forge.feature.feature.group</artifactId>
-							<version>0.0.0</version>
-						</dependency>
 					</dependencies>
 					<explodedBundles>
 						<bundle>org.jboss.tools.seam.core.test</bundle>
-						<bundle>org.jboss.tools.vpe</bundle>
 						<bundle>org.mozilla.xulrunner.carbon.macosx</bundle>
 						<bundle>org.mozilla.xulrunner.cocoa.macosx</bundle>
 						<bundle>org.mozilla.xulrunner.gtk.linux.x86</bundle>

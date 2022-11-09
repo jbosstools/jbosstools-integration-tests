@@ -72,16 +72,6 @@
         <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
       </repositories>
     </iu>
-    <iu id='org.jboss.tools.forge.reddeer' name='Forge RedDeer' version='4.4.3'>
-      <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
-      </repositories>
-    </iu>
-    <iu id='org.jboss.tools.forge.ui.bot.test' name='Forge UI Bot Tests' version='4.4.3'>
-      <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
-      </repositories>
-    </iu>
     <iu id='org.jboss.tools.freemarker.ui.bot.test' name='Freemarker UI Bot Tests' version='4.4.3'>
       <repositories size='1'>
         <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
@@ -414,16 +404,6 @@
       </repositories>
     </iu>
     <iu id='org.jboss.tools.perf.test' name='Validation Performance Tests' version='4.4.3'>
-      <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
-      </repositories>
-    </iu>
-    <iu id='org.jboss.tools.vpe.reddeer' name='VPE Reddeer' version='4.4.3'>
-      <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
-      </repositories>
-    </iu>
-    <iu id='org.jboss.tools.vpe.ui.bot.test' name='VPE UI Bot Tests' version='4.4.3'>
       <repositories size='1'>
         <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
       </repositories>
