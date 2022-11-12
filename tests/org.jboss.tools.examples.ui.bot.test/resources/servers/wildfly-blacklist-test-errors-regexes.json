@@ -14,9 +14,13 @@
 		".*Type mismatch: cannot convert from ProfileMgmt to ProfileMgmt.*",
 		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*",
 		".*Could not read maven project.*",
-		".*Project build error: 'dependencies.dependency.version' for org.jboss.resteasy:resteasy-jaxrs:jar is missing.*"
-	],
-	"microprofile-config":[
+		".*Project build error: 'dependencies.dependency.version' for org.jboss.resteasy:resteasy-jaxrs:jar is missing.*",
+		".*Service cannot be resolved.*",
+		".*SOAPBinding cannot be resolved.*",
+		".*The import jakarta.jws cannot be resolved.*",
+		".*The import jakarta.xml.ws cannot be resolved.*",
+		".*WebMethod cannot be resolved to a type.*",
+		".*WebService cannot be resolved to a type.*",
 		".*The superclass \"javax.servlet.http.HttpServlet\".*was not found on the Java Build Path.*"
 	],
 	"ejb-txn-remote-call-server":[
