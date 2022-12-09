@@ -21,10 +21,10 @@ import org.jboss.tools.maven.ui.bot.test.conversion.MavenConversionTest;
 import org.jboss.tools.maven.ui.bot.test.profile.MavenProfilesTest;
 import org.jboss.tools.maven.ui.bot.test.project.ArchetypesTest;
 import org.jboss.tools.maven.ui.bot.test.project.EARProjectTest;
-import org.jboss.tools.maven.ui.bot.test.project.JSFProjectTest;
 import org.jboss.tools.maven.ui.bot.test.project.SCMCheckoutProject;
 import org.jboss.tools.maven.ui.bot.test.repository.MavenRepositories;
 import org.jboss.tools.maven.ui.bot.test.repository.RemoteRepositoriesPreferenceTest;
+import org.jboss.tools.maven.ui.bot.test.sourcelookup.SourceLookupTest;
 import org.jboss.tools.maven.ui.bot.test.ui.PerspectiveTest;
 import org.jboss.tools.maven.ui.bot.test.ui.SeamPluginsTest;
 import org.junit.runner.RunWith;
@@ -45,7 +45,6 @@ import org.junit.runners.Suite;
 	MaterializeLibraryTest.class,
 
 	EARProjectTest.class,
-	JSFProjectTest.class, 
 	
 	JPAConfiguratorTest.class,
 	JSFConfiguratorTest.class,
@@ -57,9 +56,8 @@ import org.junit.runners.Suite;
 	MavenConversionTest.class,
 	RemoteRepositoriesPreferenceTest.class,
 	
-	//SourceLookupTest.class,
+	SourceLookupTest.class,
 	
-	//SeamProjectTest.class, 
 	SeamPluginsTest.class,
 	
 	APTPropertiesPageTest.class,
