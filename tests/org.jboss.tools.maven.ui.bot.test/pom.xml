@@ -12,12 +12,13 @@
 
 	<packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<wildflyVersion>24.0.0.Final</wildflyVersion>
+		<wildflyVersion>26.1.2.Final</wildflyVersion>
 		<requirementsDirectory>${project.build.directory}/requirements</requirementsDirectory>
 		<jbosstools.test.wildfly.home>${requirementsDirectory}/wildfly-${wildflyVersion}</jbosstools.test.wildfly.home>
 		<systemProperties>${integrationTestsSystemProperties} -Drd.config=${project.build.directory}/classes/servers/wildfly.json -Djbosstools.test.seam.2.1.0.home=${requirementsDirectory}/jboss-seam-2.1.2 -Djbosstools.test.seam.2.3.0.home=${requirementsDirectory}/jboss-seam-2.3.0.Final -Djbosstools.test.seam.2.2.0.home=${requirementsDirectory}/jboss-seam-2.2.0.GA -Dproject.build.directory=${project.build.directory} -Dmaven.settings.path=target/classes/usersettings/settings.xml -Dscope=${scope} -Djbosstools.test.wildfly.home=${jbosstools.test.wildfly.home}</systemProperties>
  		<scope>MavenAllBotTests</scope>
 		<surefire.timeout>18000</surefire.timeout>
+		<testProduct>org.eclipse.epp.package.jee.product</testProduct>
 	</properties>
 	<build>
 		<resources>
@@ -30,6 +31,41 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-surefire-plugin</artifactId>
+					<configuration>
+						<failIfNoTests>false</failIfNoTests>
+						<suiteClass>org.jboss.tools.maven.ui.bot.test.${scope}</suiteClass>
+						<appArgLine>-testpluginname ${project.artifactId}</appArgLine>
+						<dependencies combine.children="append">
+							<dependency>
+								<type>p2-installable-unit</type>
+								<artifactId>org.jboss.tools.maven.feature.feature.group</artifactId>
+								<version>0.0.0</version>
+							</dependency>
+							<!--dependency>
+								<type>p2-installable-unit</type>
+								<artifactId>org.jboss.tools.common.feature.feature.group</artifactId>
+								<version>0.0.0</version>
+							</dependency-->
+							<dependency>
+								<type>p2-installable-unit</type>
+								<artifactId>org.jboss.ide.eclipse.as.feature.feature.group</artifactId>
+								<version>0.0.0</version>
+							</dependency>
+							<!--dependency>
+								<type>p2-installable-unit</type>
+								<artifactId>org.eclipse.jpt.jpa.feature.feature.group</artifactId>
+								<version>0.0.0</version>
+							</dependency-->
+						</dependencies>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -55,14 +91,14 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
+			<!--plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
 					<testSuite>org.jboss.tools.maven.ui.bot.test</testSuite>
 					<testClass>${suiteClass}</testClass>
 				</configuration>
-			</plugin>
+			</plugin-->
 		</plugins>
 	</build>
 
