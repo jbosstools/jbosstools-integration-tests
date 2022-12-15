@@ -15,6 +15,7 @@ import java.util.Collection;
 
 import org.eclipse.reddeer.junit.internal.runner.ParameterizedRequirementsRunnerFactory;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
+import org.eclipse.reddeer.requirements.browser.InternalBrowserRequirement.UseInternalBrowser;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement.JBossServer;
 import org.jboss.tools.maven.reddeer.requirement.NewRepositoryRequirement.DefineMavenRepository;
@@ -36,6 +37,7 @@ import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 @UseParametersRunnerFactory(ParameterizedRequirementsRunnerFactory.class)
 @DefineMavenRepository(newRepositories = {@MavenRepository(url="https://maven.repository.redhat.com/ga/",ID="ga",snapshots=true)})
 @JBossServer(state=ServerRequirementState.RUNNING)
+@UseInternalBrowser
 public class EAPImportQuickstartsTest extends AbstractImportQuickstartsTest {
 	public static final String SERVER_NAME ="Enterprise Application Platform";
 	public static final String BLACKLIST_FILE = "resources/servers/eap-blacklist";
