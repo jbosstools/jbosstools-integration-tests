@@ -29,6 +29,7 @@ import org.eclipse.reddeer.common.exception.RedDeerException;
 import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
 import org.eclipse.reddeer.common.logging.Logger;
 import org.eclipse.reddeer.common.matcher.RegexMatcher;
+import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
@@ -57,6 +58,7 @@ import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.core.exception.WorkbenchCoreLayerException;
 import org.eclipse.reddeer.workbench.exception.WorkbenchLayerException;
@@ -116,6 +118,9 @@ public abstract class AbstractImportQuickstartsTest {
 		ServersView2 serversView = new ServersView2();
 		serversView.open();
 		Server server = serversView.getServer(getServerFullName(serversView.getServers(), SERVER_NAME));
+		if (server.getLabel().getState() != ServerState.STARTED) {
+			server.start();
+		}
 		assertTrue("Server has not been started!", server.getLabel().getState() == ServerState.STARTED);
 		// assertTrue("Server has not been
 		// synchronized!",server.getLabel().getPublishState() ==
@@ -181,6 +186,7 @@ public abstract class AbstractImportQuickstartsTest {
 		Project project = explorer.getProject(deployableProject);
 		project.select();
 		new ContextMenuItem("Run As", "1 Run on Server").select();
+		new DefaultTreeItem("localhost", "Red Hat JBoss Enterprise Application Platform 7.4 Server").select();
 		new WizardDialog("Run On Server").finish();
 	}
 
@@ -205,6 +211,7 @@ public abstract class AbstractImportQuickstartsTest {
 	protected static Collection<Quickstart> createQuickstartsList() {
 		ArrayList<Quickstart> resultList = new ArrayList<Quickstart>();
 		ArrayList<String> specificQuickstarts = new ArrayList<String>();
+		System.out.println(System.getProperty("specificQuickstarts"));
 		if (System.getProperty("specificQuickstarts") != null
 				&& !System.getProperty("specificQuickstarts").trim().equals("${specificQuickstarts}")) {
 			specificQuickstarts = new ArrayList<String>(
@@ -404,6 +411,15 @@ public abstract class AbstractImportQuickstartsTest {
 		List<DefaultProject> projects = projectExplorer.getProjects();
 		for (DefaultProject p : projects) {
 			DeleteUtils.forceProjectDeletion(p, false);
+			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+		}
+
+		projects = projectExplorer.getProjects();
+		if (projects.size() > 0) { // some projects contains another projects, need 2-nd check
+			for (DefaultProject p : projects) {
+				DeleteUtils.forceProjectDeletion(p, false);
+				new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
+			}
 		}
 	}
 
@@ -608,6 +624,10 @@ public abstract class AbstractImportQuickstartsTest {
 		if (new ContextMenuItem("Show In", "Web Browser").isEnabled()) {
 			new ContextMenuItem("Show In", "Web Browser").select();
 
+			System.out.println("Sleep after web browser...");
+			AbstractWait.sleep(TimePeriod.DEFAULT);
+
+			WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
 			final BrowserEditor browser = new BrowserEditor(new RegexMatcher(".*"));
 			try {
 				new WaitUntil(new BrowserIsnotEmpty(browser));
