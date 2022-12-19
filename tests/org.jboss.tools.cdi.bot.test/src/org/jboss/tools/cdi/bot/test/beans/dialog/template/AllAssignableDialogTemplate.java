@@ -32,7 +32,7 @@ public class AllAssignableDialogTemplate extends CDITestBase {
 	public void prepareClasses(){
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		if(!pe.getProject(PROJECT_NAME).containsResource("src/main/java", getPackageName())){
+		if(!pe.getProject(PROJECT_NAME).containsResource(CDIConstants.JAVA_RESOURCES, "src/main/java", getPackageName())){
 			createWithContent("AbstractManager");
 			createWithContent("App");
 			createWithContent("Basic");

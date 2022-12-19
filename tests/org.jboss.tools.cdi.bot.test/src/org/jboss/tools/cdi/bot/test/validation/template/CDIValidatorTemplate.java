@@ -54,7 +54,7 @@ public class CDIValidatorTemplate extends CDITestBase {
 	public void createBean(){
 		ProjectExplorer pe = new ProjectExplorer();
 		pe.open();
-		if(!pe.getProject(PROJECT_NAME).containsResource("Java Resources","src","test","TestClass.java")){
+		if(!pe.getProject(PROJECT_NAME).containsResource("Java Resources","src/main/java","test","TestClass.java")){
 			beansHelper.createClass("TestClass", "test");
 			new TextEditor("TestClass.java");
 			editResourceUtil.replaceInEditor("}", "@Inject String s; }");
