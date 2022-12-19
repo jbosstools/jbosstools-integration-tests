@@ -222,9 +222,9 @@ public class EditorResourceHelper {
 		pe.open();
 		pe.getProject(projectName).refresh();
 		if (pe.getProject(projectName).containsResource(CDIConstants.JAVA_RESOURCES)) {
-			deleteInProjectExplorer(projectName, CDIConstants.JAVA_RESOURCES, CDIConstants.SRC, packageName);
+			deleteInProjectExplorer(projectName, CDIConstants.JAVA_RESOURCES, "src/main/java", packageName);
 		} else {
-			deleteInProjectExplorer(projectName, "src/main/java" ,packageName);
+			deleteInProjectExplorer(projectName, "src", "main", "java", packageName);
 		}
 	}
 
