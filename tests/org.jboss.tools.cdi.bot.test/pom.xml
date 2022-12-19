@@ -11,11 +11,9 @@
 	<artifactId>org.jboss.tools.cdi.bot.test</artifactId>
     <packaging>eclipse-test-plugin</packaging>
 	<properties>
-		<systemProperties>${integrationTestsSystemProperties} -Drd.config=target/classes/servers/requirements.json -Djbosstools.test.weld-se.home=${jbosstools.test.weld-se.home} -Djbosstools.test.weld-api.home=${jbosstools.test.weld-api.home} -Djbosstools.test.jre.8=${jbosstools.test.jre.8} -Djbosstools.test.jre.11=${jbosstools.test.jre.11}</systemProperties>
+		<systemProperties>${integrationTestsSystemProperties} -Drd.config=target/classes/servers/requirements.json -Djbosstools.test.weld-se.home=${jbosstools.test.weld-se.home} -Djbosstools.test.weld-api.home=${jbosstools.test.weld-api.home} -Djbosstools.test.jre.11=${jbosstools.test.jre.11}</systemProperties>
 		<surefire.timeout>14400</surefire.timeout>
-		<jbosstools.test.jboss-as-7.1.home>${requirementsDirectory}/jboss-as-7.1.1.Final</jbosstools.test.jboss-as-7.1.home>
-		<jbosstools.test.wildfly.13.home>${requirementsDirectory}/wildfly-13.0.0.Final</jbosstools.test.wildfly.13.home>
-		<jbosstools.test.wildfly.24.home>${requirementsDirectory}/wildfly-24.0.1.Final</jbosstools.test.wildfly.24.home>
+		<jbosstools.test.wildfly.24.home>${requirementsDirectory}/wildfly-26.1.2.Final</jbosstools.test.wildfly.24.home>
 		<jbosstools.test.weld-se.home>${requirementsDirectory}/weld/se/</jbosstools.test.weld-se.home>
 		<jbosstools.test.weld-api.home>${requirementsDirectory}/weld/api/</jbosstools.test.weld-api.home>
 	</properties>
@@ -24,19 +22,7 @@
 		<profile>
 			<id>smoke-tests</id>
 			<properties>
-				<suiteClass>org.jboss.tools.cdi.bot.test.SmokeSuite</suiteClass>
-			</properties>
-		</profile>
-		<profile>
-			<id>cdi10-smoke-tests</id>
-			<properties>
-				<suiteClass>org.jboss.tools.cdi.bot.test.CDI10SmokeSuite</suiteClass>
-			</properties>
-		</profile>
-		<profile>
-			<id>cdi12-smoke-tests</id>
-			<properties>
-				<suiteClass>org.jboss.tools.cdi.bot.test.CDI12SmokeSuite</suiteClass>
+				<suiteClass>org.jboss.tools.cdi.bot.test.CDI20SmokeSuite</suiteClass>
 			</properties>
 		</profile>
 		<profile>
@@ -48,19 +34,7 @@
 		<profile>
 			<id>all-bot-tests</id>
 			<properties>
-				<suiteClass>org.jboss.tools.cdi.bot.test.CDIAllBotTests</suiteClass>
-			</properties>
-		</profile>
-		<profile>
-			<id>cdi10-tests</id>
-			<properties>
-				<suiteClass>org.jboss.tools.cdi.bot.test.CDI10SuiteTest</suiteClass>
-			</properties>
-		</profile>
-		<profile>
-			<id>cdi12-tests</id>
-			<properties>
-				<suiteClass>org.jboss.tools.cdi.bot.test.CDI12SuiteTest</suiteClass>
+				<suiteClass>org.jboss.tools.cdi.bot.test.CDI20SuiteTest</suiteClass>
 			</properties>
 		</profile>
 		<profile>
@@ -100,42 +74,6 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>jbossas</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<skip>${skipTests}</skip>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.jboss.as</groupId>
-									<artifactId>jboss-as-dist</artifactId>
-									<version>7.1.1.Final</version>
-									<type>zip</type>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-					<execution>
-						<id>wildfly</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<skip>${skipTests}</skip>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.wildfly</groupId>
-									<artifactId>wildfly-dist</artifactId>
-									<version>13.0.0.Final</version>
-									<type>zip</type>
-								</artifactItem>
-							</artifactItems>
-						</configuration>
-					</execution>
-					<execution>
 						<id>wildfly20</id>
 						<phase>pre-integration-test</phase>
 						<goals>
@@ -147,7 +85,7 @@
 								<artifactItem>
 									<groupId>org.wildfly</groupId>
 									<artifactId>wildfly-dist</artifactId>
-									<version>24.0.1.Final</version>
+									<version>26.1.2.Final</version>
 									<type>zip</type>
 								</artifactItem>
 							</artifactItems>
