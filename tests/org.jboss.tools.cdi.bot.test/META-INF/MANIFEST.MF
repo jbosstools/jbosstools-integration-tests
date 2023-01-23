@@ -7,7 +7,17 @@ Bundle-Activator: org.jboss.tools.cdi.bot.test.PluginActivator
 Require-Bundle: org.eclipse.reddeer.go;bundle-version="2.1.0",
  org.jboss.tools.cdi.reddeer;bundle-version="[4.4.100,4.5.0)",
  org.jboss.tools.common.reddeer;bundle-version="3.10.0",
- org.jboss.ide.eclipse.as.reddeer
+ org.jboss.ide.eclipse.as.reddeer,
+ org.jboss.tools.cdi.core,
+ org.jboss.tools.cdi.ui,
+ org.jboss.tools.cdi.extension.core,
+ org.jboss.tools.cdi.faces.core,
+ org.jboss.tools.cdi.text.ext,
+ org.jboss.tools.cdi.xml,
+ org.jboss.tools.cdi.xml.ui,
+ org.jboss.tools.cdi.microprofile.core,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.ui
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: jar
