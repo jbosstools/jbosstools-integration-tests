@@ -18,10 +18,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.reddeer.common.logging.Logger;
-import org.eclipse.reddeer.common.matcher.RegexMatcher;
 import org.eclipse.reddeer.common.wait.WaitUntil;
-import org.eclipse.reddeer.core.matcher.WithTextMatcher;
-import org.eclipse.reddeer.eclipse.ui.browser.BrowserEditor;
+import org.eclipse.reddeer.eclipse.condition.BrowserContainsText;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.browser.InternalBrowser;
@@ -33,6 +31,7 @@ import org.eclipse.reddeer.workbench.impl.shell.WorkbenchShell;
 import org.jboss.tools.central.reddeer.api.JavaScriptHelper;
 import org.jboss.tools.central.reddeer.wait.CentralIsLoaded;
 import org.jboss.tools.quarkus.reddeer.wizard.QuarkusWizard;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,6 +50,7 @@ public class BasicTests {
 	private static final String CENTRAL_LABEL = "Red Hat Central";
 	private static Logger log = new Logger(HTML5Parameterized.class);
 	private static InternalBrowser centralBrowser;
+	private static DefaultEditor rhCentralEditor;
 	private static JavaScriptHelper jsHelper = JavaScriptHelper.getInstance();
 
 	@Before
@@ -61,11 +61,18 @@ public class BasicTests {
 		}
 		new DefaultToolItem(new WorkbenchShell(), CENTRAL_LABEL).click();
 		// activate central editor
-		new DefaultEditor(CENTRAL_LABEL);
+		rhCentralEditor = new DefaultEditor(CENTRAL_LABEL);
 		new WaitUntil(new CentralIsLoaded());
 		centralBrowser = new InternalBrowser();
 
 		jsHelper.setBrowser(centralBrowser);
+	}
+	
+	@After
+	public void tearDown() {
+		if (rhCentralEditor.isActive()) {
+			rhCentralEditor.close();
+		}
 	}
 
 	@Test
@@ -79,10 +86,9 @@ public class BasicTests {
 	@Test
 	public void learnAboutRedHatButton() {
 		centralBrowser.execute("$(\'a[href=\"https://developers.redhat.com/\"]\').get( 0 ).click()");
-		BrowserEditor be = new BrowserEditor(new WithTextMatcher(new RegexMatcher(".*Red.*Hat.*Developer.*")));
+		new WaitUntil(new BrowserContainsText(centralBrowser, "Red Hat Developer"));
 		assertTrue("The url in the browser has to be https://developers.redhat.com/.",
-				be.getPageURL().equals("https://developers.redhat.com/"));
-		be.close();
+				centralBrowser.getURL().equals("https://developers.redhat.com/"));
 	}
 
 	@Test

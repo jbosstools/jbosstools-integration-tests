@@ -55,9 +55,9 @@ public class InstallationDetailsTest {
 
 	private static String HELP_BUTTON = "Help";
 
-	private static String ABOUT_MENU_BUTTON = ".*About Red Hat.*(Developer|CodeReady) Studio.*";
+	private static String ABOUT_MENU_BUTTON = ".*About Eclipse IDE";
 	private static String MODAL_DIALOG_ABOUT_DEVSTUDIO_INSTALLATION_DETAILS_BUTTON = ".*Installation Details.*";
-	private static String MODAL_DIALOG_ABOUT_DEVSTUDIO_INSTALLATION_DETAILS_TITLE = ".*Red Hat.*(Developer|CodeReady) Studio Installation Details.*";
+	private static String MODAL_DIALOG_ABOUT_DEVSTUDIO_INSTALLATION_DETAILS_TITLE = ".*Eclipse IDE Installation Details.*";
 	private static String MODAL_DIALOG_CONFIG_MENU_BUTTON = "Configuration";
 
 	private Logger log = new Logger(this.getClass());
@@ -124,11 +124,18 @@ public class InstallationDetailsTest {
 
 	// substring {majorVersion} is replaced with current major version
 	private final String[] regexArray = {
-			"jboss\\.discovery\\.directory\\.url\\|devstudio\\|{majorVersion}.*devstudio-directory\\.xml",
-			"jboss\\.discovery\\.site\\.url\\|devstudio\\|{majorVersion}.*=https://devstudio\\.redhat\\.com/{majorVersion}.*/updates/",
-			"jboss\\.discovery\\.earlyaccess\\.site\\.url\\|devstudio\\|{majorVersion}.*=https://devstudio\\.redhat\\.com/{majorVersion}.*\\.earlyaccess/",
-			"jboss\\.discovery\\.earlyaccess\\.list\\.url\\|devstudio\\|{majorVersion}.*=https://devstudio\\.redhat\\.com/{majorVersion}.*\\.earlyaccess/.*/devstudio-earlyaccess\\.properties",
-			"jboss\\.central\\.webpage\\.url\\|devstudio\\|{majorVersion}.*=.*jbosstools-central-webpage.*zip"//,
+//			# JBT 4.27.0.AM1
+//			jboss.discovery.directory.url|jbosstools|4.27.0.AM1=https://download.jboss.org/jbosstools/photon/snapshots/updates/discovery.earlyaccess/master/jbosstools-directory.xml
+//			jboss.discovery.site.url|jbosstools|4.27.0.AM1=https://download.jboss.org/jbosstools/photon/snapshots/updates/discovery.central/master/
+//			jboss.discovery.earlyaccess.site.url|jbosstools|4.27.0.AM1=https://download.jboss.org/jbosstools/photon/snapshots/updates/discovery.earlyaccess/master/
+//			jboss.discovery.earlyaccess.list.url|jbosstools|4.27.0.AM1=https://download.jboss.org/jbosstools/photon/snapshots/updates/discovery.earlyaccess/master/jbosstools-earlyaccess.properties
+//			jboss.central.webpage.url|jbosstools|4.27.0.AM1=https://download.jboss.org/jbosstools/static/redhat-central/jbosstools-central-webpage-2.0.0-20221116.1120.zip
+//			jboss.fuse.extras.site.url|jbosstools|4.27.0.AM1=https://download.jboss.org/jbosstools/photon/snapshots/builds/jbosstools-fuse-extras_master/latest/all/repo/
+			"jboss\\.discovery\\.directory\\.url\\|jbosstools\\|{majorVersion}.*jbosstools-directory\\.xml",
+			"jboss\\.discovery\\.site\\.url\\|jbosstools\\|{majorVersion}.*=https://download\\.jboss\\.org/jbosstools/photon/.*/{majorVersion}.*/updates/",
+			"jboss\\.discovery\\.earlyaccess\\.site\\.url\\|jbosstools\\|{majorVersion}.*=https://download\\.jboss\\.org/jbosstools/photon/.*/discovery\\.earlyaccess/",
+			"jboss\\.discovery\\.earlyaccess\\.list\\.url\\|jbosstools\\|{majorVersion}.*=https://download\\.jboss\\.org/jbosstools/photon/.*/discovery\\.earlyaccess/{majorVersion}.*/jbosstools-earlyaccess\\.properties",
+			"jboss\\.central\\.webpage\\.url\\|jbosstools\\|{majorVersion}.*=.*jbosstools-central-webpage.*zip"//,
 			//"jboss\\.discovery\\.site\\.integration-stack\\.url\\|devstudio\\|{majorVersion}.*=https://devstudio\\.redhat\\.com/{majorVersion}.*integration-stack/discovery/",
 			//"jboss\\.discovery\\.earlyaccess\\.site\\.integration-stack\\.url\\|devstudio\\|{majorVersion}.*=https://devstudio\\.redhat\\.com/{majorVersion}.*/integration-stack/discovery/earlyaccess/",
 			//"jboss\\.discovery\\.site\\.integration-stack-sap\\.url\\|devstudio\\|{majorVersion}.*=https://devstudio\\.redhat\\.com/{majorVersion}.*/integration-stack/extras/" 
@@ -136,6 +143,10 @@ public class InstallationDetailsTest {
 
 	public String getJbossToolsMajorVersion() {
 		return jbossToolsVersion.substring(0, jbossToolsVersion.indexOf('.'));
+	}
+	
+	public String getJbossToolsVersion() {
+		return jbossToolsVersion;
 	}
 
 	@Before
@@ -168,8 +179,8 @@ public class InstallationDetailsTest {
 		int versionIndex = 0;
 		jbossToolsVersion = text.substring(versionIndex = text.indexOf("Version:") + 9,
 				text.indexOf("Build id", ++versionIndex));
-		log.info("JBossTools version: " + jbossToolsVersion);
-
+		log.info("Eclipse platform + JBossTools version: " + jbossToolsVersion);
+		jbossToolsVersion = jbossToolsVersion.substring(jbossToolsVersion.indexOf("(") + 1, jbossToolsVersion.indexOf(")"));
 		assertFalse("The JBossTools version value is empty!", jbossToolsVersion.isEmpty());
 
 		new PushButton(new WithTextMatcher(new RegexMatcher(MODAL_DIALOG_ABOUT_DEVSTUDIO_INSTALLATION_DETAILS_BUTTON))).click();
@@ -195,8 +206,8 @@ public class InstallationDetailsTest {
 		log.debug("Text of global config:\n" + localText);
 		ConfigPropertiesHelper rcph = new ConfigPropertiesHelper(localText);
 
-		// note that the version substring may change with devstudio version
-		String majorVersion = getJbossToolsMajorVersion();
+		// note that the version substring may change with JBossTools version
+		String majorVersion = getJbossToolsVersion();
 		log.info("Major version: " + majorVersion);
 
 		Arrays.stream(regexArray).forEach(regexRaw -> {

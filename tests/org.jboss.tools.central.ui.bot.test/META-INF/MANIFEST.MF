@@ -18,7 +18,11 @@ Require-Bundle: org.eclipse.ui.forms;bundle-version="3.5.101",
  org.jboss.tools.common.reddeer;bundle-version="3.10.0",
  org.jboss.tools.maven.reddeer,
  org.jboss.tools.common.launcher.reddeer,
- org.jboss.tools.quarkus.reddeer
+ org.jboss.tools.quarkus.reddeer,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.ui,
+ org.jboss.tools.common.launcher.ui,
+ org.jboss.tools.common.launcher.core
 Eclipse-BundleShape: jar
 Bundle-Vendor: Red Hat
 Import-Package: org.json.simple,
