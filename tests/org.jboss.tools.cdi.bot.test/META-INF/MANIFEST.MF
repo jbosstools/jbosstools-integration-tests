@@ -17,7 +17,9 @@ Require-Bundle: org.eclipse.reddeer.go;bundle-version="2.1.0",
  org.jboss.tools.cdi.xml.ui,
  org.jboss.tools.cdi.microprofile.core,
  org.eclipse.jdt.core,
- org.eclipse.jdt.ui
+ org.eclipse.jdt.ui,
+ org.jboss.tools.common.launcher.ui,
+ org.jboss.tools.common.launcher.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-BundleShape: jar
