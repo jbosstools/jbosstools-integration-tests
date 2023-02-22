@@ -56,8 +56,10 @@ import org.eclipse.reddeer.swt.api.TreeItem;
 import org.eclipse.reddeer.swt.impl.button.CancelButton;
 import org.eclipse.reddeer.swt.impl.button.OkButton;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
+import org.eclipse.reddeer.swt.impl.combo.DefaultCombo;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.core.exception.WorkbenchCoreLayerException;
@@ -144,7 +146,7 @@ public abstract class AbstractImportQuickstartsTest {
 		for (String deployableProjectName : qstart.getDeployableProjectNames()) {
 			try {
 				// deploy
-				deployProject(deployableProjectName, explorer);
+				deployProject(deployableProjectName, explorer, fullServerName);
 				// check deploy status
 				checkDeployedProject(qstart, fullServerName);
 				// undeploy
@@ -180,13 +182,30 @@ public abstract class AbstractImportQuickstartsTest {
 
 	}
 
-	private void deployProject(String deployableProject, ProjectExplorer explorer) {
+	private void deployProject(String deployableProject, ProjectExplorer explorer, String fullServerName) {
 		log.info("DEPLOYING " + deployableProject);
+		
+		if (fullServerName.contains("WildFly")) { // wf27 quickstarts workaround, need to change facet version to 5.0
+			explorer.activate();
+			Project projectWorkaround = explorer.getProject(deployableProject);
+			projectWorkaround.select();
+
+			new ContextMenuItem("Properties").select();
+			new DefaultTreeItem("Project Facets").select();
+			new DefaultTree(1).getItem("Dynamic Web Module").select();
+			new ContextMenuItem("Change Version...").select();
+			new DefaultCombo().setSelection("5.0");
+			new OkButton().click();
+			AbstractWait.sleep(TimePeriod.DEFAULT); // need some time to change version
+			new PushButton("Apply and Close").click();
+		}
+		
 		explorer.activate();
 		Project project = explorer.getProject(deployableProject);
 		project.select();
+
 		new ContextMenuItem("Run As", "1 Run on Server").select();
-		new DefaultTreeItem("localhost", "Red Hat JBoss Enterprise Application Platform 7.4 Server").select();
+		new DefaultTreeItem("localhost", fullServerName).select();
 		new WizardDialog("Run On Server").finish();
 	}
 
@@ -211,7 +230,6 @@ public abstract class AbstractImportQuickstartsTest {
 	protected static Collection<Quickstart> createQuickstartsList() {
 		ArrayList<Quickstart> resultList = new ArrayList<Quickstart>();
 		ArrayList<String> specificQuickstarts = new ArrayList<String>();
-		System.out.println(System.getProperty("specificQuickstarts"));
 		if (System.getProperty("specificQuickstarts") != null
 				&& !System.getProperty("specificQuickstarts").trim().equals("${specificQuickstarts}")) {
 			specificQuickstarts = new ArrayList<String>(
@@ -412,14 +430,6 @@ public abstract class AbstractImportQuickstartsTest {
 		for (DefaultProject p : projects) {
 			DeleteUtils.forceProjectDeletion(p, false);
 			new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-		}
-
-		projects = projectExplorer.getProjects();
-		if (projects.size() > 0) { // some projects contains another projects, need 2-nd check
-			for (DefaultProject p : projects) {
-				DeleteUtils.forceProjectDeletion(p, false);
-				new WaitWhile(new JobIsRunning(), TimePeriod.VERY_LONG);
-			}
 		}
 	}
 
@@ -624,10 +634,10 @@ public abstract class AbstractImportQuickstartsTest {
 		if (new ContextMenuItem("Show In", "Web Browser").isEnabled()) {
 			new ContextMenuItem("Show In", "Web Browser").select();
 
-			System.out.println("Sleep after web browser...");
-			AbstractWait.sleep(TimePeriod.DEFAULT);
 
-			WorkbenchShellHandler.getInstance().closeAllNonWorbenchShells();
+			AbstractWait.sleep(TimePeriod.DEFAULT); // wait 10 seconds for mac os popup
+			cleanupShells(); // close mac os popup "Allow Non-Https Connections?"
+			
 			final BrowserEditor browser = new BrowserEditor(new RegexMatcher(".*"));
 			try {
 				new WaitUntil(new BrowserIsnotEmpty(browser));
