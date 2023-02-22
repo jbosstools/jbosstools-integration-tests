@@ -37,8 +37,8 @@
 		<jbosstools.test.jboss-eap-xp.url>https://download.eng.bos.redhat.com/released/JBoss-middleware/eap-xp/4.0.0/jboss-eap-xp-4.0.0.zip</jbosstools.test.jboss-eap-xp.url>
 		<surefire.timeout>18000</surefire.timeout>
 		<deployOnServer>true</deployOnServer>
-		<quickstarts.URL>${quickstartsURLEAP}</quickstarts.URL>
-		<server.url>${jbosstools.test.jboss-eap-7.x.url}</server.url>
+		<!-- <quickstarts.URL>${quickstartsURLEAP}</quickstarts.URL> 
+		<server.url>${jbosstools.test.jboss-eap-7.x.url}</server.url> --> <!-- Might be required by EAPXP suite -->
 	</properties>
 	<build>
 		<resources>
@@ -105,8 +105,8 @@
 						</extraRequirements>
 					</dependency-resolution>
 				</configuration>
-			</plugin>
-			<plugin>
+			</plugin> 
+			<!-- <plugin> 
 				<groupId>com.googlecode.maven-download-plugin</groupId>
 				<artifactId>download-maven-plugin</artifactId>
 				<executions>
@@ -134,7 +134,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> --> <!-- Might be required by EAPXP suite -->
 		</plugins>
 	</build>
 
@@ -450,7 +450,7 @@
 				<reddeer.config>${project.build.directory}/classes/servers/wildfly.json</reddeer.config>
 				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
 				<examplesFolder>${examplesFolderWildFly}</examplesFolder>
-				<specificQuickstarts>temperature-converter,xml-dom4j,helloworld-ws,websocket-hello,helloworld</specificQuickstarts>
+				<specificQuickstarts>temperature-converter,helloworld-ws,websocket-hello,helloworld</specificQuickstarts>
 			</properties>
 			<build>
 				<plugins>
@@ -529,7 +529,7 @@
 				<reddeer.config>${project.build.directory}/classes/servers/eap-7.json</reddeer.config>
 				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
 				<examplesFolder>${examplesFolderEAP}</examplesFolder>
-				<specificQuickstarts>temperature-converter,xml-dom4j,helloworld-ws,websocket-hello,helloworld</specificQuickstarts>
+				<specificQuickstarts>temperature-converter,helloworld-ws,websocket-hello,helloworld</specificQuickstarts>
 			</properties>
 			<build>
 				<plugins>
