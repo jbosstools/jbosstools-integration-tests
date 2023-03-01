@@ -2,9 +2,12 @@
 	"microprofile-config": "http://localhost:8080/microprofile-config/converter/value",
 	"microprofile-fault-tolerance": "http://localhost:8080/microprofile-fault-tolerance/coffee/2/availability",
 	"microprofile-health": "http://localhost:9990/health/ready",
-	"microprofile-jwt": "http://localhost:8080/microprofile-jwt/rest/Sample/birthday",
+	"microprofile-jwt": "http://localhost:8080/microprofile-jwt/Sample/helloworld",
 	"microprofile-metrics": "http://localhost:8080/microprofile-metrics/prime/7",
-	"microprofile-openapi-quickstart": "http://localhost:8080/openapi?format=JSON",
+	"microprofile-openapi": "http://localhost:8080/openapi?format=JSON",
 	"microprofile-opentracing": "http://localhost:8080/microprofile-opentracing/hello/cdi-trace",
-	"country-client": "http://localhost:8080/country-client/country/cdi/doesNotExist"
+	"microprofile-reactive-messaging-kafka": "http://localhost:8080/microprofile-reactive-messaging-kafka",
+	"country-client": "http://localhost:8080/country-client/",
+	"country-server": "http://localhost:8080/country-server/",
+	"todo-backend": "http://localhost:8080/todo-backend/"
 }

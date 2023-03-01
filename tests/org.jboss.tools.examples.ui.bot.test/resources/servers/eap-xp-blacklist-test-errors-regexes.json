@@ -1,8 +1,8 @@
 {
-	"microprofile-config": [
-		".*The superclass \"javax.servlet.http.HttpServlet\" was not found on the Java Build Path.*"
+	"Issues links" : [
+		"microprofile-config", "https://issues.redhat.com/browse/JBIDE-28825"
 	],
-	"*": [
-		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*"
+	"microprofile-config": [
+		".*The superclass \"javax\\.servlet\\.http\\.HttpServlet\", determined from the Dynamic Web Module facet version \\(2\\.3\\), was not found on the Java Build Path.*"
 	]
 }

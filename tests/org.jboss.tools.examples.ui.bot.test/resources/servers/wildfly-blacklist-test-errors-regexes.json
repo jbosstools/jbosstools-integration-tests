@@ -1,43 +1,16 @@
 {
-	"*": [
-		".*Missing artifact org.wildfly.*",
-		".*The container 'Maven Dependencies' references non existing library '.*.jar'.*",
-		".*The project cannot be built until build path errors are resolved.*",
-		".*DiscountRequest cannot be resolved to a type.*",
-		".*DiscountResponse cannot be resolved to a type.*",
-		".*Customer cannot be resolved to a type.*",
-		".*ProfileMgmt cannot be resolved to a type.*",
-		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.Customer cannot be resolved.*",
-		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountRequest cannot be resolved.*",
-		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountResponse cannot be resolved.*",
-		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.ProfileMgmt cannot be resolved.*",
-		".*Type mismatch: cannot convert from ProfileMgmt to ProfileMgmt.*",
-		".*Checkstyle execution failed due to an internal error. Please check the error log for details.*",
-		".*Could not read maven project.*",
-		".*Project build error: 'dependencies.dependency.version' for org.jboss.resteasy:resteasy-jaxrs:jar is missing.*",
-		".*Service cannot be resolved.*",
-		".*SOAPBinding cannot be resolved.*",
-		".*The import jakarta.jws cannot be resolved.*",
-		".*The import jakarta.xml.ws cannot be resolved.*",
-		".*WebMethod cannot be resolved to a type.*",
-		".*WebService cannot be resolved to a type.*",
-		".*The superclass \"javax.servlet.http.HttpServlet\".*was not found on the Java Build Path.*"
+	"Issues links" : [
+		"helloworld", "https://issues.redhat.com/browse/JBIDE-28893",
+		"helloworld-ws", "https://issues.redhat.com/browse/JBIDE-28893"
 	],
-	"ejb-txn-remote-call-server":[
-		".*The Java class for mapped type \"CalleeUser\" has a private zero-argument constructor; it must be public or protected.*",
-		".*The Java class for mapped type \"CalleeUser\" is final.*"
+	"helloworld": [
+		".*Dynamic Web Module 6\\.0 requires Java 11 or newer.*",
+		".*One or more constraints have not been satisfied.*",
+		".*Java compiler level does not match the version of the installed Java project facet.*"
 	],
-	"ejb-txn-remote-call-client":[
-		".*The Java class for mapped type \"CallerUser\" has a private zero-argument constructor; it must be public or protected.*",
-		".*The Java class for mapped type \"CallerUser\" is final.*"
-	],
-	"deltaspike-authorization":[
-		".*Project build error: 'dependencies.dependency.version' for org.picketlink:picketlink-.*:jar is missing.*"
-	],
-	"jaxrs-jwt":[
-		".*Project build error: 'dependencies.dependency.version' for org.jboss.resteasy:resteasy-jaxrs:jar is missing.*"
-	],
-	"wsat-simple":[
-		".*Referenced file contains errors.*"
+	"helloworld-ws": [
+		".*Dynamic Web Module 6\\.0 requires Java 11 or newer.*",
+		".*One or more constraints have not been satisfied.*",
+		".*Java compiler level does not match the version of the installed Java project facet.*"
 	]
 }

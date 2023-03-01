@@ -28,6 +28,8 @@
 		<examplesFolderWildFly>quickstart-${wildflyVersion}</examplesFolderWildFly>
 		<examplesFolderEAP>jboss-eap-7.4.0.GA-quickstarts</examplesFolderEAP>
 		<examplesFolderEAPXP>jboss-eap-xp-4.0.0.GA-quickstarts</examplesFolderEAPXP>
+		<!-- <eap-xp-maven-repository.url>https://download.eng.bos.redhat.com/released/JBoss-middleware/eap-xp/4.0.0/jboss-eap-xp-4.0.0-maven-repository.zip</eap-xp-maven-repository.url>
+		<eap-xp-maven-repository.name>jboss-eap-xp-4.0.0.GA-maven-repository</eap-xp-maven-repository.name> --> <!-- Might be required by EAPXP suite -->
 		<examplesFolderJavaEE7>javaee7-samples-master</examplesFolderJavaEE7>
 		<examplesFolderJavaEE8>javaee8-samples-master</examplesFolderJavaEE8>
 		<jbosstools.test.wildfly.home>${requirementsDirectory}/wildfly-${wildflyVersion}</jbosstools.test.wildfly.home>
@@ -248,15 +250,38 @@
 						<artifactId>download-maven-plugin</artifactId>
 						<executions>
 							<execution>
+								<id>examples</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${quickstarts.URL}</url>
+									<unpack>true</unpack>
+									<outputDirectory>${project.build.directory}</outputDirectory>
+								</configuration>
+							</execution>
+					<!--	<execution>
 								<id>download-maven-repository</id>
 								<phase>pre-integration-test</phase>
 								<goals>
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>https://download.eng.bos.redhat.com/devel/candidates/jboss/eap-xp/JBEAP-XP-4.0.0-7.4.8/jboss-eap-xp-4.0.0-7.4.8-maven-repository.zip</url>
+									<url>${eap-xp-maven-repository.url}</url>
 									<unpack>true</unpack>
-									<outputDirectory>${settings.localRepository}</outputDirectory>
+									<outputDirectory>${project.build.directory}/repository</outputDirectory>
+								</configuration>
+							</execution>	-->
+							<execution>
+								<id>install-server</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>wget</goal>
+								</goals>
+								<configuration>
+									<url>${server.url}</url>
+									<unpack>true</unpack>
 								</configuration>
 							</execution>
 						</executions>
