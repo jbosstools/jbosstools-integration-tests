@@ -42,6 +42,7 @@ public class MavenProjectHelper {
 		pexplorer.getProject(projectName).select();
 		new ContextMenuItem("Maven", "Add Dependency").select();
 		new WaitUntil(new ShellIsAvailable("Add Dependency"), TimePeriod.DEFAULT);
+		new DefaultShell("Add Dependency").setFocus();
 		new LabeledText("Group Id:").setText(groupId);
 		new LabeledText("Artifact Id:").setText(artifactId);
 		new LabeledText("Version: ").setText(version);
@@ -86,6 +87,7 @@ public class MavenProjectHelper {
 		pexplorer.getProject(projectName).select();
 		new ContextMenuItem("Maven", "Update Project...").select();
 		new WaitUntil(new ShellIsAvailable("Update Maven Project"), TimePeriod.LONG);
+		new DefaultShell("Update Maven Project").setFocus();
 		new CheckBox("Force Update of Snapshots/Releases").toggle(forceDependencies);
 		new PushButton("OK").click();
 		new WaitWhile(new ShellIsAvailable("Update Maven Project"), TimePeriod.DEFAULT);

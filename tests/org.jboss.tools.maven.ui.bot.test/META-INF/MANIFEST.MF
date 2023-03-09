@@ -11,8 +11,13 @@ Require-Bundle: org.junit,
  org.eclipse.ui.workbench,
  org.jboss.tools.central.reddeer,
  org.jboss.tools.common.reddeer,
- org.eclipse.egit.ui
+ org.eclipse.egit.ui,
+ org.jboss.tools.runtime.reddeer,
+ org.jboss.tools.community.project.examples,
+ org.eclipse.jpt.jpa.ui,
+ org.jboss.tools.cdi.ui,
+ org.eclipse.jst.ejb.ui
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: Red Hat
 Export-Package: org.jboss.tools.maven.ui.bot.test.utils

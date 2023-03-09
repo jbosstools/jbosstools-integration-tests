@@ -11,10 +11,12 @@
 package org.jboss.tools.maven.ui.bot.test.conversion;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
+import org.eclipse.reddeer.core.exception.CoreLayerException;
 import org.eclipse.reddeer.eclipse.jdt.ui.packageview.PackageExplorerPart;
 import org.eclipse.reddeer.eclipse.ui.dialogs.PropertyDialog;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaPerspective;
@@ -26,10 +28,10 @@ import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.CheckBox;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.combo.LabeledCombo;
+import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.swt.impl.menu.ShellMenuItem;
 import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
-import org.eclipse.reddeer.swt.impl.tab.DefaultTabItem;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
@@ -64,10 +66,15 @@ public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 	@Test
 	public void testMaterializeLibrary() throws Exception{
 		new ShellMenuItem("File","New","Example...").select();
+		new DefaultShell("New Example").setFocus();
 		new DefaultTreeItem("JBoss Tools","Project Examples").select();
 		new PushButton("Next >").click();
 		new DefaultShell("New Project Example");
-		new DefaultTreeItem("JBoss Maven Archetypes","Spring MVC Project").select();
+		try {
+			new DefaultTreeItem("JBoss Maven Archetypes","Spring MVC Project").select();
+		} catch (CoreLayerException ex) {
+			fail(ex.getMessage());
+		}
 		new PushButton("Next >").click();
 		new PushButton("Next >").click();
 		new LabeledCombo("Project name").setText(projectName);
@@ -80,6 +87,7 @@ public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 		new	DefaultTreeItem(projectName,"Maven Dependencies").select();
 		new ContextMenuItem("Copy Classpath Libraries...").select();
 		new WaitUntil(new ShellIsAvailable("Copy Classpath Libraries"),TimePeriod.DEFAULT);
+		new DefaultShell("Copy Classpath Libraries").setFocus();
 		new PushButton("OK").click();
 		new PushButton("OK").click();
 		new WaitWhile(new ShellIsAvailable("Materialize Classpath Library"), TimePeriod.DEFAULT);
@@ -91,7 +99,7 @@ public class MaterializeLibraryTest extends AbstractMavenSWTBotTest{
 		PropertyDialog pd = openPropertiesPackage(project);
 		new WaitUntil(new ShellIsAvailable("Properties for "+project),TimePeriod.DEFAULT);
 		new DefaultTreeItem("Java Build Path").select();
-		new DefaultTabItem("Source").activate();
+		new DefaultCTabItem("Source").activate();
 		for(TreeItem item: new DefaultTree(1).getAllItems()){
 			if(item.getText().startsWith("Included")){
 				assertTrue("(All) expected in Included patterns",item.getText().endsWith("(All)"));
