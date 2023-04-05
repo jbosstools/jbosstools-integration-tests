@@ -134,13 +134,20 @@ public abstract class AbstractImportQuickstartsTest {
 	 */
 	protected void deployUndeployQuickstart(Quickstart qstart, String serverName) {
 		new ConsoleView().clearConsole();
-		ProjectExplorer explorer = new ProjectExplorer();
-
-		findDeployableProjects(qstart, explorer);
 
 		ServersView2 serversView = new ServersView2();
 		serversView.open();
 		String fullServerName = getServerFullName(serversView.getServers(), serverName);
+		
+		ProjectExplorer explorer = new ProjectExplorer();
+		explorer.activate();
+
+		if (fullServerName.contains("WildFly")) { // wf27 quickstarts workaround, need to change facet version to 5.0
+			selectFacets(explorer, fullServerName);
+		}
+		findDeployableProjects(qstart, explorer);
+
+		serversView.open();
 		Server server = serversView.getServer(fullServerName);
 
 		for (String deployableProjectName : qstart.getDeployableProjectNames()) {
@@ -155,6 +162,31 @@ public abstract class AbstractImportQuickstartsTest {
 				new DefaultShell("Server Error");
 				new OkButton().click();
 			}
+		}
+	}
+	
+	private void selectFacets(ProjectExplorer explorer, String fullServerName) {
+		for (Project actualProject : explorer.getProjects()) {
+			explorer.activate();
+			explorer.getProject(actualProject.getName()).select();
+
+			new ContextMenuItem("Properties").select();
+			new DefaultTreeItem("Project Facets").select();
+
+			new DefaultTree(1).getItem("Dynamic Web Module").select();
+			new DefaultTree(1).getItem("Dynamic Web Module").setChecked(true);
+			new ContextMenuItem("Change Version...").select();
+			new DefaultCombo().setSelection("5.0");
+			new OkButton().click();
+
+			new DefaultTree(1).getItem("Java").select();
+			new DefaultTree(1).getItem("Java").setChecked(true);
+			new ContextMenuItem("Change Version...").select();
+			new DefaultCombo().setSelection("11");
+			new OkButton().click();
+
+			AbstractWait.sleep(TimePeriod.DEFAULT); // need some time to change version
+			new PushButton("Apply and Close").click();
 		}
 	}
 
@@ -184,22 +216,7 @@ public abstract class AbstractImportQuickstartsTest {
 
 	private void deployProject(String deployableProject, ProjectExplorer explorer, String fullServerName) {
 		log.info("DEPLOYING " + deployableProject);
-		
-		if (fullServerName.contains("WildFly")) { // wf27 quickstarts workaround, need to change facet version to 5.0
-			explorer.activate();
-			Project projectWorkaround = explorer.getProject(deployableProject);
-			projectWorkaround.select();
 
-			new ContextMenuItem("Properties").select();
-			new DefaultTreeItem("Project Facets").select();
-			new DefaultTree(1).getItem("Dynamic Web Module").select();
-			new ContextMenuItem("Change Version...").select();
-			new DefaultCombo().setSelection("5.0");
-			new OkButton().click();
-			AbstractWait.sleep(TimePeriod.DEFAULT); // need some time to change version
-			new PushButton("Apply and Close").click();
-		}
-		
 		explorer.activate();
 		Project project = explorer.getProject(deployableProject);
 		project.select();
@@ -286,11 +303,14 @@ public abstract class AbstractImportQuickstartsTest {
 			String blacklistErrorsFile) {
 		this.blacklistFileContents = CentralUtils.loadBlacklistFile(blacklistFile);
 		this.blacklistErrorsFileContents = CentralUtils.loadBlacklistErrorsFile(blacklistErrorsFile);
+
+		List<String> errorsToIgnoreList = createIgnoreErorrsList(qstart);
+
 		if (!blacklistFileContents.contains(qstart.getName())) {
 			try {
 				importQuickstart(qstart);
 				importTestUtilsIfNeeded(qstart);
-				if (!isError() && System.getProperty("deployOnServer") != null
+				if (!isError(errorsToIgnoreList) && System.getProperty("deployOnServer") != null
 						&& System.getProperty("deployOnServer").equals("true")) {
 					checkServerStatus();
 					deployUndeployQuickstart(qstart, SERVER_NAME);
@@ -308,25 +328,27 @@ public abstract class AbstractImportQuickstartsTest {
 				checkForErrors(qstart);
 				checkErrorLog(qstart);
 			} else {
-				log.info("Lets ignore known errors:");
-
-				JSONArray errorsToIgnore = new JSONArray();
-				if (blacklistErrorsFileContents.containsKey(qstart.getName())) {
-					errorsToIgnore = (JSONArray) blacklistErrorsFileContents.get(qstart.getName());
-				}
-				if (blacklistErrorsFileContents.containsKey("*")) {
-					JSONArray errorsToIgnoreForAll = (JSONArray) blacklistErrorsFileContents.get("*");
-					for (Object o : errorsToIgnoreForAll) {
-						errorsToIgnore.add(o);
-					}
-				}
-				log.info(errorsToIgnore.toJSONString());
-
-				List<String> errorsToIgnoreList = (List<String>) (List<?>) Arrays.asList(errorsToIgnore.toArray());
 				checkForErrors(qstart, errorsToIgnoreList);
 				checkErrorLog(qstart, errorsToIgnoreList);
 			}
 		}
+	}
+	
+	private List<String> createIgnoreErorrsList(Quickstart qstart) {
+		log.info("Lets ignore known errors:");
+		JSONArray errorsToIgnore = new JSONArray();
+		if (blacklistErrorsFileContents.containsKey(qstart.getName())) {
+			errorsToIgnore = (JSONArray) blacklistErrorsFileContents.get(qstart.getName());
+		}
+		if (blacklistErrorsFileContents.containsKey("*")) {
+			JSONArray errorsToIgnoreForAll = (JSONArray) blacklistErrorsFileContents.get("*");
+			for (Object o : errorsToIgnoreForAll) {
+				errorsToIgnore.add(o);
+			}
+		}
+		log.info(errorsToIgnore.toJSONString());
+		List<String> errorsToIgnoreList = (List<String>) (List<?>) Arrays.asList(errorsToIgnore.toArray());
+		return errorsToIgnoreList;
 	}
 
 	protected static void createReports() {
@@ -394,9 +416,18 @@ public abstract class AbstractImportQuickstartsTest {
 		}
 	}
 
-	protected boolean isError() {
+	protected boolean isError(List<String> expectedErrorsRegexes) {
 		updateProjectsIfNeeded();
-		if (!ExamplesOperator.getInstance().getAllErrors().isEmpty()) {
+
+		List<String> importantErrors = new ArrayList<String>();
+		List<String> errors = ExamplesOperator.getInstance().getAllErrors();
+		for (String error : errors) {
+			if (!expectedErrorsRegexes.stream().filter(ee -> error.matches(ee)).findAny().isPresent()) {
+				importantErrors.add(error);
+			}
+		}
+
+		if (!importantErrors.isEmpty()) {
 			return true;
 		}
 		return false;

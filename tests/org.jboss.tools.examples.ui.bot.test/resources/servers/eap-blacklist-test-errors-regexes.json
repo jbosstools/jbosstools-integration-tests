@@ -1,15 +1,3 @@
 {
-	"*": [
-		".*Customer cannot be resolved to a type.*",
-		".*DiscountRequest cannot be resolved to a type.*",
-		".*DiscountResponse cannot be resolved to a type.*",
-		".*ProfileMgmt cannot be resolved to a type.*",
-		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.Customer cannot be resolved.*",
-		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountRequest cannot be resolved.*",
-		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.DiscountResponse cannot be resolved.*",
-		".*The import org.jboss.quickstarts.ws.jaxws.samples.retail.profile.ProfileMgmt cannot be resolved.*",
-		".*The Java class for mapped type \"CalleeUser\" has a private zero-argument constructor; it must be public or protected.*",
-		".*The Java class for mapped type \"CalleeUser\" is final.*",
-		".*Type mismatch: cannot convert from ProfileMgmt to ProfileMgmt.*"
-	]
+
 }

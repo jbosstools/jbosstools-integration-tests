@@ -48,7 +48,6 @@
 				<module>org.jboss.tools.maven.ui.bot.test</module>
 				<module>org.jboss.tools.ws.ui.bot.test</module>
 				<module>org.jboss.tools.perf.test</module>
-				<module>org.jboss.tools.testng.ui.bot.test</module>
 			</modules>
 		</profile>
 		<profile>
