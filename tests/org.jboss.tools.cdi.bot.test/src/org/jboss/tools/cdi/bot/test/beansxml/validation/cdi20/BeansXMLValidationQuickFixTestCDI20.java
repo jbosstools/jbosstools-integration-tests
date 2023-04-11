@@ -42,6 +42,7 @@ public class BeansXMLValidationQuickFixTestCDI20 extends BeansXMLValidationQuick
 
 	public BeansXMLValidationQuickFixTestCDI20() {
 		CDIVersion = "2.0";
+		PROJECT_NAME = "BeansXMLValidationQuickFixTest";
 	}
 
 	@Before

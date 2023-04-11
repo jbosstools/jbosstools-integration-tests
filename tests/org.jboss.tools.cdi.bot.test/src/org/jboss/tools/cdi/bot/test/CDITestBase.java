@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
@@ -76,8 +77,8 @@ public class CDITestBase {
 
 	protected String CDIVersion;
 	protected boolean isJava11FacetActivated;
-	
-	protected static String PROJECT_NAME = "CDIProject";
+
+	protected String PROJECT_NAME = "CDIProject";
 	protected static final String PACKAGE_NAME = "cdi";
 
 	protected static final Logger LOGGER = Logger.getLogger(CDITestBase.class.getName());
@@ -142,7 +143,15 @@ public class CDITestBase {
 
 	@Before
 	public void prepareWorkspace() {
-		if (!projectHelper.projectExists(PROJECT_NAME)) {
+		ProjectExplorer projExp = new ProjectExplorer();
+		projExp.open();
+		if (projExp.getProjects().isEmpty()) {
+			if (!PROJECT_NAME.equals("CDIValidatorTest") &&
+				!PROJECT_NAME.equals("BeanValidationQuickFixTest") &&
+				!PROJECT_NAME.equals("NamedComponentsTest")) { // CDIValidatorTestCDI20, BeanValidationQuickFixTest and NamedComponentsTest requires same project for few tests
+				PROJECT_NAME = PROJECT_NAME + Integer.toString(new Random().nextInt(100)); // same project name might cause a problem
+			}
+
 			CDIProjectWizard pw = new CDIProjectWizard();
 			pw.open();
 			WebProjectFirstPage fp = new WebProjectFirstPage(pw);

@@ -41,5 +41,6 @@ public class ConfigPropertyTestCDI20 extends ConfigPropertyTestTemplate {
 
 	public ConfigPropertyTestCDI20() {
 		CDIVersion = "2.0";
+		PROJECT_NAME = "ConfigPropTest";
 	}
 }

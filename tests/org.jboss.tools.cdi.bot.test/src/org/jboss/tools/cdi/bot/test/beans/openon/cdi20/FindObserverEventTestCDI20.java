@@ -39,6 +39,7 @@ public class FindObserverEventTestCDI20 extends FindObserverEventTemplate{
 	
 	public FindObserverEventTestCDI20() {
 		CDIVersion = "2.0";
+		PROJECT_NAME = "FindObserverTest";
 	}
 		
 	@Before

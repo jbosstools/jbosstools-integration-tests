@@ -41,6 +41,7 @@ public class BeansXMLValidationTestCDI20 extends BeansXMLValidationTemplate {
 
 	public BeansXMLValidationTestCDI20() {
 		CDIVersion = "2.0";
+		PROJECT_NAME = "BeansXMLValidationTest";
 	}
 
 	@Before

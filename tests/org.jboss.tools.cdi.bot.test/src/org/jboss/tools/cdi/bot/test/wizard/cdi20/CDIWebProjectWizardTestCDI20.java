@@ -38,5 +38,6 @@ public class CDIWebProjectWizardTestCDI20 extends CDIWebProjectWizardTemplate{
 	
 	public CDIWebProjectWizardTestCDI20(){
 		CDIVersion = "2.0";
+		PROJECT_NAME = "CDIWebProjectTest";
 	}
 }

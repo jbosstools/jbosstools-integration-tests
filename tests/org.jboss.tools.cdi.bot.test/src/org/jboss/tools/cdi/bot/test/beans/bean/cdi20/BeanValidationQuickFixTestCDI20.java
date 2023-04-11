@@ -40,6 +40,7 @@ public class BeanValidationQuickFixTestCDI20 extends BeanValidationQuickFixTempl
 
 	public BeanValidationQuickFixTestCDI20() {
 		CDIVersion = "2.0";
+		PROJECT_NAME = "BeanValidationQuickFixTest";
 	}
 
 	@Before

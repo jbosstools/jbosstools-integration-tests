@@ -14,6 +14,8 @@ package org.jboss.tools.cdi.bot.test.beansxml.completion.cdi20;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.eclipse.reddeer.junit.annotation.RequirementRestriction;
 import org.eclipse.reddeer.junit.requirement.matcher.RequirementMatcher;
@@ -34,7 +36,7 @@ import org.junit.Test;
 @JBossServer(state=ServerRequirementState.PRESENT, cleanup=false)
 @OpenPerspective(JavaEEPerspective.class)
 public class BeansXMLCompletionTestCDI20 extends BeansXMLCompletionTemplate {
-
+	
 	@RequirementRestriction
 	public static Collection<RequirementMatcher> getRestrictionMatcher() {
 		return getRestrictionMatcherCDI20();
@@ -42,6 +44,7 @@ public class BeansXMLCompletionTestCDI20 extends BeansXMLCompletionTemplate {
 
 	public BeansXMLCompletionTestCDI20() {
 		CDIVersion = "2.0";
+		PROJECT_NAME = "BeansXMLCompletionTest";
 	}
 
 	@Before

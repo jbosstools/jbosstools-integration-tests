@@ -39,6 +39,7 @@ public class BeansXMLBeansEditorTestCDI20 extends BeansXMLBeansEditorTemplate{
 
 	public BeansXMLBeansEditorTestCDI20() {
 		CDIVersion = "2.0";
+		PROJECT_NAME = "BeansXMLBeansEditorTest";
 	}
 
 	@Before

@@ -39,6 +39,7 @@ public class BeanInjectOpenOnTestCDI20 extends BeanInjectOpenOnTemplate{
 	
 	public BeanInjectOpenOnTestCDI20() {
 		CDIVersion = "2.0";
+		PROJECT_NAME = "BeanInjectTest";
 	}
 		
 	@Before
