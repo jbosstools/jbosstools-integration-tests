@@ -38,5 +38,6 @@ public class BeansXMLDiscoveryModesTestCDI20 extends BeansXMLDiscoveryModesTempl
 
 	public BeansXMLDiscoveryModesTestCDI20() {
 		CDIVersion = "2.0";
+		PROJECT_NAME = "BeansXMLDiscoveryTest";
 	}
 }

@@ -39,6 +39,7 @@ public class CDIValidatorTestCDI20 extends CDIValidatorTemplate{
 
 	public CDIValidatorTestCDI20() {
 		CDIVersion = "2.0";
+		PROJECT_NAME = "CDIValidatorTest";
 	}
 
 	@Before

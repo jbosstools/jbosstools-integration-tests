@@ -40,6 +40,7 @@ public class NamedComponentsSearchingTestCDI20 extends NamedComponentsSearchingT
 	
 	public NamedComponentsSearchingTestCDI20() {
 		CDIVersion = "2.0";
+		PROJECT_NAME = "NamedComponentsTest";
 	}
 		
 	@Before

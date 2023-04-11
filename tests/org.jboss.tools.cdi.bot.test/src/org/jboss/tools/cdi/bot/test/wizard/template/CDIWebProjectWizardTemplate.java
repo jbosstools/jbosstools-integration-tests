@@ -15,6 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.reddeer.common.wait.AbstractWait;
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitUntil;
 import org.eclipse.reddeer.common.wait.WaitWhile;
@@ -127,6 +128,7 @@ public class CDIWebProjectWizardTemplate extends CDITestBase {
 			new PushButton("Apply").click();
 			new WaitWhile(jbp, TimePeriod.MEDIUM);
 		}
+		AbstractWait.sleep(TimePeriod.MEDIUM);
 		boolean toReturn = new LabeledCheckBox("CDI support:").isChecked();
 		new PushButton("Apply and Close").click();
 		new WaitWhile(new ShellIsAvailable("Properties for "+projectName));
