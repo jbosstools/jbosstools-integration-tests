@@ -62,11 +62,6 @@
         <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
       </repositories>
     </iu>
-    <iu id='org.jboss.tools.easymport.ui.bot.test' name='Easymport UI Tests' version='4.4.3'>
-      <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
-      </repositories>
-    </iu>
     <iu id='org.jboss.tools.freemarker.ui.bot.test' name='Freemarker UI Bot Tests' version='4.4.3'>
       <repositories size='1'>
         <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
@@ -159,11 +154,6 @@
       </repositories>
     </iu>
     <iu id='org.jboss.tools.common.reddeer' name='RedDeer API for Common UI Tests' version='4.4.3'>
-      <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
-      </repositories>
-    </iu>
-    <iu id='org.jboss.tools.easymport.reddeer' name='RedDeer API for Easymport UI Tests' version='4.4.3'>
       <repositories size='1'>
         <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
       </repositories>
