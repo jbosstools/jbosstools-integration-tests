@@ -13,6 +13,7 @@ package org.jboss.tools.central.test.ui.reddeer;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -100,8 +101,8 @@ public class LauncherApplicationTest {
 		wizardPage.setTargetMission("rest-http");
 		wizardPage.setTargetRuntime("vert.x redhat");
 		wizardPage.setProjectName("project_2_customized_settings");
-		wizardPage.toggleUseDefaultLocationCheckBox(true);
-		wizardPage.setCustomProjectLocation("/Users/zcervink/zc-custom-loc");
+		wizardPage.toggleUseDefaultLocationCheckBox(false);
+		wizardPage.setCustomProjectLocation(System.getProperty("user.home") + File.separator + "customFolder");
 		wizardPage.setArtifactId("my_customized_artifact_id");
 		wizardPage.setGroupId("my.customized.group.id");
 		wizardPage.setVersion("1.2.3-SNAPSHOT");
