@@ -18,7 +18,7 @@
 		<specificQuickstarts></specificQuickstarts>
 		<rd.config>${project.build.directory}/classes/eap-7.json</rd.config>
 		<jbosstools.test.eap7.home>${requirementsDirectory}/jboss-eap-7.0</jbosstools.test.eap7.home>
-		<jbosstools.test.jboss-eap-7.x.url>http://download.eng.brq.redhat.com/released/JBoss-middleware/eap7/7.0.9/jboss-eap-7.0.9-full-build.zip</jbosstools.test.jboss-eap-7.x.url>
+		<jbosstools.test.jboss-eap-7.x.url>https://download.eng.brq.redhat.com/released/JBoss-middleware/eap7/7.0.9/jboss-eap-7.0.9-full-build.zip</jbosstools.test.jboss-eap-7.x.url>
 		<surefire.timeout>10800</surefire.timeout>
 		<test.class>org.jboss.tools.central.test.ui.reddeer.AllTestsSuite</test.class>
 	</properties>
