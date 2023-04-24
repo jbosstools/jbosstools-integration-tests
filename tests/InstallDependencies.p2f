@@ -44,12 +44,12 @@
     </iu>
     <iu id='org.jboss.tools.central.reddeer' name='Central Reddeer' version='4.4.3'>
       <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
+        <repository location='https://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
       </repositories>
     </iu>
     <iu id='org.jboss.tools.central.ui.bot.test' name='Central UI Bot Tests' version='4.4.3'>
       <repositories size='1'>
-        <repository location='http://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
+        <repository location='https://download.jboss.org/jbosstools/oxygen/snapshots/updates/integration-tests/master/'/>
       </repositories>
     </iu>
     <iu id='org.jboss.tools.deltaspike.ui.bot.test' name='Deltaspike UI Bot Tests' version='4.4.3'>
