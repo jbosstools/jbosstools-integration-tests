@@ -10,8 +10,8 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test.project;
 
-import static org.junit.Assert.assertTrue;
 import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.convertToMavenProject;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.common.wait.WaitWhile;
@@ -25,6 +25,7 @@ import org.eclipse.reddeer.eclipse.ui.perspectives.JavaEEPerspective;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenu;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
@@ -45,6 +46,7 @@ public class EARProjectTest extends AbstractMavenSWTBotTest{
 	public static final String WAR_PROJECT_NAME="earWeb";
 	public static final String EJB_PROJECT_NAME="earEJB";
 	public static final String EAR_PROJECT_NAME="ear";
+	public static final String EAR_VERSION="8.0";
 	
 	@Test
 	public void testEARProject() throws InterruptedException{
@@ -93,6 +95,7 @@ public class EARProjectTest extends AbstractMavenSWTBotTest{
 		EarProjectFirstPage ef = new EarProjectFirstPage(earw);
 		ef.setProjectName(EAR_PROJECT_NAME);
 		ef.setTargetRuntime("<None>");
+		ef.setEARVersion(EAR_VERSION);
 		earw.next();
 		EarProjectInstallPage es = new EarProjectInstallPage(earw);
 		DefaultJ2EEComponentCreationWizard p = es.newModule();

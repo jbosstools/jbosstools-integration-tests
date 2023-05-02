@@ -143,7 +143,13 @@ public abstract class AbstractMavenSWTBotTest{
 		WithTextMatchers m = new WithTextMatchers(rm1,rm2);
 		new ContextMenuItem(m.getMatchers()).select();
 		new WaitUntil(new ShellIsAvailable("Edit Configuration"),TimePeriod.DEFAULT);
-		new LabeledText("Goals:").setText(goals);
+		try {
+			new LabeledText("Goals:").setText(goals);
+		} catch (CoreLayerException ex) {
+			log.info("Lable Goals was not found. Trying again");
+			new LabeledText("Goals:").setText(goals);
+		}
+		
 		new PushButton("Run").click();
 		ProjectIsBuilt pb = new ProjectIsBuilt();
 		new WaitUntil(pb,TimePeriod.VERY_LONG);

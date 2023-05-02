@@ -10,13 +10,14 @@
  ******************************************************************************/
 package org.jboss.tools.maven.ui.bot.test.conversion;
 
+import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.updateConf;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.updateConf;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.reddeer.common.exception.WaitTimeoutExpiredException;
@@ -35,6 +36,7 @@ import org.eclipse.reddeer.junit.requirement.inject.InjectRequirement;
 import org.eclipse.reddeer.junit.runner.RedDeerSuite;
 import org.eclipse.reddeer.requirements.openperspective.OpenPerspectiveRequirement.OpenPerspective;
 import org.eclipse.reddeer.requirements.server.ServerRequirementState;
+import org.eclipse.reddeer.swt.api.TreeItem;
 import org.eclipse.reddeer.swt.condition.ControlIsEnabled;
 import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.exception.SWTLayerException;
@@ -49,6 +51,7 @@ import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.swt.impl.table.DefaultTable;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
+import org.eclipse.reddeer.swt.impl.tree.DefaultTree;
 import org.eclipse.reddeer.workbench.core.condition.JobIsRunning;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
 import org.jboss.ide.eclipse.as.reddeer.server.requirement.ServerRequirement;
@@ -94,6 +97,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		finishConversionDialog();
 		checkProblemsAndResolve();
 		PropertyDialog pd = openPropertiesProject(WEB_PROJECT_NAME);
+		pd.getShell().setFocus();
 		List<String> libs = getJavaBuildPathLibraries(pd);
 		assertTrue("project contains more libraries than expected", libs.size() == 2);
 		for (String i : libs) {
@@ -112,6 +116,7 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 		finishConversionDialog();
 		checkProblemsAndResolve();
 		PropertyDialog pd = openPropertiesProject(WEB_PROJECT_NAME);
+		pd.getShell().setFocus();
 		List<String> libs = getJavaBuildPathLibraries(pd);
 		assertTrue("project contains more libraries than expected",libs.size()==3);
 		Collections.sort(libs);
@@ -254,10 +259,17 @@ public class MavenConversionTest extends AbstractMavenSWTBotTest{
 
 	private List<String> getJavaBuildPathLibraries(PropertyDialog pd) {
 		pd.select(new BuildPathsPropertyPage(pd));
-		BuildPathsPropertyPage bppp = new BuildPathsPropertyPage(pd);
-		bppp.activateLibrariesTab();
-		List<String> libs = new ArrayList<String>();
-		libs.addAll(bppp.getLibraries());
+		new DefaultCTabItem("Libraries").activate();
+		LinkedList<String> libs = new LinkedList<String>();
+		for (TreeItem item : new DefaultTree(1).getItems()) {
+			if (item.getText().equals("Classpath") || item.getText().equals("Modulepath")) {
+				for (TreeItem tiPath : item.getItems()) {
+					libs.addLast(tiPath.getText());
+				}
+			} else {
+				libs.addLast(item.getText());
+			}
+		}
 		log.debug("Libraries found after conversion:");
 		for (String i : libs) {
 			log.debug("  " + i);

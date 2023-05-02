@@ -10,9 +10,9 @@
  ******************************************************************************/ 
 package org.jboss.tools.maven.ui.bot.test.configurator;
 
+import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.updateConf;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.jboss.tools.maven.ui.bot.test.utils.MavenProjectHelper.updateConf;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,6 +27,7 @@ import org.eclipse.reddeer.swt.condition.ShellIsAvailable;
 import org.eclipse.reddeer.swt.impl.button.PushButton;
 import org.eclipse.reddeer.swt.impl.ctab.DefaultCTabItem;
 import org.eclipse.reddeer.swt.impl.menu.ContextMenuItem;
+import org.eclipse.reddeer.swt.impl.shell.DefaultShell;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.swt.impl.text.LabeledText;
 import org.eclipse.reddeer.swt.impl.tree.DefaultTreeItem;
@@ -62,7 +63,8 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		pe.open();
 		pe.getProject(projectName).select();
 		new ContextMenuItem("New","Other...").select();
-		new WaitUntil(new ShellIsAvailable("New"),TimePeriod.DEFAULT);
+		new WaitUntil(new ShellIsAvailable("Select a wizard"),TimePeriod.DEFAULT);
+		new DefaultShell("Select a wizard").setFocus();
 		new DefaultTreeItem("XML","XML File").select();
 		new PushButton("Next >").click();
 		new LabeledText("Enter or select the parent folder:").setText(projectName+"/src/META-INF");
@@ -106,10 +108,11 @@ public abstract class AbstractConfiguratorsTest extends AbstractMavenSWTBotTest{
 		pe.open();
 		pe.getProject(projectName).select();
 		new ContextMenuItem("New","Other...").select();
+		new DefaultShell("Select a wizard").setFocus();
 		new DefaultTreeItem("JBoss Tools Web","JSF","Faces Config").select();
 		new PushButton("Next >").click();
 		new PushButton("Browse...").click();
-		new DefaultTreeItem(projectName,"WebContent","WEB-INF").select();
+		new DefaultTreeItem(projectName, "src", "main", "webapp","WEB-INF").select();
 		new PushButton("OK").click();
 		new PushButton("Finish").click();
 		updateConf(projectName);

@@ -13,9 +13,9 @@
     </activation>
 <repositories>
 				<repository>
-					<id>redhat-techpreview-all-repository</id>
-					<name>Red Hat Tech Preview repository (all)</name>
-					<url>http://maven.repository.redhat.com/techpreview/all/</url>
+					<id>redhat-earlyaccess-all-repository</id>
+					<name>Red Hat Early Access repository (all)</name>
+					<url>https://maven.repository.redhat.com/earlyaccess/all/</url>
 					<layout>default</layout>
 					<releases>
 						<enabled>true</enabled>
@@ -29,9 +29,9 @@
 			</repositories>
 			<pluginRepositories>
 				<pluginRepository>
-					<id>redhat-techpreview-all-repository</id>
-					<name>Red Hat Tech Preview repository (all)</name>
-					<url>http://maven.repository.redhat.com/techpreview/all/</url>
+					<id>redhat-earlyaccess-all-repository</id>
+					<name>Red Hat Early Access repository (all)</name>
+					<url>https://maven.repository.redhat.com/earlyaccess/all/</url>
 					<layout>default</layout>
 					<releases>
 						<enabled>true</enabled>

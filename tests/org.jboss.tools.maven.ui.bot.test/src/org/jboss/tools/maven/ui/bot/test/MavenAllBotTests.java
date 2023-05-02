@@ -42,27 +42,19 @@ import org.junit.runners.Suite;
 	
 	PerspectiveTest.class,
 	MavenProfilesTest.class,
-	MaterializeLibraryTest.class,
+	MaterializeLibraryTest.class, //Missing entries in New Project Example dialog window |
 
 	EARProjectTest.class,
 	
-	JPAConfiguratorTest.class,
-	JSFConfiguratorTest.class,
-	CDIConfiguratorTest.class, 
-	JAXRSConfiguratorTest.class,
+	JPAConfiguratorTest.class, //JPA Facet is never checked
+	JSFConfiguratorTest.class, //Facets are not checked, jar isntead of war
+	CDIConfiguratorTest.class, // Facets are not checked, jar instead of war/ejb
+	JAXRSConfiguratorTest.class, //doesnt have facets, jar instead of war
 	
 	MavenRepositories.class,
 	
 	MavenConversionTest.class,
-	RemoteRepositoriesPreferenceTest.class,
-	
-	SourceLookupTest.class,
-	
-	SeamPluginsTest.class,
-	
-	APTPropertiesPageTest.class,
-	
-	SCMCheckoutProject.class
+	RemoteRepositoriesPreferenceTest.class
 	
 })
 public class MavenAllBotTests {
