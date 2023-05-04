@@ -15,7 +15,7 @@
 	<properties>
 		<!-- <systemProperties>${integrationTestsSystemProperties} -->
 		<!-- -DimportTestDefinition=${importTestDefinition}</systemProperties> -->
-		<wildflyVersion>27.0.0.Final</wildflyVersion>
+		<wildflyVersion>28.0.0.Final</wildflyVersion>
 		<systemProperties>${integrationTestsSystemProperties} -DexamplesLocation=${project.build.directory}/${examplesFolder} -Dmaven.settings.path=${maven.settings.path} -Drd.config=${reddeer.config} -DspecificQuickstarts=${specificQuickstarts} -DdeployOnServer=${deployOnServer} ${additionalProperties}</systemProperties>
 		<quickstartsURLWildFly>https://github.com/wildfly/quickstart/archive/${wildflyVersion}.zip</quickstartsURLWildFly>
 		<quickstartsURLEAP>http://download.eng.bos.redhat.com/released/JBoss-middleware/eap7/7.4.0/jboss-eap-7.4.0-quickstarts.zip</quickstartsURLEAP>
@@ -33,8 +33,8 @@
 		<examplesFolderJavaEE7>javaee7-samples-master</examplesFolderJavaEE7>
 		<examplesFolderJavaEE8>javaee8-samples-master</examplesFolderJavaEE8>
 		<jbosstools.test.wildfly.home>${requirementsDirectory}/wildfly-${wildflyVersion}</jbosstools.test.wildfly.home>
-		<jbosstools.test.eap7.home>${requirementsDirectory}/jboss-eap-7.4</jbosstools.test.eap7.home>
-		<jbosstools.test.jboss-eap-7.x.url>http://download.eng.bos.redhat.com/released/JBoss-middleware/eap7/7.4.0/jboss-eap-7.4.0.zip</jbosstools.test.jboss-eap-7.x.url>
+		<jbosstools.test.eap.home>${requirementsDirectory}/jboss-eap-7.4</jbosstools.test.eap.home>
+		<jbosstools.test.jboss-eap.url>http://download.eng.bos.redhat.com/released/JBoss-middleware/eap7/7.4.0/jboss-eap-7.4.0.zip</jbosstools.test.jboss-eap.url>
 		<jbosstools.test.eap.xp.home>${requirementsDirectory}/jboss-eap-7.4</jbosstools.test.eap.xp.home>
 		<jbosstools.test.jboss-eap-xp.url>https://download.eng.bos.redhat.com/released/JBoss-middleware/eap-xp/4.0.0/jboss-eap-xp-4.0.0.zip</jbosstools.test.jboss-eap-xp.url>
 		<surefire.timeout>18000</surefire.timeout>
@@ -208,11 +208,11 @@
 			<id>EAP7</id>
 			<properties>
 				<test.class>org.jboss.tools.examples.ui.bot.test.integration.EAPImportQuickstartsTest</test.class>
-				<reddeer.config>${project.build.directory}/classes/servers/eap-7.json</reddeer.config>
+				<reddeer.config>${project.build.directory}/classes/servers/eap.json</reddeer.config>
 				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
 				<examplesFolder>${examplesFolderEAP}</examplesFolder>
 				<quickstarts.URL>${quickstartsURLEAP}</quickstarts.URL>
-				<server.url>${jbosstools.test.jboss-eap-7.x.url}</server.url>
+				<server.url>${jbosstools.test.jboss-eap.url}</server.url>
 			</properties>
 			<build>
 				<plugins>
@@ -552,7 +552,7 @@
 			<id>SmokeTestsEAP7</id>
 			<properties>
 				<test.class>org.jboss.tools.examples.ui.bot.test.integration.EAPImportQuickstartsTest</test.class>
-				<reddeer.config>${project.build.directory}/classes/servers/eap-7.json</reddeer.config>
+				<reddeer.config>${project.build.directory}/classes/servers/eap.json</reddeer.config>
 				<examplesLocation>${project.build.directory}/${examplesFolder}</examplesLocation>
 				<examplesFolder>${examplesFolderEAP}</examplesFolder>
 				<specificQuickstarts>temperature-converter,helloworld-ws,websocket-hello,helloworld</specificQuickstarts>
@@ -576,13 +576,13 @@
 								</configuration>
 							</execution>
 							<execution>
-								<id>install-eap-7.x</id>
+								<id>install-eap</id>
 								<phase>pre-integration-test</phase>
 								<goals>
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>${jbosstools.test.jboss-eap-7.x.url}</url>
+									<url>${jbosstools.test.jboss-eap.url}</url>
 									<unpack>true</unpack>
 								</configuration>
 							</execution>
@@ -729,7 +729,7 @@
 	<repositories>
 		<repository>
 			<id>m2e-connector-</id>
-			<url>http://ianbrandt.github.io/m2e-maven-dependency-plugin/0.0.4/</url>
+			<url>https://ianbrandt.github.io/m2e-maven-dependency-plugin/0.0.4/</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
@@ -740,7 +740,7 @@
 		<repository>
 			<id>m2e</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/technology/m2e/releases/latest</url>
+			<url>https://download.eclipse.org/technology/m2e/releases/latest</url>
 		</repository>
 	</repositories>
 	<dependencies>
