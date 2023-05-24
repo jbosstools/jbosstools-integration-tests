@@ -151,7 +151,7 @@
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>http://repository.jboss.org/sourceforge/jboss-seam-2.1.2.zip</url>
+									<url>https://repository.jboss.org/sourceforge/jboss-seam-2.1.2.zip</url>
 									<unpack>true</unpack>
 									<md5>9c95a9160b2f52776aa414aad2c05e7a</md5>
 								</configuration>
@@ -163,7 +163,7 @@
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>http://repository.jboss.org/sourceforge/jboss-seam-2.2.0.GA.zip</url>
+									<url>https://repository.jboss.org/sourceforge/jboss-seam-2.2.0.GA.zip</url>
 									<unpack>true</unpack>
 									<md5>febaf032f989240fe3828a8f0f7fe98a</md5>
 								</configuration>
@@ -231,7 +231,7 @@
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>http://repository.jboss.org/sourceforge/jboss-seam-2.1.2.zip</url>
+									<url>https://repository.jboss.org/sourceforge/jboss-seam-2.1.2.zip</url>
 									<unpack>true</unpack>
 									<md5>9c95a9160b2f52776aa414aad2c05e7a</md5>
 								</configuration>
@@ -243,7 +243,7 @@
 									<goal>wget</goal>
 								</goals>
 								<configuration>
-									<url>http://repository.jboss.org/sourceforge/jboss-seam-2.2.0.GA.zip</url>
+									<url>https://repository.jboss.org/sourceforge/jboss-seam-2.2.0.GA.zip</url>
 									<unpack>true</unpack>
 									<md5>febaf032f989240fe3828a8f0f7fe98a</md5>
 								</configuration>
