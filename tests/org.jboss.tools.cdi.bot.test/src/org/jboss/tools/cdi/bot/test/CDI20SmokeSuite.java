@@ -15,10 +15,12 @@ import org.jboss.tools.cdi.bot.test.beans.bean.cdi20.BeanValidationQuickFixTestC
 import org.jboss.tools.cdi.bot.test.beans.named.cdi20.NamedComponentsSearchingTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.openon.cdi20.BeanInjectOpenOnTestCDI20;
 import org.jboss.tools.cdi.bot.test.beans.openon.cdi20.FindObserverEventTestCDI20;
+import org.jboss.tools.cdi.bot.test.beansxml.annotation.cdi20.BeanParametersAnnotationTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.cdi20.BeansXMLBeansEditorTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.cdi20.BeansXMLDiscoveryModesTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.cdi20.BeansXMLValidationTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.completion.cdi20.BeansXMLCompletionTestCDI20;
+import org.jboss.tools.cdi.bot.test.beansxml.openon.cdi20.BeansXMLOpenOnTestCDI20;
 import org.jboss.tools.cdi.bot.test.beansxml.validation.cdi20.BeansXMLValidationQuickFixTestCDI20;
 import org.jboss.tools.cdi.bot.test.microprofiile.cdi20.ConfigPropertyTestCDI20;
 import org.jboss.tools.cdi.bot.test.validation.cdi20.CDIValidatorTestCDI20;
@@ -44,7 +46,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	BeansXMLValidationQuickFixTestCDI20.class,
 	CDIValidatorTestCDI20.class,
 	CDIWebProjectWizardTestCDI20.class,
-	BeansXMLDiscoveryModesTestCDI20.class
+	BeansXMLDiscoveryModesTestCDI20.class,
+	BeanParametersAnnotationTestCDI20.class,
+	BeansXMLOpenOnTestCDI20.class
 })
 public class CDI20SmokeSuite {
 
