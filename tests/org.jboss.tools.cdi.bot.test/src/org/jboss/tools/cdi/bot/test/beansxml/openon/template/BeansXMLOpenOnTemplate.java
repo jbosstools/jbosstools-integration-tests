@@ -12,6 +12,8 @@ package org.jboss.tools.cdi.bot.test.beansxml.openon.template;
 
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.reddeer.common.wait.AbstractWait;
+import org.eclipse.reddeer.common.wait.TimePeriod;
 import org.eclipse.reddeer.swt.impl.styledtext.DefaultStyledText;
 import org.eclipse.reddeer.swt.keyboard.KeyboardFactory;
 import org.eclipse.reddeer.workbench.impl.editor.DefaultEditor;
@@ -54,7 +56,9 @@ public class BeansXMLOpenOnTemplate extends CDITestBase{
 		EditorPartWrapper beans = beansXMLHelper.openBeansXml(PROJECT_NAME);
 		beans.activateSourcePage();
 		new DefaultStyledText().selectText(packageName + "." + className);
+		AbstractWait.sleep(TimePeriod.DEFAULT); // need short wait before click on F3
 		KeyboardFactory.getKeyboard().invokeKeyCombination(SWT.F3);
+		AbstractWait.sleep(TimePeriod.DEFAULT);
 		assertTrue(new DefaultEditor().getTitle().equals(className+".java"));
 	}
 

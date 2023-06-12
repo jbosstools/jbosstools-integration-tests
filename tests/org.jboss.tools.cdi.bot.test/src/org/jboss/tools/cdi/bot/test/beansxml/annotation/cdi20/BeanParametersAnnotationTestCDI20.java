@@ -38,5 +38,6 @@ public class BeanParametersAnnotationTestCDI20 extends BeanParametersAnnotationT
 	
 	public BeanParametersAnnotationTestCDI20() {
 		CDIVersion = "2.0";
+		PROJECT_NAME = "BeanParametersAnnotationTestCDI20";
 	}
 }

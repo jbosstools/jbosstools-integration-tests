@@ -38,5 +38,6 @@ public class BeansXMLOpenOnTestCDI20 extends BeansXMLOpenOnTemplate{
 	
 	public BeansXMLOpenOnTestCDI20() {
 		CDIVersion = "2.0";
+		PROJECT_NAME = "BeansXMLOpenOnTestCDI20";
 	}
 }

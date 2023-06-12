@@ -148,7 +148,8 @@ public class CDITestBase {
 		if (projExp.getProjects().isEmpty()) {
 			if (!PROJECT_NAME.equals("CDIValidatorTest") &&
 				!PROJECT_NAME.equals("BeanValidationQuickFixTest") &&
-				!PROJECT_NAME.equals("NamedComponentsTest")) { // CDIValidatorTestCDI20, BeanValidationQuickFixTest and NamedComponentsTest requires same project for few tests
+				!PROJECT_NAME.equals("NamedComponentsTest") &&
+				!PROJECT_NAME.equals("BeansXMLOpenOnTestCDI20")){ // CDIValidatorTestCDI20, BeanValidationQuickFixTest, BeansXMLOpenOnTestCDI20 and NamedComponentsTest requires same project for few tests
 				PROJECT_NAME = PROJECT_NAME + Integer.toString(new Random().nextInt(100)); // same project name might cause a problem
 			}
 
