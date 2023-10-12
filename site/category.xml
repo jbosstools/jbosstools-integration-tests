@@ -24,7 +24,6 @@
 <bundle id="org.jboss.tools.central.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.deltaspike.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.maven.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
-<bundle id="org.jboss.tools.ws.ui.bot.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 <bundle id="org.jboss.tools.perf.test"><category name="JBoss Tools Core - Integration Tests"/></bundle>
 
 <!-- sources -->
@@ -37,6 +36,5 @@
 <bundle id="org.jboss.tools.central.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.deltaspike.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.maven.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
-<bundle id="org.jboss.tools.ws.ui.bot.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 <bundle id="org.jboss.tools.perf.test.source"><category name="JBoss Tools Core - Integration Test Sources"/></bundle>
 </site>
