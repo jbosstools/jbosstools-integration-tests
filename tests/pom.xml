@@ -45,7 +45,6 @@
 				<module>org.jboss.tools.examples.ui.bot.test</module>
 				<module>org.jboss.tools.jst.ui.bot.test</module>
 				<module>org.jboss.tools.maven.ui.bot.test</module>
-				<module>org.jboss.tools.ws.ui.bot.test</module>
 				<module>org.jboss.tools.perf.test</module>
 			</modules>
 		</profile>
