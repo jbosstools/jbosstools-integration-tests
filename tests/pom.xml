@@ -23,7 +23,7 @@
 		<integrationTestsSystemProperties>-Dswt.bot.test.record.screencast=${swt.bot.test.record.screencast} -Dorg.eclipse.swtbot.screenshots.dir=${project.build.directory}/screenshots -Dusage_reporting_enabled=${usage_reporting_enabled} -Dcom.atlassian.connector.eclipse.monitor.usage.first.time=false -Dcom.atlassian.connector.eclipse.monitor.usage.enabled=false ${junitExtensionsProperties}</integrationTestsSystemProperties>
 		<skipTests>true</skipTests>
 		<test.installPath.OSX></test.installPath.OSX>
-		<testProduct>org.eclipse.ui.ide.workbench</testProduct>
+		<testProduct>org.eclipse.epp.package.java.product</testProduct>
 		<jbtRepository>https://download.jboss.org/jbosstools/photon/snapshots/updates/</jbtRepository>
 	</properties>
 
