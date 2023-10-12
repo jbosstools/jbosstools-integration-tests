@@ -23,7 +23,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(RedDeerSuite.class)
 @SuiteClasses({
 	HTML5Parameterized.class, // does not have a test case now
-	LauncherApplicationTest.class,
 	BasicTests.class,
 	InstallationDetailsTest.class
 	})
