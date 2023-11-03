@@ -133,8 +133,6 @@ public class InstallationDetailsTest {
 //			jboss.fuse.extras.site.url|jbosstools|4.27.0.AM1=https://download.jboss.org/jbosstools/photon/snapshots/builds/jbosstools-fuse-extras_master/latest/all/repo/
 			"jboss\\.discovery\\.directory\\.url\\|jbosstools\\|{majorVersion}.*jbosstools-directory\\.xml",
 			"jboss\\.discovery\\.site\\.url\\|jbosstools\\|{majorVersion}.*=https://download\\.jboss\\.org/jbosstools/photon/.*/{majorVersion}.*/updates/",
-			"jboss\\.discovery\\.earlyaccess\\.site\\.url\\|jbosstools\\|{majorVersion}.*=https://download\\.jboss\\.org/jbosstools/photon/.*/discovery\\.earlyaccess/",
-			"jboss\\.discovery\\.earlyaccess\\.list\\.url\\|jbosstools\\|{majorVersion}.*=https://download\\.jboss\\.org/jbosstools/photon/.*/discovery\\.earlyaccess/{majorVersion}.*/jbosstools-earlyaccess\\.properties",
 			"jboss\\.central\\.webpage\\.url\\|jbosstools\\|{majorVersion}.*=.*jbosstools-central-webpage.*zip"//,
 			//"jboss\\.discovery\\.site\\.integration-stack\\.url\\|devstudio\\|{majorVersion}.*=https://devstudio\\.redhat\\.com/{majorVersion}.*integration-stack/discovery/",
 			//"jboss\\.discovery\\.earlyaccess\\.site\\.integration-stack\\.url\\|devstudio\\|{majorVersion}.*=https://devstudio\\.redhat\\.com/{majorVersion}.*/integration-stack/discovery/earlyaccess/",
