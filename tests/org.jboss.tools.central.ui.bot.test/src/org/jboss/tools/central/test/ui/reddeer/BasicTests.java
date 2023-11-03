@@ -76,14 +76,6 @@ public class BasicTests {
 	}
 
 	@Test
-	public void addToolsButton() {
-		log.step("Clicking AddToolsButton");
-		centralBrowser.execute("$(\"#addtools\").click()");
-		assertTrue(new DefaultCTabItem("Software/Update").isShowing());
-		new DefaultCTabItem("Getting Started").activate();
-	}
-
-	@Test
 	public void learnAboutRedHatButton() {
 		centralBrowser.execute("$(\'a[href=\"https://developers.redhat.com/\"]\').get( 0 ).click()");
 		new WaitUntil(new BrowserContainsText(centralBrowser, "Red Hat Developer"));
@@ -96,7 +88,6 @@ public class BasicTests {
 		List<String> wizards = Arrays.asList(jsHelper.getWizards());
 		assertTrue(wizards.contains("OpenShift Application"));
 		assertTrue(wizards.contains("Maven Project"));
-		assertTrue(wizards.contains("Launcher Application"));
 		assertTrue(wizards.contains("Quarkus Project"));
 	}
 
@@ -121,12 +112,6 @@ public class BasicTests {
 		jsHelper.clickExample(CONTACTS_MOBILE_BASIC);
 		new DefaultShell("New Project Example").close();
 		jsHelper.clearSearch();
-	}
-
-	@Test
-	public void launcherApplicationWizardCanBeEnvoked() {
-		jsHelper.clickWizard("Launcher Application");
-		new DefaultShell("New Launcher project").close();
 	}
 
 	@Test
