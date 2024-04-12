@@ -122,7 +122,6 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<testSuite>org.jboss.tools.cdi.bot.test</testSuite>
 					<testClass>${suiteClass}</testClass>
 					<dependencies combine.children="append">
 						<dependency>

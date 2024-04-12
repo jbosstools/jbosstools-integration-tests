@@ -21,7 +21,6 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<configuration>
-					<testSuite>org.jboss.tools.perf.test</testSuite>
 					<testClass>${suiteClass}</testClass>
 					<useUIThread>false</useUIThread>
 				</configuration>

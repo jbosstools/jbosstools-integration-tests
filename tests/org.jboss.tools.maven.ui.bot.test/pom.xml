@@ -38,7 +38,7 @@
 					<artifactId>tycho-surefire-plugin</artifactId>
 					<configuration>
 						<failIfNoTests>false</failIfNoTests>
-						<suiteClass>org.jboss.tools.maven.ui.bot.test.${scope}</suiteClass>
+						<testClass>org.jboss.tools.maven.ui.bot.test.${scope}</testClass>
 						<appArgLine>-testpluginname ${project.artifactId}</appArgLine>
 						<dependencies combine.children="append">
 							<dependency>
